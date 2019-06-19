@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -42,13 +39,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AreasController(
                             ILogger<AreasController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IAreaProvider areaProvider,
             IBayProvider bayProvider,
             ICellProvider cellProvider,
             IItemProvider itemProvider,
             IItemListProvider itemListProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;
@@ -97,7 +92,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -117,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -142,18 +137,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{id}/items")]
         public async Task<ActionResult<IEnumerable<Item>>> GetItemsAsync(
-                    int id,
-                    int skip = 0,
-                    int take = int.MaxValue,
-                    string where = null,
-                    string orderBy = null,
-                    string search = null)
+            int id,
+            int skip = 0,
+            int take = 0,
+            string where = null,
+            string orderBy = null,
+            string search = null)
         {
             try
             {
                 var orderByExpression = orderBy.ParseSortOptions();
 
-                return this.Ok(await this.itemProvider.GetByAreaIdAsync(
+                return this.Ok(await this.itemProvider.GetAllByAreaIdAsync(
                         id,
                         skip,
                         take,

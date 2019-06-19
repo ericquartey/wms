@@ -8,9 +8,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MissionStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
 
-        [Display(Name = nameof(BusinessObjects.MissionStatusWaiting), ResourceType = typeof(BusinessObjects))]
-        Waiting = 'W',
-
         [Display(Name = nameof(BusinessObjects.MissionStatusExecuting), ResourceType = typeof(BusinessObjects))]
         Executing = 'X',
 
@@ -21,6 +18,6 @@ namespace Ferretto.WMS.App.Core.Models
         Error = 'E',
 
         [Display(Name = nameof(BusinessObjects.MissionStatusIncomplete), ResourceType = typeof(BusinessObjects))]
-        Incomplete = 'I'
+        Incomplete = 'I',
     }
 }

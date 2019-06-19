@@ -3,16 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Controllers;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.WMS.Data.Tests
+namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
     public class AbcClassesControllerTest : BaseControllerTest
@@ -20,196 +16,186 @@ namespace Ferretto.WMS.Data.Tests
         #region Methods
 
         [TestMethod]
-        public async Task GetAllCountFound()
+        public async Task GetAllAsync_Found()
         {
+            #region Arrange
+
+            var controller = this.MockController();
+            var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
+            var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
+            var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
+
             using (var context = this.CreateContext())
             {
-                #region Arrange
-
-                var controller = this.MockController();
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
                 context.AbcClasses.Add(abcClass1);
                 context.AbcClasses.Add(abcClass2);
                 context.AbcClasses.Add(abcClass3);
                 context.SaveChanges();
-
-                #endregion
-
-                #region Act
-
-                var actionResult = await controller.GetAllCountAsync();
-
-                #endregion
-
-                #region Assert
-
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result);
-
-                #endregion
             }
+
+            #endregion
+
+            #region Act
+
+            var actionResult = await controller.GetAllAsync();
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(3, result.Count());
+
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetAllCountNotFound()
+        public async Task GetAllAsync_NotFound()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetAllCountAsync();
+            var actionResult = await controller.GetAllAsync();
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(0, result);
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(0, result.Count());
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetAllFound()
+        public async Task GetAllCountAsync_Found()
         {
+            #region Arrange
+
+            var controller = this.MockController();
+            var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
+            var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
+            var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
+
             using (var context = this.CreateContext())
             {
-                #region Arrange
-
-                var controller = this.MockController();
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
                 context.AbcClasses.Add(abcClass1);
                 context.AbcClasses.Add(abcClass2);
                 context.AbcClasses.Add(abcClass3);
                 context.SaveChanges();
-
-                #endregion
-
-                #region Act
-
-                var actionResult = await controller.GetAllAsync();
-
-                #endregion
-
-                #region Assert
-
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result.Count());
-
-                #endregion
             }
+
+            #endregion
+
+            #region Act
+
+            var actionResult = await controller.GetAllCountAsync();
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (int)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(3, result);
+
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetAllNotFound()
+        public async Task GetAllCountAsync_NotFound()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetAllAsync();
+            var actionResult = await controller.GetAllCountAsync();
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<AbcClass>)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(0, result.Count());
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (int)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(0, result);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetByIdFound()
+        [DataRow("A")]
+        [DataRow("B")]
+        public async Task GetByIdAsync_Found(string abcClassId)
         {
+            #region Arrange
+
+            var controller = this.MockController();
+            var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
+            var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
+            var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
+
             using (var context = this.CreateContext())
             {
-                #region Arrange
-
-                var controller = this.MockController();
-                var abcClass1 = new Common.DataModels.AbcClass { Id = "A", Description = "A Class" };
-                var abcClass2 = new Common.DataModels.AbcClass { Id = "B", Description = "B Class" };
-                var abcClass3 = new Common.DataModels.AbcClass { Id = "C", Description = "C Class" };
                 context.AbcClasses.Add(abcClass1);
                 context.AbcClasses.Add(abcClass2);
                 context.AbcClasses.Add(abcClass3);
                 context.SaveChanges();
-
-                #endregion
-
-                #region Act
-
-                var actionResult1 = await controller.GetByIdAsync("A");
-                var actionResult2 = await controller.GetByIdAsync("B");
-
-                #endregion
-
-                #region Assert
-
-                Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-                var result1 = (AbcClass)((OkObjectResult)actionResult1.Result).Value;
-                Assert.AreEqual("A", result1.Id);
-
-                Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
-                var result2 = (AbcClass)((OkObjectResult)actionResult2.Result).Value;
-                Assert.AreEqual("B", result2.Id);
-
-                #endregion
             }
+
+            #endregion
+
+            #region Act
+
+            var actionResult = await controller.GetByIdAsync(abcClassId);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (AbcClass)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(abcClassId, result.Id);
+
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetByIdNotFound()
+        public async Task GetByIdAsync_NotFound()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync("A");
+            var actionResult = await controller.GetByIdAsync("A");
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
+            Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult), GetDescription(actionResult.Result));
 
-                #endregion
-            }
+            #endregion
         }
 
         private AbcClassesController MockController()
         {
             return new AbcClassesController(
                 new Mock<ILogger<AbcClassesController>>().Object,
-                new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IAbcClassProvider)) as IAbcClassProvider);
         }
 

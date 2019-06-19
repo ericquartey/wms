@@ -11,28 +11,31 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class ItemListProvider : IItemListProvider
+    internal class ItemListProvider : BaseProvider, IItemListProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public ItemListProvider(DatabaseContext dataContext)
+        public ItemListProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
 
         #region Methods
+
+        public static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as IPolicyItemList).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemListDeletePolicy).ComputeDeletePolicy());
+            model.AddPolicy((model as IPolicyItemList).ComputeExecutePolicy());
+            model.AddPolicy((model as IPolicyItemList).ComputeAddRowPolicy());
+        }
 
         public async Task<IOperationResult<ItemListDetails>> CreateAsync(ItemListDetails model)
         {
@@ -41,7 +44,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.dataContext.ItemLists.AddAsync(new Common.DataModels.ItemList
+            var entry = await this.DataContext.ItemLists.AddAsync(new Common.DataModels.ItemList
             {
                 Code = model.Code,
                 CustomerOrderCode = model.CustomerOrderCode,
@@ -52,10 +55,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                 ShipmentUnitCode = model.ShipmentUnitCode,
-                ShipmentUnitDescription = model.ShipmentUnitDescription
+                ShipmentUnitDescription = model.ShipmentUnitDescription,
             });
 
-            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
@@ -63,6 +66,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.LastModificationDate = entry.Entity.LastModificationDate;
                 model.ExecutionEndDate = entry.Entity.ExecutionEndDate;
                 model.FirstExecutionDate = entry.Entity.FirstExecutionDate;
+
+                this.NotificationService.PushCreate(model);
             }
 
             return new SuccessOperationResult<ItemListDetails>(model);
@@ -70,34 +75,39 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListDetails>> DeleteAsync(int id)
         {
-            var itemList = await this.GetByIdAsync(id);
-            if (itemList == null)
+            var existingModel = await this.GetByIdAsync(id);
+            if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemListDetails>();
             }
 
-            if (!itemList.CanDelete())
+            if (!existingModel.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<ItemListDetails>
                 {
-                    Description = itemList.GetCanDeleteReason(),
+                    Description = existingModel.GetCanDeleteReason(),
                 };
             }
 
-            var rows = await this.dataContext.ItemListRows
+            var rows = await this.DataContext.ItemListRows
                 .Where(r => r.ItemListId == id)
                 .ToArrayAsync();
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                this.dataContext.ItemListRows.RemoveRange(rows);
-                this.dataContext.ItemLists.Remove(new Common.DataModels.ItemList { Id = id });
-                await this.dataContext.SaveChangesAsync();
+                this.DataContext.ItemListRows.RemoveRange(rows);
+                this.DataContext.ItemLists.Remove(new Common.DataModels.ItemList { Id = id });
+
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushDelete(existingModel);
+                }
 
                 scope.Complete();
             }
 
-            return new SuccessOperationResult<ItemListDetails>(itemList);
+            return new SuccessOperationResult<ItemListDetails>(existingModel);
         }
 
         public async Task<IEnumerable<ItemList>> GetAllAsync(
@@ -117,7 +127,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -145,7 +155,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -155,16 +165,20 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.ItemLists,
+                this.DataContext.ItemLists,
                 this.GetAllBase());
         }
 
         public async Task<IOperationResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
-                this.dataContext.ItemLists,
-                this.dataContext);
+                this.DataContext.ItemLists,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -190,7 +204,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<ItemList> GetAllBase()
         {
-            return this.dataContext.ItemLists
+            return this.DataContext.ItemLists
                 .Select(i => new ItemList
                 {
                     Id = i.Id,
@@ -199,6 +213,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Priority = i.Priority,
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ErrorRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
                     ExecutingRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
                     NewRowsCount =
@@ -209,18 +225,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    ReadyRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
                     HasActiveRows = i.ItemListRows.Any(r =>
                         r.Status != Common.DataModels.ItemListRowStatus.Completed &&
                         r.Status != Common.DataModels.ItemListRowStatus.New),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    CreationDate = i.CreationDate
+                    CreationDate = i.CreationDate,
                 });
         }
 
         private IQueryable<ItemListDetails> GetAllDetailsBase()
         {
-            return this.dataContext.ItemLists
+            return this.DataContext.ItemLists
                 .Select(i => new ItemListDetails
                 {
                     Id = i.Id,
@@ -231,6 +249,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RowsCount = i.ItemListRows.Count(),
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ErrorRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
                     ExecutingRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
                     WaitingRowsCount =
@@ -241,6 +261,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     NewRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
+                    ReadyRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
                     HasActiveRows = i.ItemListRows.Any(r =>
                         r.Status != Common.DataModels.ItemListRowStatus.Completed &&
                         r.Status != Common.DataModels.ItemListRowStatus.New),
@@ -253,68 +275,68 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ShipmentUnitDescription = i.ShipmentUnitDescription,
                     LastModificationDate = i.LastModificationDate,
                     FirstExecutionDate = i.FirstExecutionDate,
-                    ExecutionEndDate = i.ExecutionEndDate
+                    ExecutionEndDate = i.ExecutionEndDate,
                 });
         }
 
         private IQueryable<ItemList> GetByAreaId(int areaId)
         {
-            return this.dataContext.ItemLists.Join(
-            this.dataContext.ItemListRows,
-            il => il.Id,
-            ilr => ilr.ItemListId,
-            (il, ilr) => new
-            {
-                ItemList = il,
-                ItemListRow = ilr,
-            })
-            .Join(
-            this.dataContext.Compartments,
-            j => j.ItemListRow.ItemId,
-            c => c.ItemId,
-            (j, c) => new
-            {
-                ItemList = j.ItemList,
-                ItemListRow = j.ItemListRow,
-                Compartment = c,
-            })
-        .Join(
-            this.dataContext.Machines,
-            j => j.Compartment.LoadingUnit.Cell.AisleId,
-            m => m.AisleId,
-            (j, m) => new
-            {
-                ItemList = j.ItemList,
-                ItemListRow = j.ItemListRow,
-                Compartment = j.Compartment,
-                Machine = m,
-            })
-        .Where(j => j.Compartment.LoadingUnit.Cell.Aisle.AreaId == areaId)
-        .GroupBy(x => x.ItemList)
-        .Select(g => new ItemList
-        {
-            Id = g.Key.Id,
-            Description = g.Key.Description,
-            Machines = g.Select(x => x.Machine)
-            .Select(x => new
-            {
-                Id = x.Id,
-                ActualWeight = x.ActualWeight,
-                ErrorTime = x.ErrorTime,
-                Image = x.Image,
-                Model = x.Model,
-                Nickname = x.Nickname,
-            }).Distinct()
-            .Select(m1 => new Machine
-            {
-                Id = m1.Id,
-                ActualWeight = m1.ActualWeight,
-                ErrorTime = m1.ErrorTime,
-                Image = m1.Image,
-                Model = m1.Model,
-                Nickname = m1.Nickname,
-            })
-        });
+            return this.DataContext.ItemLists.Join(
+                    this.DataContext.ItemListRows,
+                    il => il.Id,
+                    ilr => ilr.ItemListId,
+                    (il, ilr) => new
+                    {
+                        ItemList = il,
+                        ItemListRow = ilr,
+                    })
+                .Join(
+                    this.DataContext.Compartments,
+                    j => j.ItemListRow.ItemId,
+                    c => c.ItemId,
+                    (j, c) => new
+                    {
+                        ItemList = j.ItemList,
+                        ItemListRow = j.ItemListRow,
+                        Compartment = c,
+                    })
+                .Join(
+                    this.DataContext.Machines,
+                    j => j.Compartment.LoadingUnit.Cell.AisleId,
+                    m => m.AisleId,
+                    (j, m) => new
+                    {
+                        ItemList = j.ItemList,
+                        ItemListRow = j.ItemListRow,
+                        Compartment = j.Compartment,
+                        Machine = m,
+                    })
+                .Where(j => j.Compartment.LoadingUnit.Cell.Aisle.AreaId == areaId)
+                .GroupBy(x => x.ItemList)
+                .Select(g => new ItemList
+                {
+                    Id = g.Key.Id,
+                    Description = g.Key.Description,
+                    Machines = g.Select(x => x.Machine)
+                        .Select(x => new
+                        {
+                            Id = x.Id,
+                            ActualWeight = x.ActualWeight,
+                            ErrorTime = x.ErrorTime,
+                            Image = x.Image,
+                            Model = x.Model,
+                            Nickname = x.Nickname,
+                        }).Distinct()
+                        .Select(m1 => new Machine
+                        {
+                            Id = m1.Id,
+                            ActualWeight = m1.ActualWeight,
+                            ErrorTime = m1.ErrorTime,
+                            Image = m1.Image,
+                            Model = m1.Model,
+                            Nickname = m1.Nickname,
+                        }),
+                });
         }
 
         #endregion

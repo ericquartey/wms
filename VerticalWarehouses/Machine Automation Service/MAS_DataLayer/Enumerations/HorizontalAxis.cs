@@ -17,5 +17,7 @@
         ClockWiseRun = 6L,
 
         AntiClockWiseRun = 7L,
+
+        Resolution = 8L,
     }
 }

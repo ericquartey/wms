@@ -10,27 +10,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private readonly ILogger logger;
 
+        private bool ackResetSecurityON;
+
         private bool disposed;
+
+        private IoSHDStatus status;
 
         #endregion
 
         #region Constructors
 
-        public PulseResetState(IIoStateMachine parentStateMachine, ILogger logger)
+        public PulseResetState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
-
-            var resetSecurityIoMessage = new IoMessage(false);
-
-            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
-            resetSecurityIoMessage.SwitchResetSecurity(true);
-            parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.status = status;
+            this.ackResetSecurityON = false;
         }
 
         #endregion
@@ -46,17 +43,50 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             if (message.ValidOutputs && !message.ResetSecurity)
             {
-                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.logger));
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
+            }
+        }
+
+        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        {
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+
+            //TEMP Acknowledge the reset security ON message has been processed
+            if (this.status.MatchOutputs(message.Outputs) && !this.ackResetSecurityON)
+            {
+                this.ackResetSecurityON = true;
             }
 
-            this.logger.LogDebug("3:Method End");
+            var checkMessage = (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+                                message.ValidOutputs &&
+                                !message.ResetSecurity);
+
+            if (this.ackResetSecurityON && checkMessage)
+            {
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
+            }
+        }
+
+        public override void Start()
+        {
+            var resetSecurityIoMessage = new IoSHDWriteMessage();
+
+            resetSecurityIoMessage.SwitchResetSecurity(true);
+            this.logger.LogTrace($"1:Switch Security IO={resetSecurityIoMessage}");
+
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
+            }
+
+            this.ackResetSecurityON = false;
+            this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
         }
 
         protected override void Dispose(bool disposing)

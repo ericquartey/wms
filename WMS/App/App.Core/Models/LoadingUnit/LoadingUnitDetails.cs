@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
-using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.LoadingUnit))]
     public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields
@@ -166,8 +162,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitLastStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.LoadingUnitLastPutDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPutDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public double Length

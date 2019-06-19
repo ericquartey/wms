@@ -3,15 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Controllers;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
-namespace Ferretto.WMS.Data.Tests
+namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
     public class WhereConditionsTest : BaseControllerTest
@@ -196,11 +191,11 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult), GetDescription(actionResult1.Result));
             var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
             Assert.AreEqual(1, result1.Count());
 
-            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult), GetDescription(actionResult2.Result));
             var result2 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult2.Result).Value;
             Assert.AreEqual(0, result2.Count());
 
@@ -232,11 +227,11 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult), GetDescription(actionResult1.Result));
             var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
             Assert.AreEqual(0, result1.Count());
 
-            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult), GetDescription(actionResult2.Result));
             var result2 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult2.Result).Value;
             Assert.AreEqual(2, result2.Count());
 
@@ -268,11 +263,11 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult), GetDescription(actionResult1.Result));
             var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
             Assert.AreEqual(1, result1.Count());
 
-            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult), GetDescription(actionResult2.Result));
             var result2 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult2.Result).Value;
             Assert.AreEqual(2, result2.Count());
 
@@ -304,11 +299,11 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult), GetDescription(actionResult1.Result));
             var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
             Assert.AreEqual(1, result1.Count());
 
-            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult), GetDescription(actionResult2.Result));
             var result2 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult2.Result).Value;
             Assert.AreEqual(0, result2.Count());
 
@@ -340,11 +335,11 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult), GetDescription(actionResult1.Result));
             var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
             Assert.AreEqual(1, result1.Count());
 
-            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult), GetDescription(actionResult2.Result));
             var result2 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult2.Result).Value;
             Assert.AreEqual(0, result2.Count());
 
@@ -376,11 +371,11 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult), GetDescription(actionResult1.Result));
             var result1 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult1.Result).Value;
             Assert.AreEqual(2, result1.Count());
 
-            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult), GetDescription(actionResult2.Result));
             var result2 = (IEnumerable<Core.Models.SchedulerRequest>)((OkObjectResult)actionResult2.Result).Value;
             Assert.AreEqual(0, result2.Count());
 
@@ -390,7 +385,6 @@ namespace Ferretto.WMS.Data.Tests
         private SchedulerRequestsController MockController()
         {
             return new SchedulerRequestsController(
-                new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
                 this.ServiceProvider.GetService(
                     typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider);
         }

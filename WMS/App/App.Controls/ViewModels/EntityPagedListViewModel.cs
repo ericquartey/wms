@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Threading;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
@@ -39,7 +40,8 @@ namespace Ferretto.WMS.App.Controls
 
         #region Constructors
 
-        protected EntityPagedListViewModel()
+        protected EntityPagedListViewModel(IDataSourceService dataSourceService)
+            : base(dataSourceService)
         {
         }
 
@@ -133,9 +135,9 @@ namespace Ferretto.WMS.App.Controls
         {
             foreach (var filterTile in this.Filters)
             {
-                var filterDataSource = this.FilterDataSources.Single(d => d.Key == filterTile.Key);
-
-                if (filterDataSource.Provider != null)
+                var currentDataSource = this.FilterDataSources.Single(d => d.Key == filterTile.Key);
+                if (currentDataSource is IFilterDataSource<TModel, TKey> filterDataSource
+                    && filterDataSource.Provider != null)
                 {
                     filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(filterDataSource.FilterString);
                 }
@@ -170,12 +172,7 @@ namespace Ferretto.WMS.App.Controls
         private static int GetPageSize()
         {
             var pageSizeSetting = ConfigurationManager.AppSettings.Get(DefaultPageSizeSettingsKey);
-            if (int.TryParse(pageSizeSetting, out var pageSize))
-            {
-                return pageSize;
-            }
-
-            return DefaultPageSize;
+            return int.TryParse(pageSizeSetting, out var pageSize) ? pageSize : DefaultPageSize;
         }
 
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)
@@ -195,15 +192,22 @@ namespace Ferretto.WMS.App.Controls
 
         private void ComputeOverallFilter()
         {
-            var filterDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
+            if (this.selectedFilterTile == null)
+            {
+                return;
+            }
 
-            this.Provider = filterDataSource.Provider;
+            var currentDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
+            if (currentDataSource is IFilterDataSource<TModel, TKey> filterDataSource)
+            {
+                this.Provider = filterDataSource.Provider;
 
-            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
+                var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
 
-            this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
-            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
-            (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
+                (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+            }
         }
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)
@@ -246,7 +250,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 await this.Provider.GetAllCountAsync(
                     whereString,
-                    this.searchText)
+                    this.searchText),
             };
         }
 
@@ -271,7 +275,7 @@ namespace Ferretto.WMS.App.Controls
         {
             var source = new InfiniteAsyncSource
             {
-                ElementType = typeof(TModel)
+                ElementType = typeof(TModel),
             };
 
             if (this.provider != null)

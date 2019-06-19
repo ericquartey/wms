@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MaterialStatusProvider : IMaterialStatusProvider
+    internal class MaterialStatusProvider : BaseProvider, IMaterialStatusProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public MaterialStatusProvider(DatabaseContext dataContext)
+        public MaterialStatusProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,27 +23,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<MaterialStatus>> GetAllAsync()
         {
-            return await this.dataContext.MaterialStatuses
+            return await this.DataContext.MaterialStatuses
                .Select(c => new MaterialStatus
                {
                    Id = c.Id,
-                   Description = c.Description
+                   Description = c.Description,
                })
                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.MaterialStatuses.CountAsync();
+            return await this.DataContext.MaterialStatuses.CountAsync();
         }
 
         public async Task<MaterialStatus> GetByIdAsync(int id)
         {
-            return await this.dataContext.MaterialStatuses
+            return await this.DataContext.MaterialStatuses
                  .Select(c => new MaterialStatus
                  {
                      Id = c.Id,
-                     Description = c.Description
+                     Description = c.Description,
                  })
                  .SingleOrDefaultAsync(a => a.Id == id);
         }

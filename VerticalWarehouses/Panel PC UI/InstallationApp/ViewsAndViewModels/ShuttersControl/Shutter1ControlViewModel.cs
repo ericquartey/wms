@@ -9,10 +9,10 @@ using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -199,7 +199,8 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.DelayBetweenCycles, out var delay);
                 int.TryParse(this.RequiredCycles, out var reqCycles);
 
-                await this.installationService.StartShutterControlAsync(delay, reqCycles);
+                var bayNumber = 1;
+                await this.installationService.StartShutterControlAsync(bayNumber, delay, reqCycles);
                 // TEMP
                 //await this.testService.StartShutterControlErrorAsync(delay, reqCycles);
                 //await this.testService.StartShutterControlAsync(delay, reqCycles);

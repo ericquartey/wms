@@ -1,8 +1,12 @@
-﻿using Ferretto.WMS.App.Controls;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.Scheduler
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.SchedulerRequest), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     public class SchedulerRequestsViewModel : EntityPagedListViewModel<SchedulerRequest, int>
     {
         #region Fields
@@ -13,7 +17,8 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Constructors
 
-        public SchedulerRequestsViewModel()
+        public SchedulerRequestsViewModel(IDataSourceService dataSourceService)
+          : base(dataSourceService)
         {
             this.ShowDetailsCommand.CanExecuteChanged += this.ShowDetailsCommand_CanExecuteChanged;
         }

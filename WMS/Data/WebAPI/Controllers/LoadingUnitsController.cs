@@ -4,13 +4,9 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -29,6 +25,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentProvider compartmentProvider;
 
+        private readonly IItemProvider itemProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
         private readonly ISchedulerService schedulerService;
@@ -38,15 +36,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
+            IItemProvider itemProvider,
             ISchedulerService schedulerService)
-            : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
             this.schedulerService = schedulerService;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -61,12 +59,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.loadingUnitProvider.CreateAsync(model);
             if (!result.Success)
             {
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Created);
-
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
         [ProducesResponseType(200)]
@@ -76,28 +72,47 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var result = await this.loadingUnitProvider.DeleteAsync(id);
-
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<LoadingUnitDetails>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Deleted);
-
             return this.Ok();
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/allowed-items")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
+            int id,
+            int skip = 0,
+            int take = 0,
+            string orderBy = null)
+        {
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                return this.Ok(
+                    await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
+        }
+
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-items-count")]
+        public async Task<ActionResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int id)
+        {
+            return await this.itemProvider.GetAllAllowedByLoadingUnitIdCountAsync(id);
         }
 
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
@@ -105,7 +120,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoadingUnit>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -184,7 +199,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NotFound(new ProblemDetails
                 {
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -221,19 +236,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.loadingUnitProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<LoadingUnitDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
@@ -256,13 +260,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.UnprocessableEntity(new ProblemDetails
                 {
                     Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
+                    Detail = result.Description,
                 });
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Updated);
 
             return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }

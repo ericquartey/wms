@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Ferretto.Common.DataModels
 {
-    // Macchina
     public sealed class Machine : IDataModel
     {
         #region Properties
@@ -73,6 +72,8 @@ namespace Ferretto.Common.DataModels
         public long? PowerOnTime { get; set; }
 
         public string RegistrationNumber { get; set; }
+
+        public string ServiceUrl { get; set; }
 
         public DateTime? TestDate { get; set; }
 

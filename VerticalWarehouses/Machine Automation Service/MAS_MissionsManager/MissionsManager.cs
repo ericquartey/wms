@@ -1,23 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
-    public class MissionsManager : BackgroundService
+    public partial class MissionsManager : BackgroundService
     {
         #region Fields
+
+        private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
@@ -27,19 +35,29 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ILogger logger;
 
-        private readonly ManualResetEventSlim missionExecuted;
+        private readonly IMachinesDataService machinesDataService;
 
-        //private readonly Task missionExecutionTask;
-
-        private readonly ManualResetEventSlim missionReady;
-
-        private readonly Dictionary<IMissionMessageData, int> missionsCollection;
+        private readonly Task missionManagementTask;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
 
+        private AutoResetEvent bayNowServiceableResetEvent;
+
         private bool disposed;
+
+        private IGeneralInfo generalInfo;
+
+        private int lastServedBay;
+
+        private List<Mission> machineMissions;
+
+        private IMissionsDataService missionsDataService;
+
+        private AutoResetEvent newMissionArrivedResetEvent;
+
+        private ISetupNetwork setupNetwork;
 
         private CancellationToken stoppingToken;
 
@@ -47,31 +65,38 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         #region Constructors
 
-        public MissionsManager(IEventAggregator eventAggregator, ILogger<MissionsManager> logger)
+        public MissionsManager(
+            IEventAggregator eventAggregator,
+            ILogger<MissionsManager> logger,
+            IGeneralInfo generalInfo,
+            IBaysManager baysManager,
+            ISetupNetwork setupNetwork,
+            IMachinesDataService machinesDataService,
+            IMissionsDataService missionsDataService)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.eventAggregator = eventAggregator;
-
+            this.baysManager = baysManager;
             this.logger = logger;
+            this.generalInfo = generalInfo;
+            this.setupNetwork = setupNetwork;
+            this.machinesDataService = machinesDataService;
+            this.missionsDataService = missionsDataService;
 
-            this.missionExecuted = new ManualResetEventSlim(true);
-
-            this.missionReady = new ManualResetEventSlim(false);
+            this.machineMissions = new List<Mission>();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
+            this.missionManagementTask = new Task(() => this.MissionManagementTaskFunction());
 
-            this.missionsCollection = new Dictionary<IMissionMessageData, int>();
-
-            //this.missionExecutionTask = new Task(() => this.MissionsExecutionTaskFunction());
+            this.bayNowServiceableResetEvent = new AutoResetEvent(false);
+            this.newMissionArrivedResetEvent = new AutoResetEvent(false);
 
             this.InitializeMethodSubscriptions();
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -95,18 +120,17 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private void CommandReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
             do
             {
                 CommandMessage receivedMessage;
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    this.logger.LogTrace($"2:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
+                    this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    this.logger.LogDebug("2:Method End - Operation Canceled");
                     return;
                 }
 
@@ -114,15 +138,14 @@ namespace Ferretto.VW.MAS_MissionsManager
                 {
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("4:Method End");
         }
 
         private void InitializeMethodSubscriptions()
         {
             this.logger.LogTrace("1:Commands Subscription");
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(commandMessage =>
+            commandEvent.Subscribe(
+                commandMessage =>
                 {
                     this.commandQueue.Enqueue(commandMessage);
                 },
@@ -132,19 +155,43 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.logger.LogTrace("2:Notifications Subscription");
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(notificationMessage =>
+            notificationEvent.Subscribe(
+                notificationMessage =>
                 {
                     this.notificationQueue.Enqueue(notificationMessage);
                 },
                 ThreadOption.PublisherThread,
                 false,
-                notificationMessage => notificationMessage.Destination == MessageActor.AutomationService || notificationMessage.Destination == MessageActor.Any);
+                notificationMessage => notificationMessage.Destination == MessageActor.MissionsManager ||
+                notificationMessage.Destination == MessageActor.Any);
         }
 
-        private void NotificationReceiveTaskFunction()
+        private void MissionManagementTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
+            do
+            {
+                if (this.IsAnyBayServiceable())
+                {
+                    if (this.IsAnyMissionExecutable())
+                    {
+                        this.ChooseAndExecuteMission();
+                    }
+                    else
+                    {
+                        WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
+                    }
+                }
+                else
+                {
+                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private async void NotificationReceiveTaskFunction()
+        {
             do
             {
                 NotificationMessage receivedMessage;
@@ -152,75 +199,46 @@ namespace Ferretto.VW.MAS_MissionsManager
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    this.logger.LogDebug("2:Method End - Operation Canceled");
 
                     return;
                 }
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.MissionCompleted:
+                        this.bayNowServiceableResetEvent.Set();
+                        break;
+
+                    case MessageType.BayConnected:
+                        if (receivedMessage.Data is IBayConnectedMessageData data)
+                        {
+                            this.DistributeMissionsToConnectedBays();
+                            this.bayNowServiceableResetEvent.Set();
+                        }
+                        break;
+
+                    case MessageType.MissionAdded:
+                        await this.GetMissions();
+                        this.DistributeMissionsToConnectedBays();
+                        this.newMissionArrivedResetEvent.Set();
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        await this.InitializeBays();
+                        await this.GetMissions();
+                        this.missionManagementTask.Start();
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("4:Method End");
 
             return;
         }
 
         #endregion
-
-        //private Task MissionsExecutionTaskFunction()
-        //{
-        //    do
-        //    {
-        //        try
-        //        {
-        //            this.missionExecuted.Wait(Timeout.Infinite, this.stoppingToken);
-        //            this.missionReady.Wait(Timeout.Infinite, this.stoppingToken);
-        //        }
-        //        catch (OperationCanceledException ex)
-        //        {
-        //            return Task.FromException(ex);
-        //        }
-
-        //        if (this.missionsCollection.Count != 0)
-        //        {
-        //            // TODO before removing the mission from the dictionary, execute it
-        //            this.missionsCollection.Remove(this.missionsCollection.Keys.First());
-        //            if (this.missionsCollection.Count == 0) this.missionReady.Reset();
-        //            // TODO publish event to notify to the FSM to begin the action
-        //            this.missionExecuted.Reset();
-        //        }
-        //        else
-        //            this.missionReady.Reset();
-        //    } while (!this.stoppingToken.IsCancellationRequested);
-
-        //    return Task.CompletedTask;
-        //}
-
-        //private void ProcessAddMissionMessage(CommandMessage message)
-        //{
-        //    var missionData = (MissionMessageData)message.Data;
-        //    var missionPriority = ((MissionMessageData)message.Data).Priority;
-        //    this.missionsCollection.Add(missionData, missionPriority);
-        //    this.missionReady.Set();
-
-        //    message.Source = MessageActor.MissionsManager;
-        //    message.Destination = MessageActor.FiniteStateMachines;
-        //    this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-        //}
-
-        //private void ProcessCreateMissionMessage(CommandMessage message)
-        //{
-        //    //TODO apply Mission Manager Business Logic to the message
-
-        //    message.Source = MessageActor.MissionsManager;
-        //    message.Destination = MessageActor.FiniteStateMachines;
-        //    this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-        //}
     }
 }

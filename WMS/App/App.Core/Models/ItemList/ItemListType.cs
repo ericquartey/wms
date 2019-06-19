@@ -12,6 +12,6 @@ namespace Ferretto.WMS.App.Core.Models
         Put = 'U',
 
         [Display(Name = nameof(BusinessObjects.ItemListTypeInventory), ResourceType = typeof(BusinessObjects))]
-        Inventory = 'I'
+        Inventory = 'I',
     }
 }

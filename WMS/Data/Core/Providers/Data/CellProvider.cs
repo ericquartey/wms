@@ -9,23 +9,18 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class CellProvider : ICellProvider
+    internal class CellProvider : BaseProvider, ICellProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public CellProvider(DatabaseContext dataContext)
+        public CellProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -49,7 +44,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -67,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Cell>> GetByAisleIdAsync(int aisleId)
         {
-            return await this.dataContext.Cells
+            return await this.DataContext.Cells
                 .Where(c => c.AisleId == aisleId)
                 .OrderBy(c => c.CellNumber)
                 .Select(c => new Cell
@@ -92,7 +87,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Cell>> GetByAreaIdAsync(int areaId)
         {
-            return await this.dataContext.Cells
+            return await this.DataContext.Cells
                 .Where(c => c.Aisle.AreaId == areaId)
                 .OrderBy(c => c.Aisle.Name)
                 .ThenBy(c => c.CellNumber)
@@ -118,10 +113,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<CellDetails> GetByIdAsync(int id)
         {
-            var loadingUnitsCount = await this.dataContext.LoadingUnits
+            var loadingUnitsCount = await this.DataContext.LoadingUnits
                 .CountAsync(l => l.CellId == id);
 
-            var model = await this.dataContext.Cells
+            var model = await this.DataContext.Cells
                 .Select(c => new CellDetails
                 {
                     Id = c.Id,
@@ -144,7 +139,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -152,50 +147,54 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Cell>> GetByLoadingUniTypeIdAsync(int loadingUnitTypeId)
         {
-            return await this.dataContext.LoadingUnitTypesAisles
+            return await this.DataContext.LoadingUnitTypesAisles
                 .Where(x => x.LoadingUnitTypeId == loadingUnitTypeId)
                 .Select(y => new
                 {
-                    Aisle = y.AisleId
+                    Aisle = y.AisleId,
                 }).Distinct()
                 .Join(
-                    this.dataContext.Cells,
-                      t => t.Aisle,
-                      c => c.AisleId,
-                      (t, c) => new Cell
-                      {
-                          Id = c.Id,
-                          AbcClassDescription = c.AbcClass.Description,
-                          AisleName = c.Aisle.Name,
-                          AreaName = c.Aisle.Area.Name,
-                          Column = c.Column,
-                          Floor = c.Floor,
-                          Number = c.CellNumber,
-                          Priority = c.Priority,
-                          Side = (Side)c.Side,
-                          Status = c.CellStatus.Description,
-                          CellTypeDescription = c.CellType.Description,
-                          XCoordinate = c.XCoordinate,
-                          YCoordinate = c.YCoordinate,
-                          ZCoordinate = c.ZCoordinate,
-                      })
-                      .ToArrayAsync();
+                    this.DataContext.Cells,
+                    t => t.Aisle,
+                    c => c.AisleId,
+                    (t, c) => new Cell
+                    {
+                        Id = c.Id,
+                        AbcClassDescription = c.AbcClass.Description,
+                        AisleName = c.Aisle.Name,
+                        AreaName = c.Aisle.Area.Name,
+                        Column = c.Column,
+                        Floor = c.Floor,
+                        Number = c.CellNumber,
+                        Priority = c.Priority,
+                        Side = (Side)c.Side,
+                        Status = c.CellStatus.Description,
+                        CellTypeDescription = c.CellType.Description,
+                        XCoordinate = c.XCoordinate,
+                        YCoordinate = c.YCoordinate,
+                        ZCoordinate = c.ZCoordinate,
+                    })
+                .ToArrayAsync();
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.Cells,
+                this.DataContext.Cells,
                 this.GetAllBase());
         }
 
         public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
-                this.dataContext.Cells,
-                this.dataContext);
+                this.DataContext.Cells,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -225,11 +224,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(c.Priority, searchAsInt)));
         }
 
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as ICellUpdatePolicy).ComputeUpdatePolicy());
+        }
+
         private IQueryable<Cell> GetAllBase()
         {
-            return this.dataContext.Cells
+            return this.DataContext.Cells
                 .GroupJoin(
-                    this.dataContext.LoadingUnits
+                    this.DataContext.LoadingUnits
                         .GroupBy(l => l.CellId)
                         .Select(j => new
                         {

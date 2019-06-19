@@ -133,6 +133,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment Type Details.
+        /// </summary>
+        public static string CompartmentTypeDetails {
+            get {
+                return ResourceManager.GetString("CompartmentTypeDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Types.
         /// </summary>
         public static string CompartmentTypes {
@@ -259,20 +268,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Pick.
+        /// </summary>
+        public static string ItemPick {
+            get {
+                return ResourceManager.GetString("ItemPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Put.
+        /// </summary>
+        public static string ItemPut {
+            get {
+                return ResourceManager.GetString("ItemPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
         public static string Items {
             get {
                 return ResourceManager.GetString("Items", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item Withdraw.
-        /// </summary>
-        public static string ItemWithdraw {
-            get {
-                return ResourceManager.GetString("ItemWithdraw", resourceCulture);
             }
         }
         
@@ -385,16 +403,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machine Status.
+        ///   Looks up a localized string similar to Machine Details.
         /// </summary>
-        public static string Machine_Status {
+        public static string MachineDetails {
             get {
-                return ResourceManager.GetString("Machine_Status", resourceCulture);
+                return ResourceManager.GetString("MachineDetails", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machines.
+        ///   Looks up a localized string similar to Machines .
         /// </summary>
         public static string Machines {
             get {

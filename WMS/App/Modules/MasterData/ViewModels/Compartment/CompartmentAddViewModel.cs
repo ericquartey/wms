@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -21,9 +22,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool canChooseItem;
 
-        private bool itemIdHasValue;
-
         private InfiniteAsyncSource itemsDataSource;
+
+        private Item selectedItem;
 
         #endregion
 
@@ -47,16 +48,36 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.canChooseItem, value);
         }
 
-        public bool ItemIdHasValue
+        public bool IsItemDetailsEnabled
         {
-            get => this.itemIdHasValue;
-            set => this.SetProperty(ref this.itemIdHasValue, value);
+            get
+            {
+                if (this.Model == null ||
+                    !this.Model.ItemId.HasValue)
+                {
+                    return false;
+                }
+
+                if (!this.Model.Stock.HasValue ||
+                    this.Model.Stock.Value <= 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
+        public Item SelectedItem
+        {
+            get => this.selectedItem;
+            set => this.SetProperty(ref this.selectedItem, value);
         }
 
         #endregion
@@ -89,7 +110,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new StatusPubSubEvent(
                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                    StatusType.Success));
-                this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(CompartmentDetails).ToString(), this.Model.Id, HubEntityOperation.Updated));
 
                 this.CompleteOperation();
             }
@@ -105,25 +125,44 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
             this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-                this.itemProvider).DataSource;
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
 
             return Task.CompletedTask;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e == null)
+            if (e == null || this.Model == null)
             {
                 return;
             }
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
-                this.ItemIdHasValue = this.Model.ItemId.HasValue;
+                if (this.Model.ItemId.HasValue)
+                {
+                    this.Model.ItemMeasureUnit = this.SelectedItem.MeasureUnitDescription;
+                }
+                else
+                {
+                    this.Model.ItemMeasureUnit = null;
+                }
+
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
+            }
+
+            if (e.PropertyName == nameof(CompartmentDetails.Stock))
+            {
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
             }
 
             if (this.Model.ItemId.HasValue
+              &&
+              this.Model.Width.HasValue
+              &&
+              this.Model.Height.HasValue
               &&
               (
               e.PropertyName == nameof(CompartmentDetails.ItemId)
@@ -132,15 +171,34 @@ namespace Ferretto.WMS.Modules.MasterData
               ||
               e.PropertyName == nameof(CompartmentDetails.Height)))
             {
-                var capacity = await this.compartmentProvider.GetMaxCapacityAsync(
+                var result = await this.compartmentProvider.GetMaxCapacityAsync(
                         this.Model.Width,
                         this.Model.Height,
                         this.Model.ItemId.Value);
 
-                this.Model.MaxCapacity = capacity ?? this.Model.MaxCapacity;
+                if (result.Success && result.Entity.HasValue)
+                {
+                    this.Model.MaxCapacity = result.Entity;
+                }
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        protected override void OnDispose()
+        {
+            if (this.Model != null)
+            {
+                this.Model.PropertyChanged -= this.Model_PropertyChanged;
+            }
+
+            base.OnDispose();
+        }
+
+        private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)
+        {
+            var result = await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
+            return !result.Success ? null : result.Entity;
         }
 
         #endregion

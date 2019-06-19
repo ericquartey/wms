@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;

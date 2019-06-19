@@ -3,6 +3,6 @@
     public enum WmsViewType
     {
         Docking,
-        Dialog
+        Dialog,
     }
 }

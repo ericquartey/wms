@@ -1,71 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.Common.Utils;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemList))]
     public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
-        #region Fields
-
-        private int itemListRowsCount;
-
-        private int? priority;
-
-        #endregion
-
         #region Properties
 
         public string Code { get; set; }
 
-        public int CompletedRowsCount { get; internal set; }
+        [PositiveOrZero]
+        public int CompletedRowsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
 
         public string Description { get; set; }
 
         [JsonIgnore]
-        public int ExecutingRowsCount { get; internal set; }
+        [PositiveOrZero]
+        public int ErrorRowsCount { get; set; }
 
         [JsonIgnore]
-        public bool HasActiveRows { get; internal set; }
+        [PositiveOrZero]
+        public int ExecutingRowsCount { get; set; }
 
         [JsonIgnore]
-        public int IncompleteRowsCount { get; internal set; }
+        public bool HasActiveRows { get; set; }
 
-        public int ItemListRowsCount
-        {
-            get => this.itemListRowsCount;
-            set => this.itemListRowsCount = CheckIfPositive(value);
-        }
+        [JsonIgnore]
+        [PositiveOrZero]
+        public int IncompleteRowsCount { get; set; }
+
+        [PositiveOrZero]
+        public int ItemListRowsCount { get; set; }
 
         public ItemListType ItemListType { get; set; }
 
         public IEnumerable<Machine> Machines { get; set; }
 
         [JsonIgnore]
-        public int NewRowsCount { get; internal set; }
+        [PositiveOrZero]
+        public int NewRowsCount { get; set; }
 
-        public int? Priority
-        {
-            get => this.priority;
-            set => this.priority = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public int? Priority { get; set; }
+
+        [JsonIgnore]
+        [PositiveOrZero]
+        public int ReadyRowsCount { get; set; }
 
         public ItemListStatus Status => GetStatus(
-            this.itemListRowsCount,
+            this.ItemListRowsCount,
             this.CompletedRowsCount,
             this.NewRowsCount,
             this.ExecutingRowsCount,
             this.WaitingRowsCount,
             this.IncompleteRowsCount,
-            this.SuspendedRowsCount);
+            this.SuspendedRowsCount,
+            this.ErrorRowsCount,
+            this.ReadyRowsCount);
 
         [JsonIgnore]
-        public int SuspendedRowsCount { get; internal set; }
+        [PositiveOrZero]
+        public int SuspendedRowsCount { get; set; }
 
         [JsonIgnore]
-        public int WaitingRowsCount { get; internal set; }
+        [PositiveOrZero]
+        public int WaitingRowsCount { get; set; }
 
         #endregion
 
@@ -78,7 +83,9 @@ namespace Ferretto.WMS.Data.Core.Models
             int executingRowsCount,
             int waitingRowsCount,
             int incompleteRowsCount,
-            int suspendedRowsCount)
+            int suspendedRowsCount,
+            int errorRowsCount,
+            int readyRowsCount)
         {
             if (rowCount == 0 || rowCount == newRowsCount)
             {
@@ -95,6 +102,21 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Waiting;
             }
 
+            if (readyRowsCount == rowCount)
+            {
+                return ItemListStatus.Ready;
+            }
+
+            if (errorRowsCount > 0)
+            {
+                return ItemListStatus.Error;
+            }
+
+            if (waitingRowsCount > 0 || readyRowsCount > 0 || executingRowsCount > 0)
+            {
+                return ItemListStatus.Executing;
+            }
+
             if (incompleteRowsCount > 0)
             {
                 return ItemListStatus.Incomplete;
@@ -105,7 +127,8 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.Executing;
+            // we can arrive here only with mixed New + Complete rows status
+            return ItemListStatus.New;
         }
 
         #endregion

@@ -26,21 +26,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
 
         #region Properties
 
-        public bool AbsoluteMovement
-        {
-            set
-            {
-                if (value)
-                {
-                    this.Value |= 0x0040;
-                }
-                else
-                {
-                    this.Value &= 0xFFBF;
-                }
-            }
-        }
-
         public bool ChangeSetPoint
         {
             set
@@ -82,6 +67,21 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
                 else
                 {
                     this.Value &= 0xFFEF;
+                }
+            }
+        }
+
+        public bool RelativeMovement
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0040;
+                }
+                else
+                {
+                    this.Value &= 0xFFBF;
                 }
             }
         }

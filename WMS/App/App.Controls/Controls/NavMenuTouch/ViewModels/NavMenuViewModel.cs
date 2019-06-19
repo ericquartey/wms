@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Ferretto.Common.Utils.Menu;
 
 namespace Ferretto.WMS.App.Controls

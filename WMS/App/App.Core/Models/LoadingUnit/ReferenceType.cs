@@ -9,6 +9,6 @@ namespace Ferretto.WMS.App.Core.Models
         MonoReference = 'M',
 
         [Display(Name = nameof(BusinessObjects.PluriReference), ResourceType = typeof(BusinessObjects))]
-        PluriReference = 'P'
+        PluriReference = 'P',
     }
 }

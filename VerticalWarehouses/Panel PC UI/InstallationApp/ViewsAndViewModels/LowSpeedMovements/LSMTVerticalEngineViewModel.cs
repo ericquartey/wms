@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -21,6 +21,10 @@ namespace Ferretto.VW.InstallationApp
         private string currentPosition;
 
         private IInstallationService installationService;
+
+        private bool isButtonDownEnabled;
+
+        private bool isButtonUpEnabled;
 
         private DelegateCommand moveDownButtonCommand;
 
@@ -45,6 +49,10 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
+
+        public bool IsButtonDownEnabled { get => this.isButtonDownEnabled; set => this.SetProperty(ref this.isButtonDownEnabled, value); }
+
+        public bool IsButtonUpEnabled { get => this.isButtonUpEnabled; set => this.SetProperty(ref this.isButtonUpEnabled, value); }
 
         public DelegateCommand MoveDownButtonCommand => this.moveDownButtonCommand ?? (this.moveDownButtonCommand = new DelegateCommand(async () => await this.MoveDownVerticalAxisAsync()));
 
@@ -71,28 +79,35 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task MoveDownVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
+            this.IsButtonUpEnabled = false;
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
+            this.IsButtonDownEnabled = false;
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task OnEnterViewAsync()
         {
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            this.IsButtonUpEnabled = true;
+            this.IsButtonDownEnabled = true;
         }
 
         public async Task StopVerticalAxisAsync()
         {
             await this.installationService.StopCommandAsync();
+            this.IsButtonDownEnabled = true;
+            this.IsButtonUpEnabled = true;
         }
 
         public void UnSubscribeMethodFromEvent()

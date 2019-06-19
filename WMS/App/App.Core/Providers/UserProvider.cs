@@ -27,29 +27,50 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return (await this.usersDataService.GetAllAsync())
-                .Select(u => new User
-                {
-                    Id = u.Id,
-                    Login = u.Login,
-                    Password = u.Password
-                });
+            try
+            {
+                return (await this.usersDataService.GetAllAsync())
+                    .Select(u => new User
+                    {
+                        Id = u.Id,
+                        Login = u.Login,
+                        Password = u.Password,
+                    });
+            }
+            catch
+            {
+                return new List<User>();
+            }
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.usersDataService.GetAllCountAsync();
+            try
+            {
+                return await this.usersDataService.GetAllCountAsync();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<User> GetByIdAsync(int id)
         {
-            var user = await this.usersDataService.GetByIdAsync(id);
-            return new User
+            try
             {
-                Id = user.Id,
-                Login = user.Login,
-                Password = user.Password
-            };
+                var user = await this.usersDataService.GetByIdAsync(id);
+                return new User
+                {
+                    Id = user.Id,
+                    Login = user.Login,
+                    Password = user.Password,
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public string IsValid(User user)

@@ -741,7 +741,7 @@ namespace Ferretto.Common.Controls.WPF
                 Brush = this.Foreground,
                 Thickness = this.GetSizeOfPen(),
                 StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
+                EndLineCap = PenLineCap.Square,
             };
         }
 

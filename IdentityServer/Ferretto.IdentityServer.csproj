@@ -6,6 +6,6 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="IdentityServer4" Version="2.3.0" />
+    <PackageReference Include="IdentityServer4" Version="2.4.0" />
   </ItemGroup>
 </Project>

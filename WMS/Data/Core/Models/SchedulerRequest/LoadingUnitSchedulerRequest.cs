@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Utils;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitSchedulerRequest : Model<int>, ISchedulerRequest
+    [Resource(nameof(SchedulerRequest))]
+    public class LoadingUnitSchedulerRequest : BaseModel<int>, ISchedulerRequest
     {
         #region Properties
 
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.Core.Models
             return new LoadingUnitSchedulerRequest
             {
                 IsInstant = true,
-                LoadingUnitId = loadingUnitId
+                LoadingUnitId = loadingUnitId,
             };
         }
 

@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Compartment))]
     public sealed class Compartment : BusinessObject
     {
         #region Fields
@@ -16,6 +14,12 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
+
+        [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
+        public string AisleName { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public string CompartmentStatusDescription { get; set; }

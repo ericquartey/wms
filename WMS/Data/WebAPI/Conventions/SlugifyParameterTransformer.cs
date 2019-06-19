@@ -15,12 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI
 
         public string TransformOutbound(object value)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return CapitalStringRegex.Replace(value.ToString(), "$1-$2").ToLower();
+            return value == null ? null : CapitalStringRegex.Replace(value.ToString(), "$1-$2").ToLower();
         }
 
         #endregion

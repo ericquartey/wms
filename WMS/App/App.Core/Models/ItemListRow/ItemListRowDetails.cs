@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.ItemListRow))]
     public class ItemListRowDetails : BusinessObject
     {
         #region Fields
@@ -23,6 +20,8 @@ namespace Ferretto.WMS.App.Core.Models
         private string itemDescription;
 
         private int? itemId;
+
+        private string itemImage;
 
         private string itemListCode;
 
@@ -85,6 +84,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public int? ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
+
+        public string ItemImage { get => this.itemImage; set => this.SetProperty(ref this.itemImage, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }

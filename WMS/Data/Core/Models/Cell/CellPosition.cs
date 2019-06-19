@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(CellPosition))]
     public class CellPosition : BaseModel<int>
     {
         #region Properties

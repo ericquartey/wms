@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -168,7 +166,7 @@ namespace Ferretto.WMS.App.Core.Models
                         Height = heightNewCompartment,
                         XPosition = this.XPosition + (c * widthNewCompartment),
                         YPosition = this.YPosition + (r * heightNewCompartment),
-                        LoadingUnitId = this.LoadingUnitId
+                        LoadingUnitId = this.LoadingUnitId,
                     };
 
                     compartments.Add(compartment);

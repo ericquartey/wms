@@ -104,46 +104,56 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpOpMainAuto}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainOff}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainOff}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainOn}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainOn}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,400,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainServiceAdvice}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainServiceAdvice}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,470,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainServiceAllert}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainServiceAllert}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,540,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainError}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,190,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainHelp}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainDrawerOp}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainItem}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,400,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainLists}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,470,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpOpMainOther}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainError}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,190,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainHelp}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,260,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainDrawerOp}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,330,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainItem}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,400,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainLists}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,470,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpOpMainOther}" />
 
     </Grid>
 </UserControl>

@@ -28,26 +28,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         public TemplateErrorState(IStateMachine parentMachine, Axis currentAxis, FieldNotificationMessage errorMessage, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
             this.errorMessage = errorMessage;
-
-            //TODO Identify Operation Target Inverter
-            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.currentAxis}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterPowerOff);
-
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -61,23 +47,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         #endregion
 
+        /// <inheritdoc/>
+
         #region Methods
 
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
@@ -92,26 +73,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
                     ErrorLevel.Error);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                this.logger.LogDebug("3:Method End");
             }
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
 
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        public override void Start()
+        {
+            //TODO Identify Operation Target Inverter
+            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+            var stopMessage = new FieldCommandMessage(stopMessageData,
+                $"Reset Inverter Axis {this.currentAxis}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterPowerOff);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogDebug("2:Method End");
+            this.logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

@@ -169,6 +169,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The compartment&apos;s max capacity is required when an item is specified..
+        /// </summary>
+        public static string CompartmentMaxCapacityRequiredWhenItemIsSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentMaxCapacityRequiredWhenItemIsSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s size/position overlaps with other compartments..
         /// </summary>
         public static string CompartmentOverlaps {
@@ -214,11 +223,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stock cannot be zero when the item pairing is not fixed..
+        /// </summary>
+        public static string CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed {
+            get {
+                return ResourceManager.GetString("CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item stock in the compartment cannot be greater that compartment&apos;s maximum capacity..
         /// </summary>
         public static string CompartmentStockGreaterThanMaxCapacity {
             get {
                 return ResourceManager.GetString("CompartmentStockGreaterThanMaxCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The compartment&apos;s stock is required when an item is specified..
+        /// </summary>
+        public static string CompartmentStockRequiredWhenItemIsSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentStockRequiredWhenItemIsSpecified", resourceCulture);
             }
         }
         
@@ -345,6 +372,15 @@ namespace Ferretto.Common.Resources {
         public static string ConverterParameterMustBeType {
             get {
                 return ResourceManager.GetString("ConverterParameterMustBeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A compartment with the same features already exists..
+        /// </summary>
+        public static string DuplicateCompartmentType {
+            get {
+                return ResourceManager.GetString("DuplicateCompartmentType", resourceCulture);
             }
         }
         
@@ -516,6 +552,33 @@ namespace Ferretto.Common.Resources {
         public static string PropertyValueIsInvalid {
             get {
                 return ResourceManager.GetString("PropertyValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No area associated to the item..
+        /// </summary>
+        public static string PutItemNoAssociatedAreas {
+            get {
+                return ResourceManager.GetString("PutItemNoAssociatedAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Compartment Type associated to Item..
+        /// </summary>
+        public static string PutItemNoCompartmentType {
+            get {
+                return ResourceManager.GetString("PutItemNoCompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity must be equal to 1 if Registration Number is specified..
+        /// </summary>
+        public static string QuantityMustBeOneIfRegistrationNumber {
+            get {
+                return ResourceManager.GetString("QuantityMustBeOneIfRegistrationNumber", resourceCulture);
             }
         }
         

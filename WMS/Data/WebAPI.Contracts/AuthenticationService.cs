@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 var request = new UserInfoRequest
                 {
                     Address = this.discoveryResponse.UserInfoEndpoint,
-                    Token = this.AccessToken
+                    Token = this.AccessToken,
                 };
 
                 identityClient.SetBearerToken(this.AccessToken);
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
                          UserName = userName,
                          Password = password,
-                         Scope = "wms-data"
+                         Scope = "wms-data",
                      });
 
                 if (this.TokenResponse.IsError)

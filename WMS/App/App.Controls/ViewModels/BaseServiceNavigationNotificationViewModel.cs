@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Services;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class BaseServiceNavigationNotificationViewModel<TModel, TKey> : BaseServiceNavigationViewModel
-        where TModel : IModel<TKey>
+    public abstract class BaseServiceNavigationNotificationViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
@@ -33,24 +28,28 @@ namespace Ferretto.WMS.App.Controls
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
+            if (this.modelChangedEventSubscription != null)
+            {
+                this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
+            }
 
             base.OnDispose();
         }
 
         private void SubscribeToEvents()
         {
-            var attribute = typeof(TModel)
+            var attributes = this.GetType()
                 .GetCustomAttributes(typeof(ResourceAttribute), true)
-                .FirstOrDefault() as ResourceAttribute;
+                .Cast<ResourceAttribute>();
 
-            if (attribute != null)
+            if (attributes.Any())
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
                         async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
-                        false,
-                        e => e.ResourceName == attribute.ResourceName);
+                        true,
+                        e => attributes.Any(a =>
+                            a.ResourceName == e.ResourceName));
             }
         }
 

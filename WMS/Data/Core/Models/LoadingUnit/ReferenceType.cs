@@ -4,6 +4,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         MonoReference = 'M',
 
-        PluriReference = 'P'
+        PluriReference = 'P',
     }
 }

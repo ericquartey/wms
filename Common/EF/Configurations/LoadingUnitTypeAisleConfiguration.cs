@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class LoadingUnitTypeAisleConfiguration : IEntityTypeConfiguration<LoadingUnitTypeAisle>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<LoadingUnitTypeAisle> builder)
         {
             if (builder == null)
@@ -19,10 +21,13 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(a => a.AisleLoadingUnitTypes)
                 .HasForeignKey(l => l.AisleId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(l => l.LoadingUnit)
                 .WithMany(l => l.LoadingUnitTypeAisles)
                 .HasForeignKey(l => l.LoadingUnitTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }

@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CellStatusProvider : ICellStatusProvider
+    internal class CellStatusProvider : BaseProvider, ICellStatusProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public CellStatusProvider(DatabaseContext dataContext)
+        public CellStatusProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,27 +23,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<CellStatus>> GetAllAsync()
         {
-            return await this.dataContext.CellStatuses
+            return await this.DataContext.CellStatuses
                .Select(c => new CellStatus
                {
                    Id = c.Id,
-                   Description = c.Description
+                   Description = c.Description,
                })
                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.CellStatuses.CountAsync();
+            return await this.DataContext.CellStatuses.CountAsync();
         }
 
         public async Task<CellStatus> GetByIdAsync(int id)
         {
-            return await this.dataContext.CellStatuses
+            return await this.DataContext.CellStatuses
                  .Select(c => new CellStatus
                  {
                      Id = c.Id,
-                     Description = c.Description
+                     Description = c.Description,
                  })
                  .SingleOrDefaultAsync(a => a.Id == id);
         }

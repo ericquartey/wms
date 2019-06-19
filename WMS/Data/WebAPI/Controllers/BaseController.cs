@@ -1,68 +1,67 @@
-﻿using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using NSwag.Annotations;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     public class BaseController : ControllerBase
     {
-        #region Fields
-
-        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
-
-        #endregion
-
-        #region Constructors
-
-        protected BaseController(IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
-        {
-            this.schedulerHubContext = schedulerHubContext;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public IHubContext<SchedulerHub, ISchedulerHub> SchedulerHubContext => this.schedulerHubContext;
-
-        #endregion
-
         #region Methods
 
-        [SwaggerIgnore]
-        protected BadRequestObjectResult BadRequest<T>(IOperationResult<T> operationResult)
-            where T : class
+        protected ObjectResult NegativeResponse<T>(IOperationResult<T> operationResult)
         {
-            return this.BadRequest(new ProblemDetails
+            if (operationResult == null)
             {
-                Status = StatusCodes.Status400BadRequest,
-                Detail = operationResult?.Description
-            });
-        }
-
-        [SwaggerIgnore]
-        protected BadRequestObjectResult BadRequest(System.Exception exception)
-        {
-            return this.BadRequest(new ProblemDetails
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Detail = exception?.Message
-            });
-        }
-
-        protected async Task NotifyEntityUpdatedAsync(string entityType, int? id, HubEntityOperation operation)
-        {
-            if (id.HasValue == false || this.schedulerHubContext.Clients == null)
-            {
-                return;
+                throw new System.ArgumentNullException(nameof(operationResult));
             }
 
-            await this.schedulerHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id.Value, EntityType = entityType, Operation = operation });
+            if (operationResult.Success)
+            {
+                throw new System.InvalidOperationException();
+            }
+
+            switch (operationResult)
+            {
+                case UnprocessableEntityOperationResult<T> result:
+                    {
+                        return this.UnprocessableEntity(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status422UnprocessableEntity,
+                            Detail = result?.Description,
+                        });
+                    }
+
+                case BadRequestOperationResult<T> result:
+                    {
+                        return this.BadRequest(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status400BadRequest,
+                            Detail = result?.Description,
+                        });
+                    }
+
+                case NotFoundOperationResult<T> result:
+                    {
+                        return this.NotFound(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status404NotFound,
+                            Detail = result?.Description,
+                        });
+                    }
+
+                case CreationErrorOperationResult<T> result:
+                    {
+                        return this.UnprocessableEntity(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status422UnprocessableEntity,
+                            Detail = result?.Description,
+                        });
+                    }
+
+                default:
+                    throw new System.InvalidOperationException();
+            }
         }
 
         #endregion

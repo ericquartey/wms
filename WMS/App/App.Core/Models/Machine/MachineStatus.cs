@@ -15,6 +15,6 @@ namespace Ferretto.WMS.App.Core.Models
         Error = 'E',
 
         [Display(Name = nameof(BusinessObjects.MachineStatusOffline), ResourceType = typeof(BusinessObjects))]
-        Offline = 'O'
+        Offline = 'O',
     }
 }

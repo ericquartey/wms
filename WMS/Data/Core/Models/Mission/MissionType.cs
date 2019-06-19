@@ -14,6 +14,6 @@
 
         Reorder = 'O',
 
-        Replace = 'R'
+        Replace = 'R',
     }
 }

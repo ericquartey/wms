@@ -3,10 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-       "Major Code Smell",
-       "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-       Justification = "This class register services into container")]
     public static class DataWebApiServiceCollectionExtensions
     {
         #region Methods
@@ -22,6 +18,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             serviceCollection.AddSingleton(s => DataServiceFactory.GetService<IAuthenticationService>(identityServerUrl));
 
             return serviceCollection;
+        }
+
+        public static IServiceCollection AddDataHub(
+            this IServiceCollection serviceCollection, System.Uri baseUrl)
+        {
+            return serviceCollection
+                .AddSingleton<IDataHubClient>(new DataHubClient(baseUrl));
         }
 
         public static IServiceCollection AddWebApiServices(
@@ -63,21 +66,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return serviceCollection;
         }
 
-        public static IServiceCollection AddSchedulerHub(
-            this IServiceCollection serviceCollection, System.Uri baseUrl)
-        {
-            return serviceCollection
-                .AddSingleton<ISchedulerHubClient>(new SchedulerHubClient(baseUrl));
-        }
-
-        public static IApplicationBuilder UseSchedulerHub(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseDataHub(this IApplicationBuilder builder)
         {
             if (builder == null)
             {
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            var hubClient = builder.ApplicationServices.GetService<ISchedulerHubClient>();
+            var hubClient = builder.ApplicationServices.GetService<IDataHubClient>();
             hubClient.ConnectAsync();
 
             return builder;

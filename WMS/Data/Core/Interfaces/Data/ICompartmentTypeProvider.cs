@@ -8,11 +8,18 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     public interface ICompartmentTypeProvider :
         ICreateAsyncProvider<CompartmentType, int>,
         IReadAllPagedAsyncProvider<CompartmentType, int>,
-        IReadSingleAsyncProvider<CompartmentType, int>
+        IReadSingleAsyncProvider<CompartmentType, int>,
+        IDeleteAsyncProvider<CompartmentType, int>,
+        IGetUniqueValuesAsyncProvider
     {
         #region Methods
 
         Task<IOperationResult<CompartmentType>> CreateAsync(
+            CompartmentType model,
+            int? itemId,
+            double? maxCapacity);
+
+        Task<IOperationResult<CompartmentType>> CreateIfNotExistsAsync(
             CompartmentType model,
             int? itemId,
             double? maxCapacity);

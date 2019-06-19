@@ -443,7 +443,7 @@ namespace Ferretto.Common.Controls.WPF
                     Top = compartment.YPosition ?? 0,
                     ColorFill = this.GetColorFilter(compartment),
                     IsReadOnly = this.IsReadOnly,
-                    IsSelectable = this.IsCompartmentSelectable
+                    IsSelectable = this.IsCompartmentSelectable,
                 };
                 newItems.Add(newCompartment);
                 this.ResizeCompartment(newCompartment);
@@ -517,7 +517,7 @@ namespace Ferretto.Common.Controls.WPF
                 DashCap = PenLineCap.Square,
                 Thickness = penSize,
                 StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
+                EndLineCap = PenLineCap.Square,
             };
             penLines.Brush = this.GridLinesColor;
             DrawSnappedLinesBetweenPoints(drawingContext, penLines, penSize, points.ToArray());
@@ -667,7 +667,7 @@ namespace Ferretto.Common.Controls.WPF
             var compartmentOrigin = new Point
             {
                 X = compartment.CompartmentDetails.XPosition.Value,
-                Y = compartment.CompartmentDetails.YPosition.Value
+                Y = compartment.CompartmentDetails.YPosition.Value,
             };
 
             var convertedCompartmentOrigin = ConvertWithStandardOrigin(

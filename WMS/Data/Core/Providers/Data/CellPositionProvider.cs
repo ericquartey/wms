@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CellPositionProvider : ICellPositionProvider
+    internal class CellPositionProvider : BaseProvider, ICellPositionProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public CellPositionProvider(DatabaseContext dataContext)
+        public CellPositionProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,27 +23,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<CellPosition>> GetAllAsync()
         {
-            return await this.dataContext.CellPositions
+            return await this.DataContext.CellPositions
                .Select(c => new CellPosition
                {
                    Id = c.Id,
-                   Description = c.Description
+                   Description = c.Description,
                })
                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.CellPositions.CountAsync();
+            return await this.DataContext.CellPositions.CountAsync();
         }
 
         public async Task<CellPosition> GetByIdAsync(int id)
         {
-            return await this.dataContext.CellPositions
+            return await this.DataContext.CellPositions
                  .Select(c => new CellPosition
                  {
                      Id = c.Id,
-                     Description = c.Description
+                     Description = c.Description,
                  })
                  .SingleOrDefaultAsync(c => c.Id == id);
         }

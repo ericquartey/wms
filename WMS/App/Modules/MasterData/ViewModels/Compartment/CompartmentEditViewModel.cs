@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
@@ -30,6 +32,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private InfiniteAsyncSource itemsDataSource;
 
+        private Item selectedItem;
+
         #endregion
 
         #region Constructors
@@ -37,8 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentEditViewModel()
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
-
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+            this.LoadDataAsync();
         }
 
         #endregion
@@ -50,6 +53,26 @@ namespace Ferretto.WMS.Modules.MasterData
                 async () => await this.DeleteCompartmentAsync(),
                 this.CanDeleteCompartment));
 
+        public bool IsItemDetailsEnabled
+        {
+            get
+            {
+                if (this.Model == null ||
+                    !this.Model.ItemId.HasValue)
+                {
+                    return false;
+                }
+
+                if (!this.Model.Stock.HasValue ||
+                    this.Model.Stock.Value <= 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public bool ItemIdHasValue
         {
             get => this.itemIdHasValue;
@@ -60,6 +83,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
+        public Item SelectedItem
+        {
+            get => this.selectedItem;
+            set => this.SetProperty(ref this.selectedItem, value);
         }
 
         #endregion
@@ -115,22 +144,44 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
             return Task.CompletedTask;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e == null)
+            if (e == null || this.Model == null)
             {
                 return;
             }
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
-                this.ItemIdHasValue = this.Model.ItemId.HasValue;
+                if (this.Model.ItemId.HasValue)
+                {
+                    this.Model.ItemMeasureUnit = this.SelectedItem.MeasureUnitDescription;
+                }
+                else
+                {
+                    this.Model.ItemMeasureUnit = null;
+                }
+
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
+            }
+
+            if (e.PropertyName == nameof(CompartmentDetails.Stock))
+            {
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
             }
 
             if (this.Model.ItemId.HasValue
+                &&
+                this.Model.Width.HasValue
+                &&
+                this.Model.Height.HasValue
                 &&
                 (
                 e.PropertyName == nameof(CompartmentDetails.ItemId)
@@ -139,15 +190,28 @@ namespace Ferretto.WMS.Modules.MasterData
                 ||
                 e.PropertyName == nameof(CompartmentDetails.Height)))
             {
-                var capacity = await this.compartmentProvider.GetMaxCapacityAsync(
+                var result = await this.compartmentProvider.GetMaxCapacityAsync(
                     this.Model.Width,
                     this.Model.Height,
                     this.Model.ItemId.Value);
 
-                this.Model.MaxCapacity = capacity ?? this.Model.MaxCapacity;
+                if (result.Success && result.Entity.HasValue)
+                {
+                    this.Model.MaxCapacity = result.Entity;
+                }
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        protected override void OnDispose()
+        {
+            if (this.Model != null)
+            {
+                this.Model.PropertyChanged -= this.Model_PropertyChanged;
+            }
+
+            base.OnDispose();
         }
 
         private bool CanDeleteCompartment()
@@ -194,6 +258,12 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.ShowErrorDialog(this.Model.GetCanDeleteReason());
             }
+        }
+
+        private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)
+        {
+            var result = await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
+            return !result.Success ? null : result.Entity;
         }
 
         #endregion

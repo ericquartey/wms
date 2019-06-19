@@ -4,12 +4,9 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -36,10 +33,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MissionsController(
             ILogger<MissionsController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IMissionProvider missionProvider,
             ISchedulerService schedulerService)
-            : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
@@ -52,10 +47,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/abort")]
-        public Task<ActionResult<Mission>> AbortAsync(int id)
+        public async Task<ActionResult<Mission>> AbortAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var result = await this.schedulerService.AbortMissionAsync(id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
         }
 
         [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
@@ -65,28 +68,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
         {
             var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<MissionExecution>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                if (result is BadRequestOperationResult<MissionExecution>)
-                {
-                    return this.BadRequest(result);
-                }
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
+                return this.NegativeResponse(result);
             }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
@@ -100,27 +84,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionExecution>> CompleteLoadingUnitAsync(int id)
         {
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<MissionExecution>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                if (result is BadRequestOperationResult<MissionExecution>)
-                {
-                    return this.BadRequest(result);
-                }
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemId.HasValue)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
+                return this.NegativeResponse(result);
             }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
@@ -134,28 +100,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<Mission>> ExecuteAsync(int id)
         {
             var result = await this.schedulerService.ExecuteMissionAsync(id);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<MissionExecution>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                if (result is BadRequestOperationResult<MissionExecution>)
-                {
-                    return this.BadRequest(result);
-                }
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
+                return this.NegativeResponse(result);
             }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
@@ -167,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -221,7 +168,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -235,25 +182,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
             var result = await this.missionProvider.GetDetailsByIdAsync(id);
-            if (result.Success == false)
-            {
-                if (result is NotFoundOperationResult<MissionDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                return this.NotFound(new ProblemDetails
-                {
-                    Detail = id.ToString(),
-                    Status = StatusCodes.Status404NotFound,
-                });
-            }
-
-            return this.Ok(result.Entity);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]

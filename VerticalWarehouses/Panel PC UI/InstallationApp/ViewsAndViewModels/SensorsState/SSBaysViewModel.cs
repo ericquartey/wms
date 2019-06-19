@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -21,6 +22,8 @@ namespace Ferretto.VW.InstallationApp
         private bool heightControlCheckBay2;
 
         private bool heightControlCheckBay3;
+
+        private IInstallationService installationService;
 
         private IOSensorsStatus ioSensorsStatus;
 
@@ -97,6 +100,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -106,6 +110,8 @@ namespace Ferretto.VW.InstallationApp
                  message => this.UpdateSensorsStates(message.Data.SensorsStates),
                  ThreadOption.PublisherThread,
                  false);
+
+            await this.installationService.ExecuteSensorsChangedAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

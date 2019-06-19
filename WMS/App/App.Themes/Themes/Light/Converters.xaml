@@ -24,6 +24,7 @@
 
     <ctrls:EnumToBrushConverter x:Key="ETBC" />
     <dxmvvm:BooleanNegationConverter x:Key="BNC" />
+    <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
 
     <ctrls:StringFormatConverter x:Key="SFC" />
 

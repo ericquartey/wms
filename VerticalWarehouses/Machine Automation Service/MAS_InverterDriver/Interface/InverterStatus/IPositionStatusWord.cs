@@ -6,6 +6,8 @@
 
         bool FollowingError { get; }
 
+        bool PositioningAttained { get; }
+
         bool SetPointAcknowledge { get; }
 
         #endregion

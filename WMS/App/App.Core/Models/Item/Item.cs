@@ -1,11 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Item))]
     public sealed class Item : BusinessObject
     {
         #region Fields
@@ -14,7 +12,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? fifoTimePick;
 
-        private int? fifoTimeStore;
+        private int? fifoTimePut;
 
         private double? height;
 
@@ -26,15 +24,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? pickTolerance;
 
-        private int? reorderQuantity;
+        private int? putTolerance;
 
-        private int? storeTolerance;
+        private int? reorderQuantity;
 
         private double totalAvailable;
 
         private double totalReservedForPick;
 
-        private double totalReservedToStore;
+        private double totalReservedToPut;
 
         private double totalStock;
 
@@ -70,11 +68,11 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.fifoTimePick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemFifoStoreTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTimeStore
+        [Display(Name = nameof(BusinessObjects.ItemFifoPutTime), ResourceType = typeof(BusinessObjects))]
+        public int? FifoTimePut
         {
-            get => this.fifoTimeStore;
-            set => this.SetProperty(ref this.fifoTimeStore, value);
+            get => this.fifoTimePut;
+            set => this.SetProperty(ref this.fifoTimePut, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
@@ -109,8 +107,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.ItemLastPutDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPutDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemLength), ResourceType = typeof(BusinessObjects))]
         public double? Length
@@ -132,6 +130,13 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.pickTolerance, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.ItemPutTolerance), ResourceType = typeof(BusinessObjects))]
+        public int? PutTolerance
+        {
+            get => this.putTolerance;
+            set => this.SetProperty(ref this.putTolerance, value);
+        }
+
         [Display(Name = nameof(BusinessObjects.ItemReorderPoint), ResourceType = typeof(BusinessObjects))]
         public int? ReorderPoint { get; set; }
 
@@ -140,13 +145,6 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.reorderQuantity;
             set => this.SetProperty(ref this.reorderQuantity, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemStoreTolerance), ResourceType = typeof(BusinessObjects))]
-        public int? StoreTolerance
-        {
-            get => this.storeTolerance;
-            set => this.SetProperty(ref this.storeTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
@@ -163,11 +161,11 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.totalReservedForPick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemReservedToStore), ResourceType = typeof(BusinessObjects))]
-        public double TotalReservedToStore
+        [Display(Name = nameof(BusinessObjects.ItemReservedToPut), ResourceType = typeof(BusinessObjects))]
+        public double TotalReservedToPut
         {
-            get => this.totalReservedToStore;
-            set => this.SetProperty(ref this.totalReservedToStore, value);
+            get => this.totalReservedToPut;
+            set => this.SetProperty(ref this.totalReservedToPut, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStock), ResourceType = typeof(BusinessObjects))]

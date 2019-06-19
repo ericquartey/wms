@@ -1,5 +1,6 @@
-﻿﻿using System;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
@@ -7,141 +8,260 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Compartment = Ferretto.Common.DataModels.Compartment;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentOperationProvider : ICompartmentOperationProvider
+    internal class CompartmentOperationProvider : BaseProvider, ICompartmentOperationProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
         public CompartmentOperationProvider(
-            DatabaseContext dataContext)
+            DatabaseContext dataContext,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id)
+        public async Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id)
         {
-            return await this.dataContext.Compartments
-                .Select(c => new StockUpdateCompartment
+            return await this.DataContext.Compartments
+                .GroupJoin(
+                    this.DataContext.ItemsCompartmentTypes,
+                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
+                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
+                    (c, ict) => new { c, ict = ict.SingleOrDefault() })
+                .Where(j => j.c.Id == id)
+                .Select(j => new CandidateCompartment
                 {
-                    Id = c.Id,
-                    LastPickDate = c.LastPickDate,
-                    ItemId = c.ItemId,
-                    ReservedForPick = c.ReservedForPick,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    Stock = c.Stock,
-                    LoadingUnitId = c.LoadingUnitId
+                    Id = j.c.Id,
+                    LastPickDate = j.c.LastPickDate,
+                    LastPutDate = j.c.LastPutDate,
+                    ItemId = j.c.ItemId,
+                    ReservedForPick = j.c.ReservedForPick,
+                    ReservedToPut = j.c.ReservedToPut,
+                    IsItemPairingFixed = j.c.IsItemPairingFixed,
+                    MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
+                    Stock = j.c.Stock,
+                    LoadingUnitId = j.c.LoadingUnitId,
+                    CompartmentTypeId = j.c.CompartmentTypeId,
+                    Sub1 = j.c.Sub1,
+                    Sub2 = j.c.Sub2,
+                    MaterialStatusId = j.c.MaterialStatusId,
+                    PackageTypeId = j.c.PackageTypeId,
+                    RegistrationNumber = j.c.RegistrationNumber,
                 })
-                .Where(c => c.Id == id)
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber)
+        {
+            return await this.DataContext.Compartments
+                .Where(c => c.ItemId == itemId && c.RegistrationNumber == registrationNumber)
+                .CountAsync();
         }
 
         /// <summary>
         /// Gets all compartments in the specified area/bay that have availability for the specified item.
         /// </summary>
-        /// <param name="schedulerRequest"></param>
+        /// <param name="request"></param>
         /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<CompartmentWithdraw> GetCandidateWithdrawalCompartments(ItemSchedulerRequest schedulerRequest)
+        public IQueryable<CandidateCompartment> GetCandidateCompartments(ItemSchedulerRequest request)
         {
-            if (schedulerRequest == null)
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(schedulerRequest));
+                throw new ArgumentNullException(nameof(request));
             }
 
-            if (schedulerRequest.OperationType != OperationType.Withdrawal)
-            {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
-            }
+            var compartmentIsInBay = this.GetCompartmentIsInBayFunction(request.BayId);
 
-            return this.dataContext.Compartments
+            var filteredCompartments = this.DataContext.Compartments
+                .Where(compartmentIsInBay)
+                .Where(c => c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                 .Where(c =>
-                    c.ItemId == schedulerRequest.ItemId
+                    c.Lot == request.Lot
                     &&
-                    c.Lot == schedulerRequest.Lot
+                    c.MaterialStatusId == request.MaterialStatusId
                     &&
-                    c.MaterialStatusId == schedulerRequest.MaterialStatusId
+                    c.PackageTypeId == request.PackageTypeId
                     &&
-                    c.MaterialStatusId == schedulerRequest.PackageTypeId
+                    c.RegistrationNumber == request.RegistrationNumber
                     &&
-                    c.RegistrationNumber == schedulerRequest.RegistrationNumber
+                    c.Sub1 == request.Sub1
                     &&
-                    c.Sub1 == schedulerRequest.Sub1
-                    &&
-                    c.Sub2 == schedulerRequest.Sub2
-                    &&
-                    (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
-                    &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
-                    &&
-                    (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
-                .Select(c => new CompartmentWithdraw
-                {
-                    AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
-                    CellId = c.LoadingUnit.CellId,
-                    FifoStartDate = c.FifoStartDate,
-                    Id = c.Id,
-                    ItemId = c.ItemId.Value,
-                    LoadingUnitId = c.LoadingUnitId,
-                    Lot = c.Lot,
-                    MaterialStatusId = c.MaterialStatusId,
-                    PackageTypeId = c.PackageTypeId,
-                    RegistrationNumber = c.RegistrationNumber,
-                    ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
-                    Stock = c.Stock,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                });
+                    c.Sub2 == request.Sub2);
+
+            IQueryable<CandidateCompartment> candidateCompartments;
+            switch (request.OperationType)
+            {
+                case OperationType.Withdrawal:
+                    candidateCompartments = filteredCompartments
+                        .Where(c => c.ItemId == request.ItemId)
+                        .Select(c => new CandidateCompartment
+                        {
+                            AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
+                            CellId = c.LoadingUnit.CellId,
+                            CompartmentTypeId = c.CompartmentTypeId,
+                            FifoStartDate = c.FifoStartDate,
+                            Id = c.Id,
+                            ItemId = c.ItemId.Value,
+                            LoadingUnitId = c.LoadingUnitId,
+                            Lot = c.Lot,
+                            MaterialStatusId = c.MaterialStatusId,
+                            PackageTypeId = c.PackageTypeId,
+                            RegistrationNumber = c.RegistrationNumber,
+                            ReservedForPick = c.ReservedForPick,
+                            ReservedToPut = c.ReservedToPut,
+                            Stock = c.Stock,
+                            Sub1 = c.Sub1,
+                            Sub2 = c.Sub2,
+                            IsItemPairingFixed = c.IsItemPairingFixed,
+                        })
+                        .Where(c => c.Availability > 0);
+
+                    break;
+
+                case OperationType.Insertion:
+
+                    var filteredCompartmentsWithMaxCapacity = filteredCompartments
+                        .Join(
+                            this.DataContext.ItemsCompartmentTypes
+                                .Where(ict => ict.ItemId == request.ItemId),
+                            c => c.CompartmentTypeId,
+                            ict => ict.CompartmentTypeId,
+                            (c, ict) => new { c, ict.MaxCapacity });
+
+                    candidateCompartments = filteredCompartmentsWithMaxCapacity
+                       .Where(info => info.c.ItemId == request.ItemId || info.c.ItemId == null)
+                       .Select(info => new CandidateCompartment
+                       {
+                           AreaId = info.c.LoadingUnit.Cell.Aisle.AreaId,
+                           MaxCapacity = info.MaxCapacity,
+                           CellId = info.c.LoadingUnit.CellId,
+                           CompartmentTypeId = info.c.CompartmentTypeId,
+                           FifoStartDate = info.c.FifoStartDate,
+                           Id = info.c.Id,
+                           ItemId = info.c.ItemId.Value,
+                           LoadingUnitId = info.c.LoadingUnitId,
+                           Lot = info.c.Lot,
+                           MaterialStatusId = info.c.MaterialStatusId,
+                           PackageTypeId = info.c.PackageTypeId,
+                           RegistrationNumber = info.c.RegistrationNumber,
+                           ReservedForPick = info.c.ReservedForPick,
+                           ReservedToPut = info.c.ReservedToPut,
+                           Stock = info.c.Stock,
+                           Sub1 = info.c.Sub1,
+                           Sub2 = info.c.Sub2,
+                           IsItemPairingFixed = info.c.IsItemPairingFixed,
+                       })
+                       .Where(c => c.RemainingCapacity > 0);
+
+                    break;
+
+                default:
+                    throw new ArgumentException("Only pick and put requests are supported.", nameof(request));
+            }
+
+            return candidateCompartments;
         }
 
-        public IQueryable<T> OrderPickCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
+        public Expression<Func<Compartment, bool>> GetCompartmentIsInBayFunction(
+                            int? bayId,
+            bool isVertimag = true)
+        {
+            if (!bayId.HasValue)
+            {
+                return compartment => true;
+            }
+
+            if (isVertimag)
+            {
+                return c => c.LoadingUnit.Cell.Aisle.Machines.Any(m => m.Bays.Any(b => b.Id == bayId));
+            }
+
+            return c => c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == bayId.Value);
+        }
+
+        public IQueryable<T> OrderCompartmentsByManagementType<T>(
+            IQueryable<T> compartments,
+            ItemManagementType managementType,
+            OperationType operationType)
             where T : IOrderableCompartment
         {
-            switch (type)
+            if (compartments == null)
+            {
+                throw new ArgumentNullException(nameof(compartments));
+            }
+
+            var selector = GetFieldSelectorForOrdering<T>(operationType);
+
+            switch (managementType)
             {
                 case ItemManagementType.FIFO:
-                    return compartments
-                        .OrderBy(c => c.FifoStartDate)
-                        .ThenBy(c => c.Availability);
+                    {
+                        var orderedCompartments = compartments
+                            .OrderBy(c => c.FifoStartDate)
+                            .ThenBy(selector);
+
+                        return orderedCompartments;
+                    }
 
                 case ItemManagementType.Volume:
-                    return compartments
-                        .OrderBy(c => c.Availability)
-                        .ThenBy(c => c.FifoStartDate);
+                    {
+                        var orderedCompartments = compartments
+                            .OrderBy(selector);
+
+                        return orderedCompartments;
+                    }
 
                 default:
                     throw new ArgumentException(
                         $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
-                        nameof(type));
+                        nameof(managementType));
             }
         }
 
-        public async Task<IOperationResult<StockUpdateCompartment>> UpdateAsync(StockUpdateCompartment model)
+        public async Task<IOperationResult<CandidateCompartment>> UpdateAsync(CandidateCompartment model)
         {
-            return await this.UpdateAsync<Common.DataModels.Compartment, StockUpdateCompartment, int>(
+            var result = await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
                 model,
-                this.dataContext.Compartments,
-                this.dataContext);
+                this.DataContext.Compartments,
+                this.DataContext,
+                checkForPolicies: false);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+            if (model.ItemId != null)
+            {
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+            }
+
+            return result;
         }
 
-        public async Task<IOperationResult<CompartmentWithdraw>> UpdateAsync(CompartmentWithdraw model)
+        private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)
+            where T : IOrderableCompartment
         {
-            return await this.UpdateAsync<Common.DataModels.Compartment, CompartmentWithdraw, int>(
-                model,
-                this.dataContext.Compartments,
-                this.dataContext);
+            if (typeof(T).GetInterface(nameof(IOrderableCompartmentSet)) != null)
+            {
+                Expression<Func<T, double>> availabilitySetSelector = c => c.Availability / ((IOrderableCompartmentSet)c).Size;
+
+                Expression<Func<T, double>> remainingCapacitySetSelector = c => c.RemainingCapacity / ((IOrderableCompartmentSet)c).Size;
+
+                return operationType == OperationType.Withdrawal ? availabilitySetSelector : remainingCapacitySetSelector;
+            }
+            else
+            {
+                Expression<Func<T, double>> availabilitySelector = c => c.Availability;
+
+                Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
+
+                return operationType == OperationType.Withdrawal ? availabilitySelector : remainingCapacitySelector;
+            }
         }
 
         #endregion

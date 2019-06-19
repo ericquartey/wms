@@ -13,6 +13,8 @@ namespace Ferretto.VW.CustomControls
 
         private string article;
 
+        private double availableQuantity;
+
         private string description;
 
         private string machine;
@@ -28,11 +30,17 @@ namespace Ferretto.VW.CustomControls
             this.machine = machine;
         }
 
+        public TestArticle()
+        {
+        }
+
         #endregion
 
         #region Properties
 
         public string Article { get => this.article; set => this.SetProperty(ref this.article, value); }
+
+        public double AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
 
         public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
 

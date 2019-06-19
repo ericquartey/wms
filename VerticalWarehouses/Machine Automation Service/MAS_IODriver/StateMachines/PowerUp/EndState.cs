@@ -13,28 +13,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private readonly ILogger logger;
 
+        private readonly IoSHDStatus status;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public EndState(IIoStateMachine parentStateMachine, ILogger logger)
+        public EndState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
-
-            var resetSecurityIoMessage = new IoMessage(false);
-
-            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
-            resetSecurityIoMessage.SwitchElevatorMotor(true);
-
-            parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.status = status;
         }
 
         #endregion
@@ -50,9 +43,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
@@ -63,8 +56,37 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
                 this.ParentStateMachine.PublishNotificationEvent(endNotification);
             }
+        }
 
-            this.logger.LogDebug("3:End Start");
+        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        {
+            this.logger.LogDebug($"1: Received Message = {message.ToString()}");
+
+            //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
+            if (this.status.MatchOutputs(message.Outputs))
+            {
+                var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd);
+
+                this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+                this.ParentStateMachine.PublishNotificationEvent(endNotification);
+            }
+        }
+
+        public override void Start()
+        {
+            var resetSecurityIoMessage = new IoSHDWriteMessage();
+
+            resetSecurityIoMessage.SwitchElevatorMotor(true);
+            this.logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
+
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
+            }
+
+            this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
         }
 
         protected override void Dispose(bool disposing)

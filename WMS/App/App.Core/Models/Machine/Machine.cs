@@ -1,17 +1,18 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Machine))]
     public sealed class Machine : BusinessObject
     {
-        #region Properties
+        #region Fields
 
-        [Display(Name = nameof(BusinessObjects.MachineFillRate), ResourceType = typeof(BusinessObjects))]
-        public static int FillRate => new Random().Next(100);
+        private MachineStatus? status;
+
+        #endregion
+
+        #region Properties
 
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
         public long? ActualWeight { get; set; }
@@ -48,6 +49,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.MachineErrorTime), ResourceType = typeof(BusinessObjects))]
         public long? ErrorTime { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
+        public int FillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineImage), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }
@@ -109,7 +113,17 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus? Status { get; set; }
+        public MachineStatus? Status
+        {
+            get => this.status;
+            set
+            {
+                if (this.SetProperty(ref this.status, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsOnLine));
+                }
+            }
+        }
 
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }

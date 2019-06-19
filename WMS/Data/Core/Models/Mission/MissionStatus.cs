@@ -6,14 +6,12 @@
 
         New = 'N',
 
-        Waiting = 'W',
-
         Executing = 'X',
 
         Completed = 'C',
 
         Error = 'E',
 
-        Incomplete = 'I'
+        Incomplete = 'I',
     }
 }

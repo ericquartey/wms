@@ -225,7 +225,7 @@
   <data name="CompartmentLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="CompartmentLastStoreDate" xml:space="preserve">
+  <data name="CompartmentLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="CompartmentLot" xml:space="preserve">
@@ -255,7 +255,7 @@
   <data name="ItemLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="ItemLastStoreDate" xml:space="preserve">
+  <data name="ItemLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
@@ -288,7 +288,7 @@
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="CompartmentReservedToStore" xml:space="preserve">
+  <data name="CompartmentReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
@@ -297,11 +297,11 @@
   <data name="CompartmentSub2" xml:space="preserve">
     <value>Sub 2</value>
   </data>
-  <data name="ItemFifoStoreTime" xml:space="preserve">
-    <value>Periodo FIFO in Versamento</value>
+  <data name="ItemFifoPutTime" xml:space="preserve">
+    <value>Periodo FIFO in Versamento [giorni]</value>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
-    <value>Periodo FIFO in Prelievo</value>
+    <value>Periodo FIFO in Prelievo [giorni]</value>
   </data>
   <data name="ItemManagementType" xml:space="preserve">
     <value>Tipo gestione</value>
@@ -312,20 +312,20 @@
   <data name="ItemReorderQuantity" xml:space="preserve">
     <value>Quantità Minima di Riordino</value>
   </data>
-  <data name="ItemStoreTolerance" xml:space="preserve">
+  <data name="ItemPutTolerance" xml:space="preserve">
     <value>Tolleranza in Versamento </value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="ItemReservedToStore" xml:space="preserve">
+  <data name="ItemReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="PackageType" xml:space="preserve">
     <value>Tipo confezione</value>
   </data>
   <data name="RegistrationNumber" xml:space="preserve">
-    <value>Matricola</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="LoadingUnitNotes" xml:space="preserve">
     <value>Note</value>
@@ -351,7 +351,7 @@
   <data name="LoadingUnitLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
+  <data name="LoadingUnitLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="LoadingUnitLastHandlingDate" xml:space="preserve">
@@ -403,7 +403,7 @@
     <value>Data di Test</value>
   </data>
   <data name="MachineRegistrationNumber" xml:space="preserve">
-    <value>Numero di Registrazione</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="MachineTypeDescription" xml:space="preserve">
     <value>Tipo</value>
@@ -495,7 +495,7 @@
   <data name="MachineArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawItem" xml:space="preserve">
+  <data name="ItemPickItem" xml:space="preserve">
     <value>Articolo selezionato</value>
   </data>
   <data name="AreaDescription" xml:space="preserve">
@@ -510,31 +510,31 @@
   <data name="BayType" xml:space="preserve">
     <value>Tipo baia</value>
   </data>
-  <data name="ItemWithdrawArea" xml:space="preserve">
+  <data name="ItemPickArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawBay" xml:space="preserve">
+  <data name="ItemPickBay" xml:space="preserve">
     <value>Baia</value>
   </data>
-  <data name="ItemWithdrawQuantity" xml:space="preserve">
+  <data name="ItemPickQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>
   </data>
-  <data name="ItemWithdrawSub1" xml:space="preserve">
+  <data name="ItemPickSub1" xml:space="preserve">
     <value>Sub1</value>
   </data>
-  <data name="ItemWithdrawSub2" xml:space="preserve">
+  <data name="ItemPickSub2" xml:space="preserve">
     <value>Sub2</value>
   </data>
-  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+  <data name="ItemPickRegistrationNumber" xml:space="preserve">
+    <value>Numero Seriale</value>
   </data>
-  <data name="ItemWithdrawLot" xml:space="preserve">
+  <data name="ItemPickLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
-  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+  <data name="ItemPickItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
   <data name="CompartmentItem" xml:space="preserve">
@@ -605,8 +605,8 @@
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Stato Manutenzione</value>
   </data>
-  <data name="MachineFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento</value>
+  <data name="MachineAreaFillRate" xml:space="preserve">
+    <value>Percentuale di Riempimento Area</value>
   </data>
   <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
     <value>Scaduta</value>
@@ -724,7 +724,7 @@
     <value>Lotto</value>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
-    <value>Numero di registrazione</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemListRowSub1" xml:space="preserve">
     <value>Sub 1</value>
@@ -740,9 +740,6 @@
   </data>
   <data name="MissionStatusNew" xml:space="preserve">
     <value>Nuova</value>
-  </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>In attesa</value>
   </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>In esecuzione</value>
@@ -836,5 +833,161 @@
   </data>
   <data name="MissionDispatchedQuantity" xml:space="preserve">
     <value>Quantità Evasa</value>
+  </data>
+  <data name="ItemPutItem" xml:space="preserve">
+    <value>Articolo selezionato</value>
+  </data>
+  <data name="ItemPutArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemPutBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemPutSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="ItemPutSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="ItemPutRegistrationNumber" xml:space="preserve">
+    <value>Numero Seriale</value>
+  </data>
+  <data name="ItemPutLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemPutItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails non valido</value>
+  </data>
+  <data name="ItemPutQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="LoadingUnitWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="LoadingUnitWithdrawBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="LoadingUnitWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="LoadingUnitWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="LoadingUnitWithdrawLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Numero Seriale</value>
+  </data>
+  <data name="ItemPutAvailableCapacity" xml:space="preserve">
+    <value>Capacità Disponibile</value>
+  </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>Giacenza Totale</value>
+  </data>
+  <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Ci sono ancora Scomparti in questa Area associati a questo Articolo</value>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="MachineServiceUrl" xml:space="preserve">
+    <value>Url di Servizio</value>
+  </data>
+  <data name="MachineLoadingUnitCount" xml:space="preserve">
+    <value>Numero di Unità di carico</value>
+  </data>
+  <data name="MachineCellCount" xml:space="preserve">
+    <value>Numero di Celle</value>
+  </data>
+  <data name="MachineItemCount" xml:space="preserve">
+    <value>Contatore Articoli</value>
+  </data>
+  <data name="BayIsActive" xml:space="preserve">
+    <value>Attivo</value>
+  </data>
+  <data name="BayUserLogged" xml:space="preserve">
+    <value>Utente Connesso</value>
+  </data>
+  <data name="BayLoadingUnitInBay" xml:space="preserve">
+    <value>Unità di Carico in Baia</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cella</value>
+  </data>
+  <data name="MachineFaultCode" xml:space="preserve">
+    <value>Codice Errore</value>
+  </data>
+  <data name="MachineElevatorPosition" xml:space="preserve">
+    <value>Posizione dell'Elevatore</value>
+  </data>
+  <data name="MachineGrossMaxWeight" xml:space="preserve">
+    <value>Peso Lordo Massimo</value>
+  </data>
+  <data name="MachineGrossWeight" xml:space="preserve">
+    <value>Peso Lordo</value>
+  </data>
+  <data name="MachineNetMaxWeight" xml:space="preserve">
+    <value>Peso Massimo Netto</value>
+  </data>
+  <data name="MachineNetWeight" xml:space="preserve">
+    <value>Peso Netto</value>
+  </data>
+  <data name="MachineWeightFillRate" xml:space="preserve">
+    <value>Percentuale di Riempimento Peso</value>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
+  <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Scomparti Associati</value>
+  </data>
+  <data name="CompartmentTypeEmptyCompartmentsCount" xml:space="preserve">
+    <value>Scomparti Vuoti Associati</value>
+  </data>
+  <data name="CompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Altezza [mm]</value>
+  </data>
+  <data name="CompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Larghezza [mm]</value>
+  </data>
+  <data name="CompartmentTypeItemCompartmentsCount" xml:space="preserve">
+    <value>Articoli Associati</value>
+  </data>
+  <data name="ItemMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="AssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CreateNewCompartmentType" xml:space="preserve">
+    <value>Crea nuovo Tipo Scomparto</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Contatori Liste</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Contatore Missioni</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Contatore Cassetti</value>
+  </data>
+  <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Totale Scomparti</value>
+  </data>
+  <data name="ItemCompartmentTypeEmptyCount" xml:space="preserve">
+    <value>Totale Vuoti</value>
+  </data>
+  <data name="ItemCompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Altezza [mm]</value>
+  </data>
+  <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Larghezza [mm]</value>
   </data>
 </root>

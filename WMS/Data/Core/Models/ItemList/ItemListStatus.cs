@@ -6,6 +6,8 @@
 
         New = 'N',
 
+        Ready = 'R',
+
         Waiting = 'W',
 
         Executing = 'X',
@@ -16,6 +18,6 @@
 
         Incomplete = 'I',
 
-        Suspended = 'S'
+        Suspended = 'S',
     }
 }

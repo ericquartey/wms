@@ -5,7 +5,7 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IFilterDataSource<TModel, TKey>
+    public interface IFilterDataSource<TModel, TKey> : IDataSource<TModel, TKey>
         where TModel : IModel<TKey>
     {
         #region Properties
@@ -15,10 +15,6 @@ namespace Ferretto.Common.BLL.Interfaces
         Func<IQueryable<TModel>> GetData { get; }
 
         Func<int> GetDataCount { get; }
-
-        string Key { get; }
-
-        string Name { get; }
 
         IPagedBusinessProvider<TModel, TKey> Provider { get; }
 

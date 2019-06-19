@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -24,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         private const int CONTROL_WORD_TIMEOUT = 5000;
 
-        private readonly Timer controlWordCheckTimer;
+        //private readonly Timer controlWordCheckTimer;
 
         private bool disposed;
 
@@ -35,7 +34,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         protected InverterStateMachineBase(ILogger logger)
         {
             this.Logger = logger;
-            this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
+            //this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
         }
 
         #endregion
@@ -60,14 +59,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
-            this.Logger.LogDebug("1:Method Start");
-
-            this.Logger.LogTrace($"2:new State: {newState.GetType()}");
+            this.Logger.LogTrace($"1:new State: {newState.GetType()}");
 
             this.CurrentState = newState;
             this.CurrentState.Start();
-
-            this.Logger.LogDebug("3:Method End");
         }
 
         public void Dispose()
@@ -79,7 +74,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
-            this.controlWordCheckTimer.Change(CONTROL_WORD_TIMEOUT, Timeout.Infinite);
+            //this.controlWordCheckTimer.Change(CONTROL_WORD_TIMEOUT, Timeout.Infinite);
+            this.Logger.LogTrace($"1:Enqueue message {message}");
             this.InverterCommandQueue.Enqueue(message);
         }
 
@@ -95,10 +91,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public bool ValidateCommandMessage(InverterMessage message)
         {
-            bool returnValue = this.CurrentState?.ValidateCommandMessage(message) ?? false;
+            var returnValue = this.CurrentState?.ValidateCommandMessage(message) ?? false;
             if (returnValue)
             {
-                this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
+                //this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
             }
             return returnValue;
         }
@@ -118,7 +114,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
             if (disposing)
             {
-                this.controlWordCheckTimer?.Dispose();
+                //this.controlWordCheckTimer?.Dispose();
             }
 
             this.disposed = true;
@@ -126,7 +122,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         private void ControlWordCheckTimeout(object state)
         {
-            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
+            //this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
             var errorNotification = new FieldNotificationMessage(null,
                 "Control Word set timeout",
                 FieldMessageActor.Any,

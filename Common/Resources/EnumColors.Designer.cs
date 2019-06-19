@@ -61,11 +61,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #57A639.
+        ///   Looks up a localized string similar to #43A047.
         /// </summary>
         public static string ItemListRowStatusCompleted {
             get {
                 return ResourceManager.GetString("ItemListRowStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #D50000.
+        /// </summary>
+        public static string ItemListRowStatusError {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusError", resourceCulture);
             }
         }
         
@@ -79,7 +88,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #D50000.
+        ///   Looks up a localized string similar to #FF6F00.
         /// </summary>
         public static string ItemListRowStatusIncomplete {
             get {
@@ -97,7 +106,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #FFB300.
+        ///   Looks up a localized string similar to #64FFDA.
+        /// </summary>
+        public static string ItemListRowStatusReady {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #616161.
         /// </summary>
         public static string ItemListRowStatusSuspended {
             get {
@@ -115,11 +133,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #57A639.
+        ///   Looks up a localized string similar to #43A047.
         /// </summary>
         public static string ItemListStatusCompleted {
             get {
                 return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #D50000.
+        /// </summary>
+        public static string ItemListStatusError {
+            get {
+                return ResourceManager.GetString("ItemListStatusError", resourceCulture);
             }
         }
         
@@ -133,7 +160,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #D50000.
+        ///   Looks up a localized string similar to #FF6F00.
         /// </summary>
         public static string ItemListStatusIncomplete {
             get {
@@ -151,7 +178,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #FFB300.
+        ///   Looks up a localized string similar to #64FFDA.
+        /// </summary>
+        public static string ItemListStatusReady {
+            get {
+                return ResourceManager.GetString("ItemListStatusReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #616161.
         /// </summary>
         public static string ItemListStatusSuspended {
             get {
@@ -264,15 +300,6 @@ namespace Ferretto.Common.Resources {
         public static string MissionStatusNew {
             get {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #00BCD4.
-        /// </summary>
-        public static string MissionStatusWaiting {
-            get {
-                return ResourceManager.GetString("MissionStatusWaiting", resourceCulture);
             }
         }
     }

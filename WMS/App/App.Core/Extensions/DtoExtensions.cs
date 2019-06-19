@@ -17,8 +17,10 @@ namespace Ferretto.WMS.App.Core.Extensions
                 {
                     IsAllowed = p.IsAllowed,
                     Name = p.Name,
-                    Reason = p.Reason,
-                    Type = (PolicyType)p.Type
+                    Reason = string.IsNullOrEmpty(p.Reason) && p.IsAllowed == false
+                        ? Common.Resources.DesktopApp.GenericDenyPolicy
+                        : p.Reason,
+                    Type = (PolicyType)p.Type,
                 });
         }
 

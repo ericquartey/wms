@@ -67,9 +67,9 @@ namespace Ferretto.WMS.App.Controls
                 var type = control.DataContext.GetType();
                 var path = bindingExpression.ParentBinding.Path.Path;
 
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
+                var localizedFieldName = Common.Utils.PropertyMetadata.LocalizeFieldName(type, path);
 
-                var isFieldRequired = FormControl.IsFieldRequired(type, path);
+                var isFieldRequired = Common.Utils.PropertyMetadata.IsFieldRequired(type, path);
 
                 if (control is WmsLabel wmsLabel)
                 {

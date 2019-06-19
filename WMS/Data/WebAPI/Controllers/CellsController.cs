@@ -4,12 +4,9 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -33,10 +30,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CellsController(
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ICellProvider cellProvider,
             ILoadingUnitProvider loadingUnitProvider)
-            : base(hubContext)
         {
             this.cellProvider = cellProvider;
             this.loadingUnitProvider = loadingUnitProvider;
@@ -51,7 +46,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cell>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -146,19 +141,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.cellProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<CellDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Cell), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

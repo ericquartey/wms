@@ -3,12 +3,9 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -36,11 +33,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AislesController(
             ILogger<AislesController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IAisleProvider aisleProvider,
             ILoadingUnitProvider loadingUnitProvider,
             ICellProvider cellProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.aisleProvider = aisleProvider;
@@ -73,7 +68,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<Aisle>> GetAllLoadingUnitsByIdAsync(
             int id,
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -97,7 +92,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     return this.NotFound(new ProblemDetails
                     {
                         Detail = message,
-                        Status = StatusCodes.Status404NotFound
+                        Status = StatusCodes.Status404NotFound,
                     });
                 }
 
@@ -122,7 +117,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 

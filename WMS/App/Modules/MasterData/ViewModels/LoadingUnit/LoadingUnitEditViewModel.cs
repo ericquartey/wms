@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -12,6 +13,11 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Cell), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemCompartmentType), false)]
     public class LoadingUnitEditViewModel : DetailsViewModel<LoadingUnitDetails>
     {
         #region Fields
@@ -176,7 +182,13 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.SelectedCompartmentTray = null;
 
-            var model = await this.compartmentProvider.GetNewAsync();
+            var result = await this.compartmentProvider.GetNewAsync();
+            if (!result.Success)
+            {
+                return;
+            }
+
+            var model = result.Entity;
             model.LoadingUnitId = this.Model.Id;
             model.LoadingUnit = this.Model;
 
@@ -184,14 +196,10 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.Data is LoadingUnitEditViewData inputData)
             {
                 model.ItemId = inputData.ItemId;
-                viewModel.CanChooseItem = false;
-            }
-            else
-            {
-                viewModel.CanChooseItem = true;
-            }
+                viewModel.CanChooseItem = inputData.ItemId == null;
 
-            this.ShowSidePanel(viewModel);
+                this.ShowSidePanel(viewModel);
+            }
         }
 
         private void BulkAddCompartment()
@@ -201,7 +209,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var model = new BulkCompartment
             {
                 LoadingUnitId = this.Model.Id,
-                LoadingUnit = this.Model
+                LoadingUnit = this.Model,
             };
 
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
@@ -235,9 +243,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = true;
 
             this.Model = await this.loadingUnitProvider.GetByIdAsync(inputData.LoadingUnitId);
-            if (inputData.SelectedCompartmentId.HasValue)
+            if (inputData.SelectedCompartmentId.HasValue && this.Model.Compartments.Any(c => c.Id == inputData.SelectedCompartmentId))
             {
                 this.SelectedCompartmentTray = await this.compartmentProvider.GetByIdAsync(inputData.SelectedCompartmentId.Value);
+            }
+            else
+            {
+                this.SelectedCompartmentTray = null;
+                inputData.SelectedCompartmentId = null;
             }
 
             if (inputData.ItemId.HasValue)

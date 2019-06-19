@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class LoadingUnitTypeProvider : ILoadingUnitTypeProvider
+    internal class LoadingUnitTypeProvider : BaseProvider, ILoadingUnitTypeProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public LoadingUnitTypeProvider(DatabaseContext dataContext)
+        public LoadingUnitTypeProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,27 +23,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<LoadingUnitType>> GetAllAsync()
         {
-            return await this.dataContext.LoadingUnitTypes
+            return await this.DataContext.LoadingUnitTypes
                .Select(c => new LoadingUnitType
                {
                    Id = c.Id,
-                   Description = c.Description
+                   Description = c.Description,
                })
                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.LoadingUnitTypes.CountAsync();
+            return await this.DataContext.LoadingUnitTypes.CountAsync();
         }
 
         public async Task<LoadingUnitType> GetByIdAsync(int id)
         {
-            return await this.dataContext.LoadingUnitTypes
+            return await this.DataContext.LoadingUnitTypes
                  .Select(c => new LoadingUnitType
                  {
                      Id = c.Id,
-                     Description = c.Description
+                     Description = c.Description,
                  })
                  .SingleOrDefaultAsync(l => l.Id == id);
         }

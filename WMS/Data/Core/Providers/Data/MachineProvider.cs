@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -12,22 +13,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MachineProvider : IMachineProvider
+    internal class MachineProvider : BaseProvider, IMachineProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
 
-        private readonly DatabaseContext dataContext;
+        private readonly IMachinesLiveDataContext liveMachinesDataContext;
 
         #endregion
 
         #region Constructors
 
-        public MachineProvider(DatabaseContext dataContext, IBayProvider bayProvider)
+        public MachineProvider(
+            DatabaseContext dataContext,
+            IMachinesLiveDataContext liveMachinesDataContext,
+            IBayProvider bayProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.bayProvider = bayProvider;
+            this.liveMachinesDataContext = liveMachinesDataContext;
         }
 
         #endregion
@@ -41,13 +47,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var machines = await this.GetAllBase()
                 .ToArrayAsync<Machine, Common.DataModels.Machine>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var machine in machines)
+            {
+                this.MergeLiveData(machine);
+            }
+
+            return machines;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -60,24 +73,53 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
+        public async Task<IOperationResult<IEnumerable<MachineServiceInfo>>> GetAllMachinesServiceInfoAsync()
+        {
+            var machines = await this.DataContext.Machines
+                .Select(m => new MachineServiceInfo
+                {
+                    Id = m.Id,
+                    ServiceUrl = m.ServiceUrl,
+                    Bays = m.Bays.Select(b => new Bay { Id = b.Id }),
+                })
+                .ToArrayAsync();
+
+            return new SuccessOperationResult<IEnumerable<MachineServiceInfo>>(machines);
+        }
+
         public async Task<Machine> GetByBayIdAsync(int bayId)
         {
             var bay = await this.bayProvider.GetByIdAsync(bayId);
-            return await this.GetAllBase()
+            var machine = await this.GetAllBase()
                        .SingleOrDefaultAsync(i => i.Id == bay.MachineId);
+
+            return this.MergeLiveData(machine);
         }
 
-        public async Task<Machine> GetByIdAsync(int id)
+        public async Task<MachineDetails> GetByIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var machine = await this.GetAllDetailsBase()
                      .SingleOrDefaultAsync(i => i.Id == id);
+            if (machine == null)
+            {
+                return null;
+            }
+
+            machine.ItemCount = new Random().Next(100);
+            machine.CellCount = new Random().Next(100);
+            machine.ItemListCount = new Random().Next(100);
+            machine.CompartmentCount = new Random().Next(100);
+            machine.LoadingUnitCount = new Random().Next(100);
+            machine.MissionCount = new Random().Next(100);
+
+            return this.MergeLiveData(machine);
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
-                       this.dataContext.Machines,
+                       this.DataContext.Machines,
                        this.GetAllBase());
         }
 
@@ -105,100 +147,293 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && Equals(m.FillRate, searchAsInt));
         }
 
-        private static MachineStatus GetMachineStatus(Common.DataModels.IDataModel machine)
+        private static Machine GetMaintenanceStatus(Machine machine)
         {
             if (machine != null)
             {
                 if (machine.Id == 1)
                 {
-                    return MachineStatus.Automatic;
+                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    return MachineStatus.Error;
-                }
-                else if (machine.Id == 3)
-                {
-                    return MachineStatus.Manual;
+                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    return MachineStatus.Offline;
+                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
                 }
             }
 
-            return MachineStatus.NotSpecified;
+            return machine;
         }
 
-        private static MaintenanceStatus GetMaintenanceStatus(Common.DataModels.IDataModel machine)
+        private static MachineDetails GetMaintenanceStatus(MachineDetails machine)
         {
             if (machine != null)
             {
                 if (machine.Id == 1)
                 {
-                    return MaintenanceStatus.Valid;
+                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    return MaintenanceStatus.Expiring;
+                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    return MaintenanceStatus.Expired;
+                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
                 }
             }
 
-            return MaintenanceStatus.NotSpecified;
+            return machine;
         }
 
         private IQueryable<Machine> GetAllBase()
         {
-            return this.dataContext.Machines
-                .Select(m => new Machine
-                {
-                    Id = m.Id,
-                    ActualWeight = m.ActualWeight,
-                    AisleId = m.AisleId,
-                    AisleName = m.Aisle.Name,
-                    AreaName = m.Aisle.Area.Name,
-                    AutomaticTime = m.AutomaticTime,
-                    BuildDate = m.BuildDate,
-                    CradlesCount = m.CradlesCount,
-                    CustomerAddress = m.CustomerAddress,
-                    CustomerCity = m.CustomerCity,
-                    CustomerCountry = m.CustomerCountry,
-                    CustomerCode = m.CustomerCode,
-                    CustomerName = m.CustomerName,
-                    ErrorTime = m.ErrorTime,
-                    FillRate = new Random().Next(100),
-                    GrossMaxWeight = m.TotalMaxWeight,
-                    GrossWeight = m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight)),
-                    Image = m.Image,
-                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
-                    InstallationDate = m.InstallationDate,
-                    LastPowerOn = m.LastPowerOn,
-                    LastServiceDate = m.LastServiceDate,
-                    Latitude = m.Latitude,
-                    Longitude = m.Longitude,
-                    LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
-                    MachineTypeId = m.MachineTypeId,
-                    MachineTypeDescription = m.MachineType.Description,
-                    MaintenanceStatus = GetMaintenanceStatus(m),
-                    ManualTime = m.ManualTime,
-                    MissionTime = m.MissionTime,
-                    Model = m.Model,
-                    MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
-                    NetMaxWeight = m.TotalMaxWeight - m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
-                    NetWeight = m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
-                    NextServiceDate = m.NextServiceDate,
-                    Nickname = m.Nickname,
-                    OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
-                    PowerOnTime = m.PowerOnTime,
-                    RegistrationNumber = m.RegistrationNumber,
-                    Status = GetMachineStatus(m),
-                    TestDate = m.TestDate,
-                    TotalMaxWeight = m.TotalMaxWeight
-                });
+            return this.DataContext.Machines
+                   .Join(
+                         this.DataContext.Machines
+                         .GroupJoin(
+                                this.DataContext.LoadingUnits,
+                                m => m.AisleId,
+                                l => l.Cell.AisleId,
+                                (m, l) => new
+                                {
+                                    MachineId = m.Id,
+                                    LoadingUnit = l,
+                                })
+                            .SelectMany(
+                                ml => ml.LoadingUnit.DefaultIfEmpty(),
+                                (m, l) => new
+                                {
+                                    MachineId = m.MachineId,
+                                    LoadingUnit = l,
+                                })
+                            .GroupJoin(
+                                this.DataContext.Compartments,
+                                m => m.LoadingUnit.Id,
+                                c => c.LoadingUnitId,
+                                (m, c) => new
+                                {
+                                    MachineId = m.MachineId,
+                                    LoadingUnit = m.LoadingUnit,
+                                    Compartment = c,
+                                })
+                            .SelectMany(
+                                mc => mc.Compartment.DefaultIfEmpty(),
+                                (m, c) => new
+                                {
+                                    MachineId = m.MachineId,
+                                    LoadingUnitId = m.LoadingUnit.Id,
+                                    LoadingUnitArea = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length * m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
+                                    CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Height : 0),
+                                })
+                            .GroupBy(x => x.MachineId)
+                            .Select(x => new
+                            {
+                                g = x.GroupBy(j => new { j.LoadingUnitId, j.LoadingUnitArea })
+                                    .Select(a => new
+                                    {
+                                        MachineId = a.First().MachineId,
+                                        LoadingUnitArea = a.First().LoadingUnitArea,
+                                        CompartmentArea = a.Sum(y => y.CompartmentArea)
+                                    }),
+                            })
+                            .Select(x => new
+                            {
+                                MachineId = x.g.First().MachineId,
+                                Occupation = x.g.Sum(y => y.CompartmentArea) / x.g.Sum(y => y.LoadingUnitArea) * 100,
+                            }),
+                        m => m.Id,
+                        agg => agg.MachineId,
+                        (m, agg) => new
+                        {
+                            m,
+                            agg,
+                        })
+                    .Select(x => new Machine
+                    {
+                        Id = x.m.Id,
+                        ActualWeight = x.m.ActualWeight,
+                        AisleId = x.m.AisleId,
+                        AisleName = x.m.Aisle.Name,
+                        AreaName = x.m.Aisle.Area.Name,
+                        AutomaticTime = x.m.AutomaticTime,
+                        BuildDate = x.m.BuildDate,
+                        CradlesCount = x.m.CradlesCount,
+                        CustomerAddress = x.m.CustomerAddress,
+                        CustomerCity = x.m.CustomerCity,
+                        CustomerCountry = x.m.CustomerCountry,
+                        CustomerCode = x.m.CustomerCode,
+                        CustomerName = x.m.CustomerName,
+                        ErrorTime = x.m.ErrorTime,
+                        FillRate = (int)x.agg.Occupation,
+                        GrossMaxWeight = x.m.TotalMaxWeight,
+                        GrossWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight)),
+                        Image = x.m.Image,
+                        InputLoadingUnitsCount = x.m.InputLoadingUnitsCount,
+                        InstallationDate = x.m.InstallationDate,
+                        LastPowerOn = x.m.LastPowerOn,
+                        LastServiceDate = x.m.LastServiceDate,
+                        Latitude = x.m.Latitude,
+                        Longitude = x.m.Longitude,
+                        LoadingUnitsPerCradle = x.m.LoadingUnitsPerCradle,
+                        MachineTypeId = x.m.MachineTypeId,
+                        MachineTypeDescription = x.m.MachineType.Description,
+                        ManualTime = x.m.ManualTime,
+                        MissionTime = x.m.MissionTime,
+                        Model = x.m.Model,
+                        MovedLoadingUnitsCount = x.m.MovedLoadingUnitsCount,
+                        NetMaxWeight = x.m.TotalMaxWeight - x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
+                        NetWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight)),
+                        NextServiceDate = x.m.NextServiceDate,
+                        Nickname = x.m.Nickname,
+                        OutputLoadingUnitsCount = x.m.OutputLoadingUnitsCount,
+                        PowerOnTime = x.m.PowerOnTime,
+                        RegistrationNumber = x.m.RegistrationNumber,
+                        TestDate = x.m.TestDate,
+                        TotalMaxWeight = x.m.TotalMaxWeight,
+                    })
+                    .Select(m => GetMaintenanceStatus(m));
+        }
+
+        private IQueryable<MachineDetails> GetAllDetailsBase(
+                    Expression<Func<Common.DataModels.Machine, bool>> whereExpression = null,
+            Expression<Func<Common.DataModels.Machine, bool>> searchExpression = null)
+        {
+            var actualWhereFunc = whereExpression ?? ((i) => true);
+            var actualSearchFunc = searchExpression ?? ((i) => true);
+
+            return this.DataContext.Machines
+                .Where(actualWhereFunc)
+                .Where(actualSearchFunc)
+                    .Join(
+                          this.DataContext.Machines
+                           .Where(actualWhereFunc)
+                            .Where(actualSearchFunc)
+                          .GroupJoin(
+                                 this.DataContext.LoadingUnits,
+                                 m => m.AisleId,
+                                 l => l.Cell.AisleId,
+                                 (m, l) => new
+                                 {
+                                     MachineId = m.Id,
+                                     LoadingUnit = l,
+                                 })
+                             .SelectMany(
+                                 ml => ml.LoadingUnit.DefaultIfEmpty(),
+                                 (m, l) => new
+                                 {
+                                     MachineId = m.MachineId,
+                                     LoadingUnit = l,
+                                 })
+                             .GroupJoin(
+                                 this.DataContext.Compartments,
+                                 m => m.LoadingUnit.Id,
+                                 c => c.LoadingUnitId,
+                                 (m, c) => new
+                                 {
+                                     MachineId = m.MachineId,
+                                     LoadingUnit = m.LoadingUnit,
+                                     Compartment = c,
+                                 })
+                             .SelectMany(
+                                 mc => mc.Compartment.DefaultIfEmpty(),
+                                 (m, c) => new
+                                 {
+                                     MachineId = m.MachineId,
+                                     LoadingUnitId = m.LoadingUnit.Id,
+                                     LoadingUnitArea = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length * m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
+                                     CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Height : 0),
+                                 })
+                             .GroupBy(x => x.MachineId)
+                             .Select(x => new
+                             {
+                                 g = x.GroupBy(j => new { j.LoadingUnitId, j.LoadingUnitArea })
+                                     .Select(a => new
+                                     {
+                                         MachineId = a.First().MachineId,
+                                         LoadingUnitArea = a.First().LoadingUnitArea,
+                                         CompartmentArea = a.Sum(y => y.CompartmentArea)
+                                     }),
+                             })
+                             .Select(x => new
+                             {
+                                 MachineId = x.g.First().MachineId,
+                                 Occupation = x.g.Sum(y => y.CompartmentArea) / x.g.Sum(y => y.LoadingUnitArea) * 100,
+                             }),
+                         m => m.Id,
+                         agg => agg.MachineId,
+                         (m, agg) => new
+                         {
+                             m,
+                             agg,
+                         })
+                 .Select(x => new MachineDetails
+                 {
+                     Id = x.m.Id,
+                     ActualWeight = x.m.ActualWeight,
+                     AisleId = x.m.AisleId,
+                     AisleName = x.m.Aisle.Name,
+                     AreaName = x.m.Aisle.Area.Name,
+                     AutomaticTime = x.m.AutomaticTime,
+                     BuildDate = x.m.BuildDate,
+                     CradlesCount = x.m.CradlesCount,
+                     CustomerAddress = x.m.CustomerAddress,
+                     CustomerCity = x.m.CustomerCity,
+                     CustomerCountry = x.m.CustomerCountry,
+                     CustomerCode = x.m.CustomerCode,
+                     CustomerName = x.m.CustomerName,
+                     ErrorTime = x.m.ErrorTime,
+                     AreaFillRate = (int)x.agg.Occupation,
+                     GrossMaxWeight = x.m.TotalMaxWeight,
+                     GrossWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight)),
+                     Image = x.m.Image,
+                     InputLoadingUnitsCount = x.m.InputLoadingUnitsCount,
+                     InstallationDate = x.m.InstallationDate,
+                     LastPowerOn = x.m.LastPowerOn,
+                     LastServiceDate = x.m.LastServiceDate,
+                     Latitude = x.m.Latitude,
+                     Longitude = x.m.Longitude,
+                     LoadingUnitsPerCradle = x.m.LoadingUnitsPerCradle,
+                     MachineTypeId = x.m.MachineTypeId,
+                     MachineTypeDescription = x.m.MachineType.Description,
+                     ManualTime = x.m.ManualTime,
+                     MissionTime = x.m.MissionTime,
+                     Model = x.m.Model,
+                     MovedLoadingUnitsCount = x.m.MovedLoadingUnitsCount,
+                     NetMaxWeight = x.m.TotalMaxWeight - x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
+                     NetWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight)),
+                     NextServiceDate = x.m.NextServiceDate,
+                     Nickname = x.m.Nickname,
+                     OutputLoadingUnitsCount = x.m.OutputLoadingUnitsCount,
+                     PowerOnTime = x.m.PowerOnTime,
+                     RegistrationNumber = x.m.RegistrationNumber,
+                     TestDate = x.m.TestDate,
+                     TotalMaxWeight = x.m.TotalMaxWeight,
+                     ServiceUrl = x.m.ServiceUrl,
+                     CellCount = x.m.Aisle.Cells.Count(),
+
+                     // TODO: to be calculated
+                     // LoadingUnitCOunt
+                     // CellCOunt
+                     // ItemUnitCOunt
+                     // MissionCOunt
+                     // ListCOunt
+                     // CompartmentCOunt
+                 })
+                 .Select(m => GetMaintenanceStatus(m));
+        }
+
+        private TMachine MergeLiveData<TMachine>(TMachine machine)
+            where TMachine : IMachineLiveData
+        {
+            var machineStatus = this.liveMachinesDataContext.GetMachineStatus(machine.Id);
+
+            machine.Status = (Models.MachineStatus)machineStatus.Mode;
+
+            return machine;
         }
 
         #endregion

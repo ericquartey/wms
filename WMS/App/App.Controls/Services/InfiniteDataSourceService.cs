@@ -20,6 +20,8 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
 
+        private readonly Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<TModel>>> getAllAsync;
+
         private InfiniteAsyncSource dataSource;
 
         private IPagedBusinessProvider<TModel, TKey> provider;
@@ -28,9 +30,10 @@ namespace Ferretto.WMS.App.Controls.Services
 
         #region Constructors
 
-        public InfiniteDataSourceService(IPagedBusinessProvider<TModel, TKey> provider)
+        public InfiniteDataSourceService(IPagedBusinessProvider<TModel, TKey> provider, Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<TModel>>> getAll = null)
         {
             this.Provider = provider;
+            this.getAllAsync = getAll;
         }
 
         #endregion
@@ -67,12 +70,7 @@ namespace Ferretto.WMS.App.Controls.Services
         private static int GetPageSize()
         {
             var pageSizeSetting = ConfigurationManager.AppSettings.Get(DefaultPageSizeSettingsKey);
-            if (int.TryParse(pageSizeSetting, out var pageSize))
-            {
-                return pageSize;
-            }
-
-            return DefaultPageSize;
+            return int.TryParse(pageSizeSetting, out var pageSize) ? pageSize : DefaultPageSize;
         }
 
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)
@@ -84,7 +82,16 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             try
             {
-                var entities = await this.provider.GetAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
+                IEnumerable<TModel> entities = null;
+                if (this.getAllAsync != null)
+                {
+                    entities = await this.getAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
+                }
+                else
+                {
+                    entities = await this.provider.GetAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
+                }
+
                 return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
             }
             catch (Exception ex)
@@ -114,7 +121,7 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             var source = new InfiniteAsyncSource
             {
-                ElementType = typeof(TModel)
+                ElementType = typeof(TModel),
             };
             if (this.provider != null)
             {

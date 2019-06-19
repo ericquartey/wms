@@ -1,20 +1,24 @@
-using Ferretto.Common.BLL.Interfaces;
+using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class BadRequestOperationResult<T> : OperationResult<T>
+    public class BadRequestOperationResult<TModel> : OperationResult<TModel>
     {
         #region Constructors
 
-        public BadRequestOperationResult(T model)
-            : base(false, model)
+        public BadRequestOperationResult(TModel model = default(TModel))
+            : base(false, default(TModel))
         {
         }
 
-        public BadRequestOperationResult(T model, string description)
+        public BadRequestOperationResult(Exception ex)
+            : base(default(TModel), ex?.Message)
+        {
+        }
+
+        public BadRequestOperationResult(string description, TModel model = default(TModel))
              : base(model, description)
         {
-            this.Description = description;
         }
 
         #endregion

@@ -121,13 +121,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         private bool CanLogin()
         {
-            if (string.IsNullOrEmpty(this.User.Login) ||
-                string.IsNullOrEmpty(this.User.Password))
-            {
-                return false;
-            }
-
-            return true;
+            return !string.IsNullOrEmpty(this.User.Login) && !string.IsNullOrEmpty(this.User.Password);
         }
 
         private async Task ExecuteLoginAsync()

@@ -20,12 +20,16 @@
 
         SetOperatingModeParam = 1454,
 
+        ShutterTargetVelocityParam = 480,
+
         StatusWordParam = 411, //INFO:Readonly
 
         ActualPositionShaft = 1108,
 
         StatusDigitalSignals = 250,
 
-        ShutterTargetPosition = 9999, // TODO wrong value, change with correct one as soon as is known
+        DigitalInputsOutputs = 1411,
+
+        ShutterTargetPosition = 414
     }
 }

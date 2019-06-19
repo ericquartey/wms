@@ -4,6 +4,6 @@
     {
         New = 'N',
 
-        Completed = 'C'
+        Completed = 'C',
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
-using Ferretto.Common.BLL.Interfaces.Models;
+﻿using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(SchedulerRequest))]
     public class ItemListRowSchedulerRequest : ItemSchedulerRequest
     {
         #region Properties

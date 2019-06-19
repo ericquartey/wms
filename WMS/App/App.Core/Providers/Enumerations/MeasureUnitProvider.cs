@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
@@ -26,19 +27,40 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<EnumerationString>> GetAllAsync()
         {
-            return (await this.measureUnitsDataService.GetAllAsync())
-                .Select(c => new EnumerationString(c.Id, c.Description));
+            try
+            {
+                return (await this.measureUnitsDataService.GetAllAsync())
+                    .Select(c => new EnumerationString(c.Id, c.Description));
+            }
+            catch
+            {
+                return new List<EnumerationString>();
+            }
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.measureUnitsDataService.GetAllCountAsync();
+            try
+            {
+                return await this.measureUnitsDataService.GetAllCountAsync();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<EnumerationString> GetByIdAsync(string id)
         {
-            var measureUnit = await this.measureUnitsDataService.GetByIdAsync(id);
-            return new EnumerationString(measureUnit.Id, measureUnit.Description);
+            try
+            {
+                var measureUnit = await this.measureUnitsDataService.GetByIdAsync(id);
+                return new EnumerationString(measureUnit.Id, measureUnit.Description);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion

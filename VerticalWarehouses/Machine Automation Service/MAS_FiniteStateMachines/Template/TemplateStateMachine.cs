@@ -33,14 +33,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         public TemplateStateMachine(IEventAggregator eventAggregator, IHomingMessageData calibrateMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
-            CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState(logger);
 
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
-
-            logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -70,28 +68,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
-                if (message.Type == MessageType.Stop)
-                {
-                    this.CurrentState.Stop();
-                }
-                else
-                {
-                    this.CurrentState.ProcessCommandMessage(message);
-                }
+                this.CurrentState.ProcessCommandMessage(message);
             }
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.CalibrateAxis)
@@ -107,40 +93,30 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
                 this.CurrentState.ProcessNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
         public override void PublishNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             base.PublishNotificationMessage(message);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
@@ -165,22 +141,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             lock (this.CurrentState)
             {
                 this.CurrentState = new TemplateStartState(this, this.currentAxis, this.logger);
+                this.CurrentState?.Start();
             }
 
-            this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {
                 this.CurrentState.Stop();
             }
-
-            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

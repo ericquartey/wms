@@ -2,12 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -33,10 +30,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public LoadingUnitTypesController(
             ILogger<LoadingUnitTypesController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             ICellProvider cellProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
@@ -74,7 +69,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 

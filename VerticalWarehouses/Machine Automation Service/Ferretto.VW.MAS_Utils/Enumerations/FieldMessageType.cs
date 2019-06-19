@@ -30,12 +30,16 @@
 
         InverterException,
 
+        InverterError,
+
         AxisPosition,
 
         Positioning,
 
         ShutterPositioning,
 
-        SensorsChanged
+        SensorsChanged,
+
+        IoDriverException,
     }
 }

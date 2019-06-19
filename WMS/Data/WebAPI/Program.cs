@@ -24,10 +24,12 @@ namespace Ferretto.WMS.Data.WebAPI
             WebHost
             .CreateDefaultBuilder(args)
             .UseNLog()
+#if !DEBUG
             .UseApplicationInsights()
+#endif
             .UseStartup<Startup>();
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             IWebHost host = null;
 
@@ -65,9 +67,13 @@ namespace Ferretto.WMS.Data.WebAPI
             }
             catch (Exception ex)
             {
-                var logger = host?.Services.GetService(typeof(ILogger<Startup>)) as ILogger<Startup>;
-                logger?.LogError(ex, $"Service terminated due to unhandled exception.");
+                Console.WriteLine("Service terminated due to unhandled exception.");
+                Console.WriteLine(ex.Message);
+
+                return -1;
             }
+
+            return 0;
         }
 
         #endregion

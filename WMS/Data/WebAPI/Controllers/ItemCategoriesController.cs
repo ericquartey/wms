@@ -2,12 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -31,9 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemCategoriesController(
             ILogger<ItemCategoriesController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IItemCategoryProvider itemCategoryProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.itemCategoryProvider = itemCategoryProvider;
@@ -70,7 +65,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 

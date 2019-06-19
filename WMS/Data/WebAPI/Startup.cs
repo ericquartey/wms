@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.WebAPI.Hubs;
+using Ferretto.WMS.Data.Core.Hubs;
+using Ferretto.WMS.Data.WebAPI.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,6 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "This class register services into container")]
     public class Startup
     {
         #region Constructors
@@ -86,12 +83,12 @@ namespace Ferretto.WMS.Data.WebAPI
 
             app.UseAuthentication();
 
-            var schedulerHubEndpoint = this.Configuration["Hubs:Scheduler"];
-            if (string.IsNullOrWhiteSpace(schedulerHubEndpoint) == false)
+            var dataHubPath = this.Configuration.GetDataHubPath();
+            if (!string.IsNullOrWhiteSpace(dataHubPath))
             {
                 app.UseSignalR(routes =>
                 {
-                    routes.MapHub<SchedulerHub>($"/{schedulerHubEndpoint}");
+                    routes.MapHub<DataHub>($"/{dataHubPath}");
                 });
             }
 
@@ -113,6 +110,8 @@ namespace Ferretto.WMS.Data.WebAPI
                 {
                     options.Conventions.Add(new RouteTokenTransformerConvention(
                                                  new SlugifyParameterTransformer()));
+                    options.Filters.Add(typeof(NormalizeTakeValueFilter));
+                    options.Filters.Add(typeof(SendNotificationsFilter));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -150,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 options.SwaggerDoc("v1", new Info
                 {
                     Title = "WMS API",
-                    Version = "v1"
+                    Version = "v1",
                 });
 
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
@@ -165,7 +164,7 @@ namespace Ferretto.WMS.Data.WebAPI
                     {
                         { "wms-data", "WMS Data API" },
                         { "wms-scheduler", "WMS Scheduler API" },
-                    }
+                    },
                 });
             });
 

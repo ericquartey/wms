@@ -1,10 +1,17 @@
 using System;
-using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(SchedulerRequest))]
     public class SchedulerRequest : BaseModel<int>
     {
+        #region Fields
+
+        public const int InstantRequestPriority = 1;
+
+        #endregion
+
         #region Properties
 
         public string AreaDescription { get; set; }

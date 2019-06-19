@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.ItemList))]
     public class ItemListDetails : BusinessObject
     {
         #region Fields
@@ -151,6 +148,8 @@ namespace Ferretto.WMS.App.Core.Models
                     this.ShipmentUnitCode = null;
                     this.ShipmentUnitDescription = null;
                 }
+
+                this.RaisePropertyChanged(nameof(this.ShipmentUnitCode));
             }
         }
 
@@ -198,6 +197,14 @@ namespace Ferretto.WMS.App.Core.Models
                 {
                     case nameof(this.Priority):
                         return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
+
+                    case nameof(this.ShipmentUnitCode):
+                        if (this.ShipmentUnitAssociated)
+                        {
+                            return this.GetErrorMessageIfNullOrEmpty(this.ShipmentUnitCode, columnName);
+                        }
+
+                        break;
                 }
 
                 return null;

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -16,6 +17,11 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Cell), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemCompartmentType), false)]
     public class LoadingUnitDetailsViewModel : DetailsViewModel<LoadingUnitDetails>
     {
         #region Fields
@@ -128,7 +134,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.WithdrawReason = this.Model?.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw));
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
@@ -269,22 +275,22 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (e.PropertyName == nameof(this.Model.LoadingUnitTypeId))
             {
+                IEnumerable<Enumeration> cellChoices = null;
                 if (this.Model.LoadingUnitTypeId.HasValue)
                 {
-                    this.Model.CellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+                    var result = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+                    cellChoices = result.Success ? result.Entity : null;
                 }
-                else
-                {
-                    this.Model.CellChoices = null;
-                }
+
+                this.Model.CellChoices = cellChoices;
             }
         }
 
         private void WithdrawLoadingUnit()
         {
-            if (!this.Model.CanExecuteOperation("Withdraw"))
+            if (!this.Model.CanExecuteOperation(nameof(LoadingUnitPolicy.Withdraw)))
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw)));
                 return;
             }
 
@@ -295,7 +301,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
                 new
                 {
-                    LoadingUnitId = this.Model.Id
+                    LoadingUnitId = this.Model.Id,
                 });
 
             this.IsBusy = false;

@@ -9,8 +9,6 @@ using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    //TEMP Integration of controller for SHD RemoteIO
-
     public class SHDTransport : ISHDTransport, IDisposable
     {
         #region Fields
@@ -46,12 +44,14 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
+        /// <inheritdoc />
         public void Configure(IPAddress hostAddress, int sendPort)
         {
             this.ioAddress = hostAddress;
             this.sendPort = sendPort;
         }
 
+        /// <inheritdoc />
         public async Task ConnectAsync()
         {
             if (this.ioAddress == null)
@@ -142,9 +142,16 @@ namespace Ferretto.VW.MAS_IODriver
             try
             {
                 var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                var receivedData = new byte[readBytes];
+                if (readBytes > 0)
+                {
+                    var receivedData = new byte[readBytes];
 
-                Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
@@ -172,12 +179,13 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;
         }
 
+        /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] message, int delay, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
@@ -198,7 +206,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;

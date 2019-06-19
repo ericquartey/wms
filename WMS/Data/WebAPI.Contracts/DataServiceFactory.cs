@@ -3,10 +3,6 @@ using System.Net.Http;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1502",
@@ -31,8 +27,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
             switch (typeof(T))
             {
-                case var service when service == typeof(ISchedulerHubClient):
-                    return new SchedulerHubClient(baseUrl) as T;
+                case var service when service == typeof(IDataHubClient):
+                    return new DataHubClient(baseUrl) as T;
 
                 case var service when service == typeof(IAuthenticationService):
                     return new AuthenticationService(baseUrl, Client) as T;

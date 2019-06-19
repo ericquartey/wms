@@ -8,13 +8,21 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         Axis AxisMovement { get; }
 
+        BeltBurnishingPosition BeltBurnishingPosition { get; set; }
+
         decimal CurrentPosition { get; set; }
+
+        int ExecutedCycles { get; set; }
 
         decimal LowerBound { get; }
 
         MovementType MovementType { get; }
 
         int NumberCycles { get; }
+
+        decimal Resolution { get; }
+
+        ResolutionCalibrationSteps ResolutionCalibrationSteps { get; set; }
 
         decimal TargetAcceleration { get; }
 

@@ -85,7 +85,14 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 case SetupNetwork.MachineNumber:
                 case SetupNetwork.Inverter1Port:
-                case SetupNetwork.Inverter2Port:
+                case SetupNetwork.InverterIndexMaster:
+                case SetupNetwork.InverterIndexChain:
+                case SetupNetwork.InverterIndexBay1:
+                case SetupNetwork.InverterIndexBay2:
+                case SetupNetwork.InverterIndexBay3:
+                case SetupNetwork.InverterIndexShutter1:
+                case SetupNetwork.InverterIndexShutter2:
+                case SetupNetwork.InverterIndexShutter3:
                 case SetupNetwork.IOExpansion1Port:
                 case SetupNetwork.IOExpansion2Port:
                 case SetupNetwork.IOExpansion3Port:
@@ -100,7 +107,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 case SetupNetwork.AlfaNumBay2:
                 case SetupNetwork.AlfaNumBay3:
                 case SetupNetwork.Inverter1:
-                case SetupNetwork.Inverter2:
                 case SetupNetwork.IOExpansion1:
                 case SetupNetwork.IOExpansion2:
                 case SetupNetwork.IOExpansion3:
@@ -176,6 +182,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case HorizontalAxis.MaxDeceleration:
                 case HorizontalAxis.MaxSpeed:
                 case HorizontalAxis.Offset:
+                case HorizontalAxis.Resolution:
                     returnValue = ConfigurationDataType.Float;
                     break;
 

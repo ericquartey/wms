@@ -6,19 +6,14 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Compartment = Ferretto.WMS.App.Core.Models.Compartment;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "This method centralize the DataSource provision")]
     public class DataSourceService : IDataSourceService
     {
         #region Methods
 
-        public IEnumerable<IFilterDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
+        public IEnumerable<IDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
             where TModel : IModel<TKey>
         {
             switch (viewModelName)
@@ -28,6 +23,9 @@ namespace Ferretto.WMS.App.Modules.BLL
 
                 case Common.Utils.Modules.MasterData.COMPARTMENTS:
                     return GetCompartmentsDataSources<TModel, TKey>();
+
+                case Common.Utils.Modules.MasterData.COMPARTMENTTYPES:
+                    return GetCompartmentTypesDataSources<TModel, TKey>();
 
                 case Common.Utils.Modules.MasterData.CELLS:
                     return GetCellsDataSources<TModel, TKey>();
@@ -48,7 +46,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     return GetSchedulerRequestDataSources<TModel, TKey>();
 
                 default:
-                    return new List<IFilterDataSource<TModel, TKey>>();
+                    return new List<IDataSource<TModel, TKey>>();
             }
         }
 
@@ -80,7 +78,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "CellClassA",
                     Common.Resources.MasterData.CellClassA,
                    cellProvider,
-                    "[AbcClassDescription] == 'A Class'")
+                    "[AbcClassDescription] == 'A Class'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -119,6 +117,25 @@ namespace Ferretto.WMS.App.Modules.BLL
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
+        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetCompartmentTypesDataSources<TModel, TKey>()
+            where TModel : IModel<TKey>
+        {
+            var compartmentTypeProvider = ServiceLocator.Current.GetInstance<ICompartmentTypeProvider>();
+
+            return new List<PagedDataSource<CompartmentType, int>>
+            {
+                new PagedDataSource<CompartmentType, int>(
+                    "CompartmentTypesViewAll",
+                    Common.Resources.MasterData.CompartmentTypeAll,
+                    compartmentTypeProvider),
+                new PagedDataSource<CompartmentType, int>(
+                    "CompartmentTypeNotUsedType",
+                    Common.Resources.MasterData.CompartmentTypeNotUsedType,
+                    compartmentTypeProvider,
+                    "[CompartmentsCount] == 0"),
+            }.Cast<IFilterDataSource<TModel, TKey>>();
+        }
+
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetItemListsDataSources<TModel, TKey>(object parameter)
             where TModel : IModel<TKey>
         {
@@ -137,7 +154,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePick",
-                            Common.Resources.MasterData.ItemListsTypePick,
+                            Common.Resources.MasterData.ItemListsAllTypePick,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Pick}'"));
                     break;
@@ -146,7 +163,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePut",
-                            Common.Resources.MasterData.ItemListsTypePut,
+                            Common.Resources.MasterData.ItemListsAllTypePut,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Put}'"));
                     break;
@@ -155,7 +172,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypeInventory",
-                            Common.Resources.MasterData.ItemListsTypeInventory,
+                            Common.Resources.MasterData.ItemListsAllTypeInventory,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;
@@ -226,7 +243,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemsViewFIFO",
                     Common.Resources.MasterData.ItemFIFO,
                     itemsProvider,
-                    $"[ManagementType] == '{ItemManagementType.FIFO}'")
+                    $"[ManagementType] == '{ItemManagementType.FIFO}'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -270,50 +287,39 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "LoadingUnitsViewStatusUsed",
                     Common.Resources.MasterData.LoadingUnitStatusUsed,
                     loadingUnitProvider,
-                    "[LoadingUnitStatusDescription] == 'Used'")
+                    "[LoadingUnitStatusDescription] == 'Used'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
-        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMachinesDataSources<TModel, TKey>()
+        private static IEnumerable<IDataSource<TModel, TKey>> GetMachinesDataSources<TModel, TKey>()
                             where TModel : IModel<TKey>
         {
             var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
-            return new List<PagedDataSource<Machine, int>>
+            const string vertimagXSFilter = "[Model] == 'VMAG/ver-2018/variant-XS/depth-103'";
+            const string vertimagMFilter = "[Model] == 'VMAG/ver-2018/variant-M/depth-84'";
+
+            return new List<DataSourceCollection<Machine, int>>
             {
-                new PagedDataSource<Machine, int>(
+                new DataSourceCollection<Machine, int>(
                     "MachinesViewAll",
                     Common.Resources.Machines.MachineAll,
-                    machineProvider),
+                    async () => await machineProvider.GetAllAsync(0, int.MaxValue)),
 
-                // TODO: restore this when the Data WebAPI supports the 'Like' operator
-                // new PagedDataSource<Machine>(
-                //    "MachinesViewVertimagXS",
-                //    Common.Resources.Machines.MachineVertimagXS,
-                //    machineProvider,
-                //    "UPPER([MachineTypeDescription]) == '%TRASLO%'"),
-
-                // new PagedDataSource<Machine>(
-                //    "MachinesViewVertimagXS",
-                //    Common.Resources.Machines.MachineVertimagXS,
-                //    machineProvider,
-                //    "UPPER([MachineTypeDescription]) == '%VERTIMAG%'"),
-                new PagedDataSource<Machine, int>(
+                new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagXS",
                     Common.Resources.Machines.MachineVertimagXS,
-                    machineProvider,
-                    "[Model] == 'VMAG/ver-2018/variant-XS/depth-103'"),
+                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagXSFilter)),
 
-                new PagedDataSource<Machine, int>(
+                new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagM",
                     Common.Resources.Machines.MachineVertimagM,
-                    machineProvider,
-                    "[Model] == 'VMAG/ver-2018/variant-M/depth-84'")
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagMFilter)),
+            }.Cast<IDataSource<TModel, TKey>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
-                    where TModel : IModel<TKey>
+            where TModel : IModel<TKey>
         {
             var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
 
@@ -334,7 +340,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "MissionViewStatusNew",
                     Common.Resources.Scheduler.MissionStatusNew,
                     missionProvider,
-                    $"[Status] == '{MissionStatus.New}'")
+                    $"[Status] == '{MissionStatus.New}'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -360,7 +366,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                             "SchedulerRequestOperationWithdraw",
                             Common.Resources.Scheduler.SchedulerRequestOperationWithdraw,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Withdrawal}'")
+                            $"[OperationType] == '{OperationType.Withdrawal}'"),
                     }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 

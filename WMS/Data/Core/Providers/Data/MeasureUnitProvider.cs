@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MeasureUnitProvider : IMeasureUnitProvider
+    internal class MeasureUnitProvider : BaseProvider, IMeasureUnitProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public MeasureUnitProvider(DatabaseContext dataContext)
+        public MeasureUnitProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,27 +23,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<MeasureUnit>> GetAllAsync()
         {
-            return await this.dataContext.MeasureUnits
+            return await this.DataContext.MeasureUnits
                .Select(c => new MeasureUnit
                {
                    Id = c.Id,
-                   Description = c.Description
+                   Description = c.Description,
                })
                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.MeasureUnits.CountAsync();
+            return await this.DataContext.MeasureUnits.CountAsync();
         }
 
         public async Task<MeasureUnit> GetByIdAsync(string id)
         {
-            return await this.dataContext.MeasureUnits
+            return await this.DataContext.MeasureUnits
                  .Select(c => new MeasureUnit
                  {
                      Id = c.Id,
-                     Description = c.Description
+                     Description = c.Description,
                  })
                  .SingleOrDefaultAsync(m => m.Id == id);
         }

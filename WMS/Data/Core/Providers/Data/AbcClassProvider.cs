@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class AbcClassProvider : IAbcClassProvider
+    internal class AbcClassProvider : BaseProvider, IAbcClassProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public AbcClassProvider(DatabaseContext dataContext)
+        public AbcClassProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,27 +23,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<AbcClass>> GetAllAsync()
         {
-            return await this.dataContext.AbcClasses
+            return await this.DataContext.AbcClasses
                .Select(a => new AbcClass
                {
                    Id = a.Id,
-                   Description = a.Description
+                   Description = a.Description,
                })
                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.AbcClasses.CountAsync();
+            return await this.DataContext.AbcClasses.CountAsync();
         }
 
         public async Task<AbcClass> GetByIdAsync(string id)
         {
-            return await this.dataContext.AbcClasses
+            return await this.DataContext.AbcClasses
                  .Select(a => new AbcClass
                  {
                      Id = a.Id,
-                     Description = a.Description
+                     Description = a.Description,
                  })
                  .SingleOrDefaultAsync(a => a.Id == id);
         }

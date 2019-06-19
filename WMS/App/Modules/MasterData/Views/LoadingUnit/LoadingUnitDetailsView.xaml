@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ctrls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -23,7 +24,8 @@
         <wms:StringFormatConverter x:Key="SFC" />
 
         <DataTemplate x:Key="CellDisplayTemplateStock">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -37,7 +39,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateMaxCapacity">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -133,10 +136,10 @@
                        Grid.ColumnSpan="2"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
-                       TextAlignment="Right"
                        VerticalAlignment="Top"
                        Style="{DynamicResource TextBlockErrorMessageStyle}"
                        Text="{Binding Model.Error}"
+                       TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
         </Grid>
 
@@ -430,7 +433,7 @@
                                       Content="{Binding Model.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.LastStoreDate}" />
+                                      Content="{Binding Model.LastPutDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.InCycleCount}" />

@@ -4,13 +4,9 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -40,10 +36,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.schedulerService = schedulerService;
@@ -60,16 +54,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<ItemListRowDetails>> CreateAsync(ItemListRowDetails model)
         {
             var result = await this.itemListRowProvider.CreateAsync(model);
-
             if (!result.Success)
             {
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
-
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -80,27 +70,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var result = await this.itemListRowProvider.DeleteAsync(id);
-
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<ItemListRowDetails>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), id, HubEntityOperation.Deleted);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
 
             return this.Ok();
         }
@@ -112,22 +85,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListRowAsync(id, areaId, bayId);
-            if (result is UnprocessableEntityOperationResult<ItemListRow>
-                || result is BadRequestOperationResult<ItemListRowSchedulerRequest>)
+            if (!result.Success)
             {
-                this.logger.LogWarning($"Request of execution for list row (id={id}) could not be processed.");
-
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ListRowId, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 
@@ -139,7 +100,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemListRow>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -188,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Status = StatusCodes.Status404NotFound,
-                    Detail = message
+                    Detail = message,
                 });
             }
 
@@ -218,21 +179,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> SuspendAsync(int id)
         {
             var result = await this.schedulerService.SuspendListRowAsync(id);
-            if (result is UnprocessableEntityOperationResult<ItemListRow>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
-            }
-            else if (result is NotFoundOperationResult<ItemListRow>)
-            {
-                return this.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
@@ -254,20 +203,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemListRowProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemListRowDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

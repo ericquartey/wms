@@ -17,43 +17,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly IPositioningMessageData positioningMessageData;
 
+        private bool disposed;
+
+        private bool inverterSwitched;
+
+        private bool ioSwitched;
+
         #endregion
 
         #region Constructors
 
         public PositioningStartState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
         {
+            logger.LogTrace("1:Method Start");
+
             this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
-
             this.ParentStateMachine = parentMachine;
-
             this.positioningMessageData = positioningMessageData;
-
-            var commandFieldMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
-            var commandFieldMessage = new FieldCommandMessage(commandFieldMessageData,
-                $"Switch Axis to {this.positioningMessageData.AxisMovement}",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis);
-
-            this.logger.LogTrace($"2:Publishing Field Command Message {commandFieldMessage.Type} Destination {commandFieldMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandFieldMessage);
-
-            var notificationMessage = new NotificationMessage(
-                this.positioningMessageData,
-                $"{this.positioningMessageData.AxisMovement} Positioning Started",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationStart);
-
-            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -71,24 +51,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new PositioningSwitchAxisDoneState(this.ParentStateMachine, this.positioningMessageData, this.logger));
+                        this.ioSwitched = true;
                         break;
 
                     case MessageStatus.OperationError:
@@ -96,25 +71,91 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         break;
                 }
             }
-            this.logger.LogDebug("3:Method End");
+
+            if (message.Type == FieldMessageType.InverterSwitchOn)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.inverterSwitched = true;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        break;
+                }
+            }
+
+            if (this.ioSwitched && this.inverterSwitched)
+            {
+                this.ParentStateMachine.ChangeState(new PositioningExecutingState(this.ParentStateMachine, this.positioningMessageData, this.logger));
+            }
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
 
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        public override void Start()
+        {
+            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
+            var ioCommandMessage = new FieldCommandMessage(ioCommandMessageData,
+                $"Switch Axis {this.positioningMessageData.AxisMovement}",
+                FieldMessageActor.IoDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.SwitchAxis);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+
+            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.positioningMessageData.AxisMovement, InverterIndex.MainInverter);
+            var inverterCommandMessage = new FieldCommandMessage(inverterCommandMessageData,
+                $"Switch Axis {this.positioningMessageData.AxisMovement}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSwitchOn);
+
+            this.logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            var notificationMessage = new NotificationMessage(
+                this.positioningMessageData,
+                this.positioningMessageData.NumberCycles == 0 ? $"{this.positioningMessageData.AxisMovement} Positioning Started" : "Burnishing Started",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                MessageStatus.OperationStart);
+
+            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, true));
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, 0, true));
+        }
 
-            this.logger.LogDebug("2:Method End");
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

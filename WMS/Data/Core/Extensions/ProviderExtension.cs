@@ -46,7 +46,8 @@ namespace Ferretto.WMS.Data.Core.Extensions
             this IUpdateAsyncProvider<TBusinessModel, TKey> provider,
             TBusinessModel model,
             DbSet<TDataModel> dbSet,
-            DatabaseContext dataContext)
+            DatabaseContext dataContext,
+            bool checkForPolicies = true)
             where TBusinessModel : class, IModel<TKey>, IPolicyDescriptor<Policy>
             where TDataModel : class
         {
@@ -70,7 +71,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 throw new ArgumentNullException(nameof(dataContext));
             }
 
-            if (provider is IReadSingleAsyncProvider<TBusinessModel, TKey> readProvider)
+            if (checkForPolicies && provider is IReadSingleAsyncProvider<TBusinessModel, TKey> readProvider)
             {
                 var existingBusinessModel = await readProvider.GetByIdAsync(model.Id);
                 if (existingBusinessModel == null)

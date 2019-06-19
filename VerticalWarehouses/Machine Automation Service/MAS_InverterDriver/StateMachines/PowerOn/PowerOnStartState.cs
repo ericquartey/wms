@@ -29,12 +29,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         public PowerOnStartState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -52,14 +50,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.inverterStatus.CommonControlWord.EnableVoltage = true;
             this.inverterStatus.CommonControlWord.QuickStop = true;
 
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
@@ -73,28 +69,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
                 FieldMessageType.InverterPowerOn,
                 MessageStatus.OperationStart);
 
-            this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            this.logger.LogDebug("2:Method End");
         }
 
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
@@ -105,15 +94,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus.CommonStatusWord.IsVoltageEnabled &
-                this.inverterStatus.CommonStatusWord.IsQuickStopTrue &
-                this.inverterStatus.CommonStatusWord.IsReadyToSwitchOn)
+            if (this.inverterStatus.CommonStatusWord.IsVoltageEnabled
+                & this.inverterStatus.CommonStatusWord.IsQuickStopTrue &
+                this.inverterStatus.CommonStatusWord.IsReadyToSwitchOn
+                )
             {
                 this.ParentStateMachine.ChangeState(new PowerOnSwitchOnState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
-
-            this.logger.LogDebug("3:Method End");
 
             return returnValue;
         }

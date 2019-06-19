@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -12,6 +13,8 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemList), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow), false)]
     public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
         #region Fields
@@ -21,6 +24,15 @@ namespace Ferretto.WMS.Modules.ItemLists
         private ICommand executeListCommand;
 
         private string executeReason;
+
+        #endregion
+
+        #region Constructors
+
+        public ItemListsViewModel(IDataSourceService dataSourceService)
+                                  : base(dataSourceService)
+        {
+        }
 
         #endregion
 
@@ -50,7 +62,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute));
         }
 
         protected override void ExecuteAddCommand()
@@ -81,19 +93,19 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteList()
         {
-            if (this.CurrentItem?.CanExecuteOperation("Execute") == true)
+            if (this.CurrentItem?.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == true)
             {
                 this.NavigationService.Appear(
                     nameof(Common.Utils.Modules.ItemLists),
                     Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
-                        Id = this.CurrentItem.Id
+                        Id = this.CurrentItem.Id,
                     });
             }
             else
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason("Execute"));
+                this.ShowErrorDialog(this.ExecuteReason);
             }
         }
 

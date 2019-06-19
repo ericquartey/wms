@@ -16,6 +16,37 @@ using Prism.Events;
 
 //namespace MAS_InverterDriverUnitTests
 //{
+//    [TestClass]
+//    public class HostedInverterDriverTests
+//    {
+//        #region Methods
+
+//        [TestMethod]
+//        public void TestSplit()
+//        {
+//            var eventAggregator = new EventAggregator();
+//            var modbusTransport = new SocketTransportMock();
+//            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+//            var vertimagConfiguration = new Mock<IVertimagConfiguration>();
+//            var logger = new Mock<ILogger<HostedInverterDriver>>();
+//            HostedInverterDriver inverterDriver = new HostedInverterDriver(eventAggregator, modbusTransport, configurationValue.Object, vertimagConfiguration.Object, logger.Object);
+
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.MainInverter);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test1);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test2);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test3);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test4);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test5);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test6);
+//            inverterDriver.RetrieveInverterIOStatus("123   8994  65256 9", InverterIndex.test7);
+//        }
+
+//        #endregion
+//    }
+//}
+
+//namespace MAS_InverterDriverUnitTests
+//{
 //    //[TestClass]
 //    //public class HostedInverterDriverTests
 //    //{

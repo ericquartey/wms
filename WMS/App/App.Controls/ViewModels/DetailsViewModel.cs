@@ -153,11 +153,9 @@ namespace Ferretto.WMS.App.Controls
                 this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new WmsDelegateCommand(
+            (this.saveCommand = new DelegateCommand(
                 async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand,
-                async () => await this.ExecuteCompleteCommandAsync(),
-                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
+                this.CanExecuteSaveCommand));
 
         public string SaveReason
         {
@@ -204,11 +202,11 @@ namespace Ferretto.WMS.App.Controls
 
         public virtual void UpdateReasons()
         {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicy.Create))
                 .Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicy.Delete))
                 .Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicy.Update))
                 .Select(p => p.Reason).FirstOrDefault();
         }
 
@@ -220,7 +218,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified && !this.IsBusy;
+            return !this.IsBusy;
         }
 
         protected virtual bool CheckValidModel()
@@ -234,14 +232,8 @@ namespace Ferretto.WMS.App.Controls
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-            ((WmsDelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected virtual Task<bool> ExecuteCompleteCommandAsync()
-        {
-            // do nothing. The derived classes can customize the behaviour
-            return Task<bool>.FromResult<bool>(default(bool));
         }
 
         /// <summary>
@@ -284,7 +276,11 @@ namespace Ferretto.WMS.App.Controls
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
+            if (this.modelChangedEventSubscription != null)
+            {
+                this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
+            }
+
             if (this.model != null)
             {
                 this.model.PropertyChanged -= this.Model_PropertyChanged;
@@ -349,21 +345,20 @@ namespace Ferretto.WMS.App.Controls
 
         private void SubscribeToEvents()
         {
-            var attribute = typeof(TModel)
+            var attributes = this.GetType()
                 .GetCustomAttributes(typeof(ResourceAttribute), true)
-                .FirstOrDefault() as ResourceAttribute;
+                .Cast<ResourceAttribute>();
 
-            if (attribute != null)
+            if (attributes.Any())
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
                         async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
                         true,
-                        e => e.ResourceName == attribute.ResourceName
-                            &&
-                            this.model != null
-                            &&
-                            (int)e.ResourceId == this.model.Id);
+                        e => attributes.Any(a =>
+                            a.ResourceName == e.ResourceName &&
+                            (!a.Primary ||
+                                (this.model != null && e.ResourceId == this.model.Id.ToString()))));
             }
         }
 

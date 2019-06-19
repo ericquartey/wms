@@ -22,13 +22,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
         public TemplateStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
             : base(logger)
         {
-            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
-
-            logger.LogDebug("2:Method End");
         }
 
         #endregion

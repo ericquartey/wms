@@ -16,7 +16,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public EmptyState(ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
+
             this.logger = logger;
         }
 
@@ -26,22 +27,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
+        }
+
+        public override void Start()
+        {
+            this.logger.LogTrace("1:Method Start");
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
         }
 
         #endregion

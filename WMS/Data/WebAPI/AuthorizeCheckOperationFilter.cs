@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
                 operation.Security.Add(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "oauth2", new[] { "wms-data" } }
+                    { "oauth2", new[] { "wms-data" } },
                 });
             }
         }

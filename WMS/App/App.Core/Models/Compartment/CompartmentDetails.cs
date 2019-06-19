@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Compartment))]
     public sealed class CompartmentDetails :
         BusinessObject,
         IDrawableCompartment,
@@ -60,9 +56,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double reservedForPick;
 
-        private double reservedToStore;
+        private double reservedToPut;
 
-        private double stock;
+        private double? stock;
 
         private string sub1;
 
@@ -77,6 +73,12 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
+
+        [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
+        public string AisleName { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
 
         public IEnumerable<Enumeration> CompartmentStatusChoices
         {
@@ -129,7 +131,13 @@ namespace Ferretto.WMS.App.Core.Models
         public bool IsItemPairingFixed
         {
             get => this.isItemPairingFixed;
-            set => this.SetProperty(ref this.isItemPairingFixed, value);
+            set
+            {
+                if (this.SetProperty(ref this.isItemPairingFixed, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode_extended), ResourceType = typeof(BusinessObjects))]
@@ -150,7 +158,13 @@ namespace Ferretto.WMS.App.Core.Models
         public int? ItemId
         {
             get => this.itemId;
-            set => this.SetProperty(ref this.itemId, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemId, value) && value == null)
+                {
+                    this.ClearItemRelatedInfo();
+                }
+            }
         }
 
         public string ItemMeasureUnit
@@ -162,8 +176,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.CompartmentLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLastStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.CompartmentLastPutDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPutDate { get; set; }
 
         public LoadingUnitDetails LoadingUnit { get; set; }
 
@@ -194,13 +208,7 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Enumeration> MaterialStatusChoices
         {
             get => this.materialStatusChoices;
-            set
-            {
-                if (this.SetProperty(ref this.materialStatusChoices, value))
-                {
-                    this.MaterialStatusId = this.MaterialStatusId ?? this.MaterialStatusChoices.FirstOrDefault()?.Id;
-                }
-            }
+            set => this.SetProperty(ref this.materialStatusChoices, value);
         }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
@@ -210,12 +218,17 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.materialStatusId, value);
         }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {
             get => this.maxCapacity;
-            set => this.SetProperty(ref this.maxCapacity, value);
+            set
+            {
+                if (this.SetProperty(ref this.maxCapacity, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         public IEnumerable<Enumeration> PackageTypeChoices
@@ -235,7 +248,13 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber
         {
             get => this.registrationNumber;
-            set => this.SetProperty(ref this.registrationNumber, value);
+            set
+            {
+                if (this.SetProperty(ref this.registrationNumber, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
@@ -245,18 +264,26 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.reservedForPick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
-        public double ReservedToStore
+        [Display(Name = nameof(BusinessObjects.CompartmentReservedToPut), ResourceType = typeof(BusinessObjects))]
+        public double ReservedToPut
         {
-            get => this.reservedToStore;
-            set => this.SetProperty(ref this.reservedToStore, value);
+            get => this.reservedToPut;
+            set => this.SetProperty(ref this.reservedToPut, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
-        public double Stock
+        public double? Stock
         {
             get => this.stock;
-            set => this.SetProperty(ref this.stock, value);
+            set
+            {
+                if (this.SetProperty(ref this.stock, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.MaxCapacity));
+                    this.RaisePropertyChanged(nameof(this.RegistrationNumber));
+                    this.RaisePropertyChanged(nameof(this.IsItemPairingFixed));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
@@ -316,45 +343,125 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                switch (columnName)
-                {
-                    case nameof(this.XPosition):
-                        return this.GetErrorMessageIfNegative(this.XPosition, columnName);
+                return this.GetValidationMessage(columnName);
+            }
+        }
 
-                    case nameof(this.YPosition):
-                        return this.GetErrorMessageIfNegative(this.YPosition, columnName);
+        #endregion
 
-                    case nameof(this.Width):
-                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
+        #region Methods
 
-                    case nameof(this.Height):
-                        return this.GetErrorMessageIfNegative(this.Height, columnName);
+        private void ClearItemRelatedInfo()
+        {
+            this.MaterialStatusId = null;
+            this.MaxCapacity = null;
+            this.Lot = null;
+            this.RegistrationNumber = null;
+            this.PackageTypeId = null;
+            this.Sub1 = null;
+            this.Sub2 = null;
+            this.Stock = null;
+            this.IsItemPairingFixed = false;
+        }
 
-                    case nameof(this.ReservedForPick):
-                        return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
+        private string GetValidationMessage(string columnName)
+        {
+            switch (columnName)
+            {
+                case nameof(this.XPosition):
+                    return this.GetErrorMessageIfNegative(this.XPosition, columnName);
 
-                    case nameof(this.ReservedToStore):
-                        return this.GetErrorMessageIfNegative(this.ReservedToStore, columnName);
+                case nameof(this.YPosition):
+                    return this.GetErrorMessageIfNegative(this.YPosition, columnName);
 
-                    case nameof(this.MaxCapacity):
-                        if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
-                        {
-                            return Errors.CompartmentStockGreaterThanMaxCapacity;
-                        }
+                case nameof(this.Width):
+                    return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
-                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
+                case nameof(this.Height):
+                    return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
-                    case nameof(this.Stock):
-                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
-                        {
-                            return Errors.CompartmentStockGreaterThanMaxCapacity;
-                        }
+                case nameof(this.ReservedForPick):
+                    return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
 
-                        return this.GetErrorMessageIfNegative(this.Stock, columnName);
-                }
+                case nameof(this.ReservedToPut):
+                    return this.GetErrorMessageIfNegative(this.ReservedToPut, columnName);
 
+                case nameof(this.RegistrationNumber):
+                    if (this.ItemId.HasValue
+                        && this.Stock.HasValue
+                        && this.stock.Value > 1
+                        && !string.IsNullOrEmpty(this.RegistrationNumber))
+                    {
+                        return Errors.QuantityMustBeOneIfRegistrationNumber;
+                    }
+
+                    break;
+
+                case nameof(this.IsItemPairingFixed):
+                    if (this.stock.HasValue
+                        && this.stock.Value.Equals(0)
+                        && !this.IsItemPairingFixed)
+                    {
+                        return Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed;
+                    }
+
+                    break;
+
+                case nameof(this.MaxCapacity):
+                    return this.GetValidationMessageForMaxCapacity(columnName);
+
+                case nameof(this.Stock):
+                    return this.GetValidationMessageForStock(columnName);
+            }
+
+            return null;
+        }
+
+        private string GetValidationMessageForMaxCapacity(string columnName)
+        {
+            if (this.ItemId.HasValue && !this.MaxCapacity.HasValue)
+            {
+                return Errors.CompartmentMaxCapacityRequiredWhenItemIsSpecified;
+            }
+
+            if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
+            {
+                return Errors.CompartmentStockGreaterThanMaxCapacity;
+            }
+
+            return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
+        }
+
+        private string GetValidationMessageForStock(string columnName)
+        {
+            if (!this.ItemId.HasValue)
+            {
                 return null;
             }
+
+            if (!this.Stock.HasValue)
+            {
+                return Errors.CompartmentStockRequiredWhenItemIsSpecified;
+            }
+
+            if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
+            {
+                return Errors.CompartmentStockGreaterThanMaxCapacity;
+            }
+
+            if (this.stock.Value > 1
+                && !string.IsNullOrEmpty(this.RegistrationNumber))
+            {
+                return Errors.QuantityMustBeOneIfRegistrationNumber;
+            }
+
+            if (!this.IsItemPairingFixed
+                && this.stock.Value.Equals(0))
+            {
+                return Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed;
+            }
+
+            return this.GetErrorMessageIfNegative(this.Stock, columnName);
         }
 
         #endregion

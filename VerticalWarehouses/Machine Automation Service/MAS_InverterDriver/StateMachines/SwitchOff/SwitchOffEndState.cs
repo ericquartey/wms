@@ -27,13 +27,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 
         public SwitchOffEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -51,8 +49,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
             var notificationMessageData = new InverterSwitchOffFieldMessageData(inverterIndex);
@@ -63,32 +59,22 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
                 FieldMessageType.InverterSwitchOff,
                 MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }

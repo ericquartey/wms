@@ -10,23 +10,25 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class ItemListRowProvider : IItemListRowProvider
+    internal class ItemListRowProvider : BaseProvider, IItemListRowProvider
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IItemListProvider itemListProvider;
 
         #endregion
 
         #region Constructors
 
-        public ItemListRowProvider(DatabaseContext dataContext)
+        public ItemListRowProvider(DatabaseContext dataContext, IItemListProvider itemListProvider, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
+            this.itemListProvider = itemListProvider;
         }
 
         #endregion
@@ -40,7 +42,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.dataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow
+            var list = await this.itemListProvider.GetByIdAsync(model.ItemListId);
+            if (!list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
+            {
+                return new BadRequestOperationResult<ItemListRowDetails>(
+                    list.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
+            }
+
+            var entry = await this.DataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow
             {
                 Code = model.Code,
                 DispatchedQuantity = model.DispatchedQuantity,
@@ -54,10 +63,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 RequestedQuantity = model.RequestedQuantity,
                 Status = (Common.DataModels.ItemListRowStatus)model.Status,
                 Sub1 = model.Sub1,
-                Sub2 = model.Sub2
+                Sub2 = model.Sub2,
             });
 
-            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
@@ -65,6 +74,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.CreationDate = entry.Entity.CreationDate;
                 model.LastExecutionDate = entry.Entity.LastExecutionDate;
                 model.LastModificationDate = entry.Entity.LastModificationDate;
+
+                this.NotificationService.PushCreate(model);
+                this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
             }
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
@@ -86,9 +99,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
-            await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<ItemListRowDetails>(existingModel);
+            this.DataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId });
+                this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId });
+
+                return new SuccessOperationResult<ItemListRowDetails>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<ItemListRowDetails>();
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
@@ -108,7 +131,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -127,11 +150,11 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
             var model = await this.GetAllDetailsBase()
-                       .SingleOrDefaultAsync(i => i.Id == id);
+                .SingleOrDefaultAsync(i => i.Id == id);
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -140,12 +163,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
             var models = await this.GetAllBase()
-                       .Where(l => l.ItemListId == id)
-                       .ToArrayAsync();
+                .Where(l => l.ItemListId == id)
+                .ToArrayAsync();
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -154,17 +177,23 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
-                       propertyName,
-                       this.dataContext.ItemListRows,
-                       this.GetAllBase());
+                propertyName,
+                this.DataContext.ItemListRows,
+                this.GetAllBase());
         }
 
         public async Task<IOperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
-                this.dataContext.ItemListRows,
-                this.dataContext);
+                this.DataContext.ItemListRows,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -193,9 +222,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as IItemListRowUpdatePolicy).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemListRowDeletePolicy).ComputeDeletePolicy());
+            model.AddPolicy((model as IItemListRowExecutePolicy).ComputeExecutePolicy());
+        }
+
         private IQueryable<ItemListRow> GetAllBase()
         {
-            return this.dataContext.ItemListRows
+            return this.DataContext.ItemListRows
                 .Select(l => new ItemListRow
                 {
                     Id = l.Id,
@@ -212,38 +248,39 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                        m.Status != Common.DataModels.MissionStatus.Incomplete),
-                    Machines = this.dataContext.Compartments.Where(c => c.ItemId == l.ItemId)
-                                    .Join(
-                                         this.dataContext.Machines,
-                                        j => j.LoadingUnit.Cell.AisleId,
-                                        m => m.AisleId,
-                                        (j, m) => new
-                                        {
-                                            Machine = m,
-                                        })
-                                        .Select(x => x.Machine).Distinct()
-                                        .Select(m1 => new Machine
-                                        {
-                                            Id = m1.Id,
-                                            ActualWeight = m1.ActualWeight,
-                                            ErrorTime = m1.ErrorTime,
-                                            Image = m1.Image,
-                                            Model = m1.Model,
-                                            Nickname = m1.Nickname,
-                                        })
+                            m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    Machines = this.DataContext.Compartments.Where(c => c.ItemId == l.ItemId)
+                        .Join(
+                            this.DataContext.Machines,
+                            j => j.LoadingUnit.Cell.AisleId,
+                            m => m.AisleId,
+                            (j, m) => new
+                            {
+                                Machine = m,
+                            })
+                        .Select(x => x.Machine).Distinct()
+                        .Select(m1 => new Machine
+                        {
+                            Id = m1.Id,
+                            ActualWeight = m1.ActualWeight,
+                            ErrorTime = m1.ErrorTime,
+                            Image = m1.Image,
+                            Model = m1.Model,
+                            Nickname = m1.Nickname,
+                        }),
                 });
         }
 
         private IQueryable<ItemListRowDetails> GetAllDetailsBase()
         {
-            return this.dataContext.ItemListRows
+            return this.DataContext.ItemListRows
                 .Select(l => new ItemListRowDetails
                 {
                     Id = l.Id,
                     Code = l.Code,
                     Priority = l.Priority,
                     ItemId = l.Item.Id,
+                    ItemImage = l.Item.Image,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     Status = (ItemListRowStatus)l.Status,
@@ -267,7 +304,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                        m.Status != Common.DataModels.MissionStatus.Incomplete)
+                            m.Status != Common.DataModels.MissionStatus.Incomplete),
                 });
         }
 

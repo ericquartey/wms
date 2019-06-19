@@ -10,6 +10,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         Error = 'E',
 
-        Offline = 'O'
+        Offline = 'O',
     }
 }

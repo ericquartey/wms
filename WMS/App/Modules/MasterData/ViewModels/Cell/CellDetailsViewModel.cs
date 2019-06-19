@@ -1,7 +1,7 @@
-using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -10,6 +10,8 @@ using Ferretto.WMS.App.Modules.BLL;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Cell))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
     public class CellDetailsViewModel : DetailsViewModel<CellDetails>
     {
         #region Fields
@@ -90,10 +92,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            var loadingUnit = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
-            this.LoadingUnitsDataSource = this.Model != null
-                ? new DataSource<LoadingUnitDetails, int>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())
-                : null;
+            IDataSource<LoadingUnitDetails, int> loadingUnits = null;
+
+            if (this.Model != null)
+            {
+                var result = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
+                if (result.Success)
+                {
+                    loadingUnits = new DataSourceCollection<LoadingUnitDetails, int>(result.Entity);
+                }
+            }
+
+            this.LoadingUnitsDataSource = loadingUnits;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

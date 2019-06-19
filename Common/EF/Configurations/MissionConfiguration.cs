@@ -19,15 +19,20 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.Property(m => m.Status)
                 .HasColumnType("char(1)")
-                .HasConversion(x => (char)x, x => (MissionStatus)System.Enum.ToObject(typeof(MissionStatus), x))
+                .HasConversion(
+                    enumValue => (char)enumValue,
+                    charValue => (MissionStatus)System.Enum.ToObject(typeof(MissionStatus), charValue))
                 .HasDefaultValueSql($"'{(char)MissionStatus.New}'");
 
             builder.Property(m => m.Type)
                 .HasColumnType("char(1)")
-                .HasConversion(x => (char)x, x => (MissionType)System.Enum.ToObject(typeof(MissionType), x));
+                .HasConversion(
+                    enumValue => (char)enumValue,
+                    charValue => (MissionType)System.Enum.ToObject(typeof(MissionType), charValue));
 
             builder.Property(m => m.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+
             builder.Property(m => m.LastModificationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 

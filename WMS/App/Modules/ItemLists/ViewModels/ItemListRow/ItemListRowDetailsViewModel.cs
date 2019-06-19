@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
@@ -14,6 +16,8 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     public class ItemListRowDetailsViewModel : DetailsViewModel<ItemListRowDetails>
     {
         #region Fields
@@ -52,7 +56,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
+                this.ExecuteListRow,
+                this.CanExecuteListRow)
+            .ObservesProperty(() => this.Model));
 
         public string ExecuteReason
         {
@@ -73,7 +79,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute))
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListRowPolicy.Execute))
                 .Select(p => p.Reason).FirstOrDefault();
         }
 
@@ -190,6 +196,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             base.OnDispose();
         }
 
+        private bool CanExecuteListRow()
+        {
+            return !this.IsBusy;
+        }
+
         private async Task DeleteListRowCommandAsync()
         {
             if (this.Model.CanDelete())
@@ -229,7 +240,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteListRow()
         {
-            if (this.Model?.CanExecuteOperation("Execute") == true)
+            if (this.Model?.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)) == true)
             {
                 this.IsBusy = true;
 
@@ -238,13 +249,13 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
-                        Id = this.Model.Id
+                        Id = this.Model.Id,
                     });
                 this.IsBusy = false;
             }
             else
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Execute"));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
             }
         }
 

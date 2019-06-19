@@ -1,8 +1,12 @@
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.Scheduler
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Mission), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     public class MissionsViewModel : EntityPagedListViewModel<Mission, int>
     {
         #region Fields
@@ -13,7 +17,8 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Constructors
 
-        public MissionsViewModel()
+        public MissionsViewModel(IDataSourceService dataSoruceService)
+            : base(dataSoruceService)
         {
             this.ShowDetailsCommand.CanExecuteChanged += this.ShowDetailsCommand_CanExecuteChanged;
         }
