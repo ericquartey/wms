@@ -23,7 +23,7 @@
                                               Margin="60,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="V-02541"
+                                              ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}" />
 
         <Button Margin="0,0,20,20"
@@ -61,34 +61,35 @@
                                               Margin="60,330,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="108510025"
+                                              ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemCode}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="150"
                                               Margin="280,380,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="H-5"
+                                              ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="Scatola cambio per sollevamento."
+                                              ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,330,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="Ingranaggio Z=45 e con innesti frontali."
+                                              ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
 
         <Controls:CustomInputFieldControlFocusable MaxWidth="160"
                                                    Margin="844,410,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
+                                                   InputText="{Binding EvadedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingQtyRefilled}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 

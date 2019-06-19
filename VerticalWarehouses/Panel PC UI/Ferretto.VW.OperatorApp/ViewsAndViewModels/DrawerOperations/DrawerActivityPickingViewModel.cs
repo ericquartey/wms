@@ -206,7 +206,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ApplicationException(ex.Message);
             }
         }
 
