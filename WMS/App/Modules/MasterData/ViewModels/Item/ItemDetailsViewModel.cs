@@ -380,7 +380,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void CheckAddArea()
         {
             this.ItemAreaInput = new ItemAreaInput();
-            if (string.IsNullOrEmpty(this.AssociateAreaReason) == false)
+            if (!string.IsNullOrEmpty(this.AssociateAreaReason))
             {
                 this.ShowErrorDialog(this.AssociateAreaReason);
             }

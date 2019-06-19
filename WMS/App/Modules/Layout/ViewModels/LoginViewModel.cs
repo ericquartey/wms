@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Modules.Layout
         private async Task ExecuteLoginAsync()
         {
             this.ValidationError = this.userProvider.IsValid(this.User);
-            if (string.IsNullOrEmpty(this.ValidationError) == false)
+            if (!string.IsNullOrEmpty(this.ValidationError))
             {
                 return;
             }
