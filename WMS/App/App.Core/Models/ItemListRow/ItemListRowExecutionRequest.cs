@@ -109,7 +109,7 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        if (this.areaId.HasValue == false ||
+                        if (!this.areaId.HasValue ||
                             this.areaId.Value == 0)
                         {
                             return this.GetErrorMessageForInvalid(columnName);
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.BayId):
-                        if ((this.bayId.HasValue == false ||
+                        if ((!this.bayId.HasValue ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
                             return this.GetErrorMessageForInvalid(columnName);

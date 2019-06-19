@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Resources.ItemListExecutionProvider.CannotExecuteBecauseNoBayWasSpecified);
                 }
 
-                if (list.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == false)
+                if (!list.CanExecuteOperation(nameof(ItemListPolicy.Execute)))
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
