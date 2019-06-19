@@ -1650,15 +1650,18 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task PickAsync(int missionId, int evadedQuantity)
+        public System.Threading.Tasks.Task PickAsync(int bayId, int missionId, int evadedQuantity)
         {
-            return PickAsync(missionId, evadedQuantity, System.Threading.CancellationToken.None);
+            return PickAsync(bayId, missionId, evadedQuantity, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task PickAsync(int missionId, int evadedQuantity, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task PickAsync(int bayId, int missionId, int evadedQuantity, System.Threading.CancellationToken cancellationToken)
         {
+            if (bayId == null)
+                throw new System.ArgumentNullException("bayId");
+    
             if (missionId == null)
                 throw new System.ArgumentNullException("missionId");
     
@@ -1666,7 +1669,8 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("evadedQuantity");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Operator/Operator/Pick/{missionId}/{evadedQuantity}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Operator/Operator/Pick/{bayId}/{missionId}/{evadedQuantity}");
+            urlBuilder_.Replace("{bayId}", System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{missionId}", System.Uri.EscapeDataString(ConvertToString(missionId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{evadedQuantity}", System.Uri.EscapeDataString(ConvertToString(evadedQuantity, System.Globalization.CultureInfo.InvariantCulture)));
     
