@@ -189,7 +189,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         private async Task DrawerDetailsButtonMethod()
         {
             var bayManager = this.container.Resolve<IBayManager>();
-            var itemDetailObject = this.wmsDataProvider.GetDrawerActivityItemDetailAsync(bayManager.CurrentMission);
+            var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(bayManager.CurrentMission);
 
             NavigationService.NavigateToView<DrawerActivityPickingDetailViewModel, IDrawerActivityPickingDetailViewModel>(itemDetailObject);
         }
