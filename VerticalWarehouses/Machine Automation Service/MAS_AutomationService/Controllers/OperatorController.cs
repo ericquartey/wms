@@ -68,6 +68,27 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
+        [HttpGet("Refill/{bayId}/{missionId}/{evadedQuantity}")]
+        public async void RefillAsync(int bayId, int missionId, int evadedQuantity)
+        {
+            try
+            {
+                await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
+                var messageData = new MissionCompletedMessageData
+                {
+                    MissionId = missionId,
+                    BayId = bayId,
+                };
+                var notificationMessage = new NotificationMessage(messageData, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.logger.LogDebug($"AS-OC Received HTTP Get request from bay {bayId}, mission Id {missionId}, evaded quantity {evadedQuantity}");
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
+        }
+
         #endregion
     }
 }
