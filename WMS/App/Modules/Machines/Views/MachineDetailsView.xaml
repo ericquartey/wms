@@ -230,7 +230,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <wms:ProgressBarEdit Margin="0,5,5,5"
+                        <wms:ProgressBarEdit Margin="0,0,5,5"
                                              EditValue="{Binding Model.GrossWeight}"
                                              Maximum="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Minimum="0"
@@ -271,7 +271,7 @@
                         </Grid.RowDefinitions>
 
                         <wms:ProgressBarEdit x:Name="AreaFillRate"
-                                             Margin="0,5,0,5"
+                                             Margin="0,5,5,5"
                                              EditValue="{Binding Path=Model.AreaFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
@@ -281,7 +281,7 @@
                         <wms:ProgressBarEdit x:Name="WeightFillRate"
                                              Grid.Row="1"
                                              Grid.Column="0"
-                                             Margin="0,20,0,0"
+                                             Margin="0,0,5,5"
                                              EditValue="{Binding Path=MachineLive.WeightFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
