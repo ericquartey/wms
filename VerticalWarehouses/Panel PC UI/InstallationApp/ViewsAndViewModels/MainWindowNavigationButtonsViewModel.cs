@@ -137,11 +137,11 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public async Task InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
-            Task.Run(this.UpdateButtonsEnableStateAsync);
+            await this.UpdateButtonsEnableStateAsync();
         }
 
         public Task OnEnterViewAsync()
