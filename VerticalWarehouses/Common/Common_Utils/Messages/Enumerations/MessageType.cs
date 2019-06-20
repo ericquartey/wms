@@ -51,5 +51,7 @@
         BayConnected,
 
         WebApiException
+
+        CheckCondition
     }
 }

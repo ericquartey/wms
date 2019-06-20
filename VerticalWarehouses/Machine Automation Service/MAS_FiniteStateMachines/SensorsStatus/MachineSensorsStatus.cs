@@ -35,9 +35,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         public bool[] DisplayedInputs => this.ioSensorsStatus?.Inputs;
 
+        public bool DrawerIsCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+
+        public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+
+        //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
+        public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.SecurityFunctionActive];
+
         public bool[] RawInvertersInputs => this.rawInvertersInputs;
 
         public bool[] RawRemoteIOsInputs => this.rawRemoteIOsInputs;
+
+        public bool SensorInZeroOnCradle => this.DisplayedInputs[(int)IOMachineSensors.ZeroPawl];
+
+        public bool SensorInZeroOnElevator => this.DisplayedInputs[(int)IOMachineSensors.ZeroVertical];
 
         #endregion
 
@@ -106,6 +117,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
             newInputs[(int)IOMachineSensors.CradleMotorSelected] = this.rawRemoteIOsInputs[9];
 
             newInputs[(int)IOMachineSensors.ZeroVertical] = this.rawInvertersInputs[2];
+            newInputs[(int)IOMachineSensors.ZeroPawl] = this.rawInvertersInputs[5];
             newInputs[(int)IOMachineSensors.LuPresentiInMachineSide] = this.rawInvertersInputs[7];
             newInputs[(int)IOMachineSensors.LuPresentInOperatorSide] = this.rawInvertersInputs[6];
 
