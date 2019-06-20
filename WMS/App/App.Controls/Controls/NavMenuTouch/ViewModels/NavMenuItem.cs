@@ -81,7 +81,7 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            var breadCrumb = string.IsNullOrEmpty(currBreadCrumb) == false
+            var breadCrumb = !string.IsNullOrEmpty(currBreadCrumb)
                 ? $"{currBreadCrumb} >> {this.DisplayName}"
                 : this.DisplayName;
 

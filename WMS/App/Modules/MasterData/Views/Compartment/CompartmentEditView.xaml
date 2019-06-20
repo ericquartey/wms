@@ -19,7 +19,26 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}">
+                       Style="{DynamicResource ActionBarNotCustomizable}"
+                       Visibility="{Binding IsAdd, Converter={StaticResource BTVC}}">
+
+            <wms:ActionBarItem Command="{Binding CreateCommand}"
+                               Content="{x:Static res:General.Create}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
+                               GlyphSize="Custom"
+                               IsVisible="{Binding IsAdd}" />
+
+            <wms:ActionBarItem Command="{Binding CancelCommand}"
+                               Content="{x:Static res:General.Cancel}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
+                               GlyphSize="Custom" />
+        </wms:ActionBar>
+
+        <wms:ActionBar HorizontalAlignment="Right"
+                       Style="{DynamicResource ActionBarNotCustomizable}"
+                       Visibility="{Binding IsAdd, Converter={StaticResource BTVIC}}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"

@@ -9,6 +9,8 @@ using System.Collections.ObjectModel;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -22,6 +24,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IItemsDataService itemsDataService;
 
+        private readonly ILogger<AutomationService> logger;
+
         private readonly IMissionsDataService missionsDataService;
 
         private readonly IServiceProvider services;
@@ -30,24 +34,38 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Constructors
 
-        public OperatorController(IEventAggregator eventAggregator, IServiceProvider services, IItemsDataService itemsDataService, IMissionsDataService missionsDataService)
+        public OperatorController(IEventAggregator eventAggregator, ILogger<AutomationService> logger, IServiceProvider services, IItemsDataService itemsDataService, IMissionsDataService missionsDataService)
         {
             this.eventAggregator = eventAggregator;
             this.services = services;
             this.itemsDataService = itemsDataService;
             this.missionsDataService = missionsDataService;
+            this.logger = logger;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("Pick/{missionId}/{evadedQuantity}")]
-        public async void PickAsync(int missionId, int evadedQuantity)
+        [HttpGet("Pick/{bayId}/{missionId}/{evadedQuantity}")]
+        public async void PickAsync(int bayId, int missionId, int evadedQuantity)
         {
-            await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
-            var notificationMessage = new NotificationMessage(null, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            try
+            {
+                await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
+                var messageData = new MissionCompletedMessageData
+                {
+                    MissionId = missionId,
+                    BayId = bayId,
+                };
+                var notificationMessage = new NotificationMessage(messageData, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.logger.LogDebug($"AS-OC Received HTTP Get request from bay {bayId}, mission Id {missionId}, evaded quantity {evadedQuantity}");
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
         }
 
         #endregion

@@ -16,15 +16,14 @@ namespace Ferretto.WMS.Data.Core.Policies
             var errorMessages = new List<string>();
             if (statusItemListModel.Status != ItemListStatus.New)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus}");
+                errorMessages.Add(
+                    Resources.ItemList.CannotAddRowsToTheListBecauseItIsNotInTheNewState);
             }
 
             string reason = null;
             if (errorMessages.Any())
             {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
+                reason = string.Join(System.Environment.NewLine, errorMessages);
             }
 
             return new Policy
@@ -42,20 +41,19 @@ namespace Ferretto.WMS.Data.Core.Policies
             if (listToDelete.Status != ItemListStatus.New)
             {
                 errorMessages.Add(
-                    $"{Common.Resources.BusinessObjects.ItemListStatus} [{listToDelete.Status.ToString()}]");
+                    Resources.ItemList.CannotDeleteTheListBecauseItIsNotInTheNewState);
             }
 
             if (listToDelete.HasActiveRows)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow}");
+                errorMessages.Add(
+                    Resources.ItemList.CannotDeleteTheListBecauseItHasActiveRows);
             }
 
             string reason = null;
             if (errorMessages.Any())
             {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
+                reason = string.Join(System.Environment.NewLine, errorMessages);
             }
 
             return new Policy
@@ -77,15 +75,13 @@ namespace Ferretto.WMS.Data.Core.Policies
                 listToExecute.Status != ItemListStatus.Waiting)
             {
                 errorMessages.Add(
-                    $"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
+                    Resources.ItemList.CannotExecuteTheListBecauseOfItsCurrentState);
             }
 
             string reason = null;
             if (errorMessages.Any())
             {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
+                reason = string.Join(System.Environment.NewLine, errorMessages);
             }
 
             return new Policy
