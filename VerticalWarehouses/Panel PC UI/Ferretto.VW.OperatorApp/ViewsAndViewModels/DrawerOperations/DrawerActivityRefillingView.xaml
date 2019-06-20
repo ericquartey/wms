@@ -29,6 +29,7 @@
         <Button Margin="0,0,20,20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Command="{Binding ConfirmCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 

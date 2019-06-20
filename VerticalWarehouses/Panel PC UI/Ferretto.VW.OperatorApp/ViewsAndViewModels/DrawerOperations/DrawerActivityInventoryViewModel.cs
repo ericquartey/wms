@@ -16,6 +16,7 @@ using Ferretto.VW.Utils.Source;
 using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.Utils.Source.Filters;
+using Ferretto.VW.OperatorApp.ServiceUtilities;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -37,13 +38,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private string itemDescription;
 
+        private IItemsDataService itemsDataService;
+
         private string listCode;
 
         private string listDescription;
 
         private ILoadingUnitsDataService loadingUnitsDataService;
 
+        private IMaterialStatusesDataService materialStatusesDataService;
+
         private IOperatorService operatorService;
+
+        private IPackageTypesDataService packageTypesDataService;
 
         private TrayControlCompartment selectedCompartment;
 
@@ -69,7 +76,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
 
         public ICommand DrawerActivityInventoryDetailsButtonCommand => this.drawerActivityInventoryDetailsButtonCommand ?? (this.drawerActivityInventoryDetailsButtonCommand = new DelegateCommand(
-            () => NavigationService.NavigateToView<DrawerActivityInventoryDetailViewModel, IDrawerActivityInventoryDetailViewModel>()));
+            async () => await this.DrawerDetailsButtonMethod()));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
@@ -107,6 +114,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.container = container;
             this.loadingUnitsDataService = this.container.Resolve<ILoadingUnitsDataService>();
             this.operatorService = this.container.Resolve<IOperatorService>();
+            this.itemsDataService = this.container.Resolve<IItemsDataService>();
+            this.materialStatusesDataService = this.container.Resolve<IMaterialStatusesDataService>();
+            this.packageTypesDataService = this.container.Resolve<IPackageTypesDataService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -158,6 +168,32 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                     NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
                 }
             }
+        }
+
+        private async Task DrawerDetailsButtonMethod()
+        {
+            var bayManager = this.container.Resolve<IBayManager>();
+            var item = await this.itemsDataService.GetByIdAsync((int)bayManager.CurrentMission.ItemId);
+            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)bayManager.CurrentMission.LoadingUnitId);
+            var compartment = compartments.First(x => x.Id == bayManager.CurrentMission.CompartmentId);
+            var materialStatus = await this.materialStatusesDataService.GetByIdAsync((int)compartment.MaterialStatusId);
+            var packageType = await this.packageTypesDataService.GetByIdAsync((int)compartment.PackageTypeId);
+            var itemDetailObject = new DrawerActivityItemDetail
+            {
+                Batch = compartment.Lot,
+                ItemCode = item.Code,
+                ItemDescription = item.Description,
+                ListCode = bayManager.CurrentMission.ItemListRowCode,
+                ListDescription = bayManager.CurrentMission.ItemListDescription,
+                ListRow = bayManager.CurrentMission.ItemListRowId.ToString(),
+                MaterialStatus = materialStatus.Description,
+                PackageType = packageType.Description,
+                Position = $"{compartment.XPosition}, {compartment.YPosition}",
+                ProductionDate = item.CreationDate.ToShortDateString(),
+                RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString()
+            };
+
+            NavigationService.NavigateToView<DrawerActivityInventoryDetailViewModel, IDrawerActivityInventoryDetailViewModel>(itemDetailObject);
         }
 
         private async Task GetTrayControlDataAsync(IBayManager bayManager)
