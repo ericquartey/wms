@@ -19,30 +19,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Methods
 
-        private bool CheckConditionToExecuteHoming(out ConditionToCheckType condition)
-        {
-            condition = ConditionToCheckType.MachineIsInEmergencyState;
-            if (this.machineSensorsStatus.MachineIsInEmergencyState)
-            {
-                return false;
-            }
-
-            condition = ConditionToCheckType.DrawerIsPartiallyOnCradle;
-            if (this.machineSensorsStatus.DrawerIsPartiallyOnCradle)
-            {
-                return false;
-            }
-
-            //TEMP This condition does not satisfied by the Bender machine
-            //condition = ConditionToCheckType.SensorInZeroOnCradle;
-            //if (!this.machineSensorsStatus.SensorInZeroOnCradle)
-            //{
-            //    return false;
-            //}
-
-            return true;
-        }
-
         private bool EvaluateCondition(ConditionToCheckType condition)
         {
             var result = false;
@@ -66,6 +42,35 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     break;
             }
             return result;
+        }
+
+        /// <summary>
+        /// This routine contains all conditions to be satisfied before to do an homing operation.
+        /// </summary>
+        private bool IsHomingToExecute(out ConditionToCheckType condition)
+        {
+            //TEMP The following conditions must be checked in order to execute an homing operation
+
+            condition = ConditionToCheckType.MachineIsInEmergencyState;
+            if (this.EvaluateCondition(condition))
+            {
+                return false;
+            }
+
+            condition = ConditionToCheckType.DrawerIsPartiallyOnCradle;
+            if (this.EvaluateCondition(condition))
+            {
+                return false;
+            }
+
+            //TEMP This condition does not satisfied by the Bender machine
+            //condition = ConditionToCheckType.SensorInZeroOnCradle;
+            //if (!this.EvaluateCondition(condition))
+            //{
+            //    return false;
+            //}
+
+            return true;
         }
 
         private void ProcessCheckConditionMessage(CommandMessage message)
@@ -96,7 +101,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             if (message.Data is IHomingMessageData data)
             {
                 //TEMP Check the conditions before start an homing procedure
-                if (!this.CheckConditionToExecuteHoming(out var condition))
+                if (!this.IsHomingToExecute(out var condition))
                 {
                     var notificationData = new HomingMessageData(data.AxisToCalibrate);
 
