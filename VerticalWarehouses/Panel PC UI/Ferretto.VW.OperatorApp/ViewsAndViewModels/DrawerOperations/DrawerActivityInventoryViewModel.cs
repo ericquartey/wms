@@ -17,6 +17,7 @@ using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.WmsCommunication.Source;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -112,11 +113,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.loadingUnitsDataService = this.container.Resolve<ILoadingUnitsDataService>();
-            this.operatorService = this.container.Resolve<IOperatorService>();
-            this.itemsDataService = this.container.Resolve<IItemsDataService>();
-            this.materialStatusesDataService = this.container.Resolve<IMaterialStatusesDataService>();
-            this.packageTypesDataService = this.container.Resolve<IPackageTypesDataService>();
+            //this.loadingUnitsDataService = this.container.Resolve<ILoadingUnitsDataService>();
+            //this.operatorService = this.container.Resolve<IOperatorService>();
+            //this.itemsDataService = this.container.Resolve<IItemsDataService>();
+            //this.materialStatusesDataService = this.container.Resolve<IMaterialStatusesDataService>();
+            //this.packageTypesDataService = this.container.Resolve<IPackageTypesDataService>();
         }
 
         public async Task OnEnterViewAsync()

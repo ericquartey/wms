@@ -6,6 +6,7 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.Utils.Interfaces;
+using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;

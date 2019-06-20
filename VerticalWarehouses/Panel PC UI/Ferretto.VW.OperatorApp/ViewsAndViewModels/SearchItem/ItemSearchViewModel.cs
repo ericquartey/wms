@@ -13,6 +13,7 @@ using Ferretto.VW.CustomControls;
 using System.Collections.ObjectModel;
 using System.Threading;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -50,8 +51,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private ICommand itemDetailButtonCommand;
 
-        private IItemsDataService itemsDataService;
-
         private ObservableCollection<WMS.Data.WebAPI.Contracts.Item> loadedItems;
 
         private int requestedQuantity;
@@ -61,6 +60,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private Timer timer;
 
         private ICommand upDataGridButtonCommand;
+
+        private IWmsDataProvider wmsDataProvider;
 
         #endregion
 
@@ -137,7 +138,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
                     try
                     {
-                        items = await this.itemsDataService.GetAllAsync(search: this.searchArticleCode, skip: this.currentItemIndex, take: DEFAULT_QUANTITY_ITEM);
+                        items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, this.currentItemIndex, DEFAULT_QUANTITY_ITEM);
                         this.IsSearching = false;
                     }
                     catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
@@ -200,27 +201,22 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.container = container;
             this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
             this.dataGridViewModel = this.dataGridViewModelRef;
-            this.itemsDataService = this.container.Resolve<IItemsDataService>();
+            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
         }
 
         public async void ItemCallMethodAsync()
         {
             var bay = this.container.Resolve<IBayManager>();
-            try
+            this.IsItemCallButtonActive = false;
+
+            var successfullRequest = await this.wmsDataProvider.PickAsync(this.loadedItems[this.currentItemIndex].Id, 2, bay.BayId, this.RequestedQuantity);
+            if (successfullRequest)
             {
-                this.IsItemCallButtonActive = false;
-                await this.itemsDataService.PickAsync(this.loadedItems[this.currentItemIndex].Id, new ItemOptions
-                {
-                    AreaId = 2,
-                    BayId = bay.BayId,
-                    RequestedQuantity = this.RequestedQuantity,
-                    RunImmediately = true
-                });
                 this.container.Resolve<IFeedbackNotifier>().Notify($"Successfully called {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
                 this.RequestedQuantity = 0;
                 this.IsItemCallButtonActive = true;
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            else
             {
                 this.container.Resolve<IFeedbackNotifier>().Notify($"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
                 this.RequestedQuantity = 0;
@@ -239,7 +235,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
             try
             {
-                items = await this.itemsDataService.GetAllAsync(search: this.searchArticleCode, take: DEFAULT_QUANTITY_ITEM);
+                items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
             }
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
