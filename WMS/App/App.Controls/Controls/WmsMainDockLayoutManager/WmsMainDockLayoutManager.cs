@@ -143,7 +143,7 @@ namespace Ferretto.WMS.App.Controls
             newLayoutPanel.AllowHide = false;
             newLayoutPanel.IsActive = true;
             newLayoutPanel.Loaded += this.NewLayoutPanel_Loaded;
-            if (this.isControlPressed == false)
+            if (!this.isControlPressed)
             {
                 if (!(this.DockController.ActiveItem is LayoutPanel activePanel))
                 {
@@ -253,9 +253,9 @@ namespace Ferretto.WMS.App.Controls
 
         private void WmsMainDockLayoutManager_Loaded(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(this.StartModuleName) == false &&
-                string.IsNullOrEmpty(this.StartViewName) == false &&
-                this.navigationService.IsUnitTest == false)
+            if (!string.IsNullOrEmpty(this.StartModuleName) &&
+                !string.IsNullOrEmpty(this.StartViewName) &&
+                !this.navigationService.IsUnitTest)
             {
                 var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
                 notificationService.CheckForDataErrorConnection();

@@ -14,11 +14,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class AbcClassesDataService : ServiceBase, IAbcClassesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public AbcClassesDataService(string baseUrl)
+        public AbcClassesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -47,7 +49,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/abc-classes");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -105,8 +107,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/abc-classes/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -175,8 +175,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -188,7 +186,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/abc-classes/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -261,8 +259,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -306,11 +302,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class AislesDataService : ServiceBase, IAislesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public AislesDataService(string baseUrl)
+        public AislesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -339,7 +337,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -397,8 +395,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -409,7 +405,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -467,8 +463,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -504,7 +498,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -592,8 +586,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -608,7 +600,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -681,8 +673,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -697,7 +687,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/{id}/cells");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -755,8 +745,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -800,11 +788,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class AreasDataService : ServiceBase, IAreasDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public AreasDataService(string baseUrl)
+        public AreasDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -837,7 +827,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/aisles");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -895,8 +885,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -907,7 +895,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -965,8 +953,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -977,7 +963,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1035,8 +1021,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1051,7 +1035,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/bays");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1124,8 +1108,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1140,7 +1122,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1213,8 +1195,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1229,7 +1209,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/cells");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1287,8 +1267,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1303,7 +1281,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/item-lists");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1361,8 +1339,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1398,7 +1374,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1471,8 +1447,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1516,11 +1490,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class BaysDataService : ServiceBase, IBaysDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public BaysDataService(string baseUrl)
+        public BaysDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -1553,7 +1529,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/activate");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1612,8 +1588,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1628,7 +1602,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/deactivate");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1687,8 +1661,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1699,7 +1671,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1757,8 +1729,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1769,7 +1739,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1827,8 +1797,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1843,7 +1811,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -1916,8 +1884,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -1932,7 +1898,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/machine");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2005,8 +1971,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2050,11 +2014,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CellPositionsDataService : ServiceBase, ICellPositionsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CellPositionsDataService(string baseUrl)
+        public CellPositionsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -2083,7 +2049,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-positions");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2141,8 +2107,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2153,7 +2117,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-positions/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2211,8 +2175,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2227,7 +2189,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-positions/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2300,8 +2262,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2345,11 +2305,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CellsDataService : ServiceBase, ICellsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CellsDataService(string baseUrl)
+        public CellsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -2399,7 +2361,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2472,8 +2434,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2493,7 +2453,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2581,8 +2541,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2597,7 +2555,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2670,8 +2628,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2686,7 +2642,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2777,8 +2733,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2793,7 +2747,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/{id}/loading-units");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2851,8 +2805,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2864,7 +2816,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2937,8 +2889,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -2982,11 +2932,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CellStatusesDataService : ServiceBase, ICellStatusesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CellStatusesDataService(string baseUrl)
+        public CellStatusesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -3015,7 +2967,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-statuses");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3073,8 +3025,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3085,7 +3035,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-statuses/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3143,8 +3093,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3159,7 +3107,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3232,8 +3180,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3277,11 +3223,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CellTypesDataService : ServiceBase, ICellTypesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CellTypesDataService(string baseUrl)
+        public CellTypesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -3310,7 +3258,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-types");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3368,8 +3316,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3380,7 +3326,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-types/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3438,8 +3384,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3454,7 +3398,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3527,8 +3471,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3572,11 +3514,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CompartmentsDataService : ServiceBase, ICompartmentsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CompartmentsDataService(string baseUrl)
+        public CompartmentsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -3605,7 +3549,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3696,8 +3640,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3729,7 +3671,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3802,8 +3744,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3814,7 +3754,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/range");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -3905,8 +3845,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -3921,7 +3859,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4011,8 +3949,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4027,7 +3963,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4100,8 +4036,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4116,7 +4050,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4222,8 +4156,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4243,7 +4175,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4316,8 +4248,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4332,7 +4262,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}/allowed-items");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4390,8 +4320,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4415,7 +4343,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append("itemId=").Append(System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4473,8 +4401,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4486,7 +4412,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4559,8 +4485,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4604,11 +4528,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CompartmentStatusesDataService : ServiceBase, ICompartmentStatusesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CompartmentStatusesDataService(string baseUrl)
+        public CompartmentStatusesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -4637,7 +4563,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-statuses");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4695,8 +4621,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4707,7 +4631,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-statuses/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4765,8 +4689,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4781,7 +4703,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -4854,8 +4776,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -4899,11 +4819,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class CompartmentTypesDataService : ServiceBase, ICompartmentTypesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public CompartmentTypesDataService(string baseUrl)
+        public CompartmentTypesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -4935,7 +4857,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append("maxCapacity=").Append(System.Uri.EscapeDataString(maxCapacity != null ? ConvertToString(maxCapacity, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5026,8 +4948,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5059,7 +4979,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5132,8 +5052,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5148,7 +5066,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5223,8 +5141,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5239,7 +5155,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5312,8 +5228,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5332,7 +5246,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Replace("{compartmentTypeId}", System.Uri.EscapeDataString(ConvertToString(compartmentTypeId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{itemId}", System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5407,8 +5321,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5436,7 +5348,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5509,8 +5421,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5525,7 +5435,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}/associated-items");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5598,8 +5508,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5619,7 +5527,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5692,8 +5600,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5705,7 +5611,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5778,8 +5684,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5823,11 +5727,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class ImagesDataService : ServiceBase, IImagesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ImagesDataService(string baseUrl)
+        public ImagesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -5857,7 +5763,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/images/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5886,7 +5792,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                         if (status_ == "200" || status_ == "206") 
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, client_, response_); 
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
@@ -5938,8 +5844,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -5950,7 +5854,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/images");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6050,8 +5954,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6095,11 +5997,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class ItemCategoriesDataService : ServiceBase, IItemCategoriesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemCategoriesDataService(string baseUrl)
+        public ItemCategoriesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -6128,7 +6032,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-categories");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6186,8 +6090,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6198,7 +6100,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-categories/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6256,8 +6158,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6272,7 +6172,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-categories/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6345,8 +6245,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6390,11 +6288,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class ItemListRowsDataService : ServiceBase, IItemListRowsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemListRowsDataService(string baseUrl)
+        public ItemListRowsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -6423,7 +6323,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6499,8 +6399,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6532,7 +6430,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6605,8 +6503,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6621,7 +6517,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6711,8 +6607,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6727,7 +6621,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6800,8 +6694,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6816,7 +6708,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -6907,8 +6799,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -6932,7 +6822,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7008,8 +6898,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7029,7 +6917,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7102,8 +6990,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7115,7 +7001,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7188,8 +7074,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7204,7 +7088,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}/suspend");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7280,8 +7164,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7325,11 +7207,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class ItemListsDataService : ServiceBase, IItemListsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemListsDataService(string baseUrl)
+        public ItemListsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -7358,7 +7242,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7434,8 +7318,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7467,7 +7349,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7540,8 +7422,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7556,7 +7436,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7631,8 +7511,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7647,7 +7525,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7720,8 +7598,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7736,7 +7612,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7827,8 +7703,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7852,7 +7726,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -7928,8 +7802,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -7949,7 +7821,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8022,8 +7894,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8038,7 +7908,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}/rows");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8111,8 +7981,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8124,7 +7992,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8197,8 +8065,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8213,7 +8079,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}/suspend");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8302,8 +8168,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8347,11 +8211,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class ItemsDataService : ServiceBase, IItemsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ItemsDataService(string baseUrl)
+        public ItemsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -8390,7 +8256,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append("maxCapacity=").Append(System.Uri.EscapeDataString(maxCapacity != null ? ConvertToString(maxCapacity, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8479,8 +8345,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8495,7 +8359,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartment-types");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8598,8 +8462,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8610,7 +8472,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/item-compartment-types");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8701,8 +8563,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8721,7 +8581,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{compartmentTypeId}", System.Uri.EscapeDataString(ConvertToString(compartmentTypeId, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8809,8 +8669,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8831,7 +8689,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append("maxCapacity=").Append(System.Uri.EscapeDataString(maxCapacity != null ? ConvertToString(maxCapacity, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -8920,8 +8778,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -8936,7 +8792,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/unassociated-compartment-types");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9039,8 +8895,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9059,7 +8913,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{areaid}", System.Uri.EscapeDataString(ConvertToString(areaid, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9148,8 +9002,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9168,7 +9020,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{areaid}", System.Uri.EscapeDataString(ConvertToString(areaid, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9243,8 +9095,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9255,7 +9105,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9346,8 +9196,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9379,7 +9227,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9452,8 +9300,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9468,7 +9314,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9543,8 +9389,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9559,7 +9403,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9632,8 +9476,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9648,7 +9490,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9739,8 +9581,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9760,7 +9600,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9848,8 +9688,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9864,7 +9702,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/allowed-areas");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -9937,8 +9775,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -9953,7 +9789,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/areas");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10026,8 +9862,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10042,7 +9876,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/areas-with-availability");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10115,8 +9949,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10131,7 +9963,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartments");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10204,8 +10036,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10220,7 +10050,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/pick-availbility");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10311,8 +10141,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10327,7 +10155,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/put-capacity");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10418,8 +10246,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10431,7 +10257,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10504,8 +10330,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10520,7 +10344,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/pick");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10611,8 +10435,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10627,7 +10449,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/put");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10718,8 +10540,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10763,11 +10583,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class LoadingUnitsDataService : ServiceBase, ILoadingUnitsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public LoadingUnitsDataService(string baseUrl)
+        public LoadingUnitsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -10796,7 +10618,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10872,8 +10694,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10905,7 +10725,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -10978,8 +10798,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -10994,7 +10812,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11069,8 +10887,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11085,7 +10901,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11158,8 +10974,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11174,7 +10988,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11265,8 +11079,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11294,7 +11106,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11367,8 +11179,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11383,7 +11193,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/allowed-items-count");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11471,8 +11281,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11492,7 +11300,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11580,8 +11388,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11596,7 +11402,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/compartments");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11669,8 +11475,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11685,7 +11489,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/size");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11758,8 +11562,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11771,7 +11573,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11844,8 +11646,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11865,7 +11665,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -11954,8 +11754,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -11999,11 +11797,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class LoadingUnitStatusesDataService : ServiceBase, ILoadingUnitStatusesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public LoadingUnitStatusesDataService(string baseUrl)
+        public LoadingUnitStatusesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -12032,7 +11832,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-statuses");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12090,8 +11890,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12102,7 +11900,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-statuses/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12160,8 +11958,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12173,7 +11969,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12246,8 +12042,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12291,11 +12085,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class LoadingUnitTypesDataService : ServiceBase, ILoadingUnitTypesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public LoadingUnitTypesDataService(string baseUrl)
+        public LoadingUnitTypesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -12324,7 +12120,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12382,8 +12178,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12394,7 +12188,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12452,8 +12246,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12468,7 +12260,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12541,8 +12333,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12557,7 +12347,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types/{id}/cells");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12615,8 +12405,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12660,11 +12448,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class MachinesDataService : ServiceBase, IMachinesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MachinesDataService(string baseUrl)
+        public MachinesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -12714,7 +12504,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12787,8 +12577,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12808,7 +12596,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12896,8 +12684,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -12912,7 +12698,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/{id}/bays");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -12985,8 +12771,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13001,7 +12785,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13074,8 +12858,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13090,7 +12872,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/{id}/missions");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13178,8 +12960,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13191,7 +12971,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13264,8 +13044,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13309,11 +13087,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class MaterialStatusesDataService : ServiceBase, IMaterialStatusesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MaterialStatusesDataService(string baseUrl)
+        public MaterialStatusesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -13342,7 +13122,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/material-statuses");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13400,8 +13180,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13412,7 +13190,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/material-statuses/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13470,8 +13248,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13486,7 +13262,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/material-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13559,8 +13335,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13604,11 +13378,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class MeasureUnitsDataService : ServiceBase, IMeasureUnitsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MeasureUnitsDataService(string baseUrl)
+        public MeasureUnitsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -13637,7 +13413,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/measure-units");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13695,8 +13471,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13707,7 +13481,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/measure-units/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13765,8 +13539,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13778,7 +13550,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/measure-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -13851,8 +13623,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -13896,11 +13666,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class MissionsDataService : ServiceBase, IMissionsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public MissionsDataService(string baseUrl)
+        public MissionsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -13933,7 +13705,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/abort");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14022,8 +13794,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14042,7 +13812,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{quantity}", System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14131,8 +13901,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14147,7 +13915,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/complete");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14236,8 +14004,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14252,7 +14018,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/execute");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14341,8 +14107,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14374,7 +14138,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14447,8 +14211,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14468,7 +14230,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14556,8 +14318,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14572,7 +14332,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14645,8 +14405,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14661,7 +14419,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/details");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14749,8 +14507,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14762,7 +14518,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14835,8 +14591,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14880,11 +14634,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class PackageTypesDataService : ServiceBase, IPackageTypesDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public PackageTypesDataService(string baseUrl)
+        public PackageTypesDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -14913,7 +14669,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/package-types");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -14971,8 +14727,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -14983,7 +14737,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/package-types/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15041,8 +14795,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15057,7 +14809,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/package-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15130,8 +14882,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15175,11 +14925,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class SchedulerRequestsDataService : ServiceBase, ISchedulerRequestsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public SchedulerRequestsDataService(string baseUrl)
+        public SchedulerRequestsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -15229,7 +14981,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15302,8 +15054,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15323,7 +15073,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             urlBuilder_.Length--;
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15411,8 +15161,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15427,7 +15175,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/scheduler-requests/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15500,8 +15248,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15513,7 +15259,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/scheduler-requests/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15586,8 +15332,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15631,11 +15375,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class UsersDataService : ServiceBase, IUsersDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public UsersDataService(string baseUrl)
+        public UsersDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -15664,7 +15410,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15722,8 +15468,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15734,7 +15478,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/count");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15792,8 +15536,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15808,7 +15550,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15881,8 +15623,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     
@@ -15893,7 +15633,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/is-valid");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -15954,8 +15694,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     

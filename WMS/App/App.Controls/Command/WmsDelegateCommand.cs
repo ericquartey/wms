@@ -74,7 +74,7 @@ namespace Ferretto.WMS.App.Controls
             if (this.beforeExecuteAction != null)
             {
                 var resultBeforeExecute = await this.beforeExecuteAction();
-                if (resultBeforeExecute == false)
+                if (!resultBeforeExecute)
                 {
                     this.beforeExecuteActionFailed?.Invoke();
                     return;

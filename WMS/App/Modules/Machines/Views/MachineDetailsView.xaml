@@ -31,35 +31,34 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <wms:InfoText Grid.ColumnSpan="2"
-                                  MaxHeight="60"
+                    <wms:InfoText Grid.Row="1"
+                                  Grid.Column="0"
                                   wms:ShowTitle.Show="True"
-                                  Content="{Binding Description}" />
-                    <StackPanel Grid.Row="1"
-                                Margin="0,2,12,10"
-                                VerticalAlignment="Top"
-                                Orientation="Vertical">
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding BayTypeDescription}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding LoadingUnitsBufferSize}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding Priority}" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="12,-15,12,10"
-                                VerticalAlignment="Top"
-                                Orientation="Vertical">
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding IsActive}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding UserLogged}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding LoadingUnitInBayDescription}" />
-                    </StackPanel>
+                                  Content="{Binding BayTypeDescription}" />
+                    <wms:InfoText Grid.Row="2"
+                                  Grid.Column="0"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding LoadingUnitsBufferSize}" />
+                    <wms:InfoText Grid.Row="3"
+                                  Grid.Column="0"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding Priority}" />
+                    <wms:InfoText Grid.Row="1"
+                                  Grid.Column="1"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding IsActive}" />
+                    <wms:InfoText Grid.Row="2"
+                                  Grid.Column="1"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding UserLogged}" />
+                    <wms:InfoText Grid.Row="3"
+                                  Grid.Column="1"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding LoadingUnitInBayDescription}" />
 
                 </Grid>
 
