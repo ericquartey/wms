@@ -73,6 +73,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.NavigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.NavigationService.Register<LoadingUnitEditView, LoadingUnitEditViewModel>();
+            this.NavigationService.Register<LoadingUnitAddView, LoadingUnitAddViewModel>();
             this.NavigationService.Register<LoadingUnitWithdrawView, LoadingUnitWithdrawViewModel>();
         }
 
