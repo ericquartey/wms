@@ -50,7 +50,7 @@
 
         BayConnected,
 
-        WebApiException
+        WebApiException,
 
         CheckCondition
     }
