@@ -32,6 +32,7 @@ namespace Ferretto.WMS.App.Controls
             if (d is ProgressBarEdit progressBar)
             {
                 var type = (ProgressBarEditType)e.NewValue;
+                progressBar.Height = 41;
                 switch (type)
                 {
                     case ProgressBarEditType.Percent:
@@ -39,13 +40,11 @@ namespace Ferretto.WMS.App.Controls
                         progressBar.Orientation = System.Windows.Controls.Orientation.Horizontal;
                         progressBar.ShowBorder = false;
                         progressBar.IsPercent = true;
-                        progressBar.Height = 35;
                         break;
 
                     case ProgressBarEditType.MinMaxCurrentH:
                         progressBar.ContentDisplayMode = DevExpress.Xpf.Editors.ContentDisplayMode.Value;
                         progressBar.Orientation = System.Windows.Controls.Orientation.Horizontal;
-                        progressBar.Height = 50;
                         progressBar.ShowBorder = false;
                         progressBar.IsPercent = false;
                         progressBar.Maximum = progressBar.TextOut != null ? double.Parse(progressBar.TextOut) : 100;
