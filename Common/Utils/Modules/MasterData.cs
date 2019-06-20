@@ -8,8 +8,6 @@
 
         public const string ASSOCIATECOMPARTMENTTYPESSTEPS = "AssociateCompartmentTypesStepsViewModel";
 
-        public const string ITEMCOMPARTMENTTYPESTOITEMSTEPVIEWMODEL = "ItemCompartmentTypesToItemStepViewModel";
-
         public const string CELLDETAILS = "CellDetailsViewModel";
 
         public const string CELLS = "CellsViewModel";
@@ -23,6 +21,8 @@
         public const string COMPARTMENTTYPES = "CompartmentTypesViewModel";
 
         public const string ITEMADD = "ItemAddViewModel";
+
+        public const string ITEMCOMPARTMENTTYPESTOITEMSTEPVIEWMODEL = "ItemCompartmentTypesToItemStepViewModel";
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";
 

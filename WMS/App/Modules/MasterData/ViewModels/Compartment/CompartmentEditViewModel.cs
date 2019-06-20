@@ -26,32 +26,48 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
+        private ICommand createCommand;
+
         private ICommand deleteCompartmentCommand;
+
+        private bool isAdd;
 
         private bool itemIdHasValue;
 
         private InfiniteAsyncSource itemsDataSource;
 
+        private AppearMode mode;
+
         private Item selectedItem;
 
         #endregion
 
-        #region Constructors
+        #region Enums
 
-        public CompartmentEditViewModel()
+        public enum AppearMode
         {
-            this.Title = Common.Resources.MasterData.EditCompartment;
-            this.LoadDataAsync();
+            Edit,
+
+            Add,
         }
 
         #endregion
 
         #region Properties
 
+        public ICommand CreateCommand => this.createCommand ??
+                                  (this.createCommand = new DelegateCommand(async () => await this.ExecuteCreateCommandAsync()));
+
         public ICommand DeleteCompartmentCommand => this.deleteCompartmentCommand ??
             (this.deleteCompartmentCommand = new DelegateCommand(
                 async () => await this.DeleteCompartmentAsync(),
                 this.CanDeleteCompartment));
+
+        public bool IsAdd
+        {
+            get => this.isAdd;
+            set => this.SetProperty(ref this.isAdd, value);
+        }
 
         public bool IsItemDetailsEnabled
         {
@@ -85,6 +101,18 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
+        public AppearMode Mode
+        {
+            get => this.mode;
+            set
+            {
+                if (this.SetProperty(ref this.mode, value))
+                {
+                    this.IsAdd = (this.mode == AppearMode.Add) ? true : false;
+                }
+            }
+        }
+
         public Item SelectedItem
         {
             get => this.selectedItem;
@@ -95,6 +123,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public Task InitializeDataAsync()
+        {
+            if (this.mode == AppearMode.Add)
+            {
+                this.Title = Common.Resources.MasterData.AddCompartment;
+                this.ColorRequired = ColorRequired.CreateMode;
+            }
+            else
+            {
+                this.Title = Common.Resources.MasterData.EditCompartment;
+            }
+
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
+            return Task.CompletedTask;
+        }
+
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -102,10 +149,42 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override Task ExecuteRefreshCommandAsync()
+        protected async Task<bool> ExecuteCreateCommandAsync()
         {
-            throw new NotSupportedException();
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
+            this.IsBusy = true;
+
+            var result = await this.compartmentProvider.CreateAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new StatusPubSubEvent(
+                   Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                   StatusType.Success));
+
+                this.CompleteOperation();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return true;
         }
+
+        protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
@@ -144,10 +223,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
-            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
-
             return Task.CompletedTask;
         }
 
