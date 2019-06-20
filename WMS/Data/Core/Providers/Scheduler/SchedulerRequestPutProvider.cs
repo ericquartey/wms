@@ -284,9 +284,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Key = key,
                         RemainingCapacity = compartments.Sum(
-                            j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
-                                    :
-                                    double.PositiveInfinity), // calculated the amount of free remaining capacity of grouping of compartments
+                            j => j.MaxCapacity - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut), // calculated the amount of free remaining capacity of grouping of compartments
                         CompartmentsCount = compartments.Count(),
                         Sub1 = key.Sub1,
                         Sub2 = key.Sub2,

@@ -13,7 +13,7 @@
 
         public int ItemId { get; set; }
 
-        public double? MaxCapacity { get; set; }
+        public double MaxCapacity { get; set; }
 
         #endregion
     }
