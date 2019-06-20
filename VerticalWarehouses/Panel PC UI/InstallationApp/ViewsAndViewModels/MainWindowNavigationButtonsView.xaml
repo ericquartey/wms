@@ -104,32 +104,32 @@
 
                 <Button Command="{Binding DataContext.CellsSideControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.CellsSideControlButton}"
-                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsCellsSideControlButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
                 <Button Command="{Binding DataContext.BayControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.BayControl}"
-                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsBayControlButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
                 <Button Command="{Binding DataContext.DrawerLoadingUnloadingTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.DrawerLoadingUnloadingTest}"
-                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsDrawerLoadingUnloadingTestButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
                 <Button Command="{Binding DataContext.LoadFirstDrawerButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LoadFirstDrawerButton}"
-                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsLoadFirstDrawerButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
                 <Button Command="{Binding DataContext.LoadingDrawersButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LoadingDrawersButton}"
-                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsLoadingDrawersButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
                 <Button Command="{Binding DataContext.SaveRestoreConfigButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SaveRestoreConfigButton}"
-                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsSaveRestoreConfigButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
             </StackPanel>
