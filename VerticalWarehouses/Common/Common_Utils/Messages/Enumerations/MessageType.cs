@@ -49,5 +49,7 @@
         MissionManagerInitialized,
 
         BayConnected,
+
+        WebApiException
     }
 }

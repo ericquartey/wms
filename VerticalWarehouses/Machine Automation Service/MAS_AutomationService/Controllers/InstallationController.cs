@@ -62,10 +62,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteMovementMethod(data);
         }
 
+        [ProducesResponseType(200)]
+        [ProducesResponseType(422)]
+        [ProducesResponseType(400)]
         [HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
-        public async Task ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        public async Task<ActionResult> ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
-            await this.ExecuteResolutionMethod(position, resolutionCalibrationSteps);
+            return await this.ExecuteResolutionMethodAsync(position, resolutionCalibrationSteps);
         }
 
         [HttpPost]
