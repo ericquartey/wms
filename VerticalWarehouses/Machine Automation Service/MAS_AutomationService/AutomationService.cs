@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
@@ -15,9 +16,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using System.Linq;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -242,6 +240,7 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.InverterException:
                     case MessageType.IoDriverException:
                     case MessageType.DLException:
+                    case MessageType.WebApiException:
                         this.ExceptionHandlerMethod(receivedMessage);
                         break;
 
