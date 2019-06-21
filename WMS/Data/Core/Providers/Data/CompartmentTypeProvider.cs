@@ -90,11 +90,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = existingCompartmentType.Id;
                 }
 
-                if (itemId.HasValue)
+                if (itemId.HasValue && maxCapacity.HasValue)
                 {
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
-                                     maxCapacity,
+                                     maxCapacity.Value,
                                      existingCompartmentType.Id);
 
                     if (!result.Success)
@@ -237,7 +237,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
                     int itemId,
-            double? maxCapacity,
+            double maxCapacity,
             int compartmentTypeId)
         {
             var existingIcTModel =

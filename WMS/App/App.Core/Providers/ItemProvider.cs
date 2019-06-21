@@ -108,7 +108,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public async Task<IOperationResult<ItemCompartmentType>> CreateCompartmentTypeAssociationAsync(
             int itemId,
             int compartmentTypeId,
-            int? maxCapacity)
+            int maxCapacity)
         {
             try
             {
@@ -618,7 +618,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
             int itemId,
             int compartmentTypeId,
-            int? maxCapacity)
+            int maxCapacity)
         {
             try
             {

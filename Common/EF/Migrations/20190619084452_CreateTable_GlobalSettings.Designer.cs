@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190619084452_CreateTable_GlobalSettings")]
+    partial class CreateTable_GlobalSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -552,8 +554,7 @@ namespace Ferretto.Common.EF.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("MinStepCompartment")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(5.0);
+                        .ValueGeneratedOnAdd();
 
                     b.HasKey("Id");
 
@@ -672,7 +673,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<double>("MaxCapacity");
+                    b.Property<double?>("MaxCapacity");
 
                     b.HasKey("CompartmentTypeId", "ItemId");
 
