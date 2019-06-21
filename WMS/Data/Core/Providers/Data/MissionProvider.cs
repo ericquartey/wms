@@ -175,7 +175,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
                             Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
                             Stock = c.Stock,
-                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : null,
+                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : double.NaN,
                         })
                     },
                     ItemList = new ItemListMissionInfo

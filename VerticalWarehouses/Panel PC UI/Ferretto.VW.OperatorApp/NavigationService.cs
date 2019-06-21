@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.CustomControls;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Events;
@@ -78,7 +80,10 @@ namespace Ferretto.VW.OperatorApp
             }
             else if (_container.Resolve<I>() is T desiredViewModel)
             {
-                if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel)) navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                {
+                    navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                }
                 await desiredViewModel.OnEnterViewAsync();
                 mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = null;
@@ -94,10 +99,52 @@ namespace Ferretto.VW.OperatorApp
             {
                 if (_container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
                 {
-                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel)) navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    {
+                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    }
                     desiredViewModel.Article = article;
                     await desiredViewModel.OnEnterViewAsync();
                     mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
+                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                }
+            }
+            if (parameterObject is DrawerActivityItemDetail itemDetail)
+            {
+                if (_container.Resolve<I>() is DrawerActivityInventoryDetailViewModel inventoryViewModel)
+                {
+                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    {
+                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    }
+                    inventoryViewModel.ItemDetail = itemDetail;
+                    await inventoryViewModel.OnEnterViewAsync();
+                    mainWindowViewModel.ContentRegionCurrentViewModel = inventoryViewModel;
+                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                }
+                else if (_container.Resolve<I>() is DrawerActivityPickingDetailViewModel pickingViewModel)
+                {
+                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    {
+                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    }
+                    pickingViewModel.ItemDetail = itemDetail;
+                    await pickingViewModel.OnEnterViewAsync();
+                    mainWindowViewModel.ContentRegionCurrentViewModel = pickingViewModel;
+                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                }
+                else if (_container.Resolve<I>() is DrawerActivityRefillingDetailViewModel refillingViewModel)
+                {
+                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    {
+                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    }
+                    refillingViewModel.ItemDetail = itemDetail;
+                    await refillingViewModel.OnEnterViewAsync();
+                    mainWindowViewModel.ContentRegionCurrentViewModel = refillingViewModel;
                     mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                     mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
                 }

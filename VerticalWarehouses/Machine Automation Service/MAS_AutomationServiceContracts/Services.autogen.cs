@@ -378,6 +378,18 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                             return;
                         }
                         else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
@@ -1670,6 +1682,81 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Operator/Operator/Pick/{bayId}/{missionId}/{evadedQuantity}");
+            urlBuilder_.Replace("{bayId}", System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{missionId}", System.Uri.EscapeDataString(ConvertToString(missionId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{evadedQuantity}", System.Uri.EscapeDataString(ConvertToString(evadedQuantity, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task RefillAsync(int bayId, int missionId, int evadedQuantity)
+        {
+            return RefillAsync(bayId, missionId, evadedQuantity, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task RefillAsync(int bayId, int missionId, int evadedQuantity, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayId == null)
+                throw new System.ArgumentNullException("bayId");
+    
+            if (missionId == null)
+                throw new System.ArgumentNullException("missionId");
+    
+            if (evadedQuantity == null)
+                throw new System.ArgumentNullException("evadedQuantity");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Operator/Operator/Refill/{bayId}/{missionId}/{evadedQuantity}");
             urlBuilder_.Replace("{bayId}", System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{missionId}", System.Uri.EscapeDataString(ConvertToString(missionId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{evadedQuantity}", System.Uri.EscapeDataString(ConvertToString(evadedQuantity, System.Globalization.CultureInfo.InvariantCulture)));

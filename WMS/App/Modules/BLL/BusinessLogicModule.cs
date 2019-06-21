@@ -44,7 +44,13 @@ namespace Ferretto.WMS.App.Modules.BLL
                 .Trace("Loading module ...");
 
             RegisterBusinessProviders(containerRegistry);
-            RegisterDataServiceEndpoints(containerRegistry);
+            RegisterDataServiceEndpoints(containerRegistry, this.Container);
+        }
+
+        private static AutoMapper.IMapper GetMapper(IUnityContainer container)
+        {
+            var mapperProvider = container.Resolve<MapperProvider>();
+            return mapperProvider.GetMapper();
         }
 
         private static void RegisterBusinessProviders(IContainerRegistry containerRegistry)
@@ -78,7 +84,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<IFileProvider, ImageProvider>();
         }
 
-        private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)
+        private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry, IUnityContainer container)
         {
             var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataService:Url"]);
 
@@ -112,6 +118,9 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint, httpClient));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint, httpClient));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILocalizationDataService>(serviceEndPoint, httpClient));
+
+            containerRegistry.RegisterInstance(new MapperProvider(container));
+            containerRegistry.RegisterInstance(GetMapper(container));
         }
 
         #endregion

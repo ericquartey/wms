@@ -903,5 +903,9 @@ INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuant
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (9, @ItemList6_Id, 'List6\Row1', NULL, 3, 10, 0, @ListRowStatus_New);
 SET IDENTITY_INSERT ItemListRows OFF;
 
+--GlobalSettings
+SET IDENTITY_INSERT GlobalSettings ON;
+INSERT INTO GlobalSettings(Id, MinStepCompartment) VALUES(1, 5)
+SET IDENTITY_INSERT GlobalSettings OFF;
 
 COMMIT;
