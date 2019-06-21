@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = existingCompartmentType.Id;
                 }
 
-                if (itemId.HasValue)
+                if (itemId.HasValue && maxCapacity.HasValue)
                 {
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
