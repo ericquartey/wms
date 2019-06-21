@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -44,23 +43,23 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
         }
 
-        [HttpPost("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
-        public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
-        {
-            await this.ExecuteBeltBurnishingMethod(upperBound, lowerBound, requiredCycles);
-        }
+        //[HttpPost("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
+        //public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
+        //{
+        //    await this.ExecuteBeltBurnishingMethod(upperBound, lowerBound, requiredCycles);
+        //}
 
-        [HttpGet("ExecuteHoming")]
-        public void ExecuteHoming()
-        {
-            this.ExecuteHomingMethod();
-        }
+        //[HttpGet("ExecuteHoming")]
+        //public void ExecuteHoming()
+        //{
+        //    this.ExecuteHomingMethod();
+        //}
 
-        [HttpPost("ExecuteMovement")]
-        public async Task ExecuteMovement([FromBody]MovementMessageDataDTO data)
-        {
-            await this.ExecuteMovementMethod(data);
-        }
+        //[HttpPost("ExecuteMovement")]
+        //public async Task ExecuteMovement([FromBody]MovementMessageDataDTO data)
+        //{
+        //    await this.ExecuteMovementMethod(data);
+        //}
 
         [HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
         public async Task ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
@@ -81,11 +80,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.ExecuteSensorsChangedMethod();
         }
 
-        [HttpPost("ExecuteShutterPositioningMovement")]
-        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
-        {
-            await this.ExecuteShutterPositioningMovementMethod(data);
-        }
+        //[HttpPost("ExecuteShutterPositioningMovement")]
+        //public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        //{
+        //    await this.ExecuteShutterPositioningMovementMethod(data);
+        //}
 
         [HttpGet("ExecuteVerticalOffsetCalibration")]
         public async Task ExecuteVerticalOffsetCalibration()
@@ -158,18 +157,18 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.ShutterPositioningForLSMMethod(bayNumber, speedRate);
         }
 
-        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
-        {
-            this.StartShutterControlMethod(bayNumber, delay, numberCycles);
-        }
+        //[HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
+        //public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
+        //{
+        //    this.StartShutterControlMethod(bayNumber, delay, numberCycles);
+        //}
 
-        [ProducesResponseType(200)]
-        [HttpGet("StopCommand")]
-        public void StopCommand()
-        {
-            this.StopCommandMethod();
-        }
+        //[ProducesResponseType(200)]
+        //[HttpGet("StopCommand")]
+        //public void StopCommand()
+        //{
+        //    this.StopCommandMethod();
+        //}
 
         [HttpPost]
         [Route("LSM-VerticalAxis/{Displacement}")]
