@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,12 +36,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #endregion
 
-        #region Methods
-
-        public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
-        {
-            return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
-        }
+        //public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
+        //{
+        //    return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
+        //}
 
         //[HttpPost("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
         //public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
@@ -61,14 +59,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         //    await this.ExecuteMovementMethod(data);
         //}
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(422)]
-        [ProducesResponseType(400)]
-        [HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
-        public async Task<ActionResult> ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
-        {
-            return await this.ExecuteResolutionMethodAsync(position, resolutionCalibrationSteps);
-        }
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(422)]
+        //[ProducesResponseType(400)]
+        //[HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
+        //public async Task<ActionResult> ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        //{
+        //    return await this.ExecuteResolutionMethodAsync(position, resolutionCalibrationSteps);
+        //}
+
+        #region Methods
 
         [HttpPost]
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
@@ -77,17 +77,17 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.ExecuteResolutionCalibrationMethod(readInitialPosition, readFinalPosition);
         }
 
-        [HttpGet("ExecuteSensorsChangedCommand")]
-        public void ExecuteSensorsChanged()
-        {
-            this.ExecuteSensorsChangedMethod();
-        }
-
-        //[HttpPost("ExecuteShutterPositioningMovement")]
-        //public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        //[HttpGet("ExecuteSensorsChangedCommand")]
+        //public void ExecuteSensorsChanged()
         //{
-        //    await this.ExecuteShutterPositioningMovementMethod(data);
+        //    this.ExecuteSensorsChangedMethod();
         //}
+
+        [HttpPost("ExecuteShutterPositioningMovement")]
+        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        {
+            await this.ExecuteShutterPositioningMovementMethod(data);
+        }
 
         [HttpGet("ExecuteVerticalOffsetCalibration")]
         public async Task ExecuteVerticalOffsetCalibration()
@@ -95,70 +95,72 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteVerticalOffsetCalibrationMethod();
         }
 
-        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
-        public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
-        {
-            return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
-        }
+        #endregion
 
-        [ProducesResponseType(200, Type = typeof(decimal))]
-        [ProducesResponseType(404)]
-        [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
-        {
-            return await this.GetDecimalConfigurationParameterMethod(category, parameter);
-        }
+        //[HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        //public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        //{
+        //    return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
+        //}
 
-        [ProducesResponseType(200, Type = typeof(bool[]))]
-        [ProducesResponseType(500)]
-        [HttpGet("GetInstallationStatus")]
-        public async Task<ActionResult<bool[]>> GetInstallationStatus()
-        {
-            return await this.GetInstallationStatusMethod();
-        }
+        //[ProducesResponseType(200, Type = typeof(decimal))]
+        //[ProducesResponseType(404)]
+        //[HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
+        //public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
+        //{
+        //    return await this.GetDecimalConfigurationParameterMethod(category, parameter);
+        //}
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(404)]
-        [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
-        {
-            return await this.GetIntegerConfigurationParameterMethod(category, parameter);
-        }
+        //[ProducesResponseType(200, Type = typeof(bool[]))]
+        //[ProducesResponseType(500)]
+        //[HttpGet("GetInstallationStatus")]
+        //public async Task<ActionResult<bool[]>> GetInstallationStatus()
+        //{
+        //    return await this.GetInstallationStatusMethod();
+        //}
 
-        [HttpPost]
-        [Route("LSM-HorizontalAxis/{Displacement}")]
-        public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
-        {
-            this.HorizontalAxisForLSMMethod(displacement, axis, movementType, speedPercentage);
-        }
+        //[ProducesResponseType(200, Type = typeof(int))]
+        //[ProducesResponseType(404)]
+        //[HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
+        //public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
+        //{
+        //    return await this.GetIntegerConfigurationParameterMethod(category, parameter);
+        //}
 
-        [HttpPost]
-        [Route("ResolutionCalibrationComplete")]
-        public async Task<bool> ResolutionCalibrationComplete()
-        {
-            return await this.ResolutionCalibrationCompleteMethod();
-        }
+        //[HttpPost]
+        //[Route("LSM-HorizontalAxis/{Displacement}")]
+        //public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        //{
+        //    this.HorizontalAxisForLSMMethod(displacement, axis, movementType, speedPercentage);
+        //}
 
-        [HttpPost]
-        [Route("SetDecimalConfigurationParameter/{category}/{parameter}/{value}")]
-        public async Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value)
-        {
-            await this.SetDecimalConfigurationParameterMethod(category, parameter, value);
-        }
+        //[HttpPost]
+        //[Route("ResolutionCalibrationComplete")]
+        //public async Task<bool> ResolutionCalibrationComplete()
+        //{
+        //    return await this.ResolutionCalibrationCompleteMethod();
+        //}
 
-        [HttpPost]
-        [Route("SetIntegerConfigurationParameter/{category}/{parameter}/{value}")]
-        public async Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value)
-        {
-            await this.SetIntegerConfigurationParameterMethod(category, parameter, value);
-        }
+        //[HttpPost]
+        //[Route("SetDecimalConfigurationParameter/{category}/{parameter}/{value}")]
+        //public async Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value)
+        //{
+        //    await this.SetDecimalConfigurationParameterMethod(category, parameter, value);
+        //}
 
-        [HttpPost]
-        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
-        {
-            this.ShutterPositioningForLSMMethod(bayNumber, speedRate);
-        }
+        //[HttpPost]
+        //[Route("SetIntegerConfigurationParameter/{category}/{parameter}/{value}")]
+        //public async Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value)
+        //{
+        //    await this.SetIntegerConfigurationParameterMethod(category, parameter, value);
+        //}
+
+        //[HttpPost]
+        //[Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
+        //public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
+        //{
+        //    this.ShutterPositioningForLSMMethod(bayNumber, speedRate);
+        //}
 
         //[HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
         //public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
@@ -173,13 +175,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         //    this.StopCommandMethod();
         //}
 
-        [HttpPost]
-        [Route("LSM-VerticalAxis/{Displacement}")]
-        public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
-        {
-            this.VerticalAxisForLSMMethod(displacement, axis, movementType, speedPercentage);
-        }
-
-        #endregion
+        //[HttpPost]
+        //[Route("LSM-VerticalAxis/{Displacement}")]
+        //public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        //{
+        //    this.VerticalAxisForLSMMethod(displacement, axis, movementType, speedPercentage);
+        //}
     }
 }

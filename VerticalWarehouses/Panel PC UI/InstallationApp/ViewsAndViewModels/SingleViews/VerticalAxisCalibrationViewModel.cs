@@ -7,10 +7,10 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -22,7 +22,9 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private IInstallationService installationService;
+        private IHomingService homingService;
+
+        //private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -141,10 +143,10 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "VerticalAxis";
-                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
-                this.Offset = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
-                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
+                this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
+                this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
+                this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
             }
             catch (SwaggerException ex)
             {
@@ -155,7 +157,9 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            //this.installationService = this.container.Resolve<IInstallationService>();
+
+            this.homingService = this.container.Resolve<IHomingService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -219,7 +223,9 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                await this.installationService.ExecuteHomingAsync();
+                //await this.installationService.ExecuteHomingAsync();
+
+                await this.homingService.ExecuteAsync();
             }
             catch (Exception)
             {
@@ -232,7 +238,10 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                await this.installationService.StopCommandAsync();
+                //await this.installationService.StopCommandAsync();
+
+                await this.homingService.StopAsync();
+
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
                 this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;

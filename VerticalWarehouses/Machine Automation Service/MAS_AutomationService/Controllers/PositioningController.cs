@@ -46,6 +46,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecutePositioning_MethodAsync(data);
         }
 
+        [ProducesResponseType(200)]
+        [HttpGet("Stop")]
+        public void Stop()
+        {
+            this.Stop_Method();
+        }
+
         private async Task ExecutePositioning_MethodAsync(MovementMessageDataDTO data)
         {
             decimal maxSpeed = 0;
@@ -149,6 +156,17 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 // TODO
             }
+        }
+
+        private void Stop_Method()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(
+                new CommandMessage(
+                    null,
+                    "Stop Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.Stop));
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string delayBetweenCycles;
 
-        private IInstallationService installationService;
+        //private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -43,6 +43,8 @@ namespace Ferretto.VW.InstallationApp
         private string requiredCycles;
 
         private BindableBase sensorRegion;
+
+        private IShutterService shutterService;
 
         private ICommand startButtonCommand;
 
@@ -109,8 +111,11 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "GeneralInfo";
-                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
-                this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
+                //this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
+                //this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
+
+                this.RequiredCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
+                this.DelayBetweenCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
             }
             catch (SwaggerException ex)
             {
@@ -135,7 +140,8 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            //this.installationService = this.container.Resolve<IInstallationService>();
+            this.shutterService = this.container.Resolve<IShutterService>();
             this.testService = this.container.Resolve<ITestService>();
         }
 
@@ -200,10 +206,12 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.RequiredCycles, out var reqCycles);
 
                 var bayNumber = 1;
-                await this.installationService.StartShutterControlAsync(bayNumber, delay, reqCycles);
+                //await this.installationService.StartShutterControlAsync(bayNumber, delay, reqCycles);
                 // TEMP
                 //await this.testService.StartShutterControlErrorAsync(delay, reqCycles);
                 //await this.testService.StartShutterControlAsync(delay, reqCycles);
+
+                await this.shutterService.ExecuteControlTestAsync(bayNumber, delay, reqCycles);
             }
             catch (Exception)
             {
@@ -218,7 +226,8 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
 
-                await this.installationService.StopCommandAsync();
+                //await this.installationService.StopCommandAsync();
+                await this.shutterService.StopAsync();
             }
             catch (Exception)
             {

@@ -3,10 +3,10 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -22,9 +22,11 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        private IInstallationService installationService;
+        //private IInstallationService installationService;
 
         private DelegateCommand openButtonCommand;
+
+        private IPositioningService positioningService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -61,7 +63,8 @@ namespace Ferretto.VW.InstallationApp
         public async Task CloseCarouselAsync()
         {
             var messageData = new MovementMessageDataDTO { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            //await this.installationService.ExecuteMovementAsync(messageData);
+            await this.positioningService.ExecuteAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -72,7 +75,8 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            //this.installationService = this.container.Resolve<IInstallationService>();
+            this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -87,12 +91,14 @@ namespace Ferretto.VW.InstallationApp
         public async Task OpenCarouselAsync()
         {
             var messageData = new MovementMessageDataDTO { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            //await this.installationService.ExecuteMovementAsync(messageData);
+            await this.positioningService.ExecuteAsync(messageData);
         }
 
         public async Task StopCarouselAsync()
         {
-            await this.installationService.StopCommandAsync();
+            //await this.installationService.StopCommandAsync();
+            await this.positioningService.StopAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

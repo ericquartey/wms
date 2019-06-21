@@ -8,11 +8,9 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    //TEMP Remove this controller: Stop method is built inside each controller (operation)
-
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
-    public class StopController : ControllerBase
+    public class UpdateSensorsController : ControllerBase
     {
         #region Fields
 
@@ -24,7 +22,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Constructors
 
-        public StopController(IEventAggregator eventAggregator, IServiceProvider services)
+        public UpdateSensorsController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
@@ -34,23 +32,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200)]
         [HttpGet("Execute")]
         public void Execute()
         {
-            this.ExecuteStop_Method();
-            this.Ok();
+            this.Execute_Method();
         }
 
-        private void ExecuteStop_Method()
+        private void Execute_Method()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(
                     null,
-                    "Stop Command",
+                    "Sensors changed Command",
                     MessageActor.FiniteStateMachines,
                     MessageActor.WebApi,
-                    MessageType.Stop));
+                    MessageType.SensorsChanged));
         }
 
         #endregion

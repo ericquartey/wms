@@ -33,7 +33,7 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand initialPositionButtonCommand;
 
-        private IInstallationService installationService;
+        //private IInstallationService installationService;
 
         private bool isAcceptButtonActive;
 
@@ -80,6 +80,8 @@ namespace Ferretto.VW.InstallationApp
         private SubscriptionToken receivedActionToken;
 
         private string repositionLenght;
+
+        private IResolutionCalibrationService resolutionCalibrationService;
 
         private ResolutionCalibrationSteps resolutionCalibrationSteps;
 
@@ -237,9 +239,13 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString("##.##");
-                this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
-                this.DesiredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
+                //this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString("##.##");
+                //this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
+                //this.DesiredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
+
+                this.Resolution = (await this.resolutionCalibrationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString("##.##");
+                this.DesiredInitialPosition = (await this.resolutionCalibrationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
+                this.DesiredFinalPosition = (await this.resolutionCalibrationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
             }
             catch (SwaggerException)
             {
@@ -249,7 +255,8 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.installationService = container.Resolve<IInstallationService>();
+            //this.installationService = container.Resolve<IInstallationService>();
+            this.resolutionCalibrationService = container.Resolve<IResolutionCalibrationService>();
             this.testService = container.Resolve<ITestService>();
         }
 
@@ -263,6 +270,7 @@ namespace Ferretto.VW.InstallationApp
                 },
                 ThreadOption.PublisherThread,
                 false);
+
             this.CancelButtonMethod();
             await this.GetParameterValuesAsync();
             this.resolutionCalibrationSteps = ResolutionCalibrationSteps.None;
@@ -280,7 +288,8 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task AcceptButtonMethodAsync()
         {
-            var resultAssignment = await this.installationService.AcceptNewDecResolutionCalibrationAsync(this.newResolutionDec);
+            //var resultAssignment = await this.installationService.AcceptNewDecResolutionCalibrationAsync(this.newResolutionDec);
+            var resultAssignment = await this.resolutionCalibrationService.SetResolutionParameterAsync(this.newResolutionDec);
 
             if (resultAssignment == true)
             {
@@ -357,7 +366,13 @@ namespace Ferretto.VW.InstallationApp
                     this.MesuredMovement = readDistance.ToString("##.##");
                     this.IsMesuredMovementActive = true;
 
-                    this.newResolutionDec = await this.installationService.GetComputedResolutionCalibrationAsync(readDistance, this.desiredInitialPosition, this.desiredFinalPosition, this.Resolution);
+                    //this.newResolutionDec = await this.installationService.GetComputedResolutionCalibrationAsync(readDistance, this.desiredInitialPosition, this.desiredFinalPosition, this.Resolution);
+                    this.newResolutionDec = await this.resolutionCalibrationService.GetComputedResolutionAsync(
+                        readDistance,
+                        this.desiredInitialPosition,
+                        this.desiredFinalPosition,
+                        this.Resolution);
+
                     this.NewResolution = this.newResolutionDec.ToString("#0.##");
                 }
             }
@@ -403,7 +418,8 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task CloseProcedureButtonMethodAsync()
         {
-            var resolutionCalibration = await this.installationService.ResolutionCalibrationCompleteAsync();
+            //var resolutionCalibration = await this.installationService.ResolutionCalibrationCompleteAsync();
+            var resolutionCalibration = await this.resolutionCalibrationService.CompletedAsync();
 
             if (resolutionCalibration)
             {
@@ -417,7 +433,8 @@ namespace Ferretto.VW.InstallationApp
             decimal.TryParse(this.DesiredFinalPosition, out var position);
             try
             {
-                await this.installationService.ExecuteResolutionAsync(position, ResolutionCalibrationSteps.Move);
+                //await this.installationService.ExecuteResolutionAsync(position, ResolutionCalibrationSteps.Move);
+                await this.resolutionCalibrationService.ExecuteAsync(position, ResolutionCalibrationSteps.Move);
             }
             catch (SwaggerException ex)
             {
@@ -431,7 +448,8 @@ namespace Ferretto.VW.InstallationApp
 
             try
             {
-                await this.installationService.ExecuteResolutionAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
+                //await this.installationService.ExecuteResolutionAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
+                await this.resolutionCalibrationService.ExecuteAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
             }
             catch (SwaggerException ex)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -13,6 +14,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
+    [Route("1.0.0/Installation/[controller]")]
+    [ApiController]
     public class ShutterController : ControllerBase
     {
         #region Fields
@@ -48,6 +51,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task ExecutePositioningAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
             await this.ExecutePositioning_MethodAsync(data);
+        }
+
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(404)]
+        [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
+        public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
+        {
+            return await this.GetIntegerConfigurationParameter_MethodAsync(category, parameter);
+        }
+
+        [ProducesResponseType(200)]
+        [HttpGet("Stop")]
+        public void Stop()
+        {
+            this.Stop_Method();
         }
 
         private async Task ExecuteControlTest_MethodAsync(int bayNumber, int delay, int numberCycles)
@@ -111,6 +129,43 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     MessageActor.FiniteStateMachines,
                     MessageActor.WebApi,
                     MessageType.ShutterPositioning));
+        }
+
+        private async Task<ActionResult<int>> GetIntegerConfigurationParameter_MethodAsync(string category, string parameter)
+        {
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
+
+            if (parameterId != null)
+            {
+                int value;
+
+                try
+                {
+                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)parameterId, (long)categoryId);
+                }
+                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                {
+                    return this.NotFound("Parameter not found");
+                }
+
+                return this.Ok(value);
+            }
+            else
+            {
+                return this.NotFound("Parameter not found");
+            }
+        }
+
+        private void Stop_Method()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(
+                new CommandMessage(
+                    null,
+                    "Stop Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.Stop));
         }
 
         #endregion
