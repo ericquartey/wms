@@ -1,3 +1,9 @@
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using CommonServiceLocator;
+using DevExpress.Mvvm.UI;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 
@@ -5,5 +11,70 @@ namespace Ferretto.WMS.App.Controls
 {
     public class SpinEdit : DevExpress.Xpf.Editors.SpinEdit, ITitleControl
     {
+        #region Fields
+
+        public static readonly DependencyProperty EnableCorrectionIncrementProperty = DependencyProperty.Register(
+                    nameof(EnableCorrection), typeof(bool), typeof(TextBox), new PropertyMetadata(default(bool)));
+
+        #endregion
+
+        #region Constructors
+
+        public SpinEdit()
+        {
+            this.Loaded += this.SpinEdit_Loaded;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public bool EnableCorrection
+        {
+            get => (bool)this.GetValue(EnableCorrectionIncrementProperty);
+            set => this.SetValue(EnableCorrectionIncrementProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void ApplyCorrection()
+        {
+            if (this.EnableCorrection && this.Value > 0)
+            {
+                this.EditValue = (double)(Math.Round(this.Value / this.Increment, 0) * this.Increment);
+            }
+        }
+
+        private void EditCore_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (this.EnableCorrection && this.Value > 0)
+            {
+                this.EditValue = (double)(Math.Round(this.Value / this.Increment, 0) * this.Increment);
+            }
+        }
+
+        private void OnMouseDown(MouseDownInfo mouseDownInfo)
+        {
+            if (mouseDownInfo.OriginalSource is UIElement baseEdit)
+            {
+                var spineditParent = LayoutTreeHelper.GetVisualParents(baseEdit).OfType<SpinEdit>().FirstOrDefault();
+                if (this.EnableCorrection && spineditParent == null)
+                {
+                    this.ApplyCorrection();
+                }
+            }
+        }
+
+        private void SpinEdit_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.EditCore.PreviewLostKeyboardFocus += this.EditCore_PreviewLostKeyboardFocus;
+
+            var inputService = ServiceLocator.Current.GetInstance<IInputService>();
+            inputService.BeginMouseNotify(this, this.OnMouseDown);
+        }
+
+        #endregion
     }
 }
