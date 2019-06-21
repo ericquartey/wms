@@ -415,14 +415,27 @@ namespace Ferretto.VW.InstallationApp
         {
             this.resolutionCalibrationSteps = ResolutionCalibrationSteps.Move;
             decimal.TryParse(this.DesiredFinalPosition, out var position);
-            await this.installationService.ExecuteResolutionAsync(position, ResolutionCalibrationSteps.Move);
+            try
+            {
+                await this.installationService.ExecuteResolutionAsync(position, ResolutionCalibrationSteps.Move);
+            }
+            catch (SwaggerException ex)
+            {
+            }
         }
 
         private async Task SetPositionButtonMethodAsync(ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
             decimal.TryParse(this.DesiredInitialPosition, out var desiredInitialPositionDec);
             this.resolutionCalibrationSteps = resolutionCalibrationSteps;
-            await this.installationService.ExecuteResolutionAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
+
+            try
+            {
+                await this.installationService.ExecuteResolutionAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
+            }
+            catch (SwaggerException ex)
+            {
+            }
         }
 
         private void UpdateResolution(MessageNotifiedEventArgs messageUI)
