@@ -49,10 +49,7 @@ namespace Ferretto.WMS.App.Controls
 
         private void EditCore_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (this.EnableCorrection && this.Value > 0)
-            {
-                this.EditValue = (double)(Math.Round(this.Value / this.Increment, 0) * this.Increment);
-            }
+            this.ApplyCorrection();
         }
 
         private void OnMouseDown(MouseDownInfo mouseDownInfo)
