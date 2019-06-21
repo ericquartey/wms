@@ -1151,4 +1151,8 @@
   <data name="ErrorRetrievingConfigurationData" xml:space="preserve">
     <value>Couldn't fetch requested configuration data</value>
   </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>Value inserted not valid</value>
+    <comment>Value inserted not valid</comment>
+  </data>
 </root>
