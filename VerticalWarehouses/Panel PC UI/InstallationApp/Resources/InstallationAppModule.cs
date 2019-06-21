@@ -32,8 +32,6 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
 
-            //var installationService = new InstallationService(this.automationServiceUrl);
-
             var homingService = new HomingService(this.automationServiceUrl);
             var positioningService = new PositioningService(this.automationServiceUrl);
             var beltBurnishingService = new BeltBurnishingService(this.automationServiceUrl);
@@ -87,7 +85,6 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            //this.container.RegisterInstance<IInstallationService>(installationService);
 
             this.container.RegisterInstance<IHomingService>(homingService);
             this.container.RegisterInstance<IPositioningService>(positioningService);

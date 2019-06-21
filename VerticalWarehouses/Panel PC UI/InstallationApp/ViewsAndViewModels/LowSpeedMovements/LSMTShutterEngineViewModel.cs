@@ -26,8 +26,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        //private IInstallationService installationService;
-
         private DelegateCommand openButtonCommand;
 
         private IShutterService shutterService;
@@ -70,10 +68,6 @@ namespace Ferretto.VW.InstallationApp
         public async Task DownShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
-            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
-            //TEMP
-            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
-
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 
@@ -85,11 +79,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
             this.shutterService = this.container.Resolve<IShutterService>();
-
-            // TEMP
-            //this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -103,7 +93,6 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task StopShutterAsync()
         {
-            //await this.installationService.StopCommandAsync();
             await this.shutterService.StopAsync();
         }
 
@@ -120,10 +109,6 @@ namespace Ferretto.VW.InstallationApp
         public async Task UpShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
-            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
-            //TEMP
-            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
-
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 

@@ -20,8 +20,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        //private IInstallationService installationService;
-
         private bool isButtonBackEnabled;
 
         private bool isButtonForwardEnabled;
@@ -78,7 +76,6 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
             this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
@@ -109,16 +106,13 @@ namespace Ferretto.VW.InstallationApp
             this.IsButtonForwardEnabled = false;
 
             var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
-            //await this.installationService.ExecuteMovementAsync(messageData);
             await this.positioningService.ExecuteAsync(messageData);
         }
 
         private async Task MoveForwardHorizontalAxisHandlerAsync()
         {
             this.IsButtonBackEnabled = false;
-
             var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
-            //await this.installationService.ExecuteMovementAsync(messageData);
             await this.positioningService.ExecuteAsync(messageData);
         }
 
@@ -126,7 +120,6 @@ namespace Ferretto.VW.InstallationApp
         {
             this.IsButtonBackEnabled = true;
             this.IsButtonForwardEnabled = true;
-            //await this.installationService.StopCommandAsync();
             await this.positioningService.StopAsync();
         }
 

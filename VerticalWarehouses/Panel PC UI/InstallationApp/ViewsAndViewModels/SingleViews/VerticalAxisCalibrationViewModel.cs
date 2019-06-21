@@ -24,8 +24,6 @@ namespace Ferretto.VW.InstallationApp
 
         private IHomingService homingService;
 
-        //private IInstallationService installationService;
-
         private bool isStartButtonActive = true;
 
         private bool isStopButtonActive = true;
@@ -157,8 +155,6 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
-
             this.homingService = this.container.Resolve<IHomingService>();
         }
 
@@ -223,8 +219,6 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                //await this.installationService.ExecuteHomingAsync();
-
                 await this.homingService.ExecuteAsync();
             }
             catch (Exception)
@@ -238,8 +232,6 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                //await this.installationService.StopCommandAsync();
-
                 await this.homingService.StopAsync();
 
                 this.IsStartButtonActive = true;

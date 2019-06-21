@@ -17,8 +17,6 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        //private IInstallationService installationService;
-
         private IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentiInMachineSide;
@@ -66,7 +64,6 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
             this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
@@ -78,7 +75,6 @@ namespace Ferretto.VW.InstallationApp
                 ThreadOption.PublisherThread,
                 false);
 
-            //await this.installationService.ExecuteSensorsChangedAsync();
             await this.updateSensorsService.ExecuteAsync();
         }
 

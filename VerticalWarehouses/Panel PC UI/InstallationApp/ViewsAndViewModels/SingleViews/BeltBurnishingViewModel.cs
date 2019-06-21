@@ -30,8 +30,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string cycleQuantity;
 
-        //private IInstallationService installationService;
-
         private bool isStartButtonActive = true;
 
         private bool isStopButtonActive;
@@ -143,12 +141,10 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var Category = "VerticalAxis";
-                //this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                //this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
                 this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
                 this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+
                 Category = "BeltBurnishing";
-                //this.CycleQuantity = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
                 this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
             }
             catch (SwaggerException ex)
@@ -159,8 +155,6 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
-
             this.beltBurnishingService = this.container.Resolve<IBeltBurnishingService>();
         }
 
@@ -180,9 +174,6 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TEMP
-            //this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
-
             this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
@@ -212,7 +203,6 @@ namespace Ferretto.VW.InstallationApp
                 decimal.TryParse(this.LowerBound, out var lowerBound);
                 decimal.TryParse(this.UpperBound, out var upperBound);
 
-                //await this.installationService.ExecuteBeltBurnishingAsync(upperBound, lowerBound, reqCycles);
                 await this.beltBurnishingService.ExecuteAsync(upperBound, lowerBound, reqCycles);
             }
             catch (Exception)
@@ -224,7 +214,6 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                //await this.installationService.StopCommandAsync();
                 await this.beltBurnishingService.StopAsync();
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;

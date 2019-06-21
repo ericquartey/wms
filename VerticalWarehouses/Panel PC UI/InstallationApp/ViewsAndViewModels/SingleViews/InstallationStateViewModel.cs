@@ -14,8 +14,6 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        //private IInstallationService installationService;
-
         private IInstallationStatusService installationStatusService;
 
         private bool isBeltBurnishingDone;
@@ -115,7 +113,6 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
             this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
         }
 
@@ -131,7 +128,6 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task GetInstallationStateAsync()
         {
-            //var installationStatus = await this.installationService.GetInstallationStatusAsync();
             var installationStatus = await this.installationStatusService.GetStatusAsync();
 
             this.IsVerticalHomingDone = installationStatus[0];

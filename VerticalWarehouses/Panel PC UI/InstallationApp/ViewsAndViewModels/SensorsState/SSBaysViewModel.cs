@@ -23,8 +23,6 @@ namespace Ferretto.VW.InstallationApp
 
         private bool heightControlCheckBay3;
 
-        //private IInstallationService installationService;
-
         private IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentInBay1;
@@ -102,7 +100,6 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            //this.installationService = this.container.Resolve<IInstallationService>();
             this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
@@ -114,7 +111,6 @@ namespace Ferretto.VW.InstallationApp
                  ThreadOption.PublisherThread,
                  false);
 
-            //await this.installationService.ExecuteSensorsChangedAsync();
             await this.updateSensorsService.ExecuteAsync();
         }
 
