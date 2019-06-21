@@ -161,7 +161,7 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        public object SelectedItem
+        public virtual object SelectedItem
         {
             get => this.selectedItem;
             set

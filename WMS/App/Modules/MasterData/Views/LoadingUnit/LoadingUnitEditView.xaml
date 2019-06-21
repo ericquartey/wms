@@ -146,7 +146,8 @@
                                         Header="{x:Static res:General.Dimension}">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock Style="{DynamicResource TextBlockCell}" HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Style="{DynamicResource TextBlockCell}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.DimensionFormat}" />
@@ -176,7 +177,8 @@
                                         FieldName="Stock">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />

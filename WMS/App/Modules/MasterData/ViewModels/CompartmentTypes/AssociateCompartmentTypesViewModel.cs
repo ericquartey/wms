@@ -53,12 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return false;
             }
 
-            if (this.selectedOption.Id == this.options.First().Id)
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public override bool CanSave()
@@ -89,7 +84,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                return (null, null, null);
+                return (nameof(MasterData), Common.Utils.Modules.MasterData.CHOOSELOADINGUNITSTEP, this.Data);
             }
         }
 
