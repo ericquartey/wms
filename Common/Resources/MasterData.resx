@@ -582,4 +582,7 @@
   <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
     <value>No Unassociate Compartment Types available</value>
   </data>
+  <data name="MinStep" xml:space="preserve">
+    <value>(Min. Step: {0})</value>
+  </data>
 </root>
