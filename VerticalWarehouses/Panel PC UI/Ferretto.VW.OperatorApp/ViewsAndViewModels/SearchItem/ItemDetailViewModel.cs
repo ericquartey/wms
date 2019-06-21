@@ -8,6 +8,11 @@ using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Net;
+using System.IO;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using System.Windows.Media;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -21,9 +26,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private string articleDescription;
 
+        private IUnityContainer container;
+
         private IEventAggregator eventAggregator;
 
-        private string testProperty = "tested";
+        private string imagePath;
 
         #endregion
 
@@ -54,9 +61,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public string ArticleDescription { get => this.articleDescription; set => this.SetProperty(ref this.articleDescription, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
+        public string ImagePath { get => this.imagePath; set => this.SetProperty(ref this.imagePath, value); }
 
-        public string TestProperty { get => this.testProperty; set => this.SetProperty(ref this.testProperty, value); }
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -67,9 +74,20 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             // TODO
         }
 
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
+            this.ImagePath = "./Images/image.jpg";
+        }
+
         public async Task OnEnterViewAsync()
         {
-            // TODO
+            //var webClient = new WebClient();
+            //webClient.DownloadFile("http://172.16.199.100:6000/api/images/Articolo1.jpg", "./Images/image.jpg");
+            //webClient.Dispose();
+
+            //var imagesProvider = this.container.Resolve<IWmsImagesProvider>();
+            //var image = imagesProvider.GetImageAsync(this.Article.Article);
         }
 
         public void SubscribeMethodToEvent()

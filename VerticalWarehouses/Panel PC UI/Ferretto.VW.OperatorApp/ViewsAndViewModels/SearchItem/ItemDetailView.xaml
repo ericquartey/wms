@@ -12,36 +12,67 @@
     <Grid Width="1024"
           Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.ItemDetailHeader}" />
-        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,190,0,0" Width="180" Height="180"
-            Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
-            Stretch="Uniform" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,130,0,0" MaxWidth="200"
-            ContentText="{Binding ArticleCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,210,0,0" MaxWidth="200"
-            ContentText="FIFO"
-            LabelText="{x:Static Resources:OperatorApp.ItemDetailManagement}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,130,0,0" MaxWidth="500"
-            ContentText="{Binding ArticleDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,270,0,0" MaxWidth="200"
-            ContentText="Ingranaggi"
-            LabelText="{x:Static Resources:OperatorApp.ItemDetailCategory}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,330,0,0" MaxWidth="200"
-            ContentText="B"
-            LabelText="{x:Static Resources:OperatorApp.ItemDetailClasse}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,270,0,0" MaxWidth="200"
-            ContentText="Pezzi"
-            LabelText="{x:Static Resources:OperatorApp.ItemDetailMeasurementUnity}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,330,0,0" MaxWidth="200"
-            ContentText="275,5"
-            LabelText="{x:Static Resources:OperatorApp.ItemDetailWeight}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,210,0,0" MaxWidth="200"
-            ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            LabelText="{x:Static Resources:OperatorApp.ItemDetailPeriod}"/>
+        <TextBlock Margin="170,40,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.ItemDetailHeader}" />
+        <Image Width="180"
+               Height="180"
+               Margin="170,190,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Source="{Binding ImagePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+               Stretch="Uniform" />
+        <!--  Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"  -->
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="170,130,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding ArticleCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonItemCode}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="440,210,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="FIFO"
+                                              LabelText="{x:Static Resources:OperatorApp.ItemDetailManagement}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+                                              Margin="440,130,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding ArticleDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="440,270,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="Ingranaggi"
+                                              LabelText="{x:Static Resources:OperatorApp.ItemDetailCategory}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="440,330,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="B"
+                                              LabelText="{x:Static Resources:OperatorApp.ItemDetailClasse}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="680,270,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="Pezzi"
+                                              LabelText="{x:Static Resources:OperatorApp.ItemDetailMeasurementUnity}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="680,330,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="275,5"
+                                              LabelText="{x:Static Resources:OperatorApp.ItemDetailWeight}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="680,210,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.ItemDetailPeriod}" />
 
     </Grid>
 </UserControl>
