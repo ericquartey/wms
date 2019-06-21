@@ -24,11 +24,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         private ICommand createCommand;
 
         private ICommand deleteCompartmentCommand;
+
+        private GlobalSettings globalSettings;
 
         private bool isAdd;
 
@@ -62,6 +66,8 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.deleteCompartmentCommand = new DelegateCommand(
                 async () => await this.DeleteCompartmentAsync(),
                 this.CanDeleteCompartment));
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
 
         public bool IsAdd
         {
@@ -123,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public Task InitializeDataAsync()
+        public async Task InitializeDataAsync()
         {
             if (this.mode == AppearMode.Add)
             {
@@ -139,7 +145,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
             this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
 
-            return Task.CompletedTask;
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -277,6 +283,13 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        protected override async Task OnAppearAsync()
+        {
+            await base.OnAppearAsync().ConfigureAwait(true);
+
+            await this.LoadDataAsync().ConfigureAwait(true);
         }
 
         protected override void OnDispose()

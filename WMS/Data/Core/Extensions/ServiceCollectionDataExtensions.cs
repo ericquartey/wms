@@ -45,6 +45,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             services.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
             services.AddTransient<IUserProvider, UserProvider>();
             services.AddTransient<IImageProvider, ImageProvider>();
+            services.AddTransient<IGlobalSettingsProvider, GlobalSettingsProvider>();
 
             services.AddHostedService<MachineLiveDataService>();
             services.AddSingleton<IMachinesLiveDataContext, MachinesLiveDataContext>();

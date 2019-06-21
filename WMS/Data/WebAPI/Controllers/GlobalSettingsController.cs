@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +8,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GlobalSettingsController : Controller
+    public class GlobalSettingsController : BaseController
     {
         #region Fields
 

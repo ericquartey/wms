@@ -5727,11 +5727,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     internal partial class GlobalSettingsDataService : ServiceBase, IGlobalSettingsDataService
     {
         private string _baseUrl = "";
+        private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public GlobalSettingsDataService(string baseUrl)
+        public GlobalSettingsDataService(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
+            _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
                 var settings = new Newtonsoft.Json.JsonSerializerSettings();
@@ -5760,7 +5762,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/global-settings");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -5833,8 +5835,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             }
             finally
             {
-                if (client_ != null)
-                    client_.Dispose();
             }
         }
     

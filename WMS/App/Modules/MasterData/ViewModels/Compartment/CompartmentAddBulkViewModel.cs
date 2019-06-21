@@ -14,6 +14,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
+        private GlobalSettings globalSettings;
+
         #endregion
 
         #region Constructors
@@ -26,7 +30,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion
 
+        #region Properties
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
+
+        #endregion
+
         #region Methods
+
+        public async Task InitializeDataAsync()
+        {
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
+        }
 
         protected override Task ExecuteRefreshCommandAsync()
         {
@@ -73,7 +88,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
-            // no need to load any data
             return Task.CompletedTask;
         }
 
