@@ -1216,4 +1216,7 @@
     <value>Width [mm]</value>
     <comment>Item Compartment Type - Width</comment>
   </data>
+  <data name="WeightFillRate" xml:space="preserve">
+    <value>Weight Fill Rate</value>
+  </data>
 </root>

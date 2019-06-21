@@ -990,4 +990,7 @@
   <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
     <value>Larghezza [mm]</value>
   </data>
+  <data name="WeightFillRate" xml:space="preserve">
+    <value>Percentuale di Riempimento Peso</value>
+  </data>
 </root>

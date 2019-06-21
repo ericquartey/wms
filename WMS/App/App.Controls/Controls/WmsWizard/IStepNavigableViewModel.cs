@@ -5,15 +5,21 @@ namespace Ferretto.WMS.App.Controls
 {
     public interface IStepNavigableViewModel : INavigableViewModel
     {
+        #region Properties
+
+        string Title { get; set; }
+
+        #endregion
+
         #region Methods
 
         bool CanGoToNextView();
 
         bool CanSave();
 
-        (string moduleName, string viewName, object data) GetNextView();
-
         string GetError();
+
+        (string moduleName, string viewName, object data) GetNextView();
 
         Task<bool> SaveAsync();
 

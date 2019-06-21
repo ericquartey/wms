@@ -65,6 +65,9 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitTypeDescription), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.WeightFillRate), ResourceType = typeof(BusinessObjects))]
+        public double WeightFillRate { get; set; }
+
         #endregion
     }
 }
