@@ -905,7 +905,7 @@ SET IDENTITY_INSERT ItemListRows OFF;
 
 --GlobalSettings
 SET IDENTITY_INSERT GlobalSettings ON;
-INSERT INTO GlobalSettings(Id) VALUES(1)
+INSERT INTO GlobalSettings(Id, MinStepCompartment) VALUES(1, 5)
 SET IDENTITY_INSERT GlobalSettings OFF;
 
 COMMIT;

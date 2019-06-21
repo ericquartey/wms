@@ -554,8 +554,7 @@ namespace Ferretto.Common.EF.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("MinStepCompartment")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(5.0);
+                        .ValueGeneratedOnAdd();
 
                     b.HasKey("Id");
 

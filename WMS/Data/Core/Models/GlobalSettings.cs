@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.WMS.Data.Core.Models;
-
-namespace Ferretto.WMS.Data.Core
+﻿namespace Ferretto.WMS.Data.Core
 {
     public class GlobalSettings
     {
@@ -11,7 +6,7 @@ namespace Ferretto.WMS.Data.Core
 
         public int Id { get; set; }
 
-        public double MinStepCompartment { get; set; } = 5;
+        public double MinStepCompartment { get; set; }
 
         #endregion
     }

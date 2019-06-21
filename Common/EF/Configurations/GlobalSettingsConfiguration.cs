@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.Common.DataModels;
+﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,8 +17,7 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(a => a.Id);
 
-            builder.Property(g => g.MinStepCompartment)
-                .HasDefaultValue(5);
+            builder.Property(g => g.MinStepCompartment);
         }
 
         #endregion

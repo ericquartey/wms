@@ -31,8 +31,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<GlobalSettings> GetAllAsync()
         {
-            var gS = await this.globalSettingsDataService.GetAllAsync();
-            return this.mapper.Map<GlobalSettings>(gS);
+            var globalSettings = await this.globalSettingsDataService.GetAllAsync();
+            return this.mapper.Map<GlobalSettings>(globalSettings);
         }
 
         #endregion
