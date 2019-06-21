@@ -582,4 +582,16 @@
   <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
     <value>No Unassociate Compartment Types available</value>
   </data>
+  <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
+    <value>Choose the Loading Unit where you want to create a new Compartment Type</value>
+    <comment>Wizard - ChooseLoadingUnitStepView -</comment>
+  </data>
+  <data name="NoLoadingUnitsAvailable" xml:space="preserve">
+    <value>No Loading Units available.</value>
+    <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
+  </data>
+  <data name="LayoutOverview" xml:space="preserve">
+    <value>Layout Overview</value>
+    <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
+  </data>
 </root>
