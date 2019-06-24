@@ -163,7 +163,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 default:
-                    throw new ArgumentException("Only pick and put requests are supported.", nameof(request));
+                    throw new ArgumentException(
+                        Resources.Errors.OnlyPickAndPutRequestsAreSupported,
+                        nameof(request));
             }
 
             return candidateCompartments;
@@ -220,7 +222,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     throw new ArgumentException(
-                        $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
+                        string.Format(
+                            Resources.Errors.UnableToInterpretEnumerationValueFor,
+                            nameof(ItemManagementType)),
                         nameof(managementType));
             }
         }

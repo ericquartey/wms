@@ -123,7 +123,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && list.OperationType != ItemListType.Put)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                           $"The list type '{list.OperationType}' is not supported.");
+                        string.Format(
+                            Resources.Errors.TheListTypeIsNotSupported,
+                            list.OperationType));
                 }
 
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);

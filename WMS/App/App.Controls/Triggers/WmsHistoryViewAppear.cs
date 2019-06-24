@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Interactivity;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -78,7 +79,7 @@ namespace Ferretto.WMS.App.Controls
             }
             else
             {
-                throw new ArgumentException(Ferretto.Common.Resources.Errors.WmsHistoryViewAppearSyntax);
+                throw new ArgumentException(Errors.WmsHistoryViewAppearSyntax);
             }
         }
 

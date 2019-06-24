@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemPutArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
             get => this.areaId;
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemPutBay), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
@@ -97,14 +97,14 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.isAreaIdSpecified, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemPutItem), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.SelectedItem), ResourceType = typeof(BusinessObjects))]
         public ItemDetails ItemDetails
         {
             get => this.itemDetails;
             set => this.SetProperty(ref this.itemDetails, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemPutLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Lot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
         public IEnumerable<Enumeration> MaterialStatusChoices
@@ -126,7 +126,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemPutQuantity), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Quantity), ResourceType = typeof(BusinessObjects))]
         public double? Quantity
         {
             get => this.quantity;
@@ -139,7 +139,7 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemPutRegistrationNumber), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber
         {
             get => this.registrationNumber;
@@ -152,10 +152,10 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemPutSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemPutSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion

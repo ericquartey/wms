@@ -129,7 +129,10 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 if (propertyType == null)
                 {
                     throw new InvalidOperationException(
-                        $"Property {sortOption.PropertyName} does not exist on entity {typeof(T).Name}");
+                        string.Format(
+                            Resources.Errors.PropertyDoesNotExistOnEntity,
+                            sortOption.PropertyName,
+                            typeof(T).Name));
                 }
 
                 var expression = typeof(IQueryableExtension)

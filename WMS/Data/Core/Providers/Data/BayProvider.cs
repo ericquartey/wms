@@ -166,7 +166,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             var bay = await this.DataContext.Bays.SingleOrDefaultAsync(b => b.Id == id);
             if (bay == null)
             {
-                throw new System.ArgumentException($"No bay with the id {id} exists", nameof(id));
+                throw new ArgumentException(
+                    string.Format(
+                        Resources.Errors.NoBayWithTheIdExists,
+                        id),
+                    nameof(id));
             }
 
             if (increment.HasValue)

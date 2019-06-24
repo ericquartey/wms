@@ -12,8 +12,6 @@ namespace Ferretto.WMS.Data.Core.Policies
         {
             return new Policy
             {
-                IsAllowed = true,
-                Reason = null,
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
