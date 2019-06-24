@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
@@ -125,41 +124,41 @@ namespace Ferretto.WMS.Data.Core.Models
 
             if (!this.XPosition.HasValue)
             {
-                sb.AppendLine(Errors.CompartmentXPositionIsNotSpecified);
+                sb.AppendLine(Resources.Errors.CompartmentXPositionIsNotSpecified);
             }
 
             if (!this.YPosition.HasValue)
             {
-                sb.AppendLine(Errors.CompartmentYPositionIsNotSpecified);
+                sb.AppendLine(Resources.Errors.CompartmentYPositionIsNotSpecified);
             }
 
             if (!this.Width.HasValue)
             {
-                sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
+                sb.AppendLine(Resources.Errors.CompartmentSizeIsNotSpecified);
             }
 
             if (!this.Height.HasValue)
             {
-                sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
+                sb.AppendLine(Resources.Errors.CompartmentSizeIsNotSpecified);
             }
 
             if (this.MaxCapacity.HasValue
                 && this.MaxCapacity.Value < this.Stock)
             {
-                sb.AppendLine(Errors.CompartmentStockGreaterThanMaxCapacity);
+                sb.AppendLine(Resources.Errors.CompartmentStockGreaterThanMaxCapacity);
             }
 
             if (!string.IsNullOrEmpty(this.RegistrationNumber)
                 && this.Stock > 1)
             {
-                sb.AppendLine(Errors.QuantityMustBeOneIfRegistrationNumber);
+                sb.AppendLine(Resources.Errors.QuantityMustBeOneIfRegistrationNumber);
             }
 
             if (this.ItemId.HasValue
                 && this.Stock.Equals(0)
                 && !this.IsItemPairingFixed)
             {
-                sb.AppendLine(Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed);
+                sb.AppendLine(Resources.Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed);
             }
 
             return sb.ToString();
