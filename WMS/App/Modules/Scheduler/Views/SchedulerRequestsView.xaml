@@ -28,7 +28,7 @@
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.RequestedQuantity"
                                  TargetNullValue="" />
-                        <Binding Path="Data.ItemUnitMeasure"
+                        <Binding Path="Data.MeasureUnitDescription"
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
@@ -276,11 +276,11 @@
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
                                                       wms:ShowTitle.Show="True"
-                                                      Content="{Binding Path=ItemUnitMeasure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Content="{Binding Path=MeasureUnitDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="6"
                                                       Grid.Column="0"
                                                       wms:ShowTitle.Show="True"
-                                                      Content="{Binding Path=AreaDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Content="{Binding Path=AreaName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="6"
                                                       Grid.Column="1"
                                                       wms:ShowTitle.Show="True"

@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public enum MissionType
+    public enum MissionOperationType
     {
         [Display(Name = nameof(BusinessObjects.MissionTypeBypass), ResourceType = typeof(BusinessObjects))]
         Bypass = 'B',

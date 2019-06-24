@@ -29,11 +29,11 @@ namespace Ferretto.WMS.App.Core.Providers
         #region Methods
 
         public async Task<IEnumerable<Mission>> GetAllAsync(
-            int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null,
-            string whereString = null,
-            string searchString = null)
+           int skip,
+           int take,
+           IEnumerable<SortOption> orderBySortOptions = null,
+           string whereString = null,
+           string searchString = null)
         {
             try
             {
@@ -48,31 +48,41 @@ namespace Ferretto.WMS.App.Core.Providers
                 return missions
                     .Select(m => new Mission
                     {
-                        Lot = m.Lot,
                         Id = m.Id,
-                        Sub1 = m.Sub1,
-                        Sub2 = m.Sub2,
-                        RegistrationNumber = m.RegistrationNumber,
                         Status = (MissionStatus)m.Status,
-                        Type = (MissionType)m.Type,
-
                         CreationDate = m.CreationDate,
                         LastModificationDate = m.LastModificationDate,
                         BayDescription = m.BayDescription,
-                        ItemDescription = m.ItemDescription,
-                        ItemListDescription = m.ItemListDescription,
-                        ItemListRowDescription = m.ItemListRowCode,
                         LoadingUnitDescription = m.LoadingUnitCode,
                         Priority = m.Priority,
-                        RequestedQuantity = m.RequestedQuantity,
-                        CellDescription = m.CellAisleName,
-                        CompartmentType = m.CompartmentTypeWidth.HasValue && m.CompartmentTypeHeight.HasValue ?
-                            string.Format(General.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight)
-                            : null,
-                        ItemUnitMeasure = m.ItemMeasureUnitDescription,
-                        MaterialStatusDescription = m.MaterialStatusDescription,
-                        PackageTypeDescription = m.PackageTypeDescription,
-                        DispatchedQuantity = m.DispatchedQuantity
+                        Operations = m.Operations.Select(o =>
+                        new MissionOperation
+                        {
+                            Lot = o.Lot,
+                            Sub1 = o.Sub1,
+                            Sub2 = o.Sub2,
+                            MissionId = o.MissionId,
+                            RegistrationNumber = o.RegistrationNumber,
+                            Type = (MissionOperationType)o.Type,
+                            ItemDescription = o.ItemDescription,
+                            ItemListDescription = o.ItemListDescription,
+                            ItemListRowDescription = o.ItemListRowCode,
+                            RequestedQuantity = o.RequestedQuantity,
+                            CreationDate = o.CreationDate,
+                            LastModificationDate = o.LastModificationDate,
+                            Status = (MissionOperationStatus)o.Status,
+                            CompartmentType = string.Format(General.CompartmentTypeListFormatReduced, o.CompartmentWidth, o.CompartmentHeight),
+                            ItemMeasureUnitDescription = o.ItemMeasureUnitDescription,
+#pragma warning disable SA1515 // Single-line comment must be preceded by blank line
+#pragma warning disable SA1005 // Single line comments must begin with single space
+
+                            // *** *AISLE NAME
+                            MaterialStatusDescription = o.MaterialStatusDescription,
+#pragma warning restore SA1005 // Single line comments must begin with single space
+#pragma warning restore SA1515 // Single-line comment must be preceded by blank line
+                            PackageTypeDescription = o.PackageTypeDescription,
+                            DispatchedQuantity = o.DispatchedQuantity,
+                        })
                     });
             }
             catch
@@ -101,29 +111,32 @@ namespace Ferretto.WMS.App.Core.Providers
 
                 return new Mission
                 {
-                    Lot = mission.Lot,
                     Id = mission.Id,
-                    Sub1 = mission.Sub1,
-                    Sub2 = mission.Sub2,
-                    RegistrationNumber = mission.RegistrationNumber,
                     Status = (MissionStatus)mission.Status,
-                    Type = (MissionType)mission.Type,
-
                     CreationDate = mission.CreationDate,
                     LastModificationDate = mission.LastModificationDate,
                     BayDescription = mission.BayDescription,
-                    ItemDescription = mission.ItemDescription,
-                    ItemListDescription = mission.ItemListDescription,
-                    ItemListRowDescription = mission.ItemListRowCode,
                     LoadingUnitDescription = mission.LoadingUnitCode,
                     Priority = mission.Priority,
-                    RequestedQuantity = mission.RequestedQuantity,
-                    CellDescription = mission.CellAisleName,
-                    CompartmentType = string.Format(General.CompartmentTypeListFormatReduced, mission.CompartmentTypeWidth, mission.CompartmentTypeHeight),
-                    ItemUnitMeasure = mission.ItemMeasureUnitDescription,
-                    MaterialStatusDescription = mission.MaterialStatusDescription,
-                    PackageTypeDescription = mission.PackageTypeDescription,
-                    DispatchedQuantity = mission.DispatchedQuantity
+                    Operations = mission.Operations.Select(o =>
+                        new MissionOperation
+                        {
+                            Lot = o.Lot,
+                            Sub1 = o.Sub1,
+                            Sub2 = o.Sub2,
+                            RegistrationNumber = o.RegistrationNumber,
+                            Type = (MissionOperationType)o.Type,
+                            CreationDate = o.CreationDate,
+                            LastModificationDate = o.LastModificationDate,
+                            ItemDescription = o.ItemDescription,
+                            ItemListDescription = o.ItemListDescription,
+                            ItemListRowDescription = o.ItemListRowCode,
+                            RequestedQuantity = o.RequestedQuantity,
+                            CompartmentType = string.Format(General.CompartmentTypeListFormatReduced, o.CompartmentWidth, o.CompartmentHeight),
+                            MaterialStatusDescription = o.MaterialStatusDescription,
+                            PackageTypeDescription = o.PackageTypeDescription,
+                            DispatchedQuantity = o.DispatchedQuantity,
+                        })
                 };
             }
             catch

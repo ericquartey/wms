@@ -1,42 +1,40 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class SchedulerRequest : BusinessObject
+    public class MissionOperation : BusinessObject
     {
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
-        public string AreaName { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
-        public string BayDescription { get; set; }
+        [Display(Name = nameof(Common.Resources.Scheduler.CompartmentType), ResourceType = typeof(Common.Resources.Scheduler))]
+        public string CompartmentType { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.IsInstant), ResourceType = typeof(Common.Resources.Scheduler))]
-        public bool IsInstant { get; set; }
+        [Display(Name = nameof(BusinessObjects.MissionDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
+        public double DispatchedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
-        [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
-        public DateTime LastModificationDate { get; set; }
-
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
-        public string ListDescription { get; set; }
+        public string ItemListDescription { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.ItemListRow), ResourceType = typeof(Common.Resources.Scheduler))]
-        public string ListRowCode { get; set; }
+        [Display(Name = nameof(ItemLists.ItemListRow), ResourceType = typeof(ItemLists))]
+        public string ItemListRowDescription { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MeasureUnitDescription), ResourceType = typeof(BusinessObjects))]
+        public string ItemMeasureUnitDescription { get; set; }
+
+        [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
+        public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
@@ -44,28 +42,26 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get; set; }
 
-        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.OperationType), ResourceType = typeof(BusinessObjects))]
-        public OperationType? OperationType { get; set; }
+        public int MissionId { get; set; }
+
+        public IEnumerable<MissionOperation> Operations { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public string PackageTypeDescription { get; set; }
 
+        [Display(Name = nameof(General.Priority), ResourceType = typeof(General))]
         public int? Priority { get; set; }
 
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
-        [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
-        public double? RequestedQuantity { get; set; }
-
-        [Display(Name = nameof(Common.Resources.Scheduler.ReservedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
-        public double? ReservedQuantity { get; set; }
+        [Display(Name = nameof(BusinessObjects.MissionRequestedQuantity), ResourceType = typeof(BusinessObjects))]
+        public double RequestedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
-        public SchedulerRequestStatus? Status { get; set; }
+        public MissionOperationStatus Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
@@ -74,7 +70,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public SchedulerRequestType? Type { get; set; }
+        public MissionOperationType Type { get; set; }
 
         #endregion
     }

@@ -142,7 +142,9 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedFilterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
+                    this.SelectedFilterDataSource = value != null
+                        ? this.FilterDataSources.Single(d => d.Key == value.Key)
+                        : null;
                 }
             }
         }

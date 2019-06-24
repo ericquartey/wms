@@ -7,7 +7,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.AreaDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.AreaName), ResourceType = typeof(BusinessObjects))]
         public string Name { get; set; }
 
         #endregion

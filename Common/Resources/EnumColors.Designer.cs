@@ -270,6 +270,42 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to #57A639.
         /// </summary>
+        public static string MissionOperationStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #D50000.
+        /// </summary>
+        public static string MissionOperationStatusError {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #0D47A1.
+        /// </summary>
+        public static string MissionOperationStatusExecuting {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #970da0.
+        /// </summary>
+        public static string MissionOperationStatusNew {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #57A639.
+        /// </summary>
         public static string MissionStatusCompleted {
             get {
                 return ResourceManager.GetString("MissionStatusCompleted", resourceCulture);
