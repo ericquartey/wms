@@ -72,11 +72,17 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="TileBorder" Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="TileImage" Property="ColorizeBrush" Value="{DynamicResource CommonSecondaryUltralight}" />
+                            <Setter TargetName="TileNameLabel" Property="Foreground" Value="{DynamicResource CommonSecondaryUltralight}" />
+                            <Setter TargetName="TileCountLabel" Property="Foreground" Value="{DynamicResource CommonSecondaryUltralight}" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
 
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
         <Setter Property="ToolTip">
             <Setter.Value>
                 <ToolTip Visibility="{Binding Description, Converter={StaticResource RTVC}}">
@@ -84,6 +90,12 @@
                 </ToolTip>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Count}"
+                         Value="0">
+                <Setter Property="IsEnabled" Value="false" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="TileBarStyle"
