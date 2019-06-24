@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS_AutomationService.Contracts;
-using Unity;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -14,7 +14,7 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private IInstallationService installationService;
+        private IInstallationStatusService installationStatusService;
 
         private bool isBeltBurnishingDone;
 
@@ -113,7 +113,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -128,7 +128,7 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task GetInstallationStateAsync()
         {
-            var installationStatus = await this.installationService.GetInstallationStatusAsync();
+            var installationStatus = await this.installationStatusService.GetStatusAsync();
 
             this.IsVerticalHomingDone = installationStatus[0];
             this.IsHorizontalHomingDone = installationStatus[1];

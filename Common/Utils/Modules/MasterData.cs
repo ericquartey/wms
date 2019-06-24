@@ -12,7 +12,11 @@
 
         public const string CELLS = "CellsViewModel";
 
+        public const string CHOOSELOADINGUNITSTEP = "ChooseLoadingUnitStepViewModel";
+
         public const string COMPARTMENTDETAILS = "CompartmentDetailsViewModel";
+
+        public const string COMPARTMENTEDITSTEP = "CompartmentEditStepViewModel";
 
         public const string COMPARTMENTS = "CompartmentsViewModel";
 

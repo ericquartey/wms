@@ -3,10 +3,10 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -20,8 +20,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        private IInstallationService installationService;
-
         private bool isButtonBackEnabled;
 
         private bool isButtonForwardEnabled;
@@ -29,6 +27,8 @@ namespace Ferretto.VW.InstallationApp
         private DelegateCommand moveBackwardButtonCommand;
 
         private DelegateCommand moveForwardButtonCommand;
+
+        private IPositioningService positioningService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -76,7 +76,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -106,22 +106,21 @@ namespace Ferretto.VW.InstallationApp
             this.IsButtonForwardEnabled = false;
 
             var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            await this.positioningService.ExecuteAsync(messageData);
         }
 
         private async Task MoveForwardHorizontalAxisHandlerAsync()
         {
             this.IsButtonBackEnabled = false;
-
             var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            await this.positioningService.ExecuteAsync(messageData);
         }
 
         private async Task StopHorizontalAxisHandlerAsync()
         {
             this.IsButtonBackEnabled = true;
             this.IsButtonForwardEnabled = true;
-            await this.installationService.StopCommandAsync();
+            await this.positioningService.StopAsync();
         }
 
         #endregion
