@@ -55,7 +55,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             services.AddSingleton(new Mock<IHubContext<DataHub, IDataHub>>().Object);
 
             services.AddDbContext<DatabaseContext>(
-                options => options.UseInMemoryDatabase(this.GetType().FullName),
+                options => options
+                    .UseInMemoryDatabase(this.GetType().FullName)
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors(),
                 ServiceLifetime.Transient);
 
             this.AddServices(services);

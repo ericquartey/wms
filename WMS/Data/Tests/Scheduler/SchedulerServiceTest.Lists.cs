@@ -223,12 +223,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 context.SaveChanges();
             }
 
+            var requestedBay = this.Bay1Aisle1.Id;
+
+            var requestedArea = this.Bay1Aisle1.AreaId;
+
             #endregion
 
             #region Act
 
-            var requestedBay = this.Bay1Aisle1.Id;
-            var result = await schedulerService.ExecuteListAsync(list1.Id, this.Bay1Aisle1.AreaId, requestedBay);
+            var result = await schedulerService.ExecuteListAsync(list1.Id, requestedArea, requestedBay);
 
             #endregion
 
@@ -239,7 +242,6 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var requests = result.Entity;
 
             var updatedList = await listExecutionProvider.GetByIdAsync(list1.Id);
-            var missions = await missionProvider.GetAllAsync(0, 0);
 
             Assert.AreEqual(
                 ItemListStatus.Ready,
@@ -260,13 +262,20 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 requests.Count(),
                 "Number of scheduler requests should match the number of list rows.");
 
+            var missions = await missionProvider.GetAllAsync(0, 0);
+
+            Assert.AreEqual(
+                1,
+                missions.Count(),
+                "A mission should be created.");
+
             Assert.AreEqual(
                 list1.ItemListRows.Count(),
-                missions.Count(),
-                "The number of missions should match the number of list rows.");
+                missions.Single().Operations.Count(),
+                "The number of operations should match the number of list rows.");
 
             Assert.IsTrue(
-                requests.All(r => r.BayId == this.Bay1Aisle1.Id),
+                requests.All(r => r.BayId == requestedBay),
                 "All requests should address the same bay.");
 
             Assert.AreEqual(
@@ -1028,7 +1037,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var missions = await missionProvider.GetAllAsync(0, 0);
             if (!missions.Any())
             {
-                Assert.Inconclusive(listExecutionResult.Description);
+                Assert.Inconclusive("No missions were generated.");
             }
 
             var row1Mission = missions.First().Operations.SingleOrDefault(o => o.ItemListRowCode == row1.Code);

@@ -96,9 +96,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsTrue(result.Success, result.Description);
 
             Assert.AreEqual(
-                MissionStatus.Incomplete,
+                MissionOperationStatus.Incomplete,
                 result.Entity.Status,
-                $"The status of the mission should be '{MissionStatus.Incomplete}'.");
+                $"The status of the mission should be '{MissionOperationStatus.Incomplete}'.");
 
             var updatedCompartment = await compartmentProvider.GetByIdAsync(compartment.Id);
 
@@ -223,9 +223,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsTrue(result.Success, result.Description);
 
             Assert.AreEqual(
-                MissionStatus.Completed,
+                MissionOperationStatus.Completed,
                 result.Entity.Status,
-                $"The status of the mission should be '{MissionStatus.Completed}'.");
+                $"The status of the mission should be '{MissionOperationStatus.Completed}'.");
 
             var updatedCompartment = await compartmentProvider.GetByIdAsync(emptyCompartment.Id);
 

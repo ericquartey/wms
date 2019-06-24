@@ -156,12 +156,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .ToListAsync();
 
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
-            var missions = new List<Mission>();
+            var createdMissionsCount = 0;
             var missionOperations = new List<MissionOperation>();
 
             while (request.QuantityLeftToReserve > 0
                 && availableCompartments.Any()
-                && missions.Count < queuableMissionsCount)
+                && createdMissionsCount < queuableMissionsCount)
             {
                 var compartment = availableCompartments.First();
 
@@ -184,40 +184,29 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var mission = await this.missionProvider
                     .GetNewByLoadingUnitIdAsync(compartment.LoadingUnitId);
+
                 if (mission == null)
                 {
-                    mission = new Mission
+                    var creationResult = await this.missionProvider.CreateAsync(
+                        new Mission
+                        {
+                            BayId = request.BayId.Value,
+                            LoadingUnitId = compartment.LoadingUnitId,
+                            Priority = request.Priority.Value
+                        });
+
+                    if (creationResult.Success)
                     {
-                        BayId = request.BayId.Value,
-                        LoadingUnitId = compartment.LoadingUnitId,
-                        Priority = request.Priority.Value
-                    };
-
-                    missions.Add(mission);
+                        mission = creationResult.Entity;
+                        createdMissionsCount++;
+                    }
+                    else
+                    {
+                        return new List<MissionOperation>();
+                    }
                 }
 
-                var operation =
-                    request is ItemListRowSchedulerRequest
-                    ? new MissionOperation()
-                    : new MissionListOperation();
-
-                operation.MissionId = mission.Id;
-                operation.ItemId = item.Id;
-                operation.CompartmentId = compartment.Id;
-                operation.MaterialStatusId = compartment.MaterialStatusId;
-                operation.Sub1 = compartment.Sub1;
-                operation.Sub2 = compartment.Sub2;
-                operation.Priority = request.Priority.Value;
-                operation.RequestedQuantity = quantityToExtractFromCompartment;
-                operation.Type = MissionOperationType.Pick;
-
-                if (operation is MissionListOperation missionOperation
-                    &&
-                    request is ItemListRowSchedulerRequest rowRequest)
-                {
-                    missionOperation.ItemListId = rowRequest.ListId;
-                    missionOperation.ItemListRowId = rowRequest.ListRowId;
-                }
+                var operation = CreateOperation(request, item, compartment, quantityToExtractFromCompartment, mission);
 
                 this.logger.LogWarning(
                     $"Scheduler Request (id={request.Id}): generating pick mission (CompartmentId={operation.CompartmentId}, " +
@@ -227,7 +216,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 missionOperations.Add(operation);
             }
 
-            await this.missionProvider.CreateRangeAsync(missions);
             await this.missionOperationProvider.CreateRangeAsync(missionOperations);
 
             this.logger.LogDebug(
@@ -263,12 +251,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .ToListAsync();
 
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
-            var missions = new List<Mission>();
+            var createdMissionsCount = 0;
             var missionOperations = new List<MissionOperation>();
 
             while (request.Status != SchedulerRequestStatus.Completed
                 && availableCompartments.Any()
-                && missions.Count < queuableMissionsCount)
+                && createdMissionsCount < queuableMissionsCount)
             {
                 var compartment = availableCompartments.First();
 
@@ -304,38 +292,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var mission = await this.missionProvider.GetNewByLoadingUnitIdAsync(compartment.LoadingUnitId);
                 if (mission == null)
                 {
-                    mission = new Mission
+                    var creationResult = await this.missionProvider.CreateAsync(
+                        new Mission
+                        {
+                            BayId = request.BayId.Value,
+                            LoadingUnitId = compartment.LoadingUnitId,
+                            Priority = request.Priority.Value
+                        });
+
+                    if (creationResult.Success)
                     {
-                        BayId = request.BayId.Value,
-                        LoadingUnitId = compartment.LoadingUnitId,
-                        Priority = request.Priority.Value,
-                    };
-
-                    missions.Add(mission);
+                        mission = creationResult.Entity;
+                        createdMissionsCount++;
+                    }
+                    else
+                    {
+                        return new List<MissionOperation>();
+                    }
                 }
 
-                var operation =
-                  request is ItemListRowSchedulerRequest
-                  ? new MissionOperation()
-                  : new MissionListOperation();
-
-                operation.MissionId = mission.Id;
-                operation.ItemId = item.Id;
-                operation.CompartmentId = compartment.Id;
-                operation.MaterialStatusId = compartment.MaterialStatusId;
-                operation.Sub1 = compartment.Sub1;
-                operation.Sub2 = compartment.Sub2;
-                operation.Priority = request.Priority.Value;
-                operation.RequestedQuantity = quantityToPutInCompartment;
-                operation.Type = MissionOperationType.Put;
-
-                if (request is ItemListRowSchedulerRequest rowRequest
-                    &&
-                    operation is MissionListOperation listOperation)
-                {
-                    listOperation.ItemListId = rowRequest.ListId;
-                    listOperation.ItemListRowId = rowRequest.ListRowId;
-                }
+                var operation = CreateOperation(request, item, compartment, quantityToPutInCompartment, mission);
 
                 this.logger.LogWarning(
                     $"Scheduler Request (id={request.Id}): generating put mission (CompartmentId={operation.CompartmentId}, " +
@@ -345,13 +321,47 @@ namespace Ferretto.WMS.Data.Core.Providers
                 missionOperations.Add(operation);
             }
 
-            await this.missionProvider.CreateRangeAsync(missions);
             await this.missionOperationProvider.CreateRangeAsync(missionOperations);
 
             this.logger.LogDebug(
                 $"Scheduler Request (id={request.Id}): a total of {queuableMissionsCount} missions were queued on bay.");
 
             return missionOperations;
+        }
+
+        private static MissionOperation CreateOperation(
+            ISchedulerRequest request,
+            ItemAvailable item,
+            CandidateCompartment compartment,
+            double requestedQuantity,
+            Mission mission)
+        {
+            var operation =
+                request is ItemListRowSchedulerRequest
+                ? new MissionOperation()
+                : new MissionListOperation();
+
+            operation.MissionId = mission.Id;
+            operation.ItemId = item.Id;
+            operation.CompartmentId = compartment.Id;
+            operation.MaterialStatusId = compartment.MaterialStatusId;
+            operation.Sub1 = compartment.Sub1;
+            operation.Sub2 = compartment.Sub2;
+            operation.Priority = request.Priority.Value;
+            operation.RequestedQuantity = requestedQuantity;
+            operation.Type = request.OperationType == OperationType.Withdrawal
+                ? MissionOperationType.Pick
+                : MissionOperationType.Put;
+
+            if (operation is MissionListOperation missionOperation
+                &&
+                request is ItemListRowSchedulerRequest rowRequest)
+            {
+                missionOperation.ItemListId = rowRequest.ListId;
+                missionOperation.ItemListRowId = rowRequest.ListRowId;
+            }
+
+            return operation;
         }
 
         private async Task<int> GetQueuableMissionsCountAsync(ItemSchedulerRequest request)

@@ -212,7 +212,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 operations.First().Type,
                 "A type of mission should be Put");
             Assert.AreEqual(
-                MissionStatus.New,
+                MissionOperationStatus.New,
                 operations.First().Status,
                 "A status of mission should be New");
             Assert.AreEqual(
@@ -322,7 +322,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 operations.First().Type,
                 "A type of mission should be Put");
             Assert.AreEqual(
-                MissionStatus.New,
+                MissionOperationStatus.New,
                 operations.First().Status,
                 "A status of mission should be New");
             Assert.AreEqual(

@@ -47,7 +47,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            await this.DataContext.Missions.AddAsync(
+            var entityEntry = await this.DataContext.Missions.AddAsync(
                 this.mapper.Map<Common.DataModels.Mission>(model));
 
             this.NotificationService.PushCreate(model);
@@ -57,6 +57,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new CreationErrorOperationResult<Mission>();
             }
+
+            model.Id = entityEntry.Entity.Id;
 
             return new SuccessOperationResult<Mission>(model);
         }
