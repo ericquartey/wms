@@ -418,6 +418,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             try
             {
+                this.roundTripStopwatch.Reset();
+                this.roundTripStopwatch.Start();
                 await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(message.HeartbeatValue), this.stoppingToken);
             }
             catch (InverterDriverException ex)
@@ -437,6 +439,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 try
                 {
+                    this.roundTripStopwatch.Reset();
+                    this.roundTripStopwatch.Start();
                     await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
                 }
                 catch (InverterDriverException ex)
@@ -448,6 +452,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 try
                 {
+                    this.roundTripStopwatch.Reset();
+                    this.roundTripStopwatch.Start();
                     await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
                 }
                 catch (InverterDriverException ex)

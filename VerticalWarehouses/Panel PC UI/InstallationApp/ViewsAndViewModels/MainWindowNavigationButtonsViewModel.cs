@@ -141,7 +141,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
-            await this.UpdateButtonsEnableStateAsync();
+            //await this.UpdateButtonsEnableStateAsync();
         }
 
         public Task OnEnterViewAsync()
