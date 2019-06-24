@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.CellSide_extended), ResourceType = typeof(BusinessObjects))]
         public Side? CellSide { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
@@ -64,6 +64,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitTypeDescription), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.WeightFillRate), ResourceType = typeof(BusinessObjects))]
+        public double WeightFillRate { get; set; }
 
         #endregion
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils;
 using Ferretto.Common.Utils.Extensions;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -69,7 +70,7 @@ namespace Ferretto.WMS.App.Core.Models
                 this.GetType(),
                 propertyName);
 
-            return string.Format(Common.Resources.Errors.PropertyValueIsInvalid, localizedFieldName);
+            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
         }
 
         public string GetErrorMessageIfRequired(string propertyName)
@@ -90,7 +91,7 @@ namespace Ferretto.WMS.App.Core.Models
             if (propertyInfo.HasEmptyValue(this))
             {
                 var localizedFieldName = PropertyMetadata.LocalizeFieldName(type, propertyName);
-                return string.Format(Common.Resources.Errors.PropertyIsRequired, localizedFieldName);
+                return string.Format(Errors.PropertyIsRequired, localizedFieldName);
             }
 
             return null;
@@ -104,7 +105,7 @@ namespace Ferretto.WMS.App.Core.Models
                     this.GetType(),
                     propertyName);
 
-                return string.Format(Common.Resources.Errors.PropertyMustBePositive, localizedFieldName);
+                return string.Format(Errors.PropertyMustBePositive, localizedFieldName);
             }
 
             return null;
@@ -118,7 +119,7 @@ namespace Ferretto.WMS.App.Core.Models
                     this.GetType(),
                     propertyName);
 
-                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, localizedFieldName);
+                return string.Format(Errors.PropertyMustBeStriclyPositive, localizedFieldName);
             }
 
             return null;
@@ -132,7 +133,7 @@ namespace Ferretto.WMS.App.Core.Models
                     this.GetType(),
                     propertyName);
 
-                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, localizedFieldName);
+                return string.Format(Errors.PropertyMustHaveValue, localizedFieldName);
             }
 
             return null;
@@ -146,7 +147,7 @@ namespace Ferretto.WMS.App.Core.Models
                     this.GetType(),
                     propertyName);
 
-                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, localizedFieldName);
+                return string.Format(Errors.PropertyMustHaveValue, localizedFieldName);
             }
 
             return null;

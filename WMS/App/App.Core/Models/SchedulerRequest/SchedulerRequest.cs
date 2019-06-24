@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.IsInstant), ResourceType = typeof(Common.Resources.Scheduler))]
+        [Display(Name = nameof(Scheduler.IsInstant), ResourceType = typeof(Scheduler))]
         public bool IsInstant { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
@@ -32,7 +32,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public string ListDescription { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.ItemListRow), ResourceType = typeof(Common.Resources.Scheduler))]
+        [Display(Name = nameof(Scheduler.ItemListRow), ResourceType = typeof(Scheduler))]
         public string ListRowDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Lot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
@@ -61,19 +61,19 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
         public double? RequestedQuantity { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.ReservedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
+        [Display(Name = nameof(Scheduler.ReservedQuantity), ResourceType = typeof(Scheduler))]
         public double? ReservedQuantity { get; set; }
 
-        [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
         public SchedulerRequestStatus? Status { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
-        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
         public SchedulerRequestType? Type { get; set; }
 
         #endregion

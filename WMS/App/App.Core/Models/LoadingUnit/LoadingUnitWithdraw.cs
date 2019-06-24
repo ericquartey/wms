@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
         public IEnumerable<Bay> BayChoices
@@ -34,14 +34,14 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawBay), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
@@ -50,16 +50,16 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Lot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
         #endregion

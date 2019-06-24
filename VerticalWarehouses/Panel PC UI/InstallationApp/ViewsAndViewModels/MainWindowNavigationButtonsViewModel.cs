@@ -16,7 +16,7 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private IInstallationService installationService;
+        private IInstallationStatusService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -140,8 +140,8 @@ namespace Ferretto.VW.InstallationApp
         public async Task InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
-            //await this.UpdateButtonsEnableStateAsync();
+            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
+            await this.UpdateButtonsEnableStateAsync();
         }
 
         public Task OnEnterViewAsync()
@@ -174,7 +174,7 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task UpdateButtonsEnableStateAsync()
         {
-            var installationStatus = await this.installationService.GetInstallationStatusAsync();
+            var installationStatus = await this.installationStatusService.GetStatusAsync();
             var checkHomingDone = installationStatus[0];
 
             this.IsInstallationStateButtonActive = true;

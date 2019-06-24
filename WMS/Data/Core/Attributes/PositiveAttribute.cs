@@ -14,12 +14,18 @@ namespace Ferretto.WMS.Data.Core
             {
                 if (value is int intValue && intValue <= 0)
                 {
-                    return new ValidationResult($"Value of '{validationContext?.DisplayName}' must be strictly positive.");
+                    return new ValidationResult(
+                        string.Format(
+                            Resources.Errors.ValueOfMustBeStrictlyPositive,
+                            validationContext?.DisplayName));
                 }
 
                 if (value is double doubleValue && doubleValue <= 0)
                 {
-                    return new ValidationResult($"Value of '{validationContext?.DisplayName}' must be strictly positive.");
+                    return new ValidationResult(
+                        string.Format(
+                            Resources.Errors.ValueOfMustBeStrictlyPositive,
+                            validationContext?.DisplayName));
                 }
             }
 

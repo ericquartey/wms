@@ -233,7 +233,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ||
                         !r.ReservedQuantity.HasValue)
                     {
-                        throw new System.Data.DataException("Item request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
+                        throw new System.Data.DataException(
+                            Resources.Errors.ItemRequestHasMissingMandatoryFields);
                     }
 
                     return new ItemSchedulerRequest
@@ -265,7 +266,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ||
                         !r.BayId.HasValue)
                     {
-                        throw new System.Data.DataException("Loading unit request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
+                        throw new System.Data.DataException(
+                            Resources.Errors.LoadingUnitRequestHasMissingMandatoryFields);
                     }
 
                     return new LoadingUnitSchedulerRequest
@@ -305,7 +307,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     };
 
                 default:
-                    throw new NotSupportedException("The specified scheduler request type is not supported.");
+                    throw new NotSupportedException(
+                        Resources.Errors.TheSpecifiedSchedulerRequestTypeIsNotSupported);
             }
         }
 

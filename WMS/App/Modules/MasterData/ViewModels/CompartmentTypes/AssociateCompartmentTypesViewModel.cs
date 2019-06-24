@@ -53,12 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return false;
             }
 
-            if (this.selectedOption.Id == this.options.First().Id)
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public override bool CanSave()
@@ -89,7 +84,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                return (null, null, null);
+                return (nameof(MasterData), Common.Utils.Modules.MasterData.CHOOSELOADINGUNITSTEP, this.Data);
             }
         }
 
@@ -97,7 +92,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is ItemDetails itemDetails)
             {
-                this.Title = string.Format(Ferretto.Common.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
+                this.Title = string.Format(App.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
             }
 
             return base.OnAppearAsync();
@@ -106,8 +101,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private void InitializeData()
         {
             this.options = new List<Enumeration>();
-            this.options.Add(new Enumeration(1, Common.Resources.MasterData.AssociateACompartmentTypeToThisItem));
-            this.options.Add(new Enumeration(2, Common.Resources.MasterData.CreateANewCompartment));
+            this.options.Add(new Enumeration(1, App.Resources.MasterData.AssociateACompartmentTypeToThisItem));
+            this.options.Add(new Enumeration(2, App.Resources.MasterData.CreateANewCompartment));
             this.RaisePropertyChanged(nameof(this.Options));
             this.SelectedOption = this.options.First();
         }
