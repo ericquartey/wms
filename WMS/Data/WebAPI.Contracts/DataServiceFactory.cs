@@ -47,6 +47,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 case var service when service == typeof(IMissionsDataService):
                     return new MissionsDataService(baseUrl.AbsoluteUri, client) as T;
 
+                case var service when service == typeof(IMissionOperationsDataService):
+                    return new MissionOperationsDataService(baseUrl.AbsoluteUri, client) as T;
+
                 case var service when service == typeof(ISchedulerRequestsDataService):
                     return new SchedulerRequestsDataService(baseUrl.AbsoluteUri, client) as T;
 

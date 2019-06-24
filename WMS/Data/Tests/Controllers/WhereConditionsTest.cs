@@ -108,12 +108,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
-                $"StartsWith([BayDescription], 'Bay') And StartsWith([AreaDescription], 'Area')");
+                $"StartsWith([BayDescription], 'Bay') And StartsWith([AreaName], 'Area')");
 
             var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
-                "StartsWith([BayDescription], 'Bay') And StartsWith([AreaDescription], 'NOT PRESENT')");
+                "StartsWith([BayDescription], 'Bay') And StartsWith([AreaName], 'NOT PRESENT')");
 
             #endregion
 

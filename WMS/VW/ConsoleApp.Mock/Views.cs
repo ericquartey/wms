@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -320,7 +320,16 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
 
             Console.WriteLine(
-                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | ");
+
+            foreach (var operation in mission.Operations)
+            {
+                string trimmedDescription = operation.ItemId.ToString();
+                var quantities = $"{operation.DispatchedQuantity, 2} / {operation.RequestedQuantity, 2}";
+
+                Console.WriteLine(
+               $"| > {operation.Priority, 6} | {operation.Id, 3} | {operation.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+            }
         }
 
         #endregion

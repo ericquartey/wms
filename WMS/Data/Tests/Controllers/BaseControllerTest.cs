@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -30,8 +31,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         #region Properties
 
         public LoadingUnitStatus LoadingUnitStatus1 { get; set; }
-
-        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
 
         protected AbcClass AbcClass1 { get; set; }
 
@@ -83,17 +82,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
         protected LoadingUnitType LoadingUnitType1 { get; set; }
 
-        protected LoadingUnitType LoadingUnitType2 { get; set; }
-
         protected LoadingUnitTypeAisle LoadingUnitType1Aisle1 { get; set; }
-
-        protected LoadingUnitTypeAisle LoadingUnitType2Aisle1 { get; set; }
 
         protected LoadingUnitTypeAisle LoadingUnitType1Aisle2 { get; set; }
 
-        protected LoadingUnitTypeAisle LoadingUnitType2Aisle2 { get; set; }
-
         protected LoadingUnitTypeAisle LoadingUnitType1Aisle3 { get; set; }
+
+        protected LoadingUnitType LoadingUnitType2 { get; set; }
+
+        protected LoadingUnitTypeAisle LoadingUnitType2Aisle1 { get; set; }
+
+        protected LoadingUnitTypeAisle LoadingUnitType2Aisle2 { get; set; }
 
         protected LoadingUnitTypeAisle LoadingUnitType2Aisle3 { get; set; }
 
@@ -102,6 +101,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         protected Machine Machine1 { get; set; }
 
         protected MachineType MachineType1 { get; set; }
+
+        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
 
         #endregion
 
@@ -124,6 +125,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             services.AddDbContext<DatabaseContext>(
                 options => options.UseInMemoryDatabase(databaseName),
                 ServiceLifetime.Transient);
+
+            services.AddTransient(typeof(MissionOperationsController));
+            services.AddSingleton(new Mock<ILogger<MissionOperationsController>>().Object);
 
             return services.BuildServiceProvider();
         }
@@ -202,40 +206,64 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             this.CellType1 = new CellType { Id = 1, Description = "Cell Type #1" };
             this.Cell1 = new Cell
             {
-                Id = 1, AisleId = this.Aisle1.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id,
-                CellStatusId = this.CellStatus1.Id, Priority = 1
+                Id = 1,
+                AisleId = this.Aisle1.Id,
+                AbcClassId = this.AbcClass1.Id,
+                CellTypeId = this.CellType1.Id,
+                CellStatusId = this.CellStatus1.Id,
+                Priority = 1
             };
             this.Cell2 = new Cell
             {
-                Id = 2, AisleId = this.Aisle1.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id,
-                CellStatusId = this.CellStatus1.Id, Priority = 2
+                Id = 2,
+                AisleId = this.Aisle1.Id,
+                AbcClassId = this.AbcClass1.Id,
+                CellTypeId = this.CellType1.Id,
+                CellStatusId = this.CellStatus1.Id,
+                Priority = 2
             };
             this.Cell3 = new Cell
             {
-                Id = 3, AisleId = this.Aisle2.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id,
-                CellStatusId = this.CellStatus1.Id, Priority = 3
+                Id = 3,
+                AisleId = this.Aisle2.Id,
+                AbcClassId = this.AbcClass1.Id,
+                CellTypeId = this.CellType1.Id,
+                CellStatusId = this.CellStatus1.Id,
+                Priority = 3
             };
             this.Cell4 = new Cell
             {
-                Id = 4, AisleId = this.Aisle2.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id,
-                CellStatusId = this.CellStatus1.Id, Priority = 4
+                Id = 4,
+                AisleId = this.Aisle2.Id,
+                AbcClassId = this.AbcClass1.Id,
+                CellTypeId = this.CellType1.Id,
+                CellStatusId = this.CellStatus1.Id,
+                Priority = 4
             };
             this.Cell5 = new Cell
             {
-                Id = 5, AisleId = this.Aisle2.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id,
-                CellStatusId = this.CellStatus1.Id, Priority = 5
+                Id = 5,
+                AisleId = this.Aisle2.Id,
+                AbcClassId = this.AbcClass1.Id,
+                CellTypeId = this.CellType1.Id,
+                CellStatusId = this.CellStatus1.Id,
+                Priority = 5
             };
             this.Cell6 = new Cell
             {
-                Id = 6, AisleId = this.Aisle2.Id, AbcClassId = this.AbcClass1.Id, CellTypeId = this.CellType1.Id,
-                CellStatusId = this.CellStatus1.Id, Priority = 6
+                Id = 6,
+                AisleId = this.Aisle2.Id,
+                AbcClassId = this.AbcClass1.Id,
+                CellTypeId = this.CellType1.Id,
+                CellStatusId = this.CellStatus1.Id,
+                Priority = 6
             };
             this.LoadingUnitHeightClass1 = new LoadingUnitHeightClass
-                { Id = 1, Description = "Loading Unit Height Class #1", MaxHeight = 1, MinHeight = 100 };
+            { Id = 1, Description = "Loading Unit Height Class #1", MaxHeight = 1, MinHeight = 100 };
             this.LoadingUnitSizeClass1 = new LoadingUnitSizeClass
-                { Id = 1, Description = "Loading Unit Size Class #1", Length = 100, Width = 100 };
+            { Id = 1, Description = "Loading Unit Size Class #1", Length = 100, Width = 100 };
             this.LoadingUnitWeightClass1 = new LoadingUnitWeightClass
-                { Id = 1, Description = "Loading Unit Weight Class #1", MinWeight = 1, MaxWeight = 10 };
+            { Id = 1, Description = "Loading Unit Weight Class #1", MinWeight = 1, MaxWeight = 10 };
             this.LoadingUnitType1 = new LoadingUnitType
             {
                 Id = 1,

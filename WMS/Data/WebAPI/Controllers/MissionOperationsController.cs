@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,17 +13,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionsController :
+    public class MissionOperationsController :
         BaseController,
-        IReadAllPagedController<MissionInfo>,
-        IReadSingleController<MissionWithLoadingUnitDetails, int>,
-        IGetUniqueValuesController
+        IReadAllPagedController<MissionOperation>,
+        IReadSingleController<MissionOperation, int>
     {
         #region Fields
 
         private readonly ILogger logger;
 
-        private readonly IMissionProvider missionProvider;
+        private readonly IMissionOperationProvider missionOperationProvider;
 
         private readonly ISchedulerService schedulerService;
 
@@ -31,13 +30,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Constructors
 
-        public MissionsController(
-            ILogger<MissionsController> logger,
-            IMissionProvider missionProvider,
+        public MissionOperationsController(
+            ILogger<MissionOperationsController> logger,
+            IMissionOperationProvider missionOperationProvider,
             ISchedulerService schedulerService)
         {
             this.logger = logger;
-            this.missionProvider = missionProvider;
+            this.missionOperationProvider = missionOperationProvider;
             this.schedulerService = schedulerService;
         }
 
@@ -45,26 +44,58 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(typeof(MissionInfo), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionOperation), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("{id}/complete")]
-        public async Task<ActionResult<MissionInfo>> CompleteLoadingUnitAsync(int id)
+        [HttpPost("{id}/abort")]
+        public async Task<ActionResult<MissionOperation>> AbortAsync(int id)
         {
-            var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
+            var result = await this.schedulerService.AbortMissionOperationAsync(id);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
             }
 
-            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            var updatedMission = await this.missionOperationProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<MissionInfo>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionOperation), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/complete")]
+        public async Task<ActionResult<MissionOperation>> CompleteItemAsync(int id, double quantity)
+        {
+            var result = await this.schedulerService.CompleteItemOperationAsync(id, quantity);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            var updatedOperation = await this.missionOperationProvider.GetByIdAsync(id);
+            return this.Ok(updatedOperation);
+        }
+
+        [ProducesResponseType(typeof(MissionOperation), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/execute")]
+        public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id)
+        {
+            var result = await this.schedulerService.ExecuteMissionOperationAsync(id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            var updatedMission = await this.missionOperationProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<MissionOperation>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MissionInfo>>> GetAllAsync(
+        public async Task<ActionResult<IEnumerable<MissionOperation>>> GetAllAsync(
             int skip = 0,
             int take = 0,
             string where = null,
@@ -76,7 +107,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 var orderByExpression = orderBy.ParseSortOptions();
 
                 return this.Ok(
-                    await this.missionProvider.GetAllAsync(
+                    await this.missionOperationProvider.GetAllAsync(
                         skip,
                         take,
                         orderByExpression,
@@ -99,7 +130,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             try
             {
-                return await this.missionProvider.GetAllCountAsync(where, search);
+                return await this.missionOperationProvider.GetAllCountAsync(where, search);
             }
             catch (NotSupportedException e)
             {
@@ -107,12 +138,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(MissionInfo), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionOperation), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<MissionWithLoadingUnitDetails>> GetByIdAsync(int id)
+        public async Task<ActionResult<MissionOperation>> GetByIdAsync(int id)
         {
-            var result = await this.missionProvider.GetByIdAsync(id);
+            var result = await this.missionOperationProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
@@ -125,32 +156,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
-        }
-
-        [ProducesResponseType(typeof(MissionWithLoadingUnitDetails), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("{id}/details")]
-        public async Task<ActionResult<MissionWithLoadingUnitDetails>> GetDetailsByIdAsync(int id)
-        {
-            var result = await this.missionProvider.GetDetailsByIdAsync(id);
-            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
-        }
-
-        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("unique/{propertyName}")]
-        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
-            string propertyName)
-        {
-            try
-            {
-                return this.Ok(await this.missionProvider.GetUniqueValuesAsync(propertyName));
-            }
-            catch (InvalidOperationException e)
-            {
-                return this.BadRequest(e);
-            }
         }
 
         #endregion

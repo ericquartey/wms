@@ -255,13 +255,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             var result = await this.schedulerService.WithdrawLoadingUnitAsync(id, loadingUnit.LoadingUnitTypeId, bayId);
-            if (result is UnprocessableEntityOperationResult<LoadingUnitSchedulerRequest>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);

@@ -552,7 +552,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 notificationService
                     .SentNotifications
                     .Any(
-                        n => n.ModelType == typeof(MissionExecution)
+                        n => n.ModelType == typeof(Mission)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
             Assert.IsTrue(
@@ -647,7 +647,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 notificationService
                     .SentNotifications
                     .Any(
-                        n => n.ModelType == typeof(MissionExecution)
+                        n => n.ModelType == typeof(Mission)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
             Assert.IsTrue(
@@ -657,6 +657,54 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                         n => n.ModelType == typeof(ItemSchedulerRequest)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
+
+            #endregion
+        }
+
+        [TestMethod]
+        public async Task UpdateAsync_WithNotifications()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var notificationService =
+                this.ServiceProvider.GetService(typeof(INotificationService)) as NotificationServiceMock;
+
+            var item1 = new Common.DataModels.Item
+            {
+                Id = 1,
+                Code = "Item #1",
+                ManagementType = Common.DataModels.ItemManagementType.Volume,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+            }
+
+            var itemResult = await controller.GetByIdAsync(item1.Id);
+            var itemToBeUpdated = (ItemDetails)((OkObjectResult)itemResult.Result).Value;
+            itemToBeUpdated.Code = "Item #1 updated";
+
+            #endregion
+
+            #region Act
+
+            await controller.UpdateAsync(itemToBeUpdated, item1.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == item1.Id.ToString()
+                            && n.ModelType == typeof(ItemDetails)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
 
             #endregion
         }
@@ -728,54 +776,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     .SentNotifications
                     .Any(
                         n => n.ModelType == typeof(CompartmentType)
-                            && n.OperationType == HubEntityOperation.Updated),
-                "An update notification should be generated");
-
-            #endregion
-        }
-
-        [TestMethod]
-        public async Task UpdateAsync_WithNotifications()
-        {
-            #region Arrange
-
-            var controller = this.MockController();
-            var notificationService =
-                this.ServiceProvider.GetService(typeof(INotificationService)) as NotificationServiceMock;
-
-            var item1 = new Common.DataModels.Item
-            {
-                Id = 1,
-                Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Items.Add(item1);
-                context.SaveChanges();
-            }
-
-            var itemResult = await controller.GetByIdAsync(item1.Id);
-            var itemToBeUpdated = (ItemDetails)((OkObjectResult)itemResult.Result).Value;
-            itemToBeUpdated.Code = "Item #1 updated";
-
-            #endregion
-
-            #region Act
-
-            await controller.UpdateAsync(itemToBeUpdated, item1.Id);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsTrue(
-                notificationService
-                    .SentNotifications
-                    .Any(
-                        n => n.ModelId == item1.Id.ToString()
-                            && n.ModelType == typeof(ItemDetails)
                             && n.OperationType == HubEntityOperation.Updated),
                 "An update notification should be generated");
 

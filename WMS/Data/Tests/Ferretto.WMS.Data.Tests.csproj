@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -36,12 +36,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    
     <Compile Update="Scheduler\MissionExecutionProviderTest.Pick.cs">
       <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Scheduler\MissionExecutionProviderTest.Put.cs">
       <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Scheduler\SchedulerRequestPickProviderTest.Compartments.cs">
       <DependentUpon>SchedulerRequestPickProviderTest.cs</DependentUpon>
     </Compile>
@@ -51,35 +54,43 @@
     <Compile Update="Scheduler\MissionCreationProviderTest.Bays.cs">
       <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">
       <DependentUpon>SchedulerServiceTest.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Controllers\ItemsControllerTest.Put.cs">
       <DependentUpon>ItemsControllerTest.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Controllers\ItemsControllerTest.AreasWithAvailability.cs">
       <DependentUpon>ItemsControllerTest.cs</DependentUpon>
     </Compile>
+    
     <Compile Update="Controllers\ItemsControllerTest.Pick.cs">
       <DependentUpon>ItemsControllerTest.cs</DependentUpon>
     </Compile>
-
+    
+    <Compile Update="Controllers\MissionOperationsControllerTest.Notifications.cs">
+      <DependentUpon>MissionOperationsControllerTest.cs</DependentUpon>
+    </Compile>
+    
     <Compile Update="Controllers\ItemsControllerTest.AllowedAreas.cs">
         <DependentUpon>ItemsControllerTest.cs</DependentUpon>
     </Compile>
-
+    
     <Compile Update="Controllers\CellsControllerTest.Notifications.cs">
       <DependentUpon>CellsControllerTest.cs</DependentUpon>
     </Compile>
-
+    
     <Compile Update="Controllers\BaysControllerTest.Notifications.cs">
       <DependentUpon>BaysControllerTest.cs</DependentUpon>
     </Compile>
-
+    
     <Compile Update="Controllers\CompartmentsControllerTest.Notifications.cs">
       <DependentUpon>CompartmentsControllerTest.cs</DependentUpon>
     </Compile>
-
+    
     <Compile Update="Controllers\CompartmentTypesControllerTest.Notifications.cs">
       <DependentUpon>CompartmentTypesControllerTest.cs</DependentUpon>
     </Compile>
@@ -103,6 +114,7 @@
     <Compile Update="Controllers\MissionsControllerTest.Notifications.cs">
       <DependentUpon>MissionsControllerTest.cs</DependentUpon>
     </Compile>
+    
   </ItemGroup>
 
 </Project>
