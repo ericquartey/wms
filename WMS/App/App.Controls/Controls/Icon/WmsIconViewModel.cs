@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -43,7 +44,7 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            var sourcePath = Ferretto.Common.Resources.Icons.ResourceManager.GetString(symbolName);
+            var sourcePath = Icons.ResourceManager.GetString(symbolName);
 
             if (sourcePath != null)
             {

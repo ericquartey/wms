@@ -5,9 +5,9 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Base;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Prism.Regions;
 
 namespace Ferretto.WMS.App.Controls
