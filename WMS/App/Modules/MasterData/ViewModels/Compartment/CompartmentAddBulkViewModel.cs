@@ -43,6 +43,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 
+        protected override bool CheckValidModel()
+        {
+            this.Model.ApplyCorrectionOnSingleCompartment(this.GlobalSettings.MinStepCompartment);
+            return base.CheckValidModel();
+        }
+
         protected override Task ExecuteRefreshCommandAsync()
         {
             throw new NotSupportedException();
