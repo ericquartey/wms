@@ -127,16 +127,16 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
-            IEnumerable<CompartmentDetails> compartments)
+            IEnumerable<CompartmentDetails> models)
         {
-            if (compartments == null)
+            if (models == null)
             {
-                throw new ArgumentNullException(nameof(compartments));
+                throw new ArgumentNullException(nameof(models));
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                foreach (var compartment in compartments)
+                foreach (var compartment in models)
                 {
                     var result = await this.CreateAsync(compartment);
                     if (!result.Success)
@@ -149,8 +149,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 scope.Complete();
-                return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(compartments);
             }
+
+            return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(models);
         }
 
         public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)

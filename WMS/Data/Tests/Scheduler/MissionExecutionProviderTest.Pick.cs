@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionOperationProvider = this.GetService<IMissionOperationProvider>();
 
             var compartmentOperationProvider = this.GetService<ICompartmentOperationProvider>();
 
@@ -50,14 +50,21 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 CompartmentTypeId = compartmentType.Id
             };
 
+            var missionOperation1 = new Common.DataModels.MissionOperation
+            {
+                Id = 1,
+                Status = Common.DataModels.MissionOperationStatus.New,
+                CompartmentId = compartment1.Id,
+                ItemId = itemCompartmentType.ItemId,
+                Type = Common.DataModels.MissionOperationType.Pick,
+                RequestedQuantity = 10
+            };
+
             var mission = new Common.DataModels.Mission
             {
                 Id = 1,
-                CompartmentId = compartment1.Id,
-                ItemId = compartment1.ItemId,
                 Status = Common.DataModels.MissionStatus.Executing,
-                Type = Common.DataModels.MissionType.Pick,
-                RequestedQuantity = 10
+                Operations = new[] { missionOperation1 }
             };
 
             using (var context = this.CreateContext())
@@ -74,7 +81,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var result = await missionExecutionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+            var result = await missionOperationProvider.CompleteAsync(missionOperation1.Id, missionOperation1.RequestedQuantity);
 
             #endregion
 
@@ -133,24 +140,26 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionOperationProvider = this.GetService<IMissionOperationProvider>();
             var compartmentOperationProvider = this.GetService<ICompartmentOperationProvider>();
             var loadingUnitProvider = this.GetService<ILoadingUnitProvider>();
             var itemProvider = this.GetService<IItemProvider>();
 
             var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
 
+            var item = this.Item1;
+
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
                 CompartmentTypeId = compartmentType.Id,
-                ItemId = this.Item1.Id,
+                ItemId = item.Id,
                 MaxCapacity = 100,
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
-                ItemId = this.Item1.Id,
+                ItemId = item.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 7,
@@ -158,14 +167,21 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 CompartmentTypeId = compartmentType.Id
             };
 
+            var missionOperation1 = new Common.DataModels.MissionOperation
+            {
+                Id = 1,
+                Status = Common.DataModels.MissionOperationStatus.New,
+                CompartmentId = compartment1.Id,
+                ItemId = item.Id,
+                Type = Common.DataModels.MissionOperationType.Pick,
+                RequestedQuantity = 7
+            };
+
             var mission = new Common.DataModels.Mission
             {
                 Id = 1,
-                CompartmentId = compartment1.Id,
-                ItemId = compartment1.ItemId,
                 Status = Common.DataModels.MissionStatus.Executing,
-                Type = Common.DataModels.MissionType.Pick,
-                RequestedQuantity = 7
+                Operations = new[] { missionOperation1 }
             };
 
             using (var context = this.CreateContext())
@@ -184,7 +200,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 #region Act
 
-                var result = await missionExecutionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+                var result = await missionOperationProvider.CompleteAsync(missionOperation1.Id, missionOperation1.RequestedQuantity);
 
                 #endregion
 

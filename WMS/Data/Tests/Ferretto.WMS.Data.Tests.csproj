@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -48,11 +48,13 @@
     <Compile Update="Scheduler\SchedulerRequestPickProviderTest.Compartments.cs">
       <DependentUpon>SchedulerRequestPickProviderTest.cs</DependentUpon>
     </Compile>
-    <Compile Update="Scheduler\MissionCreationProviderTest.Concurrency.cs">
-      <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
+    
+    <Compile Update="Scheduler\MissionOperationCreationProviderTest.Concurrency.cs">
+      <DependentUpon>MissionOperationCreationProviderTest.cs</DependentUpon>
     </Compile>
-    <Compile Update="Scheduler\MissionCreationProviderTest.Bays.cs">
-      <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
+    
+    <Compile Update="Scheduler\MissionOperationCreationProviderTest.Bays.cs">
+      <DependentUpon>MissionOperationCreationProviderTest.cs</DependentUpon>
     </Compile>
     
     <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">

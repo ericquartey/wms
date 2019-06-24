@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
-    public partial class MissionCreationProviderTest
+    public partial class MissionOperationCreationProviderTest
     {
         #region Methods
 
@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionCreationProvider>();
+            var operationProvider = this.GetService<IMissionOperationCreationProvider>();
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
@@ -73,15 +73,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var missions = await missionProvider.CreateForRequestsAsync(requests);
+            var operations = await operationProvider.CreateForRequestsAsync(requests);
 
             #endregion
 
             #region Assert
 
             Assert.AreEqual(1, requests.Count());
-            Assert.AreEqual(1, missions.Count());
-            Assert.AreEqual(request2.RequestedQuantity, missions.First().RequestedQuantity);
+            Assert.AreEqual(1, operations.Count());
+            Assert.AreEqual(request2.RequestedQuantity, operations.First().RequestedQuantity);
 
             #endregion
         }
@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-            var missionProvider = this.GetService<IMissionCreationProvider>();
+            var operationProvider = this.GetService<IMissionOperationCreationProvider>();
 
             var now = System.DateTime.Now;
 
@@ -152,7 +152,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var missions = await missionProvider.CreateForRequestsAsync(requests);
+            var operations = await operationProvider.CreateForRequestsAsync(requests);
 
             #endregion
 
@@ -160,15 +160,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             using (var context = this.CreateContext())
             {
-                Assert.AreEqual(2, missions.Count());
+                Assert.AreEqual(2, operations.Count());
 
                 var updatedRequest = context.SchedulerRequests.Single(r => r.Id == request1.Id);
-                Assert.AreEqual(updatedRequest.RequestedQuantity, missions.Sum(m => m.RequestedQuantity));
+                Assert.AreEqual(updatedRequest.RequestedQuantity, operations.Sum(m => m.RequestedQuantity));
                 Assert.AreEqual(updatedRequest.RequestedQuantity, updatedRequest.ReservedQuantity);
             }
 
-            Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
-            Assert.AreEqual(compartment2.Stock, missions.First().RequestedQuantity);
+            Assert.AreEqual(compartment2.Id, operations.First().CompartmentId);
+            Assert.AreEqual(compartment2.Stock, operations.First().RequestedQuantity);
 
             #endregion
         }

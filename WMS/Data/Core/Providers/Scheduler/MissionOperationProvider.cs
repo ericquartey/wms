@@ -1,0 +1,505 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+namespace Ferretto.WMS.Data.Core.Providers
+{
+    internal class MissionOperationProvider : BaseProvider, IMissionOperationProvider
+    {
+        #region Fields
+
+        private readonly ICompartmentOperationProvider compartmentOperationProvider;
+
+        private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
+
+        private readonly IItemProvider itemProvider;
+
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
+        private readonly ILogger<MissionOperationProvider> logger;
+
+        private readonly IMapper mapper;
+
+        private readonly IItemListRowExecutionProvider rowExecutionProvider;
+
+        #endregion
+
+        #region Constructors
+
+        public MissionOperationProvider(
+            DatabaseContext dataContext,
+            INotificationService notificationService,
+            IMapper mapper,
+            ICompartmentOperationProvider compartmentOperationProvider,
+            IItemListRowExecutionProvider rowExecutionProvider,
+            IItemProvider itemProvider,
+            ILoadingUnitProvider loadingUnitProvider,
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            ILogger<MissionOperationProvider> logger)
+        : base(dataContext, notificationService)
+        {
+            this.mapper = mapper;
+            this.logger = logger;
+            this.compartmentOperationProvider = compartmentOperationProvider;
+            this.itemProvider = itemProvider;
+            this.rowExecutionProvider = rowExecutionProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public async Task<IOperationResult<MissionOperation>> AbortAsync(int id)
+        {
+            var operation = await this.GetByIdAsync(id);
+            if (operation == null)
+            {
+                return new NotFoundOperationResult<MissionOperation>(null, $"No mission with id '{id}' exists.");
+            }
+
+            if (!operation.CanExecuteOperation(nameof(MissionPolicy.Abort)))
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    operation.GetCanExecuteOperationReason(nameof(MissionPolicy.Abort)), operation);
+            }
+
+            return await this.AbortAsync(operation);
+        }
+
+        public async Task<IOperationResult<MissionOperation>> CompleteAsync(int id, double quantity)
+        {
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    $"Value '{quantity}' represents an invalid quantity. The quantity dispatched by an operation cannot be negative or zero.");
+            }
+
+            var operation = await this.GetByIdAsync(id);
+            if (operation == null)
+            {
+                return new NotFoundOperationResult<MissionOperation>(null, $"No operation with id '{id}' exists.");
+            }
+
+            if (!operation.CanExecuteOperation(nameof(MissionPolicy.Complete)))
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    operation.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)),
+                    operation);
+            }
+
+            IOperationResult<MissionOperation> result = null;
+            switch (operation.Type)
+            {
+                case MissionOperationType.Pick:
+                    result = await this.CompletePickOperationAsync(operation, quantity);
+                    this.logger.LogDebug($"Completed pick operation id={operation.Id}");
+                    break;
+
+                case MissionOperationType.Put:
+                    result = await this.CompletePutOperationAsync(operation, quantity);
+                    this.logger.LogDebug($"Completed put operation id={operation.Id}");
+                    break;
+
+                default:
+                    return new BadRequestOperationResult<MissionOperation>(
+                        $"Completion is not supported for operation type '{operation.Type}'.");
+            }
+
+            return result;
+        }
+
+        public async Task<IOperationResult<IEnumerable<MissionOperation>>> CreateRangeAsync(
+            IEnumerable<MissionOperation> models)
+        {
+            if (models == null)
+            {
+                throw new ArgumentNullException(nameof(models));
+            }
+
+            await this.DataContext.MissionOperations.AddRangeAsync(
+                this.mapper.Map<IEnumerable<Common.DataModels.MissionOperation>>(models));
+
+            foreach (var model in models)
+            {
+                this.NotificationService.PushCreate(model);
+            }
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount <= 0)
+            {
+                return new CreationErrorOperationResult<IEnumerable<MissionOperation>>();
+            }
+
+            return new SuccessOperationResult<IEnumerable<MissionOperation>>(models);
+        }
+
+        public async Task<IOperationResult<MissionOperation>> ExecuteAsync(int id)
+        {
+            var operation = await this.GetByIdAsync(id);
+            if (operation == null)
+            {
+                return new NotFoundOperationResult<MissionOperation>();
+            }
+
+            if (!operation.CanExecuteOperation(nameof(MissionPolicy.Execute)))
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    operation.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)),
+                    operation);
+            }
+
+            operation.Status = MissionOperationStatus.Executing;
+            var result = await this.UpdateAsync(operation);
+
+            if (operation is MissionListOperation listOperation)
+            {
+                var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
+            }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<MissionOperation>> GetAllAsync(int skip, int take, IEnumerable<SortOption> orderBySortOptions = null, string whereString = null, string searchString = null)
+        {
+            var models = await this.DataContext.MissionOperations
+                .ProjectTo<MissionOperation>(this.mapper.ConfigurationProvider)
+                .ToArrayAsync<MissionOperation, Common.DataModels.MissionOperation>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    whereString,
+                    null);
+
+            return models;
+        }
+
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
+        {
+            return await this.DataContext.MissionOperations
+                .ProjectTo<MissionOperation>(this.mapper.ConfigurationProvider)
+                .CountAsync<MissionOperation, Common.DataModels.MissionOperation>(
+                    whereString,
+                    null);
+        }
+
+        public async Task<MissionOperation> GetByIdAsync(int id)
+        {
+            return await this.DataContext.MissionOperations
+                .ProjectTo<MissionOperation>(this.mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync(o => o.Id == id);
+        }
+
+        public async Task<IEnumerable<MissionOperation>> GetByListRowIdAsync(int listRowId)
+        {
+            return await this.DataContext.MissionOperations
+                .Where(o => o.ItemListRowId == listRowId)
+                .ProjectTo<MissionOperation>(this.mapper.ConfigurationProvider)
+                .ToArrayAsync();
+        }
+
+        public async Task<IOperationResult<MissionOperation>> UpdateAsync(MissionOperation model)
+        {
+            if (model == null)
+            {
+                throw new System.ArgumentNullException(nameof(model));
+            }
+
+            var result = await this.UpdateAsync(
+                model,
+                this.DataContext.MissionOperations,
+                this.DataContext,
+                checkForPolicies: false);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+            return result;
+        }
+
+        public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)
+        {
+            var involvedOperations = await this.GetByListRowIdAsync(row.Id);
+
+            var completeMissionsCount = involvedOperations.Count(o => o.Status == MissionOperationStatus.Completed);
+            var hasExecutingMissions = involvedOperations.Any(o => o.Status == MissionOperationStatus.Executing);
+            var hasErroredMissions = involvedOperations.Any(o => o.Status == MissionOperationStatus.Error);
+            var hasIncompleteMissions = involvedOperations.Any(o => o.Status == MissionOperationStatus.Incomplete);
+
+            if (!involvedOperations.Any())
+            {
+                row.Status = ItemListRowStatus.New;
+            }
+            else if (completeMissionsCount == involvedOperations.Count()
+                && involvedOperations.Sum(o => o.DispatchedQuantity).CompareTo(row.RequestedQuantity) == 0)
+            {
+                row.Status = ItemListRowStatus.Completed;
+                row.CompletionDate = now;
+            }
+            else if (hasErroredMissions)
+            {
+                row.Status = ItemListRowStatus.Error;
+            }
+            else if (hasExecutingMissions)
+            {
+                row.Status = ItemListRowStatus.Executing;
+                row.LastExecutionDate = now;
+            }
+            else if (hasIncompleteMissions)
+            {
+                row.Status = ItemListRowStatus.Incomplete;
+            }
+
+            await this.rowExecutionProvider.UpdateAsync(row);
+        }
+
+        private static void RemovePairingIfEmpty(CandidateCompartment compartment)
+        {
+            if (compartment.Stock.CompareTo(0) == 0
+                && compartment.ReservedForPick.CompareTo(0) == 0
+                && compartment.ReservedToPut.CompareTo(0) == 0)
+            {
+                if (!compartment.IsItemPairingFixed)
+                {
+                    compartment.ItemId = null;
+                }
+
+                compartment.Lot = null;
+                compartment.MaterialStatusId = null;
+                compartment.PackageTypeId = null;
+                compartment.RegistrationNumber = null;
+                compartment.Sub1 = null;
+                compartment.Sub2 = null;
+            }
+        }
+
+        private static void UpdateCompartmentAfterPick(CandidateCompartment compartment, double quantity, DateTime now)
+        {
+            compartment.ReservedForPick -= quantity;
+            compartment.Stock -= quantity;
+            RemovePairingIfEmpty(compartment);
+
+            compartment.LastPickDate = now;
+        }
+
+        private static void UpdateOperationQuantityAndStatus(MissionOperation operation, double? quantity)
+        {
+            if (quantity.HasValue)
+            {
+                operation.DispatchedQuantity += quantity.Value;
+            }
+
+            operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
+                ? MissionOperationStatus.Completed
+                : MissionOperationStatus.Incomplete;
+        }
+
+        private async Task<IOperationResult<MissionOperation>> AbortAsync(MissionOperation operation)
+        {
+            System.Diagnostics.Debug.Assert(
+                operation != null,
+                $"The method argument {nameof(operation)} should not be null.");
+
+            var compartment = await this.compartmentOperationProvider
+                .GetByIdForStockUpdateAsync(operation.CompartmentId);
+
+            switch (operation.Type)
+            {
+                case MissionOperationType.Pick:
+                    compartment.ReservedForPick -= operation.RequestedQuantity;
+                    break;
+
+                case MissionOperationType.Put:
+                    compartment.ReservedToPut -= operation.RequestedQuantity;
+                    RemovePairingIfEmpty(compartment);
+                    break;
+
+                default:
+                    return new BadRequestOperationResult<MissionOperation>(
+                        $"Abortion is not supported for mission type '{operation.Type}'.");
+            }
+
+            operation.Status = MissionOperationStatus.Incomplete;
+
+            var compartmentUpdateResult = await this.compartmentOperationProvider.UpdateAsync(compartment);
+            if (!compartmentUpdateResult.Success)
+            {
+                return new UnprocessableEntityOperationResult<MissionOperation>(
+                    compartmentUpdateResult.Description);
+            }
+
+            var updateResult = await this.UpdateAsync(operation);
+
+            if (operation is MissionListOperation listOperation)
+            {
+                var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
+            }
+
+            return updateResult;
+        }
+
+        private async Task<IOperationResult<MissionOperation>> CompletePickOperationAsync(MissionOperation operation, double quantity)
+        {
+            if (quantity > operation.QuantityRemainingToDispatch)
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    $"Actual picked quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({operation.QuantityRemainingToDispatch}).",
+                    operation);
+            }
+
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    "Unable to complete the specified operation. " +
+                    $"Actual put quantity ({quantity}) cannot be negative or zero.",
+                    operation);
+            }
+
+            var now = DateTime.UtcNow;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var compartment = await this.compartmentOperationProvider
+                    .GetByIdForStockUpdateAsync(operation.CompartmentId);
+                if (compartment == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionOperation>(
+                        "Unable to complete the specified mission. The associated compartment could not be retrieved.");
+                }
+
+                var loadingUnit = await this.loadingUnitProvider
+                    .GetByIdForExecutionAsync(compartment.LoadingUnitId);
+                if (loadingUnit == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionOperation>(
+                        "Unable to complete the specified mission. The associated loading unit could not be retrieved.");
+                }
+
+                var item = await this.itemProvider.GetByIdForExecutionAsync(operation.ItemId);
+
+                UpdateCompartmentAfterPick(compartment, quantity, now);
+
+                loadingUnit.LastPickDate = now;
+
+                item.LastPickDate = now;
+
+                UpdateOperationQuantityAndStatus(operation, quantity);
+
+                var result = await this.UpdateAsync(operation);
+                await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+                await this.itemProvider.UpdateAsync(item);
+                await this.compartmentOperationProvider.UpdateAsync(compartment);
+
+                if (operation is MissionListOperation listOperation)
+                {
+                    var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                    row.DispatchedQuantity += operation.DispatchedQuantity;
+                    await this.UpdateRowStatusAsync(row, now);
+                }
+
+                scope.Complete();
+
+                return result;
+            }
+        }
+
+        private async Task<IOperationResult<MissionOperation>> CompletePutOperationAsync(
+            MissionOperation operation,
+            double quantity)
+        {
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionOperation>(
+                    "Unable to complete the specified operation. " +
+                    $"Actual put quantity ({quantity}) cannot be negative or zero.",
+                    operation);
+            }
+
+            var now = DateTime.UtcNow;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var compartment = await this.compartmentOperationProvider
+                    .GetByIdForStockUpdateAsync(operation.CompartmentId);
+                if (compartment == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionOperation>(
+                        "Unable to complete the specified operation. The associated compartment could not be retrieved.");
+                }
+
+                var loadingUnit = await this.loadingUnitProvider
+                    .GetByIdForExecutionAsync(compartment.LoadingUnitId);
+                if (loadingUnit == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionOperation>(
+                        "Unable to complete the specified operation. The associated loading unit could not be retrieved.");
+                }
+
+                var item = await this.itemProvider.GetByIdForExecutionAsync(operation.ItemId);
+
+                await this.UpdateCompartmentAfterPutAsync(compartment, quantity, now);
+
+                loadingUnit.LastPutDate = now;
+
+                item.LastPutDate = now;
+
+                UpdateOperationQuantityAndStatus(operation, quantity);
+
+                var result = await this.UpdateAsync(operation);
+                await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+                await this.itemProvider.UpdateAsync(item);
+                await this.compartmentOperationProvider.UpdateAsync(compartment);
+
+                if (operation is MissionListOperation listOperation)
+                {
+                    var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                    row.DispatchedQuantity += operation.DispatchedQuantity;
+                    await this.UpdateRowStatusAsync(row, now);
+                }
+
+                scope.Complete();
+
+                return result;
+            }
+        }
+
+        private async Task UpdateCompartmentAfterPutAsync(
+            CandidateCompartment compartment,
+            double quantity,
+            DateTime now)
+        {
+            compartment.ReservedToPut -= Math.Min(quantity, compartment.ReservedToPut);
+            compartment.Stock += quantity;
+            compartment.LastPutDate = now;
+
+            if (compartment.MaxCapacity.HasValue
+                &&
+                compartment.Stock > compartment.MaxCapacity.Value)
+            {
+                await this.itemCompartmentTypeProvider.UpdateAsync(
+                     new ItemCompartmentType
+                     {
+                         ItemId = compartment.ItemId.Value,
+                         CompartmentTypeId = compartment.CompartmentTypeId,
+                         MaxCapacity = compartment.Stock
+                     });
+            }
+        }
+
+        #endregion
+    }
+}

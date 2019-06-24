@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionProvider = this.GetService<IMissionOperationProvider>();
 
             var compartmentProvider = this.GetService<ICompartmentProvider>();
 
@@ -50,13 +50,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 PackageTypeId = 4
             };
 
-            var mission = new Common.DataModels.Mission
+            var missionOperation = new Common.DataModels.MissionOperation
             {
                 Id = 1,
                 CompartmentId = compartment.Id,
                 ItemId = this.Item1.Id,
-                Status = Common.DataModels.MissionStatus.Executing,
-                Type = Common.DataModels.MissionType.Put,
+                Status = Common.DataModels.MissionOperationStatus.Executing,
+                Type = Common.DataModels.MissionOperationType.Put,
                 RequestedQuantity = 10,
                 Sub1 = compartment.Sub1,
                 Sub2 = compartment.Sub2,
@@ -64,11 +64,20 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 PackageTypeId = compartment.PackageTypeId
             };
 
+            var mission = new Common.DataModels.Mission
+            {
+                Id = 1,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Status = Common.DataModels.MissionStatus.Executing,
+                Operations = new[] { missionOperation }
+            };
+
             using (var context = this.CreateContext())
             {
                 context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment);
+                context.MissionOperations.Add(missionOperation);
                 context.Missions.Add(mission);
 
                 context.SaveChanges();
@@ -78,7 +87,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var result = await missionProvider.AbortItemAsync(mission.Id);
+            var result = await missionProvider.AbortAsync(mission.Id);
 
             #endregion
 
@@ -140,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var operationProvider = this.GetService<IMissionOperationProvider>();
 
             var compartmentProvider = this.GetService<ICompartmentProvider>();
 
@@ -166,13 +175,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 PackageTypeId = 4
             };
 
-            var mission = new Common.DataModels.Mission
+            var missionOperation = new Common.DataModels.MissionOperation
             {
                 Id = 1,
                 CompartmentId = emptyCompartment.Id,
                 ItemId = this.Item1.Id,
-                Status = Common.DataModels.MissionStatus.Executing,
-                Type = Common.DataModels.MissionType.Put,
+                Status = Common.DataModels.MissionOperationStatus.Executing,
+                Type = Common.DataModels.MissionOperationType.Put,
                 RequestedQuantity = 10,
                 Sub1 = emptyCompartment.Sub1,
                 Sub2 = emptyCompartment.Sub2,
@@ -180,11 +189,20 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 PackageTypeId = emptyCompartment.PackageTypeId
             };
 
+            var mission = new Common.DataModels.Mission
+            {
+                Id = 1,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Status = Common.DataModels.MissionStatus.Executing,
+                Operations = new[] { missionOperation }
+            };
+
             using (var context = this.CreateContext())
             {
                 context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(emptyCompartment);
+                context.MissionOperations.Add(missionOperation);
                 context.Missions.Add(mission);
 
                 context.SaveChanges();
@@ -194,7 +212,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var result = await missionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+            var result = await operationProvider.CompleteAsync(
+                missionOperation.Id,
+                missionOperation.RequestedQuantity);
 
             #endregion
 
@@ -212,7 +232,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsNotNull(updatedCompartment);
 
             Assert.AreEqual(
-                mission.RequestedQuantity,
+                missionOperation.RequestedQuantity,
                 updatedCompartment.Stock);
 
             Assert.AreEqual(
@@ -220,7 +240,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 updatedCompartment.ReservedToPut);
 
             Assert.AreEqual(
-                mission.ItemId,
+                missionOperation.ItemId,
                 updatedCompartment.ItemId,
                 $"The mission's item information should be copied in the compartment.");
 

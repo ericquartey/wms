@@ -470,7 +470,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         private IQueryable<Item> GetAllBase(
-                    Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
             Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
             var actualWhereFunc = whereExpression ?? ((i) => true);
@@ -560,7 +560,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                     AvailableQuantityItem = g2.Sum(x => x.Quantity),
                                 }).Distinct(),
                         CompartmentsCount = i.Compartments.Count(),
-                        MissionsCount = i.Missions.Count(),
+                        MissionOperationsCount = i.MissionOperations.Count(),
                         SchedulerRequestsCount = i.SchedulerRequests.Count(),
                         ItemListRowsCount = i.ItemListRows.Count(),
                         HasCompartmentTypes = i.ItemsCompartmentTypes.Any(),

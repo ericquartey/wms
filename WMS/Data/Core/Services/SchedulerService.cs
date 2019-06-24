@@ -47,13 +47,13 @@ namespace Ferretto.WMS.Data.Core.Services
 
         #region Methods
 
-        public async Task<IOperationResult<MissionExecution>> AbortMissionAsync(int missionId)
+        public async Task<IOperationResult<MissionOperation>> AbortMissionOperationAsync(int operationId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+                var operationsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionOperationProvider>();
 
-                var result = await missionsProvider.AbortItemAsync(missionId);
+                var result = await operationsProvider.AbortAsync(operationId);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -61,13 +61,13 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<MissionExecution>> CompleteItemMissionAsync(int missionId, double quantity)
+        public async Task<IOperationResult<MissionOperation>> CompleteItemOperationAsync(int operationId, double quantity)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+                var operationsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionOperationProvider>();
 
-                var result = await missionsProvider.CompleteItemAsync(missionId, quantity);
+                var result = await operationsProvider.CompleteAsync(operationId, quantity);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -75,13 +75,13 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitMissionAsync(int missionId)
+        public async Task<IOperationResult<Mission>> CompleteLoadingUnitMissionAsync(int missionId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionLoadingUnitProvider>();
 
-                var result = await missionsProvider.CompleteLoadingUnitAsync(missionId);
+                var result = await missionsProvider.CompleteAsync(missionId);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -117,13 +117,13 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId)
+        public async Task<IOperationResult<MissionOperation>> ExecuteMissionOperationAsync(int operationId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+                var operationsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionOperationProvider>();
 
-                return await missionsProvider.ExecuteAsync(missionId);
+                return await operationsProvider.ExecuteAsync(operationId);
             }
         }
 
@@ -245,29 +245,29 @@ namespace Ferretto.WMS.Data.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        public async Task<IOperationResult<ItemList>> SuspendListAsync(int id)
+        public async Task<IOperationResult<ItemList>> SuspendListAsync(int listId)
         {
-            this.logger.LogDebug($"Suspending execution of list id={id}.");
+            this.logger.LogDebug($"Suspending execution of list id={listId}.");
 
             using (var scope = this.scopeFactory.CreateScope())
             {
                 var listProvider = scope.ServiceProvider.GetRequiredService<IItemListExecutionProvider>();
 
-                await listProvider.SuspendAsync(id);
+                await listProvider.SuspendAsync(listId);
             }
 
             throw new System.NotImplementedException();
         }
 
-        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id)
+        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int listId)
         {
-            this.logger.LogDebug($"Suspending execution of list row id={id}.");
+            this.logger.LogDebug($"Suspending execution of list row id={listId}.");
 
             using (var scope = this.scopeFactory.CreateScope())
             {
                 var rowProvider = scope.ServiceProvider.GetRequiredService<IItemListRowExecutionProvider>();
 
-                await rowProvider.SuspendAsync(id);
+                await rowProvider.SuspendAsync(listId);
             }
 
             throw new System.NotImplementedException();
@@ -293,8 +293,13 @@ namespace Ferretto.WMS.Data.Core.Services
                             Status = SchedulerRequestStatus.New,
                         };
 
-                        var createdRequest = await requestsProvider.CreateAsync(qualifiedRequest);
-                        qualifiedRequest = createdRequest.Entity;
+                        var creationResult = await requestsProvider.CreateAsync(qualifiedRequest);
+                        if (!creationResult.Success)
+                        {
+                            return creationResult;
+                        }
+
+                        qualifiedRequest = creationResult.Entity;
                         transactionScope.Complete();
 
                         this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for loadingUnit={qualifiedRequest.LoadingUnitId} was accepted and stored.");
@@ -373,10 +378,10 @@ namespace Ferretto.WMS.Data.Core.Services
             using (var scope = this.scopeFactory.CreateScope())
             {
                 var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
-                var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionCreationProvider>();
+                var operationsProvider = scope.ServiceProvider.GetRequiredService<IMissionOperationCreationProvider>();
 
                 var requests = await requestsProvider.GetRequestsToProcessAsync();
-                await missionsProvider.CreateForRequestsAsync(requests);
+                await operationsProvider.CreateForRequestsAsync(requests);
             }
 
             this.logger.LogDebug("Done processing pending requests.");

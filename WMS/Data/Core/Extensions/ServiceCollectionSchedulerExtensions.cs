@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
         #region Methods
 
         public static IServiceCollection AddSchedulerServiceProvider<T>(
-                this IServiceCollection serviceCollection)
+            this IServiceCollection serviceCollection)
         {
             switch (typeof(T))
             {
@@ -24,19 +24,19 @@ namespace Ferretto.WMS.Data.Core.Extensions
         }
 
         public static IServiceCollection AddSchedulerServiceProviders(
-                         this IServiceCollection serviceCollection)
+            this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<IItemListRowExecutionProvider, ItemListRowExecutionProvider>();
+            serviceCollection.AddTransient<ICompartmentOperationProvider, CompartmentOperationProvider>();
             serviceCollection.AddTransient<IItemListExecutionProvider, ItemListExecutionProvider>();
-            serviceCollection.AddTransient<IMissionExecutionProvider, MissionExecutionProvider>();
+            serviceCollection.AddTransient<IItemListRowExecutionProvider, ItemListRowExecutionProvider>();
+            serviceCollection.AddTransient<IMissionLoadingUnitProvider, MissionLoadingUnitProvider>();
+            serviceCollection.AddTransient<IMissionOperationCreationProvider, MissionOperationCreationProvider>();
+            serviceCollection.AddTransient<IMissionOperationProvider, MissionOperationProvider>();
             serviceCollection.AddTransient<ISchedulerRequestExecutionProvider, SchedulerRequestExecutionProvider>();
             serviceCollection.AddTransient<ISchedulerRequestPickProvider, SchedulerRequestPickProvider>();
             serviceCollection.AddTransient<ISchedulerRequestPutProvider, SchedulerRequestPutProvider>();
-            serviceCollection.AddTransient<ICompartmentOperationProvider, CompartmentOperationProvider>();
-            serviceCollection.AddTransient<IMissionCreationProvider, MissionCreationProvider>();
-
-            serviceCollection.AddHostedService<Services.SchedulerService>();
             serviceCollection.AddTransient<ISchedulerService, Services.SchedulerService>();
+            serviceCollection.AddHostedService<Services.SchedulerService>();
 
             return serviceCollection;
         }

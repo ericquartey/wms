@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         int ItemListRowsCount { get; }
 
-        int MissionsCount { get; }
+        int MissionOperationsCount { get; }
 
         int SchedulerRequestsCount { get; }
 

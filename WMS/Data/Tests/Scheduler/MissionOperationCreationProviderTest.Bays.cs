@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
-    public partial class MissionCreationProviderTest
+    public partial class MissionOperationCreationProviderTest
     {
         #region Methods
 
@@ -21,7 +21,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionCreationProvider>();
+            var operationProvider = this.GetService<IMissionOperationCreationProvider>();
+            var missionProvider = this.GetService<IMissionProvider>();
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
@@ -35,19 +36,29 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedForPick = mission1ReservedQty
             };
 
+            var missionOperation1 = new Common.DataModels.MissionOperation
+            {
+                Id = 1,
+                RequestedQuantity = mission1ReservedQty,
+                ItemId = this.ItemFifo.Id,
+                Priority = 2,
+                Status = Common.DataModels.MissionOperationStatus.New,
+                CompartmentId = compartment1.Id
+            };
+
             var mission1 = new Common.DataModels.Mission
             {
+                Id = 1,
                 BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = mission1ReservedQty,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Priority = 2,
+                Operations = new[] { missionOperation1 },
                 Status = Common.DataModels.MissionStatus.New,
-                CompartmentId = compartment1.Id
             };
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
                 Id = 1,
-
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
@@ -74,15 +85,19 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var missions = await missionProvider.CreateForRequestsAsync(requests);
+            var operations = await operationProvider.CreateForRequestsAsync(requests);
 
             #endregion
 
             #region Assert
 
             Assert.AreEqual(1, requests.Count());
-            Assert.AreEqual(1, missions.Count());
-            Assert.AreEqual(this.Bay1Aisle1.Id, missions.First().BayId);
+            Assert.AreEqual(1, operations.Count());
+
+            var operation = operations.First();
+            var mission = await missionProvider.GetByIdAsync(operation.MissionId);
+
+            Assert.AreEqual(this.Bay1Aisle1.Id, mission.BayId);
 
             #endregion
         }
@@ -99,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionCreationProvider>();
+            var operationProvider = this.GetService<IMissionOperationCreationProvider>();
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
@@ -114,20 +129,36 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
+            var missionOperation1 = new Common.DataModels.MissionOperation
+            {
+                Id = 1,
+                RequestedQuantity = 1,
+                Status = Common.DataModels.MissionOperationStatus.New,
+                Type = Common.DataModels.MissionOperationType.Pick
+            };
+
             var mission1 = new Common.DataModels.Mission
             {
                 Id = 1,
                 BayId = this.Bay1Aisle1.Id,
+                Status = Common.DataModels.MissionStatus.New,
+                Operations = new[] { missionOperation1 }
+            };
+
+            var missionOperation2 = new Common.DataModels.MissionOperation
+            {
+                Id = 2,
                 RequestedQuantity = 1,
-                Status = Common.DataModels.MissionStatus.New
+                Status = Common.DataModels.MissionOperationStatus.New,
+                Type = Common.DataModels.MissionOperationType.Pick
             };
 
             var mission2 = new Common.DataModels.Mission
             {
                 Id = 2,
                 BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = 1,
-                Status = Common.DataModels.MissionStatus.New
+                Status = Common.DataModels.MissionStatus.New,
+                Operations = new[] { missionOperation2 }
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -136,7 +167,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100,
-                ReservedForPick = mission1.RequestedQuantity + mission2.RequestedQuantity
+                ReservedForPick = missionOperation1.RequestedQuantity + missionOperation2.RequestedQuantity
             };
 
             using (var context = this.CreateContext())
@@ -149,18 +180,22 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             }
 
             var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+            if (requests == null || !requests.Any())
+            {
+                Assert.Inconclusive();
+            }
 
             #endregion
 
             #region Act
 
-            var missions = await missionProvider.CreateForRequestsAsync(requests);
+            var operations = await operationProvider.CreateForRequestsAsync(requests);
 
             #endregion
 
             #region Assert
 
-            Assert.IsFalse(missions.Any());
+            Assert.IsFalse(operations.Any());
 
             #endregion
         }

@@ -25,9 +25,9 @@ namespace Ferretto.WMS.Data.Core.Policies
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemToDelete.ItemListRowsCount}]");
             }
 
-            if (itemToDelete.MissionsCount > 0)
+            if (itemToDelete.MissionOperationsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{itemToDelete.MissionsCount}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{itemToDelete.MissionOperationsCount}]");
             }
 
             if (itemToDelete.SchedulerRequestsCount > 0)
