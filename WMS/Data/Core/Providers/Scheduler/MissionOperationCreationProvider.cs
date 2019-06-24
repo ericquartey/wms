@@ -120,7 +120,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 else
                 {
                     this.logger.LogError(
-                        $"Cannot process scheduler request id={request.Id} because it is not an item scheduler request .");
+                        string.Format(
+                            Resources.Errors.CannotProcessSchedulerRequest,
+                            request.Id));
                 }
             }
 
@@ -137,7 +139,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (request.OperationType != OperationType.Withdrawal)
             {
                 throw new InvalidOperationException(
-                    $"Pick missions cannot be created for scheduler operation type '{request.OperationType}'.");
+                    string.Format(
+                        Resources.Errors.PickMissionsCannotBeCreatedForSchedulerOperationType,
+                        request.OperationType));
             }
 
             System.Diagnostics.Debug.Assert(
@@ -242,7 +246,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (request.OperationType != OperationType.Insertion)
             {
                 throw new InvalidOperationException(
-                    $"Put missions cannot be created for scheduler operation type '{request.OperationType}'.");
+                    string.Format(
+                        Resources.Errors.PutMissionsCannotBeCreatedForSchedulerOperationType,
+                        request.OperationType));
             }
 
             System.Diagnostics.Debug.Assert(
@@ -353,7 +359,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!request.BayId.HasValue)
             {
                 throw new InvalidOperationException(
-                    "Cannot create a pick mission from a request that does not specify the target bay.");
+                    Resources.Errors.CannotCreatePickMissionFromRequestThatDoesNotSpecifyTargetBay);
             }
 
             var bay = await this.bayProvider.GetByIdForExecutionAsync(request.BayId.Value);

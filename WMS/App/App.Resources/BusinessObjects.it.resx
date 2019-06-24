@@ -432,9 +432,6 @@
   <data name="SelectedItem" xml:space="preserve">
     <value>Articolo selezionato</value>
   </data>
-  <data name="AreaName" xml:space="preserve">
-    <value>Area</value>
-  </data>
   <data name="BayLoadingUnitsBufferSize" xml:space="preserve">
     <value>Dimensione buffer UDC</value>
   </data>

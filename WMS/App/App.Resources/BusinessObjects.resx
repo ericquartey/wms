@@ -537,10 +537,6 @@
     <value>Selected Item</value>
     <comment>Selected Item</comment>
   </data>
-    <data name="AreaName" xml:space="preserve">
-    <value>Area</value>
-    <comment>Area - Description</comment>
-  </data>
   <data name="BayType" xml:space="preserve">
     <value>Bay Type</value>
     <comment>Bay Type</comment>

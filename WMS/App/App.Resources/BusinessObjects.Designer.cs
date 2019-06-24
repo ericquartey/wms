@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("AbcClass", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aisle.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("AllowedItemAreaTotalStock", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Area.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Area", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Area Fill Rate.
         /// </summary>
@@ -114,15 +114,6 @@ namespace Ferretto.WMS.App.Resources {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Area.
-        /// </summary>
-        public static string AreaName {
-            get {
-                return ResourceManager.GetString("AreaName", resourceCulture);
-            }
-        }
-
         /// <summary>
         ///   Looks up a localized string similar to Associate New Item.
         /// </summary>
@@ -140,7 +131,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Bay", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Is Active.
         /// </summary>
@@ -212,7 +203,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Category", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cell.
         /// </summary>
@@ -311,7 +302,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CellPositionDescription", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Side.
         /// </summary>
@@ -329,7 +320,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CellSide_extended", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to X Coordinate [mm].
         /// </summary>
@@ -365,7 +356,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Code", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment.
         /// </summary>
@@ -383,7 +374,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentFifoStartDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fixed Pairing.
         /// </summary>
@@ -392,7 +383,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentIsItemPairingFixed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Status.
         /// </summary>
@@ -401,7 +392,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentStatus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Type [mm] x [mm].
         /// </summary>
@@ -437,7 +428,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentTypeEmptyCompartmentsCount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Associated Items.
         /// </summary>
@@ -446,7 +437,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentTypeItemCompartmentsCount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to X Position [mm].
         /// </summary>
@@ -599,7 +590,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemDescription", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to FIFO Pick Time [days].
         /// </summary>
@@ -617,7 +608,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemFifoPutTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to List.
         /// </summary>
@@ -626,7 +617,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemList", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to End Execution.
         /// </summary>
@@ -635,7 +626,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListExecutionEndDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Schedule.
         /// </summary>
@@ -662,7 +653,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListJob", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Item List Row.
         /// </summary>
@@ -671,7 +662,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rows Count.
         /// </summary>
@@ -680,7 +671,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowsCount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
@@ -689,7 +680,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -752,7 +743,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusWaiting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Associated Shipment Unit.
         /// </summary>
@@ -761,7 +752,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListShipmentUnitAssociated", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
@@ -833,7 +824,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusWaiting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Management Type.
         /// </summary>
@@ -860,7 +851,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemManagementTypeVolume", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ItemDetails Invalid.
         /// </summary>
@@ -869,7 +860,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemPickItemDetailsInvalidError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Available Capacity.
         /// </summary>
@@ -878,7 +869,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemPutAvailableCapacity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Put Tolerance.
         /// </summary>
@@ -959,7 +950,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading Unit Code.
         /// </summary>
@@ -995,7 +986,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnitHandlingParametersCorrection", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to In Cycle Count.
         /// </summary>
@@ -1004,7 +995,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnitInCycleCount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cell Pairing.
         /// </summary>
@@ -1022,7 +1013,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnitLastHandlingDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Other Cycle Count.
         /// </summary>
@@ -1085,7 +1076,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnitWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Lot.
         /// </summary>
@@ -1112,7 +1103,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineActualWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Area Fill Rate.
         /// </summary>
@@ -1256,7 +1247,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineGrossWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Input Loading Units Count.
         /// </summary>
@@ -1481,7 +1472,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachinePowerOnTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Service Url.
         /// </summary>
@@ -1553,7 +1544,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineTotalMaxWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Weight Fill Rate.
         /// </summary>
@@ -1580,7 +1571,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MaxCapacity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Measure Unit.
         /// </summary>
@@ -1607,7 +1598,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionOperationStatusCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -1616,7 +1607,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionOperationStatusError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Executing.
         /// </summary>
@@ -1625,7 +1616,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionOperationStatusExecuting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Incomplete.
         /// </summary>
@@ -1634,7 +1625,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionOperationStatusIncomplete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
@@ -1697,7 +1688,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionTypeBypass", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reorder.
         /// </summary>
@@ -1733,7 +1724,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Notes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Insert.
         /// </summary>
@@ -1769,7 +1760,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("OperationType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Package Type.
         /// </summary>
@@ -1805,7 +1796,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Pick", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Pick Tolerance.
         /// </summary>
@@ -1814,7 +1805,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PickTolerance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Multi Reference.
         /// </summary>
@@ -1832,7 +1823,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Priority", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Put.
         /// </summary>
@@ -1841,7 +1832,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Put", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Requested Quantity.
         /// </summary>
@@ -1850,7 +1841,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Registration Number.
         /// </summary>
@@ -1868,7 +1859,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ReservedForPick", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reserved to Put.
         /// </summary>
@@ -1877,7 +1868,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ReservedToPut", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Scheduler Request.
         /// </summary>
@@ -1895,7 +1886,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("SelectedItem", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
@@ -1940,7 +1931,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Status", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Stock.
         /// </summary>
@@ -1949,7 +1940,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Stock", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sub 1.
         /// </summary>
@@ -1958,7 +1949,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Sub1", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sub 2.
         /// </summary>
@@ -1967,7 +1958,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Sub2", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
@@ -1976,7 +1967,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Type", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
@@ -1985,7 +1976,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Username", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Weight Fill Rate.
         /// </summary>
@@ -1994,7 +1985,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("WeightFillRate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Width [mm].
         /// </summary>

@@ -26,7 +26,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Priority), ResourceType = typeof(BusinessObjects))]
         public int? Priority { get; set; }
 
-        [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(General))]
         public MissionStatus? Status { get; set; } = MissionStatus.New;
 
         #endregion
