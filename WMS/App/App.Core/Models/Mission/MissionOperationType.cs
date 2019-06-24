@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -8,13 +8,13 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MissionTypeBypass), ResourceType = typeof(BusinessObjects))]
         Bypass = 'B',
 
-        [Display(Name = nameof(BusinessObjects.MissionTypeInventory), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Inventory), ResourceType = typeof(BusinessObjects))]
         Inventory = 'I',
 
-        [Display(Name = nameof(BusinessObjects.MissionTypePick), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Pick), ResourceType = typeof(BusinessObjects))]
         Pick = 'P',
 
-        [Display(Name = nameof(BusinessObjects.MissionTypePut), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Put), ResourceType = typeof(BusinessObjects))]
         Put = 'T',
 
         [Display(Name = nameof(BusinessObjects.MissionTypeReorder), ResourceType = typeof(BusinessObjects))]

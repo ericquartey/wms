@@ -3,9 +3,9 @@ using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -26,8 +26,6 @@ namespace Ferretto.VW.InstallationApp
         private bool cradleEngineSelected;
 
         private bool elevatorEngineSelected;
-
-        private IInstallationService installationService;
 
         private IOSensorsStatus ioSensorsStatus;
 
@@ -50,6 +48,8 @@ namespace Ferretto.VW.InstallationApp
         private bool mushroomHeadButtonBay3;
 
         private bool securityFunctionActive;
+
+        private IUpdateSensorsService updateSensorsService;
 
         private SubscriptionToken updateVariousInputsSensorsState;
 
@@ -112,7 +112,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -123,7 +123,7 @@ namespace Ferretto.VW.InstallationApp
                 ThreadOption.PublisherThread,
                 false);
 
-            await this.installationService.ExecuteSensorsChangedAsync();
+            await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

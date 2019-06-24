@@ -133,6 +133,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CellNumber = l.CellNumber,
                         CellPositionDescription = l.CellPositionDescription,
                         AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
+                        WeightFillRate = l.WeightFillRate.GetValueOrDefault(),
                         Policies = l.GetPolicies(),
                     });
             }

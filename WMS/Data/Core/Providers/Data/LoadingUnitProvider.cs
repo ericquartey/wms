@@ -290,6 +290,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<LoadingUnit> GetAllBase()
         {
+            var loadingUnitsMachines = this.DataContext.LoadingUnits.Join(this.DataContext.Machines, l => l.Cell.Aisle.Id, machine => machine.AisleId, (l, m) => new { l, m }).ToArray();
             return this.DataContext.LoadingUnits
                 .Select(l => new LoadingUnit
                 {
@@ -306,7 +307,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
-
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed
@@ -315,6 +315,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Height)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
                             l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                    WeightFillRate = loadingUnitsMachines.Any(wl => wl.l.Id == l.Id &&
+                                                                    wl.m.TotalMaxWeight.HasValue &&
+                                                                    wl.m.TotalMaxWeight.Value > 0) ? loadingUnitsMachines.Select(lm => new
+                                                            {
+                                                                WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
+                                                                LoadingUnitId = lm.l.Id
+                                                            }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : (double?)0,
                 });
         }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Markup;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {

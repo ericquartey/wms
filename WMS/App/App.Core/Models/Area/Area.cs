@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -7,7 +7,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.AreaName), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string Name { get; set; }
 
         #endregion

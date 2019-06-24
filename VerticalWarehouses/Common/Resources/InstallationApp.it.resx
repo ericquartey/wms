@@ -898,4 +898,7 @@
   <data name="SwitchEngineStarted" xml:space="preserve">
     <value>Cambio motore iniziato</value>
   </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>Valore inserito non valido</value>
+  </data>
 </root>

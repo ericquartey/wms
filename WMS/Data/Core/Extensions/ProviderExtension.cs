@@ -35,7 +35,10 @@ namespace Ferretto.WMS.Data.Core.Extensions
             var businessModelPropertyInfo = typeof(TBusinessModel).GetProperty(propertyName);
             if (businessModelPropertyInfo == null)
             {
-                throw new InvalidOperationException($"The specified property '{propertyName}' is not found");
+                throw new InvalidOperationException(
+                    string.Format(
+                        Resources.Errors.TheSpecifiedPropertyIsNotFound,
+                        propertyName));
             }
 
             var businessSelectExpression = DoBuildSelectExpression<TBusinessModel>(propertyName, businessModelPropertyInfo.PropertyType);

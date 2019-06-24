@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<MissionOperation> Operations { get; set; }
 
-        [Display(Name = nameof(General.Priority), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Priority), ResourceType = typeof(BusinessObjects))]
         public int? Priority { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]

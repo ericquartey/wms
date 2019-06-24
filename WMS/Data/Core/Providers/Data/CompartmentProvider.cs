@@ -6,7 +6,6 @@ using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
@@ -54,7 +53,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || !model.YPosition.HasValue)
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(
-                    "Compartment position and size must be specified.");
+                    Resources.Errors.CompartmentPositionAndSizeMustBeSpecified);
             }
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
@@ -67,8 +66,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (!model.CanAddToLoadingUnit(existingCompartents, loadingUnit))
             {
-                return new CreationErrorOperationResult<CompartmentDetails>(Errors
-                    .CompartmentSetCannotBeInsertedInLoadingUnit);
+                return new CreationErrorOperationResult<CompartmentDetails>(
+                    Resources.Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -257,8 +256,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
             if (!model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit))
             {
-                return new CreationErrorOperationResult<CompartmentDetails>(Errors
-                    .CompartmentSetCannotBeInsertedInLoadingUnit);
+                return new CreationErrorOperationResult<CompartmentDetails>(
+                    Resources.Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

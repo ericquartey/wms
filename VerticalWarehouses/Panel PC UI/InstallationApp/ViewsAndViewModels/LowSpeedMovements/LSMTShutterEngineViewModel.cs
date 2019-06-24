@@ -1,14 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 // TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 using ShutterMovementDirection = Ferretto.VW.MAS_AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.InstallationApp
@@ -27,9 +26,9 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        private IInstallationService installationService;
-
         private DelegateCommand openButtonCommand;
+
+        private IShutterService shutterService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -69,9 +68,7 @@ namespace Ferretto.VW.InstallationApp
         public async Task DownShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
-            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
-            //TEMP
-            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
+            await this.shutterService.ExecutePositioningAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -82,9 +79,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
-            // TEMP
-            //this.testService = this.container.Resolve<ITestService>();
+            this.shutterService = this.container.Resolve<IShutterService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -98,7 +93,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task StopShutterAsync()
         {
-            await this.installationService.StopCommandAsync();
+            await this.shutterService.StopAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -114,9 +109,7 @@ namespace Ferretto.VW.InstallationApp
         public async Task UpShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
-            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
-            //TEMP
-            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
+            await this.shutterService.ExecutePositioningAsync(messageData);
         }
 
         #endregion

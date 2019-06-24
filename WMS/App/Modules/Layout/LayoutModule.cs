@@ -1,6 +1,7 @@
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -59,7 +60,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+            SplashScreenService.SetMessage(DesktopApp.InitializingLayoutModule);
 
             this.logger.Trace("Loading module ...");
 

@@ -1,5 +1,6 @@
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using NLog;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -48,7 +49,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
+            SplashScreenService.SetMessage(DesktopApp.InitializingMasterDataModule);
 
             this.logger.Trace("Loading module ...");
 
@@ -65,9 +66,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<AssociateCompartmentTypesView, AssociateCompartmentTypesViewModel>();
             this.NavigationService.Register<AssociateCompartmentTypesStepsView, AssociateCompartmentTypesStepsViewModel>();
             this.NavigationService.Register<ItemCompartmentTypesToItemStepView, ItemCompartmentTypesToItemStepViewModel>();
+            this.NavigationService.Register<ChooseLoadingUnitStepView, ChooseLoadingUnitStepViewModel>();
             this.NavigationService.Register<CompartmentsView, CompartmentsViewModel>();
             this.NavigationService.Register<CompartmentTypesView, CompartmentTypesViewModel>();
             this.NavigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
+            this.NavigationService.Register<CompartmentEditStepView, CompartmentEditStepViewModel>();
             this.NavigationService.Register<CompartmentTypeDetailsView, CompartmentTypeDetailsViewModel>();
 
             this.NavigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
