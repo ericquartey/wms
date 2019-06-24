@@ -574,7 +574,11 @@
     <comment>Label text</comment>
   </data>
   <data name="DoCorrectOffset" xml:space="preserve">
-    <value>Correct Offset</value>
+    <value>Close procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="AcceptOffset" xml:space="preserve">
+    <value>Accept Offset</value>
     <comment>Button text</comment>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">

@@ -39,6 +39,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost("ExecuteCompleted")]
+        public async Task<bool> ExecuteCompletedAsync()
+        {
+            return await this.ExecuteCompleted_MethodAsync();
+        }
+
         [HttpGet("ExecutePositioning")]
         public async Task ExecutePositioningAsync()
         {
@@ -64,10 +70,35 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [ProducesResponseType(200)]
+        [ProducesResponseType(422)]
+        [ProducesResponseType(400)]
+        [HttpPost("SetOffsetParameter/{newOffset}/")]
+        public async Task<bool> SetOffsetParameterAsync(decimal newOffset)
+        {
+            return await this.SetOffsetParameter_MethodAsync(newOffset);
+        }
+
+        [ProducesResponseType(200)]
         [HttpGet("Stop")]
         public void Stop()
         {
             this.Stop_Method();
+        }
+
+        private async Task<bool> ExecuteCompleted_MethodAsync()
+        {
+            var completionPersist = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus, true);
+            }
+            catch (Exception ex)
+            {
+                completionPersist = false;
+            }
+
+            return completionPersist;
         }
 
         private async Task ExecutePositioning_MethodAsync()
@@ -145,6 +176,22 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageActor.WebApi,
                 MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        private async Task<bool> SetOffsetParameter_MethodAsync(decimal newOffset)
+        {
+            var resultAssignment = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis, newOffset);
+            }
+            catch (Exception ex)
+            {
+                resultAssignment = false;
+            }
+
+            return resultAssignment;
         }
 
         private void Stop_Method()
