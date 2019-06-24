@@ -43,7 +43,7 @@ namespace Ferretto.WMS.App.Controls
         {
             if (this.EnableCorrection && this.Value > 0)
             {
-                this.EditValue = (double)(Math.Round(this.Value / this.Increment, 0) * this.Increment);
+                this.EditValue = (double)(Math.Floor(this.Value / this.Increment) * this.Increment);
             }
         }
 
