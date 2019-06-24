@@ -7,10 +7,10 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -20,6 +20,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private IBeltBurnishingService beltBurnishingService;
+
         private string completedCycles;
 
         private IUnityContainer container;
@@ -27,8 +29,6 @@ namespace Ferretto.VW.InstallationApp
         private string currentPosition;
 
         private string cycleQuantity;
-
-        private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -141,10 +141,11 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var Category = "VerticalAxis";
-                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
+                this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+
                 Category = "BeltBurnishing";
-                this.CycleQuantity = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
+                this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
             }
             catch (SwaggerException ex)
             {
@@ -154,7 +155,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.beltBurnishingService = this.container.Resolve<IBeltBurnishingService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -173,9 +174,6 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TEMP
-            //this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
-
             this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
@@ -205,7 +203,7 @@ namespace Ferretto.VW.InstallationApp
                 decimal.TryParse(this.LowerBound, out var lowerBound);
                 decimal.TryParse(this.UpperBound, out var upperBound);
 
-                await this.installationService.ExecuteBeltBurnishingAsync(upperBound, lowerBound, reqCycles);
+                await this.beltBurnishingService.ExecuteAsync(upperBound, lowerBound, reqCycles);
             }
             catch (Exception)
             {
@@ -216,7 +214,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                await this.installationService.StopCommandAsync();
+                await this.beltBurnishingService.StopAsync();
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
             }

@@ -331,6 +331,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose the Loading Unit where you want to create a new Compartment Type.
+        /// </summary>
+        public static string ChooseTheLoadingUnitCreateNewCompartmentType {
+            get {
+                return ResourceManager.GetString("ChooseTheLoadingUnitCreateNewCompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment.
         /// </summary>
         public static string Compartment {
@@ -898,6 +907,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Layout Overview.
+        /// </summary>
+        public static string LayoutOverview {
+            get {
+                return ResourceManager.GetString("LayoutOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
@@ -1119,6 +1137,15 @@ namespace Ferretto.Common.Resources {
         public static string NoAvailableAreas {
             get {
                 return ResourceManager.GetString("NoAvailableAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Loading Units available..
+        /// </summary>
+        public static string NoLoadingUnitsAvailable {
+            get {
+                return ResourceManager.GetString("NoLoadingUnitsAvailable", resourceCulture);
             }
         }
         

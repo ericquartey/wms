@@ -508,4 +508,13 @@
   <data name="MinStep" xml:space="preserve">
     <value>(Passo Min.: {0})</value>
   </data>
+  <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
+    <value>Scegli l'Unità di Carico dove creare un nuovo Tipo Scomparto</value>
+  </data>
+  <data name="NoLoadingUnitsAvailable" xml:space="preserve">
+    <value>Non ci sono Unità di Carico disponibili.</value>
+  </data>
+  <data name="LayoutOverview" xml:space="preserve">
+    <value>Panoramica della Disposizione</value>
+  </data>
 </root>

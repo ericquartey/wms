@@ -3,10 +3,10 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -20,8 +20,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        private IInstallationService installationService;
-
         private bool isButtonDownEnabled;
 
         private bool isButtonUpEnabled;
@@ -29,6 +27,8 @@ namespace Ferretto.VW.InstallationApp
         private DelegateCommand moveDownButtonCommand;
 
         private DelegateCommand moveUpButtonCommand;
+
+        private IPositioningService positioningService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -74,21 +74,21 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
         public async Task MoveDownVerticalAxisAsync()
         {
             this.IsButtonUpEnabled = false;
             var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            await this.positioningService.ExecuteAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
             this.IsButtonDownEnabled = false;
             var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            await this.positioningService.ExecuteAsync(messageData);
         }
 
         public async Task OnEnterViewAsync()
@@ -105,7 +105,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task StopVerticalAxisAsync()
         {
-            await this.installationService.StopCommandAsync();
+            await this.positioningService.StopAsync();
             this.IsButtonDownEnabled = true;
             this.IsButtonUpEnabled = true;
         }

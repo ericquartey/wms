@@ -585,4 +585,16 @@
   <data name="MinStep" xml:space="preserve">
     <value>(Min. Step: {0})</value>
   </data>
+  <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
+    <value>Choose the Loading Unit where you want to create a new Compartment Type</value>
+    <comment>Wizard - ChooseLoadingUnitStepView -</comment>
+  </data>
+  <data name="NoLoadingUnitsAvailable" xml:space="preserve">
+    <value>No Loading Units available.</value>
+    <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
+  </data>
+  <data name="LayoutOverview" xml:space="preserve">
+    <value>Layout Overview</value>
+    <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
+  </data>
 </root>

@@ -45,6 +45,9 @@ namespace Ferretto.WMS.App.Modules.BLL
                 case Common.Utils.Modules.Scheduler.SCHEDULERREQUESTS:
                     return GetSchedulerRequestDataSources<TModel, TKey>();
 
+                case Common.Utils.Modules.MasterData.CHOOSELOADINGUNITSTEP:
+                    return GetLoadingUnitStepDataSources<TModel, TKey>();
+
                 default:
                     return new List<IDataSource<TModel, TKey>>();
             }
@@ -288,6 +291,20 @@ namespace Ferretto.WMS.App.Modules.BLL
                     Common.Resources.MasterData.LoadingUnitStatusUsed,
                     loadingUnitProvider,
                     "[LoadingUnitStatusDescription] == 'Used'")
+            }.Cast<IFilterDataSource<TModel, TKey>>();
+        }
+
+        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetLoadingUnitStepDataSources<TModel, TKey>()
+                            where TModel : IModel<TKey>
+        {
+            var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
+            return new List<PagedDataSource<LoadingUnit, int>>
+            {
+                new PagedDataSource<LoadingUnit, int>(
+                    "ChooseLoadingUnitStepViewAll",
+                    Common.Resources.MasterData.LoadingUnitAll,
+                    loadingUnitProvider),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
