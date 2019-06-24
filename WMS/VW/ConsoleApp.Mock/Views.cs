@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -8,6 +8,41 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
     public static class Views
     {
         #region Methods
+
+        public static void DisplayHeader()
+        {
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("   VertiMAG Panel PC   ");
+            Console.WriteLine("-----------------------");
+        }
+
+        public static void DisplayUserOptions(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
+        {
+            if (machineStatus == null)
+            {
+                throw new ArgumentNullException(nameof(machineStatus));
+            }
+
+            DisplayHeader();
+
+            Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
+            Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
+            Console.WriteLine();
+            Console.WriteLine("Machine");
+            Console.WriteLine($"{(int)UserSelection.DisplayMachineStatus} - Display Status");
+            Console.WriteLine($"{(int)UserSelection.ToggleMachineMode} - Auto/Manual Toggle (current: {machineStatus.Mode})");
+            Console.WriteLine($"{(int)UserSelection.SetMachineFault} - Set Fault");
+            Console.WriteLine();
+            Console.WriteLine("Missions");
+            Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
+            Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
+            Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+            Console.WriteLine($"{(int)UserSelection.AbortMission} - Abort mission");
+            Console.WriteLine();
+            Console.WriteLine("Lists");
+            Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
+            Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
+        }
 
         public static void PrintListsTable(IEnumerable<ItemList> lists)
         {
@@ -41,13 +76,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             Console.WriteLine($"|__________|_____|____________|");
         }
 
-        public static void DisplayHeader()
-        {
-            Console.WriteLine("-----------------------");
-            Console.WriteLine("   VertiMAG Panel PC   ");
-            Console.WriteLine("-----------------------");
-        }
-
         public static void PrintMachineStatus(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
         {
             if (machineStatus == null)
@@ -75,6 +103,11 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         public static void PrintMissionsTable(IEnumerable<Mission> missions)
         {
+            if (missions == null)
+            {
+                throw new ArgumentNullException(nameof(missions));
+            }
+
             if (!missions.Any())
             {
                 Console.WriteLine("No missions are available.");
@@ -88,20 +121,18 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 $"| {nameof(Mission.Priority), 8} " +
                 $"| {nameof(Mission.Id), 3} " +
                 $"| {nameof(Mission.Status), -10} " +
-                $"| {nameof(Mission.ItemDescription), -40} " +
+                $"| {nameof(MissionOperationInfo.ItemDescription), -40} " +
                 $"| Quantities |");
 
             Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
 
             var completedMissions = missions
                    .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
-                   .OrderBy(m => m.Priority)
-                   .ThenBy(m => m.CreationDate);
+                   .OrderBy(m => m.Priority);
 
             foreach (var mission in missions
-                                        .Except(completedMissions)
-                                        .OrderBy(m => m.Priority)
-                                        .ThenBy(m => m.CreationDate))
+                .Except(completedMissions)
+                .OrderBy(m => m.Priority))
             {
                 PrintMissionTableRow(mission);
             }
@@ -182,34 +213,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return selectedMachine;
         }
 
-        public static void DisplayUserOptions(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
-        {
-            if (machineStatus == null)
-            {
-                throw new ArgumentNullException(nameof(machineStatus));
-            }
-
-            DisplayHeader();
-
-            Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
-            Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
-            Console.WriteLine();
-            Console.WriteLine("Machine");
-            Console.WriteLine($"{(int)UserSelection.DisplayMachineStatus} - Display Status");
-            Console.WriteLine($"{(int)UserSelection.ToggleMachineMode} - Auto/Manual Toggle (current: {machineStatus.Mode})");
-            Console.WriteLine($"{(int)UserSelection.SetMachineFault} - Set Fault");
-            Console.WriteLine();
-            Console.WriteLine("Missions");
-            Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
-            Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
-            Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
-            Console.WriteLine($"{(int)UserSelection.AbortMission} - Abort mission");
-            Console.WriteLine();
-            Console.WriteLine("Lists");
-            Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
-            Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
-        }
-
         public static UserSelection PromptForUserSelection()
         {
             Console.WriteLine("Select option:");
@@ -286,6 +289,23 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return -1;
         }
 
+        public static int ReadOperationId()
+        {
+            Console.Write("Insert operation id: ");
+            var operationIdString = Console.ReadLine();
+
+            if (int.TryParse(operationIdString, out var operationId))
+            {
+                return operationId;
+            }
+            else
+            {
+                Console.WriteLine("Unable to parse operation id.");
+            }
+
+            return -1;
+        }
+
         public static int ReadQuantity()
         {
             Console.Write("Insert quantity: ");
@@ -311,14 +331,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private static void PrintMissionTableRow(Mission mission)
         {
-            string trimmedDescription = null;
-            if (mission.ItemDescription != null)
-            {
-                trimmedDescription = mission.ItemDescription?.Substring(0, Math.Min(40, mission.ItemDescription.Length));
-            }
-
-            var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
-
             Console.WriteLine(
                 $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | ");
 
