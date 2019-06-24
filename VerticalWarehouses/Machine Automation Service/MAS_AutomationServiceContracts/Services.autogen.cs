@@ -1741,7 +1741,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("desiredDistance");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/ResolutionCalibration/GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/ResolutionCalibration/GetComputedResolution/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}");
             urlBuilder_.Replace("{desiredDistance}", System.Uri.EscapeDataString(ConvertToString(desiredDistance, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{desiredInitialPosition}", System.Uri.EscapeDataString(ConvertToString(desiredInitialPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{desiredFinalPosition}", System.Uri.EscapeDataString(ConvertToString(desiredFinalPosition, System.Globalization.CultureInfo.InvariantCulture)));

@@ -44,6 +44,7 @@ namespace Ferretto.VW.InstallationApp
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
+            var feedbackNotifierInstance = new FeedbackNotifier();
 
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(container.Resolve<IEventAggregator>());
@@ -95,6 +96,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IUpdateSensorsService>(updateSensorsService);
 
             this.container.RegisterInstance<ITestService>(testService);
+            this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifierInstance);
 
             var mainWindowVMInstance = new MainWindowViewModel(
               container.Resolve<IEventAggregator>(),
@@ -147,6 +149,7 @@ namespace Ferretto.VW.InstallationApp
             lSMTCarouselVMInstance.InitializeViewModel(this.container);
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);
+            feedbackNotifierInstance.Initialize(this.container);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToIAPPButtonVMInstance.InitializeViewModel(this.container);
