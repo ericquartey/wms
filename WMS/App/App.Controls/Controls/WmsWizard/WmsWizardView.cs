@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {

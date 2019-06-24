@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using DevExpress.Mvvm.UI;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -51,10 +52,10 @@ namespace Ferretto.WMS.App.Controls
                     element.SetValue(OriginalTextProperty, originalText);
                 }
 
-                var additionalInfoText = string.Format(Common.Resources.General.AdditionalInfo, labelText);
+                var additionalInfoText = string.Format(General.AdditionalInfo, labelText);
 
                 gridColumn.Header = string.Format(
-                    Common.Resources.General.TitleWithAdditionalInfo,
+                    General.TitleWithAdditionalInfo,
                     originalText,
                     additionalInfoText);
             }
@@ -68,7 +69,7 @@ namespace Ferretto.WMS.App.Controls
                 if (wmsLabel != null)
                 {
                     wmsLabel.AdditionalInfo = (binding && !string.IsNullOrEmpty(labelText)) ?
-                        $"{string.Format(Common.Resources.General.AdditionalInfo, labelText)}" :
+                        $"{string.Format(General.AdditionalInfo, labelText)}" :
                         $"{labelText}";
                 }
             }

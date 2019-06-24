@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Utils", "..
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WMS", "WMS", "{C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Resources", "..\Common\Resources\Ferretto.Common.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Resources", "App\App.Resources\Ferretto.WMS.App.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.Machines", "App\Modules\Machines\Ferretto.WMS.App.Modules.Machines.csproj", "{641C7533-696E-48D4-95DA-9A8E31BCDBED}"
 EndProject

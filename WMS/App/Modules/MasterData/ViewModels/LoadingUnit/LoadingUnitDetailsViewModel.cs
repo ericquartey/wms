@@ -7,12 +7,12 @@ using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -142,7 +142,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -181,7 +181,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
             }
             else
             {
