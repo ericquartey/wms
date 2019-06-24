@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.WMS.Data.Core.Resources {
+namespace Ferretto.WMS.Data.Resources {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ItemList {
+    public class ItemList {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Ferretto.WMS.Data.Core.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.WMS.Data.Core.Resources.ItemList", typeof(ItemList).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.WMS.Data.Resources.ItemList", typeof(ItemList).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot add rows to the list because it is not in the new state..
         /// </summary>
-        internal static string CannotAddRowsToTheListBecauseItIsNotInTheNewState {
+        public static string CannotAddRowsToTheListBecauseItIsNotInTheNewState {
             get {
                 return ResourceManager.GetString("CannotAddRowsToTheListBecauseItIsNotInTheNewState", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete the list because it has active rows..
         /// </summary>
-        internal static string CannotDeleteTheListBecauseItHasActiveRows {
+        public static string CannotDeleteTheListBecauseItHasActiveRows {
             get {
                 return ResourceManager.GetString("CannotDeleteTheListBecauseItHasActiveRows", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot delete the list because it is not in the new state..
         /// </summary>
-        internal static string CannotDeleteTheListBecauseItIsNotInTheNewState {
+        public static string CannotDeleteTheListBecauseItIsNotInTheNewState {
             get {
                 return ResourceManager.GetString("CannotDeleteTheListBecauseItIsNotInTheNewState", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot execute the list because no bay was specified..
         /// </summary>
-        internal static string CannotExecuteBecauseNoBayWasSpecified {
+        public static string CannotExecuteBecauseNoBayWasSpecified {
             get {
                 return ResourceManager.GetString("CannotExecuteBecauseNoBayWasSpecified", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot execute the list because of its current state..
         /// </summary>
-        internal static string CannotExecuteTheListBecauseOfItsCurrentState {
+        public static string CannotExecuteTheListBecauseOfItsCurrentState {
             get {
                 return ResourceManager.GetString("CannotExecuteTheListBecauseOfItsCurrentState", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Ferretto.WMS.Data.Core.Resources {
         /// <summary>
         ///   Looks up a localized string similar to None of the list rows could be processed..
         /// </summary>
-        internal static string NoneOfTheListRowsCouldBeProcessed {
+        public static string NoneOfTheListRowsCouldBeProcessed {
             get {
                 return ResourceManager.GetString("NoneOfTheListRowsCouldBeProcessed", resourceCulture);
             }
