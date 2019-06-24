@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
@@ -147,28 +148,77 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
-        private async Task ExecuteResolutionMethod(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        private async Task<ActionResult> ExecuteResolutionMethodAsync(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
-            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
-            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+            string message;
 
-            var speed = maxSpeed * feedRate;
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
-            var commandMessage = new CommandMessage(
-                messageData,
-                resolutionCalibrationSteps == ResolutionCalibrationSteps.StartProcedure ? "Resolution Calibration Start" : "Resolution Calibration go to initial position",
-                MessageActor.FiniteStateMachines,
-                MessageActor.WebApi,
-                MessageType.Positioning);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+            var homingDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
+
+            if (homingDone)
+            {
+                switch (resolutionCalibrationSteps)
+                {
+                    case ResolutionCalibrationSteps.StartProcedure:
+                        message = "Resolution Calibration Start";
+                        break;
+
+                    case ResolutionCalibrationSteps.InitialPosition:
+                        message = "Resolution Calibration go to initial position";
+                        break;
+
+                    case ResolutionCalibrationSteps.Move:
+                        message = "Resolution Calibration move to final position";
+                        break;
+
+                    default:
+                        message = string.Empty;
+                        break;
+                }
+
+                try
+                {
+                    var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                        (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                    var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                        (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                    var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                        (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                    var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                        (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
+                    var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                        (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+                    var speed = maxSpeed * feedRate;
+                    var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
+                    var commandMessage = new CommandMessage(
+                        messageData,
+                        message,
+                        MessageActor.FiniteStateMachines,
+                        MessageActor.WebApi,
+                        MessageType.Positioning);
+                    this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+                }
+                catch (Exception ex)
+                {
+                    var msg = new NotificationMessage(
+                        new WebApiExceptionMessageData(ex.Message, 0),
+                        "WebApi Error",
+                        MessageActor.Any,
+                        MessageActor.WebApi,
+                        MessageType.WebApiException,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+                    return this.BadRequest();
+                }
+            }
+            else
+            {
+                return this.UnprocessableEntity();
+            }
+
+            return this.Ok();
         }
 
         private void ExecuteSensorsChangedMethod()

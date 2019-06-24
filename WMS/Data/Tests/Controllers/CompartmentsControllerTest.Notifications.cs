@@ -299,6 +299,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 ItemId = item1.Id,
                 CompartmentTypeId = compartmentType1.Id,
+                MaxCapacity = 30
             };
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -326,11 +327,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            await controller.UpdateAsync(compartmentToBeUpdated, compartment1.Id);
+            var actionResult = await controller.UpdateAsync(compartmentToBeUpdated, compartment1.Id);
 
             #endregion
 
             #region Assert
+
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
 
             Assert.IsTrue(
                 notificationService

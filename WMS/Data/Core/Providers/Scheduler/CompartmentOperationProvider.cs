@@ -27,6 +27,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber)
+        {
+            return await this.DataContext.Compartments
+                .Where(c => c.ItemId == itemId && c.RegistrationNumber == registrationNumber)
+                .CountAsync();
+        }
+
         public async Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id)
         {
             return await this.DataContext.Compartments
@@ -45,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ReservedForPick = j.c.ReservedForPick,
                     ReservedToPut = j.c.ReservedToPut,
                     IsItemPairingFixed = j.c.IsItemPairingFixed,
-                    MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
+                    MaxCapacity = j.ict == null ? double.NaN : j.ict.MaxCapacity,
                     Stock = j.c.Stock,
                     LoadingUnitId = j.c.LoadingUnitId,
                     CompartmentTypeId = j.c.CompartmentTypeId,
@@ -56,13 +63,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RegistrationNumber = j.c.RegistrationNumber,
                 })
                 .SingleOrDefaultAsync();
-        }
-
-        public async Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber)
-        {
-            return await this.DataContext.Compartments
-                .Where(c => c.ItemId == itemId && c.RegistrationNumber == registrationNumber)
-                .CountAsync();
         }
 
         /// <summary>
