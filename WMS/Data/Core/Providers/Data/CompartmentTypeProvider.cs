@@ -20,6 +20,8 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion
@@ -29,10 +31,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public CompartmentTypeProvider(
             DatabaseContext dataContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            IGlobalSettingsProvider globalSettingsProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+            this.globalSettingsProvider = globalSettingsProvider;
         }
 
         #endregion
@@ -54,6 +58,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 !model.Width.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
+            }
+
+            var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
+            if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
+            {
+                return new CreationErrorOperationResult<CompartmentType>();
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
