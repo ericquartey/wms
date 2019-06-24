@@ -32,7 +32,14 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
 
-            var installationService = new InstallationService(this.automationServiceUrl);
+            var homingService = new HomingService(this.automationServiceUrl);
+            var positioningService = new PositioningService(this.automationServiceUrl);
+            var beltBurnishingService = new BeltBurnishingService(this.automationServiceUrl);
+            var shutterService = new ShutterService(this.automationServiceUrl);
+            var resolutionCalibrationService = new ResolutionCalibrationService(this.automationServiceUrl);
+            var installationStatusService = new InstallationStatusService(this.automationServiceUrl);
+            var updateSensorsService = new UpdateSensorsService(this.automationServiceUrl);
+
             var testService = new TestService(this.automationServiceUrl);
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
@@ -79,7 +86,15 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            this.container.RegisterInstance<IInstallationService>(installationService);
+
+            this.container.RegisterInstance<IHomingService>(homingService);
+            this.container.RegisterInstance<IPositioningService>(positioningService);
+            this.container.RegisterInstance<IBeltBurnishingService>(beltBurnishingService);
+            this.container.RegisterInstance<IShutterService>(shutterService);
+            this.container.RegisterInstance<IResolutionCalibrationService>(resolutionCalibrationService);
+            this.container.RegisterInstance<IInstallationStatusService>(installationStatusService);
+            this.container.RegisterInstance<IUpdateSensorsService>(updateSensorsService);
+
             this.container.RegisterInstance<ITestService>(testService);
             this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifierInstance);
 
