@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.Common.Utils.Menu
+namespace Ferretto.WMS.App.Controls
 {
     public class MainMenuItem
     {
