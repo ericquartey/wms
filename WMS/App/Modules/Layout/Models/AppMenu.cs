@@ -1,6 +1,7 @@
-﻿using Ferretto.Common.Resources;
+﻿using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.Common.Utils.Menu
+namespace Ferretto.WMS.Modules.Layout
 {
     public class AppMenu
     {
@@ -34,18 +35,43 @@ namespace Ferretto.Common.Utils.Menu
             const string bgColor = "CommonSecondaryDark";
 
             this.menu.Items.Add(
-                new MainMenuItem(Navigation.Machines, bgColor, Icons.MachineStatus, nameof(Modules.Machines), Modules.Machines.MACHINES));
+                new MainMenuItem(Navigation.Machines, bgColor, Icons.MachineStatus, nameof(Common.Utils.Modules.Machines), Common.Utils.Modules.Machines.MACHINES));
 
             var masterDataMenu =
                 new MainMenuItem(Navigation.MasterData, bgColor, Icons.MasterData, string.Empty, string.Empty);
             this.menu.Items.Add(masterDataMenu);
             masterDataMenu.Children.AddRange(new[]
             {
-                new MainMenuItem(Navigation.Items, bgColor, nameof(Navigation.Items), nameof(Modules.MasterData), Modules.MasterData.ITEMS),
-                new MainMenuItem(Navigation.Cells, bgColor, nameof(Navigation.Cells),  nameof(Modules.MasterData), Modules.MasterData.CELLS),
-                new MainMenuItem(Navigation.LoadingUnits, bgColor, nameof(Navigation.LoadingUnits), nameof(Modules.MasterData), Modules.MasterData.LOADINGUNITS),
-                new MainMenuItem(Navigation.Compartments, bgColor,  nameof(Navigation.Compartments), nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTS),
-                new MainMenuItem(Navigation.CompartmentTypes, bgColor,  nameof(Navigation.CompartmentTypes), nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTTYPES)
+                new MainMenuItem(
+                    Navigation.Items,
+                    bgColor,
+                    nameof(Navigation.Items),
+                    nameof(Common.Utils.Modules.MasterData),
+                    Common.Utils.Modules.MasterData.ITEMS),
+                new MainMenuItem(
+                    Navigation.Cells,
+                    bgColor,
+                    nameof(Navigation.Cells),
+                     nameof(Common.Utils.Modules.MasterData),
+                     Common.Utils.Modules.MasterData.CELLS),
+                new MainMenuItem(
+                    Navigation.LoadingUnits,
+                    bgColor,
+                    nameof(Navigation.LoadingUnits),
+                    nameof(Common.Utils.Modules.MasterData),
+                    Common.Utils.Modules.MasterData.LOADINGUNITS),
+                new MainMenuItem(
+                    Navigation.Compartments,
+                    bgColor,
+                     nameof(Navigation.Compartments),
+                     nameof(Common.Utils.Modules.MasterData),
+                     Common.Utils.Modules.MasterData.COMPARTMENTS),
+                new MainMenuItem(
+                    Navigation.CompartmentTypes,
+                    bgColor,
+                     nameof(Navigation.CompartmentTypes),
+                     nameof(Common.Utils.Modules.MasterData),
+                     Common.Utils.Modules.MasterData.COMPARTMENTTYPES)
             });
 
             var listsMenu = new MainMenuItem(Navigation.Lists, bgColor, Icons.Lists, string.Empty, string.Empty);
@@ -56,29 +82,29 @@ namespace Ferretto.Common.Utils.Menu
                     Navigation.AllLists,
                     bgColor,
                     nameof(Navigation.AllLists),
-                    nameof(Modules.ItemLists),
-                    Modules.ItemLists.ITEMLISTS),
+                    nameof(Common.Utils.Modules.ItemLists),
+                    Common.Utils.Modules.ItemLists.ITEMLISTS),
                 new MainMenuItem(
                     Navigation.PickLists,
                     bgColor,
                     nameof(Navigation.PickLists),
-                    nameof(Modules.ItemLists),
-                    Modules.ItemLists.ITEMLISTS,
-                    Modules.ItemLists.ITEMLISTSPICK),
+                    nameof(Common.Utils.Modules.ItemLists),
+                    Common.Utils.Modules.ItemLists.ITEMLISTS,
+                    Common.Utils.Modules.ItemLists.ITEMLISTSPICK),
                 new MainMenuItem(
                     Navigation.PutLists,
                     bgColor,
                     nameof(Navigation.PutLists),
-                    nameof(Modules.ItemLists),
-                    Modules.ItemLists.ITEMLISTS,
-                    Modules.ItemLists.ITEMLISTSPUT),
+                    nameof(Common.Utils.Modules.ItemLists),
+                    Common.Utils.Modules.ItemLists.ITEMLISTS,
+                    Common.Utils.Modules.ItemLists.ITEMLISTSPUT),
                 new MainMenuItem(
                     Navigation.InventoryLists,
                     bgColor,
                     nameof(Navigation.InventoryLists),
-                    nameof(Modules.ItemLists),
-                    Modules.ItemLists.ITEMLISTS,
-                    Modules.ItemLists.ITEMLISTSINVENTORY)
+                    nameof(Common.Utils.Modules.ItemLists),
+                    Common.Utils.Modules.ItemLists.ITEMLISTS,
+                    Common.Utils.Modules.ItemLists.ITEMLISTSINVENTORY)
             });
 
             var schedulerMenu =
@@ -86,8 +112,18 @@ namespace Ferretto.Common.Utils.Menu
             this.menu.Items.Add(schedulerMenu);
             schedulerMenu.Children.AddRange(new[]
             {
-                   new MainMenuItem(Navigation.Missions, bgColor, nameof(Navigation.Missions), nameof(Modules.Scheduler), Modules.Scheduler.MISSIONS),
-                   new MainMenuItem(Navigation.SchedulerRequests, bgColor, nameof(Navigation.SchedulerRequests), nameof(Modules.Scheduler), Modules.Scheduler.SCHEDULERREQUESTS),
+                   new MainMenuItem(
+                       Navigation.Missions,
+                       bgColor,
+                       nameof(Navigation.Missions),
+                       nameof(Common.Utils.Modules.Scheduler),
+                       Common.Utils.Modules.Scheduler.MISSIONS),
+                   new MainMenuItem(
+                       Navigation.SchedulerRequests,
+                       bgColor,
+                       nameof(Navigation.SchedulerRequests),
+                       nameof(Common.Utils.Modules.Scheduler),
+                       Common.Utils.Modules.Scheduler.SCHEDULERREQUESTS),
                });
 
             var importExportMenu = new MainMenuItem(
