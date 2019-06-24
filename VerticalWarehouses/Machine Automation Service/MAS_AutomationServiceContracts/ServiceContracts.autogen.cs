@@ -104,6 +104,34 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteStepUpAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetLoadingUnitPositionParameterAsync(string category, string parameter);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<int> GetLoadingUnitPositionParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
