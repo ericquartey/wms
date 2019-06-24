@@ -15,7 +15,7 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
 
-        public IEnumerable<Mission> Missions { get; set; }
+        public IEnumerable<MissionOperation> MissionOperations { get; set; }
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 
 namespace Ferretto.Common.DataModels
 {
-    // Riga di Lista Articoli
-    public sealed class ItemListRow : ITimestamped, IDataModel
+    public sealed class MissionOperation : IDataModel, ITimestamped
     {
         #region Properties
 
-        public string Code { get; set; }
+        public Compartment Compartment { get; set; }
 
-        public DateTime? CompletionDate { get; set; }
+        public int CompartmentId { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -24,9 +22,11 @@ namespace Ferretto.Common.DataModels
 
         public ItemList ItemList { get; set; }
 
-        public int ItemListId { get; set; }
+        public int? ItemListId { get; set; }
 
-        public DateTime? LastExecutionDate { get; set; }
+        public ItemListRow ItemListRow { get; set; }
+
+        public int? ItemListRowId { get; set; }
 
         public DateTime LastModificationDate { get; set; }
 
@@ -36,25 +36,27 @@ namespace Ferretto.Common.DataModels
 
         public int? MaterialStatusId { get; set; }
 
-        public IEnumerable<MissionOperation> MissionOperations { get; set; }
+        public Mission Mission { get; set; }
+
+        public int MissionId { get; set; }
 
         public PackageType PackageType { get; set; }
 
         public int? PackageTypeId { get; set; }
 
-        public int? Priority { get; set; }
+        public int Priority { get; set; }
 
         public string RegistrationNumber { get; set; }
 
         public double RequestedQuantity { get; set; }
 
-        public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
-
-        public ItemListRowStatus Status { get; set; }
+        public MissionOperationStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
+        public MissionOperationType Type { get; set; }
 
         #endregion
     }

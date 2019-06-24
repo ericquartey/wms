@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.DataModels
 {
-    public enum MissionType
+    public enum MissionOperationType
     {
         Bypass = 'B',
 
