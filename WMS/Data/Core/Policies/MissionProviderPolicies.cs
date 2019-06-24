@@ -11,57 +11,54 @@ namespace Ferretto.WMS.Data.Core.Policies
 
         public static Policy ComputeAbortPolicy(this IMissionPolicy missionToAbort)
         {
-            string reason = null;
+            var policy = new Policy
+            {
+                Name = nameof(MissionPolicy.Abort),
+                Type = PolicyType.Operation
+            };
+
             if (missionToAbort.Status != MissionStatus.Executing
                 &&
                 missionToAbort.Status != MissionStatus.New
                 &&
                 missionToAbort.Status != MissionStatus.Error)
             {
-                reason = $"Unable to abort the mission, because it is not in the New or Executing or Error state.";
+                policy.AddErrorMessage(Resources.Mission.UnableToAbortTheMissionBecauseOfItsCurrentState);
             }
 
-            return new Policy
-            {
-                IsAllowed = reason == null,
-                Reason = reason,
-                Name = nameof(MissionPolicy.Abort),
-                Type = PolicyType.Operation
-            };
+            return policy;
         }
 
         public static Policy ComputeCompletePolicy(this IMissionPolicy missionToComplete)
         {
-            string reason = null;
-            if (missionToComplete.Status != MissionStatus.Executing)
+            var policy = new Policy
             {
-                reason = $"Unable to complete the mission, because it is not in the Executing state.";
-            }
-
-            return new Policy
-            {
-                IsAllowed = reason == null,
-                Reason = reason,
                 Name = nameof(MissionPolicy.Complete),
                 Type = PolicyType.Operation
             };
+
+            if (missionToComplete.Status != MissionStatus.Executing)
+            {
+                policy.AddErrorMessage(Resources.Mission.UnableToCompleteTheMissionBecauseOfItsCurrentState);
+            }
+
+            return policy;
         }
 
         public static Policy ComputeExecutePolicy(this IMissionPolicy missionToExecute)
         {
-            string reason = null;
-            if (missionToExecute.Status != MissionStatus.New)
+            var policy = new Policy
             {
-                reason = $"Unable to execute the mission, because it is not in the New state.";
-            }
-
-            return new Policy
-            {
-                IsAllowed = reason == null,
-                Reason = reason,
                 Name = nameof(MissionPolicy.Execute),
                 Type = PolicyType.Operation
             };
+
+            if (missionToExecute.Status != MissionStatus.New)
+            {
+                policy.AddErrorMessage(Resources.Mission.UnableToExecuteTheMissionBecauseOfItsCurrentState);
+            }
+
+            return policy;
         }
 
         #endregion

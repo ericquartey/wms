@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemCompartmentTypeEmptyCount), ResourceType = typeof(BusinessObjects))]
         public int EmptyCompartmentsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemCompartmentTypeHeightDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
         public double? Height { get; set; }
 
         public bool IsActive
@@ -34,14 +34,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         public int ItemId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemCompartmentTypeMaxCapacity), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.MaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {
             get => this.maxCapacity;
             set => this.SetProperty(ref this.maxCapacity, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemCompartmentTypeWidthDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width { get; set; }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -8,7 +8,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.OperationInsert), ResourceType = typeof(BusinessObjects))]
         Insertion = 'I',
 
-        [Display(Name = nameof(BusinessObjects.OperationWithdraw), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Pick), ResourceType = typeof(BusinessObjects))]
         Withdrawal = 'W',
 
         [Display(Name = nameof(BusinessObjects.OperationReplace), ResourceType = typeof(BusinessObjects))]

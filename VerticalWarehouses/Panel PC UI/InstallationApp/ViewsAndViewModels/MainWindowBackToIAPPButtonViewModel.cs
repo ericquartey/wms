@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -20,6 +20,8 @@ namespace Ferretto.VW.InstallationApp
         private bool isBackButtonActive = true;
 
         private bool isCancelButtonActive;
+
+        private string note;
 
         #endregion
 
@@ -45,6 +47,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsCancelButtonActive { get => this.isCancelButtonActive; set => this.SetProperty(ref this.isCancelButtonActive, value); }
 
         public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 
         #endregion
 

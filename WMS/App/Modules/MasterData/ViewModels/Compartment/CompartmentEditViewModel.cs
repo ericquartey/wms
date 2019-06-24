@@ -7,13 +7,13 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -133,12 +133,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.mode == AppearMode.Add)
             {
-                this.Title = Common.Resources.MasterData.AddCompartment;
+                this.Title = App.Resources.MasterData.AddCompartment;
                 this.ColorRequired = ColorRequired.CreateMode;
             }
             else
             {
-                this.Title = Common.Resources.MasterData.EditCompartment;
+                this.Title = App.Resources.MasterData.EditCompartment;
             }
 
             Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
@@ -175,7 +175,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(
-                   Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                   App.Resources.MasterData.LoadingUnitSavedSuccessfully,
                    StatusType.Success));
 
                 this.CompleteOperation();
@@ -213,13 +213,13 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -327,7 +327,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     {
                         loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
-                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+                        this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
                         this.IsBusy = false;
                         this.CompleteOperation();
@@ -336,7 +336,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
                     }
                 }
 

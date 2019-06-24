@@ -5,7 +5,7 @@
                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
-                   xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                   xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                    Title="{x:Static res:Navigation.ItemAdd}"
                    d:DesignHeight="450"
@@ -198,7 +198,7 @@
                           Grid.RowSpan="2"
                           Grid.Column="2"
                           Margin="20,0,0,0"
-                          Header="{x:Static res:MasterData.ItemImage}">
+                          Header="{x:Static res:BusinessObjects.Image}">
                     <wms:WmsImageEdit Width="300"
                                       Height="350"
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {
             get => this.height;
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width
         {
             get => this.width;

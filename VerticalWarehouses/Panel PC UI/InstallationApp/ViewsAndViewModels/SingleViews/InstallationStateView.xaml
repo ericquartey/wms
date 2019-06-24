@@ -45,7 +45,24 @@
                                     LabelText="{x:Static res:InstallationApp.CellPositionDone}"
                                     SensorState="{Binding IsCellPositionVerifyDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-
+        <custom:CustomSensorControl Margin="220,360,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    LabelText="Verifica primo cassetto caricato"
+                                    SensorState="{Binding IsFirstDrawerLoadedDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl Margin="220,400,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    LabelText="Caricamento cassetti vuoti"
+                                    SensorState="{Binding IsEmptyDrawersLoadedDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <custom:CustomSensorControl Margin="220,440,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    LabelText="Controllo pannelli"
+                                    SensorState="{Binding IsCheckPanelsVerifyDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
         <custom:CustomSensorControl Margin="220,200,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"

@@ -5,7 +5,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.MachineDetails}"
              MinHeight="300"
@@ -405,7 +405,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <GroupBox Margin="20,0"
-                              Header="{x:Static res:MasterData.Image}">
+                              Header="{x:Static res:BusinessObjects.Image}">
 
                         <wms:WmsImage MaxWidth="200"
                                       MaxHeight="300"

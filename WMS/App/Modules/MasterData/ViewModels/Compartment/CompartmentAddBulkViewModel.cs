@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public CompartmentAddBulkViewModel()
         {
-            this.Title = Common.Resources.MasterData.BulkAddCompartment;
+            this.Title = App.Resources.MasterData.BulkAddCompartment;
             this.ColorRequired = ColorRequired.CreateMode;
         }
 
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                    App.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
 
                 this.CompleteOperation();

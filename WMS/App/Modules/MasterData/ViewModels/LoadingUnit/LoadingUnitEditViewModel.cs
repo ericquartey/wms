@@ -9,6 +9,7 @@ using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -259,11 +260,11 @@ namespace Ferretto.WMS.Modules.MasterData
             if (inputData.ItemId.HasValue)
             {
                 var item = await this.itemProvider.GetByIdAsync(inputData.ItemId.Value);
-                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditForItemSubTitle, this.Model.Code, item.Code);
+                this.SubTitle = string.Format(App.Resources.MasterData.LoadingUnitEditForItemSubTitle, this.Model.Code, item.Code);
             }
             else
             {
-                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditSubTitle, this.Model.Code);
+                this.SubTitle = string.Format(App.Resources.MasterData.LoadingUnitEditSubTitle, this.Model.Code);
             }
 
             await this.LoadCompartmentsDataSourceAsync();

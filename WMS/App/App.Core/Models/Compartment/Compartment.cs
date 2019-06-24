@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.CompartmentIsItemPairingFixed), ResourceType = typeof(BusinessObjects))]
         public bool IsItemPairingFixed { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
         public string ItemMeasureUnit
@@ -42,23 +42,23 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Lot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Stock), ResourceType = typeof(BusinessObjects))]
         public double Stock
         {
             get => this.stock;
             set => this.SetProperty(ref this.stock, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
         #endregion
