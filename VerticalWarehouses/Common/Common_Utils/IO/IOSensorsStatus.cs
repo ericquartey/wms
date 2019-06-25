@@ -81,7 +81,7 @@ namespace Ferretto.VW.Common_Utils.IO
 
         public bool MushroomHeadButtonBay3 => this.inputs?[(int)IOMachineSensors.MushroomHeadButtonBay3] ?? false;
 
-        public bool SecurityFunctionActive => this.inputs?[(int)IOMachineSensors.SecurityFunctionActive] ?? false;
+        public bool SecurityFunctionActive => this.inputs?[(int)IOMachineSensors.NormalState] ?? false;
 
         public bool ShutterSensorABay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay1] ?? false;
 
