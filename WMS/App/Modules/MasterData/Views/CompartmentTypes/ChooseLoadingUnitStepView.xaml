@@ -12,7 +12,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <Grid>
+    <Grid Height="420">
         <GroupBox Header="{Binding Title}">
             <Grid>
                 <Grid.RowDefinitions>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override bool CanSave()
         {
-            return this.IsValid();
+            return true;
         }
 
         public override string GetError()
@@ -122,12 +123,14 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
+                this.SetValidation(true);
                 this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
             }
 
             this.IsBusy = false;
 
-            return true;
+            return result.Success;
         }
 
         protected override async Task OnAppearAsync()
@@ -229,6 +232,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     this.selectedItemCompartmentType.MaxCapacity = null;
                 }
+            }
+        }
+
+        private void SetValidation(bool enable)
+        {
+            foreach (var unassociateItemCompartmentType in this.unassociateItemCompartmentTypesDataSource)
+            {
+                unassociateItemCompartmentType.IsValidationEnabled = enable;
             }
         }
 

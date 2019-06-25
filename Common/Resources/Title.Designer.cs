@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Compartment for this Item : {0}.
+        /// </summary>
+        public static string CreateCompartmentForThisItem {
+            get {
+                return ResourceManager.GetString("CreateCompartmentForThisItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Details : {0}.
         /// </summary>
         public static string ItemDetailsView {

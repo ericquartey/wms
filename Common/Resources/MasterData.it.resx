@@ -514,4 +514,7 @@
   <data name="LayoutOverview" xml:space="preserve">
     <value>Panoramica della Disposizione</value>
   </data>
+  <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
+    <value>Crea un nuovo Scomparto delle dimensioni del Tipo Scomparto desiderato</value>
+  </data>
 </root>

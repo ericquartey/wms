@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <dxmvvm:BooleanNegationConverter x:Key="BNC" />
     </UserControl.Resources>
-    
+
     <Grid MinWidth="300"
           Margin="10"
           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">

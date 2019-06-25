@@ -594,4 +594,8 @@
     <value>Layout Overview</value>
     <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
   </data>
+  <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
+    <value>Create a new Compartment of the desired Compartment Type</value>
+    <comment>Wizard - CompartmentEditStepView -</comment>
+  </data>
 </root>

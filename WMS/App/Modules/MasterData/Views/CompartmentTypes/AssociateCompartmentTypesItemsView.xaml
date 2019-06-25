@@ -18,7 +18,7 @@
                    WindowStyle="None"
                    mc:Ignorable="d">
 
-    <Grid Height="400"
+    <Grid Height="500"
           Margin="10,30,10,10"
           HorizontalAlignment="Stretch"
           Background="White"
@@ -31,45 +31,57 @@
 
         <ContentControl Tag="{x:Static res:General.WizardStep}" />
 
-        <TextBlock Grid.Row="1"
-                   Grid.Column="1"
-                   MaxWidth="300"
-                   Margin="10,25,10,0"
-                   HorizontalAlignment="Left"
-                   Style="{DynamicResource TextBlockErrorMessageStyle}"
-                   Text="{Binding Error}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Column="0"
+                          MaxHeight="50"
+                          Margin="10,10,10,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          Focusable="False"
+                          IsTabStop="True">
 
-        <wms:ActionBar Grid.Row="1"
-                       Margin="20,20,20,20"
-                       HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}">
+                <TextBlock MaxWidth="400"
+                           Margin="10,0,10,0"
+                           Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Error}" />
+            </ScrollViewer>
+
+            <wms:ActionBar Grid.Column="1"
+                           Margin="20,20,20,20"
+                           HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}">
 
 
-            <wms:ActionBarItem Command="{Binding GoToPreviousCommand}"
-                               Content="{x:Static res:General.Previous}"
-                               CustomGlyphSize="36,36"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/baseline_keyboard_arrow_left_black_36dp.png"
-                               GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding GoToPreviousCommand}"
+                                   Content="{x:Static res:General.Previous}"
+                                   CustomGlyphSize="36,36"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/baseline_keyboard_arrow_left_black_36dp.png"
+                                   GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding GoToNextCommand}"
-                               Content="{x:Static res:General.Next}"
-                               CustomGlyphSize="36,36"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/baseline_keyboard_arrow_right_black_36dp.png"
-                               GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding GoToNextCommand}"
+                                   Content="{x:Static res:General.Next}"
+                                   CustomGlyphSize="36,36"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/baseline_keyboard_arrow_right_black_36dp.png"
+                                   GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding SaveCommand}"
-                               Content="{x:Static res:General.Done}"
-                               CustomGlyphSize="36,36"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_36dp.png"
-                               GlyphSize="Custom"
-                               IsVisible="{Binding IsSaveVisible}" />
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
+                                   Content="{x:Static res:General.Done}"
+                                   CustomGlyphSize="36,36"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_36dp.png"
+                                   GlyphSize="Custom"
+                                   IsVisible="{Binding IsSaveVisible}" />
 
-            <wms:ActionBarItem Command="{Binding CancelCommand}"
-                               Content="{x:Static res:General.Cancel}"
-                               CustomGlyphSize="36,36"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_highlight_off_black_36dp.png"
-                               GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding CancelCommand}"
+                                   Content="{x:Static res:General.Cancel}"
+                                   CustomGlyphSize="36,36"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_highlight_off_black_36dp.png"
+                                   GlyphSize="Custom" />
 
-        </wms:ActionBar>
+            </wms:ActionBar>
+        </Grid>
     </Grid>
 </wms:WmsWizardView>

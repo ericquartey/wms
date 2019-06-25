@@ -32,6 +32,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isAdd;
 
+        private bool isErrorsVisible;
+
+        private bool isHeaderVisible;
+
         private bool itemIdHasValue;
 
         private InfiniteAsyncSource itemsDataSource;
@@ -39,6 +43,16 @@ namespace Ferretto.WMS.Modules.MasterData
         private AppearMode mode;
 
         private Item selectedItem;
+
+        #endregion
+
+        #region Constructors
+
+        public CompartmentEditViewModel()
+        {
+            this.IsHeaderVisible = true;
+            this.IsErrorsVisible = true;
+        }
 
         #endregion
 
@@ -69,6 +83,18 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isAdd, value);
         }
 
+        public bool IsErrorsVisible
+        {
+            get => this.isErrorsVisible;
+            set => this.SetProperty(ref this.isErrorsVisible, value);
+        }
+
+        public bool IsHeaderVisible
+        {
+            get => this.isHeaderVisible;
+            set => this.SetProperty(ref this.isHeaderVisible, value);
+        }
+
         public bool IsItemDetailsEnabled
         {
             get
@@ -88,6 +114,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 return true;
             }
         }
+
+        public bool IsValidModel => this.CheckValidModel();
 
         public bool ItemIdHasValue
         {
@@ -123,33 +151,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public Task InitializeDataAsync()
-        {
-            if (this.mode == AppearMode.Add)
-            {
-                this.Title = Common.Resources.MasterData.AddCompartment;
-                this.ColorRequired = ColorRequired.CreateMode;
-            }
-            else
-            {
-                this.Title = Common.Resources.MasterData.EditCompartment;
-            }
-
-            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
-
-            return Task.CompletedTask;
-        }
-
-        protected override void EvaluateCanExecuteCommands()
-        {
-            base.EvaluateCanExecuteCommands();
-
-            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected async Task<bool> ExecuteCreateCommandAsync()
+        public async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
@@ -181,7 +183,33 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = false;
 
-            return true;
+            return result.Success;
+        }
+
+        public Task InitializeDataAsync()
+        {
+            if (this.mode == AppearMode.Add)
+            {
+                this.Title = Common.Resources.MasterData.AddCompartment;
+                this.ColorRequired = ColorRequired.CreateMode;
+            }
+            else
+            {
+                this.Title = Common.Resources.MasterData.EditCompartment;
+            }
+
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
+            return Task.CompletedTask;
+        }
+
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+
+            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
@@ -235,7 +263,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
-                if (this.Model.ItemId.HasValue)
+                if (this.selectedItem != null &&
+                    this.Model.ItemId.HasValue)
                 {
                     this.Model.ItemMeasureUnit = this.SelectedItem.MeasureUnitDescription;
                 }
