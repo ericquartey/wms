@@ -11,12 +11,6 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 {
     public interface IWmsImagesProvider
     {
-        #region Properties
-
-        Dictionary<string, string> StoredImages { get; set; }
-
-        #endregion
-
         #region Methods
 
         Task<Stream> GetImageAsync(string imageCode);
