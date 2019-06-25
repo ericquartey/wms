@@ -144,6 +144,19 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Methods
 
+        public void ApplyCorrectionOnSingleCompartment(double minStepCompartment)
+        {
+            if (this.Width.HasValue && this.Height.HasValue && this.Rows > 0 &&
+                            this.Columns > 0)
+            {
+                var widthSingleCompartment = this.Width.Value / this.Columns;
+                var heightSingleCompartment = this.Height.Value / this.Rows;
+
+                this.Width = (Math.Floor(widthSingleCompartment / minStepCompartment) * minStepCompartment) * this.Columns;
+                this.Height = (Math.Floor(heightSingleCompartment / minStepCompartment) * minStepCompartment) * this.Rows;
+            }
+        }
+
         public IEnumerable<IDrawableCompartment> CreateBulk()
         {
             if (this.rows == 0 || this.columns == 0)

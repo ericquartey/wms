@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
         #endregion
@@ -29,11 +31,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             DatabaseContext dataContext,
             ICompartmentTypeProvider compartmentTypeProvider,
             ILoadingUnitProvider loadingUnitProvider,
+            IGlobalSettingsProvider globalSettingsProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.loadingUnitProvider = loadingUnitProvider;
+            this.globalSettingsProvider = globalSettingsProvider;
         }
 
         #endregion
@@ -47,13 +51,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            if (model.Height == null
-                || model.Width == null
+            if (!model.Height.HasValue
+                || !model.Width.HasValue
                 || !model.XPosition.HasValue
                 || !model.YPosition.HasValue)
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(
                     Resources.Errors.CompartmentPositionAndSizeMustBeSpecified);
+            }
+
+            var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
+            if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(
+                   Resources.Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
@@ -249,6 +260,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Description = existingModel.GetCanUpdateReason(),
                 };
+            }
+
+            var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
+            if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(
+                   Resources.Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);

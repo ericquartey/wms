@@ -97,6 +97,16 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Methods
 
+        public bool ApplyCorrection(double increment)
+        {
+            this.Width = Math.Floor(this.Width.Value / increment) * increment;
+            this.Height = Math.Floor(this.Height.Value / increment) * increment;
+            this.XPosition = Math.Floor(this.XPosition.Value / increment) * increment;
+            this.YPosition = Math.Floor(this.YPosition.Value / increment) * increment;
+
+            return this.Width.Value.CompareTo(0) != 0 && this.Height.Value.CompareTo(0) != 0;
+        }
+
         public bool CanAddToLoadingUnit(IEnumerable<CompartmentDetails> compartments, LoadingUnitDetails loadingUnit)
         {
             if (loadingUnit == null)

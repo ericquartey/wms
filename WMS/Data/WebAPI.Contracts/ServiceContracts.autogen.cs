@@ -1626,8 +1626,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inCycleCount", Required = Newtonsoft.Json.Required.Always)]
-        public int InCycleCount { get; set; }
+        [Newtonsoft.Json.JsonProperty("inMissionCount", Required = Newtonsoft.Json.Required.Always)]
+        public int InMissionCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? InventoryDate { get; set; }
@@ -1671,11 +1671,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Note { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("otherCycleCount", Required = Newtonsoft.Json.Required.Always)]
-        public int OtherCycleCount { get; set; }
+        [Newtonsoft.Json.JsonProperty("otherMissionCount", Required = Newtonsoft.Json.Required.Always)]
+        public int OtherMissionCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("outCycleCount", Required = Newtonsoft.Json.Required.Always)]
-        public int OutCycleCount { get; set; }
+        [Newtonsoft.Json.JsonProperty("outMissionCount", Required = Newtonsoft.Json.Required.Always)]
+        public int OutMissionCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("referenceType", Required = Newtonsoft.Json.Required.Always)]
         public ReferenceType ReferenceType { get; set; }

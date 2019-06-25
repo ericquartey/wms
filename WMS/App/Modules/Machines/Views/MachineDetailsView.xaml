@@ -270,7 +270,7 @@
                         </Grid.RowDefinitions>
 
                         <wms:ProgressBarEdit x:Name="AreaFillRate"
-                                             Margin="0,5,5,5"
+                                             Margin="0,0,5,5"
                                              EditValue="{Binding Path=Model.AreaFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
