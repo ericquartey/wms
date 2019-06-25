@@ -7,13 +7,13 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -24,11 +24,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         private ICommand createCommand;
 
         private ICommand deleteCompartmentCommand;
+
+        private GlobalSettings globalSettings;
 
         private bool isAdd;
 
@@ -76,6 +80,8 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.deleteCompartmentCommand = new DelegateCommand(
                 async () => await this.DeleteCompartmentAsync(),
                 this.CanDeleteCompartment));
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
 
         public bool IsAdd
         {
@@ -151,7 +157,33 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public async Task<bool> ExecuteCreateCommandAsync()
+        public async Task InitializeDataAsync()
+        {
+            if (this.mode == AppearMode.Add)
+            {
+                this.Title = App.Resources.MasterData.AddCompartment;
+                this.ColorRequired = ColorRequired.CreateMode;
+            }
+            else
+            {
+                this.Title = App.Resources.MasterData.EditCompartment;
+            }
+
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
+        }
+
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+
+            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
@@ -171,7 +203,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(
-                   Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                   App.Resources.MasterData.LoadingUnitSavedSuccessfully,
                    StatusType.Success));
 
                 this.CompleteOperation();
@@ -184,25 +216,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
 
             return result.Success;
-        }
-
-        public Task InitializeDataAsync()
-        {
-            if (this.mode == AppearMode.Add)
-            {
-                this.Title = Common.Resources.MasterData.AddCompartment;
-                this.ColorRequired = ColorRequired.CreateMode;
-            }
-            else
-            {
-                this.Title = Common.Resources.MasterData.EditCompartment;
-            }
-
-            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
-
-            return Task.CompletedTask;
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -235,13 +248,13 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -308,6 +321,13 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
+        protected override async Task OnAppearAsync()
+        {
+            await base.OnAppearAsync().ConfigureAwait(true);
+
+            await this.LoadDataAsync().ConfigureAwait(true);
+        }
+
         protected override void OnDispose()
         {
             if (this.Model != null)
@@ -343,7 +363,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     {
                         loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
-                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+                        this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
                         this.IsBusy = false;
                         this.CompleteOperation();
@@ -352,7 +372,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
                     }
                 }
 

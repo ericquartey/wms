@@ -240,4 +240,8 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Update Resolution</value>
+    <comment>Update the resolution in the Calibration Resolution</comment>
+  </data>
 </root>

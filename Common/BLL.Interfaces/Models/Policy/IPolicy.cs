@@ -4,13 +4,13 @@
     {
         #region Properties
 
-        bool IsAllowed { get; set; }
+        bool IsAllowed { get; }
 
-        string Name { get; set; }
+        string Name { get; }
 
-        string Reason { get; set; }
+        string Reason { get; }
 
-        PolicyType Type { get; set; }
+        PolicyType Type { get; }
 
         #endregion
     }

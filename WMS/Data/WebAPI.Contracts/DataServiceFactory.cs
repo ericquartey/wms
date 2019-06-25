@@ -109,6 +109,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
                 case var service when service == typeof(IPackageTypesDataService):
                     return new PackageTypesDataService(baseUrl.AbsoluteUri, client) as T;
+
+                case var service when service == typeof(IGlobalSettingsDataService):
+                    return new GlobalSettingsDataService(baseUrl.AbsoluteUri, client) as T;
             }
 
             return null;

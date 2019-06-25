@@ -141,7 +141,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is ItemDetails itemDetails)
             {
-                this.Title = string.Format(Ferretto.Common.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
+                this.Title = string.Format(App.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
             }
 
             this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.Refresh));

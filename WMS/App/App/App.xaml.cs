@@ -3,6 +3,7 @@ using System.Windows;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App
 {
@@ -29,7 +30,7 @@ namespace Ferretto.WMS.App
         {
             try
             {
-                SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLogin);
+                SplashScreenService.SetMessage(DesktopApp.InitializingLogin);
                 SplashScreenService.Hide();
 
                 var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();

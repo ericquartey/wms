@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return await this.ExecuteResolution_MethodAsync(position, resolutionCalibrationSteps);
         }
 
-        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        [HttpGet("GetComputedResolution/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
         public decimal GetComputedResolution(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
         {
             return this.GetComputedResolution_Method(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);

@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -47,7 +47,7 @@ namespace Ferretto.WMS.App.Controls
         private void Timer_Tick(object sender, EventArgs e)
         {
             var elapsedSeconds = (DateTime.Now - this.startTime).TotalSeconds;
-            this.Timing.Text = $"{Common.Resources.DesktopApp.ElapsedTime}: {elapsedSeconds.ToString("#")}s";
+            this.Timing.Text = $"{DesktopApp.ElapsedTime}: {elapsedSeconds.ToString("#")}s";
         }
 
         #endregion

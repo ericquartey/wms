@@ -5,7 +5,7 @@
              xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -69,6 +69,34 @@
                       Grid.Row="1">
 
             <GroupBox Header="{Binding Title, Mode=OneWay}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left"
+                              DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                       Text="{Binding Title, Mode=OneWay}" />
+
+                            <TextBlock Grid.Column="1"
+                                       Margin="8,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       FontStyle="Italic">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource SFC}">
+                                        <Binding Source="{x:Static res:MasterData.MinStep}" />
+                                        <Binding Path="GlobalSettings.MinStepCompartment"
+                                                 TargetNullValue="" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -93,6 +121,8 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
@@ -102,6 +132,8 @@
                                   HorizontalContentAlignment="Right"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="WidthText"
@@ -110,6 +142,8 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="HeightText"
@@ -118,6 +152,8 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:LookUpEdit Name="ItemLookUp"

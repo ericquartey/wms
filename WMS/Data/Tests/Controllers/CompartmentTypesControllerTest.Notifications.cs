@@ -28,9 +28,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ManagementType = Common.DataModels.ItemManagementType.Volume,
             };
 
+            var globalSettings = new Common.DataModels.GlobalSettings
+            {
+                MinStepCompartment = 5,
+            };
+
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);
+                context.GlobalSettings.Add(globalSettings);
                 context.SaveChanges();
             }
 

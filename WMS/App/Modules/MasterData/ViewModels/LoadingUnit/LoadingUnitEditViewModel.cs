@@ -9,6 +9,7 @@ using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -88,7 +89,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand BulkAddCompartmentCommand => this.bulkAddCompartmentCommand ??
             (this.bulkAddCompartmentCommand = new DelegateCommand(
-                this.BulkAddCompartment, this.CanBulkAddCommand));
+                async () => await this.BulkAddCompartmentAsync(),
+                this.CanBulkAddCommand));
 
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
@@ -201,7 +203,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void BulkAddCompartment()
+        private async Task BulkAddCompartmentAsync()
         {
             this.SelectedCompartmentTray = null;
 
@@ -211,7 +213,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 LoadingUnit = this.Model
             };
 
-            this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
+            var viewModel = new CompartmentAddBulkViewModel { Model = model };
+            await viewModel.InitializeDataAsync();
+            this.ShowSidePanel(viewModel);
         }
 
         private bool CanBulkAddCommand()
@@ -256,11 +260,11 @@ namespace Ferretto.WMS.Modules.MasterData
             if (inputData.ItemId.HasValue)
             {
                 var item = await this.itemProvider.GetByIdAsync(inputData.ItemId.Value);
-                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditForItemSubTitle, this.Model.Code, item.Code);
+                this.SubTitle = string.Format(App.Resources.MasterData.LoadingUnitEditForItemSubTitle, this.Model.Code, item.Code);
             }
             else
             {
-                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditSubTitle, this.Model.Code);
+                this.SubTitle = string.Format(App.Resources.MasterData.LoadingUnitEditSubTitle, this.Model.Code);
             }
 
             await this.LoadCompartmentsDataSourceAsync();
