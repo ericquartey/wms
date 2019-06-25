@@ -70,6 +70,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Accept Offset.
+        /// </summary>
+        public static string AcceptOffset {
+            get {
+                return ResourceManager.GetString("AcceptOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Active rays quantity:.
         /// </summary>
         public static string ActiveRaysQuantity {
@@ -628,7 +637,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Correct Offset.
+        ///   Cerca una stringa localizzata simile a Close procedure.
         /// </summary>
         public static string DoCorrectOffset {
             get {

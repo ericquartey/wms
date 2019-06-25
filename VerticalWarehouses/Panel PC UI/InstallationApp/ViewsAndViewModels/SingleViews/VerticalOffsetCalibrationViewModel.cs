@@ -20,6 +20,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private ICommand acceptOffsetButtonCommand;
+
         private IUnityContainer container;
 
         private string correctOffset;
@@ -28,9 +30,11 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentHeight;
 
-        private int currentOffset;
+        private decimal currentOffset;
 
         private ICommand exitFromViewCommand;
+
+        private bool isAcceptOffsetButtonActive = true;
 
         private bool isCorrectOffsetButtonActive;
 
@@ -73,15 +77,21 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
+        public ICommand AcceptOffsetButtonCommand => this.acceptOffsetButtonCommand ?? (
+            this.acceptOffsetButtonCommand = new DelegateCommand(async () => await this.AcceptOffsetButtonCommandMethodAsync()));
+
         public string CorrectOffset { get => this.correctOffset; set => this.SetProperty(ref this.correctOffset, value); }
 
-        public ICommand CorrectOffsetButtonCommand => this.correctOffsetButtonCommand ?? (this.correctOffsetButtonCommand = new DelegateCommand(this.CorrectOffsetButtonCommandMethod));
+        public ICommand CorrectOffsetButtonCommand => this.correctOffsetButtonCommand ?? (
+            this.correctOffsetButtonCommand = new DelegateCommand(async () => await this.CorrectOffsetButtonCommandMethodAsync()));
 
         public string CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
 
-        public int CurrentOffset { get => this.currentOffset; set => this.SetProperty(ref this.currentOffset, value); }
+        public decimal CurrentOffset { get => this.currentOffset; set => this.SetProperty(ref this.currentOffset, value); }
 
         public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
+
+        public bool IsAcceptOffsetButtonActive { get => this.isAcceptOffsetButtonActive; set => this.SetProperty(ref this.isAcceptOffsetButtonActive, value); }
 
         public bool IsCorrectOffsetButtonActive { get => this.isCorrectOffsetButtonActive; set => this.SetProperty(ref this.isCorrectOffsetButtonActive, value); }
 
@@ -111,9 +121,31 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        public void CorrectOffsetButtonCommandMethod()
+        public async Task AcceptOffsetButtonCommandMethodAsync()
         {
-            // TODO implement missing feature
+            if (decimal.TryParse(this.CorrectOffset, out var decCorrectOffset))
+            {
+                var result = await this.offsetCalibrationService.SetOffsetParameterAsync(decCorrectOffset);
+
+                if (result)
+                {
+                    this.IsAcceptOffsetButtonActive = false;
+                    this.IsCorrectOffsetButtonActive = true;
+                    this.IsStepDownButtonActive = false;
+                    this.IsStepUpButtonActive = false;
+                    this.CurrentOffset = decCorrectOffset;
+                }
+            }
+        }
+
+        public async Task CorrectOffsetButtonCommandMethodAsync()
+        {
+            var result = await this.offsetCalibrationService.ExecuteCompletedAsync();
+
+            if (result)
+            {
+                this.IsCorrectOffsetButtonActive = false;
+            }
         }
 
         public void ExitFromViewMethod()
@@ -126,8 +158,9 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "OffsetCalibration";
-                this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "CellReference")).ToString();
-                this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
+                this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
+                //TEMP temporary commented because there is not a cell map
+                //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
                 this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
             }
             catch (SwaggerException ex)
@@ -138,6 +171,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer container)
         {
+            this.offsetCalibrationService = container.Resolve<IOffsetCalibrationService>();
             this.container = container;
             this.offsetCalibrationService = this.container.Resolve<IOffsetCalibrationService>();
         }
