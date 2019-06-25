@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ||
                             ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
 
-            if (existingCompartmentType != null)
+            if (existingCompartmentType != null && !itemId.HasValue)
             {
                 return new CreationErrorOperationResult<CompartmentType>(Resources.Errors.DuplicateCompartmentType);
             }
