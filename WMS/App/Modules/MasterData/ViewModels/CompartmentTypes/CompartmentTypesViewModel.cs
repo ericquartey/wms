@@ -22,6 +22,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider = ServiceLocator.Current.GetInstance<ICompartmentTypeProvider>();
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
+        private GlobalSettings globalSettings;
+
         private bool isAddShown;
 
         private CompartmentType newCompartmentType;
@@ -40,6 +44,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Properties
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
 
         public bool IsAddShown { get => this.isAddShown; set => this.SetProperty(ref this.isAddShown, value); }
 
@@ -86,13 +92,19 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.compartmentTypeProvider.DeleteAsync(this.CurrentItem.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeDeletedSuccessfully, StatusType.Success));
                 this.SelectedItem = null;
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
+        }
+
+        protected override async Task LoadDataAsync()
+        {
+            await base.LoadDataAsync();
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 
         private async Task<bool> ExecuteAddCompartmentTypeAsync()

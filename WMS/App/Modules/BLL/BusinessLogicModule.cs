@@ -82,6 +82,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<ISchedulerRequestProvider, SchedulerRequestProvider>();
             containerRegistry.Register<IUserProvider, UserProvider>();
             containerRegistry.Register<IFileProvider, ImageProvider>();
+            containerRegistry.Register<IGlobalSettingsProvider, GlobalSettingsProvider>();
         }
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry, IUnityContainer container)
@@ -118,6 +119,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint, httpClient));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint, httpClient));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILocalizationService>(serviceEndPoint, httpClient));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IGlobalSettingsDataService>(serviceEndPoint, httpClient));
 
             containerRegistry.RegisterInstance(new MapperProvider(container));
             containerRegistry.RegisterInstance(GetMapper(container));

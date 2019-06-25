@@ -381,12 +381,12 @@
                                                 FieldName="Sub2" />
                                 <dxg:GridColumn Width="180*"
                                                 FieldName="Lot" />
-                                <dxg:GridColumn Width="150*"
-                                                FieldName="CompartmentStatusDescription" />
                                 <dxg:GridColumn Width="100*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="125*"
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateStock}"
                                                 FieldName="Stock" />
-                                <dxg:GridColumn Width="100*"
+                                <dxg:GridColumn Width="125*"
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateMaxCapacity}"
                                                 FieldName="MaxCapacity" />
                                 <dxg:GridColumn Width="90*"

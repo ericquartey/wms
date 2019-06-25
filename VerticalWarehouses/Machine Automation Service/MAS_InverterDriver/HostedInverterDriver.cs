@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_InverterDriver.Diagnostics;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
@@ -17,9 +19,9 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public partial class HostedInverterDriver : BackgroundService
@@ -56,15 +58,21 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly Task notificationReceiveTask;
 
+        private readonly Stopwatch readSpeedStopwatch;
+
+        private readonly Stopwatch readWaitStopwatch;
+
+        private readonly Stopwatch roundTripStopwatch;
+
         private readonly ISocketTransport socketTransport;
 
         private readonly IVertimagConfiguration vertimagConfiguration;
 
+        private readonly ManualResetEventSlim writeEnableEvent;
+
         private Timer axisPositionUpdateTimer;
 
         private Axis currentAxis;
-
-        private int currentPosition;
 
         private IInverterStateMachine currentStateMachine;
 
@@ -79,8 +87,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         private int shaftPositionUpdateNumberOfTimes;
 
         private CancellationToken stoppingToken;
-
-        private ManualResetEventSlim writeEnableEvent;
 
         #endregion
 
@@ -97,6 +103,18 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
+
+            this.readWaitStopwatch = new Stopwatch();
+
+            this.readSpeedStopwatch = new Stopwatch();
+
+            this.roundTripStopwatch = new Stopwatch();
+
+            this.ReadWaitTimeData = new InverterDiagnosticsData();
+
+            this.ReadSpeadTimeData = new InverterDiagnosticsData();
+
+            this.WriteRoundtripTimeData = new InverterDiagnosticsData();
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
 
@@ -126,6 +144,16 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.Dispose(false);
         }
+
+        #endregion
+
+        #region Properties
+
+        public InverterDiagnosticsData ReadSpeadTimeData { get; }
+
+        public InverterDiagnosticsData ReadWaitTimeData { get; }
+
+        public InverterDiagnosticsData WriteRoundtripTimeData { get; }
 
         #endregion
 
@@ -373,7 +401,19 @@ namespace Ferretto.VW.MAS_InverterDriver
                 byte[] inverterData;
                 try
                 {
+                    this.readWaitStopwatch.Reset();
+                    this.readWaitStopwatch.Start();
+
                     inverterData = await this.socketTransport.ReadAsync(this.stoppingToken);
+
+                    this.readWaitStopwatch.Stop();
+                    this.roundTripStopwatch.Stop();
+                    this.readSpeedStopwatch.Stop();
+                    this.ReadSpeadTimeData.AddValue(this.readSpeedStopwatch.ElapsedTicks);
+                    this.readSpeedStopwatch.Reset();
+                    this.readSpeedStopwatch.Start();
+                    this.ReadWaitTimeData.AddValue(this.readWaitStopwatch.ElapsedTicks);
+                    this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
                 }
                 catch (OperationCanceledException)
                 {
@@ -664,9 +704,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                         ErrorLevel.Critical);
                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }
-                    break;
-
-                default:
                     break;
             }
         }
