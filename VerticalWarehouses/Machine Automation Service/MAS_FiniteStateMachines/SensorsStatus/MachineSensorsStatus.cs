@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
         public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.SecurityFunctionActive];
+        public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
 
         public bool[] RawInvertersInputs => this.rawInvertersInputs;
 

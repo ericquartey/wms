@@ -174,16 +174,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
-            var IoDataMessage = new SensorsChangedFieldMessageData();
-            IoDataMessage.SensorsStatus = true;
-            var IoMessage = new FieldCommandMessage(
-                IoDataMessage,
-                "Update IO digital input",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SensorsChanged);
+            foreach(var index in this.ioIndexDeviceList)
+            {
+                var IoDataMessage = new SensorsChangedFieldMessageData();
+                IoDataMessage.SensorsStatus = true;
+                var IoMessage = new FieldCommandMessage(
+                    IoDataMessage,
+                    "Update IO digital input",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.SensorsChanged,
+                    (byte)index);
 
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(IoMessage);
+                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(IoMessage);
+            }
 
             this.forceInverterIoStatusPublish = true;
             this.forceRemoteIoStatusPublish = true;
