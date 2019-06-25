@@ -306,14 +306,14 @@
   <data name="LoadingUnitCreationDate" xml:space="preserve">
     <value>Data Creazione</value>
   </data>
-  <data name="LoadingUnitInCycleCount" xml:space="preserve">
-    <value>Numero Cicli Ingresso</value>
+  <data name="LoadingUnitInMissionCount" xml:space="preserve">
+    <value>Numero Missioni Versamento</value>
   </data>
-  <data name="LoadingUnitOutCycleCount" xml:space="preserve">
-    <value>Numero Cicli Prelievo</value>
+  <data name="LoadingUnitOutMissionCount" xml:space="preserve">
+    <value>Numero Missioni Prelievo</value>
   </data>
-  <data name="LoadingUnitOtherCycleCount" xml:space="preserve">
-    <value>Numero Altri Cicli</value>
+  <data name="LoadingUnitOtherMissionCount" xml:space="preserve">
+    <value>Numero Altre Missioni</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorità</value>
