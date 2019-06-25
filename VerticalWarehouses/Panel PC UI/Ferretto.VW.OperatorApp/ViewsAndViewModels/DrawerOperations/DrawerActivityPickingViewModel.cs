@@ -21,6 +21,7 @@ using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.VW.WmsCommunication.Interfaces;
+using System.Drawing;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -42,6 +43,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private Func<IDrawableCompartment, IDrawableCompartment, string> filterColorFunc;
 
+        private Image image;
+
         private string itemCode;
 
         private string itemDescription;
@@ -59,6 +62,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         private ObservableCollection<TrayControlCompartment> viewCompartments;
 
         private IWmsDataProvider wmsDataProvider;
+
+        private IWmsImagesProvider wmsImagesProvider;
 
         #endregion
 
@@ -89,6 +94,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             get { return this.filterColorFunc; }
             set { this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value); }
         }
+
+        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -125,7 +132,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public void ExitFromViewMethod()
         {
-            // TODO
+            this.Image?.Dispose();
+            this.image?.Dispose();
         }
 
         public void InitializeViewModel(IUnityContainer container)
@@ -133,6 +141,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.container = container;
             this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
             this.operatorService = this.container.Resolve<IOperatorService>();
+            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
         }
 
         public async Task OnEnterViewAsync()
@@ -209,12 +218,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
+            this.Image?.Dispose();
+            this.image?.Dispose();
+            this.Image = null;
+            this.image = null;
             this.ListCode = bayManager.CurrentMission.ItemListId.ToString();
             this.ItemCode = bayManager.CurrentMission.ItemId.ToString();
             this.CompartmentPosition = await this.wmsDataProvider.GetCompartmentPosition(bayManager.CurrentMission);
             this.ListDescription = bayManager.CurrentMission.ItemListDescription;
             this.ItemDescription = bayManager.CurrentMission.ItemDescription;
             this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
+            var imageCode = await this.wmsDataProvider.GetItemImageCodeAsync((int)bayManager.CurrentMission.ItemId);
+            var imageStram = await this.wmsImagesProvider.GetImageAsync(imageCode);
+            this.Image = Image.FromStream(imageStram);
         }
 
         #endregion

@@ -75,6 +75,20 @@ namespace Ferretto.VW.WmsCommunication
             return returnValue;
         }
 
+        public async Task<string> GetItemImageCodeAsync(int itemId)
+        {
+            ItemDetails item = null;
+            try
+            {
+                item = await this.itemsDataService.GetByIdAsync(itemId);
+            }
+            catch (SwaggerException ex)
+            {
+                throw new NotImplementedException(ex.Message);
+            }
+            return item.Image;
+        }
+
         public async Task<ObservableCollection<Item>> GetItemsAsync(string searchCode, int skip, int quantity)
         {
             var items = await this.itemsDataService.GetAllAsync(search: searchCode, skip: skip, take: quantity);
