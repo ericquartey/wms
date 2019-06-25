@@ -146,14 +146,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         public void ApplyCorrectionOnSingleCompartment(double minStepCompartment)
         {
-            if (this.Width.HasValue && this.Height.HasValue && this.Rows > 0 &&
+            if (this.Width.HasValue && this.Depth.HasValue && this.Rows > 0 &&
                             this.Columns > 0)
             {
                 var widthSingleCompartment = this.Width.Value / this.Columns;
-                var heightSingleCompartment = this.Height.Value / this.Rows;
+                var heightSingleCompartment = this.Depth.Value / this.Rows;
 
                 this.Width = (Math.Floor(widthSingleCompartment / minStepCompartment) * minStepCompartment) * this.Columns;
-                this.Height = (Math.Floor(heightSingleCompartment / minStepCompartment) * minStepCompartment) * this.Rows;
+                this.Depth = (Math.Floor(heightSingleCompartment / minStepCompartment) * minStepCompartment) * this.Rows;
             }
         }
 
