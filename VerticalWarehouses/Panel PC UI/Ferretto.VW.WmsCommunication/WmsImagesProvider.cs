@@ -18,9 +18,9 @@ namespace Ferretto.VW.WmsCommunication
     {
         #region Fields
 
-        private const int MAX_CACHE_CAPACITY_MB = 1;
+        private const int MAX_CACHE_CAPACITY_MB = 200;
 
-        private const int MAX_CACHING_TIME_IN_MINUTES = 20;
+        private const int MAX_CACHING_TIME_IN_MINUTES = 720; // INFO 60 minutes * 12 hours (avarage machine's daily work load)
 
         private readonly IUnityContainer container;
 
@@ -59,7 +59,7 @@ namespace Ferretto.VW.WmsCommunication
                 using (var response = await this.imagesDataService.DownloadAsync(imageCode))
                 {
                     var policy = new CacheItemPolicy();
-                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(MAX_CACHING_TIME_IN_MINUTES);
+                    policy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(MAX_CACHING_TIME_IN_MINUTES);
                     cachedObject = new MemoryStream(this.ReadFully(response.Stream));
                     this.cache.Set(imageCode, cachedObject, policy);
                 }

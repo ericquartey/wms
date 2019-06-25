@@ -18,7 +18,6 @@ namespace Ferretto.VW.VWApp
         {
             this.logger = LogManager.GetCurrentClassLogger();
             System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
-            this.logger.Error(new Exception(), "CTOR!");
         }
 
         #endregion
