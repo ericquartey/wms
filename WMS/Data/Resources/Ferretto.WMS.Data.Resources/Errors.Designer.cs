@@ -223,6 +223,15 @@ namespace Ferretto.WMS.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No entity with the specified id={0} exists..
+        /// </summary>
+        public static string NoEntityExists {
+            get {
+                return ResourceManager.GetString("NoEntityExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No mission with id &apos;{0}&apos; exists..
         /// </summary>
         public static string NoMissionWithIdExists {

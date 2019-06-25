@@ -261,4 +261,7 @@
   <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
     <value>L'insieme di scomparti specificato non può essere inserito nella unità di carico.</value>
   </data>
+  <data name="NoEntityExists" xml:space="preserve">
+    <value>Nessuna entità con l'ID specifico {0} esiste.</value>
+  </data>
 </root>
