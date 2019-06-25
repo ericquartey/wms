@@ -29,11 +29,13 @@ namespace Ferretto.VW.VWApp
             var wmsUri = new System.Uri(wmsServiceAddress);
             var eventAggregator = new EventAggregator();
             var notificationCatcher = new NotificationCatcher(eventAggregator, container);
-            var wmsCommunication = new WmsDataProvider(this.container, wmsUri);
+            var wmsDataProvider = new WmsDataProvider(this.container, wmsUri);
+            var wmsImagesProvider = new WmsImagesProvider(this.container, wmsUri);
 
             this.container.RegisterInstance<IEventAggregator>(eventAggregator);
             this.container.RegisterInstance<INotificationCatcher>(notificationCatcher);
-            this.container.RegisterInstance<IWmsDataProvider>(wmsCommunication);
+            this.container.RegisterInstance<IWmsDataProvider>(wmsDataProvider);
+            this.container.RegisterInstance<IWmsImagesProvider>(wmsImagesProvider);
         }
 
         #endregion

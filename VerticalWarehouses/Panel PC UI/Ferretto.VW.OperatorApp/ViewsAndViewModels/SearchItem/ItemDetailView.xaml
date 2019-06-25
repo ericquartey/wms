@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
              xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:converter="clr-namespace:Ferretto.VW.CustomControls.Converters;assembly=Ferretto.VW.CustomControls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,6 +12,9 @@
 
     <Grid Width="1024"
           Height="608">
+        <Grid.Resources>
+            <converter:ImageToSourceConverter x:Key="ImageToSourceConverter" />
+        </Grid.Resources>
 
         <TextBlock Margin="170,40,0,0"
                    HorizontalAlignment="Left"
@@ -22,7 +26,7 @@
                Margin="170,190,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               Source="{Binding ImagePath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+               Source="{Binding Image, Converter={StaticResource ImageToSourceConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                Stretch="Uniform" />
         <!--  Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"  -->
         <Controls:CustomLabelTextBlockControl MaxWidth="200"

@@ -175,6 +175,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                                 Article = items[i].Code,
                                 Description = items[i].Description,
                                 AvailableQuantity = items[i].TotalAvailable,
+                                ImageCode = items[i].Image,
                                 Machine = machines
                             };
                             viewItems.Add(item);
@@ -281,6 +282,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                         Article = items[i].Code,
                         Description = items[i].Description,
                         AvailableQuantity = items[i].TotalAvailable,
+                        ImageCode = items[i].Image,
                         Machine = machines
                     };
                     viewItems.Add(item);

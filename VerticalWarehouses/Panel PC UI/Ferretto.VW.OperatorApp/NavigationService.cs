@@ -45,8 +45,12 @@ namespace Ferretto.VW.OperatorApp
         {
             if (navigationStackTrace.Count != 0 && navigationStackTrace.Pop() is IViewModel destinationViewModel)
             {
-                mainWindowViewModel.ContentRegionCurrentViewModel = destinationViewModel as BindableBase;
+                if (mainWindowViewModel.ContentRegionCurrentViewModel is IViewModel vm)
+                {
+                    vm.ExitFromViewMethod();
+                }
                 destinationViewModel.OnEnterViewAsync();
+                mainWindowViewModel.ContentRegionCurrentViewModel = destinationViewModel as BindableBase;
                 if (destinationViewModel is IViewModel destination && destination.NavigationViewModel != null)
                 {
                     mainWindowViewModel.NavigationRegionCurrentViewModel = destination.NavigationViewModel;
@@ -58,6 +62,10 @@ namespace Ferretto.VW.OperatorApp
             }
             else
             {
+                if (mainWindowViewModel.ContentRegionCurrentViewModel is IViewModel vm)
+                {
+                    vm.ExitFromViewMethod();
+                }
                 mainWindowViewModel.ContentRegionCurrentViewModel = _container.Resolve<IIdleViewModel>() as IdleViewModel;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = _container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
                 mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = null;
