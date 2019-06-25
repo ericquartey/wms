@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/compartment-types")]
-        public async Task<ActionResult<ItemCompartmentType>> AddCompartmentTypeAssociationAsync(int id, int compartmentTypeId, int? maxCapacity)
+        public async Task<ActionResult<ItemCompartmentType>> AddCompartmentTypeAssociationAsync(int id, int compartmentTypeId, int maxCapacity)
         {
             var result = await this.itemCompartmentTypeProvider.CreateAsync(new ItemCompartmentType
             {
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
             int id,
             int compartmentTypeId,
-            double? maxCapacity)
+            double maxCapacity)
         {
             var model = new ItemCompartmentType { ItemId = id, CompartmentTypeId = compartmentTypeId, MaxCapacity = maxCapacity };
 

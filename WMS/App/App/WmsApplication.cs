@@ -11,6 +11,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism;
 using Prism.Ioc;
@@ -72,7 +73,7 @@ namespace Ferretto.WMS.App
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.ConfiguringPrismModuleCatalog);
+            SplashScreenService.SetMessage(DesktopApp.ConfiguringPrismModuleCatalog);
             base.ConfigureModuleCatalog(moduleCatalog);
             LoadCatalog(moduleCatalog);
         }

@@ -49,6 +49,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string LoadingUnitTypeDescription { get; set; }
 
+        [PositiveOrZero]
+        public double? WeightFillRate { get; set; }
+
         #endregion
     }
 }

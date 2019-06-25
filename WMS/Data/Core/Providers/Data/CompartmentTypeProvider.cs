@@ -90,11 +90,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = existingCompartmentType.Id;
                 }
 
-                if (itemId.HasValue)
+                if (itemId.HasValue && maxCapacity.HasValue)
                 {
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
-                                     maxCapacity,
+                                     maxCapacity.Value,
                                      existingCompartmentType.Id);
 
                     if (!result.Success)
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (existingCompartmentType != null)
             {
-                return new CreationErrorOperationResult<CompartmentType>(Common.Resources.Errors.DuplicateCompartmentType);
+                return new CreationErrorOperationResult<CompartmentType>(Resources.Errors.DuplicateCompartmentType);
             }
 
             return await this.CreateAsync(model, itemId, maxCapacity);
@@ -193,7 +193,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             var model = await this.GetAllBase()
                 .SingleOrDefaultAsync(a => a.Id == id);
 
-            SetPolicies(model);
+            if (model != null)
+            {
+                SetPolicies(model);
+            }
+
             return model;
         }
 
@@ -227,17 +231,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private static void SetPolicies(BaseModel<int> model)
         {
-            if (model == null)
-            {
-                return;
-            }
-
             model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
         }
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
                     int itemId,
-            double? maxCapacity,
+            double maxCapacity,
             int compartmentTypeId)
         {
             var existingIcTModel =

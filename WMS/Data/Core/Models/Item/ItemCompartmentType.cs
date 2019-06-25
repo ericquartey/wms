@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [Positive]
         [Required]
-        public double? MaxCapacity { get; set; }
+        public double MaxCapacity { get; set; }
 
         public double? Width { get; set; }
 

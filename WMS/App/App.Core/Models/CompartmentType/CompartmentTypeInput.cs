@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemMaxCapacity), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.MaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity { get => this.maxCapacity; set => this.SetProperty(ref this.maxCapacity, value); }
 
         #endregion
