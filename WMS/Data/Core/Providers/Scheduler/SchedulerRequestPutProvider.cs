@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (itemOptions.RequestedQuantity <= 0)
             {
                 return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
-                    "Requested quantity must be positive.");
+                    Resources.Errors.RequestedQuantityMustBePositive);
             }
 
             if (!string.IsNullOrEmpty(itemOptions.RegistrationNumber))
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (itemOptions.RequestedQuantity > 1)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
-                        "When registration number is specified, the requested quantity must be 1.");
+                        Resources.Errors.WhenRegistrationNumberIsSpecifiedTheRequestedQuantityMustBeOne);
                 }
 
                 var registrationNumberCount = await this.compartmentOperationProvider
@@ -80,14 +80,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (registrationNumberCount > 0)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
-                        "This Registration Number is already present for this Item.");
+                        Resources.Errors.ThisRegistrationNumberIsAlreadyPresentForThisItem);
                 }
             }
 
             var item = await this.itemProvider.GetByIdAsync(itemId);
             if (item == null)
             {
-                return new NotFoundOperationResult<IEnumerable<ItemSchedulerRequest>>(null, "The specified item does not exist.");
+                return new NotFoundOperationResult<IEnumerable<ItemSchedulerRequest>>(
+                    null,
+                    Resources.Errors.TheSpecifiedItemDoesNotExist);
             }
 
             if (!item.CanExecuteOperation(nameof(ItemPolicy.Put)))
@@ -105,7 +107,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (selectedSets.Sum(s => s.RemainingCapacity) < itemOptions.RequestedQuantity)
             {
                 return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
-                    "Not enough available compartments to serve the request.");
+                    Resources.Errors.NotEnoughAvailableCompartmentsToServeTheRequest);
             }
 
             var qualifiedRequests = new List<ItemSchedulerRequest>();
@@ -136,7 +138,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             var item = await this.itemProvider.GetByIdAsync(itemId);
             if (item == null)
             {
-                return new NotFoundOperationResult<double>(0, "The specified item does not exist.");
+                return new NotFoundOperationResult<double>(
+                    0,
+                    Resources.Errors.TheSpecifiedItemDoesNotExist);
             }
 
             var compartments = this.GetCompartmentSetsForRequest(item, itemPutOptions);

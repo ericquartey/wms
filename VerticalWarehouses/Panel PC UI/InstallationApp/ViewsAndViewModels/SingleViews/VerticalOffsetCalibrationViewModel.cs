@@ -1,6 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -41,6 +47,8 @@ namespace Ferretto.VW.InstallationApp
         private string noteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
 
         private IOffsetCalibrationService offsetCalibrationService;
+
+        private SubscriptionToken receivePositioningUpdateToken;
 
         private string referenceCellHeight;
 
@@ -101,7 +109,7 @@ namespace Ferretto.VW.InstallationApp
 
         public string ReferenceCellNumber { get => this.referenceCellNumber; set => this.SetProperty(ref this.referenceCellNumber, value); }
 
-        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(this.SetPositionButtonCommandMethod));
+        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonCommandMethod()));
 
         public ICommand StepDownButtonCommand => this.stepDownButtonCommand ?? (this.stepDownButtonCommand = new DelegateCommand(this.StepDownButtonCommandMethod));
 
@@ -147,15 +155,40 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
+        public async Task GetParameterValuesAsync()
+        {
+            try
+            {
+                const string Category = "OffsetCalibration";
+                this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "CellReference")).ToString();
+                this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
+                this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
+            }
+            catch (SwaggerException ex)
+            {
+                this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+            }
+        }
+
         public void InitializeViewModel(IUnityContainer container)
         {
             this.offsetCalibrationService = container.Resolve<IOffsetCalibrationService>();
             this.container = container;
+            this.offsetCalibrationService = this.container.Resolve<IOffsetCalibrationService>();
         }
 
         public async Task OnEnterViewAsync()
         {
-            // TODO implement missing feature
+            await this.GetParameterValuesAsync();
+
+            this.receivePositioningUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public void PositioningDone(bool result)
@@ -163,9 +196,17 @@ namespace Ferretto.VW.InstallationApp
             // TODO implement missing feature
         }
 
-        public void SetPositionButtonCommandMethod()
+        public async Task SetPositionButtonCommandMethod()
         {
-            // TODO implement missing feature
+            try
+            {
+                await this.offsetCalibrationService.ExecutePositioningAsync();
+            }
+            catch (Exception ex)
+            {
+                this.NoteString = "Couldn't get response from this http request.";
+                throw; // TEMP Define a better throw exception
+            }
         }
 
         public void StepDownButtonCommandMethod()
@@ -180,7 +221,31 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TODO implement missing feature
+            this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivePositioningUpdateToken);
+        }
+
+        private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
+        {
+            if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> p)
+            {
+                switch (p.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.NoteString = VW.Resources.InstallationApp.GoToInitialPosition;
+                        break;
+
+                    case MessageStatus.OperationEnd:
+                        this.NoteString = VW.Resources.InstallationApp.GoToInitialPosition;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.NoteString = VW.Resources.InstallationApp.Error;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
         #endregion

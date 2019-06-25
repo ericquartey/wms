@@ -40,6 +40,7 @@ namespace Ferretto.VW.InstallationApp
             var offsetCalibrationService = new OffsetCalibrationService(this.automationServiceUrl);
             var installationStatusService = new InstallationStatusService(this.automationServiceUrl);
             var updateSensorsService = new UpdateSensorsService(this.automationServiceUrl);
+            var offsetCalibrationService = new OffsetCalibrationService(this.automationServiceUrl);
 
             var testService = new TestService(this.automationServiceUrl);
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
@@ -96,6 +97,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
             this.container.RegisterInstance<IInstallationStatusService>(installationStatusService);
             this.container.RegisterInstance<IUpdateSensorsService>(updateSensorsService);
+            this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
 
             this.container.RegisterInstance<ITestService>(testService);
             this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifierInstance);
