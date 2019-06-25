@@ -118,7 +118,7 @@ namespace Ferretto.WMS.Data.Core.Models
                     &&
                     this.XPosition + this.Width <= loadingUnit.Width
                     &&
-                    this.YPosition + this.Depth <= loadingUnit.Length
+                    this.YPosition + this.Depth <= loadingUnit.Depth
                     &&
                     !compartments.Any(c => HasCollision(c, this)))
                 ||

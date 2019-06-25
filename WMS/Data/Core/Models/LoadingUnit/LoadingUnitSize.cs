@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public double Height { get; set; }
 
         [Positive]
-        public double Length { get; set; }
+        public double Depth { get; set; }
 
         [PositiveOrZero]
         public int Weight { get; set; }

@@ -41,7 +41,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime? lastPutDate;
 
-        private double? length;
+        private double? depth;
 
         private ItemManagementType? managementType;
 
@@ -185,11 +185,11 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.lastPutDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.Length), ResourceType = typeof(BusinessObjects))]
-        public double? Length
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth
         {
-            get => this.length;
-            set => this.SetProperty(ref this.length, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         [Required]
@@ -304,9 +304,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                         return this.GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, columnName);
 
-                    case nameof(this.Length):
+                    case nameof(this.Depth):
 
-                        return this.GetErrorMessageIfNegativeOrZero(this.Length, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
 
                     case nameof(this.PickTolerance):
 

@@ -384,7 +384,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.Length, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"

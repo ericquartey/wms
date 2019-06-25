@@ -314,7 +314,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Depth)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
-                            l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                            l.LoadingUnitType.LoadingUnitSizeClass.Depth),
                     WeightFillRate = loadingUnitsMachines.Any(wl => wl.l.Id == l.Id &&
                                                                     wl.m.TotalMaxWeight.HasValue &&
                                                                     wl.m.TotalMaxWeight.Value > 0) ? loadingUnitsMachines.Select(lm => new
@@ -342,7 +342,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitTypeId = l.LoadingUnitTypeId,
                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
-                    Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
+                    Depth = l.LoadingUnitType.LoadingUnitSizeClass.Depth,
                     Note = l.Note,
                     IsCellPairingFixed = l.IsCellPairingFixed,
                     ReferenceType = (ReferenceType)l.ReferenceType,
@@ -364,7 +364,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
                     MaxNetWeight = l.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
                     AreaFillRate = l.Compartments.Sum(cmp => cmp.CompartmentType.Width * cmp.CompartmentType.Depth) /
-                        (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                        (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Depth),
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(
@@ -379,7 +379,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(t => t.Id == typeId)
                 .Select(t => new LoadingUnitSize
                 {
-                    Length = t.LoadingUnitSizeClass.Length,
+                    Depth = t.LoadingUnitSizeClass.Depth,
                     Width = t.LoadingUnitSizeClass.Width,
                 })
                 .Distinct();

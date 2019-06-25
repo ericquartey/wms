@@ -233,7 +233,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             this.LoadingUnitHeightClass1 = new LoadingUnitHeightClass
                 { Id = 1, Description = "Loading Unit Height Class #1", MaxHeight = 1, MinHeight = 100 };
             this.LoadingUnitSizeClass1 = new LoadingUnitSizeClass
-                { Id = 1, Description = "Loading Unit Size Class #1", Length = 100, Width = 100 };
+                { Id = 1, Description = "Loading Unit Size Class #1", Depth = 100, Width = 100 };
             this.LoadingUnitWeightClass1 = new LoadingUnitWeightClass
                 { Id = 1, Description = "Loading Unit Weight Class #1", MinWeight = 1, MaxWeight = 10 };
             this.LoadingUnitType1 = new LoadingUnitType

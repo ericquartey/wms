@@ -168,7 +168,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Id = m.LoadingUnit.Id,
                         Width = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
-                        Length = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length,
+                        Depth = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Depth,
                         Compartments = m.LoadingUnit.Compartments.Select(c => new CompartmentMissionInfo
                         {
                             Id = c.Id,

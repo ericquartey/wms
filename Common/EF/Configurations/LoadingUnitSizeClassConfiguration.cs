@@ -20,7 +20,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(l => l.Description)
                 .IsRequired();
 
-            builder.Property(l => l.Length)
+            builder.Property(l => l.Depth)
                 .IsRequired();
 
             builder.Property(l => l.Width)

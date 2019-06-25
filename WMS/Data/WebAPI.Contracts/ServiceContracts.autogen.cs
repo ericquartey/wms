@@ -1403,8 +1403,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("lastPutDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastPutDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Length { get; set; }
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Depth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("machines", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.ObjectModel.ObservableCollection<MachinePick> Machines { get; set; }
@@ -1647,8 +1647,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("lastPutDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastPutDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Always)]
-        public double Length { get; set; }
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
+        public double Depth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("loadingUnitStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LoadingUnitStatusDescription { get; set; }
@@ -2458,8 +2458,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("lastPutDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastPutDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Length { get; set; }
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Depth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("managementType", Required = Newtonsoft.Json.Required.Always)]
         public ItemManagementType ManagementType { get; set; }
@@ -2818,8 +2818,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Always)]
-        public double Length { get; set; }
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
+        public double Depth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Always)]
         public int Weight { get; set; }
@@ -3511,8 +3511,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Always)]
-        public double Length { get; set; }
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
+        public double Depth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
         public double Width { get; set; }

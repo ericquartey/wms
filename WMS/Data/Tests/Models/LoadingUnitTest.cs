@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddAdjacentCompartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 10, Width = 10, Depth = 10 };
             var compartment3 = new CompartmentDetails { Id = 3, XPosition = 10, YPosition = 0, Width = 10, Depth = 10 };
@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddAllAdjacentCompartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { XPosition = 30, YPosition = 30, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { XPosition = 40, YPosition = 30, Width = 10, Depth = 10 };
             var compartment3 = new CompartmentDetails { XPosition = 40, YPosition = 40, Width = 10, Depth = 10 };
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddAllOverlapsCompartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 30, YPosition = 30, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 39, YPosition = 30, Width = 10, Depth = 10 };
 
@@ -70,8 +70,8 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddCompartmentBiggerThanLoadingUnit()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = loadingUnit.Length + 1, Depth = loadingUnit.Width + 1 };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var compartment = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = loadingUnit.Depth + 1, Depth = loadingUnit.Width + 1 };
             var compartments = new List<CompartmentDetails> { compartment };
             Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddCompartmentOnTheEdgeOfLoadingUnit()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment = new CompartmentDetails { XPosition = 99, YPosition = 0, Width = 10, Depth = 10 };
             var compartments = new List<CompartmentDetails> { compartment };
             Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddCompartmentOutOfLoadingUnit()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment = new CompartmentDetails { XPosition = 200, YPosition = 0, Width = 10, Depth = 10 };
             var compartments = new List<CompartmentDetails> { compartment };
             Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
@@ -97,7 +97,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddCompartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { XPosition = 0, YPosition = 11, Width = 10, Depth = 10 };
             var compartmentsDetails = new List<CompartmentDetails>();
@@ -108,7 +108,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddOverlapping1Compartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 9, Width = 10, Depth = 10 };
             var compartmentsDetails = new List<CompartmentDetails>();
@@ -119,7 +119,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddOverlapping2Compartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 1, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 1, YPosition = 0, Width = 5, Depth = 10 };
 
@@ -135,7 +135,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddOverlapping3Compartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 10, YPosition = 2, Width = 10, Depth = 5 };
 
@@ -151,7 +151,7 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public void AddOverlapping4Compartments()
         {
-            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var loadingUnit = new LoadingUnitDetails { Depth = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
             var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 2, Width = 10, Depth = 5 };
 
