@@ -141,12 +141,12 @@
                                   Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
-                    <wms:SpinEdit x:Name="HeightText"
+                    <wms:SpinEdit x:Name="DepthText"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   EnableCorrection="True"
                                   Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />

@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [Required]
         [Positive]
-        public double? Height { get; set; }
+        public double? Depth { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.Data.Core.Models
                     &&
                     this.XPosition + this.Width <= loadingUnit.Width
                     &&
-                    this.YPosition + this.Height <= loadingUnit.Length
+                    this.YPosition + this.Depth <= loadingUnit.Length
                     &&
                     !compartments.Any(c => HasCollision(c, this)))
                 ||
@@ -147,7 +147,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 sb.AppendLine(Resources.Errors.CompartmentSizeIsNotSpecified);
             }
 
-            if (!this.Height.HasValue)
+            if (!this.Depth.HasValue)
             {
                 sb.AppendLine(Resources.Errors.CompartmentSizeIsNotSpecified);
             }
@@ -188,10 +188,10 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             // check if any source corner is inside target
             var sourceXPositionFinal = source.XPosition + source.Width;
-            var sourceYPositionFinal = source.YPosition + source.Height;
+            var sourceYPositionFinal = source.YPosition + source.Depth;
 
             var targetXPositionFinal = target.XPosition + target.Width;
-            var targetYPositionFinal = target.YPosition + target.Height;
+            var targetYPositionFinal = target.YPosition + target.Depth;
 
             // Bottom Left
             if (source.XPosition >= target.XPosition

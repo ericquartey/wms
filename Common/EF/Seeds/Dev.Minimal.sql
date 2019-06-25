@@ -750,11 +750,11 @@ DECLARE
   @CompTypesId_500x325 int = 4;
 
 SET IDENTITY_INSERT CompartmentTypes ON;
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_800x1200, 800, 1200);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_50x50, 50, 50);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_100x100, 100, 100);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_500x325, 500, 325);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_500x215, 500, 215);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_800x1200, 800, 1200);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_50x50, 50, 50);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_100x100, 100, 100);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_500x325, 500, 325);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_500x215, 500, 215);
 SET IDENTITY_INSERT CompartmentTypes OFF;
 
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_800x1200, 1, 100);

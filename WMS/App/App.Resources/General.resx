@@ -296,7 +296,7 @@
     <value>{0:0} x {1:0} [mm]</value>
   </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0:0} x {1:0} (Width x Height)</value>
+    <value>{0:0} x {1:0} (Width x Depth)</value>
   </data>
   <data name="AnyValue" xml:space="preserve">
     <value>Any</value>

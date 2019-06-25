@@ -23,8 +23,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemCompartmentTypeEmptyCount), ResourceType = typeof(BusinessObjects))]
         public int EmptyCompartmentsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
-        public double? Height { get; set; }
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth { get; set; }
 
         public bool IsActive
         {

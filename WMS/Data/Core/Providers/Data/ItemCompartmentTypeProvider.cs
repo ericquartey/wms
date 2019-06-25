@@ -135,7 +135,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .Select(ic => new ItemCompartmentType
                     {
                         CompartmentTypeId = ic.Id,
-                        Height = ic.Height,
+                        Depth = ic.Depth,
                         Width = ic.Width,
                         CompartmentsCount = ic.Compartments.Count(),
                         EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))

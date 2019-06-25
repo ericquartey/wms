@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190624151123_Rename_Height_Field_In_CompartmentType_Table_To_Depth")]
+    partial class Rename_Height_Field_In_CompartmentType_Table_To_Depth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -822,7 +824,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<double>("Height");
 
-                    b.Property<int>("InMissionCount")
+                    b.Property<int>("InCycleCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
@@ -849,11 +851,11 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
-                    b.Property<int>("OtherMissionCount")
+                    b.Property<int>("OtherCycleCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
-                    b.Property<int>("OutMissionCount")
+                    b.Property<int>("OutCycleCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 

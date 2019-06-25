@@ -12,7 +12,7 @@
 
         private string colorFill;
 
-        private double height;
+        private double depth;
 
         private bool isReadOnly;
 
@@ -58,10 +58,10 @@
 
         public IDrawableCompartment CompartmentDetails { get; set; }
 
-        public double Height
+        public double Depth
         {
-            get => this.height;
-            set => this.SetProperty(ref this.height, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         public bool IsReadOnly { get => this.isReadOnly; set => this.SetProperty(ref this.isReadOnly, value); }

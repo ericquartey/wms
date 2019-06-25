@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? CompartmentId { get; set; }
 
         [Positive]
-        public double? CompartmentTypeHeight { get; set; }
+        public double? CompartmentTypeDepth { get; set; }
 
         [Positive]
         public double? CompartmentTypeWidth { get; set; }

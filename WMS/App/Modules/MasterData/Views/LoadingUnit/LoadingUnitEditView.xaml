@@ -153,7 +153,7 @@
                                                 <Binding Source="{x:Static res:General.DimensionFormat}" />
                                                 <Binding Path="Data.Width"
                                                          TargetNullValue="" />
-                                                <Binding Path="Data.Height"
+                                                <Binding Path="Data.Depth"
                                                          TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>

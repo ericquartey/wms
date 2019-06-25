@@ -262,18 +262,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 &&
                 this.Model.Width.HasValue
                 &&
-                this.Model.Height.HasValue
+                this.Model.Depth.HasValue
                 &&
                 (
                 e.PropertyName == nameof(CompartmentDetails.ItemId)
                 ||
                 e.PropertyName == nameof(CompartmentDetails.Width)
                 ||
-                e.PropertyName == nameof(CompartmentDetails.Height)))
+                e.PropertyName == nameof(CompartmentDetails.Depth)))
             {
                 var result = await this.compartmentProvider.GetMaxCapacityAsync(
                     this.Model.Width,
-                    this.Model.Height,
+                    this.Model.Depth,
                     this.Model.ItemId.Value);
 
                 if (result.Success && result.Entity.HasValue)

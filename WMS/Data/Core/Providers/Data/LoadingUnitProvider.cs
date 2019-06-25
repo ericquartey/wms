@@ -312,7 +312,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         m => m.Status != Common.DataModels.MissionStatus.Completed
                             && m.Status != Common.DataModels.MissionStatus.Incomplete),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                    AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Height)
+                    AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Depth)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
                             l.LoadingUnitType.LoadingUnitSizeClass.Length),
                     WeightFillRate = loadingUnitsMachines.Any(wl => wl.l.Id == l.Id &&
@@ -363,7 +363,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaId = l.Cell.Aisle.AreaId,
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
                     MaxNetWeight = l.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
-                    AreaFillRate = l.Compartments.Sum(cmp => cmp.CompartmentType.Width * cmp.CompartmentType.Height) /
+                    AreaFillRate = l.Compartments.Sum(cmp => cmp.CompartmentType.Width * cmp.CompartmentType.Depth) /
                         (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),

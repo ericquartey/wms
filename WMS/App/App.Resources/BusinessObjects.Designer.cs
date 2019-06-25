@@ -475,6 +475,15 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Depth [mm].
+        /// </summary>
+        public static string Depth {
+            get {
+                return ResourceManager.GetString("Depth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {

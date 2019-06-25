@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            if (!model.Height.HasValue
+            if (!model.Depth.HasValue
                 || !model.Width.HasValue
                 || !model.XPosition.HasValue
                 || !model.YPosition.HasValue)
@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     new CompartmentType
                     {
                         Width = model.Width,
-                        Height = model.Height
+                        Depth = model.Depth
                     },
                     model.ItemId,
                     model.MaxCapacity);
@@ -222,15 +222,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .ToArrayAsync();
         }
 
-        public async Task<double?> GetMaxCapacityAsync(double width, double height, int itemId)
+        public async Task<double?> GetMaxCapacityAsync(double width, double depth, int itemId)
         {
             var compartmentType = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ict =>
                     ict.ItemId == itemId &&
                     (((int)ict.CompartmentType.Width == (int)width &&
-                            (int)ict.CompartmentType.Height == (int)height) ||
-                        ((int)ict.CompartmentType.Width == (int)height &&
-                            (int)ict.CompartmentType.Height == (int)width)));
+                            (int)ict.CompartmentType.Depth == (int)depth) ||
+                        ((int)ict.CompartmentType.Width == (int)depth &&
+                            (int)ict.CompartmentType.Depth == (int)width)));
 
             return compartmentType?.MaxCapacity;
         }
@@ -283,7 +283,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     new CompartmentType
                     {
                         Width = model.Width,
-                        Height = model.Height
+                        Depth = model.Depth
                     },
                     model.ItemId,
                     model.MaxCapacity);
@@ -356,7 +356,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CompartmentTypeId = j.cmp.CompartmentTypeId,
                     CreationDate = j.cmp.CreationDate,
                     FifoStartDate = j.cmp.FifoStartDate,
-                    Height = j.cmp.HasRotation ? j.cmp.CompartmentType.Width : j.cmp.CompartmentType.Height,
+                    Depth = j.cmp.HasRotation ? j.cmp.CompartmentType.Width : j.cmp.CompartmentType.Depth,
                     Id = j.cmp.Id,
                     InventoryDate = j.cmp.InventoryDate,
                     IsItemPairingFixed = j.cmp.IsItemPairingFixed,
@@ -379,7 +379,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Stock = j.cmp.Stock,
                     Sub1 = j.cmp.Sub1,
                     Sub2 = j.cmp.Sub2,
-                    Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Height : j.cmp.CompartmentType.Width,
+                    Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Depth : j.cmp.CompartmentType.Width,
                     XPosition = j.cmp.XPosition,
                     YPosition = j.cmp.YPosition,
                 });

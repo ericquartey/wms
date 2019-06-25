@@ -11,7 +11,7 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
 
-        public double Height { get; set; }
+        public double Depth { get; set; }
 
         public int Id { get; set; }
 

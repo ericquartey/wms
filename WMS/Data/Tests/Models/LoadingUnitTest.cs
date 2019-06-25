@@ -13,9 +13,9 @@ namespace Ferretto.WMS.Data.Tests
         public void AddAdjacentCompartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 10, Width = 10, Height = 10 };
-            var compartment3 = new CompartmentDetails { Id = 3, XPosition = 10, YPosition = 0, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 10, Width = 10, Depth = 10 };
+            var compartment3 = new CompartmentDetails { Id = 3, XPosition = 10, YPosition = 0, Width = 10, Depth = 10 };
 
             var compartments = new List<CompartmentDetails> { compartment1 };
             Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartments, loadingUnit));
@@ -27,15 +27,15 @@ namespace Ferretto.WMS.Data.Tests
         public void AddAllAdjacentCompartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { XPosition = 30, YPosition = 30, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { XPosition = 40, YPosition = 30, Width = 10, Height = 10 };
-            var compartment3 = new CompartmentDetails { XPosition = 40, YPosition = 40, Width = 10, Height = 10 };
-            var compartment4 = new CompartmentDetails { XPosition = 30, YPosition = 40, Width = 10, Height = 10 };
-            var compartment5 = new CompartmentDetails { XPosition = 20, YPosition = 40, Width = 10, Height = 10 };
-            var compartment6 = new CompartmentDetails { XPosition = 20, YPosition = 30, Width = 10, Height = 10 };
-            var compartment7 = new CompartmentDetails { XPosition = 20, YPosition = 20, Width = 10, Height = 10 };
-            var compartment8 = new CompartmentDetails { XPosition = 30, YPosition = 20, Width = 10, Height = 10 };
-            var compartment9 = new CompartmentDetails { XPosition = 40, YPosition = 20, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { XPosition = 30, YPosition = 30, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { XPosition = 40, YPosition = 30, Width = 10, Depth = 10 };
+            var compartment3 = new CompartmentDetails { XPosition = 40, YPosition = 40, Width = 10, Depth = 10 };
+            var compartment4 = new CompartmentDetails { XPosition = 30, YPosition = 40, Width = 10, Depth = 10 };
+            var compartment5 = new CompartmentDetails { XPosition = 20, YPosition = 40, Width = 10, Depth = 10 };
+            var compartment6 = new CompartmentDetails { XPosition = 20, YPosition = 30, Width = 10, Depth = 10 };
+            var compartment7 = new CompartmentDetails { XPosition = 20, YPosition = 20, Width = 10, Depth = 10 };
+            var compartment8 = new CompartmentDetails { XPosition = 30, YPosition = 20, Width = 10, Depth = 10 };
+            var compartment9 = new CompartmentDetails { XPosition = 40, YPosition = 20, Width = 10, Depth = 10 };
 
             var compartments = new List<CompartmentDetails> { compartment1 };
             Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartments, loadingUnit));
@@ -60,8 +60,8 @@ namespace Ferretto.WMS.Data.Tests
         public void AddAllOverlapsCompartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 30, YPosition = 30, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 39, YPosition = 30, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 30, YPosition = 30, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 39, YPosition = 30, Width = 10, Depth = 10 };
 
             var compartments = new List<CompartmentDetails> { compartment1 };
             Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartments, loadingUnit));
@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Data.Tests
         public void AddCompartmentBiggerThanLoadingUnit()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = loadingUnit.Length + 1, Height = loadingUnit.Width + 1 };
+            var compartment = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = loadingUnit.Length + 1, Depth = loadingUnit.Width + 1 };
             var compartments = new List<CompartmentDetails> { compartment };
             Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
@@ -80,7 +80,7 @@ namespace Ferretto.WMS.Data.Tests
         public void AddCompartmentOnTheEdgeOfLoadingUnit()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment = new CompartmentDetails { XPosition = 99, YPosition = 0, Width = 10, Height = 10 };
+            var compartment = new CompartmentDetails { XPosition = 99, YPosition = 0, Width = 10, Depth = 10 };
             var compartments = new List<CompartmentDetails> { compartment };
             Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
@@ -89,7 +89,7 @@ namespace Ferretto.WMS.Data.Tests
         public void AddCompartmentOutOfLoadingUnit()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment = new CompartmentDetails { XPosition = 200, YPosition = 0, Width = 10, Height = 10 };
+            var compartment = new CompartmentDetails { XPosition = 200, YPosition = 0, Width = 10, Depth = 10 };
             var compartments = new List<CompartmentDetails> { compartment };
             Assert.IsFalse(compartment.CanAddToLoadingUnit(compartments, loadingUnit));
         }
@@ -98,8 +98,8 @@ namespace Ferretto.WMS.Data.Tests
         public void AddCompartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { XPosition = 0, YPosition = 11, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { XPosition = 0, YPosition = 11, Width = 10, Depth = 10 };
             var compartmentsDetails = new List<CompartmentDetails>();
             compartmentsDetails.Add(compartment1);
             Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartmentsDetails, loadingUnit));
@@ -109,8 +109,8 @@ namespace Ferretto.WMS.Data.Tests
         public void AddOverlapping1Compartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 9, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 9, Width = 10, Depth = 10 };
             var compartmentsDetails = new List<CompartmentDetails>();
             compartmentsDetails.Add(compartment1);
             Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartmentsDetails, loadingUnit));
@@ -120,8 +120,8 @@ namespace Ferretto.WMS.Data.Tests
         public void AddOverlapping2Compartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 1, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 1, YPosition = 0, Width = 5, Height = 10 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 1, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 1, YPosition = 0, Width = 5, Depth = 10 };
 
             var compartmentsDetails1 = new List<CompartmentDetails>();
             compartmentsDetails1.Add(compartment1);
@@ -136,8 +136,8 @@ namespace Ferretto.WMS.Data.Tests
         public void AddOverlapping3Compartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 10, YPosition = 2, Width = 10, Height = 5 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 10, YPosition = 2, Width = 10, Depth = 5 };
 
             var compartmentsDetails1 = new List<CompartmentDetails>();
             compartmentsDetails1.Add(compartment2);
@@ -152,8 +152,8 @@ namespace Ferretto.WMS.Data.Tests
         public void AddOverlapping4Compartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
-            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 2, Width = 10, Height = 5 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Depth = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 2, Width = 10, Depth = 5 };
 
             var compartmentsDetails1 = new List<CompartmentDetails>();
             compartmentsDetails1.Add(compartment2);

@@ -227,7 +227,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                     MachineId = m.MachineId,
                                     LoadingUnitId = m.LoadingUnit.Id,
                                     LoadingUnitArea = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length * m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
-                                    CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Height : 0),
+                                    CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Depth : 0),
                                 })
                             .GroupBy(x => x.MachineId)
                             .Select(x => new
@@ -345,7 +345,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                      MachineId = m.MachineId,
                                      LoadingUnitId = m.LoadingUnit.Id,
                                      LoadingUnitArea = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length * m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
-                                     CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Height : 0),
+                                     CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Depth : 0),
                                  })
                              .GroupBy(x => x.MachineId)
                              .Select(x => new

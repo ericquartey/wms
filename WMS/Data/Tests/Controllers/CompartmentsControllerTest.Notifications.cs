@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ItemId = item1.Id,
                 Stock = 10,
                 CompartmentTypeId = compartmentType1.Id,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
                 XPosition = 0,
                 YPosition = 0,
@@ -119,7 +119,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
@@ -147,7 +147,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ItemId = item1.Id,
                 Stock = 10,
                 CompartmentTypeId = compartmentType1.Id,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
                 XPosition = 0,
                 YPosition = 0,
@@ -158,7 +158,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ItemId = item1.Id,
                 Stock = 20,
                 CompartmentTypeId = compartmentType1.Id,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
                 XPosition = 10,
                 YPosition = 10,
@@ -219,7 +219,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
@@ -301,7 +301,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
