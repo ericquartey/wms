@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
                 if (result is NotFoundOperationResult<IEnumerable<LoadingUnit>>)
                 {
-                    var message = $"No entity with the specified id={id} exists.";
+                    var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                     this.logger.LogWarning(message);
                     return this.NotFound(new ProblemDetails
                     {
@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.aisleProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -12,20 +12,20 @@ namespace Ferretto.WMS.App.Core.Models
 
         public string AbcClassId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string Description { get; set; }
 
         public string Image { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Category), ResourceType = typeof(BusinessObjects))]
         public string ItemCategoryDescription { get; set; }
 
         public int? ItemCategoryId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemMaxCapacity), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.MaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MeasureUnitDescription), ResourceType = typeof(BusinessObjects))]
@@ -34,13 +34,13 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
         public double TotalAvailable { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemReservedForPick), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ReservedForPick), ResourceType = typeof(BusinessObjects))]
         public double TotalReservedForPick { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemReservedToPut), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ReservedToPut), ResourceType = typeof(BusinessObjects))]
         public double TotalReservedToPut { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemStock), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Stock), ResourceType = typeof(BusinessObjects))]
         public double TotalStock { get; set; }
 
         #endregion

@@ -2,12 +2,12 @@
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -21,6 +21,10 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider = ServiceLocator.Current.GetInstance<ICompartmentTypeProvider>();
+
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
+        private GlobalSettings globalSettings;
 
         private bool isAddShown;
 
@@ -40,6 +44,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Properties
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
 
         public bool IsAddShown { get => this.isAddShown; set => this.SetProperty(ref this.isAddShown, value); }
 
@@ -86,13 +92,19 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.compartmentTypeProvider.DeleteAsync(this.CurrentItem.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeDeletedSuccessfully, StatusType.Success));
                 this.SelectedItem = null;
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
+        }
+
+        protected override async Task LoadDataAsync()
+        {
+            await base.LoadDataAsync();
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 
         private async Task<bool> ExecuteAddCompartmentTypeAsync()
@@ -102,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (resultCreate.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AssociationCompartmentTypeCreatedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeCreatedSuccessfully, StatusType.Success));
                 this.IsAddShown = false;
             }
             else

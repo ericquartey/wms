@@ -20,6 +20,8 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion
@@ -29,10 +31,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public CompartmentTypeProvider(
             DatabaseContext dataContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            IGlobalSettingsProvider globalSettingsProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+            this.globalSettingsProvider = globalSettingsProvider;
         }
 
         #endregion
@@ -54,6 +58,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 !model.Width.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
+            }
+
+            var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
+            if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
+            {
+                return new CreationErrorOperationResult<CompartmentType>();
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -90,11 +100,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = existingCompartmentType.Id;
                 }
 
-                if (itemId.HasValue)
+                if (itemId.HasValue && maxCapacity.HasValue)
                 {
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
-                                     maxCapacity,
+                                     maxCapacity.Value,
                                      existingCompartmentType.Id);
 
                     if (!result.Success)
@@ -122,9 +132,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ||
                             ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
 
-            if (existingCompartmentType != null)
+            if (existingCompartmentType != null && !itemId.HasValue)
             {
-                return new CreationErrorOperationResult<CompartmentType>(Common.Resources.Errors.DuplicateCompartmentType);
+                return new CreationErrorOperationResult<CompartmentType>(Resources.Errors.DuplicateCompartmentType);
             }
 
             return await this.CreateAsync(model, itemId, maxCapacity);
@@ -193,7 +203,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             var model = await this.GetAllBase()
                 .SingleOrDefaultAsync(a => a.Id == id);
 
-            SetPolicies(model);
+            if (model != null)
+            {
+                SetPolicies(model);
+            }
+
             return model;
         }
 
@@ -227,17 +241,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private static void SetPolicies(BaseModel<int> model)
         {
-            if (model == null)
-            {
-                return;
-            }
-
             model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
         }
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
                     int itemId,
-            double? maxCapacity,
+            double maxCapacity,
             int compartmentTypeId)
         {
             var existingIcTModel =

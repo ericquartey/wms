@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DataContext="{x:Static dx:SplashScreenViewModel.DesignTimeData}"
              mc:Ignorable="d">
     <Grid x:Name="LayoutRoot">

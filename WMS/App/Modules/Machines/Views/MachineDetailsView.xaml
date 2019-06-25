@@ -5,7 +5,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.MachineDetails}"
              MinHeight="300"
@@ -31,35 +31,34 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <wms:InfoText Grid.ColumnSpan="2"
-                                  MaxHeight="60"
+                    <wms:InfoText Grid.Row="1"
+                                  Grid.Column="0"
                                   wms:ShowTitle.Show="True"
-                                  Content="{Binding Description}" />
-                    <StackPanel Grid.Row="1"
-                                Margin="0,2,12,10"
-                                VerticalAlignment="Top"
-                                Orientation="Vertical">
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding BayTypeDescription}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding LoadingUnitsBufferSize}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding Priority}" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="12,-15,12,10"
-                                VerticalAlignment="Top"
-                                Orientation="Vertical">
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding IsActive}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding UserLogged}" />
-                        <wms:InfoText wms:ShowTitle.Show="True"
-                                      Content="{Binding LoadingUnitInBayDescription}" />
-                    </StackPanel>
+                                  Content="{Binding BayTypeDescription}" />
+                    <wms:InfoText Grid.Row="2"
+                                  Grid.Column="0"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding LoadingUnitsBufferSize}" />
+                    <wms:InfoText Grid.Row="3"
+                                  Grid.Column="0"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding Priority}" />
+                    <wms:InfoText Grid.Row="1"
+                                  Grid.Column="1"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding IsActive}" />
+                    <wms:InfoText Grid.Row="2"
+                                  Grid.Column="1"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding UserLogged}" />
+                    <wms:InfoText Grid.Row="3"
+                                  Grid.Column="1"
+                                  wms:ShowTitle.Show="True"
+                                  Content="{Binding LoadingUnitInBayDescription}" />
 
                 </Grid>
 
@@ -230,7 +229,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <wms:ProgressBarEdit Margin="0,5,5,5"
+                        <wms:ProgressBarEdit Margin="0,0,5,5"
                                              EditValue="{Binding Model.GrossWeight}"
                                              Maximum="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Minimum="0"
@@ -271,7 +270,7 @@
                         </Grid.RowDefinitions>
 
                         <wms:ProgressBarEdit x:Name="AreaFillRate"
-                                             Margin="0,5,0,5"
+                                             Margin="0,0,5,5"
                                              EditValue="{Binding Path=Model.AreaFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
@@ -281,7 +280,7 @@
                         <wms:ProgressBarEdit x:Name="WeightFillRate"
                                              Grid.Row="1"
                                              Grid.Column="0"
-                                             Margin="0,20,0,0"
+                                             Margin="0,0,5,5"
                                              EditValue="{Binding Path=MachineLive.WeightFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
@@ -406,7 +405,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <GroupBox Margin="20,0"
-                              Header="{x:Static res:MasterData.Image}">
+                              Header="{x:Static res:BusinessObjects.Image}">
 
                         <wms:WmsImage MaxWidth="200"
                                       MaxHeight="300"

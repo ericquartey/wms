@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {
             get => this.height;
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width
         {
             get => this.width;
@@ -143,6 +143,19 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Methods
+
+        public void ApplyCorrectionOnSingleCompartment(double minStepCompartment)
+        {
+            if (this.Width.HasValue && this.Height.HasValue && this.Rows > 0 &&
+                            this.Columns > 0)
+            {
+                var widthSingleCompartment = this.Width.Value / this.Columns;
+                var heightSingleCompartment = this.Height.Value / this.Rows;
+
+                this.Width = (Math.Floor(widthSingleCompartment / minStepCompartment) * minStepCompartment) * this.Columns;
+                this.Height = (Math.Floor(heightSingleCompartment / minStepCompartment) * minStepCompartment) * this.Rows;
+            }
+        }
 
         public IEnumerable<IDrawableCompartment> CreateBulk()
         {

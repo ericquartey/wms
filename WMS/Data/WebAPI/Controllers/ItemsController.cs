@@ -178,7 +178,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemAreaProvider.GetByItemIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
@@ -197,7 +197,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.areaProvider.GetByItemIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,

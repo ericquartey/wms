@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         ItemId = itemCompartmentType.ItemId,
                         CompartmentTypeId = itemCompartmentType.Id,
-                        MaxCapacity = itemCompartmentType.MaxCapacity,
+                        MaxCapacity = itemCompartmentType.MaxCapacity ?? 0,
                     });
                 }
 
@@ -184,21 +184,6 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<CompartmentType> GetByIdAsync(int id)
-        {
-            var ct = await this.compartmentTypesDataService.GetByIdAsync(id);
-            return new CompartmentType
-            {
-                CompartmentsCount = ct.CompartmentsCount,
-                EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
-                Height = ct.Height,
-                Id = ct.Id,
-                ItemCompartmentsCount = ct.ItemCompartmentsCount,
-                Policies = ct.GetPolicies(),
-                Width = ct.Width,
-            };
-        }
-
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id)
         {
             try
@@ -222,6 +207,21 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<IEnumerable<ItemCompartmentType>>(e);
             }
+        }
+
+        public async Task<CompartmentType> GetByIdAsync(int id)
+        {
+            var ct = await this.compartmentTypesDataService.GetByIdAsync(id);
+            return new CompartmentType
+            {
+                CompartmentsCount = ct.CompartmentsCount,
+                EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
+                Height = ct.Height,
+                Id = ct.Id,
+                ItemCompartmentsCount = ct.ItemCompartmentsCount,
+                Policies = ct.GetPolicies(),
+                Width = ct.Width,
+            };
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)

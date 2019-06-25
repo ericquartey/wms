@@ -94,7 +94,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new NotFoundOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                     null,
-                    $"Unable to execute the row because no row with id={id} exists.");
+                    string.Format(
+                        Resources.Errors.UnableToExecuteTheListRowBecauseNoRowExists,
+                        id));
             }
 
             return await this.ExecutionAsync(row, areaId, bayId, false);
@@ -116,7 +118,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new NotFoundOperationResult<ItemListRowOperation>(
                     null,
-                    $"Unable to execute the row because no row with id={id} exists.");
+                    string.Format(
+                        Resources.Errors.UnableToSuspendTheListRowBecauseNoRowExists,
+                        id));
             }
 
             if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Suspend)))
@@ -191,7 +195,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        $"Unable to execute the list row (id={row.Id}). The rows of type '{row.OperationType}' are not supported.");
+                        string.Format(
+                            Resources.Errors.UnableToExecuteTheListRowBecauseOfTypeNotSupported,
+                            row.Id,
+                            row.OperationType));
             }
 
             if (!result.Success)
@@ -200,7 +207,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.UpdateAsync(row);
 
                 return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                    $"Unable to execute the list row (id={row.Id}). {result.Description}.",
+                    string.Format(
+                        Resources.Errors.UnableToExecuteTheListRowWithDescription,
+                        row.Id,
+                        result.Description),
                     result.Entity?.Cast<ItemListRowSchedulerRequest>());
             }
 

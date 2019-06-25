@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -13,46 +11,34 @@ namespace Ferretto.WMS.Data.Core.Policies
 
         public static Policy ComputeDeletePolicy(this ILoadingUnitDeletePolicy loadingUnitToDelete)
         {
-            var errorMessages = new List<string>();
+            var policy = new Policy
+            {
+                Name = nameof(CrudPolicies.Delete),
+                Type = PolicyType.Operation
+            };
+
             if (loadingUnitToDelete.CompartmentsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{loadingUnitToDelete.CompartmentsCount}]");
+                policy.AddErrorMessage(Resources.LoadingUnit.CannotDeleteTheLoadingUnitBecauseItHasAssociatedCompartments);
             }
 
             if (loadingUnitToDelete.ActiveMissionsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{loadingUnitToDelete.ActiveMissionsCount}]");
+                policy.AddErrorMessage(Resources.LoadingUnit.CannotDeleteTheLoadingUnitBecauseItHasAssociatedActiveMissions);
             }
 
             if (loadingUnitToDelete.ActiveSchedulerRequestsCount > 0)
             {
-                errorMessages.Add(
-                    $"{Common.Resources.BusinessObjects.SchedulerRequest} [{loadingUnitToDelete.ActiveSchedulerRequestsCount}]");
+                policy.AddErrorMessage(Resources.LoadingUnit.CannotDeleteTheLoadingUnitBecauseItHasAssociatedActiveSchedulerRequests);
             }
 
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
-                Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
-            };
+            return policy;
         }
 
         public static Policy ComputeUpdatePolicy(this ILoadingUnitUpdatePolicy model)
         {
             return new Policy
             {
-                IsAllowed = true,
-                Reason = null,
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
@@ -60,27 +46,18 @@ namespace Ferretto.WMS.Data.Core.Policies
 
         public static Policy ComputeWithdrawPolicy(this ILoadingUnitWithdrawPolicy loadingUnitToWithdraw)
         {
-            var errorMessages = new List<string>();
-            if (loadingUnitToWithdraw.CellId == null)
+            var policy = new Policy
             {
-                errorMessages.Add($"{Common.Resources.Errors.LoadingUnitWithoutAssociatedCell}");
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
                 Name = nameof(LoadingUnitPolicy.Withdraw),
                 Type = PolicyType.Operation
             };
+
+            if (loadingUnitToWithdraw.CellId == null)
+            {
+                policy.AddErrorMessage(Resources.LoadingUnit.CannotWithdrawTheLoadingUnitBecauseItHasNoAssociatedCell);
+            }
+
+            return policy;
         }
 
         #endregion

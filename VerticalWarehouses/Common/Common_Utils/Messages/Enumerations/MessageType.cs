@@ -49,5 +49,9 @@
         MissionManagerInitialized,
 
         BayConnected,
+
+        WebApiException,
+
+        CheckCondition
     }
 }

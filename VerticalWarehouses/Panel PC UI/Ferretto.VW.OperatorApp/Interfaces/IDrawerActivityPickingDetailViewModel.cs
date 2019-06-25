@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IDrawerActivityPickingDetailViewModel : IViewModel
+    public interface IDrawerActivityPickingDetailViewModel : IDrawerActivityDetailViewModel
     {
     }
 }

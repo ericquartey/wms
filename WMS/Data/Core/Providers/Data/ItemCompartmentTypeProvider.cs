@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (existingModel != null)
             {
-                if (existingModel.MaxCapacity?.CompareTo(model.MaxCapacity) == 0)
+                if (existingModel.MaxCapacity.CompareTo(model.MaxCapacity) == 0)
                 {
                     return new SuccessOperationResult<ItemCompartmentType>(model);
                 }
@@ -168,11 +168,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemCompartmentType>();
             }
 
-            if (existingModel.MaxCapacity.HasValue &&
-                model.MaxCapacity.HasValue &&
-                existingModel.MaxCapacity > model.MaxCapacity)
+            if (existingModel.MaxCapacity > model.MaxCapacity)
             {
-                return new BadRequestOperationResult<ItemCompartmentType>($"New MaxCapacity {model.MaxCapacity} must be equal or greater than current MaxCapacity {existingModel.MaxCapacity}");
+                return new BadRequestOperationResult<ItemCompartmentType>(
+                    string.Format(
+                        Resources.Errors.NewMaxCapacityMustBeEqualOrGreaterThanCurrent,
+                        model.MaxCapacity,
+                        existingModel.MaxCapacity));
             }
 
             existingModel.MaxCapacity = model.MaxCapacity;

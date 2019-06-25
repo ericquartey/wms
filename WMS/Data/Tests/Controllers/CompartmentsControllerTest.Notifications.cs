@@ -39,12 +39,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ItemId = item1.Id,
                 CompartmentTypeId = compartmentType1.Id,
             };
-
+            var globalSettings = new Common.DataModels.GlobalSettings
+            {
+                MinStepCompartment = 5,
+            };
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);
                 context.CompartmentTypes.Add(compartmentType1);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType1);
+                context.GlobalSettings.Add(globalSettings);
                 context.SaveChanges();
             }
 
@@ -123,12 +127,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ItemId = item1.Id,
                 CompartmentTypeId = compartmentType1.Id,
             };
+            var globalSettings = new Common.DataModels.GlobalSettings
+            {
+                MinStepCompartment = 5,
+            };
 
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);
                 context.CompartmentTypes.Add(compartmentType1);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType1);
+                context.GlobalSettings.Add(globalSettings);
                 context.SaveChanges();
             }
 
@@ -299,6 +308,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 ItemId = item1.Id,
                 CompartmentTypeId = compartmentType1.Id,
+                MaxCapacity = 30
             };
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -308,6 +318,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Stock = 10,
                 CompartmentTypeId = compartmentType1.Id,
             };
+            var globalSettings = new Common.DataModels.GlobalSettings
+            {
+                MinStepCompartment = 5,
+            };
 
             using (var context = this.CreateContext())
             {
@@ -315,6 +329,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 context.CompartmentTypes.Add(compartmentType1);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType1);
                 context.Compartments.Add(compartment1);
+                context.GlobalSettings.Add(globalSettings);
                 context.SaveChanges();
             }
 
@@ -326,11 +341,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            await controller.UpdateAsync(compartmentToBeUpdated, compartment1.Id);
+            var actionResult = await controller.UpdateAsync(compartmentToBeUpdated, compartment1.Id);
 
             #endregion
 
             #region Assert
+
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
 
             Assert.IsTrue(
                 notificationService

@@ -7,7 +7,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:masterData="clr-namespace:Ferretto.WMS.Modules.MasterData"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.LoadingUnitEdit}"
              MinHeight="300"
@@ -146,7 +146,8 @@
                                         Header="{x:Static res:General.Dimension}">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock Style="{DynamicResource TextBlockCell}" HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Style="{DynamicResource TextBlockCell}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.DimensionFormat}" />
@@ -176,7 +177,8 @@
                                         FieldName="Stock">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -225,9 +227,6 @@
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type masterData:CompartmentEditViewModel}">
                                 <masterData:CompartmentEditView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type masterData:CompartmentAddViewModel}">
-                                <masterData:CompartmentAddView />
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type masterData:CompartmentAddBulkViewModel}">
                                 <masterData:CompartmentAddBulkView />

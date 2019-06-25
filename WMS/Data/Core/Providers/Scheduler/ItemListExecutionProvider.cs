@@ -110,10 +110,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (list.Status == ItemListStatus.Waiting && !bayId.HasValue)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        "Cannot execute the list because no bay was specified.");
+                        Resources.ItemList.CannotExecuteBecauseNoBayWasSpecified);
                 }
 
-                if (list.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == false)
+                if (!list.CanExecuteOperation(nameof(ItemListPolicy.Execute)))
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
@@ -123,14 +123,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && list.OperationType != ItemListType.Put)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                           $"The list type '{list.OperationType}' is not supported.");
+                        string.Format(
+                            Resources.Errors.TheListTypeIsNotSupported,
+                            list.OperationType));
                 }
 
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
                 if (!requests.Any())
                 {
                     return new UnprocessableEntityOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        "None of the list rows could be processed.");
+                        Resources.ItemList.NoneOfTheListRowsCouldBeProcessed);
                 }
 
                 await this.schedulerRequestExecutionProvider.CreateRangeAsync(requests);
