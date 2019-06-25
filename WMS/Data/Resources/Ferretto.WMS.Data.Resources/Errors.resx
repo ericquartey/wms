@@ -241,4 +241,7 @@
   <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
     <value>Specified set of compartments cannot be inserted in the loading unit.</value>
   </data>
+  <data name="NoEntityExists" xml:space="preserve">
+    <value>No entity with the specified id={0} exists.</value>
+  </data>
 </root>
