@@ -89,7 +89,7 @@
         <custom:CustomLabelTextBlockControl Margin="230,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ContentText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentCell}" />
     </Grid>
 </UserControl>

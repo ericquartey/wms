@@ -248,7 +248,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     break;
 
                 case ConfigurationCategory.OffsetCalibration:
-                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var offsetCalibrationParameterId);
+                    Enum.TryParse(typeof(OffsetCalibration), parameter, out var offsetCalibrationParameterId);
                     if (offsetCalibrationParameterId != null)
                     {
                         decimal value2 = 0;

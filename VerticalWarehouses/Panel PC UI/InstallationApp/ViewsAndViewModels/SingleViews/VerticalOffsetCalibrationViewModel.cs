@@ -123,8 +123,6 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task AcceptOffsetButtonCommandMethodAsync()
         {
-            this.CorrectOffset = "1,78";
-
             if (decimal.TryParse(this.CorrectOffset, out var decCorrectOffset))
             {
                 var result = await this.offsetCalibrationService.SetOffsetParameterAsync(decCorrectOffset);
@@ -160,8 +158,9 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "OffsetCalibration";
-                this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "CellReference")).ToString();
-                this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
+                this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
+                //TEMP temporary commented because there is not a cell map
+                //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
                 this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
             }
             catch (SwaggerException ex)
