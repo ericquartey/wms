@@ -88,7 +88,7 @@
                                    DimensionHeight="{Binding Model.Depth}"
                                    DimensionWidth="{Binding Model.Width}"
                                    IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-                                   RulerFontSize="8"
+                                   RulerFontSize="{DynamicResource RulerFontSize}"
                                    RulerInfo="mm"
                                    SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                    SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"

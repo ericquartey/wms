@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
@@ -107,9 +108,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public virtual(string moduleName, string viewName, object data) GetNextView()
         {
-            if (this.CurrentItem != null)
+            if (this.selectedItem != null)
             {
-                return (nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTEDITSTEP, this.CurrentItem);
+                var data = new Tuple<LoadingUnitDetails, ItemDetails>(this.loadingUnitDetails, this.Data as ItemDetails);
+                return (nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTEDITSTEP, data);
             }
 
             return (null, null, null);

@@ -475,6 +475,15 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new Compartment of the desired Compartment Type.
+        /// </summary>
+        public static string CreateNewCompartementDesiredCompartmentType {
+            get {
+                return ResourceManager.GetString("CreateNewCompartementDesiredCompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Cell Information.
         /// </summary>
         public static string CurrentCellInformation {
