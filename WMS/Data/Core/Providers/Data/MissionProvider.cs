@@ -125,8 +125,9 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<MissionWithLoadingUnitDetails> GetByIdAsync(int id)
         {
             var mission = await this.DataContext.Missions
+                .Where(m => m.Id == id)
                 .ProjectTo<MissionWithLoadingUnitDetails>(this.mapper.ConfigurationProvider)
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync();
 
             SetPolicies(mission);
 

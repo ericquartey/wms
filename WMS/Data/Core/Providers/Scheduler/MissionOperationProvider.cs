@@ -178,9 +178,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             operation.Status = MissionOperationStatus.Executing;
             var result = await this.UpdateAsync(operation);
 
-            if (operation is MissionListOperation listOperation)
+            if (operation.ItemListRowId.HasValue)
             {
-                var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
                 await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
             }
 
@@ -359,9 +359,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var updateResult = await this.UpdateAsync(operation);
 
-            if (operation is MissionListOperation listOperation)
+            if (operation.ItemListRowId.HasValue)
             {
-                var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
                 await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
             }
 
@@ -423,9 +423,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.itemProvider.UpdateAsync(item);
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
 
-                if (operation is MissionListOperation listOperation)
+                if (operation.ItemListRowId.HasValue)
                 {
-                    var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                    var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
                     row.DispatchedQuantity += operation.DispatchedQuantity;
                     await this.UpdateRowStatusAsync(row, now);
                 }
@@ -483,9 +483,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.itemProvider.UpdateAsync(item);
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
 
-                if (operation is MissionListOperation listOperation)
+                if (operation.ItemListRowId.HasValue)
                 {
-                    var row = await this.rowExecutionProvider.GetByIdAsync(listOperation.ItemListRowId);
+                    var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
                     row.DispatchedQuantity += operation.DispatchedQuantity;
                     await this.UpdateRowStatusAsync(row, now);
                 }

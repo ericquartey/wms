@@ -336,29 +336,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             double requestedQuantity,
             Mission mission)
         {
-            var operation =
-                request is ItemListRowSchedulerRequest
-                ? new MissionOperation()
-                : new MissionListOperation();
-
-            operation.MissionId = mission.Id;
-            operation.ItemId = item.Id;
-            operation.CompartmentId = compartment.Id;
-            operation.MaterialStatusId = compartment.MaterialStatusId;
-            operation.Sub1 = compartment.Sub1;
-            operation.Sub2 = compartment.Sub2;
-            operation.Priority = request.Priority.Value;
-            operation.RequestedQuantity = requestedQuantity;
-            operation.Type = request.OperationType == OperationType.Withdrawal
-                ? MissionOperationType.Pick
-                : MissionOperationType.Put;
-
-            if (operation is MissionListOperation missionOperation
-                &&
-                request is ItemListRowSchedulerRequest rowRequest)
+            var operation = new MissionOperation
             {
-                missionOperation.ItemListId = rowRequest.ListId;
-                missionOperation.ItemListRowId = rowRequest.ListRowId;
+                MissionId = mission.Id,
+                ItemId = item.Id,
+                CompartmentId = compartment.Id,
+                MaterialStatusId = compartment.MaterialStatusId,
+                Sub1 = compartment.Sub1,
+                Sub2 = compartment.Sub2,
+                Priority = request.Priority.Value,
+                RequestedQuantity = requestedQuantity,
+                Type = request.OperationType == OperationType.Withdrawal
+                    ? MissionOperationType.Pick
+                    : MissionOperationType.Put,
+            };
+
+            if (request is ItemListRowSchedulerRequest rowRequest)
+            {
+                operation.ItemListId = rowRequest.ListId;
+                operation.ItemListRowId = rowRequest.ListRowId;
             }
 
             return operation;

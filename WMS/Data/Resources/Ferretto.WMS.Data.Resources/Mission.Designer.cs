@@ -61,6 +61,15 @@ namespace Ferretto.WMS.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to abort the mission because it has no associated operations..
+        /// </summary>
+        public static string UnableToAbortTheMissionBecauseItHasNoAssociatedOperations {
+            get {
+                return ResourceManager.GetString("UnableToAbortTheMissionBecauseItHasNoAssociatedOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to abort the mission because of its current state..
         /// </summary>
         public static string UnableToAbortTheMissionBecauseOfItsCurrentState {

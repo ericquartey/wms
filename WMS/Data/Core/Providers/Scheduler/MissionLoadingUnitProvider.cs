@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -23,6 +24,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IMissionProvider missionProvider;
 
+        private readonly IMissionOperationProvider operationProvider;
+
         private readonly ISchedulerRequestExecutionProvider requestProvider;
 
         #endregion
@@ -34,6 +37,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             INotificationService notificationService,
             IMapper mapper,
             IMissionProvider missionProvider,
+            IMissionOperationProvider operationProvider,
             ISchedulerRequestExecutionProvider requestProvider,
             ILogger<MissionLoadingUnitProvider> logger)
             : base(dataContext, notificationService)
@@ -41,6 +45,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.logger = logger;
             this.mapper = mapper;
             this.missionProvider = missionProvider;
+            this.operationProvider = operationProvider;
             this.requestProvider = requestProvider;
         }
 
@@ -58,9 +63,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            mission.Status = MissionStatus.Incomplete;
+            var operation = mission.Operations.FirstOrDefault();
 
-            var updatedMission = await this.UpdateAsync(mission);
+            if (operation == null)
+            {
+                return new UnprocessableEntityOperationResult<Mission>(Resources.Mission.UnableToAbortTheMissionBecauseItHasNoAssociatedOperations);
+            }
+
+            operation.Status = MissionOperationStatus.Incomplete;
+
+            await this.operationProvider.UpdateAsync(operation);
+            var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
                 return new SuccessOperationResult<Mission>(updatedMission);
@@ -79,11 +92,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            mission.Status = MissionStatus.Completed;
+            var operation = mission.Operations.FirstOrDefault();
+            if (operation == null)
+            {
+                return new UnprocessableEntityOperationResult<Mission>(Resources.Mission.UnableToAbortTheMissionBecauseItHasNoAssociatedOperations);
+            }
 
-            var updatedMission = await this.UpdateAsync(mission);
+            operation.Status = MissionOperationStatus.Completed;
+
+            await this.operationProvider.UpdateAsync(operation);
+            var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
+                this.NotificationService.PushUpdate(mission);
                 return new SuccessOperationResult<Mission>(updatedMission);
             }
 
@@ -101,7 +123,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 BayId = request.BayId,
                 LoadingUnitId = request.LoadingUnitId,
-                Priority = request.Priority.Value
+                Priority = request.Priority.Value,
+                Operations = new[]
+                {
+                    new MissionOperation
+                    {
+                        Type = MissionOperationType.Pick,
+                        Priority = request.Priority.Value
+                    }
+                }
             };
 
             this.logger.LogWarning(
@@ -138,21 +168,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.AddPolicy(mission.ComputeCompletePolicy());
                 model.AddPolicy(mission.ComputeExecutePolicy());
             }
-        }
-
-        private async Task<Mission> UpdateAsync(Mission mission)
-        {
-            var missionDataModel = await this.DataContext.Missions
-                .SingleOrDefaultAsync(m => m.Id == mission.Id);
-
-            missionDataModel.Status = (Common.DataModels.MissionStatus)mission.Status;
-
-            await this.DataContext.SaveChangesAsync();
-
-            this.NotificationService.PushUpdate(mission);
-            this.NotificationService.PushUpdate(new LoadingUnit { Id = mission.LoadingUnitId });
-
-            return await this.GetByIdAsync(mission.Id);
         }
 
         #endregion
