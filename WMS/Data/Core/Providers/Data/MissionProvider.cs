@@ -180,8 +180,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Mission> GetNewByLoadingUnitIdAsync(int loadingUnitId)
         {
             return await this.DataContext.Missions
+                .Where(m =>
+                    m.LoadingUnitId == loadingUnitId
+                    &&
+                    m.Operations.All(o => o.Status == Common.DataModels.MissionOperationStatus.New))
                 .ProjectTo<Mission>(this.mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(m => m.LoadingUnitId == loadingUnitId && m.Status == MissionStatus.New);
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
