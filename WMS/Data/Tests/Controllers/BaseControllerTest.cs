@@ -1,15 +1,14 @@
 using System.Linq;
 using Ferretto.Common.DataModels;
-using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Tests;
 using Ferretto.WMS.Data.WebAPI.Tests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,14 +19,8 @@ using Moq;
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public abstract class BaseControllerTest
+    public abstract class BaseControllerTest : BaseDataContextTest
     {
-        #region Fields
-
-        private ServiceProvider serviceProvider;
-
-        #endregion
-
         #region Properties
 
         public LoadingUnitStatus LoadingUnitStatus1 { get; set; }
@@ -102,35 +95,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
         protected MachineType MachineType1 { get; set; }
 
-        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
-
         #endregion
 
         #region Methods
-
-        protected static ServiceProvider CreateServices()
-        {
-            var databaseName = typeof(BaseControllerTest).FullName;
-
-            var services = new ServiceCollection();
-            services.AddDataServiceProviders();
-            services.AddSchedulerServiceProviders();
-            services.AddSingleton(new Mock<IConfiguration>().Object);
-            services.AddSingleton(new Mock<IContentTypeProvider>().Object);
-            services.AddSingleton(new Mock<IHostingEnvironment>().Object);
-            services.AddSingleton<INotificationService, NotificationServiceMock>();
-            services.AddSingleton(new Mock<IHubContext<DataHub, IDataHub>>().Object);
-            services.AddSingleton(new Mock<IApplicationLifetime>().Object);
-
-            services.AddDbContext<DatabaseContext>(
-                options => options.UseInMemoryDatabase(databaseName),
-                ServiceLifetime.Transient);
-
-            services.AddTransient(typeof(MissionOperationsController));
-            services.AddSingleton(new Mock<ILogger<MissionOperationsController>>().Object);
-
-            return services.BuildServiceProvider();
-        }
 
         protected static string GetDescription(ActionResult actionResult)
         {
@@ -158,24 +125,34 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             return string.Empty;
         }
 
-        protected DatabaseContext CreateContext()
+        protected override void AddServices(IServiceCollection services)
         {
-            return this.ServiceProvider.GetService<DatabaseContext>();
+            services.AddSchedulerServiceProviders();
+            services.AddDataServiceProviders();
+            services.AddSingleton(new Mock<IConfiguration>().Object);
+            services.AddSingleton(new Mock<IContentTypeProvider>().Object);
+            services.AddSingleton(new Mock<IHostingEnvironment>().Object);
+            services.AddSingleton<INotificationService, NotificationServiceMock>();
+            services.AddSingleton(new Mock<IHubContext<DataHub, IDataHub>>().Object);
+            services.AddSingleton(new Mock<IApplicationLifetime>().Object);
+
+            services.AddTransient(typeof(MissionOperationsController));
+            services.AddSingleton(new Mock<ILogger<MissionOperationsController>>().Object);
         }
 
         protected virtual void InitializeDatabase()
         {
             this.AbcClass1 = new AbcClass { Id = "A", Description = "A Class" };
-            this.Area1 = new Area { Id = 1, Name = "Area #1" };
-            this.Area2 = new Area { Id = 2, Name = "Area #2" };
-            this.Area3 = new Area { Id = 3, Name = "Area #3" };
-            this.Aisle1 = new Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };
-            this.Aisle2 = new Aisle { Id = 2, AreaId = this.Area2.Id, Name = "Aisle #2" };
-            this.Aisle3 = new Aisle { Id = 3, AreaId = this.Area2.Id, Name = "Aisle #3" };
+            this.Area1 = new Area { Id = GetNewId(), Name = "Area #1" };
+            this.Area2 = new Area { Id = GetNewId(), Name = "Area #2" };
+            this.Area3 = new Area { Id = GetNewId(), Name = "Area #3" };
+            this.Aisle1 = new Aisle { Id = GetNewId(), AreaId = this.Area1.Id, Name = "Aisle #1" };
+            this.Aisle2 = new Aisle { Id = GetNewId(), AreaId = this.Area2.Id, Name = "Aisle #2" };
+            this.Aisle3 = new Aisle { Id = GetNewId(), AreaId = this.Area2.Id, Name = "Aisle #3" };
             this.MachineType1 = new MachineType { Id = "T", Description = "Machine Type #1" };
             this.Machine1 = new Machine
             {
-                Id = 1,
+                Id = GetNewId(),
                 AisleId = this.Aisle1.Id,
                 MachineTypeId = this.MachineType1.Id,
                 Model = "Model Machine #1",
@@ -186,7 +163,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             this.BayType1 = new BayType { Id = "T", Description = "Bay Type #1" };
             this.Bay1 = new Bay
             {
-                Id = 1,
+                Id = GetNewId(),
                 AreaId = this.Area1.Id,
                 BayTypeId = this.BayType1.Id,
                 Description = "Bay #1",
@@ -195,18 +172,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             };
             this.Bay2 = new Bay
             {
-                Id = 2,
+                Id = GetNewId(),
                 AreaId = this.Area1.Id,
                 BayTypeId = this.BayType1.Id,
                 Description = "Bay #2",
                 LoadingUnitsBufferSize = 10,
                 MachineId = this.Machine1.Id,
             };
-            this.CellStatus1 = new CellStatus { Id = 1, Description = "Cell Status #1" };
-            this.CellType1 = new CellType { Id = 1, Description = "Cell Type #1" };
+            this.CellStatus1 = new CellStatus { Id = GetNewId(), Description = "Cell Status #1" };
+            this.CellType1 = new CellType { Id = GetNewId(), Description = "Cell Type #1" };
             this.Cell1 = new Cell
             {
-                Id = 1,
+                Id = GetNewId(),
                 AisleId = this.Aisle1.Id,
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
@@ -215,7 +192,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             };
             this.Cell2 = new Cell
             {
-                Id = 2,
+                Id = GetNewId(),
                 AisleId = this.Aisle1.Id,
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
@@ -224,7 +201,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             };
             this.Cell3 = new Cell
             {
-                Id = 3,
+                Id = GetNewId(),
                 AisleId = this.Aisle2.Id,
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
@@ -233,7 +210,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             };
             this.Cell4 = new Cell
             {
-                Id = 4,
+                Id = GetNewId(),
                 AisleId = this.Aisle2.Id,
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
@@ -242,7 +219,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             };
             this.Cell5 = new Cell
             {
-                Id = 5,
+                Id = GetNewId(),
                 AisleId = this.Aisle2.Id,
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
@@ -251,22 +228,41 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             };
             this.Cell6 = new Cell
             {
-                Id = 6,
+                Id = GetNewId(),
                 AisleId = this.Aisle2.Id,
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
                 Priority = 6
             };
+
             this.LoadingUnitHeightClass1 = new LoadingUnitHeightClass
-            { Id = 1, Description = "Loading Unit Height Class #1", MaxHeight = 1, MinHeight = 100 };
+            {
+                Id = GetNewId(),
+                Description = "Loading Unit Height Class #1",
+                MaxHeight = 1,
+                MinHeight = 100
+            };
+
             this.LoadingUnitSizeClass1 = new LoadingUnitSizeClass
-            { Id = 1, Description = "Loading Unit Size Class #1", Length = 100, Width = 100 };
+            {
+                Id = GetNewId(),
+                Description = "Loading Unit Size Class #1",
+                Length = 100,
+                Width = 100
+            };
+
             this.LoadingUnitWeightClass1 = new LoadingUnitWeightClass
-            { Id = 1, Description = "Loading Unit Weight Class #1", MinWeight = 1, MaxWeight = 10 };
+            {
+                Id = GetNewId(),
+                Description = "Loading Unit Weight Class #1",
+                MinWeight = 1,
+                MaxWeight = 10
+            };
+
             this.LoadingUnitType1 = new LoadingUnitType
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitHeightClassId = this.LoadingUnitHeightClass1.Id,
                 LoadingUnitWeightClassId = this.LoadingUnitWeightClass1.Id,
                 LoadingUnitSizeClassId = this.LoadingUnitSizeClass1.Id,
@@ -274,9 +270,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 HasCompartments = true,
                 EmptyWeight = 17
             };
+
             this.LoadingUnitType2 = new LoadingUnitType
             {
-                Id = 2,
+                Id = GetNewId(),
                 LoadingUnitHeightClassId = this.LoadingUnitHeightClass1.Id,
                 LoadingUnitWeightClassId = this.LoadingUnitWeightClass1.Id,
                 LoadingUnitSizeClassId = this.LoadingUnitSizeClass1.Id,
@@ -284,44 +281,52 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 HasCompartments = true,
                 EmptyWeight = 13
             };
+
             this.LoadingUnitType1Aisle1 = new LoadingUnitTypeAisle
             {
                 AisleId = this.Aisle1.Id,
                 LoadingUnitTypeId = this.LoadingUnitType1.Id,
             };
+
             this.LoadingUnitType2Aisle1 = new LoadingUnitTypeAisle
             {
                 AisleId = this.Aisle1.Id,
                 LoadingUnitTypeId = this.LoadingUnitType2.Id,
             };
+
             this.LoadingUnitType1Aisle2 = new LoadingUnitTypeAisle
             {
                 AisleId = this.Aisle2.Id,
                 LoadingUnitTypeId = this.LoadingUnitType1.Id,
             };
+
             this.LoadingUnitType2Aisle2 = new LoadingUnitTypeAisle
             {
                 AisleId = this.Aisle2.Id,
                 LoadingUnitTypeId = this.LoadingUnitType2.Id,
             };
+
             this.LoadingUnitType1Aisle3 = new LoadingUnitTypeAisle
             {
                 AisleId = this.Aisle3.Id,
                 LoadingUnitTypeId = this.LoadingUnitType1.Id,
             };
+
             this.LoadingUnitType2Aisle3 = new LoadingUnitTypeAisle
             {
                 AisleId = this.Aisle3.Id,
                 LoadingUnitTypeId = this.LoadingUnitType2.Id,
             };
+
             this.LoadingUnitStatus1 = new LoadingUnitStatus
             {
                 Id = "1",
                 Description = "Loading Unit Status #1"
             };
+
             this.LoadingUnit1 = new LoadingUnit
             {
-                Id = 11,
+                Id = GetNewId(),
                 Code = "Loading Unit #1",
                 CellId = this.Cell1.Id,
                 LoadingUnitTypeId = this.LoadingUnitType1.Id,
@@ -330,9 +335,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Height = 10,
                 LoadingUnitStatusId = this.LoadingUnitStatus1.Id,
             };
+
             this.LoadingUnit2 = new LoadingUnit
             {
-                Id = 12,
+                Id = GetNewId(),
                 Code = "Loading Unit #2",
                 CellId = this.Cell2.Id,
                 LoadingUnitTypeId = this.LoadingUnitType2.Id,
@@ -341,9 +347,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Height = 10,
                 LoadingUnitStatusId = this.LoadingUnitStatus1.Id,
             };
+
             this.LoadingUnit3 = new LoadingUnit
             {
-                Id = 13,
+                Id = GetNewId(),
                 Code = "Loading Unit #3",
                 CellId = this.Cell3.Id,
                 LoadingUnitTypeId = this.LoadingUnitType1.Id,
@@ -351,9 +358,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Height = 10,
                 LoadingUnitStatusId = this.LoadingUnitStatus1.Id,
             };
+
             this.LoadingUnit4 = new LoadingUnit
             {
-                Id = 14,
+                Id = GetNewId(),
                 Code = "Loading Unit #4",
                 CellId = this.Cell4.Id,
                 LoadingUnitTypeId = this.LoadingUnitType1.Id,

@@ -18,13 +18,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var controller = this.MockController();
             var item1 = new DataModels.Item
             {
-                Id = 1,
+                Id = GetNewId(),
                 Code = "Item #1",
                 ManagementType = DataModels.ItemManagementType.Volume,
             };
+
             var compartment1 = new DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 ItemId = item1.Id,
                 Stock = 10,
@@ -68,13 +69,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var controller = this.MockController();
             var item1 = new DataModels.Item
             {
-                Id = 1,
+                Id = GetNewId(),
                 Code = "Item #1",
                 ManagementType = DataModels.ItemManagementType.Volume,
             };
             var compartment1 = new DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 ItemId = item1.Id,
                 Stock = 0,

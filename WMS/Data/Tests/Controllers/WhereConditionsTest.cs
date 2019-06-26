@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 Code = "Item #1 Code",
                 Description = "Item #1 Description",
-                Id = 1,
+                Id = GetNewId(),
                 ManagementType = ItemManagementType.FIFO,
             };
             this.SchedulerRequest1 = new Common.DataModels.SchedulerRequest
@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 ReservedQuantity = 0,
-                Id = 1,
+                Id = GetNewId(),
                 IsInstant = false,
                 ItemId = this.Item1.Id,
                 OperationType = Common.DataModels.OperationType.Withdrawal,

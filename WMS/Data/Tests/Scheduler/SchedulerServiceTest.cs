@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
@@ -39,7 +40,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 8,
@@ -47,7 +48,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment2 = new Common.DataModels.Compartment
             {
-                Id = 2,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit2Cell2.Id,
                 Stock = 2,
@@ -89,7 +90,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
                 Assert.AreEqual(
                     1,
-                    context.Missions.First().Operations.Count(),
+                    context.Missions.Include(m => m.Operations).First().Operations.Count(),
                     "Only one mission operation should be generated.");
 
                 Assert.AreEqual(
@@ -117,7 +118,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 8,
@@ -125,7 +126,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment2 = new Common.DataModels.Compartment
             {
-                Id = 2,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 2,
@@ -167,7 +168,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
                 Assert.AreEqual(
                     1,
-                    context.Missions.First().Operations.Count(),
+                    context.Missions.Include(m => m.Operations).First().Operations.Count(),
                     "Only one mission operation should be generated.");
 
                 Assert.AreEqual(

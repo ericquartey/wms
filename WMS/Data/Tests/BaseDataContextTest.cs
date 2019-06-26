@@ -9,12 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests
 {
     [TestClass]
     public abstract class BaseDataContextTest
     {
         #region Fields
+
+        private static int autoIncrementIdentifier;
 
         private ServiceProvider serviceProvider;
 
@@ -22,11 +24,17 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         #region Properties
 
-        private ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = this.CreateServices());
+        protected ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = this.CreateServices());
 
         #endregion
 
         #region Methods
+
+        public static int GetNewId()
+        {
+            autoIncrementIdentifier++;
+            return autoIncrementIdentifier;
+        }
 
         protected virtual void AddServices(IServiceCollection services)
         {
@@ -67,7 +75,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         }
 
         protected T GetService<T>()
-            where T : class
+                    where T : class
         {
             return this.ServiceProvider.GetService(typeof(T)) as T;
         }

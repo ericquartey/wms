@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
-                Id = 1,
+                Id = GetNewId(),
                 Height = 10,
                 Width = 10,
             };
@@ -40,23 +40,23 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             };
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
-                CompartmentTypeId = 1,
+                Id = GetNewId(),
+                CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 4,
             };
             var compartment2 = new Common.DataModels.Compartment
             {
-                Id = 2,
-                CompartmentTypeId = 1,
+                Id = GetNewId(),
+                CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 6,
             };
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
@@ -139,7 +139,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
-                Id = 1,
+                Id = GetNewId(),
                 Height = 10,
                 Width = 10,
             };
@@ -151,15 +151,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             };
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
-                CompartmentTypeId = 1,
+                Id = GetNewId(),
+                CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 0,
             };
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
@@ -242,7 +242,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartmentType = new Common.DataModels.CompartmentType
             {
-                Id = 1,
+                Id = GetNewId(),
                 Height = 10,
                 Width = 10,
             };
@@ -256,8 +256,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment = new Common.DataModels.Compartment
             {
-                Id = 1,
-                CompartmentTypeId = 1,
+                Id = GetNewId(),
+                CompartmentTypeId = compartmentType.Id,
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 5,
@@ -265,7 +265,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,

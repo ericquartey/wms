@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Tests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,13 +17,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
     {
         #region Fields
 
-        private Common.DataModels.Bay bayA;
+        private Bay bayA;
 
-        private Common.DataModels.Bay bayB;
+        private Bay bayB;
 
-        private Common.DataModels.Compartment compartmentInMachineA;
+        private Compartment compartmentInMachineA;
 
-        private Common.DataModels.Compartment compartmentInMachineB;
+        private Compartment compartmentInMachineB;
 
         private ICompartmentOperationProvider provider;
 
@@ -74,9 +75,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var compartment1 = new Common.DataModels.Compartment
+            var compartment1 = new Compartment
             {
-                Id = 100
+                Id = GetNewId()
             };
 
             using (var context = this.CreateContext())
@@ -90,7 +91,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var wrongCompartmentId = 10;
+            var wrongCompartmentId = GetNewId();
 
             var updatedCompartment = await this.provider.GetByIdForStockUpdateAsync(wrongCompartmentId);
 
@@ -135,9 +136,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var filteredCompartments = compartments.Where(compartmentsInBayFunction);
 
                 Assert.AreEqual(filteredCompartments.Single().Id, this.compartmentInMachineA.Id);
-
-                #endregion
             }
+
+            #endregion
         }
 
         [TestMethod]
@@ -218,7 +219,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             this.compartmentInMachineA = new Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = loadingUnitA.Id,
                 IsItemPairingFixed = true,
                 ItemId = itemCompartmentType.ItemId,
@@ -231,7 +232,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             this.compartmentInMachineB = new Common.DataModels.Compartment
             {
-                Id = 2,
+                Id = GetNewId(),
                 ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = loadingUnitB.Id,
                 CompartmentTypeId = compartmentType.Id

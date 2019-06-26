@@ -63,7 +63,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var mission = new Common.DataModels.Mission
             {
                 Id = 1,
-                Status = Common.DataModels.MissionStatus.New,
                 Operations = new[]
                 {
                     missionOperation
@@ -120,14 +119,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var item = new Common.DataModels.Item
             {
-                Id = 1,
+                Id = GetNewId(),
                 Code = "Item #1",
                 ManagementType = Common.DataModels.ItemManagementType.Volume,
             };
 
             var compartmentType = new Common.DataModels.CompartmentType
             {
-                Id = 1,
+                Id = GetNewId(),
                 Height = 10,
                 Width = 10,
             };
@@ -140,7 +139,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var compartment = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 ItemId = item.Id,
                 Stock = 10,
@@ -149,7 +148,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var missionOperation = new Common.DataModels.MissionOperation
             {
-                Id = 1,
+                Id = GetNewId(),
                 Status = Common.DataModels.MissionOperationStatus.Executing,
                 CompartmentId = compartment.Id,
                 ItemId = item.Id,
@@ -159,8 +158,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var mission = new Common.DataModels.Mission
             {
-                Id = 1,
-                Status = Common.DataModels.MissionStatus.Executing,
+                Id = GetNewId(),
                 Operations = new[] { missionOperation }
             };
 
@@ -224,14 +222,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var item1 = new Common.DataModels.Item
             {
-                Id = 1,
+                Id = GetNewId(),
                 Code = "Item #1",
                 ManagementType = Common.DataModels.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
-                Id = 1,
+                Id = GetNewId(),
                 Height = 10,
                 Width = 10,
             };
@@ -244,7 +242,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 ItemId = item1.Id,
                 Stock = 10,
@@ -253,7 +251,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var missionOperation1 = new Common.DataModels.MissionOperation
             {
-                Id = 1,
+                Id = GetNewId(),
                 CompartmentId = compartment1.Id,
                 ItemId = item1.Id,
                 Status = Common.DataModels.MissionOperationStatus.New,
@@ -263,9 +261,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var mission1 = new Common.DataModels.Mission
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
-                Status = Common.DataModels.MissionStatus.New,
                 Operations = new[] { missionOperation1 }
             };
 
@@ -283,7 +280,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            await controller.ExecuteAsync(mission1.Id);
+            await controller.ExecuteAsync(missionOperation1.Id);
 
             #endregion
 

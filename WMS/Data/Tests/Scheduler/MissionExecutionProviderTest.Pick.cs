@@ -30,30 +30,28 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartmentOperationProvider = this.GetService<ICompartmentOperationProvider>();
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
-
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
-                CompartmentTypeId = compartmentType.Id,
+                CompartmentTypeId = this.CompartmentType.Id,
                 ItemId = this.Item1.Id,
                 MaxCapacity = 100
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 10,
                 IsItemPairingFixed = isPairingFixed,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = this.CompartmentType.Id
             };
 
             var missionOperation1 = new Common.DataModels.MissionOperation
             {
-                Id = 1,
-                Status = Common.DataModels.MissionOperationStatus.New,
+                Id = GetNewId(),
+                Status = Common.DataModels.MissionOperationStatus.Executing,
                 CompartmentId = compartment1.Id,
                 ItemId = itemCompartmentType.ItemId,
                 Type = Common.DataModels.MissionOperationType.Pick,
@@ -62,14 +60,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var mission = new Common.DataModels.Mission
             {
-                Id = 1,
-                Status = Common.DataModels.MissionStatus.Executing,
+                Id = GetNewId(),
                 Operations = new[] { missionOperation1 }
             };
 
             using (var context = this.CreateContext())
             {
-                context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission);
@@ -145,32 +141,30 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var loadingUnitProvider = this.GetService<ILoadingUnitProvider>();
             var itemProvider = this.GetService<IItemProvider>();
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
-
             var item = this.Item1;
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
-                CompartmentTypeId = compartmentType.Id,
+                CompartmentTypeId = this.CompartmentType.Id,
                 ItemId = item.Id,
                 MaxCapacity = 100,
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = item.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 7,
                 LastPickDate = null,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = this.CompartmentType.Id
             };
 
             var missionOperation1 = new Common.DataModels.MissionOperation
             {
-                Id = 1,
-                Status = Common.DataModels.MissionOperationStatus.New,
+                Id = GetNewId(),
+                Status = Common.DataModels.MissionOperationStatus.Executing,
                 CompartmentId = compartment1.Id,
                 ItemId = item.Id,
                 Type = Common.DataModels.MissionOperationType.Pick,
@@ -179,14 +173,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var mission = new Common.DataModels.Mission
             {
-                Id = 1,
-                Status = Common.DataModels.MissionStatus.Executing,
+                Id = GetNewId(),
                 Operations = new[] { missionOperation1 }
             };
 
             using (var context = this.CreateContext())
             {
-                context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission);
