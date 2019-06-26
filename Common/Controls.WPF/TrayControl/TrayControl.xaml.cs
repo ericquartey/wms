@@ -102,7 +102,7 @@ namespace Ferretto.Common.Controls.WPF
                 nameof(this.CanvasListBoxControl.TrayWidth),
                 TrayWidthProperty);
 
-            this.PreviewMouseDown += Control_MouseDown;
+            this.PreviewMouseDown += Control_PreviewMouseDown;
         }
 
         #endregion
@@ -258,19 +258,18 @@ namespace Ferretto.Common.Controls.WPF
             {
                 if (e.NewValue != null && e.OldValue == null)
                 {
-                    control.PreviewMouseDown += Control_MouseDown;
+                    control.PreviewMouseDown += Control_PreviewMouseDown;
                     control.MouseDoubleClick += OnMouseDoubleClick;
                 }
                 else if ((e.NewValue == null) && (e.OldValue != null))
                 {
-                    control.MouseDown -= Control_MouseDown;
-
+                    control.PreviewMouseDown -= Control_PreviewMouseDown;
                     control.MouseDoubleClick -= OnMouseDoubleClick;
                 }
             }
         }
 
-        private static void Control_MouseDown(object sender, MouseButtonEventArgs e)
+        private static void Control_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
