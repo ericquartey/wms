@@ -128,6 +128,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             generalInfoVMInstance.InitializeViewModel(this.container);
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
             itemSearchVMInstance.InitializeViewModel(this.container);
+            itemDetailVMInstance.InitializeViewModel(this.container);
             bayManagerInstance.Initialize(this.container);
 
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
