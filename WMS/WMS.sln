@@ -88,7 +88,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PanelPC", "PanelPC", "{C11F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MachineAutomationService.Contracts", "VW\Contracts\Ferretto.VW.MachineAutomationService.Contracts.csproj", "{7A5AD5F9-521A-4A42-BCE8-28C1BF9D5092}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Resources", "Data\Resources\Ferretto.WMS.Data.Resources\Ferretto.WMS.Data.Resources.csproj", "{B8E046DF-609A-4680-82B6-A90E17993F7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Resources", "Data\Resources\Ferretto.WMS.Data.Resources.csproj", "{B8E046DF-609A-4680-82B6-A90E17993F7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
