@@ -4325,13 +4325,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<double?> GetMaxCapacityAsync(double width, double height, int itemId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<double?> GetMaxCapacityAsync(double width, double depth, int itemId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (width == null)
                 throw new System.ArgumentNullException("width");
     
-            if (height == null)
-                throw new System.ArgumentNullException("height");
+            if (depth == null)
+                throw new System.ArgumentNullException("depth");
     
             if (itemId == null)
                 throw new System.ArgumentNullException("itemId");
@@ -4339,7 +4339,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/max-capacity?");
             urlBuilder_.Append("width=").Append(System.Uri.EscapeDataString(ConvertToString(width, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("height=").Append(System.Uri.EscapeDataString(ConvertToString(height, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("depth=").Append(System.Uri.EscapeDataString(ConvertToString(depth, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("itemId=").Append(System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     

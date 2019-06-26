@@ -14,7 +14,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int columns = MinGridSize;
 
-        private double? height;
+        private double? depth;
 
         private int? loadingUnitId;
 
@@ -39,11 +39,11 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
-        public double? Height
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth
         {
-            get => this.height;
-            set => this.SetProperty(ref this.height, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         public LoadingUnitDetails LoadingUnit { get; set; }
@@ -116,8 +116,8 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.Width):
                         return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
-                    case nameof(this.Height):
-                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
+                    case nameof(this.Depth):
+                        return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
 
                     case nameof(this.Rows):
                         if (this.Rows < MinGridSize)
@@ -146,14 +146,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         public void ApplyCorrectionOnSingleCompartment(double minStepCompartment)
         {
-            if (this.Width.HasValue && this.Height.HasValue && this.Rows > 0 &&
+            if (this.Width.HasValue && this.Depth.HasValue && this.Rows > 0 &&
                             this.Columns > 0)
             {
                 var widthSingleCompartment = this.Width.Value / this.Columns;
-                var heightSingleCompartment = this.Height.Value / this.Rows;
+                var heightSingleCompartment = this.Depth.Value / this.Rows;
 
                 this.Width = (Math.Floor(widthSingleCompartment / minStepCompartment) * minStepCompartment) * this.Columns;
-                this.Height = (Math.Floor(heightSingleCompartment / minStepCompartment) * minStepCompartment) * this.Rows;
+                this.Depth = (Math.Floor(heightSingleCompartment / minStepCompartment) * minStepCompartment) * this.Rows;
             }
         }
 
@@ -167,7 +167,7 @@ namespace Ferretto.WMS.App.Core.Models
             var compartments = new List<IDrawableCompartment>();
 
             var widthNewCompartment = this.width / this.columns;
-            var heightNewCompartment = this.height / this.rows;
+            var depthNewCompartment = this.depth / this.rows;
 
             for (var r = 0; r < this.rows; r++)
             {
@@ -176,9 +176,9 @@ namespace Ferretto.WMS.App.Core.Models
                     var compartment = new CompartmentDetails
                     {
                         Width = widthNewCompartment,
-                        Height = heightNewCompartment,
+                        Depth = depthNewCompartment,
                         XPosition = this.XPosition + (c * widthNewCompartment),
-                        YPosition = this.YPosition + (r * heightNewCompartment),
+                        YPosition = this.YPosition + (r * depthNewCompartment),
                         LoadingUnitId = this.LoadingUnitId
                     };
 

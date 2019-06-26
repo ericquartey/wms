@@ -62,7 +62,7 @@
                                           Grid.Column="2"
                                           HorizontalAlignment="Stretch"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding NewCompartmentType.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding NewCompartmentType.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           EnableCorrection="True"
                                           Increment="{Binding GlobalSettings.MinStepCompartment}"
                                           Style="{DynamicResource SpinEditDecimalStyle}" />
@@ -231,7 +231,7 @@
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="300*"
-                                        FieldName="Height">
+                                        FieldName="Depth">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>

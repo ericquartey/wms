@@ -18,14 +18,14 @@ namespace Ferretto.WMS.App.Tests
             var bulkCompartment = new BulkCompartment
             {
                 Width = width,
-                Height = height,
+                Depth = height,
                 Rows = row,
                 Columns = column,
             };
             bulkCompartment.ApplyCorrectionOnSingleCompartment(minStep);
 
             Assert.AreEqual(bulkCompartment.Width, widthCorrected);
-            Assert.AreEqual(bulkCompartment.Height, heightCorrected);
+            Assert.AreEqual(bulkCompartment.Depth, heightCorrected);
         }
 
         #endregion

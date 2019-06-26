@@ -541,7 +541,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         LastModificationDate = i.LastModificationDate,
                         LastPickDate = i.LastPickDate,
                         LastPutDate = i.LastPutDate,
-                        Length = i.Length,
+                        Depth = i.Depth,
                         ManagementType = (ItemManagementType)i.ManagementType,
                         MeasureUnitId = i.MeasureUnitId,
                         MeasureUnitDescription = i.MeasureUnit.Description,

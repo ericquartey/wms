@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? compartmentTypeId;
 
-        private double? height;
+        private double? depth;
 
         private bool isItemPairingFixed;
 
@@ -116,12 +116,12 @@ namespace Ferretto.WMS.App.Core.Models
         public DateTime? FifoStartDate { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
-        public double? Height
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth
         {
-            get => this.height;
+            get => this.depth;
 
-            set => this.SetProperty(ref this.height, value);
+            set => this.SetProperty(ref this.depth, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -377,8 +377,8 @@ namespace Ferretto.WMS.App.Core.Models
                 case nameof(this.Width):
                     return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
-                case nameof(this.Height):
-                    return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
+                case nameof(this.Depth):
+                    return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
 
                 case nameof(this.ReservedForPick):
                     return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);

@@ -21,11 +21,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
             DataModels.CompartmentType[] compartmentTypes =
             {
-                new DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 },
-                new DataModels.CompartmentType { Id = 2, Height = 3, Width = 4 },
-                new DataModels.CompartmentType { Id = 3, Height = 5, Width = 6 },
-                new DataModels.CompartmentType { Id = 4, Height = 7, Width = 8 },
-                new DataModels.CompartmentType { Id = 5, Height = 9, Width = 10 },
+                new DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
+                new DataModels.CompartmentType { Id = 2, Depth = 3, Width = 4 },
+                new DataModels.CompartmentType { Id = 3, Depth = 5, Width = 6 },
+                new DataModels.CompartmentType { Id = 4, Depth = 7, Width = 8 },
+                new DataModels.CompartmentType { Id = 5, Depth = 9, Width = 10 },
             };
             DataModels.ItemCompartmentType[] itemCompartmentTypes =
             {
@@ -96,7 +96,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
             DataModels.CompartmentType[] compartmentTypes =
             {
-                new DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 },
+                new DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
             };
             DataModels.ItemCompartmentType[] itemCompartmentTypes =
             {

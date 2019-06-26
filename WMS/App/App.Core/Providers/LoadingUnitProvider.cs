@@ -197,7 +197,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastHandlingDate = l.LastHandlingDate,
                         LastPickDate = l.LastPickDate,
                         LastPutDate = l.LastPutDate,
-                        Length = l.Length,
+                        Depth = l.Depth,
                         LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
                         LoadingUnitStatusId = l.LoadingUnitStatusId,
                         LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
@@ -261,7 +261,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LastHandlingDate = loadingUnit.LastHandlingDate,
                     LastPickDate = loadingUnit.LastPickDate,
                     LastPutDate = loadingUnit.LastPutDate,
-                    Length = loadingUnit.Length,
+                    Depth = loadingUnit.Depth,
                     LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
                     LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
                     LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
@@ -320,8 +320,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         FifoStartDate = c.FifoStartDate,
                         LastPutDate = c.LastPutDate,
                         LastPickDate = c.LastPickDate,
-                        Width = c.HasRotation ? c.Height : c.Width,
-                        Height = c.HasRotation ? c.Width : c.Height,
+                        Width = c.HasRotation ? c.Depth : c.Width,
+                        Depth = c.HasRotation ? c.Width : c.Depth,
                         XPosition = c.XPosition,
                         YPosition = c.YPosition,
                         LoadingUnitId = c.LoadingUnitId,
@@ -343,7 +343,7 @@ namespace Ferretto.WMS.App.Core.Providers
             try
             {
                 var loadingUnitDetails = new LoadingUnitDetails();
-                loadingUnitDetails.Length = 1;
+                loadingUnitDetails.Depth = 1;
                 await this.AddEnumerationsAsync(loadingUnitDetails);
                 return new OperationResult<LoadingUnitDetails>(true, loadingUnitDetails);
             }
@@ -388,7 +388,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LoadingUnitTypeId = model.LoadingUnitTypeId.GetValueOrDefault(),
                         LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
                         Width = model.Width,
-                        Length = model.Length,
+                        Depth = model.Depth,
                         Note = model.Note,
                         IsCellPairingFixed = model.IsCellPairingFixed,
                         ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
