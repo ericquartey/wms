@@ -125,7 +125,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.machineProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {

@@ -838,6 +838,83 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<bool> ExecuteCompletedAsync()
+        {
+            return ExecuteCompletedAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<bool> ExecuteCompletedAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/OffsetCalibration/ExecuteCompleted");
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(bool); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(bool);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task ExecutePositioningAsync()
         {
             return ExecutePositioningAsync(System.Threading.CancellationToken.None);
@@ -1011,6 +1088,435 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter)
+        {
+            return GetDecimalConfigurationParameterAsync(category, parameter, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/OffsetCalibration/GetDecimalConfigurationParameter/{category}/{parameter}");
+            urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(decimal); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<decimal>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(decimal);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter)
+        {
+            return GetIntegerConfigurationParameterAsync(category, parameter, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/OffsetCalibration/GetIntegerConfigurationParameter/{category}/{parameter}");
+            urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(int); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<int>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(int);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<int> GetLoadingUnitPositionParameterAsync(string category, string parameter)
+        {
+            return GetLoadingUnitPositionParameterAsync(category, parameter, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<int> GetLoadingUnitPositionParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/OffsetCalibration/GetLoadingUnitPositionParameter/{category}/{parameter}");
+            urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(int); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<int>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(int);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter)
+        {
+            return GetLoadingUnitSideParameterAsync(category, parameter, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/OffsetCalibration/GetLoadingUnitSideParameter/{category}/{parameter}");
+            urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(int); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<int>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(int);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<bool> SetOffsetParameterAsync(decimal newOffset)
+        {
+            return SetOffsetParameterAsync(newOffset, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<bool> SetOffsetParameterAsync(decimal newOffset, System.Threading.CancellationToken cancellationToken)
+        {
+            if (newOffset == null)
+                throw new System.ArgumentNullException("newOffset");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/OffsetCalibration/SetOffsetParameter/{newOffset}");
+            urlBuilder_.Replace("{newOffset}", System.Uri.EscapeDataString(ConvertToString(newOffset, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(bool); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(bool);
                     }
                     finally
                     {

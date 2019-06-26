@@ -10,8 +10,8 @@
 
 namespace Ferretto.WMS.App.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.WMS.App.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Title {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Title() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.App.Resources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.App.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Associate a Compartment Type to this Item : {0}.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("AssociateCompartmentTypeToThisItem", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cell Details.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CellDetailsView", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Details.
         /// </summary>
@@ -86,7 +86,16 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentDetailsView", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Compartment for this Item : {0}.
+        /// </summary>
+        public static string CreateCompartmentForThisItem {
+            get {
+                return ResourceManager.GetString("CreateCompartmentForThisItem", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Item Details : {0}.
         /// </summary>
@@ -95,7 +104,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemDetailsView", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0} List: {1}.
         /// </summary>
@@ -104,7 +113,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListDetailsView", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0} Row List: {1}.
         /// </summary>
@@ -113,7 +122,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowDetailsView", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading Unit Details : {0}.
         /// </summary>
@@ -122,7 +131,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnitDetailsView", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading Unit : {0}.
         /// </summary>
@@ -131,7 +140,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LoadingUnitEditView", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Machine Details: {0}.
         /// </summary>

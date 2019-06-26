@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -158,7 +158,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -258,7 +258,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -333,7 +333,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -406,7 +406,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -501,7 +501,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var compartment1 = new Common.DataModels.Compartment
@@ -584,7 +584,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var compartment1 = new Common.DataModels.Compartment
@@ -672,7 +672,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var compartment1 = new Common.DataModels.Compartment

@@ -85,10 +85,10 @@
                                    VerticalAlignment="Stretch"
                                    CommandDoubleClick="{Binding EditCompartmentCommand}"
                                    Compartments="{Binding Model.Compartments}"
-                                   DimensionHeight="{Binding Model.Length}"
+                                   DimensionHeight="{Binding Model.Depth}"
                                    DimensionWidth="{Binding Model.Width}"
                                    IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-                                   RulerFontSize="8"
+                                   RulerFontSize="{DynamicResource RulerFontSize}"
                                    RulerInfo="mm"
                                    SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                    SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
@@ -153,7 +153,7 @@
                                                 <Binding Source="{x:Static res:General.DimensionFormat}" />
                                                 <Binding Path="Data.Width"
                                                          TargetNullValue="" />
-                                                <Binding Path="Data.Height"
+                                                <Binding Path="Data.Depth"
                                                          TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>

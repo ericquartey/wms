@@ -79,7 +79,7 @@
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="120*"
-                                        FieldName="Height">
+                                        FieldName="Depth">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>

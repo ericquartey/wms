@@ -475,6 +475,15 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Depth [mm].
+        /// </summary>
+        public static string Depth {
+            get {
+                return ResourceManager.GetString("Depth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -988,11 +997,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In Cycle Count.
+        ///   Looks up a localized string similar to In Missions Count.
         /// </summary>
-        public static string LoadingUnitInCycleCount {
+        public static string LoadingUnitInMissionCount {
             get {
-                return ResourceManager.GetString("LoadingUnitInCycleCount", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitInMissionCount", resourceCulture);
             }
         }
         
@@ -1015,20 +1024,20 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other Cycle Count.
+        ///   Looks up a localized string similar to Other Missions Count.
         /// </summary>
-        public static string LoadingUnitOtherCycleCount {
+        public static string LoadingUnitOtherMissionCount {
             get {
-                return ResourceManager.GetString("LoadingUnitOtherCycleCount", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitOtherMissionCount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Out Cycle Count.
+        ///   Looks up a localized string similar to Out Missions Count.
         /// </summary>
-        public static string LoadingUnitOutCycleCount {
+        public static string LoadingUnitOutMissionCount {
             get {
-                return ResourceManager.GetString("LoadingUnitOutCycleCount", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitOutMissionCount", resourceCulture);
             }
         }
         

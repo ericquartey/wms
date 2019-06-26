@@ -367,23 +367,11 @@ namespace Ferretto.VW.InstallationApp
 
         private void CheckMesuredFinalPositionCorrectness(string input)
         {
-            //decimal readDistance;
             if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
             {
                 this.IsAcceptButtonActive = true;
                 if (decimal.TryParse(this.ReadFinalPosition, out var decimalReadFinalPosition) && decimal.TryParse(this.ReadInitialPosition, out var decimalReadInitialPosition))
                 {
-                    //readDistance = decimalReadFinalPosition - decimalReadInitialPosition;
-                    //this.MesuredMovement = readDistance.ToString("##.##");
-                    //this.IsMesuredMovementActive = true;
-
-                    //this.newResolutionDec = this.resolutionCalibrationService.GetComputedResolutionAsync(
-                    //    readDistance,
-                    //    this.desiredInitialPosition,
-                    //    this.desiredFinalPosition,
-                    //    this.Resolution);
-
-                    //this.NewResolution = this.newResolutionDec.ToString("#0.##");
                     this.IsUpdateResolutionButtonActive = true;
                     this.IsReadFinalPositionHighlighted = false;
                     this.feedbackNotifier.Notify(string.Empty);

@@ -54,13 +54,17 @@
                                           HorizontalAlignment="Stretch"
                                           wms:ShowTitle.Show="True"
                                           EditValue="{Binding NewCompartmentType.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EnableCorrection="True"
+                                          Increment="{Binding GlobalSettings.MinStepCompartment}"
                                           Style="{DynamicResource SpinEditDecimalStyle}" />
                             <wms:SpinEdit x:Name="HeightText"
                                           Grid.Row="1"
                                           Grid.Column="2"
                                           HorizontalAlignment="Stretch"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding NewCompartmentType.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding NewCompartmentType.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EnableCorrection="True"
+                                          Increment="{Binding GlobalSettings.MinStepCompartment}"
                                           Style="{DynamicResource SpinEditDecimalStyle}" />
 
                             <TextBlock x:Name="Error"
@@ -221,15 +225,13 @@
 
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="300*"
-                                        wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                         FieldName="Width">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="300*"
-                                        wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
-                                        FieldName="Height">
+                                        FieldName="Depth">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>

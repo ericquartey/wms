@@ -265,10 +265,10 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("Depth");
+
                     b.Property<string>("Description")
                         .IsRequired();
-
-                    b.Property<double>("Length");
 
                     b.Property<double>("Width");
 
@@ -487,7 +487,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Height");
+                    b.Property<double>("Depth");
 
                     b.Property<double>("Width");
 
@@ -577,6 +577,8 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<double?>("Depth");
+
                     b.Property<string>("Description");
 
                     b.Property<int?>("FifoTimePick");
@@ -600,8 +602,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<DateTime?>("LastPickDate");
 
                     b.Property<DateTime?>("LastPutDate");
-
-                    b.Property<double?>("Length");
 
                     b.Property<string>("ManagementType")
                         .IsRequired()
@@ -822,7 +822,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<double>("Height");
 
-                    b.Property<int>("InCycleCount")
+                    b.Property<int>("InMissionCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
@@ -849,11 +849,11 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
-                    b.Property<int>("OtherCycleCount")
+                    b.Property<int>("OtherMissionCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
-                    b.Property<int>("OutCycleCount")
+                    b.Property<int>("OutMissionCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
@@ -933,10 +933,10 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<double>("CellForksUnthread");
 
+                    b.Property<double>("Depth");
+
                     b.Property<string>("Description")
                         .IsRequired();
-
-                    b.Property<double>("Length");
 
                     b.Property<double?>("Lift");
 

@@ -37,6 +37,7 @@ namespace Ferretto.VW.InstallationApp
             var beltBurnishingService = new BeltBurnishingService(this.automationServiceUrl);
             var shutterService = new ShutterService(this.automationServiceUrl);
             var resolutionCalibrationService = new ResolutionCalibrationService(this.automationServiceUrl);
+            var offsetCalibrationService = new OffsetCalibrationService(this.automationServiceUrl);
             var installationStatusService = new InstallationStatusService(this.automationServiceUrl);
             var updateSensorsService = new UpdateSensorsService(this.automationServiceUrl);
 
@@ -92,8 +93,10 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IBeltBurnishingService>(beltBurnishingService);
             this.container.RegisterInstance<IShutterService>(shutterService);
             this.container.RegisterInstance<IResolutionCalibrationService>(resolutionCalibrationService);
+            this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
             this.container.RegisterInstance<IInstallationStatusService>(installationStatusService);
             this.container.RegisterInstance<IUpdateSensorsService>(updateSensorsService);
+            this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
 
             this.container.RegisterInstance<ITestService>(testService);
             this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifierInstance);

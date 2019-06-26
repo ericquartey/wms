@@ -52,7 +52,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? LastPutDate { get; set; }
 
-        public double? Length { get; set; }
+        public double? Depth { get; set; }
 
         public ItemManagementType ManagementType { get; set; }
 

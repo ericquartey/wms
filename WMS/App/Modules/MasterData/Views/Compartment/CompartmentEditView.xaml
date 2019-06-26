@@ -18,52 +18,85 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}"
-                       Visibility="{Binding IsAdd, Converter={StaticResource BTVC}}">
+        <Grid Visibility="{Binding IsHeaderVisible, Converter={StaticResource BTVC}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}"
+                           Visibility="{Binding IsAdd, Converter={StaticResource BTVC}}">
 
-            <wms:ActionBarItem Command="{Binding CreateCommand}"
-                               Content="{x:Static res:General.Create}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
-                               GlyphSize="Custom"
-                               IsVisible="{Binding IsAdd}" />
+                <wms:ActionBarItem Command="{Binding CreateCommand}"
+                                   Content="{x:Static res:General.Create}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
+                                   GlyphSize="Custom"
+                                   IsVisible="{Binding IsAdd}" />
 
-            <wms:ActionBarItem Command="{Binding CancelCommand}"
-                               Content="{x:Static res:General.Cancel}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
-                               GlyphSize="Custom" />
-        </wms:ActionBar>
+                <wms:ActionBarItem Command="{Binding CancelCommand}"
+                                   Content="{x:Static res:General.Cancel}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}"
+                           Visibility="{Binding IsAdd, Converter={StaticResource BTVIC}}">
 
-        <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}"
-                       Visibility="{Binding IsAdd, Converter={StaticResource BTVIC}}">
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
+                                   Content="{x:Static res:General.Save}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding SaveReason}" />
 
-            <wms:ActionBarItem Command="{Binding SaveCommand}"
-                               Content="{x:Static res:General.Save}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding SaveReason}" />
+                <wms:ActionBarItem Command="{Binding DeleteCompartmentCommand}"
+                                   Content="{x:Static res:General.Delete}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding DeleteReason}" />
 
-            <wms:ActionBarItem Command="{Binding DeleteCompartmentCommand}"
-                               Content="{x:Static res:General.Delete}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding DeleteReason}" />
+                <wms:ActionBarItem Command="{Binding CancelCommand}"
+                                   Content="{x:Static res:General.Cancel}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+        </Grid>
 
-            <wms:ActionBarItem Command="{Binding CancelCommand}"
-                               Content="{x:Static res:General.Cancel}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
-                               GlyphSize="Custom" />
-        </wms:ActionBar>
         <ScrollViewer x:Name="ScrollView"
                       Grid.Row="1">
 
             <GroupBox Header="{Binding Title, Mode=OneWay}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left"
+                              DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                       Text="{Binding Title, Mode=OneWay}" />
+
+                            <TextBlock Grid.Column="1"
+                                       Margin="8,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       FontStyle="Italic">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource SFC}">
+                                        <Binding Source="{x:Static res:MasterData.MinStep}" />
+                                        <Binding Path="GlobalSettings.MinStepCompartment"
+                                                 TargetNullValue="" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -88,6 +121,8 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
@@ -97,6 +132,8 @@
                                   HorizontalContentAlignment="Right"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="WidthText"
@@ -105,14 +142,18 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
-                    <wms:SpinEdit x:Name="HeightText"
+                    <wms:SpinEdit x:Name="DepthText"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:LookUpEdit Name="ItemLookUp"
@@ -252,11 +293,13 @@
             </GroupBox>
 
         </ScrollViewer>
-        <TextBlock Grid.Row="2"
-                   Grid.ColumnSpan="3"
-                   MaxWidth="300"
-                   Style="{DynamicResource TextBlockErrorMessageStyle}"
-                   Text="{Binding Model.Error}"
-                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+        <ContentControl Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Visibility="{Binding IsErrorsVisible, Converter={StaticResource BTVC}}">
+            <TextBlock MaxWidth="300"
+                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                       Text="{Binding Model.Error}"
+                       Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+        </ContentControl>
     </Grid>
 </UserControl>

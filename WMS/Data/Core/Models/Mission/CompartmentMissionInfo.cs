@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Properties
 
         [Positive]
-        public double? Height { get; set; }
+        public double? Depth { get; set; }
 
         public int Id { get; set; }
 

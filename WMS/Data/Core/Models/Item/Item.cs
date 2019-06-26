@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? LastPutDate { get; set; }
 
         [Positive]
-        public double? Length { get; set; }
+        public double? Depth { get; set; }
 
         public IEnumerable<MachinePick> Machines { get; set; }
 

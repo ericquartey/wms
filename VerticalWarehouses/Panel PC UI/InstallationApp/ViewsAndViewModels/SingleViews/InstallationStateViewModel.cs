@@ -20,6 +20,12 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isCellPositionVerifyDone;
 
+        private bool isCheckPanelsDone;
+
+        private bool isEmptyDrawersLoadedDone;
+
+        private bool isFirstDrawerLoadedDone;
+
         private bool isHorizontalHomingDone;
 
         private bool isLaserShutter1Done;
@@ -70,6 +76,12 @@ namespace Ferretto.VW.InstallationApp
         public bool IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
 
         public bool IsCellPositionVerifyDone { get => this.isCellPositionVerifyDone; set => this.SetProperty(ref this.isCellPositionVerifyDone, value); }
+
+        public bool IsCheckPanelsVerifyDone { get => this.isCheckPanelsDone; set => this.SetProperty(ref this.isCheckPanelsDone, value); }
+
+        public bool IsEmptyDrawersLoadedDone { get => this.isEmptyDrawersLoadedDone; set => this.SetProperty(ref this.isEmptyDrawersLoadedDone, value); }
+
+        public bool IsFirstDrawerLoadedDone { get => this.isFirstDrawerLoadedDone; set => this.SetProperty(ref this.isFirstDrawerLoadedDone, value); }
 
         public bool IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
 
@@ -145,6 +157,9 @@ namespace Ferretto.VW.InstallationApp
             this.IsLaserShutter1Done = installationStatus[19];
             this.IsLaserShutter2Done = installationStatus[20];
             this.IsLaserShutter3Done = installationStatus[21];
+            this.IsFirstDrawerLoadedDone = installationStatus[17];
+            this.IsEmptyDrawersLoadedDone = installationStatus[18];
+            this.IsCheckPanelsVerifyDone = installationStatus[6];
 
             var checkMachineDone = true;
             foreach (var itemState in installationStatus)

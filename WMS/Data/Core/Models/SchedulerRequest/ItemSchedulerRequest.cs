@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Models
             {
                 if (value < this.reservedQuantity)
                 {
-                    throw new ArgumentOutOfRangeException($"The requested quantity cannot be lower than the reserved quantity.");
+                    throw new ArgumentOutOfRangeException(WMS.Data.Resources.SchedulerRequest.ItemSchedulerRequestArgumentExceptionLower);
                 }
 
                 this.requestedQuantity = value;
@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.Core.Models
             {
                 if (value > this.requestedQuantity)
                 {
-                    throw new ArgumentOutOfRangeException($"The reserved quantity cannot be greater than the requested quantity.");
+                    throw new ArgumentOutOfRangeException(WMS.Data.Resources.SchedulerRequest.ItemSchedulerRequestArgumentExceptionGreater);
                 }
 
                 this.reservedQuantity = value;

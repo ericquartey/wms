@@ -11,7 +11,7 @@
     "BaysQuantity": 2,
     "Bay1Type": 1,
     "Bay2Type": 2,
-    "Bay3Type": 3,
+    "Bay3Type": 3
   },
 
   //"SetupNetwork": {
@@ -114,8 +114,8 @@
 
   "OffsetCalibration": {
     "ReferenceCell": 50,
-    "StepValue": 1.0,
-    "FeedRate": 0.80
+    "StepValue": 0.5,
+    "FeedRate": 0.20
   },
 
   "CellControl": {},

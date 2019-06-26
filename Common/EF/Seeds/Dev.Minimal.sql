@@ -130,22 +130,22 @@ INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (3,
 SET IDENTITY_INSERT CellHeightClasses OFF;
 
 SET IDENTITY_INSERT CellSizeClasses ON;
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 1, 'Europallet'         , 800, 1200);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 2, 'Vertimag tray 65XS' , 1950, 650);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 3, 'Vertimag tray 84XS' , 1950, 840);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 4, 'Vertimag tray 103XS', 1950, 1030);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 5, 'Vertimag tray 65S'  , 2450, 650);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 6, 'Vertimag tray 84S', 2450, 840);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 7, 'Vertimag tray 103S', 2450, 1030);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 8, 'Vertimag tray 65M', 3050, 650);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES ( 9, 'Vertimag tray 84M', 3050, 840);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (10, 'Vertimag tray 103M', 3050, 1030);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (11, 'Vertimag tray 65L', 3650, 650);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (12, 'Vertimag tray 84L', 3650, 840);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (13, 'Vertimag tray 103L', 3650, 1030);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (14, 'Vertimag tray 65XL', 4250, 650);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (15, 'Vertimag tray 84XL', 4250, 840);
-INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (16, 'Vertimag tray 103XL', 4250, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 1, 'Europallet'         , 800, 1200);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 2, 'Vertimag tray 65XS' , 1950, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 3, 'Vertimag tray 84XS' , 1950, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 4, 'Vertimag tray 103XS', 1950, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 5, 'Vertimag tray 65S'  , 2450, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 6, 'Vertimag tray 84S', 2450, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 7, 'Vertimag tray 103S', 2450, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 8, 'Vertimag tray 65M', 3050, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES ( 9, 'Vertimag tray 84M', 3050, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (10, 'Vertimag tray 103M', 3050, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (11, 'Vertimag tray 65L', 3650, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (12, 'Vertimag tray 84L', 3650, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (13, 'Vertimag tray 103L', 3650, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (14, 'Vertimag tray 65XL', 4250, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (15, 'Vertimag tray 84XL', 4250, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Depth) VALUES (16, 'Vertimag tray 103XL', 4250, 1030);
 SET IDENTITY_INSERT CellSizeClasses OFF;
 
 SET IDENTITY_INSERT CellWeightClasses ON;
@@ -605,22 +605,22 @@ INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VAL
 SET IDENTITY_INSERT LoadingUnitWeightClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitSizeClasses ON;
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (1, 'Europallet', 800, 1200, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (2, 'Vertimag tray 65XS', 1950, 650, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (3, 'Vertimag tray 84XS', 1950, 840, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (4, 'Vertimag tray 103XS', 1950, 1030, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (5, 'Vertimag tray 65S', 2450, 650, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (6, 'Vertimag tray 84S', 2450, 840, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (7, 'Vertimag tray 103S', 2450, 1030, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (8, 'Vertimag tray 65M', 3050, 650, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (9, 'Vertimag tray 84M', 3050, 840, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (10, 'Vertimag tray 103M', 3050, 1030, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (11, 'Vertimag tray 65L', 3650, 650, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (12, 'Vertimag tray 84L', 3650, 840, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (13, 'Vertimag tray 103L', 3650, 1030, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (14, 'Vertimag tray 65XL', 4250, 650, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (15, 'Vertimag tray 84XL', 4250, 840, 0, 0, 0, 0);
-INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (16, 'Vertimag tray 103XL', 4250, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (1, 'Europallet', 800, 1200, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (2, 'Vertimag tray 65XS', 1950, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (3, 'Vertimag tray 84XS', 1950, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (4, 'Vertimag tray 103XS', 1950, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (5, 'Vertimag tray 65S', 2450, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (6, 'Vertimag tray 84S', 2450, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (7, 'Vertimag tray 103S', 2450, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (8, 'Vertimag tray 65M', 3050, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (9, 'Vertimag tray 84M', 3050, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (10, 'Vertimag tray 103M', 3050, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (11, 'Vertimag tray 65L', 3650, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (12, 'Vertimag tray 84L', 3650, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (13, 'Vertimag tray 103L', 3650, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (14, 'Vertimag tray 65XL', 4250, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (15, 'Vertimag tray 84XL', 4250, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Depth, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (16, 'Vertimag tray 103XL', 4250, 1030, 0, 0, 0, 0);
 SET IDENTITY_INSERT LoadingUnitSizeClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitHeightClasses ON;
@@ -668,53 +668,53 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellConfigurationId, LoadingUnitTypeId, Priority) VALUES (2, 3, 13, 1);
 
 SET IDENTITY_INSERT LoadingUnits ON;
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (1, '100000', 1, 0, 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 3, 6, 9);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (2, '100001', 2, 0, 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 4, 8, 12);
 
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (3, '01001', 301, 0, 2, 15, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (4, '01002', 302, 0, 2, 15, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (5, '01003', 303, 0, 2, 15, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (6, '01004', 304, 0, 2, 15, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (7, '01005', 305, 0, 2, 15, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (8, '02001', 321, 0, 2, 5, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (9, '02002', 322, 0, 2, 5, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (10, '02003', 323, 0, 2, 5, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (11, '02004', 324, 0, 2, 5, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (12, '02005', 325, 0, 2, 5, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (13, '03001', 341, 0, 2, 10, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (14, '03002', 342, 0, 2, 10, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (15, '03003', 343, 0, 2, 10, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (16, '03004', 344, 0, 2, 10, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (17, '03005', 345, 0, 2, 10, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (18, '04001', 361, 0, 2, 13, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (19, '04002', 362, 0, 2, 13, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (20, '04003', 363, 0, 2, 13, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (21, '04004', 364, 0, 2, 13, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
-INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InCycleCount, OutCycleCount, OtherCycleCount)
+INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastPutDate, InMissionCount, OutMissionCount, OtherMissionCount)
 VALUES (22, '04005', 365, 0, 2, 13, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 SET IDENTITY_INSERT LoadingUnits OFF;
 
@@ -750,11 +750,11 @@ DECLARE
   @CompTypesId_500x325 int = 4;
 
 SET IDENTITY_INSERT CompartmentTypes ON;
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_800x1200, 800, 1200);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_50x50, 50, 50);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_100x100, 100, 100);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_500x325, 500, 325);
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (@CompTypesId_500x215, 500, 215);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_800x1200, 800, 1200);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_50x50, 50, 50);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_100x100, 100, 100);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_500x325, 500, 325);
+INSERT INTO CompartmentTypes (Id, Width, Depth) VALUES (@CompTypesId_500x215, 500, 215);
 SET IDENTITY_INSERT CompartmentTypes OFF;
 
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_800x1200, 1, 100);

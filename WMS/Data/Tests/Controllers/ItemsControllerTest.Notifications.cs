@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -107,21 +107,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
             var compartmentType2 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 20,
+                Depth = 20,
                 Width = 20,
             };
 
             var compartmentType3 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 30,
+                Depth = 30,
                 Width = 30,
             };
 
@@ -428,7 +428,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
@@ -501,7 +501,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -599,7 +599,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -739,7 +739,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType

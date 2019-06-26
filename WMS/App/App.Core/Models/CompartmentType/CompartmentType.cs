@@ -14,8 +14,8 @@ namespace Ferretto.WMS.App.Core.Models
         public int EmptyCompartmentsCount { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
-        public double? Height { get; set; }
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentTypeItemCompartmentsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemCompartmentsCount { get; set; }
@@ -49,9 +49,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                         return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
-                    case nameof(this.Height):
+                    case nameof(this.Depth):
 
-                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
                 }
 
                 return null;

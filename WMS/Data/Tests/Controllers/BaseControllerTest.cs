@@ -248,10 +248,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Description = "Loading Unit Size Class #1",
-                Length = 100,
+                Depth = 100,
                 Width = 100
             };
-
             this.LoadingUnitWeightClass1 = new LoadingUnitWeightClass
             {
                 Id = GetNewId(),

@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [Required]
         [Positive]
-        public double? Height { get; set; }
+        public double? Depth { get; set; }
 
         public bool IsItemPairingFixed { get; set; }
 

@@ -418,6 +418,9 @@
   <data name="ItemListsTypeInventory" xml:space="preserve">
     <value>Liste di Inventario</value>
   </data>
+  <data name="MinStep" xml:space="preserve">
+    <value>(Passo Min.: {0})</value>
+  </data>
   <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
     <value>Scegli l'Unità di Carico dove creare un nuovo Tipo Scomparto</value>
   </data>
@@ -426,5 +429,8 @@
   </data>
   <data name="LayoutOverview" xml:space="preserve">
     <value>Panoramica della Disposizione</value>
+  </data>
+  <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
+    <value>Crea un nuovo Scomparto delle dimensioni del Tipo Scomparto desiderato</value>
   </data>
 </root>

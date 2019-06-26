@@ -154,6 +154,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .GroupJoin(
                     this.DataContext.Compartments
                         .Where(c => c.ItemId != null)
+                        .Where(c => c.CompartmentTypeId == compartmentTypeId)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new
                         {
@@ -541,7 +542,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         LastModificationDate = i.LastModificationDate,
                         LastPickDate = i.LastPickDate,
                         LastPutDate = i.LastPutDate,
-                        Length = i.Length,
+                        Depth = i.Depth,
                         ManagementType = (ItemManagementType)i.ManagementType,
                         MeasureUnitId = i.MeasureUnitId,
                         MeasureUnitDescription = i.MeasureUnit.Description,

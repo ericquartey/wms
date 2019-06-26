@@ -88,7 +88,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand BulkAddCompartmentCommand => this.bulkAddCompartmentCommand ??
             (this.bulkAddCompartmentCommand = new DelegateCommand(
-                this.BulkAddCompartment, this.CanBulkAddCommand));
+                async () => await this.BulkAddCompartmentAsync(),
+                this.CanBulkAddCommand));
 
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
@@ -200,7 +201,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void BulkAddCompartment()
+        private async Task BulkAddCompartmentAsync()
         {
             this.SelectedCompartmentTray = null;
 
@@ -210,7 +211,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 LoadingUnit = this.Model
             };
 
-            this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
+            var viewModel = new CompartmentAddBulkViewModel { Model = model };
+            await viewModel.InitializeDataAsync();
+            this.ShowSidePanel(viewModel);
         }
 
         private bool CanBulkAddCommand()

@@ -43,6 +43,34 @@
         <ScrollViewer x:Name="ScrollView"
                       Grid.Row="1">
             <GroupBox Header="{Binding Title, Mode=OneWay}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left"
+                              DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                       Text="{Binding Title, Mode=OneWay}" />
+
+                            <TextBlock Grid.Column="1"
+                                       Margin="8,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       FontStyle="Italic">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource SFC}">
+                                        <Binding Source="{x:Static res:MasterData.MinStep}" />
+                                        <Binding Path="GlobalSettings.MinStepCompartment"
+                                                 TargetNullValue="" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -64,6 +92,8 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit Grid.Row="0"
@@ -71,6 +101,8 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit Grid.Row="1"
@@ -78,13 +110,17 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EnableCorrection="True"
+                                  Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit Grid.Row="2"

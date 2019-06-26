@@ -208,7 +208,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var loadingUnitB = new LoadingUnit { Id = 2, CellId = cellB.Id };
 
-            var compartmentType = new CompartmentType { Id = 1, Height = 1, Width = 1 };
+            var compartmentType = new CompartmentType { Id = 1, Depth = 1, Width = 1 };
 
             var itemCompartmentType = new ItemCompartmentType
             {
