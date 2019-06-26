@@ -89,7 +89,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is Tuple<LoadingUnitDetails, ItemDetails> loadingUnitItem)
             {
-                this.Title = string.Format(Ferretto.Common.Resources.Title.CreateCompartmentForThisItem, loadingUnitItem.Item2.Code);
+                this.Title = string.Format(App.Resources.Title.CreateCompartmentForThisItem, loadingUnitItem.Item2.Code);
 
                 this.loadingUnitDetails = loadingUnitItem.Item1;
                 this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));

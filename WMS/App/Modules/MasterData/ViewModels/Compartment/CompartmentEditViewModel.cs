@@ -157,33 +157,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public async Task InitializeDataAsync()
-        {
-            if (this.mode == AppearMode.Add)
-            {
-                this.Title = App.Resources.MasterData.AddCompartment;
-                this.ColorRequired = ColorRequired.CreateMode;
-            }
-            else
-            {
-                this.Title = App.Resources.MasterData.EditCompartment;
-            }
-
-            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
-
-            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
-        }
-
-        protected override void EvaluateCanExecuteCommands()
-        {
-            base.EvaluateCanExecuteCommands();
-
-            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected async Task<bool> ExecuteCreateCommandAsync()
+        public async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
@@ -216,6 +190,25 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
 
             return result.Success;
+        }
+
+        public async Task InitializeDataAsync()
+        {
+            if (this.mode == AppearMode.Add)
+            {
+                this.Title = App.Resources.MasterData.AddCompartment;
+                this.ColorRequired = ColorRequired.CreateMode;
+            }
+            else
+            {
+                this.Title = App.Resources.MasterData.EditCompartment;
+            }
+
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 
         protected override void EvaluateCanExecuteCommands()

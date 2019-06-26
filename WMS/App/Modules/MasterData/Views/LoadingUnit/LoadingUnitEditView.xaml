@@ -87,7 +87,7 @@
                                    Compartments="{Binding Model.Compartments}"
                                    DimensionHeight="{Binding Model.Length}"
                                    DimensionWidth="{Binding Model.Width}"
-                                   IsCompartmentSelectable="False"
+                                   IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
                                    RulerFontSize="{DynamicResource RulerFontSize}"
                                    RulerInfo="mm"
                                    SelectedColorFilterFunc="{Binding FilterColorFunc}"
