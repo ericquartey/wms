@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.Common.Controls.WPF;
+﻿using Ferretto.Common.Controls.WPF;
 
-namespace Ferretto.VW.Utils.Source
+namespace Ferretto.VW.WmsCommunication.Source
 {
     public class TrayControlCompartment : IDrawableCompartment
     {

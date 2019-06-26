@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.OperatorApp.ServiceUtilities
+namespace Ferretto.VW.WmsCommunication.Source
 {
     public class DrawerActivityItemDetail
     {

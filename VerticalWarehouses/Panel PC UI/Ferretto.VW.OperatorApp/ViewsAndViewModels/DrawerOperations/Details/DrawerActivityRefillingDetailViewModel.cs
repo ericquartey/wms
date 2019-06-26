@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
 using Prism.Mvvm;
 
