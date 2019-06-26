@@ -293,6 +293,7 @@
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
                     <ctrls:TrayControl HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
+                                       CommandDoubleClick="{Binding EditLoadingUnitCommand}"
                                        Compartments="{Binding Model.Compartments}"
                                        DimensionHeight="{Binding Model.Depth}"
                                        DimensionWidth="{Binding Model.Width}"

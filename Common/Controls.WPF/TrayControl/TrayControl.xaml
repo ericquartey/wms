@@ -124,6 +124,7 @@
             Grid.Column="2"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            ctrls:SelectorBehavior.ShouldSelectItemOnMouseUp="True"
             Compartments="{Binding Compartments}"
             DefaultCompartmentColor="{Binding DefaultCompartmentColor}"
             DimensionHeight="{Binding DimensionHeight}"
