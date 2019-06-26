@@ -1,5 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -43,7 +44,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingSchedulerModule);
+            SplashScreenService.SetMessage(DesktopApp.InitializingSchedulerModule);
 
             NLog.LogManager
                .GetCurrentClassLogger()

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? compartmentTypeId;
 
-        private double? height;
+        private double? depth;
 
         private bool isItemPairingFixed;
 
@@ -116,15 +116,15 @@ namespace Ferretto.WMS.App.Core.Models
         public DateTime? FifoStartDate { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
-        public double? Height
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth
         {
-            get => this.height;
+            get => this.depth;
 
-            set => this.SetProperty(ref this.height, value);
+            set => this.SetProperty(ref this.depth, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentIsItemPairingFixed), ResourceType = typeof(BusinessObjects))]
@@ -140,21 +140,21 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemCode_extended), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
         public string ItemCode
         {
             get => this.itemCode;
             set => this.SetProperty(ref this.itemCode, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription
         {
             get => this.itemDescription;
             set => this.SetProperty(ref this.itemDescription, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentItem), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public int? ItemId
         {
             get => this.itemId;
@@ -173,10 +173,10 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.itemMeasureUnit, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLastPickDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLastPutDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPutDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPutDate { get; set; }
 
         public LoadingUnitDetails LoadingUnit { get; set; }
@@ -198,7 +198,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.loadingUnitId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Lot), ResourceType = typeof(BusinessObjects))]
         public string Lot
         {
             get => this.lot;
@@ -218,7 +218,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.materialStatusId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.MaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {
             get => this.maxCapacity;
@@ -257,21 +257,21 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ReservedForPick), ResourceType = typeof(BusinessObjects))]
         public double ReservedForPick
         {
             get => this.reservedForPick;
             set => this.SetProperty(ref this.reservedForPick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentReservedToPut), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ReservedToPut), ResourceType = typeof(BusinessObjects))]
         public double ReservedToPut
         {
             get => this.reservedToPut;
             set => this.SetProperty(ref this.reservedToPut, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Stock), ResourceType = typeof(BusinessObjects))]
         public double? Stock
         {
             get => this.stock;
@@ -286,14 +286,14 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1
         {
             get => this.sub1;
             set => this.SetProperty(ref this.sub1, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Sub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2
         {
             get => this.sub2;
@@ -301,7 +301,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width
         {
             get => this.width;
@@ -377,8 +377,8 @@ namespace Ferretto.WMS.App.Core.Models
                 case nameof(this.Width):
                     return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
-                case nameof(this.Height):
-                    return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
+                case nameof(this.Depth):
+                    return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
 
                 case nameof(this.ReservedForPick):
                     return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);

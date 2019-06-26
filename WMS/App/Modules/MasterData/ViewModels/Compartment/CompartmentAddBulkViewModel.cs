@@ -14,19 +14,40 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
+        private GlobalSettings globalSettings;
+
         #endregion
 
         #region Constructors
 
         public CompartmentAddBulkViewModel()
         {
-            this.Title = Common.Resources.MasterData.BulkAddCompartment;
+            this.Title = App.Resources.MasterData.BulkAddCompartment;
             this.ColorRequired = ColorRequired.CreateMode;
         }
 
         #endregion
 
+        #region Properties
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
+
+        #endregion
+
         #region Methods
+
+        public async Task InitializeDataAsync()
+        {
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
+        }
+
+        protected override bool CheckValidModel()
+        {
+            this.Model.ApplyCorrectionOnSingleCompartment(this.GlobalSettings.MinStepCompartment);
+            return base.CheckValidModel();
+        }
 
         protected override Task ExecuteRefreshCommandAsync()
         {
@@ -56,7 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                    App.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
 
                 this.CompleteOperation();
@@ -73,7 +94,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
-            // no need to load any data
             return Task.CompletedTask;
         }
 

@@ -16,8 +16,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId);
 
-        Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id);
-
         Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id);
 
         Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id);

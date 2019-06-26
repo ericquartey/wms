@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime? lastPutDate;
 
-        private double? length;
+        private double? depth;
 
         private ItemManagementType? managementType;
 
@@ -83,7 +83,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code
         {
             get => this.code;
@@ -101,7 +101,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.creationDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string Description
         {
             get => this.description;
@@ -122,7 +122,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.fifoTimePut, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {
             get => this.height;
@@ -141,14 +141,14 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.imagePath, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate
         {
             get => this.inventoryDate;
             set => this.SetProperty(ref this.inventoryDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemInventoryTolerance), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.InventoryTolerance), ResourceType = typeof(BusinessObjects))]
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
@@ -157,7 +157,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> ItemCategoryChoices { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Category), ResourceType = typeof(BusinessObjects))]
         public int? ItemCategoryId
         {
             get => this.itemCategoryId;
@@ -171,25 +171,25 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.lastModificationDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastPickDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate
         {
             get => this.lastPickDate;
             set => this.SetProperty(ref this.lastPickDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastPutDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPutDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPutDate
         {
             get => this.lastPutDate;
             set => this.SetProperty(ref this.lastPutDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemLength), ResourceType = typeof(BusinessObjects))]
-        public double? Length
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth
         {
-            get => this.length;
-            set => this.SetProperty(ref this.length, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         [Required]
@@ -214,14 +214,14 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.measureUnitId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemNotes), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Notes), ResourceType = typeof(BusinessObjects))]
         public string Note
         {
             get => this.note;
             set => this.SetProperty(ref this.note, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemPickTolerance), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.PickTolerance), ResourceType = typeof(BusinessObjects))]
         public int? PickTolerance
         {
             get => this.pickTolerance;
@@ -256,7 +256,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.totalAvailable, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width
         {
             get => this.width;
@@ -304,9 +304,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                         return this.GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, columnName);
 
-                    case nameof(this.Length):
+                    case nameof(this.Depth):
 
-                        return this.GetErrorMessageIfNegativeOrZero(this.Length, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
 
                     case nameof(this.PickTolerance):
 

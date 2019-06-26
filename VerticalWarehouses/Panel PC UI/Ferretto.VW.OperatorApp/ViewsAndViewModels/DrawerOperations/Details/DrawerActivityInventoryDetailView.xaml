@@ -15,7 +15,7 @@
             Text="{x:Static Resources:OperatorApp.DrawerActivityInventoryDetailHeader}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,90,0,0" MaxWidth="200"
-            ContentText="147"
+            ContentText="{Binding ListCode, Mode=OneWay,  UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
 
         <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,350,0,0" Width="180" Height="180"
@@ -23,39 +23,39 @@
             Stretch="Uniform" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,290,0,0" MaxWidth="200"
-            ContentText="1258445984"
+            ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,490,0,0" MaxWidth="200"
-            ContentText="F-3"
+            ContentText="{Binding Position, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,150,0,0" MaxWidth="500"
-            ContentText="Gruppo riduzione secondaria"
+            ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,290,0,0" MaxWidth="500"
-            ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
+            ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,210,0,0" MaxWidth="200"
-            ContentText="4"
+            ContentText="{Binding ListRow, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailListRow}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,370,0,0" MaxWidth="200"
-            ContentText="2019-02-12"
+            ContentText="{Binding ProductionDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailProductionDate}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,430,0,0" MaxWidth="200"
-            ContentText="Collaudato"
+            ContentText="{Binding MaterialStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailMaterialStatus}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,370,0,0" MaxWidth="200"
-            ContentText="045-25"
+            ContentText="{Binding Batch, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailLotto}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,430,0,0" MaxWidth="200"
-            ContentText="Boxed"
+            ContentText="{Binding PackagingType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailPackagingType}"/>
 
     </Grid>

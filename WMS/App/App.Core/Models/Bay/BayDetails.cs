@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -16,7 +16,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.BayType), ResourceType = typeof(BusinessObjects))]
         public string BayTypeId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.BayDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string Description { get; set; }
 
         public string Image { get; set; }
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Machine), ResourceType = typeof(BusinessObjects))]
         public int? MachineId { get; set; }
 
-        [Display(Name = nameof(General.Priority), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Priority), ResourceType = typeof(BusinessObjects))]
         public int Priority { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayUserLogged), ResourceType = typeof(BusinessObjects))]

@@ -1,6 +1,8 @@
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -58,7 +60,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+            SplashScreenService.SetMessage(DesktopApp.InitializingLayoutModule);
 
             this.logger.Trace("Loading module ...");
 
@@ -66,6 +68,9 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
             navigationService.Register<LoginView, LoginViewModel>();
+
+            var localisationService = ServiceLocator.Current.GetService(typeof(ILocalizationService)) as ILocalizationService;
+            localisationService.SetAcceptedLanguage(System.Globalization.CultureInfo.CurrentUICulture.ToString());
         }
 
         #endregion

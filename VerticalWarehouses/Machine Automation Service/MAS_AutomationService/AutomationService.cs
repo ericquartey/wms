@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
@@ -15,7 +16,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using System.Linq;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 catch (OperationCanceledException ex)
                 {
-                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    this.logger.LogTrace("3:Method End - Operation Canceled");
                     return;
                 }
                 switch (receivedMessage.Type)
@@ -240,6 +240,7 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.InverterException:
                     case MessageType.IoDriverException:
                     case MessageType.DLException:
+                    case MessageType.WebApiException:
                         this.ExceptionHandlerMethod(receivedMessage);
                         break;
 
@@ -248,10 +249,15 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.ExecuteMission:
-                        this.ExecuteMissionMethod(receivedMessage);
+                        if (receivedMessage.Data is IExecuteMissionMessageData data)
+                        {
+                            await this.ExecuteMissionMethod(receivedMessage);
+                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.MissionsQuantity}");
+                        }
                         break;
 
                     case MessageType.BayConnected:
+                        this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
                         this.BayConnectedMethod(receivedMessage);
                         break;
 

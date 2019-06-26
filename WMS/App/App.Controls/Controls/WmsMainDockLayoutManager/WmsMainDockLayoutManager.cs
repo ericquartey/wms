@@ -5,9 +5,9 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Base;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Prism.Regions;
 
 namespace Ferretto.WMS.App.Controls
@@ -143,7 +143,7 @@ namespace Ferretto.WMS.App.Controls
             newLayoutPanel.AllowHide = false;
             newLayoutPanel.IsActive = true;
             newLayoutPanel.Loaded += this.NewLayoutPanel_Loaded;
-            if (this.isControlPressed == false)
+            if (!this.isControlPressed)
             {
                 if (!(this.DockController.ActiveItem is LayoutPanel activePanel))
                 {
@@ -253,9 +253,9 @@ namespace Ferretto.WMS.App.Controls
 
         private void WmsMainDockLayoutManager_Loaded(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(this.StartModuleName) == false &&
-                string.IsNullOrEmpty(this.StartViewName) == false &&
-                this.navigationService.IsUnitTest == false)
+            if (!string.IsNullOrEmpty(this.StartModuleName) &&
+                !string.IsNullOrEmpty(this.StartViewName) &&
+                !this.navigationService.IsUnitTest)
             {
                 var notificationService = ServiceLocator.Current.GetInstance<INotificationService>();
                 notificationService.CheckForDataErrorConnection();

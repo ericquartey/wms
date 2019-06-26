@@ -2,17 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields
-
-        private readonly BindingList<IDrawableCompartment> compartments = new BindingList<IDrawableCompartment>();
 
         private string abcClassId;
 
@@ -32,17 +29,21 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? height;
 
-        private int inCycleCount;
+        private int inMissionCount;
 
         private bool isCellPairingFixed;
 
-        private double length;
+        private double depth;
 
         private string loadingUnitStatusId;
 
         private int? loadingUnitTypeId;
 
         private string note;
+
+        private int otherMissionCount;
+
+        private int outMissionCount;
 
         private ReferenceType? referenceType;
 
@@ -53,6 +54,8 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
+
+        public BindingList<IDrawableCompartment> Compartments { get; } = new BindingList<IDrawableCompartment>();
 
         public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
@@ -107,14 +110,12 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code
         {
             get => this.code;
             set => this.SetProperty(ref this.code, value);
         }
-
-        public BindingList<IDrawableCompartment> Compartments => this.compartments;
 
         public int CompartmentsCount { get; set; }
 
@@ -131,7 +132,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {
             get => this.height;
@@ -139,14 +140,14 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitInCycleCount), ResourceType = typeof(BusinessObjects))]
-        public int InCycleCount
+        [Display(Name = nameof(BusinessObjects.LoadingUnitInMissionCount), ResourceType = typeof(BusinessObjects))]
+        public int InMissionCount
         {
-            get => this.inCycleCount;
-            set => this.SetProperty(ref this.inCycleCount, value);
+            get => this.inMissionCount;
+            set => this.SetProperty(ref this.inMissionCount, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitInventoryDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitIsCellPairingFixed), ResourceType = typeof(BusinessObjects))]
@@ -159,17 +160,17 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitLastPickDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitLastPutDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPutDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPutDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
-        public double Length
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double Depth
         {
-            get => this.length;
-            set => this.SetProperty(ref this.length, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }
@@ -200,22 +201,28 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.loadingUnitTypeId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Notes), ResourceType = typeof(BusinessObjects))]
         public string Note
         {
             get => this.note;
             set => this.SetProperty(ref this.note, value);
         }
 
-        public Point OriginTray { get; set; }
+        [Required]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitOtherMissionCount), ResourceType = typeof(BusinessObjects))]
+        public int OtherMissionCount
+        {
+            get => this.otherMissionCount;
+            set => this.SetProperty(ref this.otherMissionCount, value);
+        }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitOtherCycleCount), ResourceType = typeof(BusinessObjects))]
-        public int OtherCycleCount { get; set; }
-
-        [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitOutCycleCount), ResourceType = typeof(BusinessObjects))]
-        public int OutCycleCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.LoadingUnitOutMissionCount), ResourceType = typeof(BusinessObjects))]
+        public int OutMissionCount
+        {
+            get => this.outMissionCount;
+            set => this.SetProperty(ref this.outMissionCount, value);
+        }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
@@ -225,8 +232,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.referenceType, value);
         }
 
-        public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
-
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
         public int? Weight
@@ -235,7 +240,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.weight, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double Width
         {
             get => this.width;
@@ -291,7 +296,7 @@ namespace Ferretto.WMS.App.Core.Models
                 throw new ArgumentNullException(nameof(compartmentDetails));
             }
 
-            this.compartments.Add(compartmentDetails);
+            this.Compartments.Add(compartmentDetails);
         }
 
         #endregion

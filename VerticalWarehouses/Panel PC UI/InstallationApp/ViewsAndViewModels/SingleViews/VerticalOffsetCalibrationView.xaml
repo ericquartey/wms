@@ -65,15 +65,21 @@
                 Content="{x:Static res:InstallationApp.StepUp}"
                 IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="680,320,0,0"
+        <Button Margin="680,330,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding StepDownButtonCommand}"
                 Content="{x:Static res:InstallationApp.StepDown}"
                 IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button Margin="680,450,0,0"
+        <Button Margin="680,410,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding AcceptOffsetButtonCommand}"
+                Content="{x:Static res:InstallationApp.AcceptOffset}"
+                IsEnabled="{Binding IsAcceptOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="680,490,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding CorrectOffsetButtonCommand}"
@@ -83,7 +89,7 @@
         <custom:CustomLabelTextBlockControl Margin="230,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ContentText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentCell}" />
     </Grid>
 </UserControl>

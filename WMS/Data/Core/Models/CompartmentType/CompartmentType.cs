@@ -1,3 +1,4 @@
+using System;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
@@ -12,11 +13,23 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int EmptyCompartmentsCount { get; set; }
 
-        public double? Height { get; set; }
+        public double? Depth { get; set; }
 
         public int ItemCompartmentsCount { get; set; }
 
         public double? Width { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public bool ApplyCorrection(double increment)
+        {
+            this.Width = Math.Floor(this.Width.Value / increment) * increment;
+            this.Depth = Math.Floor(this.Depth.Value / increment) * increment;
+
+            return this.Width.Value.CompareTo(0) != 0 && this.Depth.Value.CompareTo(0) != 0;
+        }
 
         #endregion
     }

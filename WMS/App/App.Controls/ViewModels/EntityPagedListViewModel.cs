@@ -12,6 +12,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -86,7 +87,7 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        [Display(Name = nameof(Ferretto.Common.Resources.DesktopApp.EmptyString), ResourceType = typeof(Ferretto.Common.Resources.DesktopApp))]
+        [Display(Name = nameof(DesktopApp.EmptyString), ResourceType = typeof(DesktopApp))]
         public string SearchText
         {
             get => this.searchText;

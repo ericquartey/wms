@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -10,19 +10,53 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.CompartmentTypeCompartmentsCount), ResourceType = typeof(BusinessObjects))]
         public int CompartmentsCount { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentTypeEmptyCompartmentsCount), ResourceType = typeof(BusinessObjects))]
         public int EmptyCompartmentsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentTypeHeightDescription), ResourceType = typeof(BusinessObjects))]
-        public double? Height { get; set; }
+        [Required]
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentTypeHeightDescription), ResourceType = typeof(BusinessObjects))]
-        public string HeightDescription { get; set; }
+        [Display(Name = nameof(BusinessObjects.CompartmentTypeItemCompartmentsCount), ResourceType = typeof(BusinessObjects))]
+        public int ItemCompartmentsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentTypeWidthDescription), ResourceType = typeof(BusinessObjects))]
+        [Required]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentTypeWidthDescription), ResourceType = typeof(BusinessObjects))]
-        public string WidthDescription { get; set; }
+        #endregion
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                if (!this.IsValidationEnabled)
+                {
+                    return null;
+                }
+
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
+                switch (columnName)
+                {
+                    case nameof(this.Width):
+
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
+
+                    case nameof(this.Depth):
+
+                        return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
+                }
+
+                return null;
+            }
+        }
 
         #endregion
     }

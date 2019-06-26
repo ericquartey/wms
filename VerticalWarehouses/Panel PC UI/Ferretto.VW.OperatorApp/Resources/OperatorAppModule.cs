@@ -120,12 +120,13 @@ namespace Ferretto.VW.OperatorApp.Resources
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
             mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
+            drawerWaitVMInstance.InitializeViewModel(this.container);
             drawerActivityPickingVMInstance.InitializeViewModel(this.container);
+            drawerActivityRefillingVMInstance.InitializeViewModel(this.container);
             otherNavigationVMInstance.InitializeViewModel(this.container);
             generalInfoVMInstance.InitializeViewModel(this.container);
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
             itemSearchVMInstance.InitializeViewModel(this.container);
-            drawerWaitVMInstance.InitializeViewModel(this.container);
             bayManagerInstance.Initialize(this.container);
 
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();

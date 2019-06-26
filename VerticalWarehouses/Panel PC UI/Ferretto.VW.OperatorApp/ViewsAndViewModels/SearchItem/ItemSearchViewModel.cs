@@ -223,8 +223,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
                 this.container.Resolve<IFeedbackNotifier>().Notify($"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
+                this.RequestedQuantity = 0;
                 this.IsItemCallButtonActive = true;
-                // TODO inform the operator of an error during the Item Call request to the WMS service
             }
         }
 

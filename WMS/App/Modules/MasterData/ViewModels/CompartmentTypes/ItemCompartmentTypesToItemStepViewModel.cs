@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,7 +8,6 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.Hubs.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -118,7 +116,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                                             Common.Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
+                                             App.Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
                                              StatusType.Success));
                 this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(ItemCompartmentType).ToString(), null, HubEntityOperation.Created));
             }
@@ -136,7 +134,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is ItemDetails itemDetails)
             {
-                this.Title = string.Format(Ferretto.Common.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
+                this.Title = string.Format(App.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
             }
 
             await this.LoadUnassociateCompartmentTypesAsync();

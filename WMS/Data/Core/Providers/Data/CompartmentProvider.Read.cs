@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaName = c.LoadingUnit.Cell.Aisle.Area.Name,
                     CompartmentStatusDescription = c.CompartmentStatus.Description,
                     HasRotation = c.HasRotation,
-                    Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
+                    Depth = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Depth,
                     Id = c.Id,
                     IsItemPairingFixed = c.IsItemPairingFixed,
                     ItemDescription = c.Item.Description,
@@ -130,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
-                    Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
+                    Width = c.HasRotation ? c.CompartmentType.Depth : c.CompartmentType.Width,
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                 });

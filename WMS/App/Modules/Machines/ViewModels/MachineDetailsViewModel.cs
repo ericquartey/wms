@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
@@ -12,6 +11,7 @@ using Ferretto.WMS.App.Core;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.Modules.Machines
 {
@@ -160,12 +160,8 @@ namespace Ferretto.WMS.Modules.Machines
 
         private void OnMachineStatusChanged(MachineStatusPubSubEvent e)
         {
-            if (e == null)
-            {
-                return;
-            }
-
-            if (this.machineLive is MachineLive machine)
+            if (e != null
+                && this.machineLive is MachineLive machine)
             {
                 machine.Status = (MachineStatus)e.MachineStatus.Mode;
                 machine.FaultCode = e.MachineStatus.FaultCode;

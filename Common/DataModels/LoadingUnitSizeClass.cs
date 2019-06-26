@@ -17,7 +17,7 @@ namespace Ferretto.Common.DataModels
 
         public int Id { get; set; }
 
-        public double Length { get; set; }
+        public double Depth { get; set; }
 
         public double? Lift { get; set; }
 

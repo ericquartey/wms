@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Ferretto.WMS.App.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.Factory;
@@ -17,7 +18,7 @@ namespace Ferretto.WMS.App.Tests
         #region Properties
 
         public Window MainWindow =>
-            this.application?.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
+            this.application?.GetWindow(DesktopApp.Application_Title, InitializeOption.NoCache);
 
         public TestContext TestContext { get; set; }
 

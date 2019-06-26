@@ -7,13 +7,13 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -24,34 +24,56 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
+        private ICommand createCommand;
+
         private ICommand deleteCompartmentCommand;
+
+        private GlobalSettings globalSettings;
+
+        private bool isAdd;
 
         private bool itemIdHasValue;
 
         private InfiniteAsyncSource itemsDataSource;
 
+        private AppearMode mode;
+
         private Item selectedItem;
 
         #endregion
 
-        #region Constructors
+        #region Enums
 
-        public CompartmentEditViewModel()
+        public enum AppearMode
         {
-            this.Title = Common.Resources.MasterData.EditCompartment;
-            this.LoadDataAsync();
+            Edit,
+
+            Add,
         }
 
         #endregion
 
         #region Properties
 
+        public ICommand CreateCommand => this.createCommand ??
+                                  (this.createCommand = new DelegateCommand(async () => await this.ExecuteCreateCommandAsync()));
+
         public ICommand DeleteCompartmentCommand => this.deleteCompartmentCommand ??
             (this.deleteCompartmentCommand = new DelegateCommand(
                 async () => await this.DeleteCompartmentAsync(),
                 this.CanDeleteCompartment));
+
+        public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
+
+        public bool IsAdd
+        {
+            get => this.isAdd;
+            set => this.SetProperty(ref this.isAdd, value);
+        }
 
         public bool IsItemDetailsEnabled
         {
@@ -85,6 +107,18 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
+        public AppearMode Mode
+        {
+            get => this.mode;
+            set
+            {
+                if (this.SetProperty(ref this.mode, value))
+                {
+                    this.IsAdd = (this.mode == AppearMode.Add) ? true : false;
+                }
+            }
+        }
+
         public Item SelectedItem
         {
             get => this.selectedItem;
@@ -95,6 +129,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public async Task InitializeDataAsync()
+        {
+            if (this.mode == AppearMode.Add)
+            {
+                this.Title = App.Resources.MasterData.AddCompartment;
+                this.ColorRequired = ColorRequired.CreateMode;
+            }
+            else
+            {
+                this.Title = App.Resources.MasterData.EditCompartment;
+            }
+
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
+        }
+
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -102,10 +155,42 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override Task ExecuteRefreshCommandAsync()
+        protected async Task<bool> ExecuteCreateCommandAsync()
         {
-            throw new NotSupportedException();
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
+            this.IsBusy = true;
+
+            var result = await this.compartmentProvider.CreateAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new StatusPubSubEvent(
+                   App.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                   StatusType.Success));
+
+                this.CompleteOperation();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return true;
         }
+
+        protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
@@ -128,13 +213,13 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -144,10 +229,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
-            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
-
             return Task.CompletedTask;
         }
 
@@ -181,18 +262,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 &&
                 this.Model.Width.HasValue
                 &&
-                this.Model.Height.HasValue
+                this.Model.Depth.HasValue
                 &&
                 (
                 e.PropertyName == nameof(CompartmentDetails.ItemId)
                 ||
                 e.PropertyName == nameof(CompartmentDetails.Width)
                 ||
-                e.PropertyName == nameof(CompartmentDetails.Height)))
+                e.PropertyName == nameof(CompartmentDetails.Depth)))
             {
                 var result = await this.compartmentProvider.GetMaxCapacityAsync(
                     this.Model.Width,
-                    this.Model.Height,
+                    this.Model.Depth,
                     this.Model.ItemId.Value);
 
                 if (result.Success && result.Entity.HasValue)
@@ -202,6 +283,13 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        protected override async Task OnAppearAsync()
+        {
+            await base.OnAppearAsync().ConfigureAwait(true);
+
+            await this.LoadDataAsync().ConfigureAwait(true);
         }
 
         protected override void OnDispose()
@@ -239,7 +327,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     {
                         loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
-                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+                        this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
                         this.IsBusy = false;
                         this.CompleteOperation();
@@ -248,7 +336,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
                     }
                 }
 

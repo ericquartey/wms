@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 }
             };
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 1 };
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
@@ -463,7 +463,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 }
             };
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 1 };
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
@@ -583,7 +583,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var listId = 1;
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 1 };
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {

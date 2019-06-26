@@ -470,7 +470,10 @@
     <value>Offset attuale [mm]:</value>
   </data>
   <data name="DoCorrectOffset" xml:space="preserve">
-    <value>Correggi</value>
+    <value>Chiudi procedura</value>
+  </data>
+  <data name="AcceptOffset" xml:space="preserve">
+    <value>Accetta</value>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
     <value>Quota cella selezionata [mm]:</value>
@@ -897,5 +900,8 @@
   </data>
   <data name="SwitchEngineStarted" xml:space="preserve">
     <value>Cambio motore iniziato</value>
+  </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>Valore inserito non valido</value>
   </data>
 </root>

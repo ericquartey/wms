@@ -20,6 +20,8 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly IGlobalSettingsProvider globalSettingsProvider;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion
@@ -29,10 +31,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public CompartmentTypeProvider(
             DatabaseContext dataContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            IGlobalSettingsProvider globalSettingsProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+            this.globalSettingsProvider = globalSettingsProvider;
         }
 
         #endregion
@@ -50,10 +54,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             double? maxCapacity)
         {
             if (model == null ||
-                !model.Height.HasValue ||
+                !model.Depth.HasValue ||
                 !model.Width.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
+            }
+
+            var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
+            if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
+            {
+                return new CreationErrorOperationResult<CompartmentType>();
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -62,16 +72,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     await this.DataContext.CompartmentTypes
                         .SingleOrDefaultAsync(
                             ct =>
-                                ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
+                                ((int)ct.Width == (int)model.Width && (int)ct.Depth == (int)model.Depth)
                                 ||
-                                ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
+                                ((int)ct.Width == (int)model.Depth && (int)ct.Depth == (int)model.Width));
 
                 if (existingCompartmentType == null)
                 {
                     var entry = await this.DataContext.CompartmentTypes.AddAsync(
                                     new Common.DataModels.CompartmentType
                                     {
-                                        Height = model.Height.Value,
+                                        Depth = model.Depth.Value,
                                         Width = model.Width.Value
                                     });
 
@@ -90,11 +100,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = existingCompartmentType.Id;
                 }
 
-                if (itemId.HasValue)
+                if (itemId.HasValue && maxCapacity.HasValue)
                 {
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
-                                     maxCapacity,
+                                     maxCapacity.Value,
                                      existingCompartmentType.Id);
 
                     if (!result.Success)
@@ -107,6 +117,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return new SuccessOperationResult<CompartmentType>(model);
+        }
+
+        public async Task<IOperationResult<CompartmentType>> CreateIfNotExistsAsync(
+            CompartmentType model,
+            int? itemId,
+            double? maxCapacity)
+        {
+            var existingCompartmentType =
+                await this.DataContext.CompartmentTypes
+                    .SingleOrDefaultAsync(
+                        ct =>
+                            ((int)ct.Width == (int)model.Width && (int)ct.Depth == (int)model.Depth)
+                            ||
+                            ((int)ct.Width == (int)model.Depth && (int)ct.Depth == (int)model.Width));
+
+            if (existingCompartmentType != null && !itemId.HasValue)
+            {
+                return new CreationErrorOperationResult<CompartmentType>(Resources.Errors.DuplicateCompartmentType);
+            }
+
+            return await this.CreateAsync(model, itemId, maxCapacity);
         }
 
         public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
@@ -172,7 +203,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             var model = await this.GetAllBase()
                 .SingleOrDefaultAsync(a => a.Id == id);
 
-            SetPolicies(model);
+            if (model != null)
+            {
+                SetPolicies(model);
+            }
+
             return model;
         }
 
@@ -198,7 +233,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 &&
                 (Equals(ct.Width, resultDouble)
                 ||
-                Equals(ct.Height, resultDouble)))
+                Equals(ct.Depth, resultDouble)))
                 ||
                 (successInt &&
                 Equals(ct.CompartmentsCount, resultInt));
@@ -206,17 +241,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private static void SetPolicies(BaseModel<int> model)
         {
-            if (model == null)
-            {
-                return;
-            }
-
             model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
         }
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
                     int itemId,
-            double? maxCapacity,
+            double maxCapacity,
             int compartmentTypeId)
         {
             var existingIcTModel =
@@ -259,7 +289,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(ct => new CompartmentType
                 {
                     Id = ct.Id,
-                    Height = ct.Height,
+                    Depth = ct.Depth,
                     Width = ct.Width,
                     CompartmentsCount = ct.Compartments.Count(),
                     EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0)),

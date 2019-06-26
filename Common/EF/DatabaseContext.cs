@@ -68,6 +68,8 @@ namespace Ferretto.Common.EF
 
         public virtual DbSet<DefaultLoadingUnit> DefaultLoadingUnits { get; set; }
 
+        public virtual DbSet<GlobalSettings> GlobalSettings { get; set; }
+
         public virtual DbSet<ItemCategory> ItemCategories { get; set; }
 
         public virtual DbSet<ItemListRow> ItemListRows { get; set; }
@@ -156,6 +158,7 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new CompartmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DefaultCompartmentConfiguration());
             modelBuilder.ApplyConfiguration(new DefaultLoadingUnitConfiguration());
+            modelBuilder.ApplyConfiguration(new GlobalSettingsConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
             modelBuilder.ApplyConfiguration(new ItemAreaConfiguration());
             modelBuilder.ApplyConfiguration(new ItemCompartmentTypeConfiguration());

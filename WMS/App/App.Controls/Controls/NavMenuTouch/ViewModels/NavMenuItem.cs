@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommonServiceLocator;
-using Ferretto.Common.Utils.Menu;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Prism.Commands;
 
@@ -81,7 +80,7 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            var breadCrumb = string.IsNullOrEmpty(currBreadCrumb) == false
+            var breadCrumb = !string.IsNullOrEmpty(currBreadCrumb)
                 ? $"{currBreadCrumb} >> {this.DisplayName}"
                 : this.DisplayName;
 

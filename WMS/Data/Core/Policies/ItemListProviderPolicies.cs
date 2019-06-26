@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -13,96 +11,68 @@ namespace Ferretto.WMS.Data.Core.Policies
 
         public static Policy ComputeAddRowPolicy(this IPolicyItemList statusItemListModel)
         {
-            var errorMessages = new List<string>();
-            if (statusItemListModel.Status != ItemListStatus.New)
+            var policy = new Policy
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus}");
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
                 Name = nameof(ItemListPolicy.AddRow),
                 Type = PolicyType.Operation
             };
+
+            if (statusItemListModel.Status != ItemListStatus.New)
+            {
+                policy.AddErrorMessage(Resources.ItemList.CannotAddRowsToTheListBecauseItIsNotInTheNewState);
+            }
+
+            return policy;
         }
 
         public static Policy ComputeDeletePolicy(this IItemListDeletePolicy listToDelete)
         {
-            var errorMessages = new List<string>();
+            var policy = new Policy
+            {
+                Name = nameof(CrudPolicies.Delete),
+                Type = PolicyType.Operation
+            };
+
             if (listToDelete.Status != ItemListStatus.New)
             {
-                errorMessages.Add(
-                    $"{Common.Resources.BusinessObjects.ItemListStatus} [{listToDelete.Status.ToString()}]");
+                policy.AddErrorMessage(
+                    Resources.ItemList.CannotDeleteTheListBecauseItIsNotInTheNewState);
             }
 
             if (listToDelete.HasActiveRows)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow}");
+                policy.AddErrorMessage(
+                    Resources.ItemList.CannotDeleteTheListBecauseItHasActiveRows);
             }
 
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
-                Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
-            };
+            return policy;
         }
 
         public static Policy ComputeExecutePolicy(this IPolicyItemList listToExecute)
         {
-            var errorMessages = new List<string>();
+            var policy = new Policy
+            {
+                Name = nameof(ItemListPolicy.Execute),
+                Type = PolicyType.Operation
+            };
+
             if (listToExecute.Status != ItemListStatus.New &&
                 listToExecute.Status != ItemListStatus.Error &&
                 listToExecute.Status != ItemListStatus.Incomplete &&
                 listToExecute.Status != ItemListStatus.Suspended &&
                 listToExecute.Status != ItemListStatus.Waiting)
             {
-                errorMessages.Add(
-                    $"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
+                policy.AddErrorMessage(
+                    Resources.ItemList.CannotExecuteTheListBecauseOfItsCurrentState);
             }
 
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
-                Name = nameof(ItemListPolicy.Execute),
-                Type = PolicyType.Operation
-            };
+            return policy;
         }
 
         public static Policy ComputeUpdatePolicy(this IPolicyItemList model)
         {
             return new Policy
             {
-                IsAllowed = true,
-                Reason = null,
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };

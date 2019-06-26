@@ -22,10 +22,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
-            var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 };
-            var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 };
-            var compartmentType4 = new Common.DataModels.CompartmentType { Id = 4, Height = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
+            var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Depth = 1, Width = 2 };
+            var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Depth = 1, Width = 2 };
+            var compartmentType4 = new Common.DataModels.CompartmentType { Id = 4, Depth = 1, Width = 2 };
 
             using (var context = this.CreateContext())
             {
@@ -85,11 +85,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var controller = this.MockController();
             Common.DataModels.CompartmentType[] compartmentTypes =
             {
-                new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 },
-                new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 },
-                new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 },
-                new Common.DataModels.CompartmentType { Id = 4, Height = 1, Width = 2 },
-                new Common.DataModels.CompartmentType { Id = 5, Height = 1, Width = 2 },
+                new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
+                new Common.DataModels.CompartmentType { Id = 2, Depth = 1, Width = 2 },
+                new Common.DataModels.CompartmentType { Id = 3, Depth = 1, Width = 2 },
+                new Common.DataModels.CompartmentType { Id = 4, Depth = 1, Width = 2 },
+                new Common.DataModels.CompartmentType { Id = 5, Depth = 1, Width = 2 },
             };
 
             using (var context = this.CreateContext())
@@ -140,9 +140,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             Common.DataModels.CompartmentType[] compartmentTypes =
             {
-                    new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 },
-                    new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 },
-                    new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 },
+                    new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
+                    new Common.DataModels.CompartmentType { Id = 2, Depth = 1, Width = 2 },
+                    new Common.DataModels.CompartmentType { Id = 3, Depth = 1, Width = 2 },
                 };
 
             Common.DataModels.Compartment[] compartments =
@@ -239,10 +239,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
-            var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 };
-            var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 };
-            var compartmentType4 = new Common.DataModels.CompartmentType { Id = 4, Height = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
+            var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Depth = 1, Width = 2 };
+            var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Depth = 1, Width = 2 };
+            var compartmentType4 = new Common.DataModels.CompartmentType { Id = 4, Depth = 1, Width = 2 };
 
             using (var context = this.CreateContext())
             {
@@ -298,7 +298,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
 
             Common.DataModels.Compartment[] compartments =
             {
@@ -347,10 +347,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
-            var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Height = 1, Width = 2 };
-            var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Height = 1, Width = 2 };
-            var compartmentType4 = new Common.DataModels.CompartmentType { Id = 4, Height = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
+            var compartmentType2 = new Common.DataModels.CompartmentType { Id = 2, Depth = 1, Width = 2 };
+            var compartmentType3 = new Common.DataModels.CompartmentType { Id = 3, Depth = 1, Width = 2 };
+            var compartmentType4 = new Common.DataModels.CompartmentType { Id = 4, Depth = 1, Width = 2 };
             using (var context = this.CreateContext())
             {
                 context.CompartmentTypes.Add(compartmentType1);
@@ -405,7 +405,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
 
             Common.DataModels.Compartment[] compartments =
             {

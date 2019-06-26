@@ -64,7 +64,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             var mission = await this.GetByIdAsync(missionId);
             if (mission == null)
             {
-                return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{missionId}' exists.");
+                return new NotFoundOperationResult<MissionExecution>(
+                    null,
+                    string.Format(
+                        Resources.Errors.NoMissionWithIdExists,
+                        missionId));
             }
 
             if (!mission.CanExecuteOperation(nameof(MissionPolicy.Abort)))
@@ -81,13 +85,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    $"Value '{quantity}' represents an invalid quantity. Dispatched mission quantity cannot be negative or zero.");
+                    string.Format(
+                        Resources.Errors.ValueRepresentsAnInvalidQuantity,
+                        quantity));
             }
 
             var mission = await this.GetByIdAsync(id);
             if (mission == null)
             {
-                return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{id}' exists.");
+                return new NotFoundOperationResult<MissionExecution>(
+                    null,
+                    string.Format(
+                        Resources.Errors.NoMissionWithIdExists,
+                        id));
             }
 
             if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
@@ -112,7 +122,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     return new BadRequestOperationResult<MissionExecution>(
-                        $"Completion is not supported for mission type '{mission.Type}'.");
+                        string.Format(
+                            Resources.Errors.CompletionIsNotSupportedForMissionType,
+                            mission.Type));
             }
 
             return result;
@@ -143,7 +155,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     return new BadRequestOperationResult<MissionExecution>(
-                        "Only loading unit withdrawal operations are allowed.");
+                        Resources.Errors.OnlyLoadingUnitWithdrawalOperationsAreAllowed);
             }
 
             return result;
@@ -403,7 +415,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     return new BadRequestOperationResult<MissionExecution>(
-                        $"Abortion is not supported for mission type '{mission.Type}'.");
+                        string.Format(
+                            Resources.Errors.AbortionIsNotSupportedForMissionType,
+                            mission.Type));
             }
 
             mission.Status = MissionStatus.Incomplete;
@@ -430,27 +444,31 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!mission.CompartmentId.HasValue)
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
-                    "Unable to complete the specified mission because it has no associated compartment.");
+                    Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment);
             }
 
             if (!mission.ItemId.HasValue)
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
-                    "Unable to complete the specified mission because it has no associated item.");
+                    Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem);
             }
 
             if (quantity > mission.QuantityRemainingToDispatch)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    $"Actual picked quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).",
+                    string.Format(
+                        Resources.Errors.ActualPickedQuantityCannotBeGreaterThanTheRemainingQuantityToDispatch,
+                        quantity,
+                        mission.QuantityRemainingToDispatch),
                     mission);
             }
 
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be negative or zero.",
+                    string.Format(
+                        Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseOfActualPutQuantity,
+                        quantity),
                     mission);
             }
 
@@ -461,14 +479,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (compartment == null)
                 {
                     return new UnprocessableEntityOperationResult<MissionExecution>(
-                        "Unable to complete the specified mission. The associated compartment could not be retrieved.");
+                        Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseOfAssociatedCompartmentNotRetrieved);
                 }
 
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
                 if (loadingUnit == null)
                 {
                     return new UnprocessableEntityOperationResult<MissionExecution>(
-                        "Unable to complete the specified mission. The associated loading unit could not be retrieved.");
+                        Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseOfAssociatedLoadingUnitNotRetrieved);
                 }
 
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
@@ -503,23 +521,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             MissionExecution mission,
             double quantity)
         {
-            if (mission.CompartmentId.HasValue == false)
+            if (!mission.CompartmentId.HasValue)
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
-                    "Unable to complete the specified mission. The mission has no associated compartment.");
+                    Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment);
             }
 
-            if (mission.ItemId.HasValue == false)
+            if (!mission.ItemId.HasValue)
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
-                    "Unable to complete the specified mission. The mission has no associated item.");
+                    Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem);
             }
 
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be negative or zero.",
+                    string.Format(
+                        Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseOfActualPutQuantity,
+                        quantity),
                     mission);
             }
 
@@ -530,14 +549,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (compartment == null)
                 {
                     return new UnprocessableEntityOperationResult<MissionExecution>(
-                        "Unable to complete the specified mission. The associated compartment could not be retrieved.");
+                        Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseOfAssociatedCompartmentNotRetrieved);
                 }
 
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
                 if (loadingUnit == null)
                 {
                     return new UnprocessableEntityOperationResult<MissionExecution>(
-                        "Unable to complete the specified mission. The associated loading unit could not be retrieved.");
+                        Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseOfAssociatedLoadingUnitNotRetrieved);
                 }
 
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
@@ -572,12 +591,14 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             System.Diagnostics.Debug.Assert(
                 mission != null,
-                $"The method argument {nameof(mission)} should not be null.");
+                string.Format(
+                    Resources.Errors.TheMethodArgumentShouldNotBeNull,
+                    nameof(mission)));
 
             if (!mission.LoadingUnitId.HasValue)
             {
                 throw new InvalidOperationException(
-                    "Unable to complete the specified mission. The mission has no associated loading unit.");
+                    Resources.Errors.UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedLoadingUnit);
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
