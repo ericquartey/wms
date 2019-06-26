@@ -17,13 +17,6 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(m => m.Id);
 
-            builder.Property(m => m.Status)
-                .HasColumnType("char(1)")
-                .HasConversion(
-                    enumValue => (char)enumValue,
-                    charValue => (MissionStatus)System.Enum.ToObject(typeof(MissionStatus), charValue))
-                .HasDefaultValueSql($"'{(char)MissionStatus.New}'");
-
             builder.Property(m => m.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
