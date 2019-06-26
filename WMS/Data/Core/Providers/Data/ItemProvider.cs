@@ -154,6 +154,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .GroupJoin(
                     this.DataContext.Compartments
                         .Where(c => c.ItemId != null)
+                        .Where(c => c.CompartmentTypeId == compartmentTypeId)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new
                         {
