@@ -22,10 +22,7 @@ namespace Ferretto.WMS.Data.Core.Maps
             this.CreateMap<Common.DataModels.MissionOperation, MissionOperationInfo>();
 
             this.CreateMap<MissionOperation, Common.DataModels.MissionOperation>();
-            this.CreateMap<Common.DataModels.MissionOperation, MissionOperation>()
-                .ConstructUsing((m, context) => m.ItemListRowId.HasValue
-                ? context.Mapper.Map<MissionListOperation>(m)
-                : context.Mapper.Map<MissionOperation>(m));
+            this.CreateMap<Common.DataModels.MissionOperation, MissionOperation>();
         }
 
         #endregion

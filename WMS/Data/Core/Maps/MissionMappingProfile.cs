@@ -24,12 +24,24 @@ namespace Ferretto.WMS.Data.Core.Maps
                 .ForMember(
                     cmp => cmp.MaxCapacity,
                     conf => conf.MapFrom(
-                        c => c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : double.NaN));
+                        c => c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : 0));
 
-            this.CreateMap<Common.DataModels.Mission, Mission>();
+            this.CreateMap<Common.DataModels.Mission, Mission>()
+                .ForMember(m => m.CompletedOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Completed)))
+                .ForMember(m => m.ExecutingOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Executing)))
+                .ForMember(m => m.IncompleteOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Incomplete)))
+                .ForMember(m => m.NewOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.New)))
+                .ForMember(m => m.OperationsCount, c => c.MapFrom(m => m.Operations.Count()))
+                .ForMember(m => m.ErrorOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Error)));
             this.CreateMap<Mission, Common.DataModels.Mission>();
 
-            this.CreateMap<Common.DataModels.Mission, MissionInfo>();
+            this.CreateMap<Common.DataModels.Mission, MissionInfo>()
+                                .ForMember(m => m.CompletedOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Completed)))
+                .ForMember(m => m.ExecutingOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Executing)))
+                .ForMember(m => m.IncompleteOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Incomplete)))
+                .ForMember(m => m.NewOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.New)))
+                .ForMember(m => m.OperationsCount, c => c.MapFrom(m => m.Operations.Count()))
+                .ForMember(m => m.ErrorOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Error)));
 
             this.CreateMap<Common.DataModels.Mission, MissionWithLoadingUnitDetails>()
                 .ForMember(m => m.Operations, c => c.MapFrom(m => m.Operations));

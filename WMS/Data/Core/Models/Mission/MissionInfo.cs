@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces.Policies;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -14,7 +15,19 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? BayId { get; set; }
 
+        [JsonIgnore]
+        public int CompletedOperationsCount { get; set; }
+
         public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public int ErrorOperationsCount { get; set; }
+
+        [JsonIgnore]
+        public int ExecutingOperationsCount { get; set; }
+
+        [JsonIgnore]
+        public int IncompleteOperationsCount { get; set; }
 
         public DateTime? LastModificationDate { get; set; }
 
@@ -22,12 +35,24 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitId { get; set; }
 
+        [JsonIgnore]
+        public int NewOperationsCount { get; set; }
+
         public IEnumerable<MissionOperationInfo> Operations { get; set; }
+
+        [JsonIgnore]
+        public int OperationsCount { get; private set; }
 
         [Positive]
         public int Priority { get; set; }
 
-        public MissionStatus Status { get; set; } = MissionStatus.New;
+        public MissionStatus Status => Mission.GetStatus(
+            this.OperationsCount,
+            this.NewOperationsCount,
+            this.ExecutingOperationsCount,
+            this.CompletedOperationsCount,
+            this.IncompleteOperationsCount,
+            this.ErrorOperationsCount);
 
         #endregion
     }
