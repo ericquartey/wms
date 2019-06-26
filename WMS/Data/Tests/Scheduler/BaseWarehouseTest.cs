@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             this.CompartmentType = new CompartmentType
             {
                 Id = GetNewId(),
-                Height = 1,
+                Depth = 1,
                 Width = 1
             };
 

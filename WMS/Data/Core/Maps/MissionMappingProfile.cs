@@ -10,17 +10,14 @@ namespace Ferretto.WMS.Data.Core.Maps
 
         public MissionMappingProfile()
         {
-            this.CreateMap<Common.DataModels.MissionStatus, MissionStatus>()
-               .ConvertUsing(value => (MissionStatus)value);
-
             this.CreateMap<Common.DataModels.LoadingUnit, LoadingUnitMissionInfo>()
                 .ForMember(l => l.Width, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Width))
-                .ForMember(l => l.Length, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Length))
+                .ForMember(l => l.Depth, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Depth))
                 .ForMember(l => l.Compartments, c => c.MapFrom(l => l.Compartments));
 
             this.CreateMap<Common.DataModels.Compartment, CompartmentMissionInfo>()
-                .ForMember(cmp => cmp.Width, conf => conf.MapFrom(c => c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width))
-                .ForMember(cmp => cmp.Height, conf => conf.MapFrom(c => c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height))
+                .ForMember(cmp => cmp.Width, conf => conf.MapFrom(c => c.HasRotation ? c.CompartmentType.Depth : c.CompartmentType.Width))
+                .ForMember(cmp => cmp.Depth, conf => conf.MapFrom(c => c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Depth))
                 .ForMember(
                     cmp => cmp.MaxCapacity,
                     conf => conf.MapFrom(

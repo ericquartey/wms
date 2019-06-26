@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType = new Common.DataModels.CompartmentType
             {
                 Id = 1,
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
@@ -230,7 +230,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
-                Height = 10,
+                Depth = 10,
                 Width = 10,
             };
 
