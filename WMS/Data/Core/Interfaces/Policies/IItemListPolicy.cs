@@ -3,7 +3,7 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
-    public interface IPolicyItemList : IModel<int>
+    public interface IItemListPolicy : IModel<int>
     {
         #region Properties
 

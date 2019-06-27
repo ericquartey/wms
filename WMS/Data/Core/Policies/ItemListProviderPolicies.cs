@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.Core.Policies
     {
         #region Methods
 
-        public static Policy ComputeAddRowPolicy(this IPolicyItemList statusItemListModel)
+        public static Policy ComputeAddRowPolicy(this IItemListPolicy statusItemListModel)
         {
             var policy = new Policy
             {
@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return policy;
         }
 
-        public static Policy ComputeExecutePolicy(this IPolicyItemList listToExecute)
+        public static Policy ComputeExecutePolicy(this IItemListPolicy listToExecute)
         {
             var policy = new Policy
             {
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return policy;
         }
 
-        public static Policy ComputeUpdatePolicy(this IPolicyItemList model)
+        public static Policy ComputeUpdatePolicy(this IItemListPolicy model)
         {
             return new Policy
             {

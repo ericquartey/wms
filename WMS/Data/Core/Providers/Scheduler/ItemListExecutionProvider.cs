@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public static void SetPolicies(BaseModel<int> model)
         {
-            model.AddPolicy((model as IPolicyItemList).ComputeExecutePolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeExecutePolicy());
         }
 
         public async Task<ItemListOperation> GetByIdAsync(int id)
