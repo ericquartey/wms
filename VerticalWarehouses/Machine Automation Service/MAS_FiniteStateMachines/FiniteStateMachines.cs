@@ -141,7 +141,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    if (this.commandQueue.Count == 0)
+                    {
+                        this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    }
+                    else
+                    {
+                        this.commandQueue.Dequeue(out receivedMessage);
+                    }
 
                     this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
@@ -362,7 +369,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 NotificationMessage receivedMessage;
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    if (this.notificationQueue.Count == 0)
+                    {
+                        this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    }
+                    else
+                    {
+                        this.notificationQueue.Dequeue(out receivedMessage);
+                    }
 
                     this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
