@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MasterData {
@@ -268,7 +268,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose which existing types to associate with current Item, and specify the maximum capacity.
+        ///   Looks up a localized string similar to Choose which existing types to associate with current Item, and specify the maximum capacity:.
         /// </summary>
         public static string ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose how you want to associate a Compartment Type to this Item.
+        ///   Looks up a localized string similar to Choose how you want to associate a Compartment Type to this Item:.
         /// </summary>
         public static string ChooseHowYouWantToAssociateACompartmentTypeToThisItem {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose the Loading Unit where you want to create a new Compartment Type.
+        ///   Looks up a localized string similar to Choose the Loading Unit where you want to create a new Compartment Type:.
         /// </summary>
         public static string ChooseTheLoadingUnitCreateNewCompartmentType {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Compartment of the desired Compartment Type.
+        ///   Looks up a localized string similar to Create a new Compartment of the desired Compartment Type:.
         /// </summary>
         public static string CreateNewCompartementDesiredCompartmentType {
             get {

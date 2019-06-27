@@ -10,23 +10,24 @@
              mc:Ignorable="d">
 
     <Grid>
-        <GroupBox Header="{Binding Title}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="1"
-                           HorizontalAlignment="Left"
-                           Text="{x:Static res:MasterData.ChooseHowYouWantToAssociateACompartmentTypeToThisItem}" />
-                <wms:RadioButton Grid.Row="2"
-                                 Margin="20,0,0,0"
-                                 DisplayMember="Description"
-                                 ItemsSource="{Binding Options}"
-                                 SelectedItem="{Binding SelectedOption, Mode=TwoWay}"
-                                 ValueMember="Id" />
-            </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="7,15,0,0"
+                   FontSize="{DynamicResource FontSizeMedium}"
+                   Text="{Binding Title}" />
+
+        <GroupBox Grid.Row="1"
+                  Margin="10,0,0,0"
+                  Header="{x:Static res:MasterData.ChooseHowYouWantToAssociateACompartmentTypeToThisItem}">
+            <wms:RadioButton Margin="20,10,0,0"
+                             DisplayMember="Description"
+                             ItemsSource="{Binding Options}"
+                             SelectedItem="{Binding SelectedOption, Mode=TwoWay}"
+                             ValueMember="Id"
+                             FontSize="14"/>
         </GroupBox>
     </Grid>
 
