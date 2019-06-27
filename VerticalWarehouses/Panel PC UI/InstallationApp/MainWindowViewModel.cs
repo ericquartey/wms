@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -22,7 +22,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly HelpMainWindow helpWindow;
 
-        private readonly IContainerInstallationHubClient installationHubClient;
+        private readonly IInstallationHubClient installationHubClient;
 
         private IUnityContainer container;
 
@@ -54,7 +54,7 @@ namespace Ferretto.VW.InstallationApp
 
         public MainWindowViewModel(
             IEventAggregator eventAggregator,
-            IContainerInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.helpWindow = new HelpMainWindow(eventAggregator);

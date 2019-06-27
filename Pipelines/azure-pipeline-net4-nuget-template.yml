@@ -1,18 +1,20 @@
+parameters:
+  RestoreSolution: '**/*.sln'
 
 steps:
 
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.x'
+  displayName: 'Use NuGet 5.x'
   inputs:
-    versionSpec: 4.x
+    versionSpec: 5.x
 
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '**/*.sln'
+    restoreSolution: ${{ parameters.RestoreSolution }}
     feedsToUse: config
     nugetConfigPath: 'nuget.config'
     restoreDirectory: './packages'
-    verbosityRestore: Normal
+    verbosityRestore: Detailed
 

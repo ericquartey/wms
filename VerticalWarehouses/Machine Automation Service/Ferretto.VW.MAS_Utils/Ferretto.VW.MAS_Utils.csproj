@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.2;net471</TargetFrameworks>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="6.3.0" />
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,7 +10,7 @@ namespace Ferretto.WMS.App.Core.Models
         public Func<IDrawableCompartment, IDrawableCompartment, string> ColorFunc => (compartment, selected) =>
         {
             var compartmentDetails = compartment as ICapacityCompartment;
-            if (compartmentDetails == null || compartmentDetails.MaxCapacity.HasValue == false)
+            if (compartmentDetails == null || !compartmentDetails.MaxCapacity.HasValue)
             {
                 return "#FF90A4AE";
             }

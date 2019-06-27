@@ -1,5 +1,8 @@
+using Ferretto.Common.Utils;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Item))]
     public class AllowedItemInCompartment : BaseModel<int>
     {
         #region Properties
@@ -18,6 +21,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
+        [Positive]
         public double? MaxCapacity { get; set; }
 
         #endregion

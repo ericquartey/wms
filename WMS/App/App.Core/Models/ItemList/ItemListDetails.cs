@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.ItemList))]
     public class ItemListDetails : BusinessObject
     {
         #region Fields
@@ -46,7 +44,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.ItemListAreaName), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName
         {
             get => this.areaName;
@@ -54,7 +52,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code
         {
             get => this.code;
@@ -68,21 +66,21 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.creationDate, value);
         }
 
-        [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string CustomerOrderCode
         {
             get => this.customerOrderCode;
             set => this.SetProperty(ref this.customerOrderCode, value);
         }
 
-        [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string CustomerOrderDescription
         {
             get => this.customerOrderDescription;
             set => this.SetProperty(ref this.customerOrderDescription, value);
         }
 
-        [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string Description
         {
             get => this.description;
@@ -107,14 +105,14 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
 
         [Required]
-        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
         public ItemListType? ItemListType
         {
             get => this.itemListType;
             set => this.SetProperty(ref this.itemListType, value);
         }
 
-        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
         public string ItemListTypeDescription
         {
             get => this.itemListTypeDescription;
@@ -131,7 +129,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Priority), ResourceType = typeof(BusinessObjects))]
         public int? Priority
         {
             get => this.priority;
@@ -155,21 +153,21 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string ShipmentUnitCode
         {
             get => this.shipmentUnitCode;
             set => this.SetProperty(ref this.shipmentUnitCode, value);
         }
 
-        [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string ShipmentUnitDescription
         {
             get => this.shipmentUnitDescription;
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
         public ItemListStatus? Status
         {
             get => this.status;

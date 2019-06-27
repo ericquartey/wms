@@ -9,8 +9,13 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Constructors
 
+        public PositioningMessageData()
+        {
+        }
+
         public PositioningMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration,
-            decimal deceleration, int numberCycles, decimal lowerBound, decimal upperBound, MessageVerbosity verbosity = MessageVerbosity.Debug)
+            decimal deceleration, int numberCycles, decimal lowerBound, decimal upperBound, decimal resolution,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -22,33 +27,40 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
+            this.Resolution = resolution;
         }
 
         #endregion
 
         #region Properties
 
-        public Axis AxisMovement { get; private set; }
+        public Axis AxisMovement { get; set; }
+
+        public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
         public decimal CurrentPosition { get; set; }
 
-        public decimal LowerBound { get; }
+        public int ExecutedCycles { get; set; }
 
-        public MovementType MovementType { get; private set; }
+        public decimal LowerBound { get; set; }
 
-        public int NumberCycles { get; }
+        public MovementType MovementType { get; set; }
 
-        public decimal TargetAcceleration { get; private set; }
+        public int NumberCycles { get; set; }
 
-        public decimal TargetDeceleration { get; private set; }
+        public decimal Resolution { get; set; }
 
-        public decimal TargetPosition { get; private set; }
+        public decimal TargetAcceleration { get; set; }
 
-        public decimal TargetSpeed { get; private set; }
+        public decimal TargetDeceleration { get; set; }
 
-        public decimal UpperBound { get; }
+        public decimal TargetPosition { get; set; }
 
-        public MessageVerbosity Verbosity { get; private set; }
+        public decimal TargetSpeed { get; set; }
+
+        public decimal UpperBound { get; set; }
+
+        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
     }

@@ -1,0 +1,120 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <CodeAnalysisRuleSet>..\..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Compartment.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Compartment.resx</DependentUpon>
+        </Compile>
+        <Compile Update="CompartmentType.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>CompartmentType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Errors.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Errors.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Item.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Item.resx</DependentUpon>
+        </Compile>
+        <Compile Update="ItemArea.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ItemArea.resx</DependentUpon>
+        </Compile>
+        <Compile Update="ItemList.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ItemList.resx</DependentUpon>
+        </Compile>
+        <Compile Update="ItemListRow.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ItemListRow.resx</DependentUpon>
+        </Compile>
+        <Compile Update="LoadingUnit.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>LoadingUnit.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Mission.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Mission.resx</DependentUpon>
+        </Compile>
+        <Compile Update="SchedulerRequest.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>SchedulerRequest.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Compartment.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Compartment.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="CompartmentType.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>CompartmentType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Errors.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Item.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Item.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="ItemArea.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ItemArea.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="ItemList.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ItemList.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="ItemListRow.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ItemListRow.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="LoadingUnit.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>LoadingUnit.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Mission.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Mission.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="SchedulerRequest.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>SchedulerRequest.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+</Project>

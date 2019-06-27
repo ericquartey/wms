@@ -10,7 +10,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.ListDetails}"
              MinHeight="300"
@@ -287,7 +287,7 @@
                                            Text="{x:Static res:ItemLists.ItemListRows}" />
 
                                 <wms:ActionBar Grid.Row="0"
-                                               Grid.ColumnSpan="4"
+                                               Grid.ColumnSpan="2"
                                                HorizontalAlignment="Right"
                                                Style="{DynamicResource ActionBarNotCustomizable}">
 

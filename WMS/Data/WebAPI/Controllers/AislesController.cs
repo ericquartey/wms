@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -36,11 +33,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AislesController(
             ILogger<AislesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IAisleProvider aisleProvider,
             ILoadingUnitProvider loadingUnitProvider,
             ICellProvider cellProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.aisleProvider = aisleProvider;
@@ -92,7 +87,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
                 if (result is NotFoundOperationResult<IEnumerable<LoadingUnit>>)
                 {
-                    var message = $"No entity with the specified id={id} exists.";
+                    var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                     this.logger.LogWarning(message);
                     return this.NotFound(new ProblemDetails
                     {
@@ -117,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.aisleProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {

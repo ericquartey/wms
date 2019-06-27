@@ -1,6 +1,8 @@
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -8,10 +10,6 @@ using Unity;
 
 namespace Ferretto.WMS.Modules.Layout
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "This class associate all Views to related ViewModels")]
     [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class LayoutModule : IModule
@@ -62,7 +60,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+            SplashScreenService.SetMessage(DesktopApp.InitializingLayoutModule);
 
             this.logger.Trace("Loading module ...");
 
@@ -70,6 +68,9 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
             navigationService.Register<LoginView, LoginViewModel>();
+
+            var localisationService = ServiceLocator.Current.GetService(typeof(ILocalizationService)) as ILocalizationService;
+            localisationService.SetAcceptedLanguage(System.Globalization.CultureInfo.CurrentUICulture.ToString());
         }
 
         #endregion

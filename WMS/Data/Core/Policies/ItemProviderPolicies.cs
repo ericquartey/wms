@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -13,102 +11,106 @@ namespace Ferretto.WMS.Data.Core.Policies
 
         public static Policy ComputeDeletePolicy(this IItemDeletePolicy itemToDelete)
         {
-            var errorMessages = new List<string>();
+            var policy = new Policy
+            {
+                Name = nameof(CrudPolicies.Delete),
+                Type = PolicyType.Operation
+            };
+
             if (itemToDelete.CompartmentsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{itemToDelete.CompartmentsCount}]");
+                policy.AddErrorMessage(
+                    Resources.Item.CannotDeleteTheItemBecauseItHasAssociatedCompartments);
             }
 
             if (itemToDelete.ItemListRowsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemToDelete.ItemListRowsCount}]");
+                policy.AddErrorMessage(
+                    Resources.Item.CannotDeleteTheItemBecauseItHasAssociatedItemListRows);
             }
 
             if (itemToDelete.MissionsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{itemToDelete.MissionsCount}]");
+                policy.AddErrorMessage(
+                    Resources.Item.CannotDeleteTheItemBecauseItHasAssociatedMissions);
             }
 
             if (itemToDelete.SchedulerRequestsCount > 0)
             {
-                errorMessages.Add(
-                    $"{Common.Resources.BusinessObjects.SchedulerRequest} [{itemToDelete.SchedulerRequestsCount}]");
+                policy.AddErrorMessage(
+                    Resources.Item.CannotDeleteTheItemBecauseItHasAssociatedSchedulerRequests);
             }
 
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
+            return policy;
+        }
 
-            return new Policy
+        public static Policy ComputeItemCompartmentTypeDeletePolicy(this IItemCompartmentTypeDeletePolicy itemToDelete)
+        {
+            var policy = new Policy
             {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
                 Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
+
+            if (itemToDelete.TotalStock > 0)
+            {
+                policy.AddErrorMessage(Resources.Item.CannotDeleteTheItemCompartmentTypeBecauseStockIsNotZero);
+            }
+
+            if (itemToDelete.TotalReservedForPick > 0)
+            {
+                policy.AddErrorMessage(Resources.Item.CannotDeleteTheItemCompartmentTypeBecauseTotalReservedForPickIsNotZero);
+            }
+
+            if (itemToDelete.TotalReservedToPut > 0)
+            {
+                policy.AddErrorMessage(Resources.Item.CannotDeleteTheItemCompartmentTypeBecauseTotalReservedToPutIsNotZero);
+            }
+
+            return policy;
         }
 
         public static Policy ComputePickPolicy(this IItemPickPolicy itemToWithdraw)
         {
-            var errorMessages = new List<string>();
-            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
+            var policy = new Policy
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
                 Name = nameof(ItemPolicy.Pick),
                 Type = PolicyType.Operation
             };
+
+            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
+            {
+                policy.AddErrorMessage(Resources.Item.CannotPickTheItemBecauseItHasNoAvailableQuantity);
+            }
+
+            return policy;
         }
 
         public static Policy ComputePutPolicy(this IItemPutPolicy itemToPut)
         {
-            var errorMessages = new List<string>();
-
-            if (!itemToPut.HasCompartmentTypes)
+            var policy = new Policy
             {
-                errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
                 Name = nameof(ItemPolicy.Put),
                 Type = PolicyType.Operation
             };
+
+            if (!itemToPut.HasCompartmentTypes)
+            {
+                policy.AddErrorMessage(Resources.Item.CannotPutTheItemBecauseItHasNoAssociatedCompartmentTypes);
+            }
+
+            if (!itemToPut.HasAssociatedAreas)
+            {
+                policy.AddErrorMessage(Resources.Item.CannotPutTheItemBecauseItHasNoAssociatedAreas);
+            }
+
+            return policy;
         }
 
         public static Policy ComputeUpdatePolicy(this IItemUpdatePolicy model)
         {
             return new Policy
             {
-                IsAllowed = true,
-                Reason = null,
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };

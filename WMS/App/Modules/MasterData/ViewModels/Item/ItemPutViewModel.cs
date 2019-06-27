@@ -186,7 +186,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.ItemPutCommenced,
+                    App.Resources.MasterData.ItemPutCommenced,
                     StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
@@ -204,9 +204,9 @@ namespace Ferretto.WMS.Modules.MasterData
         private async Task TriggerRetrievePutCapacityAsync(string propertyName)
         {
             if (propertyName == nameof(this.Model.Quantity)
-                &&
+                ||
                 propertyName == nameof(this.Model.ItemDetails)
-                &&
+                ||
                 propertyName == nameof(this.Model.Error))
             {
                 return;

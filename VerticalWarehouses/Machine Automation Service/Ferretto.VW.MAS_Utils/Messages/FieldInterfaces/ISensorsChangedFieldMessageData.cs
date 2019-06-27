@@ -6,6 +6,8 @@
 
         bool[] SensorsStates { get; set; }
 
+        bool SensorsStatus { get; set; }
+
         #endregion
     }
 }

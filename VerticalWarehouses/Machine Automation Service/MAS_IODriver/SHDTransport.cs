@@ -9,8 +9,6 @@ using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    //TEMP Integration of controller for SHD RemoteIO
-
     public class SHDTransport : ISHDTransport, IDisposable
     {
         #region Fields
@@ -46,12 +44,14 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
+        /// <inheritdoc />
         public void Configure(IPAddress hostAddress, int sendPort)
         {
             this.ioAddress = hostAddress;
             this.sendPort = sendPort;
         }
 
+        /// <inheritdoc />
         public async Task ConnectAsync()
         {
             if (this.ioAddress == null)
@@ -185,6 +185,7 @@ namespace Ferretto.VW.MAS_IODriver
             return 0;
         }
 
+        /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] message, int delay, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)

@@ -4,15 +4,29 @@
     {
         #region Fields
 
+        public const string ASSOCIATECOMPARTMENTTYPES = "AssociateCompartmentTypesViewModel";
+
+        public const string ASSOCIATECOMPARTMENTTYPESSTEPS = "AssociateCompartmentTypesStepsViewModel";
+
         public const string CELLDETAILS = "CellDetailsViewModel";
 
         public const string CELLS = "CellsViewModel";
 
+        public const string CHOOSELOADINGUNITSTEP = "ChooseLoadingUnitStepViewModel";
+
         public const string COMPARTMENTDETAILS = "CompartmentDetailsViewModel";
+
+        public const string COMPARTMENTEDITSTEP = "CompartmentEditStepViewModel";
 
         public const string COMPARTMENTS = "CompartmentsViewModel";
 
+        public const string COMPARTMENTTYPEDETAILS = "CompartmentTypeDetailsViewModel";
+
+        public const string COMPARTMENTTYPES = "CompartmentTypesViewModel";
+
         public const string ITEMADD = "ItemAddViewModel";
+
+        public const string ITEMCOMPARTMENTTYPESTOITEMSTEPVIEWMODEL = "ItemCompartmentTypesToItemStepViewModel";
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";
 

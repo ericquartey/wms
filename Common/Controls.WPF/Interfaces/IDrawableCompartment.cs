@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        double? Height { get; set; }
+        double? Depth { get; set; }
 
         int Id { get; set; }
 

@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ImageProvider : IImageProvider
+    internal class ImageProvider : IImageProvider
     {
         #region Fields
 
@@ -132,7 +132,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.logger.LogWarning($"Could not get content type for file '{file.PhysicalPath}'.");
 
                 return new UnprocessableEntityOperationResult<ImageFile>(
-                    $"Could not get content type for file {key}");
+                    string.Format(
+                        Resources.Errors.CouldNotGetContentTypeForFile,
+                        key));
             }
         }
 

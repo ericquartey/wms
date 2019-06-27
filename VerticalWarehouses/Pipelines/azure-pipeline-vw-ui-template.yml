@@ -5,6 +5,8 @@ parameters:
 steps:
 
 - template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
+  parameters:
+    RestoreSolution: '**/VerticalWarehouses.sln'
 
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml

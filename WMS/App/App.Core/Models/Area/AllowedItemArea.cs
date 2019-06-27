@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.AllowedItemArea))]
     public class AllowedItemArea : BusinessObject
     {
         #region Properties

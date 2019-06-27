@@ -2,10 +2,11 @@
 using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -28,6 +29,8 @@ namespace Ferretto.VW.InstallationApp
         private bool luPresentiInMachineSide;
 
         private bool luPresentInOperatorSide;
+
+        private IUpdateSensorsService updateSensorsService;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
@@ -78,6 +81,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -87,6 +91,8 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateVerticalandCradleSensorsState(message.Data.SensorsStates),
                 ThreadOption.PublisherThread,
                 false);
+
+            await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

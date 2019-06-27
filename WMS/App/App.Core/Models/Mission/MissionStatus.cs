@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -7,9 +7,6 @@ namespace Ferretto.WMS.App.Core.Models
     {
         [Display(Name = nameof(BusinessObjects.MissionStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
-
-        [Display(Name = nameof(BusinessObjects.MissionStatusWaiting), ResourceType = typeof(BusinessObjects))]
-        Waiting = 'W',
 
         [Display(Name = nameof(BusinessObjects.MissionStatusExecuting), ResourceType = typeof(BusinessObjects))]
         Executing = 'X',

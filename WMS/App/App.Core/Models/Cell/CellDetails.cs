@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Cell))]
     public class CellDetails : BusinessObject
     {
         #region Fields
@@ -68,7 +66,7 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Enumeration> CellStatusChoices { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
         public int? CellStatusId
         {
             get => this.cellStatusId;
@@ -78,7 +76,7 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Enumeration> CellTypeChoices { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
         public int? CellTypeId
         {
             get => this.cellTypeId;
@@ -114,7 +112,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CellPriority), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Priority), ResourceType = typeof(BusinessObjects))]
         public int? Priority
         {
             get => this.priority;
@@ -128,8 +126,6 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.side;
             set => this.SetProperty(ref this.side, value);
         }
-
-        public IEnumerable<Enumeration> SideChoices { get; set; }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]

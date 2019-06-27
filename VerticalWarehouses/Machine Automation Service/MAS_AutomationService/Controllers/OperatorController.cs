@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using System.Collections.ObjectModel;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("1.0.0/Operator/[controller]")]
     [ApiController]
     public class OperatorController : ControllerBase
     {
@@ -20,36 +24,68 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IItemsDataService itemsDataService;
 
+        private readonly ILogger<AutomationService> logger;
+
+        private readonly IMissionsDataService missionsDataService;
+
         private readonly IServiceProvider services;
 
         #endregion
 
         #region Constructors
 
-        public OperatorController(IEventAggregator eventAggregator, IServiceProvider services, IItemsDataService itemsDataService)
+        public OperatorController(IEventAggregator eventAggregator, ILogger<AutomationService> logger, IServiceProvider services, IItemsDataService itemsDataService, IMissionsDataService missionsDataService)
         {
             this.eventAggregator = eventAggregator;
             this.services = services;
             this.itemsDataService = itemsDataService;
+            this.missionsDataService = missionsDataService;
+            this.logger = logger;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(ObservableCollection<Item>))]
-        [ProducesResponseType(404)]
-        [HttpGet("Items/{code}/{quantity}")]
-        public async Task<ActionResult<ObservableCollection<Item>>> Items(string code, int quantity)
+        [HttpGet("Pick/{bayId}/{missionId}/{evadedQuantity}")]
+        public async void PickAsync(int bayId, int missionId, int evadedQuantity)
         {
-            var item = await this.itemsDataService.GetAllAsync(search: code);
-            if (item != null)
+            try
             {
-                return this.Ok(await this.itemsDataService.GetAllAsync(skip: item[0].Id - (item[0].Id < (quantity / 2) ? item[0].Id : (quantity / 2)), take: quantity));
+                await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
+                var messageData = new MissionCompletedMessageData
+                {
+                    MissionId = missionId,
+                    BayId = bayId,
+                };
+                var notificationMessage = new NotificationMessage(messageData, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.logger.LogDebug($"AS-OC Received HTTP Get request from bay {bayId}, mission Id {missionId}, evaded quantity {evadedQuantity}");
             }
-            else
+            catch (Exception ex)
             {
-                return null;
+                throw new ApplicationException(ex.Message);
+            }
+        }
+
+        [HttpGet("Refill/{bayId}/{missionId}/{evadedQuantity}")]
+        public async void RefillAsync(int bayId, int missionId, int evadedQuantity)
+        {
+            try
+            {
+                await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
+                var messageData = new MissionCompletedMessageData
+                {
+                    MissionId = missionId,
+                    BayId = bayId,
+                };
+                var notificationMessage = new NotificationMessage(messageData, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.logger.LogDebug($"AS-OC Received HTTP Get request from bay {bayId}, mission Id {missionId}, evaded quantity {evadedQuantity}");
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
             }
         }
 

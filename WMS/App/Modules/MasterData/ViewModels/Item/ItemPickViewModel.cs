@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -28,6 +29,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool advancedPick;
 
         private ICommand runPickCommand;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -108,6 +111,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model.AreaChoices = areaChoices;
                     break;
             }
+
+            await this.TriggerRetrievePickAvailabilityAsync(e.PropertyName);
         }
 
         protected override async Task OnAppearAsync()
@@ -151,6 +156,20 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.AddEnumerationsAsync(this.Model);
         }
 
+        private async Task RetrieveItemAvailabilityAsync(CancellationToken cancellationToken)
+        {
+            var result = await this.itemProvider.GetPickAvailabilityAsync(this.Model, cancellationToken);
+
+            if (result.Success)
+            {
+                this.Model.TotalAvailable = result.Entity;
+            }
+            else
+            {
+                this.Model.TotalAvailable = default(double?);
+            }
+        }
+
         private async Task RunPickAsync()
         {
             if (!this.CheckValidModel())
@@ -167,7 +186,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.ItemPickCommenced,
+                    App.Resources.MasterData.ItemPickCommenced,
                     StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
@@ -180,6 +199,38 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private async Task TriggerRetrievePickAvailabilityAsync(string propertyName)
+        {
+            if (propertyName == nameof(this.Model.Quantity)
+                ||
+                propertyName == nameof(this.Model.ItemDetails)
+                ||
+                propertyName == nameof(this.Model.Error))
+            {
+                return;
+            }
+
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 300;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
+                    .ContinueWith(
+                        async t => await this.RetrieveItemAvailabilityAsync(this.tokenSource.Token),
+                        this.tokenSource.Token,
+                        TaskContinuationOptions.NotOnCanceled,
+                        TaskScheduler.Current);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         #endregion

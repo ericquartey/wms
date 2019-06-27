@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Layout
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Modules.Layout
         public LoginViewModel()
         {
             this.User = new User();
-            this.LoginCheck = Common.Resources.Layout.Access;
+            this.LoginCheck = App.Resources.Layout.Access;
             this.IsBusy = false;
             this.IsEnabled = true;
             this.Status = Icons.ResourceManager.GetString(nameof(Icons.NavigationForward));
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Modules.Layout
         private async Task ExecuteLoginAsync()
         {
             this.ValidationError = this.userProvider.IsValid(this.User);
-            if (string.IsNullOrEmpty(this.ValidationError) == false)
+            if (!string.IsNullOrEmpty(this.ValidationError))
             {
                 return;
             }
@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Modules.Layout
             this.IsBusy = true;
             this.IsEnabled = false;
             this.Status = Icons.ResourceManager.GetString(nameof(Icons.NavigationCheck));
-            this.LoginCheck = Common.Resources.Layout.Ok;
+            this.LoginCheck = App.Resources.Layout.Ok;
         }
 
         private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)

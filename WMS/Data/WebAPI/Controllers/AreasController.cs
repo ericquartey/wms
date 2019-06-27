@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -42,13 +39,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AreasController(
                             ILogger<AreasController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IAreaProvider areaProvider,
             IBayProvider bayProvider,
             ICellProvider cellProvider,
             IItemProvider itemProvider,
             IItemListProvider itemListProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;
@@ -112,7 +107,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.areaProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
@@ -153,7 +148,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var orderByExpression = orderBy.ParseSortOptions();
 
-                return this.Ok(await this.itemProvider.GetByAreaIdAsync(
+                return this.Ok(await this.itemProvider.GetAllByAreaIdAsync(
                         id,
                         skip,
                         take,

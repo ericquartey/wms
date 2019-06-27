@@ -574,7 +574,11 @@
     <comment>Label text</comment>
   </data>
   <data name="DoCorrectOffset" xml:space="preserve">
-    <value>Correct Offset</value>
+    <value>Close procedure</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="AcceptOffset" xml:space="preserve">
+    <value>Accept Offset</value>
     <comment>Button text</comment>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
@@ -1150,5 +1154,9 @@
   </data>
   <data name="ErrorRetrievingConfigurationData" xml:space="preserve">
     <value>Couldn't fetch requested configuration data</value>
+  </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>Value inserted not valid</value>
+    <comment>Value inserted not valid</comment>
   </data>
 </root>

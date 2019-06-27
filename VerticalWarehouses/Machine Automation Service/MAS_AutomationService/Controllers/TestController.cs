@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("1.0.0/Test/[controller]")]
     [ApiController]
-    public class TestController : ControllerBase
+    public partial class TestController : ControllerBase
     {
         #region Fields
 
@@ -28,150 +21,63 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private IHubContext<InstallationHub, IInstallationHub> hub;
+        private IDataHubClient dataHubClient;
+
+        private IHubContext<InstallationHub, IInstallationHub> installationHub;
+
+        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub)
+        public TestController(
+            IEventAggregator eventAggregator,
+            IServiceProvider services,
+            IHubContext<InstallationHub, IInstallationHub> hub,
+            IHubContext<OperatorHub, IOperatorHub> operatorHub,
+            IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.hub = hub;
+            this.installationHub = hub;
+            this.dataHubClient = dataHubClient;
+            this.operatorHub = operatorHub;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("AddMissionTest")]
-        public void AddMission()
+        [HttpGet("BayNowServiceable")]
+        public void BayNowServiceable()
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
-            var missionMessage = new CommandMessage(missionData,
-                "Test Mission",
-                MessageActor.AutomationService,
-                MessageActor.WebApi,
-                MessageType.AddMission,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(missionMessage);
-        }
-
-        [HttpPost("CreateMissionTest")]
-        public void CreateMission([FromBody] int bayID, int drawerID)
-        {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
-
-            var message = new CommandMessage(missionData,
-                "Create Mission",
-                MessageActor.MissionsManager,
-                MessageActor.WebApi,
-                MessageType.CreateMission,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.BayNowServiceableMethod();
         }
 
         [HttpGet("HomingTest")]
         public async void ExecuteHoming()
         {
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-
-            return;
-
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(2000);
-
-            //TEMP this.eventAggregator.GetEvent<NotificationEvent>()
-            //TEMP     .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
-            //TEMP await Task.Delay(2000);
-
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(4000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(4000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
+            await this.ExecuteHomingMethod();
         }
 
         [HttpPost]
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
         public async Task ExecuteResolutionCalibrationAsync(decimal readInitialPosition, decimal readFinalPosition)
         {
-            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
-            var notificationMessage = new NotificationMessage(resolutionCalibrationMessageData, "Resolution Calibration Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationStart);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            await Task.Delay(2000);
-            resolutionCalibrationMessageData.Resolution = 1.0001m;
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(resolutionCalibrationMessageData,
-                "Resolution Calibration Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationEnd));
+            await this.ExecuteResolutionCalibrationMethod(readInitialPosition, readFinalPosition);
         }
 
         [HttpPost]
         public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
-            dto.ShutterType = 1;
-            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement);
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
-                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
-                MessageStatus.OperationStart));
-
-            await Task.Delay(2000);
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
-                MessageStatus.OperationEnd));
+            await this.ExecuteShutterPositioningMovementMethod();
         }
 
         [HttpGet("HomingStop")]
         public void ExecuteStopHoming()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
-                MessageVerbosity.Info));
+            this.ExecuteStopHomingMethod();
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -179,30 +85,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("DecimalConfigurationValues/{parameter}")]
         public ActionResult<decimal> GetDecimalConfigurationParameter(string parameter)
         {
-            decimal returnValue;
-            switch (parameter)
-            {
-                case "UpperBound":
-                    returnValue = 1000m;
-                    break;
-
-                case "LowerBound":
-                    returnValue = 10m;
-                    break;
-
-                case "Offset":
-                    returnValue = 20m;
-                    break;
-
-                case "Resolution":
-                    returnValue = 165.14m;
-                    break;
-
-                default:
-                    var message = $"No entity with the specified parameter={parameter} exists.";
-                    return this.NotFound(message);
-            }
-            return this.Ok(returnValue);
+            return this.GetDecimalConfigurationParameterMethod(parameter);
         }
 
         [ProducesResponseType(200, Type = typeof(bool))]
@@ -210,15 +93,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("GetInstallationStatus")]
         public ActionResult<bool[]> GetInstallationStatus()
         {
-            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
-            if (installationStatus != null)
-            {
-                return this.Ok(installationStatus);
-            }
-            else
-            {
-                return this.StatusCode(500);
-            }
+            return this.GetInstallationStatusMethod();
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -226,144 +101,59 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
         public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
         {
-            var categoryEnum = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), category);
-
-            long longParameter;
-            long longCategory;
-
-            switch (categoryEnum)
-            {
-                case ConfigurationCategory.GeneralInfo:
-                    {
-                        longCategory = (long)categoryEnum;
-                        longParameter = (long)Enum.Parse(typeof(GeneralInfo), parameter);
-                        break;
-                    }
-                default:
-                    {
-                        longParameter = 0;
-                        longCategory = 0;
-                        break;
-                    }
-            }
-
-            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync(longParameter, longCategory);
-
-            return this.Ok(returnValue);
+            return this.GetIntegerConfigurationParameterMethod(category, parameter);
         }
 
         [HttpGet("Homing")]
         public async void Homing()
         {
-            var messageData = new HomingMessageData(Axis.Both);
-            var message = new CommandMessage(messageData, "Homing", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Homing);
-
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.HomingMethod();
         }
 
         [HttpGet("HorizontalPositioning")]
         public void HorizontalPositioning()
         {
-            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
-            var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.HorizontalPositioningMethod();
         }
 
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
-            //var message = new NotificationMessage(
-            //    null,
-            //    "Mission Executed",
-            //    MessageActor.MissionsManager,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.EndAction,
-            //    MessageStatus.OperationEnd);
-            //this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
         [HttpGet("ResetIO")]
         public void ResetIO()
         {
-            //this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
-            //    MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
-            //    MessageVerbosity.Info));
         }
 
-        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Started",
-                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
-                MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
-                MessageStatus.OperationEnd));
+            await this.StartShutterControlMethod();
         }
 
         [HttpGet("StartShutterControlError/{delay}/{numberCycles}")]
         public void StartShutterControlError(int delay, int numberCycles)
         {
-            var dataInterface = new ShutterControlMessageData(delay, numberCycles);
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
-                "Simulated Shutter Error",
-                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
-                 MessageStatus.OperationError));
+            this.StartShutterControlErrorMethod(delay, numberCycles);
         }
 
         [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
-                MessageVerbosity.Info));
+            this.StopFiniteStateMachineMethod();
         }
 
         [HttpGet("UpdateCurrentPositionTest")]
         public async Task UpdateCurrentPositionTest()
         {
-            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            var positionData = new CurrentPositionMessageData(0m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(50m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(100m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(150m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(200m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(250m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(300m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
-            await Task.Delay(1000);
-            positionData = new CurrentPositionMessageData(350m);
-            notificationEvent.Publish(new NotificationMessage(
-                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await this.UpdateCurrentPositionTestMethod();
         }
 
         [HttpGet("VerticalPositioning")]
         public void VerticalPositioning()
         {
-            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
-            var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.VerticalPositioningMethod();
         }
 
         #endregion

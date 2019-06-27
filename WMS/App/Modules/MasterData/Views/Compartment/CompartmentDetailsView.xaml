@@ -6,7 +6,7 @@
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.CompartmentDetails}"
              d:DesignHeight="450"
@@ -196,7 +196,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:LookUpEdit Grid.Row="0"
+                        <wms:LookUpEdit Name="ItemLookUp"
+                                        Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         wms:ShowTitle.Show="True"
@@ -249,32 +250,37 @@
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding IsItemDetailsEnabled}"
                                       ItemsSource="{Binding Model.MaterialStatusChoices}" />
-
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.PackageTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding IsItemDetailsEnabled}"
                                       ItemsSource="{Binding Model.PackageTypeChoices}" />
                         <wms:TextBox Grid.Row="4"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                     </Grid>
                 </GroupBox>
 
@@ -295,7 +301,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
@@ -356,6 +362,7 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Stock, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding Path=EditValue, ElementName=ItemLookUp, Converter={StaticResource OTBC}, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
@@ -374,31 +381,43 @@
                           VerticalContentAlignment="Stretch"
                           Header="{x:Static res:MasterData.CompartmentPosition}"
                           Visibility="{Binding Model.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid Width="{Binding TrayWidth, ElementName=trayControl}"
+                                  HorizontalAlignment="Left"
+                                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:MasterData.CompartmentPosition}" />
+
+                                <wms:ActionBar Grid.Column="1"
+                                               Height="28"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource ActionBarNotCustomizable}">
+                                    <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
+                                                       Content="{x:Static res:MasterData.EditLoadingUnit}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
+                                                       GlyphSize="Custom" />
+                                </wms:ActionBar>
+
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-
-                        <Grid Width="{Binding TrayWidth, ElementName=trayControl}"
-                              HorizontalAlignment="Left">
-                            <wms:ActionBar Height="28"
-                                           Margin="0,0,0,5"
-                                           HorizontalAlignment="Right"
-                                           Style="{DynamicResource ActionBarNotCustomizable}">
-                                <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
-                                                   Content="{x:Static res:MasterData.EditLoadingUnit}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
-                                                   GlyphSize="Custom" />
-                            </wms:ActionBar>
-                        </Grid>
-
                         <ctrls:TrayControl x:Name="trayControl"
-                                           Grid.Row="1"
                                            Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                           DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                           DimensionHeight="{Binding LoadingUnitDetails.Depth}"
                                            DimensionWidth="{Binding LoadingUnitDetails.Width}"
                                            IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                            RulerInfo="mm"

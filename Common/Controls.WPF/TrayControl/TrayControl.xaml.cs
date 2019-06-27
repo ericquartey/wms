@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -96,6 +97,12 @@ namespace Ferretto.Common.Controls.WPF
             this.RootTrayGrid.DataContext = trayControl;
             this.SizeChanged += this.TrayControl_SizeChanged;
             this.LoadStyle();
+            this.CreateBinding(
+                this.CanvasListBoxControl,
+                nameof(this.CanvasListBoxControl.TrayWidth),
+                TrayWidthProperty);
+
+            this.PreviewMouseDown += Control_PreviewMouseDown;
         }
 
         #endregion
@@ -251,11 +258,32 @@ namespace Ferretto.Common.Controls.WPF
             {
                 if (e.NewValue != null && e.OldValue == null)
                 {
+                    control.PreviewMouseDown += Control_PreviewMouseDown;
                     control.MouseDoubleClick += OnMouseDoubleClick;
                 }
                 else if ((e.NewValue == null) && (e.OldValue != null))
                 {
+                    control.PreviewMouseDown -= Control_PreviewMouseDown;
                     control.MouseDoubleClick -= OnMouseDoubleClick;
+                }
+            }
+        }
+
+        private static void Control_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                var control = sender as Control;
+                var command = (ICommand)control.GetValue(CommandDoubleClickProperty);
+                var commandParameter = control.GetValue(CommandDoubleClickProperty);
+                if (commandParameter == null)
+                {
+                    return;
+                }
+
+                if (command.CanExecute(commandParameter))
+                {
+                    command.Execute(commandParameter);
                 }
             }
         }
@@ -272,6 +300,18 @@ namespace Ferretto.Common.Controls.WPF
             }
         }
 
+        private void CreateBinding(CanvasListBoxControl source, string bindingName, DependencyProperty depPropertyName)
+        {
+            var binding = new Binding
+            {
+                Source = source,
+                Path = new PropertyPath(path: bindingName),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(this, depPropertyName, binding);
+        }
+
         private void LoadStyle()
         {
             var dictionary = new ResourceDictionary();
@@ -284,7 +324,6 @@ namespace Ferretto.Common.Controls.WPF
         private void TrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 2, e.NewSize.Width - 2);
-            this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
 
         #endregion

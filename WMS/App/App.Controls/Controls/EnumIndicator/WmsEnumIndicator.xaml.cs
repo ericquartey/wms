@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Extensions;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Controls
         #region Fields
 
         public static readonly DependencyProperty BackgroundBrushProperty = DependencyProperty.Register(
-            nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
+                    nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
 
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));

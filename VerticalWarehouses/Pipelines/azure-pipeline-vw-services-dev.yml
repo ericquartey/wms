@@ -26,4 +26,4 @@ steps:
     BuildConfiguration: 'debug'
     RestoreBuildProjects: '**/MAS_AutomationService.csproj'
     TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
-    TargetFramework: 'netcoreapp2.1'
+    TargetFramework: 'netcoreapp2.2'

@@ -45,7 +45,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             {
                 return false;
             }
-            for (int id = firstCellID; id <= lastCellID; id += 2)
+            for (var id = firstCellID; id <= lastCellID; id += 2)
             {
                 ChangeCellStatus(cm, id - 1, Status.Disabled);
             }
@@ -57,23 +57,23 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             cm.Blocks = null;
             cm.Blocks = new List<CellBlock>();
-            int counter = 1;
-            for (int index = 0; index < cm.Cells.Count; index += 2) //odd ID cell's index
+            var counter = 1;
+            for (var index = 0; index < cm.Cells.Count; index += 2) //odd ID cell's index
             {
                 if (cm.Cells[index].Status == 0)
                 {
-                    int tmp = GetLastUpperNotDisabledCellIndex(cm, index);
+                    var tmp = GetLastUpperNotDisabledCellIndex(cm, index);
                     var cb = new CellBlock(index + 1, tmp + 1, counter);
                     cm.Blocks.Add(cb);
                     counter++;
                     index = tmp;
                 }
             }
-            for (int index = 1; index < cm.Cells.Count; index += 2)//even ID cell's index
+            for (var index = 1; index < cm.Cells.Count; index += 2)//even ID cell's index
             {
                 if (cm.Cells[index].Status == 0)
                 {
-                    int tmp = GetLastUpperNotDisabledCellIndex(cm, index);
+                    var tmp = GetLastUpperNotDisabledCellIndex(cm, index);
                     var cb = new CellBlock(index + 1, tmp + 1, counter);
                     cm.Blocks.Add(cb);
                     counter++;
@@ -86,8 +86,8 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         public static void CreateCellTable(CellsManager cm, int machineHeightMillimiters)
         {
-            int cells = CalculateCellQuantityFromMachineHeight(machineHeightMillimiters);
-            for (int id = 1; id <= cells; id++)
+            var cells = CalculateCellQuantityFromMachineHeight(machineHeightMillimiters);
+            for (var id = 1; id <= cells; id++)
             {
                 var c = new Cell(id);
                 cm.Cells.Add(c);
@@ -200,7 +200,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         private static int CalculateCellQuantityFromMachineHeight(int machineHeightMillimiters)
         {
-            int cells = machineHeightMillimiters / CELL_HEIGHT_MILLIMETERS;
+            var cells = machineHeightMillimiters / CELL_HEIGHT_MILLIMETERS;
             return cells * AISLE_SIDES_COUNT;
         }
 
@@ -208,7 +208,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if (cellIndex >= cm.Cells.Count || cellIndex < 0)
             {
-                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellIndex");
+                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", nameof(cellIndex));
             }
             cm.Cells[cellIndex].Status = newStatus;
         }
@@ -230,7 +230,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         private static void FreeCells(CellsManager cm, int firstCellIndex, int drawerHeightMillimiters)
         {
             var cellsToFree = drawerHeightMillimiters / CELL_HEIGHT_MILLIMETERS;
-            for (int index = firstCellIndex; index <= firstCellIndex + (cellsToFree * AISLE_SIDES_COUNT); index += 2)
+            for (var index = firstCellIndex; index <= firstCellIndex + (cellsToFree * AISLE_SIDES_COUNT); index += 2)
             {
                 ChangeCellStatus(cm, index, 0);
             }
@@ -238,7 +238,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         private static int GetLastUpperNotDisabledCellIndex(CellsManager cm, int cellIndex)
         {
-            for (int index = cellIndex + 2; index < cm.Cells.Count; index += 2)
+            for (var index = cellIndex + 2; index < cm.Cells.Count; index += 2)
             {
                 if (cm.Cells[index].Status != Status.Disabled && cm.Cells[index].Status != Status.Occupied)
                 {
@@ -253,8 +253,8 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         private static void OccupyCells(CellsManager cm, int firstCellindex, int drawerHeightMillimiters)
         {
-            int cellsToOccupy = (drawerHeightMillimiters / CELL_HEIGHT_MILLIMETERS) + 1;
-            for (int index = firstCellindex; index <= firstCellindex + (cellsToOccupy * AISLE_SIDES_COUNT); index += 2)
+            var cellsToOccupy = (drawerHeightMillimiters / CELL_HEIGHT_MILLIMETERS) + 1;
+            for (var index = firstCellindex; index <= firstCellindex + (cellsToOccupy * AISLE_SIDES_COUNT); index += 2)
             {
                 ChangeCellStatus(cm, index, Status.Occupied);
             }

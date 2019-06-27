@@ -1,17 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using DataModels = Ferretto.Common.DataModels;
 
-namespace Ferretto.WMS.Data.Tests
+namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
     public class ItemsControllerCompartmentTypesTest : BaseControllerTest
@@ -19,7 +13,7 @@ namespace Ferretto.WMS.Data.Tests
         #region Methods
 
         [TestMethod]
-        public async Task DeleteItemCompartmentType()
+        public async Task DeleteCompartmentTypeAssociationAsync_Nominal()
         {
             #region Arrange
 
@@ -27,11 +21,11 @@ namespace Ferretto.WMS.Data.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
             DataModels.CompartmentType[] compartmentTypes =
             {
-                new DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 },
-                new DataModels.CompartmentType { Id = 2, Height = 3, Width = 4 },
-                new DataModels.CompartmentType { Id = 3, Height = 5, Width = 6 },
-                new DataModels.CompartmentType { Id = 4, Height = 7, Width = 8 },
-                new DataModels.CompartmentType { Id = 5, Height = 9, Width = 10 },
+                new DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
+                new DataModels.CompartmentType { Id = 2, Depth = 3, Width = 4 },
+                new DataModels.CompartmentType { Id = 3, Depth = 5, Width = 6 },
+                new DataModels.CompartmentType { Id = 4, Depth = 7, Width = 8 },
+                new DataModels.CompartmentType { Id = 5, Depth = 9, Width = 10 },
             };
             DataModels.ItemCompartmentType[] itemCompartmentTypes =
             {
@@ -46,25 +40,20 @@ namespace Ferretto.WMS.Data.Tests
             {
                 context.Items.Add(item1);
 
-                foreach (var compartmentType in compartmentTypes)
-                {
-                    context.CompartmentTypes.Add(compartmentType);
-                }
-
-                foreach (var itemCompartmentType in itemCompartmentTypes)
-                {
-                    context.ItemsCompartmentTypes.Add(itemCompartmentType);
-                }
+                context.CompartmentTypes.AddRange(compartmentTypes);
+                context.ItemsCompartmentTypes.AddRange(itemCompartmentTypes);
 
                 context.SaveChanges();
             }
+
+            const int itemIdToDelete = 1;
+
+            const int compartmentTypeIdToDelete = 2;
 
             #endregion
 
             #region Act
 
-            const int itemIdToDelete = 1;
-            const int compartmentTypeIdToDelete = 2;
             var actionResult = await controller.DeleteCompartmentTypeAssociationAsync(
                 itemIdToDelete,
                 compartmentTypeIdToDelete);
@@ -99,7 +88,7 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
-        public async Task PatchItemCompartmentType()
+        public async Task UpdateCompartmentTypeAssociationAsync_Nominal()
         {
             #region Arrange
 
@@ -107,7 +96,7 @@ namespace Ferretto.WMS.Data.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
             DataModels.CompartmentType[] compartmentTypes =
             {
-                new DataModels.CompartmentType { Id = 1, Height = 1, Width = 2 },
+                new DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
             };
             DataModels.ItemCompartmentType[] itemCompartmentTypes =
             {
@@ -118,26 +107,22 @@ namespace Ferretto.WMS.Data.Tests
             {
                 context.Items.Add(item1);
 
-                foreach (var compartmentType in compartmentTypes)
-                {
-                    context.CompartmentTypes.Add(compartmentType);
-                }
-
-                foreach (var itemCompartmentType in itemCompartmentTypes)
-                {
-                    context.ItemsCompartmentTypes.Add(itemCompartmentType);
-                }
+                context.CompartmentTypes.AddRange(compartmentTypes);
+                context.ItemsCompartmentTypes.AddRange(itemCompartmentTypes);
 
                 context.SaveChanges();
             }
+
+            const int itemIdToUpdate = 1;
+
+            const int compartmentTypeIdToUpdate = 1;
+
+            const int newMaxCapacity = 20;
 
             #endregion
 
             #region Act
 
-            const int itemIdToUpdate = 1;
-            const int compartmentTypeIdToUpdate = 1;
-            const int newMaxCapacity = 20;
             var actionResult = await controller.UpdateCompartmentTypeAssociationAsync(
                 itemIdToUpdate,
                 compartmentTypeIdToUpdate,
@@ -168,10 +153,9 @@ namespace Ferretto.WMS.Data.Tests
         private ItemsController MockController()
         {
             return new ItemsController(
-                new Mock<ILogger<ItemsController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
+                this.ServiceProvider.GetService(typeof(IItemAreaProvider)) as IItemAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
                 this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);

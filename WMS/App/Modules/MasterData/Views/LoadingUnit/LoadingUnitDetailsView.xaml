@@ -10,7 +10,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.LoadingUnitDetails}"
              d:DesignHeight="450"
@@ -23,7 +23,8 @@
         <wms:StringFormatConverter x:Key="SFC" />
 
         <DataTemplate x:Key="CellDisplayTemplateStock">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -37,7 +38,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateMaxCapacity">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right"
+                       VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -291,8 +293,9 @@
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
                     <ctrls:TrayControl HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
+                                       CommandDoubleClick="{Binding EditLoadingUnitCommand}"
                                        Compartments="{Binding Model.Compartments}"
-                                       DimensionHeight="{Binding Model.Length}"
+                                       DimensionHeight="{Binding Model.Depth}"
                                        DimensionWidth="{Binding Model.Width}"
                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                        RulerInfo="mm"
@@ -360,7 +363,7 @@
                                                         <Binding Source="{x:Static res:General.DimensionFormat}" />
                                                         <Binding Path="Data.Width"
                                                                  TargetNullValue="" />
-                                                        <Binding Path="Data.Height"
+                                                        <Binding Path="Data.Depth"
                                                                  TargetNullValue="" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
@@ -378,12 +381,12 @@
                                                 FieldName="Sub2" />
                                 <dxg:GridColumn Width="180*"
                                                 FieldName="Lot" />
-                                <dxg:GridColumn Width="150*"
-                                                FieldName="CompartmentStatusDescription" />
                                 <dxg:GridColumn Width="100*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="125*"
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateStock}"
                                                 FieldName="Stock" />
-                                <dxg:GridColumn Width="100*"
+                                <dxg:GridColumn Width="125*"
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateMaxCapacity}"
                                                 FieldName="MaxCapacity" />
                                 <dxg:GridColumn Width="90*"
@@ -433,13 +436,13 @@
                                       Content="{Binding Model.LastPutDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.InCycleCount}" />
+                                      Content="{Binding Model.InMissionCount}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.OutCycleCount}" />
+                                      Content="{Binding Model.OutMissionCount}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.OtherCycleCount}" />
+                                      Content="{Binding Model.OtherMissionCount}" />
                     </StackPanel>
                 </GroupBox>
 

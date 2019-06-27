@@ -8,12 +8,14 @@ using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Interfaces.Policies;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MissionProvider : IMissionProvider
+    internal class MissionProvider : BaseProvider, IMissionProvider
     {
         #region Fields
 
@@ -25,7 +27,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             CellId = m.CellId,
             CompartmentId = m.CompartmentId,
             CompartmentTypeWidth = m.Compartment.CompartmentType.Width,
-            CompartmentTypeHeight = m.Compartment.CompartmentType.Height,
+            CompartmentTypeDepth = m.Compartment.CompartmentType.Depth,
             CreationDate = m.CreationDate,
             Id = m.Id,
             ItemDescription = m.Item.Description,
@@ -53,15 +55,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             Type = (MissionType)m.Type,
         };
 
-        private readonly DatabaseContext dataContext;
-
         #endregion
 
         #region Constructors
 
-        public MissionProvider(DatabaseContext dataContext)
+        public MissionProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -75,13 +75,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var missions = await this.GetAllBase()
                 .ToArrayAsync<Mission, Common.DataModels.Mission>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var mission in missions)
+            {
+                SetPolicies(mission);
+            }
+
+            return missions;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -96,20 +103,24 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<Mission> GetByIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var mission = await this.GetAllBase()
                        .SingleOrDefaultAsync(m => m.Id == id);
+
+            SetPolicies(mission);
+
+            return mission;
         }
 
         public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
         {
-            if (await this.dataContext.Machines.AnyAsync(m => m.Id == id) == false)
+            if (await this.DataContext.Machines.AnyAsync(m => m.Id == id) == false)
             {
                 return new NotFoundOperationResult<IEnumerable<Mission>>();
             }
 
-            var missions = await this.dataContext.Missions
+            var missions = await this.DataContext.Missions
                 .Join(
-                    this.dataContext.Machines,
+                    this.DataContext.Machines,
                     mission => mission.Compartment.LoadingUnit.Cell.Aisle.Id,
                     machine => machine.Aisle.Id,
                     (mission, machine) => new { Mission = mission, Machine = machine })
@@ -118,12 +129,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(SelectMission)
                 .ToArrayAsync();
 
+            foreach (var mission in missions)
+            {
+                SetPolicies(mission);
+            }
+
             return new SuccessOperationResult<IEnumerable<Mission>>(missions);
         }
 
         public async Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
-            var missionDetails = await this.dataContext.Missions
+            var missionDetails = await this.DataContext.Missions
                 .Where(m => m.Id == id)
                 .Select(m => new MissionDetails
                 {
@@ -152,14 +168,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Id = m.LoadingUnit.Id,
                         Width = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
-                        Length = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length,
+                        Depth = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Depth,
                         Compartments = m.LoadingUnit.Compartments.Select(c => new CompartmentMissionInfo
                         {
                             Id = c.Id,
-                            Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
-                            Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
+                            Width = c.HasRotation ? c.CompartmentType.Depth : c.CompartmentType.Width,
+                            Depth = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Depth,
                             Stock = c.Stock,
-                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : null,
+                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : double.NaN,
                         })
                     },
                     ItemList = new ItemListMissionInfo
@@ -181,6 +197,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionDetails>();
             }
 
+            SetPolicies(missionDetails);
+
             return new SuccessOperationResult<MissionDetails>(missionDetails);
         }
 
@@ -188,7 +206,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
-                       this.dataContext.Missions,
+                       this.DataContext.Missions,
                        this.GetAllBase());
         }
 
@@ -220,9 +238,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && Equals(m.RequestedQuantity, searchAsDouble));
         }
 
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            if (model is IMissionPolicy mission)
+            {
+                model.AddPolicy(mission.ComputeAbortPolicy());
+                model.AddPolicy(mission.ComputeCompletePolicy());
+                model.AddPolicy(mission.ComputeExecutePolicy());
+            }
+        }
+
         private IQueryable<Mission> GetAllBase()
         {
-            return this.dataContext.Missions.Select(SelectMission);
+            return this.DataContext.Missions.Select(SelectMission);
         }
 
         #endregion

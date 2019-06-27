@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Configuration;
 using System.Windows;
+using NLog;
 
 namespace Ferretto.VW.VWApp
 {
@@ -8,9 +8,17 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
-        private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
+        private Logger logger;
 
-        private static readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
+        #endregion
+
+        #region Constructors
+
+        public App()
+        {
+            this.logger = LogManager.GetCurrentClassLogger();
+            System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
+        }
 
         #endregion
 
@@ -53,6 +61,11 @@ namespace Ferretto.VW.VWApp
             var bootstrapper = new Bootstrapper();
 
             bootstrapper.Run();
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            this.logger.Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
         }
 
         #endregion

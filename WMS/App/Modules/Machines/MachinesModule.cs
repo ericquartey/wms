@@ -1,5 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -43,13 +44,14 @@ namespace Ferretto.WMS.Modules.Machines
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMachinesModule);
+            SplashScreenService.SetMessage(DesktopApp.InitializingMachinesModule);
 
             NLog.LogManager
                .GetCurrentClassLogger()
                .Trace("Loading module ...");
 
             this.NavigationService.Register<MachinesView, MachinesViewModel>();
+            this.NavigationService.Register<MachineDetailsView, MachineDetailsViewModel>();
         }
 
         #endregion

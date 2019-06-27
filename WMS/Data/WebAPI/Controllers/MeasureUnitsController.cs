@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -31,9 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MeasureUnitsController(
             ILogger<MeasureUnitsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMeasureUnitProvider measureUnitProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.measureUnitProvider = measureUnitProvider;
@@ -65,7 +60,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.measureUnitProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {

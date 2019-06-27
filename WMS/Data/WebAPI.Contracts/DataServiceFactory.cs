@@ -1,11 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1502",
@@ -14,7 +11,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         #region Methods
 
-        public static T GetService<T>(System.Uri baseUrl)
+        public static T GetService<T>(System.Uri baseUrl, HttpClient httpClient = null)
             where T : class
         {
             if (baseUrl == null)
@@ -22,91 +19,99 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException(nameof(baseUrl));
             }
 
+            var client = httpClient ?? new HttpClient { BaseAddress = baseUrl };
+
             switch (typeof(T))
             {
+                case var service when service == typeof(ILocalizationService):
+                    return new LocalizationService(client) as T;
+
                 case var service when service == typeof(IDataHubClient):
                     return new DataHubClient(baseUrl) as T;
 
                 case var service when service == typeof(IItemsDataService):
-                    return new ItemsDataService(baseUrl.AbsoluteUri) as T;
+                    return new ItemsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IItemListsDataService):
-                    return new ItemListsDataService(baseUrl.AbsoluteUri) as T;
+                    return new ItemListsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IItemListRowsDataService):
-                    return new ItemListRowsDataService(baseUrl.AbsoluteUri) as T;
+                    return new ItemListRowsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ILoadingUnitsDataService):
-                    return new LoadingUnitsDataService(baseUrl.AbsoluteUri) as T;
+                    return new LoadingUnitsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IMachinesDataService):
-                    return new MachinesDataService(baseUrl.AbsoluteUri) as T;
+                    return new MachinesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IMissionsDataService):
-                    return new MissionsDataService(baseUrl.AbsoluteUri) as T;
+                    return new MissionsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ISchedulerRequestsDataService):
-                    return new SchedulerRequestsDataService(baseUrl.AbsoluteUri) as T;
+                    return new SchedulerRequestsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IAreasDataService):
-                    return new AreasDataService(baseUrl.AbsoluteUri) as T;
+                    return new AreasDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IAislesDataService):
-                    return new AislesDataService(baseUrl.AbsoluteUri) as T;
+                    return new AislesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IBaysDataService):
-                    return new BaysDataService(baseUrl.AbsoluteUri) as T;
+                    return new BaysDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICellsDataService):
-                    return new CellsDataService(baseUrl.AbsoluteUri) as T;
+                    return new CellsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICompartmentsDataService):
-                    return new CompartmentsDataService(baseUrl.AbsoluteUri) as T;
+                    return new CompartmentsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IItemListsDataService):
-                    return new ItemListsDataService(baseUrl.AbsoluteUri) as T;
+                    return new ItemListsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IUsersDataService):
-                    return new UsersDataService(baseUrl.AbsoluteUri) as T;
+                    return new UsersDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IImagesDataService):
-                    return new ImagesDataService(baseUrl.AbsoluteUri) as T;
+                    return new ImagesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IAbcClassesDataService):
-                    return new AbcClassesDataService(baseUrl.AbsoluteUri) as T;
+                    return new AbcClassesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICellPositionsDataService):
-                    return new CellPositionsDataService(baseUrl.AbsoluteUri) as T;
+                    return new CellPositionsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICellStatusesDataService):
-                    return new CellStatusesDataService(baseUrl.AbsoluteUri) as T;
+                    return new CellStatusesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICellTypesDataService):
-                    return new CellTypesDataService(baseUrl.AbsoluteUri) as T;
+                    return new CellTypesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICompartmentStatusesDataService):
-                    return new CompartmentStatusesDataService(baseUrl.AbsoluteUri) as T;
+                    return new CompartmentStatusesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ICompartmentTypesDataService):
-                    return new CompartmentTypesDataService(baseUrl.AbsoluteUri) as T;
+                    return new CompartmentTypesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IItemCategoriesDataService):
-                    return new ItemCategoriesDataService(baseUrl.AbsoluteUri) as T;
+                    return new ItemCategoriesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ILoadingUnitStatusesDataService):
-                    return new LoadingUnitStatusesDataService(baseUrl.AbsoluteUri) as T;
+                    return new LoadingUnitStatusesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ILoadingUnitTypesDataService):
-                    return new LoadingUnitTypesDataService(baseUrl.AbsoluteUri) as T;
+                    return new LoadingUnitTypesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IMaterialStatusesDataService):
-                    return new MaterialStatusesDataService(baseUrl.AbsoluteUri) as T;
+                    return new MaterialStatusesDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IMeasureUnitsDataService):
-                    return new MeasureUnitsDataService(baseUrl.AbsoluteUri) as T;
+                    return new MeasureUnitsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(IPackageTypesDataService):
-                    return new PackageTypesDataService(baseUrl.AbsoluteUri) as T;
+                    return new PackageTypesDataService(baseUrl.AbsoluteUri, client) as T;
+
+                case var service when service == typeof(IGlobalSettingsDataService):
+                    return new GlobalSettingsDataService(baseUrl.AbsoluteUri, client) as T;
             }
 
             return null;

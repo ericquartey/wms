@@ -7,7 +7,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:masterData="clr-namespace:Ferretto.WMS.Modules.MasterData"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.LoadingUnitEdit}"
              MinHeight="300"
@@ -40,32 +40,42 @@
                 </MultiBinding>
             </Grid.IsEnabled>
 
-            <wms:ActionBar Grid.Row="0"
-                           Margin="10,10,10,0"
-                           HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
-                                   Content="{x:Static res:MasterData.EditCompartment}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding AddCompartmentCommand}"
-                                   Content="{x:Static res:MasterData.AddCompartment}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   TooltipText="{Binding AddReason}" />
-                <wms:ActionBarItem Command="{Binding BulkAddCompartmentCommand}"
-                                   Content="{x:Static res:MasterData.BulkAddCompartment}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_photo_size_select_small_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding RefreshCommand}"
-                                   Content="{x:Static res:General.Refresh}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+                <wms:ActionBar Grid.Row="0"
+                               Grid.Column="1"
+                               Margin="10,10,10,0"
+                               HorizontalAlignment="Right"
+                               Style="{DynamicResource ActionBarNotCustomizable}">
+                    <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
+                                       Content="{x:Static res:MasterData.EditCompartment}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
+                                       GlyphSize="Custom" />
+                    <wms:ActionBarItem Command="{Binding AddCompartmentCommand}"
+                                       Content="{x:Static res:MasterData.AddCompartment}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
+                                       GlyphSize="Custom"
+                                       TooltipText="{Binding AddReason}" />
+                    <wms:ActionBarItem Command="{Binding BulkAddCompartmentCommand}"
+                                       Content="{x:Static res:MasterData.BulkAddCompartment}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_photo_size_select_small_black_24dp.png"
+                                       GlyphSize="Custom" />
+                    <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                       Content="{x:Static res:General.Refresh}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
+                                       GlyphSize="Custom" />
+                </wms:ActionBar>
+            </Grid>
 
             <GroupBox Grid.Row="1"
                       Header="{x:Static res:MasterData.CompartmentsLayoutOverview}">
@@ -75,7 +85,7 @@
                                    VerticalAlignment="Stretch"
                                    CommandDoubleClick="{Binding EditCompartmentCommand}"
                                    Compartments="{Binding Model.Compartments}"
-                                   DimensionHeight="{Binding Model.Length}"
+                                   DimensionHeight="{Binding Model.Depth}"
                                    DimensionWidth="{Binding Model.Width}"
                                    IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
                                    RulerFontSize="8"
@@ -136,13 +146,14 @@
                                         Header="{x:Static res:General.Dimension}">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock Style="{DynamicResource TextBlockCell}">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Style="{DynamicResource TextBlockCell}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.DimensionFormat}" />
                                                 <Binding Path="Data.Width"
                                                          TargetNullValue="" />
-                                                <Binding Path="Data.Height"
+                                                <Binding Path="Data.Depth"
                                                          TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>
@@ -166,7 +177,8 @@
                                         FieldName="Stock">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -215,9 +227,6 @@
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type masterData:CompartmentEditViewModel}">
                                 <masterData:CompartmentEditView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type masterData:CompartmentAddViewModel}">
-                                <masterData:CompartmentAddView />
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type masterData:CompartmentAddBulkViewModel}">
                                 <masterData:CompartmentAddBulkView />

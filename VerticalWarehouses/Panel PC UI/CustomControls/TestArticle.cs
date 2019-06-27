@@ -13,7 +13,11 @@ namespace Ferretto.VW.CustomControls
 
         private string article;
 
+        private double availableQuantity;
+
         private string description;
+
+        private string imageCode;
 
         private string machine;
 
@@ -21,11 +25,12 @@ namespace Ferretto.VW.CustomControls
 
         #region Constructors
 
-        public TestArticle(string article, string description, string machine)
+        public TestArticle(string article, string description, string machine, string imageCode)
         {
             this.article = article;
             this.description = description;
             this.machine = machine;
+            this.imageCode = imageCode;
         }
 
         public TestArticle()
@@ -38,7 +43,11 @@ namespace Ferretto.VW.CustomControls
 
         public string Article { get => this.article; set => this.SetProperty(ref this.article, value); }
 
+        public double AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
+
         public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
+
+        public string ImageCode { get => this.imageCode; set => this.SetProperty(ref this.imageCode, value); }
 
         public string Machine { get => this.machine; set => this.SetProperty(ref this.machine, value); }
 

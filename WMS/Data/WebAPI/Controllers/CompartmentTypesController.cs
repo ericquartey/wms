@@ -1,14 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -18,13 +16,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class CompartmentTypesController :
         BaseController,
         IReadAllPagedController<CompartmentType>,
-        IReadSingleController<CompartmentType, int>
+        IReadSingleController<CompartmentType, int>,
+        IDeleteController<int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
+
+        private readonly IItemProvider itemProvider;
 
         private readonly ILogger logger;
 
@@ -34,14 +36,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CompartmentTypesController(
             ILogger<CompartmentTypesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            ICompartmentTypeProvider compartmentTypeProvider)
-            : base(hubContext)
+            ICompartmentTypeProvider compartmentTypeProvider,
+            IItemProvider itemProvider)
         {
             this.logger = logger;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -50,39 +52,100 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         public async Task<ActionResult<CompartmentType>> CreateAsync(
             CompartmentType model,
             int? itemId,
             int? maxCapacity)
         {
-            var result = await this.compartmentTypeProvider.CreateAsync(model, itemId, maxCapacity);
+            var result = await this.compartmentTypeProvider.CreateIfNotExistsAsync(model, itemId, maxCapacity);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(422)]
-        [HttpDelete("{id}/items/{itemId}")]
-        public async Task<ActionResult> DeleteItemAssociationAsync(int id, int itemId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, id);
+            var result = await this.compartmentTypeProvider.DeleteAsync(id);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+            return this.Ok();
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpDelete("{compartmentTypeId}/items/{itemId}")]
+        public async Task<ActionResult> DeleteItemAssociationAsync(int compartmentTypeId, int itemId)
+        {
+            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, compartmentTypeId);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
 
             return this.Ok();
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-by-compartment-type")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAllowedItemsByCompartmentTypeAsync(
+            int id,
+            int skip = 0,
+            int take = 0,
+            string orderBy = null)
+        {
+            var orderByExpression = orderBy.ParseSortOptions();
+
+            var result = await this.itemProvider.GetAllAllowedByCompartmentTypeIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression);
+            if (result == null)
+            {
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<ItemWithCompartmentTypeInfo>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/associated-items")]
+        public async Task<ActionResult<IEnumerable<ItemWithCompartmentTypeInfo>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
+        {
+            var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(id);
+            if (result == null)
+            {
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<CompartmentType>), StatusCodes.Status200OK)]
@@ -130,23 +193,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("{id}/items")]
-        public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> GetAllItemAssociationsByIdAsync(int id)
-        {
-            try
-            {
-                var result = await this.itemCompartmentTypeProvider.GetAllByCompartmentTypeIdAsync(id);
-                return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
-            }
-            catch (System.NotSupportedException e)
-            {
-                return this.BadRequest(e);
-            }
-        }
-
         [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
@@ -155,7 +201,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.compartmentTypeProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
@@ -165,6 +211,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
+        {
+            try
+            {
+                return this.Ok(await this.compartmentTypeProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         #endregion

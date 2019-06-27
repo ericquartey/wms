@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS_Utils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.OperatorApp\Ferretto.VW.OperatorApp.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.WmsCommunication\Ferretto.VW.WmsCommunication.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
     <ProjectReference Include="..\InstallationApp\Ferretto.VW.InstallationApp.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />
@@ -43,10 +44,20 @@
     </Page>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
   
 
   <ItemGroup>
-    <PackageReference Include="Prism.Unity" Version="6.3.0" />
+    <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
     <PackageReference Include="Unity.NLog" Version="1.0.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>

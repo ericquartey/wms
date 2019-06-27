@@ -7,18 +7,16 @@ parameters:
 steps:
 
 - task: CopyFiles@2
-  displayName: 'Copy sources to staging directory'
+  displayName: 'Copy Sources to Staging Directory'
   inputs:
     Contents: |
-      **
-      !**\.git\**
-      !**\*.png
-      !**\*.jpg
+      Common\**
+      *
     targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'NuGet restore (netcore)'
+  displayName: 'Restore NuGet Packages'
   inputs:
     command: restore
     projects:  ${{ parameters.RestoreBuildProjects }}
@@ -30,18 +28,18 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build projects (netcore)'
+  displayName: 'Build Projects'
   inputs:
     projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Test (netcore)'
+  displayName: 'Run Automated Tests'
   inputs:
     command: test
     projects: ${{ parameters.TestProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} /p:CollectCoverage=true'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --collect:"Code Coverage" --verbosity detailed -- MSTest.MapInconclusiveToFailed=True'
 
 
 - task: DotNetCoreCLI@2
@@ -52,6 +50,17 @@ steps:
     projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime win7-x64 --no-build --no-restore'
     zipAfterPublish: false
+    
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create Nuget package for WebAPI contracts'
+  inputs:
+    command: 'pack'
+    configuration: '${{ parameters.BuildConfiguration }}'
+    packDirectory: '$(build.artifactStagingDirectory)/packages'
+    packagesToPack: 'WMS/Data/**/Ferretto.WMS.Data.@(Hubs|WebAPI.Contracts).csproj'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'GitVersion.NuGetVersion'
 
 
 - task: PublishBuildArtifacts@1
@@ -59,6 +68,13 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
     ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Nuget Packages'
+  inputs:
+    PathtoPublish: '$(build.artifactStagingDirectory)/packages'
+    ArtifactName: 'packages'
 
 
 - task: PublishBuildArtifacts@1

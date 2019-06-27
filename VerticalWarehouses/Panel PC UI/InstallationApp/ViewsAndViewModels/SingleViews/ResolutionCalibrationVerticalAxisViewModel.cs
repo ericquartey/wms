@@ -1,13 +1,16 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
+using MessageStatus = Ferretto.VW.Common_Utils.Messages.Enumerations.MessageStatus;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -21,13 +24,17 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand cancelButtonCommand;
 
+        private ICommand closeProcedureButtonCommand;
+
         private string currentResolution;
 
-        private string desideredFinalPosition;
+        private string desiredFinalPosition;
 
         private string desiredInitialPosition;
 
-        private IInstallationService installationService;
+        private IFeedbackNotifier feedbackNotifier;
+
+        private ICommand initialPositionButtonCommand;
 
         private bool isAcceptButtonActive;
 
@@ -59,11 +66,15 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSetPositionButtonActive;
 
+        private bool isUpdateResolutionButtonActive;
+
         private string mesuredMovement;
 
         private ICommand moveButtonCommand;
 
         private string newResolution;
+
+        private decimal newResolutionDec;
 
         private string readFinalPosition;
 
@@ -73,9 +84,15 @@ namespace Ferretto.VW.InstallationApp
 
         private string repositionLenght;
 
+        private IResolutionCalibrationService resolutionCalibrationService;
+
+        private ResolutionCalibrationSteps resolutionCalibrationSteps;
+
         private ICommand setPositionButtonCommand;
 
         private ITestService testService;
+
+        private ICommand updateResolutionCommand;
 
         #endregion
 
@@ -91,19 +108,22 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand AcceptButtonCommand => this.acceptButtonCommand ?? (this.acceptButtonCommand = new DelegateCommand(() => this.AcceptButtonMethod()));
+        public ICommand AcceptButtonCommand => this.acceptButtonCommand ?? (this.acceptButtonCommand = new DelegateCommand(async () => await this.AcceptButtonMethodAsync()));
 
         public ICommand CancelButtonCommand => this.cancelButtonCommand ?? (this.cancelButtonCommand = new DelegateCommand(() => this.CancelButtonMethod()));
 
+        public ICommand CloseProcedureButtonCommand => this.closeProcedureButtonCommand ?? (
+            this.closeProcedureButtonCommand = new DelegateCommand(async () => await this.CloseProcedureButtonMethodAsync()));
+
         public string CurrentResolution { get => this.currentResolution; set => this.SetProperty(ref this.currentResolution, value); }
 
-        public string DesideredFinalPosition
+        public string DesiredFinalPosition
         {
-            get => this.desideredFinalPosition;
+            get => this.desiredFinalPosition;
             set
             {
-                this.SetProperty(ref this.desideredFinalPosition, value);
-                this.CheckMesuredInitialPositionCorrectness(value);
+                this.SetProperty(ref this.desiredFinalPosition, value);
+                this.CheckDesiredFinalPositionCorrectness(value);
             }
         }
 
@@ -113,9 +133,12 @@ namespace Ferretto.VW.InstallationApp
             set
             {
                 this.SetProperty(ref this.desiredInitialPosition, value);
-                this.CheckDesideredInitialPositionCorrectness(value);
+                this.CheckDesiredInitialPositionCorrectness(value);
             }
         }
+
+        public ICommand InitialPositionButtonCommand => this.initialPositionButtonCommand ?? (
+            this.initialPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync(ResolutionCalibrationSteps.InitialPosition)));
 
         public bool IsAcceptButtonActive { get => this.isAcceptButtonActive; set => this.SetProperty(ref this.isAcceptButtonActive, value); }
 
@@ -143,9 +166,15 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsReadFinalPositionHighlighted { get => this.isReadFinalPositionHighlighted; set => this.SetProperty(ref this.isReadFinalPositionHighlighted, value); }
 
-        public bool IsReadInitialPositionActive { get => this.isReadInitialPositionActive; set => this.SetProperty(ref this.isReadInitialPositionActive, value); }
+        public bool IsReadInitialPositionActive
+        {
+            get => this.isReadInitialPositionActive;
+            set => this.SetProperty(ref this.isReadInitialPositionActive, value);
+        }
 
         public bool IsSetPositionButtonActive { get => this.isSetPositionButtonActive; set => this.SetProperty(ref this.isSetPositionButtonActive, value); }
+
+        public bool IsUpdateResolutionButtonActive { get => this.isUpdateResolutionButtonActive; set => this.SetProperty(ref this.isUpdateResolutionButtonActive, value); }
 
         public string MesuredInitialPosition
         {
@@ -173,9 +202,25 @@ namespace Ferretto.VW.InstallationApp
 
         public string NewResolution { get => this.newResolution; set => this.SetProperty(ref this.newResolution, value); }
 
-        public string ReadFinalPosition { get => this.readFinalPosition; set => this.SetProperty(ref this.readFinalPosition, value); }
+        public string ReadFinalPosition
+        {
+            get => this.readFinalPosition;
+            set
+            {
+                this.SetProperty(ref this.readFinalPosition, value);
+                this.CheckMesuredFinalPositionCorrectness(value);
+            }
+        }
 
-        public string ReadInitialPosition { get => this.readInitialPosition; set => this.SetProperty(ref this.readInitialPosition, value); }
+        public string ReadInitialPosition
+        {
+            get => this.readInitialPosition;
+            set
+            {
+                this.SetProperty(ref this.readInitialPosition, value);
+                this.CheckMesuredInitialPositionCorrectness(value);
+            }
+        }
 
         public string RepositionLenght { get => this.repositionLenght; set => this.SetProperty(ref this.repositionLenght, value); }
 
@@ -185,7 +230,10 @@ namespace Ferretto.VW.InstallationApp
             set => this.SetProperty(ref this.currentResolution, value);
         }
 
-        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync()));
+        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (
+            this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync(ResolutionCalibrationSteps.StartProcedure)));
+
+        public ICommand UpdateResolutionCommand => this.updateResolutionCommand ?? (this.updateResolutionCommand = new DelegateCommand(() => this.UpdateResolutionMethodAsync()));
 
         #endregion
 
@@ -200,9 +248,9 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString();
-                this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
-                this.DesideredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
+                this.Resolution = (await this.resolutionCalibrationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString("##.##");
+                this.DesiredInitialPosition = (await this.resolutionCalibrationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
+                this.DesiredFinalPosition = (await this.resolutionCalibrationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
             }
             catch (SwaggerException)
             {
@@ -212,16 +260,14 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.installationService = container.Resolve<IInstallationService>();
+            this.resolutionCalibrationService = container.Resolve<IResolutionCalibrationService>();
             this.testService = container.Resolve<ITestService>();
+            this.feedbackNotifier = container.Resolve<IFeedbackNotifier>();
         }
 
         public async Task OnEnterViewAsync()
         {
-            // TODO implement feature
-            // await this.GetParameterValuesAsync();
-
-            this.receivedActionToken = this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>()
+            this.receivedActionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -229,6 +275,10 @@ namespace Ferretto.VW.InstallationApp
                 },
                 ThreadOption.PublisherThread,
                 false);
+
+            this.CancelButtonMethod();
+            await this.GetParameterValuesAsync();
+            this.resolutionCalibrationSteps = ResolutionCalibrationSteps.None;
         }
 
         public void PositioningDone(bool result)
@@ -241,45 +291,96 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Unsubscribe(this.receivedActionToken);
         }
 
-        private void AcceptButtonMethod()
+        private async Task AcceptButtonMethodAsync()
         {
-            // TODO implement feature
-        }
+            var resultAssignment = await this.resolutionCalibrationService.SetResolutionParameterAsync(this.newResolutionDec);
 
-        private void CalculateNewResolutionMethod()
-        {
-            decimal.TryParse(this.CurrentResolution, out var cr);
-            decimal.TryParse(this.MesuredMovement, out var ml);
-            decimal.TryParse(this.RepositionLenght, out var rl);
-            this.NewResolution = ((cr * ml) / rl).ToString("##.##");
-            this.IsAcceptButtonActive = true;
+            if (resultAssignment == true)
+            {
+                this.IsAcceptButtonActive = false;
+                this.IsUpdateResolutionButtonActive = false;
+                this.IsGoToInitialPositionButtonActive = true;
+                this.CurrentResolution = this.NewResolution;
+            }
         }
 
         private void CancelButtonMethod()
         {
             this.RepositionLenght = string.Empty;
             this.MesuredMovement = string.Empty;
-            this.DesideredFinalPosition = string.Empty;
+            this.DesiredFinalPosition = string.Empty;
             this.NewResolution = string.Empty;
+            this.ReadInitialPosition = string.Empty;
+            this.ReadFinalPosition = string.Empty;
             this.IsAcceptButtonActive = false;
             this.IsMesuredInitialPositionHighlighted = false;
+            this.IsReadFinalPositionHighlighted = false;
             this.IsReadInitialPositionActive = false;
+            this.IsReadFinalPositionActive = false;
             this.IsMesuredMovementActive = false;
             this.IsMoveButtonActive = false;
+            this.IsUpdateResolutionButtonActive = false;
             this.IsSetPositionButtonActive = false;
+            this.IsGoToInitialPositionButtonActive = false;
+            this.IsCloseProcedureButtonActive = false;
         }
 
-        private void CheckDesideredInitialPositionCorrectness(string input)
+        private void CheckDesiredFinalPositionCorrectness(string input)
+        {
+            if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
+            {
+                this.IsDesiredFinalPositionHighlighted = false;
+                this.feedbackNotifier.Notify(string.Empty);
+
+                if (decimal.TryParse(this.ReadInitialPosition, out var j) && j > 0)
+                {
+                    this.IsMoveButtonActive = true;
+                }
+                else
+                {
+                    this.IsMoveButtonActive = false;
+                }
+            }
+            else
+            {
+                this.IsMoveButtonActive = false;
+                this.IsDesiredFinalPositionHighlighted = true;
+                this.feedbackNotifier.Notify(Ferretto.VW.Resources.InstallationApp.ValueNotValid);
+            }
+        }
+
+        private void CheckDesiredInitialPositionCorrectness(string input)
         {
             if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
             {
                 this.IsSetPositionButtonActive = true;
                 this.IsDesiredInitialPositionHighlighted = false;
+                this.feedbackNotifier.Notify(string.Empty);
             }
             else
             {
                 this.IsSetPositionButtonActive = false;
                 this.IsDesiredInitialPositionHighlighted = true;
+                this.feedbackNotifier.Notify(Ferretto.VW.Resources.InstallationApp.ValueNotValid);
+            }
+        }
+
+        private void CheckMesuredFinalPositionCorrectness(string input)
+        {
+            if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
+            {
+                this.IsAcceptButtonActive = true;
+                if (decimal.TryParse(this.ReadFinalPosition, out var decimalReadFinalPosition) && decimal.TryParse(this.ReadInitialPosition, out var decimalReadInitialPosition))
+                {
+                    this.IsUpdateResolutionButtonActive = true;
+                    this.IsReadFinalPositionHighlighted = false;
+                    this.feedbackNotifier.Notify(string.Empty);
+                }
+            }
+            else
+            {
+                this.IsReadFinalPositionHighlighted = true;
+                this.feedbackNotifier.Notify(Ferretto.VW.Resources.InstallationApp.ValueNotValid);
             }
         }
 
@@ -288,10 +389,15 @@ namespace Ferretto.VW.InstallationApp
             if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
             {
                 this.IsMoveButtonActive = true;
-                this.IsReadInitialPositionActive = false;
                 this.IsMesuredInitialPositionHighlighted = false;
-                this.IsReadInitialPositionActive = true;
+                this.IsDesiredFinalPositionActive = true;
+            }
+            else
+            {
+                this.IsMoveButtonActive = false;
                 this.IsMesuredInitialPositionHighlighted = true;
+                this.IsDesiredFinalPositionActive = false;
+                this.feedbackNotifier.Notify(Ferretto.VW.Resources.InstallationApp.ValueNotValid);
             }
         }
 
@@ -300,31 +406,94 @@ namespace Ferretto.VW.InstallationApp
             if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
             {
                 this.IsMesuredMovementHighlighted = false;
-                this.IsMesuredMovementActive = false;
-                this.CalculateNewResolutionMethod();
+            }
+            if (decimal.TryParse(input, out var j) && j <= 0)
+            {
+                this.IsMesuredMovementHighlighted = true;
             }
         }
 
-        private void MoveButtonMethod()
+        private async Task CloseProcedureButtonMethodAsync()
         {
-            // TODO implement feature
-        }
+            var resolutionCalibration = await this.resolutionCalibrationService.CompletedAsync();
 
-        private async Task SetPositionButtonMethodAsync()
-        {
-            decimal.TryParse(this.ReadInitialPosition, out var readInitialPosition);
-            await this.installationService.ExecuteMovementAsync(new MovementMessageDataDTO
+            if (resolutionCalibration)
             {
-                Axis = Axis.Vertical,
-                Displacement = readInitialPosition,
-                MovementType = MovementType.Absolute,
-                SpeedPercentage = 100,
-            });
+                this.IsCloseProcedureButtonActive = false;
+            }
         }
 
-        private void UpdateResolution(MessageNotifiedEventArgs message)
+        private async Task MoveButtonMethod()
         {
-            // TODO implement feature
+            this.resolutionCalibrationSteps = ResolutionCalibrationSteps.Move;
+            decimal.TryParse(this.DesiredFinalPosition, out var position);
+            try
+            {
+                await this.resolutionCalibrationService.ExecuteAsync(position, ResolutionCalibrationSteps.Move);
+            }
+            catch (SwaggerException ex)
+            {
+            }
+        }
+
+        private async Task SetPositionButtonMethodAsync(ResolutionCalibrationSteps resolutionCalibrationSteps)
+        {
+            decimal.TryParse(this.DesiredInitialPosition, out var desiredInitialPositionDec);
+            this.resolutionCalibrationSteps = resolutionCalibrationSteps;
+
+            try
+            {
+                await this.resolutionCalibrationService.ExecuteAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
+            }
+            catch (SwaggerException ex)
+            {
+            }
+        }
+
+        private void UpdateResolution(MessageNotifiedEventArgs messageUI)
+        {
+            if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
+            {
+                if ((cp.Status == MessageStatus.OperationEnd || cp.Status == MessageStatus.OperationStop) && this.resolutionCalibrationSteps == ResolutionCalibrationSteps.StartProcedure)
+                {
+                    this.IsSetPositionButtonActive = false;
+                    this.IsReadInitialPositionActive = true;
+                }
+                if ((cp.Status == MessageStatus.OperationEnd || cp.Status == MessageStatus.OperationStop) && this.resolutionCalibrationSteps == ResolutionCalibrationSteps.Move)
+                {
+                    this.IsReadFinalPositionActive = true;
+                    this.IsMoveButtonActive = false;
+                }
+                if ((cp.Status == MessageStatus.OperationEnd || cp.Status == MessageStatus.OperationStop) && this.resolutionCalibrationSteps == ResolutionCalibrationSteps.InitialPosition)
+                {
+                    this.IsGoToInitialPositionButtonActive = false;
+                    this.IsCloseProcedureButtonActive = true;
+                }
+            }
+        }
+
+        private async Task UpdateResolutionMethodAsync()
+        {
+            decimal readDistance;
+            if (decimal.TryParse(this.ReadFinalPosition, out var decimalReadFinalPosition) && decimal.TryParse(this.ReadInitialPosition, out var decimalReadInitialPosition))
+            {
+                readDistance = decimalReadFinalPosition - decimalReadInitialPosition;
+                this.MesuredMovement = readDistance.ToString("##.##");
+                this.IsMesuredMovementActive = true;
+
+                this.newResolutionDec = await this.resolutionCalibrationService.GetComputedResolutionAsync(readDistance, this.desiredInitialPosition, this.desiredFinalPosition, this.Resolution);
+                this.NewResolution = readDistance > 0 ? this.newResolutionDec.ToString("#0.##") : string.Empty;
+                if (readDistance > 0)
+                {
+                    this.newResolutionDec.ToString("#0.##");
+                }
+                else
+                {
+                    this.NewResolution = string.Empty;
+                }
+            }
+
+            this.IsAcceptButtonActive = this.newResolutionDec > 0 ? true : false;
         }
 
         #endregion

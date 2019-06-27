@@ -4,7 +4,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                   xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                    Title="{x:Static res:Navigation.ItemPut}"
                    d:DesignHeight="450"
@@ -119,7 +119,8 @@
                                       VerticalAlignment="Top"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     </Grid>
                 </GroupBox>
@@ -152,34 +153,27 @@
                         </Grid.ColumnDefinitions>
 
                         <wms:TextBox wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                     NullText="{x:Static res:General.AnyValue}" />
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
                         <wms:TextBox Grid.Row="1"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                     NullText="{x:Static res:General.AnyValue}"/>
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
                         <wms:ComboBox x:Name="MaterialStatus"
                                       Grid.Row="2"
                                       Grid.Column="0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                      ItemsSource="{Binding Path=Model.MaterialStatusChoices}"
-                                      NullText="{x:Static res:General.AnyValue}"/>
-
+                                      ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
                         <wms:TextBox Grid.Row="3"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                     NullText="{x:Static res:General.AnyValue}"/>
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
                         <wms:TextBox Grid.Row="4"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                     NullText="{x:Static res:General.AnyValue}"/>
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
                         <wms:ComboBox x:Name="PackageType"
                                       Grid.Row="5"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                                      ItemsSource="{Binding Path=Model.PackageTypeChoices}"
-                                      NullText="{x:Static res:General.AnyValue}" />
+                                      ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
                     </Grid>
                 </GroupBox>
 

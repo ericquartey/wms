@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Bay))]
     public sealed class Bay : BusinessObject
     {
         #region Properties
@@ -18,21 +16,17 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
-        public IEnumerable<EnumerationString> BayTypeChoices { get; set; }
-
         [Display(Name = nameof(BusinessObjects.BayType), ResourceType = typeof(BusinessObjects))]
         public string BayTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayType), ResourceType = typeof(BusinessObjects))]
         public string BayTypeId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.BayDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string Description { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayLoadingUnitsBufferSize), ResourceType = typeof(BusinessObjects))]
         public int? LoadingUnitsBufferSize { get; set; }
-
-        public IEnumerable<Enumeration> MachineChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Machine), ResourceType = typeof(BusinessObjects))]
         public int? MachineId { get; set; }

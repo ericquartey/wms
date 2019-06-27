@@ -4,16 +4,20 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemList))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     public class ItemListDetailsViewModel : DetailsViewModel<ItemListDetails>
     {
         #region Fields
@@ -82,7 +86,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
                     (this.executeListCommand = new DelegateCommand(
-                this.ExecuteList));
+                this.ExecuteList,
+                this.CanExecuteList)
+            .ObservesProperty(() => this.Model));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
@@ -135,7 +141,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 .Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
+            this.AddRowReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.AddRow))
                 .Select(p => p.Reason).FirstOrDefault();
             this.DeleteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
@@ -151,13 +157,34 @@ namespace Ferretto.WMS.Modules.ItemLists
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
         }
 
+        protected async Task ExcuteDeleteListRowAsync()
+        {
+            var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        App.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                        StatusType.Success));
+                this.SelectedItemListRow = null;
+
+                await this.LoadDataAsync();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Errors.UnableToSaveChanges,
+                    StatusType.Error));
+            }
+        }
+
         protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.itemListProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.ItemLists.ItemListDeletedSuccessfully,
+                    App.Resources.ItemLists.ItemListDeletedSuccessfully,
                     StatusType.Success));
             }
             else
@@ -198,13 +225,13 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.ItemLists.ItemListSavedSuccessfully,
+                    App.Resources.ItemLists.ItemListSavedSuccessfully,
                     StatusType.Success));
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.Errors.UnableToSaveChanges,
+                    Errors.UnableToSaveChanges,
                     StatusType.Error));
             }
 
@@ -270,6 +297,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             return this.selectedItemListRow != null;
         }
 
+        private bool CanExecuteList()
+        {
+            return !this.IsBusy;
+        }
+
         private bool CanExecuteListRow()
         {
             return this.selectedItemListRow != null;
@@ -284,8 +316,6 @@ namespace Ferretto.WMS.Modules.ItemLists
         {
             if (this.SelectedItemListRow.CanDelete())
             {
-                this.IsBusy = true;
-
                 var userChoice = this.DialogService.ShowMessage(
                     string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
                     DesktopApp.ConfirmOperation,
@@ -294,27 +324,10 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 if (userChoice == DialogResult.Yes)
                 {
-                    var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
-                    if (result.Success)
-                    {
-                        this.EventService.Invoke(
-                            new StatusPubSubEvent(
-                                Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                                StatusType.Success));
-                        this.IsBusy = false;
-                        this.SelectedItemListRow = null;
-
-                        await this.LoadDataAsync();
-                    }
-                    else
-                    {
-                        this.EventService.Invoke(new StatusPubSubEvent(
-                            Common.Resources.Errors.UnableToSaveChanges,
-                            StatusType.Error));
-                    }
+                    this.IsBusy = true;
+                    await this.ExcuteDeleteListRowAsync().ConfigureAwait(true);
+                    this.IsBusy = false;
                 }
-
-                this.IsBusy = false;
             }
             else
             {

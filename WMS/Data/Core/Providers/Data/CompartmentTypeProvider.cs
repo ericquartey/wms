@@ -5,20 +5,22 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentTypeProvider : ICompartmentTypeProvider
+    internal class CompartmentTypeProvider : BaseProvider, ICompartmentTypeProvider
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IGlobalSettingsProvider globalSettingsProvider;
 
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
@@ -28,10 +30,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public CompartmentTypeProvider(
             DatabaseContext dataContext,
-            IItemCompartmentTypeProvider itemCompartmentTypeProvider)
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            IGlobalSettingsProvider globalSettingsProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+            this.globalSettingsProvider = globalSettingsProvider;
         }
 
         #endregion
@@ -49,49 +54,57 @@ namespace Ferretto.WMS.Data.Core.Providers
             double? maxCapacity)
         {
             if (model == null ||
-                !model.Height.HasValue ||
+                !model.Depth.HasValue ||
                 !model.Width.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
+            if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
+            {
+                return new CreationErrorOperationResult<CompartmentType>();
+            }
+
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var existingCompartmentType =
-                    await this.dataContext.CompartmentTypes
+                    await this.DataContext.CompartmentTypes
                         .SingleOrDefaultAsync(
                             ct =>
-                                ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
+                                ((int)ct.Width == (int)model.Width && (int)ct.Depth == (int)model.Depth)
                                 ||
-                                ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
+                                ((int)ct.Width == (int)model.Depth && (int)ct.Depth == (int)model.Width));
 
                 if (existingCompartmentType == null)
                 {
-                    var entry = await this.dataContext.CompartmentTypes.AddAsync(
+                    var entry = await this.DataContext.CompartmentTypes.AddAsync(
                                     new Common.DataModels.CompartmentType
                                     {
-                                        Height = model.Height.Value,
+                                        Depth = model.Depth.Value,
                                         Width = model.Width.Value
                                     });
 
-                    if (await this.dataContext.SaveChangesAsync() <= 0)
+                    if (await this.DataContext.SaveChangesAsync() <= 0)
                     {
                         return new CreationErrorOperationResult<CompartmentType>();
                     }
 
                     existingCompartmentType = entry.Entity;
                     model.Id = entry.Entity.Id;
+
+                    this.NotificationService.PushCreate(model);
                 }
                 else
                 {
                     model.Id = existingCompartmentType.Id;
                 }
 
-                if (itemId.HasValue)
+                if (itemId.HasValue && maxCapacity.HasValue)
                 {
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
-                                     maxCapacity,
+                                     maxCapacity.Value,
                                      existingCompartmentType.Id);
 
                     if (!result.Success)
@@ -101,24 +114,78 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 scope.Complete();
-                return new SuccessOperationResult<CompartmentType>(model);
             }
+
+            return new SuccessOperationResult<CompartmentType>(model);
+        }
+
+        public async Task<IOperationResult<CompartmentType>> CreateIfNotExistsAsync(
+            CompartmentType model,
+            int? itemId,
+            double? maxCapacity)
+        {
+            var existingCompartmentType =
+                await this.DataContext.CompartmentTypes
+                    .SingleOrDefaultAsync(
+                        ct =>
+                            ((int)ct.Width == (int)model.Width && (int)ct.Depth == (int)model.Depth)
+                            ||
+                            ((int)ct.Width == (int)model.Depth && (int)ct.Depth == (int)model.Width));
+
+            if (existingCompartmentType != null && !itemId.HasValue)
+            {
+                return new CreationErrorOperationResult<CompartmentType>(Resources.Errors.DuplicateCompartmentType);
+            }
+
+            return await this.CreateAsync(model, itemId, maxCapacity);
+        }
+
+        public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
+        {
+            var existingModel = await this.GetByIdAsync(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<CompartmentType>();
+            }
+
+            if (!existingModel.CanDelete())
+            {
+                return new UnprocessableEntityOperationResult<CompartmentType>();
+            }
+
+            this.DataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
+                return new SuccessOperationResult<CompartmentType>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<CompartmentType>();
         }
 
         public async Task<IEnumerable<CompartmentType>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<CompartmentType, Common.DataModels.CompartmentType>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -133,8 +200,23 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<CompartmentType> GetByIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var model = await this.GetAllBase()
                 .SingleOrDefaultAsync(a => a.Id == id);
+
+            if (model != null)
+            {
+                SetPolicies(model);
+            }
+
+            return model;
+        }
+
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.GetUniqueValuesAsync(
+                propertyName,
+                this.DataContext.CompartmentTypes,
+                this.GetAllBase());
         }
 
         private static Expression<Func<CompartmentType, bool>> BuildSearchExpression(string search)
@@ -144,55 +226,74 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            var success = double.TryParse(search, out var result);
+            var successDouble = double.TryParse(search, out var resultDouble);
+            var successInt = int.TryParse(search, out var resultInt);
 
-            return (ct) => success
+            return (ct) => (successDouble
                 &&
-                (Equals(ct.Width, result)
+                (Equals(ct.Width, resultDouble)
                 ||
-                Equals(ct.Height, result));
+                Equals(ct.Depth, resultDouble)))
+                ||
+                (successInt &&
+                Equals(ct.CompartmentsCount, resultInt));
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
         }
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
-            int itemId,
-            double? maxCapacity,
+                    int itemId,
+            double maxCapacity,
             int compartmentTypeId)
         {
             var existingIcTModel =
-                await this.dataContext.ItemsCompartmentTypes
+                await this.DataContext.ItemsCompartmentTypes
                     .SingleOrDefaultAsync(
                         ict =>
                             ict.CompartmentTypeId == compartmentTypeId
                             &&
                             ict.ItemId == itemId);
 
-            return existingIcTModel != null
-                       ? await this.itemCompartmentTypeProvider.UpdateAsync(
-                             new ItemCompartmentType
-                             {
-                                 ItemId = existingIcTModel.ItemId,
-                                 MaxCapacity = maxCapacity,
-                                 CompartmentTypeId = existingIcTModel.CompartmentTypeId
-                             })
-                       : await this.itemCompartmentTypeProvider.CreateAsync(
-                             new ItemCompartmentType
-                             {
-                                 ItemId = itemId,
-                                 MaxCapacity = maxCapacity,
-                                 CompartmentTypeId = compartmentTypeId
-                             });
+            if (existingIcTModel != null)
+            {
+                var updateResult = await this.itemCompartmentTypeProvider.UpdateAsync(
+                    new ItemCompartmentType
+                    {
+                        ItemId = existingIcTModel.ItemId,
+                        MaxCapacity = maxCapacity,
+                        CompartmentTypeId = existingIcTModel.CompartmentTypeId
+                    });
+
+                return updateResult;
+            }
+
+            var createResult = await this.itemCompartmentTypeProvider.CreateAsync(
+                new ItemCompartmentType
+                {
+                    ItemId = itemId,
+                    MaxCapacity = maxCapacity,
+                    CompartmentTypeId = compartmentTypeId
+                });
+
+            this.NotificationService.PushCreate(typeof(ItemCompartmentType));
+
+            return createResult;
         }
 
         private IQueryable<CompartmentType> GetAllBase()
         {
-            return this.dataContext.CompartmentTypes
+            return this.DataContext.CompartmentTypes
                 .Select(ct => new CompartmentType
                 {
                     Id = ct.Id,
-                    Height = ct.Height,
+                    Depth = ct.Depth,
                     Width = ct.Width,
                     CompartmentsCount = ct.Compartments.Count(),
-                    EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0))
+                    EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0)),
+                    ItemCompartmentsCount = ct.ItemsCompartmentTypes.Count(),
                 });
         }
 

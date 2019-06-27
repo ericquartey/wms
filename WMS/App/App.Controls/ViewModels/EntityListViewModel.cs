@@ -9,14 +9,14 @@ using System.Windows.Threading;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationNotificationViewModel<TModel, TKey>, IEntityListViewModel
+    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationNotificationViewModel, IEntityListViewModel
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
@@ -161,7 +161,7 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        public object SelectedItem
+        public virtual object SelectedItem
         {
             get => this.selectedItem;
             set

@@ -6,7 +6,7 @@
 
         double? MaxCapacity { get; }
 
-        double Stock { get; }
+        double? Stock { get; }
 
         #endregion
     }

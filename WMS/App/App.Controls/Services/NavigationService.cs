@@ -49,6 +49,15 @@ namespace Ferretto.WMS.App.Controls.Services
 
         #region Methods
 
+        public INavigableView GetView(string moduleViewName, object data = null)
+        {
+            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
+            registeredView.Token = moduleViewName;
+            registeredView.MapId = moduleViewName;
+            registeredView.Data = data;
+            return registeredView;
+        }
+
         public void Appear<TViewModel>()
         {
             var(moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
@@ -57,7 +66,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         public INavigableView Appear(string moduleName, string viewModelName, object data = null)
         {
-            if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
+            if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
                 return null;
             }
@@ -159,18 +168,22 @@ namespace Ferretto.WMS.App.Controls.Services
             return viewModel;
         }
 
-        public INavigableView GetView(string moduleViewName, object data = null)
+        public INavigableView GetNewView(string moduleName, string viewModelName, object data)
         {
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
-            registeredView.Token = moduleViewName;
-            registeredView.MapId = moduleViewName;
-            registeredView.Data = data;
-            return registeredView;
+            if (string.IsNullOrEmpty(viewModelName))
+            {
+                return null;
+            }
+
+            var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+            var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+            var instanceModuleViewName = this.GetNewViewModelName(moduleViewName);
+            return this.GetView(instanceModuleViewName, data);
         }
 
         public INavigableViewModel GetViewModelByName(string viewModelName)
         {
-            if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
+            if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
                 return null;
             }
@@ -239,7 +252,7 @@ namespace Ferretto.WMS.App.Controls.Services
         /// <returns>A new instance of the view model associated to the specified view.</returns>
         public INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data = null)
         {
-            if (this.registrations.ContainsKey(viewName) == false)
+            if (!this.registrations.ContainsKey(viewName))
             {
                 throw new InvalidOperationException(
                     $"Before invoking the ({nameof(this.RegisterAndGetViewModel)}) method, the {nameof(this.Register)} method needs to be called " +
@@ -320,7 +333,7 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             var viewModelBind = this.GetViewModelBind(moduleViewName);
             var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";
-            if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
+            if (!this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName))
             {
                 // Map Prism region to current layout
                 return this.AddToRegion(instanceModuleViewName, data);
@@ -341,7 +354,7 @@ namespace Ferretto.WMS.App.Controls.Services
             string newId = null;
             ViewModelBind viewModelBind = null;
             var fullViewName = typeof(TItemsView).ToString();
-            if (this.registrations.ContainsKey(fullViewName) == false)
+            if (!this.registrations.ContainsKey(fullViewName))
             {
                 viewModelBind = new ViewModelBind(typeof(TItemsView), typeof(TItemsViewModel));
                 this.registrations.Add(fullViewName, viewModelBind);

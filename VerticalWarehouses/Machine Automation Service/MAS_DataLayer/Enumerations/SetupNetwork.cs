@@ -10,42 +10,54 @@
 
         Inverter1 = 3L,
 
-        Inverter2 = 4L,
+        InverterIndexMaster = 4L,
 
-        IOExpansion1 = 5L,
+        InverterIndexChain = 5L,
 
-        IOExpansion2 = 6L,
+        InverterIndexShutter1 = 6L,
 
-        IOExpansion3 = 7L,
+        InverterIndexBay1 = 7L,
 
-        LaserBay1 = 8L,
+        InverterIndexShutter2 = 8L,
 
-        LaserBay2 = 9L,
+        InverterIndexBay2 = 9L,
 
-        LaserBay3 = 10L,
+        InverterIndexShutter3 = 10L,
 
-        AlfaNumBay1 = 11L,
+        InverterIndexBay3 = 11L,
 
-        AlfaNumBay2 = 12L,
+        IOExpansion1 = 12L,
 
-        AlfaNumBay3 = 13L,
+        IOExpansion2 = 13L,
 
-        SQLServerIPAddress = 14L,
+        IOExpansion3 = 14L,
 
-        PPC1MasterIPAddress = 15L,
+        LaserBay1 = 15L,
 
-        PPC2SlaveIPAddress = 16L,
+        LaserBay2 = 16L,
 
-        PPC3SlaveIPAddress = 17L,
+        LaserBay3 = 17L,
 
-        Inverter1Port = 18L,
+        AlfaNumBay1 = 18L,
 
-        Inverter2Port = 19L,
+        AlfaNumBay2 = 19L,
 
-        IOExpansion1Port = 21L,
+        AlfaNumBay3 = 20L,
 
-        IOExpansion2Port = 22L,
+        SQLServerIPAddress = 21L,
 
-        IOExpansion3Port = 23L,
+        PPC1MasterIPAddress = 22L,
+
+        PPC2SlaveIPAddress = 23L,
+
+        PPC3SlaveIPAddress = 24L,
+
+        Inverter1Port = 25L,
+
+        IOExpansion1Port = 26L,
+
+        IOExpansion2Port = 27L,
+
+        IOExpansion3Port = 28L,
     }
 }

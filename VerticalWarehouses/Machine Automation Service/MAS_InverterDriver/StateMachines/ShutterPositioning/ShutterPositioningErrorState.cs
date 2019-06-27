@@ -1,8 +1,9 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
@@ -11,27 +12,26 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
+        private readonly IInverterStatusBase inverterStatus;
+
         private readonly ILogger logger;
 
-        private ShutterPosition shutterPosition;
-
-        private byte systemIndex;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
         #endregion
 
-        #region Constructurs
+        #region Constructors
 
-        public ShutterPositioningErrorState(IInverterStateMachine parentStateMachine, ShutterPosition shutterPosition, ILogger logg)
+        public ShutterPositioningErrorState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
+
             this.logger = logger;
-
             this.ParentStateMachine = parentStateMachine;
-            this.shutterPosition = shutterPosition;
-
-            
+            this.inverterStatus = inverterStatus;
+            this.shutterPositionData = shutterPositionData;
         }
 
         #endregion
@@ -49,11 +49,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
-            var messageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.systemIndex);
-
-            var errorNotification = new FieldNotificationMessage(messageData,
+            var errorNotification = new FieldNotificationMessage(this.shutterPositionData,
                 "Inverter operation error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -61,33 +57,22 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
-            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+            this.logger.LogTrace($"1:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(errorNotification);
-
-            
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
         }
 
-
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }

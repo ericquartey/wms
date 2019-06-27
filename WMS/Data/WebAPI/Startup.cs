@@ -1,9 +1,11 @@
-﻿using Ferretto.Common.EF;
+﻿using System.Globalization;
+using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.WebAPI.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.StaticFiles;
@@ -66,6 +68,19 @@ namespace Ferretto.WMS.Data.WebAPI
                 app.UseSwaggerUi3();
             }
 
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("it"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+
             var dataHubPath = this.Configuration.GetDataHubPath();
             if (!string.IsNullOrWhiteSpace(dataHubPath))
             {
@@ -88,12 +103,15 @@ namespace Ferretto.WMS.Data.WebAPI
                 throw new System.ArgumentNullException(nameof(services));
             }
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services
                 .AddMvc(options =>
                 {
                     options.Conventions.Add(new RouteTokenTransformerConvention(
                                                  new SlugifyParameterTransformer()));
                     options.Filters.Add(typeof(NormalizeTakeValueFilter));
+                    options.Filters.Add(typeof(SendNotificationsFilter));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

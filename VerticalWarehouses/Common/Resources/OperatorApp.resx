@@ -286,23 +286,23 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
-    <value>DrawerActivityPickingDetailHeader</value>
+    <value>Picking item detail</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
-    <value>DrawerActivityPickingDetailProductionDate</value>
+    <value>Production date:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
-    <value>DrawerActivityPickingDetailLotto</value>
+    <value>Batch:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
-    <value>DrawerActivityPickingDetailMaterialStatus</value>
+    <value>Material status:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
-    <value>DrawerActivityPickingDetailPackagingType</value>
+    <value>Packaging type:</value>
     <comment>Label text</comment>
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
@@ -673,115 +673,115 @@
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
-    <value>DrawerActivityRefillingHeader</value>
+    <value>Refilling operation</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>DrawerActivityRefillingQtyToRefill</value>
+    <value>Requested quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>DrawerActivityRefillingQtyRefilled</value>
+    <value>Refilled quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
-    <value>DrawerActivityRefillingCapacityMaxAdjust</value>
+    <value>Update max capacity</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
-    <value>DrawerActivityPickingDetailRowList</value>
+    <value>List's row:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
-    <value>DrawerActivityPickingDetailQtyRequest</value>
+    <value>Requested quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailHeader</value>
+    <value>Refilling operation detail</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityRefillingDetailLotto" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailLotto</value>
+    <value>Batch:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailMaterialStatus</value>
+    <value>Material status:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailPackagingType</value>
+    <value>Packaging type:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailProductionDate</value>
+    <value>Production date:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailQtyRequest</value>
+    <value>Requested quantity:</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
-    <value>DrawerActivityRefillingDetailListRow</value>
+    <value>List's row</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonItemCode" xml:space="preserve">
-    <value>CommonItemCode</value>
+    <value>Item code:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonItemDescription" xml:space="preserve">
-    <value>CommonItemDescription</value>
+    <value>Item description:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonListCode" xml:space="preserve">
-    <value>CommonListCode</value>
+    <value>List code:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonListDescription" xml:space="preserve">
-    <value>CommonListDescription</value>
+    <value>List description:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonPackingListCode" xml:space="preserve">
-    <value>CommonPackingListCode</value>
+    <value>Packing list code:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonPackingListDescription" xml:space="preserve">
-    <value>CommonPackingListDescription</value>
+    <value>Packing list description:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonNote" xml:space="preserve">
-    <value>CommonNote</value>
+    <value>Note:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonUp" xml:space="preserve">
-    <value>CommonUp</value>
+    <value>Up</value>
     <comment>Button text</comment>
   </data>
   <data name="CommonDown" xml:space="preserve">
-    <value>CommonDown</value>
+    <value>Down</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityInventoryHeader" xml:space="preserve">
-    <value>DrawerActivityInventoryHeader</value>
+    <value>Inventory operation</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
-    <value>DrawerActivityInventoryQtyStored</value>
+    <value>Stored quantity;</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonCompartmentPosition" xml:space="preserve">
-    <value>CommonCompartmentPosition</value>
+    <value>Position:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonButtonConfirm" xml:space="preserve">
-    <value>CommonButtonConfirm</value>
+    <value>Confirm</value>
     <comment>Button text</comment>
   </data>
   <data name="CommonButtonDetail" xml:space="preserve">
-    <value>CommonButtonDetail</value>
+    <value>Detail</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
-    <value>DrawerActivityInventoryDetailHeader</value>
+    <value>Inventory operation detail</value>
     <comment>Page header</comment>
   </data>
   <data name="ItemDetailCategory" xml:space="preserve">

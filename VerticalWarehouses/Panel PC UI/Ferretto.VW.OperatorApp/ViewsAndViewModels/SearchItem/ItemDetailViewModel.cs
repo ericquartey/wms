@@ -4,10 +4,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.CustomControls;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Net;
+using System.IO;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using System.Windows.Media;
+using System.Drawing;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -21,9 +27,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private string articleDescription;
 
+        private IUnityContainer container;
+
         private IEventAggregator eventAggregator;
 
-        private string testProperty = "tested";
+        private Image image;
+
+        private IWmsImagesProvider wmsImagesProvider;
 
         #endregion
 
@@ -54,9 +64,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public string ArticleDescription { get => this.articleDescription; set => this.SetProperty(ref this.articleDescription, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
+        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
-        public string TestProperty { get => this.testProperty; set => this.SetProperty(ref this.testProperty, value); }
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -64,12 +74,24 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public void ExitFromViewMethod()
         {
-            // TODO
+            this.image?.Dispose();
+            this.Image?.Dispose();
+        }
+
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
+            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
         }
 
         public async Task OnEnterViewAsync()
         {
-            // TODO
+            this.image?.Dispose();
+            this.Image?.Dispose();
+            this.image = null;
+            this.Image = null;
+            var stream = await this.wmsImagesProvider.GetImageAsync(this.Article.ImageCode);
+            this.Image = Image.FromStream(stream);
         }
 
         public void SubscribeMethodToEvent()

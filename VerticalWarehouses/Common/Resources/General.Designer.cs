@@ -392,5 +392,14 @@ namespace Ferretto.VW.Resources {
                 return ResourceManager.GetString("Up", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a UpdateResolution.
+        /// </summary>
+        public static string UpdateResolution {
+            get {
+                return ResourceManager.GetString("UpdateResolution", resourceCulture);
+            }
+        }
     }
 }

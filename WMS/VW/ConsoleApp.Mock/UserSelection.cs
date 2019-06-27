@@ -8,11 +8,17 @@
 
         DisplayMachineStatus,
 
+        ToggleMachineMode,
+
+        SetMachineFault,
+
         DisplayMissions,
 
         ExecuteMission,
 
         CompleteMission,
+
+        AbortMission,
 
         DisplayLists,
 

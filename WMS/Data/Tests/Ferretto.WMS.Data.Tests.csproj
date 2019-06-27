@@ -35,4 +35,74 @@
     <ProjectReference Include="..\WebAPI\Ferretto.WMS.Data.WebAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Scheduler\MissionExecutionProviderTest.Pick.cs">
+      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionExecutionProviderTest.Put.cs">
+      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\SchedulerRequestPickProviderTest.Compartments.cs">
+      <DependentUpon>SchedulerRequestPickProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionCreationProviderTest.Concurrency.cs">
+      <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionCreationProviderTest.Bays.cs">
+      <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">
+      <DependentUpon>SchedulerServiceTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.Put.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.AreasWithAvailability.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.Pick.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\ItemsControllerTest.AllowedAreas.cs">
+        <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\CellsControllerTest.Notifications.cs">
+      <DependentUpon>CellsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\BaysControllerTest.Notifications.cs">
+      <DependentUpon>BaysControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\CompartmentsControllerTest.Notifications.cs">
+      <DependentUpon>CompartmentsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\CompartmentTypesControllerTest.Notifications.cs">
+      <DependentUpon>CompartmentTypesControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\ItemListRowsControllerTest.Notifications.cs">
+      <DependentUpon>ItemListRowsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\ItemListsControllerTest.Notifications.cs">
+      <DependentUpon>ItemListsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\ItemsControllerTest.Notifications.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\LoadingUnitsControllerTest.Notifications.cs">
+      <DependentUpon>LoadingUnitsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\MissionsControllerTest.Notifications.cs">
+      <DependentUpon>MissionsControllerTest.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

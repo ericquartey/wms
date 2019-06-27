@@ -106,9 +106,16 @@
                    Text="{Binding LoginErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    TextWrapping="WrapWithOverflow" />
         
-        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,310,0,0" Grid.Row="1"
-                  Content="{x:Static res:General.CheckBoxDark}"
-                  FontFamily="Microsoft Sans Serif" FontSize="14" FontWeight="Thin" Background="{DynamicResource FerrettoPureWhite}"
-                  Foreground="{DynamicResource FerrettoPureWhite}" BorderBrush="{DynamicResource FerrettoLightGray}" IsChecked="True" />
+        <CheckBox HorizontalAlignment="Left" 
+                  VerticalAlignment="Top" 
+                  Margin="80,310,0,0" 
+                  Grid.Row="1"
+                  Content="{x:Static res:General.CheckBoxDark}" 
+                  FontFamily="Microsoft Sans Serif" FontSize="14" 
+                  FontWeight="Thin" 
+                  Background="{DynamicResource FerrettoPureWhite}"
+                  Foreground="{DynamicResource FerrettoPureWhite}" 
+                  BorderBrush="{DynamicResource FerrettoLightGray}" 
+                  IsChecked="{Binding IsDarkSkinChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

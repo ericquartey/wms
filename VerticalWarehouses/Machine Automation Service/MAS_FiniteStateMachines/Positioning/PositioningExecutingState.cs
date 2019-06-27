@@ -1,0 +1,264 @@
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.Logging;
+
+namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+{
+    public class PositioningExecutingState : StateBase
+    {
+        #region Fields
+
+        private readonly ILogger logger;
+
+        private readonly IPositioningMessageData positioningMessageData;
+
+        private FieldCommandMessage commandMessage;
+
+        private bool disposed;
+
+        private int numberExecutedSteps;
+
+        private IPositioningFieldMessageData positioningDownFieldMessageData;
+
+        private IPositioningMessageData positioningDownMessageData;
+
+        private IPositioningFieldMessageData positioningFieldMessageData;
+
+        private IPositioningFieldMessageData positioningUpFieldMessageData;
+
+        private IPositioningMessageData positioningUpMessageData;
+
+        #endregion
+
+        #region Constructors
+
+        public PositioningExecutingState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
+        {
+            logger.LogTrace("1:Method Start");
+
+            this.logger = logger;
+            this.ParentStateMachine = parentMachine;
+            this.positioningMessageData = positioningMessageData;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PositioningExecutingState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void ProcessCommandMessage(CommandMessage message)
+        {
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.Positioning)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.numberExecutedSteps++;
+                        if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
+                        {
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps));
+                        }
+                        else
+                        {
+                            // INFO Even to go Up and Odd for Down
+                            this.commandMessage = new FieldCommandMessage(this.numberExecutedSteps % 2 == 0 ? this.positioningUpFieldMessageData : this.positioningDownFieldMessageData,
+                                $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.Positioning);
+
+                            this.logger.LogTrace($"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
+
+                            var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0 ? BeltBurnishingPosition.LowerBound : BeltBurnishingPosition.UpperBound;
+
+                            var executedSteps = this.numberExecutedSteps / 2;
+
+                            this.positioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
+                            this.positioningMessageData.ExecutedCycles = executedSteps;
+
+                            // Notification message
+                            var notificationMessage = new NotificationMessage(this.positioningMessageData,
+                                $"Current position {beltBurnishingPosition}",
+                                MessageActor.AutomationService,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.CurrentEncoderPosition,
+                                MessageStatus.OperationExecuting);
+
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        }
+
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        break;
+                }
+            }
+            else if (message.Type == FieldMessageType.InverterStatusUpdate)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationExecuting:
+                        if (message.Data is InverterStatusUpdateFieldMessageData data)
+                        {
+                            this.positioningMessageData.CurrentPosition = data.CurrentPosition;
+
+                            var notificationMessage = new NotificationMessage(this.positioningMessageData,
+                                $"Current Encoder position: {data.CurrentPosition}",
+                                MessageActor.AutomationService,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.CurrentEncoderPosition,
+                                MessageStatus.OperationExecuting);
+
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        }
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        break;
+                }
+            }
+        }
+
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
+
+        public override void Start()
+        {
+            // INFO Hypothesis: The positioning has NumberCycles == 0
+            if (this.positioningMessageData.NumberCycles == 0)
+            {
+                this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+
+                this.commandMessage = new FieldCommandMessage(this.positioningFieldMessageData,
+                    $"{this.positioningMessageData.AxisMovement} Positioning State Started",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.Positioning);
+            }
+            else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
+            {
+                if (this.positioningMessageData.MovementType == MovementType.Relative)
+                {
+                    var distance = this.positioningMessageData.UpperBound - this.positioningMessageData.LowerBound;
+                    // Build message for UP
+                    this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          distance,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+
+                    // Build message for DOWN
+                    this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          -distance,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+                }
+                else
+                {
+                    // Build message for UP
+                    this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+
+                    // Build message for DOWN
+                    this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+                }
+
+                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
+
+                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.positioningDownMessageData);
+
+                // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
+                this.commandMessage = new FieldCommandMessage(this.positioningUpFieldMessageData,
+                    "Belt Burninshing Started",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.Positioning);
+            }
+
+            this.logger.LogTrace($"1:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps, true));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+}

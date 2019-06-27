@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
@@ -7,22 +8,40 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
     {
         #region Constructors
 
-        public ShutterPositioningFieldMessageData(ShutterPosition shutterPosition, byte systemIndex, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningFieldMessageData(
+            ShutterPosition shutterPosition,
+            ShutterMovementDirection shutterMovementDirection,
+            ShutterType shutterType,
+           decimal speedRate,
+           MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Verbosity = verbosity;
-
             this.ShutterPosition = shutterPosition;
+            this.ShutterMovementDirection = shutterMovementDirection;
+            this.ShutterType = shutterType;
+            this.SpeedRate = speedRate;
+        }
 
-            this.SystemIndex = systemIndex;
+        public ShutterPositioningFieldMessageData(IShutterPositioningMessageData shutterPositioningMessageData)
+        {
+            this.ShutterPosition = shutterPositioningMessageData.ShutterPosition;
+            this.ShutterMovementDirection = shutterPositioningMessageData.ShutterMovementDirection;
+            this.ShutterType = shutterPositioningMessageData.ShutterType;
+            this.SpeedRate = shutterPositioningMessageData.SpeedRate;
+            this.Verbosity = shutterPositioningMessageData.Verbosity;
         }
 
         #endregion
 
         #region Properties
 
+        public ShutterMovementDirection ShutterMovementDirection { get; }
+
         public ShutterPosition ShutterPosition { get; }
 
-        public byte SystemIndex { get; set; }
+        public ShutterType ShutterType { get; }
+
+        public decimal SpeedRate { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

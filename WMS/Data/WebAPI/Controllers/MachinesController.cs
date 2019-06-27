@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -19,10 +17,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class MachinesController :
         BaseController,
         IReadAllPagedController<Machine>,
-        IReadSingleController<Machine, int>,
+        IReadSingleController<MachineDetails, int>,
         IGetUniqueValuesController
     {
         #region Fields
+
+        private readonly IBayProvider bayProvider;
 
         private readonly ILogger logger;
 
@@ -36,14 +36,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MachinesController(
             ILogger<MachinesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMachineProvider machineProvider,
-            IMissionProvider missionProvider)
-            : base(hubContext)
+            IMissionProvider missionProvider,
+            IBayProvider bayProvider)
         {
             this.logger = logger;
             this.machineProvider = machineProvider;
             this.missionProvider = missionProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -96,15 +96,36 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/bays")]
+        public async Task<ActionResult<IEnumerable<Bay>>> GetBaysAsync(int id)
+        {
+            var bays = await this.bayProvider.GetByMachineIdAsync(id);
+
+            if (!bays.Any())
+            {
+                var message = $"No entity associated with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(bays);
+        }
+
+        [ProducesResponseType(typeof(MachineDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Machine>> GetByIdAsync(int id)
+        public async Task<ActionResult<MachineDetails>> GetByIdAsync(int id)
         {
             var result = await this.machineProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = $"No entity with the specified id={id} exists.";
+                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {

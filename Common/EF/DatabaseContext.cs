@@ -7,10 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.EF
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Class Designed as part of the Entity Framework")]
     public class DatabaseContext : DbContext
     {
         #region Constructors
@@ -71,6 +67,8 @@ namespace Ferretto.Common.EF
         public virtual DbSet<DefaultCompartment> DefaultCompartments { get; set; }
 
         public virtual DbSet<DefaultLoadingUnit> DefaultLoadingUnits { get; set; }
+
+        public virtual DbSet<GlobalSettings> GlobalSettings { get; set; }
 
         public virtual DbSet<ItemCategory> ItemCategories { get; set; }
 
@@ -160,6 +158,7 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new CompartmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DefaultCompartmentConfiguration());
             modelBuilder.ApplyConfiguration(new DefaultLoadingUnitConfiguration());
+            modelBuilder.ApplyConfiguration(new GlobalSettingsConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
             modelBuilder.ApplyConfiguration(new ItemAreaConfiguration());
             modelBuilder.ApplyConfiguration(new ItemCompartmentTypeConfiguration());
