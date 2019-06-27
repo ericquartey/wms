@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ChooseLoadingUnitStepViewModel : EntityPagedListViewModel<LoadingUnit, int>, IStepNavigableViewModel
+    public class ChooseLoadingUnitStepViewModel : EntityPagedListViewModel<LoadingUnit, int>, IWmsWizardStepViewModel
     {
         #region Fields
 

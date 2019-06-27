@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class AssociateCompartmentTypesStepsViewModel : StepsViewModel
+    public class AssociateCompartmentTypesWizardViewModel : WmsWizardViewModel
     {
     }
 }

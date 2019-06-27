@@ -13,7 +13,7 @@ using Ferretto.WMS.Data.Hubs.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemCompartmentTypesToItemStepViewModel : StepViewModel
+    public class ChooseCompartmentTypesStepViewModel : WmsWizardStepViewModel
     {
         #region Fields
 
@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public ItemCompartmentTypesToItemStepViewModel(ICompartmentTypeProvider compartmentTypeProvider)
+        public ChooseCompartmentTypesStepViewModel(ICompartmentTypeProvider compartmentTypeProvider)
         {
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.HasUnassociatedItemCompartmentTypes = true;

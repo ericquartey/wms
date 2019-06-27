@@ -8,7 +8,7 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentEditStepViewModel : StepViewModel
+    public class CompartmentEditStepViewModel : WmsWizardStepViewModel
     {
         #region Fields
 
