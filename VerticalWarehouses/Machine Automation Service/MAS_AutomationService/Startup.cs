@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<FiniteStateMachines>();
 
             // HACK commented out module initialization for development purpose
-            //services.AddHostedService<MissionsManager>();
+            services.AddHostedService<MissionsManager>();
 
             services.AddHostedService<AutomationService>();
 
