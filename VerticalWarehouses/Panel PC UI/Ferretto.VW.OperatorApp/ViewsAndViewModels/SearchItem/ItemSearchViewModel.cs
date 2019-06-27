@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -151,7 +152,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     }
                     if (items != null && items.Count > 0)
                     {
-                        var viewItems = new ObservableCollection<TestArticle>();
+                        var viewItems = new ObservableCollection<DataGridItem>();
                         var random = new Random();
                         for (var i = 0; i < items.Count; i++)
                         {
@@ -170,7 +171,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                                     machines = string.Concat(machines, $" {random.Next(1, 200)},");
                                 }
                             }
-                            var item = new TestArticle
+                            var item = new DataGridItem
                             {
                                 Article = items[i].Code,
                                 Description = items[i].Description,
@@ -258,7 +259,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
             if (items != null && items.Count > 0)
             {
-                var viewItems = new ObservableCollection<TestArticle>();
+                var viewItems = new ObservableCollection<DataGridItem>();
                 var random = new Random();
                 for (var i = 0; i < items.Count; i++)
                 {
@@ -277,7 +278,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
                     }
-                    var item = new TestArticle
+                    var item = new DataGridItem
                     {
                         Article = items[i].Code,
                         Description = items[i].Description,
