@@ -27,6 +27,8 @@ namespace Ferretto.VW.OperatorApp
 
         private readonly HelpMainWindow helpWindow;
 
+        private ICommand backToVWAPPCommand;
+
         private IUnityContainer container;
 
         private BindableBase contentRegionCurrentViewModel;
@@ -66,6 +68,14 @@ namespace Ferretto.VW.OperatorApp
         #endregion
 
         #region Properties
+
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
+        {
+            this.IsPopupOpen = false;
+            this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.BackToVWApp));
+            ClickedOnMachineModeEventHandler = null;
+            ClickedOnMachineOnMarchEventHandler = null;
+        }));
 
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
 
