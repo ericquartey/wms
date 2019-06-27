@@ -268,7 +268,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose which existing types to associate with current Item, and specify the maximum capacity:.
+        ///   Looks up a localized string similar to Choose which existing types to associate with current item, and specify the maximum capacity:.
         /// </summary>
         public static string ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose how you want to associate a Compartment Type to this Item:.
+        ///   Looks up a localized string similar to Choose how you want to associate a compartment type to this item:.
         /// </summary>
         public static string ChooseHowYouWantToAssociateACompartmentTypeToThisItem {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose the Loading Unit where you want to create a new Compartment Type:.
+        ///   Looks up a localized string similar to Choose the loading unit where you want to create a new compartment type:.
         /// </summary>
         public static string ChooseTheLoadingUnitCreateNewCompartmentType {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new Compartment of the desired Compartment Type:.
+        ///   Looks up a localized string similar to Create a new compartment of the desired compartment type:.
         /// </summary>
         public static string CreateNewCompartementDesiredCompartmentType {
             get {
@@ -907,7 +907,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Unassociate Compartment Types available.
+        ///   Looks up a localized string similar to No unassociated Compartment Types available.
         /// </summary>
         public static string NoUnassociateItemCompartmentTypesAvailable {
             get {

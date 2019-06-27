@@ -377,7 +377,7 @@
     <value>Crea un Nuovo Scomparto</value>
   </data>
   <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
-    <value>Scegli come vuoi associare un Tipo Scomparto a questo Articolo:</value>
+    <value>Scegli come vuoi associare un tipo scomparto a questo articolo:</value>
   </data>
   <data name="AssociateACompartmentType" xml:space="preserve">
     <value>Associa un Tipo Scomparto</value>
@@ -410,7 +410,7 @@
     <value>Associazione del tipo scomparto all'articolo effettuata con successo.</value>
   </data>
   <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
-    <value>Tra i tipi scomparto esistenti, scegli quelli da associare all'articolo specificando la capacità massima:</value>
+    <value>Tra i tipi scomparto esistenti, scegli quelli da associare a questo articolo specificando la capacità massima:</value>
   </data>
   <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
     <value>Non ci sono tipi scomparto associabili all'articolo.</value>
@@ -422,7 +422,7 @@
     <value>(Passo Min.: {0})</value>
   </data>
   <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
-    <value>Scegli l'Unità di Carico dove creare un nuovo Tipo Scomparto:</value>
+    <value>Scegli l'unità di carico dove creare un nuovo tipo scomparto:</value>
   </data>
   <data name="NoLoadingUnitsAvailable" xml:space="preserve">
     <value>Non ci sono Unità di Carico disponibili.</value>
@@ -431,6 +431,6 @@
     <value>Panoramica della Disposizione</value>
   </data>
   <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
-    <value>Crea un nuovo Scomparto delle dimensioni del Tipo Scomparto desiderato:</value>
+    <value>Crea un nuovo scomparto delle dimensioni del tipo scomparto desiderato:</value>
   </data>
 </root>
