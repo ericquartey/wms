@@ -45,7 +45,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\Ingranaggio_quadrato.png" />
     <None Remove="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Ingranaggio_quadrato.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

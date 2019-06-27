@@ -111,6 +111,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerActivityInventoryViewModel>(drawerActivityInventoryVMInstance);
             this.container.RegisterInstance<IDrawerActivityInventoryDetailViewModel>(drawerActivityInventoryDetailVMInstance);
             this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
+            this.container.RegisterInstance<IMachineStatisticsViewModel>(machineStatisticsVMInstance);
 
             this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
 
