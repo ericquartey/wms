@@ -112,10 +112,6 @@
     <Compile Update="Controllers\LoadingUnitsControllerTest.Notifications.cs">
       <DependentUpon>LoadingUnitsControllerTest.cs</DependentUpon>
     </Compile>
-
-    <Compile Update="Controllers\MissionsControllerTest.Notifications.cs">
-      <DependentUpon>MissionsControllerTest.cs</DependentUpon>
-    </Compile>
     
   </ItemGroup>
 
