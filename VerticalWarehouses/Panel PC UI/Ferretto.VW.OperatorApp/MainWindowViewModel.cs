@@ -43,6 +43,8 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand openClosePopupCommand;
 
+        private ICommand openHelpWindow;
+
         #endregion
 
         #region Constructors
@@ -78,6 +80,12 @@ namespace Ferretto.VW.OperatorApp
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
         public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
+
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
+        {
+            this.helpWindow.Show();
+            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
+        }));
 
         #endregion
 

@@ -53,15 +53,46 @@ namespace Ferretto.VW.WmsCommunication
 
         public async Task<Stream> GetImageAsync(string imageCode)
         {
-            var cachedObject = this.cache[imageCode] as Stream;
-            if (cachedObject == null)
+            Stream cachedObject;
+            if (imageCode != null)
             {
-                using (var response = await this.imagesDataService.DownloadAsync(imageCode))
+                cachedObject = this.cache[imageCode] as Stream;
+                if (cachedObject == null)
+                {
+                    try
+                    {
+                        using (var response = await this.imagesDataService.DownloadAsync(imageCode))
+                        {
+                            var policy = new CacheItemPolicy();
+                            policy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(MAX_CACHING_TIME_IN_MINUTES);
+                            cachedObject = new MemoryStream(this.ReadFully(response.Stream));
+                            this.cache.Set(imageCode, cachedObject, policy);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        cachedObject = this.cache["rollback"] as Stream;
+                        if (cachedObject == null)
+                        {
+                            var policy = new CacheItemPolicy();
+                            policy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(MAX_CACHING_TIME_IN_MINUTES);
+                            var stream = new FileStream("./Images/Ingranaggio_quadrato.png", FileMode.Open);
+                            cachedObject = new MemoryStream(this.ReadFully(stream));
+                            this.cache.Set("rollback", cachedObject, policy);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cachedObject = this.cache["rollback"] as Stream;
+                if (cachedObject == null)
                 {
                     var policy = new CacheItemPolicy();
                     policy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(MAX_CACHING_TIME_IN_MINUTES);
-                    cachedObject = new MemoryStream(this.ReadFully(response.Stream));
-                    this.cache.Set(imageCode, cachedObject, policy);
+                    var stream = new FileStream("./Images/Ingranaggio_quadrato.png", FileMode.Open);
+                    cachedObject = new MemoryStream(this.ReadFully(stream));
+                    this.cache.Set("rollback", cachedObject, policy);
                 }
             }
             return cachedObject;
