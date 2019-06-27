@@ -62,7 +62,7 @@
                     <custom:CustomControlLoggedUser IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LogOffCommand="{Binding BackToVWAPPCommand}"
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
-                                                    UserText="Installer" />
+                                                    UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Image Height="30"
                            Margin="10,0,10,0"
                            HorizontalAlignment="Center"

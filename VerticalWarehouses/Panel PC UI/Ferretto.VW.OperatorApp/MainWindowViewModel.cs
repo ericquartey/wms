@@ -37,6 +37,8 @@ namespace Ferretto.VW.OperatorApp
 
         private bool isPopupOpen;
 
+        private string loggedUser;
+
         private bool machineModeSelectionBool;
 
         private bool machineOnMarchSelectionBool;
@@ -82,6 +84,8 @@ namespace Ferretto.VW.OperatorApp
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
 
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
+
+        public string LoggedUser { get => this.loggedUser; set => this.SetProperty(ref this.loggedUser, value); }
 
         public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
 

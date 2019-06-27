@@ -123,6 +123,7 @@ namespace Ferretto.VW.VWApp
                             await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
                             this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
                             this.IsLoginButtonWorking = false;
+                            (((App)Application.Current).InstallationAppMainWindowInstance.DataContext as InstallationApp.MainWindowViewModel).LoggedUser = "Installer";
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
                         catch (Exception ex)
@@ -143,6 +144,7 @@ namespace Ferretto.VW.VWApp
                             ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
                             this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
                             await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            (((App)Application.Current).OperatorAppMainWindowInstance.DataContext as OperatorApp.MainWindowViewModel).LoggedUser = "Operator";
                             ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         }
                         catch (Exception ex)
