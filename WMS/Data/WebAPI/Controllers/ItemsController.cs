@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly ISchedulerService schedulerService;
+        private readonly IItemSchedulerService schedulerService;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemAreaProvider itemAreaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            ISchedulerService schedulerService)
+            IItemSchedulerService schedulerService)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;

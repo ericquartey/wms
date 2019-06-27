@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionOperationProvider missionOperationProvider;
 
-        private readonly ISchedulerService schedulerService;
+        private readonly IMissionSchedulerService schedulerService;
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public MissionOperationsController(
             ILogger<MissionOperationsController> logger,
             IMissionOperationProvider missionOperationProvider,
-            ISchedulerService schedulerService)
+            IMissionSchedulerService schedulerService)
         {
             this.logger = logger;
             this.missionOperationProvider = missionOperationProvider;
@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/abort")]
         public async Task<ActionResult<MissionOperation>> AbortAsync(int id)
         {
-            var result = await this.schedulerService.AbortMissionOperationAsync(id);
+            var result = await this.schedulerService.AbortOperationAsync(id);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/complete")]
         public async Task<ActionResult<MissionOperation>> CompleteItemAsync(int id, double quantity)
         {
-            var result = await this.schedulerService.CompleteItemOperationAsync(id, quantity);
+            var result = await this.schedulerService.CompleteOperationAsync(id, quantity);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/execute")]
         public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id)
         {
-            var result = await this.schedulerService.ExecuteMissionOperationAsync(id);
+            var result = await this.schedulerService.ExecuteOperationAsync(id);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);

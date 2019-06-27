@@ -138,6 +138,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             services.AddTransient(typeof(MissionOperationsController));
             services.AddSingleton(new Mock<ILogger<MissionOperationsController>>().Object);
+
+            services.AddTransient(typeof(MissionsController));
+            services.AddSingleton(new Mock<ILogger<MissionsController>>().Object);
         }
 
         protected virtual void InitializeDatabase()

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Services
 {
-    internal class SchedulerService : BackgroundService, ISchedulerService
+    internal class SchedulerService : BackgroundService, IMissionSchedulerService, ISchedulerService, IItemSchedulerService, IItemListSchedulerService
     {
         #region Fields
 
@@ -47,27 +47,13 @@ namespace Ferretto.WMS.Data.Core.Services
 
         #region Methods
 
-        public async Task<IOperationResult<MissionOperation>> AbortMissionOperationAsync(int operationId)
+        public async Task<IOperationResult<MissionOperation>> AbortOperationAsync(int operationId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var operationsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionOperationProvider>();
 
                 var result = await operationsProvider.AbortAsync(operationId);
-
-                await this.ProcessPendingRequestsAsync();
-
-                return result;
-            }
-        }
-
-        public async Task<IOperationResult<MissionOperation>> CompleteItemOperationAsync(int operationId, double quantity)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var operationsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionOperationProvider>();
-
-                var result = await operationsProvider.CompleteAsync(operationId, quantity);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -82,6 +68,20 @@ namespace Ferretto.WMS.Data.Core.Services
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionLoadingUnitProvider>();
 
                 var result = await missionsProvider.CompleteAsync(missionId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<MissionOperation>> CompleteOperationAsync(int operationId, double quantity)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var operationsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionOperationProvider>();
+
+                var result = await operationsProvider.CompleteAsync(operationId, quantity);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<MissionOperation>> ExecuteMissionOperationAsync(int operationId)
+        public async Task<IOperationResult<MissionOperation>> ExecuteOperationAsync(int operationId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {

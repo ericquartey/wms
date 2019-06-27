@@ -23,7 +23,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
+
+            var missionSchedulerService = this.GetService<IMissionSchedulerService>();
 
             var listExecutionProvider = this.GetService<IItemListExecutionProvider>();
 
@@ -103,7 +105,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var operation = context.MissionOperations.SingleOrDefault(o => o.ItemListRowId == row1.Id);
                 operationId = operation.Id;
 
-                var operationExecutionResult = await schedulerService.ExecuteMissionOperationAsync(operationId);
+                var operationExecutionResult = await missionSchedulerService.ExecuteOperationAsync(operationId);
                 if (!operationExecutionResult.Success)
                 {
                     Assert.Inconclusive(operationExecutionResult.Description);
@@ -114,7 +116,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var result = await schedulerService.CompleteItemOperationAsync(operationId, row1.RequestedQuantity);
+            var result = await missionSchedulerService.CompleteOperationAsync(operationId, row1.RequestedQuantity);
 
             #endregion
 
@@ -176,7 +178,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var missionProvider = this.GetService<IMissionProvider>();
 
@@ -305,7 +307,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var listId = GetNewId();
 
@@ -471,7 +473,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var missionProvider = this.GetService<IMissionProvider>();
 
@@ -632,7 +634,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var missionProvider = this.GetService<IMissionProvider>();
 
@@ -780,7 +782,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var listId = GetNewId();
 
@@ -844,7 +846,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var listId = 1;
 
@@ -915,7 +917,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
 
             var listId = GetNewId();
 
@@ -1001,7 +1003,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemListSchedulerService>();
+
+            var missionSchedulerService = this.GetService<IMissionSchedulerService>();
 
             var listExecutionProvider = this.GetService<IItemListExecutionProvider>();
 
@@ -1079,7 +1083,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var result = await schedulerService.ExecuteMissionOperationAsync(row1Operation.Id);
+            var result = await missionSchedulerService.ExecuteOperationAsync(row1Operation.Id);
 
             #endregion
 

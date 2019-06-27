@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemSchedulerService>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemSchedulerService>();
 
             var compartment1 = new Common.DataModels.Compartment
             {

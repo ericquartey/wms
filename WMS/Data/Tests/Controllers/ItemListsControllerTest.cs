@@ -248,7 +248,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var controller = new ItemListsController(
                 this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider,
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService)
+                this.ServiceProvider.GetService(typeof(IItemListSchedulerService)) as IItemListSchedulerService)
             {
                 ControllerContext = new Mock<ControllerContext>().Object
             };
