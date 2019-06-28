@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int EmptyCompartmentsCount { get; set; }
 
-        public double? Height { get; set; }
+        public double? Depth { get; set; }
 
         public int ItemCompartmentsCount { get; set; }
 
@@ -26,9 +26,9 @@ namespace Ferretto.WMS.Data.Core.Models
         public bool ApplyCorrection(double increment)
         {
             this.Width = Math.Floor(this.Width.Value / increment) * increment;
-            this.Height = Math.Floor(this.Height.Value / increment) * increment;
+            this.Depth = Math.Floor(this.Depth.Value / increment) * increment;
 
-            return this.Width.Value.CompareTo(0) != 0 && this.Height.Value.CompareTo(0) != 0;
+            return this.Width.Value.CompareTo(0) != 0 && this.Depth.Value.CompareTo(0) != 0;
         }
 
         #endregion

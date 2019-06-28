@@ -293,8 +293,9 @@
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
                     <ctrls:TrayControl HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
+                                       CommandDoubleClick="{Binding EditLoadingUnitCommand}"
                                        Compartments="{Binding Model.Compartments}"
-                                       DimensionHeight="{Binding Model.Length}"
+                                       DimensionHeight="{Binding Model.Depth}"
                                        DimensionWidth="{Binding Model.Width}"
                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                        RulerInfo="mm"
@@ -362,7 +363,7 @@
                                                         <Binding Source="{x:Static res:General.DimensionFormat}" />
                                                         <Binding Path="Data.Width"
                                                                  TargetNullValue="" />
-                                                        <Binding Path="Data.Height"
+                                                        <Binding Path="Data.Depth"
                                                                  TargetNullValue="" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>

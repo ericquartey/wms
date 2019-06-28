@@ -1,10 +1,27 @@
 ﻿using System;
 using System.Windows;
+using NLog;
 
 namespace Ferretto.VW.VWApp
 {
     public partial class App : Application
     {
+        #region Fields
+
+        private Logger logger;
+
+        #endregion
+
+        #region Constructors
+
+        public App()
+        {
+            this.logger = LogManager.GetCurrentClassLogger();
+            System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
+        }
+
+        #endregion
+
         #region Properties
 
         public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
@@ -44,6 +61,11 @@ namespace Ferretto.VW.VWApp
             var bootstrapper = new Bootstrapper();
 
             bootstrapper.Run();
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            this.logger.Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
         }
 
         #endregion

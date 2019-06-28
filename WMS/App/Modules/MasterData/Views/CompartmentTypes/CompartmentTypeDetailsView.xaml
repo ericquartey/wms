@@ -230,7 +230,7 @@
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding Path=Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False" />
 
                         </Grid>
@@ -255,6 +255,7 @@
                                     <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                                     AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
                                                                     AttachedBarItem="AssociateAreaBarItem"
+                                                                    FocusedStart="ItemLookUp"
                                                                     IsOpen="{Binding IsAddAssociateItemShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Style="{StaticResource inputAreaControlStyle}" />
                                     <wms:ActionBar x:Name="AssociateAreaBar"

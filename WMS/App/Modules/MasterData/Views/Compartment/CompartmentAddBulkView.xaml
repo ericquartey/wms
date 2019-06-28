@@ -118,7 +118,7 @@
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   EnableCorrection="True"
                                   Increment="{Binding GlobalSettings.MinStepCompartment}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />

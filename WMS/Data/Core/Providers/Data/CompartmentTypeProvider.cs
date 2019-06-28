@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             double? maxCapacity)
         {
             if (model == null ||
-                !model.Height.HasValue ||
+                !model.Depth.HasValue ||
                 !model.Width.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
@@ -72,16 +72,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     await this.DataContext.CompartmentTypes
                         .SingleOrDefaultAsync(
                             ct =>
-                                ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
+                                ((int)ct.Width == (int)model.Width && (int)ct.Depth == (int)model.Depth)
                                 ||
-                                ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
+                                ((int)ct.Width == (int)model.Depth && (int)ct.Depth == (int)model.Width));
 
                 if (existingCompartmentType == null)
                 {
                     var entry = await this.DataContext.CompartmentTypes.AddAsync(
                                     new Common.DataModels.CompartmentType
                                     {
-                                        Height = model.Height.Value,
+                                        Depth = model.Depth.Value,
                                         Width = model.Width.Value
                                     });
 
@@ -128,9 +128,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.DataContext.CompartmentTypes
                     .SingleOrDefaultAsync(
                         ct =>
-                            ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
+                            ((int)ct.Width == (int)model.Width && (int)ct.Depth == (int)model.Depth)
                             ||
-                            ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
+                            ((int)ct.Width == (int)model.Depth && (int)ct.Depth == (int)model.Width));
 
             if (existingCompartmentType != null && !itemId.HasValue)
             {
@@ -233,7 +233,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 &&
                 (Equals(ct.Width, resultDouble)
                 ||
-                Equals(ct.Height, resultDouble)))
+                Equals(ct.Depth, resultDouble)))
                 ||
                 (successInt &&
                 Equals(ct.CompartmentsCount, resultInt));
@@ -289,7 +289,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(ct => new CompartmentType
                 {
                     Id = ct.Id,
-                    Height = ct.Height,
+                    Depth = ct.Depth,
                     Width = ct.Width,
                     CompartmentsCount = ct.Compartments.Count(),
                     EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0)),

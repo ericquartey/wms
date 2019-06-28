@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             CellId = m.CellId,
             CompartmentId = m.CompartmentId,
             CompartmentTypeWidth = m.Compartment.CompartmentType.Width,
-            CompartmentTypeHeight = m.Compartment.CompartmentType.Height,
+            CompartmentTypeDepth = m.Compartment.CompartmentType.Depth,
             CreationDate = m.CreationDate,
             Id = m.Id,
             ItemDescription = m.Item.Description,
@@ -168,12 +168,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Id = m.LoadingUnit.Id,
                         Width = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
-                        Length = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length,
+                        Depth = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Depth,
                         Compartments = m.LoadingUnit.Compartments.Select(c => new CompartmentMissionInfo
                         {
                             Id = c.Id,
-                            Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
-                            Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
+                            Width = c.HasRotation ? c.CompartmentType.Depth : c.CompartmentType.Width,
+                            Depth = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Depth,
                             Stock = c.Stock,
                             MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : double.NaN,
                         })

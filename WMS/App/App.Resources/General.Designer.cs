@@ -10,8 +10,8 @@
 
 namespace Ferretto.WMS.App.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.WMS.App.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class General {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal General() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.App.Resources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.App.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Accept.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Accept", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Add", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to [{0}].
         /// </summary>
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("AdditionalInfo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Any.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("AnyValue", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bottom.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Bottom", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Clear.
         /// </summary>
@@ -131,16 +131,16 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Clear", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to {0:0} x {1:0} (Width x Height).
+        ///   Looks up a localized string similar to {0:0} x {1:0} (Width x Depth).
         /// </summary>
         public static string CompartmentTypeListFormat {
             get {
                 return ResourceManager.GetString("CompartmentTypeListFormat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0:0} x {1:0} [mm].
         /// </summary>
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentTypeListFormatReduced", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Connection status.
         /// </summary>
@@ -158,7 +158,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConnectionStatus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Connection to Data Service restored.
         /// </summary>
@@ -167,7 +167,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConnetionToDataServiceRestored", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
@@ -176,7 +176,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Create", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
@@ -185,7 +185,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CreationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
@@ -194,7 +194,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Details", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dimension.
         /// </summary>
@@ -212,7 +212,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Dimension", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0:0}X{1:0}.
         /// </summary>
@@ -221,7 +221,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("DimensionFormat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
@@ -230,7 +230,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Done", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
@@ -239,7 +239,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Down", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
@@ -248,7 +248,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error on connection to Data Service.
         /// </summary>
@@ -257,7 +257,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ErrorOnConnetionToDataService", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Execute.
         /// </summary>
@@ -266,7 +266,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Execute", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
@@ -275,7 +275,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("File", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
@@ -284,7 +284,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Filter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Front.
         /// </summary>
@@ -293,7 +293,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Front", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to General Information.
         /// </summary>
@@ -302,7 +302,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("GeneralInformation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Item Information.
         /// </summary>
@@ -311,7 +311,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemInformation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Last Modification Date.
         /// </summary>
@@ -320,7 +320,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("LastModificationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
@@ -329,7 +329,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
@@ -338,7 +338,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Measure Unit.
         /// </summary>
@@ -347,7 +347,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MeasureUnit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to M.
         /// </summary>
@@ -356,7 +356,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MillionsSymbol", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
@@ -365,7 +365,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Next", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
@@ -374,7 +374,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("No", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Not Specified.
         /// </summary>
@@ -383,7 +383,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("NotSpecified", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
@@ -392,7 +392,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
@@ -401,7 +401,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Open", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Other Information.
         /// </summary>
@@ -410,7 +410,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("OtherInformation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
@@ -419,7 +419,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Position", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to X={0:0} Y={1:0}.
         /// </summary>
@@ -428,7 +428,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PositionFormat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Previous.
         /// </summary>
@@ -437,7 +437,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Previous", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
@@ -446,7 +446,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0} [{1}].
         /// </summary>
@@ -455,7 +455,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("QuantityWithUnitMeasure", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
@@ -464,7 +464,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Refresh", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Revert.
         /// </summary>
@@ -473,7 +473,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Revert", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
@@ -482,7 +482,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
@@ -491,7 +491,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select a value.
         /// </summary>
@@ -500,7 +500,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("SelectValue", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show Details.
         /// </summary>
@@ -509,7 +509,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ShowDetails", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shut Down App.
         /// </summary>
@@ -518,7 +518,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ShutDownApp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Size Information.
         /// </summary>
@@ -527,7 +527,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("SizeInformation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Switch Off.
         /// </summary>
@@ -536,7 +536,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("SwitchOff", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to k.
         /// </summary>
@@ -545,7 +545,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ThousandsSymbol", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0} {1}.
         /// </summary>
@@ -554,7 +554,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("TitleWithAdditionalInfo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Top.
         /// </summary>
@@ -563,7 +563,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Top", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
@@ -572,7 +572,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("Up", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to WizardStep.
         /// </summary>
@@ -581,7 +581,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("WizardStep", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>

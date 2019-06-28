@@ -305,13 +305,13 @@ namespace Ferretto.Common.Controls.WPF
             double dimensionWidth,
             double dimensionHeight,
             double widthCompartment,
-            double heightCompartment)
+            double depthCompartment)
         {
             var ret = new Point { X = compartmentOrigin.X, Y = compartmentOrigin.Y };
 
             if (originHorizontal == OriginHorizontal.Left && originVertical == OriginVertical.Bottom)
             {
-                ret.Y = (int)dimensionHeight - compartmentOrigin.Y - heightCompartment;
+                ret.Y = (int)dimensionHeight - compartmentOrigin.Y - depthCompartment;
             }
             else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Top)
             {
@@ -320,7 +320,7 @@ namespace Ferretto.Common.Controls.WPF
             else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Bottom)
             {
                 ret.X = dimensionWidth - compartmentOrigin.X - widthCompartment;
-                ret.Y = dimensionHeight - compartmentOrigin.Y - heightCompartment;
+                ret.Y = dimensionHeight - compartmentOrigin.Y - depthCompartment;
             }
 
             return ret;
@@ -438,7 +438,7 @@ namespace Ferretto.Common.Controls.WPF
                 {
                     CompartmentDetails = compartment,
                     Width = compartment.Width ?? 0,
-                    Height = compartment.Height ?? 0,
+                    Depth = compartment.Depth ?? 0,
                     Left = compartment.XPosition ?? 0,
                     Top = compartment.YPosition ?? 0,
                     ColorFill = this.GetColorFilter(compartment),
@@ -658,7 +658,7 @@ namespace Ferretto.Common.Controls.WPF
                 return;
             }
 
-            if (compartment.CompartmentDetails.Width == null || compartment.CompartmentDetails.Height == null ||
+            if (compartment.CompartmentDetails.Width == null || compartment.CompartmentDetails.Depth == null ||
                 compartment.CompartmentDetails.XPosition == null || compartment.CompartmentDetails.YPosition == null)
             {
                 return;
@@ -677,7 +677,7 @@ namespace Ferretto.Common.Controls.WPF
                 this.DimensionWidth,
                 this.DimensionHeight,
                 (double)compartment.CompartmentDetails.Width,
-                (double)compartment.CompartmentDetails.Height);
+                (double)compartment.CompartmentDetails.Depth);
 
             compartment.Top = ConvertMillimetersToPixel(
                 convertedCompartmentOrigin.Y,
@@ -689,7 +689,7 @@ namespace Ferretto.Common.Controls.WPF
                 this.DimensionWidth);
 
             var height = ConvertMillimetersToPixel(
-            (double)compartment.CompartmentDetails.Height,
+            (double)compartment.CompartmentDetails.Depth,
              this.TrayHeight,
              this.DimensionHeight);
             var width = ConvertMillimetersToPixel(
@@ -697,7 +697,7 @@ namespace Ferretto.Common.Controls.WPF
              this.TrayWidth,
              this.DimensionWidth);
 
-            compartment.Height = height;
+            compartment.Depth = height;
             compartment.Width = width;
         }
 

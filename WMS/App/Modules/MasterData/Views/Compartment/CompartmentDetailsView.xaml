@@ -301,7 +301,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
@@ -417,7 +417,7 @@
 
                         <ctrls:TrayControl x:Name="trayControl"
                                            Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                           DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                           DimensionHeight="{Binding LoadingUnitDetails.Depth}"
                                            DimensionWidth="{Binding LoadingUnitDetails.Width}"
                                            IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                            RulerInfo="mm"

@@ -269,6 +269,10 @@
     <value>Height [mm]</value>
     <comment> Height</comment>
   </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Depth [mm]</value>
+    <comment> Depth</comment>
+  </data>
   <data name="InventoryTolerance" xml:space="preserve">
     <value>Inventory Tolerance</value>
     <comment>Inventory Tolerance</comment>

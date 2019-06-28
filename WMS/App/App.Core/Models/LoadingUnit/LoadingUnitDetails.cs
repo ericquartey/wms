@@ -33,7 +33,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private bool isCellPairingFixed;
 
-        private double length;
+        private double depth;
 
         private string loadingUnitStatusId;
 
@@ -166,11 +166,11 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LastPutDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPutDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.Length), ResourceType = typeof(BusinessObjects))]
-        public double Length
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double Depth
         {
-            get => this.length;
-            set => this.SetProperty(ref this.length, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }

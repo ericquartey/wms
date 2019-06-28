@@ -78,7 +78,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 var compartmentType = await this.compartmentTypesDataService.CreateAsync(
                     new WMS.Data.WebAPI.Contracts.CompartmentType
                     {
-                        Height = model.Height,
+                        Depth = model.Depth,
                         Id = model.Id,
                         Width = model.Width
                     }, itemId,
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.App.Core.Providers
             try
             {
                 return (await this.compartmentTypesDataService.GetAllAsync())
-                    .Select(c => new Enumeration(c.Id, string.Format(General.CompartmentTypeListFormat, c.Width, c.Height)));
+                    .Select(c => new Enumeration(c.Id, string.Format(General.CompartmentTypeListFormat, c.Width, c.Depth)));
             }
             catch
             {
@@ -147,7 +147,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         CompartmentsCount = ct.CompartmentsCount,
                         EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
-                        Height = ct.Height,
+                        Depth = ct.Depth,
                         Id = ct.Id,
                         ItemCompartmentsCount = ct.ItemCompartmentsCount,
                         Policies = ct.GetPolicies(),
@@ -197,7 +197,7 @@ namespace Ferretto.WMS.App.Core.Providers
                       CompartmentTypeId = i.CompartmentTypeId,
                       CompartmentsCount = i.CompartmentsCount,
                       EmptyCompartmentsCount = i.EmptyCompartmentsCount,
-                      Height = i.Height,
+                      Depth = i.Depth,
                       Width = i.Width,
                   });
 
@@ -216,7 +216,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 CompartmentsCount = ct.CompartmentsCount,
                 EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
-                Height = ct.Height,
+                Depth = ct.Depth,
                 Id = ct.Id,
                 ItemCompartmentsCount = ct.ItemCompartmentsCount,
                 Policies = ct.GetPolicies(),

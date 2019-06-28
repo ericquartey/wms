@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_AutomationServiceContra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.SignalRClientConsole", "Panel PC UI\Ferretto.VW.SignalRClientConsole\Ferretto.VW.SignalRClientConsole.csproj", "{2DB8ED5C-7C80-46D6-9857-A5784316A35B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.WmsCommunication", "Panel PC UI\Ferretto.VW.WmsCommunication\Ferretto.VW.WmsCommunication.csproj", "{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Autogen|Any CPU = Autogen|Any CPU
@@ -506,6 +508,24 @@ Global
 		{2DB8ED5C-7C80-46D6-9857-A5784316A35B}.Release|x64.Build.0 = Release|Any CPU
 		{2DB8ED5C-7C80-46D6-9857-A5784316A35B}.Release|x86.ActiveCfg = Release|Any CPU
 		{2DB8ED5C-7C80-46D6-9857-A5784316A35B}.Release|x86.Build.0 = Release|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Autogen|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Autogen|Any CPU.Build.0 = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Autogen|x64.ActiveCfg = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Autogen|x64.Build.0 = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Autogen|x86.ActiveCfg = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Autogen|x86.Build.0 = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Debug|x64.Build.0 = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Debug|x86.Build.0 = Debug|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Release|x64.Build.0 = Release|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Release|x86.ActiveCfg = Release|Any CPU
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -539,6 +559,7 @@ Global
 		{8B0B44AB-011D-4279-BF77-D189CAF6BF3A} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{6A1B4468-5DF1-48ED-8887-E1A5A1814056} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{2DB8ED5C-7C80-46D6-9857-A5784316A35B} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{FCB1F3A9-B317-403E-8A8E-B26D21DF795D} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
