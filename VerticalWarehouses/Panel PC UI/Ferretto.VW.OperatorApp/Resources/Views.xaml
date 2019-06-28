@@ -100,4 +100,7 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlArticleDataGridViewModel}">
         <customviewsandviewmodels:CustomControlArticleDataGrid />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlCellStatisticsDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlCellStatisticsDataGrid />
+    </DataTemplate>
 </ResourceDictionary>

@@ -14,19 +14,19 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        private ObservableCollection<DataGridItem> articles;
+        private ObservableCollection<DataGridCell> cells;
 
-        private DataGridItem selectedArticle;
+        private DataGridCell selectedCell;
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<DataGridItem> Articles { get => this.articles; set => this.SetProperty(ref this.articles, value); }
+        public ObservableCollection<DataGridCell> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public DataGridItem SelectedArticle { get => this.selectedArticle; set => this.SetProperty(ref this.selectedArticle, value); }
+        public DataGridCell SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
 
         #endregion
 
