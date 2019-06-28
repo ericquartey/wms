@@ -11,12 +11,14 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int CompartmentsCount { get; set; }
 
-        public int EmptyCompartmentsCount { get; set; }
-
+        [Positive]
         public double? Depth { get; set; }
+
+        public int EmptyCompartmentsCount { get; set; }
 
         public int ItemCompartmentsCount { get; set; }
 
+        [Positive]
         public double? Width { get; set; }
 
         #endregion
