@@ -8,18 +8,22 @@ namespace Ferretto.WMS.Data.Core.Models
 
         protected OperationResult(
              TModel entity = default(TModel),
-             string description = null)
+             string description = null,
+             bool showToast = true)
              : this(false)
         {
             this.Description = description;
+            this.ShowToast = showToast;
         }
 
         protected OperationResult(
                     bool success,
-            TModel entity = default(TModel))
+            TModel entity = default(TModel),
+            bool showToast = true)
         {
             this.Success = success;
             this.Entity = entity;
+            this.ShowToast = showToast;
         }
 
         #endregion
@@ -29,6 +33,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Description { get; set; }
 
         public TModel Entity { get; private set; }
+
+        public bool ShowToast { get; private set; }
 
         public bool Success { get; private set; }
 
