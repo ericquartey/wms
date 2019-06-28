@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Prism.Mvvm;
+
+namespace Ferretto.VW.CustomControls.Utils
+{
+    public class DataGridError : BindableBase
+    {
+        #region Fields
+
+        private string error;
+
+        private string total;
+
+        private string totalPercentage;
+
+        #endregion
+
+        #region Properties
+
+        public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
+
+        public string Total { get => this.total; set => this.SetProperty(ref this.total, value); }
+
+        public string TotalPercentage { get => this.totalPercentage; set => this.SetProperty(ref this.totalPercentage, value); }
+
+        #endregion
+    }
+}
