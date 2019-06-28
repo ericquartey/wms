@@ -1,19 +1,8 @@
 ﻿namespace Ferretto.VW.MAS_IODriver.Enumerations
 {
-    // Check if is it better to use 2 different enums
-    //enum OutpuPorts
-    //{
-
-    //}
-
-    //enum InputPorts
-    //{
-
-    //}
-
     public enum IoPorts
     {
-        // outputs
+        //INFO Outputs
 
         ResetSecurity = 0,
 
@@ -29,7 +18,7 @@
 
         ReadyWarehouseRobot = 7,
 
-        // inputs
+        //INFO Inputs
 
         NormalState = 0,
 
