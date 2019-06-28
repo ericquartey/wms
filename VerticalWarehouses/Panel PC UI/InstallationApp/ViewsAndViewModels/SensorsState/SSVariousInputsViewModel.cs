@@ -117,6 +117,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
+            this.DisableVariousInputsSensorsState();
             this.updateVariousInputsSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                 message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
@@ -137,20 +138,40 @@ namespace Ferretto.VW.InstallationApp
 
             this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
 
-            this.MushroomHeadButtonBay1 = this.ioSensorsStatus.MushroomHeadButtonBay1;
+            this.MushroomHeadButtonBay1 = !this.ioSensorsStatus.MushroomHeadButtonBay1;
             this.MicroCarterLeftSideBay1 = this.ioSensorsStatus.MicroCarterLeftSideBay1;
             this.MicroCarterRightSideBay1 = this.ioSensorsStatus.MicroCarterRightSideBay1;
-            this.AntiIntrusionShutterBay1 = this.ioSensorsStatus.AntiIntrusionShutterBay1;
+            this.AntiIntrusionShutterBay1 = !this.ioSensorsStatus.AntiIntrusionShutterBay1;
 
-            this.MushroomHeadButtonBay2 = this.ioSensorsStatus.MushroomHeadButtonBay2;
+            this.MushroomHeadButtonBay2 = !this.ioSensorsStatus.MushroomHeadButtonBay2;
             this.MicroCarterLeftSideBay2 = this.ioSensorsStatus.MicroCarterLeftSideBay2;
             this.MicroCarterRightSideBay2 = this.ioSensorsStatus.MicroCarterRightSideBay2;
-            this.AntiIntrusionShutterBay2 = this.ioSensorsStatus.AntiIntrusionShutterBay2;
+            this.AntiIntrusionShutterBay2 = !this.ioSensorsStatus.AntiIntrusionShutterBay2;
 
-            this.MushroomHeadButtonBay3 = this.ioSensorsStatus.MushroomHeadButtonBay3;
+            this.MushroomHeadButtonBay3 = !this.ioSensorsStatus.MushroomHeadButtonBay3;
             this.MicroCarterLeftSideBay3 = this.ioSensorsStatus.MicroCarterLeftSideBay3;
             this.MicroCarterRightSideBay3 = this.ioSensorsStatus.MicroCarterRightSideBay3;
-            this.AntiIntrusionShutterBay3 = this.ioSensorsStatus.AntiIntrusionShutterBay3;
+            this.AntiIntrusionShutterBay3 = !this.ioSensorsStatus.AntiIntrusionShutterBay3;
+        }
+
+        private void DisableVariousInputsSensorsState()
+        {
+            this.SecurityFunctionActive = false;
+
+            this.MushroomHeadButtonBay1 = false;
+            this.MicroCarterLeftSideBay1 = false;
+            this.MicroCarterRightSideBay1 = false;
+            this.AntiIntrusionShutterBay1 = false;
+
+            this.MushroomHeadButtonBay2 = false;
+            this.MicroCarterLeftSideBay2 = false;
+            this.MicroCarterRightSideBay2 = false;
+            this.AntiIntrusionShutterBay2 = false;
+
+            this.MushroomHeadButtonBay3 = false;
+            this.MicroCarterLeftSideBay3 = false;
+            this.MicroCarterRightSideBay3 = false;
+            this.AntiIntrusionShutterBay3 = false;
         }
 
         #endregion

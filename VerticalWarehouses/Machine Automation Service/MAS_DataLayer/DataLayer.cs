@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-                this.applicationLogWriteTask.Start();
+                //this.applicationLogWriteTask.Start();  this line of code needs to be uncommented after testing on-production
             }
             catch (Exception ex)
             {

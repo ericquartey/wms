@@ -31,6 +31,10 @@ namespace Ferretto.VW.MAS_IODriver
 
         void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage);
 
+        void ExecuteSetConfiguration();
+
+        void DestroyStateMachine();
+
         #endregion
     }
 }

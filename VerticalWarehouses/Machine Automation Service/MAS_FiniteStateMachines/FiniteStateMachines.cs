@@ -254,6 +254,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case FieldMessageType.SensorsChanged:
+
                         this.logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                         {
@@ -262,6 +263,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
+
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
 
                                 msg = new NotificationMessage(
@@ -273,16 +275,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
+                                if (ioIndex == 0)
+                                {
+                                    this.logger.LogTrace($" >>  FSM SensorStates Buffer value: 0:{msgData.SensorsStates[19]}, 1:{msgData.SensorsStates[20]}, 2:{msgData.SensorsStates[21]}, 3:{msgData.SensorsStates[22]}, 4:{msgData.SensorsStates[23]}, 5:{msgData.SensorsStates[7]}");
+                                }
+
                                 this.forceRemoteIoStatusPublish = false;
                             }
                         }
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
+
                         this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
                         {
                             byte inverterIndex = receivedMessage.DeviceIndex;
+
                             if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();

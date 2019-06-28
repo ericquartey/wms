@@ -135,15 +135,18 @@ namespace Ferretto.VW.MAS_IODriver
                         continue;
                     }
 
-                        this.ParsingDataBytes(
-                        telegram,
-                        out nBytesReceived,
-                        out formatDataOperation,
-                        out fwRelease,
-                        ref inputData,
-                        ref outputData,
-                        out configurationData,
-                        out errorCode);
+                    this.ParsingDataBytes(
+                    telegram,
+                    out nBytesReceived,
+                    out formatDataOperation,
+                    out fwRelease,
+                    ref inputData,
+                    ref outputData,
+                    out configurationData,
+                    out errorCode);
+
+                    Array.Clear(inputData, 0, inputData.Length);
+
                 }
                 catch (Exception ex)
                 {
@@ -175,6 +178,11 @@ namespace Ferretto.VW.MAS_IODriver
                                 ErrorLevel.NoError,
                                 (byte)this.index);
                             this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+
+                            if (this.index == IoIndex.IoDevice1)
+                            {
+                                this.logger.LogTrace($" >>  SHD Status Buffer value: 0:{data.SensorsStates[0]}, 1:{data.SensorsStates[1]}, 2:{data.SensorsStates[2]}, 3:{data.SensorsStates[3]}, 4:{data.SensorsStates[4]}, 5:{data.SensorsStates[5]}");
+                            }
 
                             this.forceIoStatusPublish = false;
                         }
@@ -322,6 +330,12 @@ namespace Ferretto.VW.MAS_IODriver
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
+        }
+
+        public void DestroyStateMachine()
+        {
+            this.currentStateMachine?.Dispose();
+            this.currentStateMachine = null;
         }
 
         public void SendIoMessageData(object state)

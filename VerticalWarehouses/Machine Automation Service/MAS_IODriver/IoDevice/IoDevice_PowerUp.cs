@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void ExecuteIoPowerUp()
         {
-            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.index, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
         }
 

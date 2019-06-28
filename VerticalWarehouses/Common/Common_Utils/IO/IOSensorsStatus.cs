@@ -23,14 +23,6 @@ namespace Ferretto.VW.Common_Utils.IO
 
         #endregion
 
-        //INFO Vertical Sensors
-
-        //INFO Cradle Sensors
-
-        //INFO Bays & HeightControl Sensors
-
-        //INFO VariousInputs Sensors
-
         #region Properties
 
         public bool AntiIntrusionShutterBay1 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay1] ?? false;

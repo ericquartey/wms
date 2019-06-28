@@ -215,6 +215,7 @@ namespace Ferretto.VW.MAS_IODriver
                         await this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
                         this.ioDevices[IoIndex.IoDevice1].ExecuteIoPowerUp();
+                        this.ioDevices[IoIndex.IoDevice2].ExecuteIoPowerUp();
 
                         break;
 
@@ -223,7 +224,8 @@ namespace Ferretto.VW.MAS_IODriver
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
-                            //TODO
+                            var index = (IoIndex)receivedMessage.DeviceIndex;
+                            this.ioDevices[index].DestroyStateMachine();
                         }
                         break;
                 }
