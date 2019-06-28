@@ -831,4 +831,24 @@
     <value>ItemDetailWeight</value>
     <comment>Label text</comment>
   </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Tot Back</value>
+    <comment>Tot Post</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>Tot Back %</value>
+    <comment>Tot Post %</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Tot Front</value>
+    <comment>Tot Ant</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>Tot Front %</value>
+    <comment>Tot Ant %</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>State</value>
+    <comment>Stato</comment>
+  </data>
 </root>

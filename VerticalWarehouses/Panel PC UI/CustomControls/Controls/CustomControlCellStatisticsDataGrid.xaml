@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.CustomControls.Behaviours"
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls">
@@ -84,7 +85,7 @@
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
                                     Binding="{Binding Path=State}"
-                                    Header="State">
+                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderState }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -110,7 +111,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
                                     Binding="{Binding Path=TotalFront}"
-                                    Header="Tot Ant">
+                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFront }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -135,7 +136,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
                                     Binding="{Binding Path=TotalFrontPercentage}"
-                                    Header="Tot Ant %">
+                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -160,7 +161,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
                                     Binding="{Binding Path=TotalBack}"
-                                    Header="Tot Post">
+                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBack }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -185,7 +186,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
                                     Binding="{Binding Path=TotalBackPercentage}"
-                                    Header="Tot Post %">
+                                    Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
