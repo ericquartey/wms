@@ -27,24 +27,9 @@ namespace Ferretto.WMS.App
     {
         #region Methods
 
-        public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
+        public static void LoadCatalog(IModuleCatalog moduleCatalog)
         {
-            ConfigureSignalRHub(containerRegistry);
-
-            var navigationService = container.Resolve<NavigationService>();
-            containerRegistry.RegisterInstance<INavigationService>(navigationService);
-            var eventService = container.Resolve<EventService>();
-            containerRegistry.RegisterInstance<IEventService>(eventService);
-            var inputService = container.Resolve<InputService>();
-            containerRegistry.RegisterInstance<IInputService>(inputService);
-            var dialogService = container.Resolve<DialogService>();
-            containerRegistry.RegisterInstance<IDialogService>(dialogService);
-            var histViewService = container.Resolve<HistoryViewService>();
-            containerRegistry.RegisterInstance<IHistoryViewService>(histViewService);
-            var notificationService = container.Resolve<NotificationService>();
-            containerRegistry.RegisterInstance<INotificationService>(notificationService);
-            var statusBarViewModel = container.Resolve<StatusBarViewModel>();
-            containerRegistry.RegisterInstance(statusBarViewModel);
+            (moduleCatalog as ModuleCatalog)?.Load();
         }
 
         public static void RegisterAdapterMappings(RegionAdapterMappings regionAdapterMappings, IContainerProvider container)
@@ -61,14 +46,28 @@ namespace Ferretto.WMS.App
             }
         }
 
-        public static void LoadCatalog(IModuleCatalog moduleCatalog)
+        public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
-            (moduleCatalog as ModuleCatalog)?.Load();
-        }
+            ConfigureSignalRHub(containerRegistry);
 
-        protected override IModuleCatalog CreateModuleCatalog()
-        {
-            return new ConfigurationModuleCatalog();
+            var navigationService = container.Resolve<NavigationService>();
+            containerRegistry.RegisterInstance<INavigationService>(navigationService);
+            var eventService = container.Resolve<EventService>();
+            containerRegistry.RegisterInstance<IEventService>(eventService);
+            var inputService = container.Resolve<InputService>();
+            containerRegistry.RegisterInstance<IInputService>(inputService);
+            var dialogService = container.Resolve<DialogService>();
+            containerRegistry.RegisterInstance<IDialogService>(dialogService);
+            var histViewService = container.Resolve<HistoryViewService>();
+            containerRegistry.RegisterInstance<IHistoryViewService>(histViewService);
+
+            var notificationDialogService = container.Resolve<NotificationDialogService>();
+            containerRegistry.RegisterInstance<INotificationDialogService>(notificationDialogService);
+
+            var notificationService = container.Resolve<NotificationService>();
+            containerRegistry.RegisterInstance<INotificationService>(notificationService);
+            var statusBarViewModel = container.Resolve<StatusBarViewModel>();
+            containerRegistry.RegisterInstance(statusBarViewModel);
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
@@ -83,14 +82,25 @@ namespace Ferretto.WMS.App
             RegisterAdapterMappings(regionAdapterMappings, this.Container);
         }
 
+        protected override IContainerExtension CreateContainerExtension()
+        {
+            return new UnityContainerExtension();
+        }
+
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new ConfigurationModuleCatalog();
+        }
+
         protected override Window CreateShell()
         {
             return this.Container.Resolve<Shell>();
         }
 
-        protected override IContainerExtension CreateContainerExtension()
+        protected override void RegisterFrameworkExceptionTypes()
         {
-            return new UnityContainerExtension();
+            base.RegisterFrameworkExceptionTypes();
+            ExceptionExtensions.RegisterFrameworkExceptionType(typeof(ResolutionFailedException));
         }
 
         protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
@@ -98,12 +108,6 @@ namespace Ferretto.WMS.App
             base.RegisterRequiredTypes(containerRegistry);
             containerRegistry.RegisterSingleton<IRegionNavigationContentLoader, UnityRegionNavigationContentLoader>();
             containerRegistry.RegisterSingleton<IServiceLocator, UnityServiceLocatorAdapter>();
-        }
-
-        protected override void RegisterFrameworkExceptionTypes()
-        {
-            base.RegisterFrameworkExceptionTypes();
-            ExceptionExtensions.RegisterFrameworkExceptionType(typeof(ResolutionFailedException));
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
