@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.CustomControls.Utils
 {
-    internal class DataGridCell : BindableBase
+    public class DataGridCell : BindableBase
     {
         #region Fields
 

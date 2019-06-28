@@ -7,22 +7,17 @@
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
         <DataGrid Name="DataGrid"
-                  Grid.Column="0"
                   Width="auto"
                   Height="auto"
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
@@ -85,7 +80,7 @@
                 </Style>
             </DataGrid.RowStyle>
 
-        <DataGrid.Columns>
+            <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
                                     Binding="{Binding Path=Article}"
@@ -165,42 +160,5 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Grid.Column="1">
-            <StackPanel>
-             <Button Name="TopButton"
-                    Margin="70,40,0,0"
-                    Click="TopButton_Click"
-                    Content="Inizio"
-                     Visibility="Collapsed"
-                    Template="{StaticResource VWAPP_DataGridNavigationButton_ControlTemplate}" />
-            <RepeatButton Name="UpButton"
-                          Margin="70,40,0,0"
-                          Click="UpButton_Click"
-                          Content="Su"
-                           Visibility="Collapsed"
-                          Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}" />
-            <RepeatButton Name="DownButton"
-                          Margin="70,5,0,0"
-                           Visibility="Collapsed"
-                          Click="DownButton_Click"
-                          Content="Giu'"
-                          Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}">
-                <RepeatButton.LayoutTransform>
-                    <RotateTransform Angle="0" />
-                </RepeatButton.LayoutTransform>
-            </RepeatButton>
-            <Button Name="BottomButton"
-                    Margin="70,15,0,0"
-                    Click="BottomButton_Click"
-                    Content="Fine"
-                    Visibility="Collapsed"
-                    Template="{StaticResource VWAPP_DataGridNavigationButton_ControlTemplate}">
-                <Button.LayoutTransform>
-                    <RotateTransform Angle="0" />
-                </Button.LayoutTransform>
-            </Button>
-               
-            </StackPanel>
-        </Grid>
     </Grid>
 </UserControl>
