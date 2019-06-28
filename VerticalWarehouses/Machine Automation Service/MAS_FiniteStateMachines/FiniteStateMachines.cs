@@ -275,11 +275,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
-                                if (ioIndex == 0)
-                                {
-                                    this.logger.LogTrace($" >>  FSM SensorStates Buffer value: 0:{msgData.SensorsStates[19]}, 1:{msgData.SensorsStates[20]}, 2:{msgData.SensorsStates[21]}, 3:{msgData.SensorsStates[22]}, 4:{msgData.SensorsStates[23]}, 5:{msgData.SensorsStates[7]}");
-                                }
-
                                 this.forceRemoteIoStatusPublish = false;
                             }
                         }
