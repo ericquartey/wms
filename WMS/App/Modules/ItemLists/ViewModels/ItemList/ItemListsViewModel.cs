@@ -77,12 +77,12 @@ namespace Ferretto.WMS.Modules.ItemLists
             var result = await this.itemListProvider.DeleteAsync(this.CurrentItem.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListDeletedSuccessfully, StatusType.Success, result.ShowToast));
                 this.SelectedItem = null;
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
             }
         }
 

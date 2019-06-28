@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error, result.ShowToast));
             }
 
             this.IsBusy = false;

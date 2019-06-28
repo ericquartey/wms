@@ -37,13 +37,13 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success, resultCreate.ShowToast));
 
                 this.CloseDialogCommand.Execute(null);
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, resultCreate.ShowToast));
             }
 
             this.IsBusy = false;
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error, result.ShowToast));
             }
 
             this.IsBusy = false;

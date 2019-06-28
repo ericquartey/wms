@@ -99,7 +99,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     App.Resources.MasterData.LoadingUnitWithdrawCommenced,
-                    StatusType.Success));
+                    StatusType.Success,
+                    result.ShowToast));
 
                 this.CloseDialogCommand.Execute(null);
             }
@@ -107,7 +108,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     result.Description,
-                    StatusType.Error));
+                    StatusType.Error,
+                    result.ShowToast));
             }
         }
 

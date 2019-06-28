@@ -142,11 +142,11 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success, result.ShowToast));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
             }
 
             return result.Success;
@@ -181,11 +181,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success, result.ShowToast));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
             }
 
             this.IsBusy = false;

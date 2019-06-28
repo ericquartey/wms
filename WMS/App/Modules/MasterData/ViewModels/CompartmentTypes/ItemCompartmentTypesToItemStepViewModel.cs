@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -118,13 +117,14 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                                              App.Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
-                                             StatusType.Success));
+                                             StatusType.Success,
+                                             result.ShowToast));
                 this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(ItemCompartmentType).ToString(), null, HubEntityOperation.Created));
             }
             else
             {
                 this.SetValidation(true);
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error, result.ShowToast));
                 this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
             }
 

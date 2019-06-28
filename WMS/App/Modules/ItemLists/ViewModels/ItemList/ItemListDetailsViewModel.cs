@@ -165,7 +165,8 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.EventService.Invoke(
                     new StatusPubSubEvent(
                         App.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                        StatusType.Success));
+                        StatusType.Success,
+                        result.ShowToast));
                 this.SelectedItemListRow = null;
 
                 await this.LoadDataAsync();
@@ -174,7 +175,8 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Errors.UnableToSaveChanges,
-                    StatusType.Error));
+                    StatusType.Error,
+                    result.ShowToast));
             }
         }
 
@@ -185,11 +187,12 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     App.Resources.ItemLists.ItemListDeletedSuccessfully,
-                    StatusType.Success));
+                    StatusType.Success,
+                    result.ShowToast));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
             }
 
             return result.Success;
@@ -226,13 +229,15 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.EventService.Invoke(new StatusPubSubEvent(
                     App.Resources.ItemLists.ItemListSavedSuccessfully,
-                    StatusType.Success));
+                    StatusType.Success,
+                    result.ShowToast));
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Errors.UnableToSaveChanges,
-                    StatusType.Error));
+                    StatusType.Error,
+                    result.ShowToast));
             }
 
             this.IsBusy = false;

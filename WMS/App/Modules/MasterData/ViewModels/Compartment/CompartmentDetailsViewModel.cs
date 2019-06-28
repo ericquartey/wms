@@ -141,11 +141,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentSavedSuccessfully, StatusType.Success, result.ShowToast));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
             }
 
             this.IsBusy = false;
@@ -169,7 +169,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error, result.ShowToast));
                 }
 
                 this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
