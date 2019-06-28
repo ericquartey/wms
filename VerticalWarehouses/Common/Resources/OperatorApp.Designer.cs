@@ -646,6 +646,51 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartments.
+        /// </summary>
+        public static string DrawerSaturationDataGridHeaderCompartments {
+            get {
+                return ResourceManager.GetString("DrawerSaturationDataGridHeaderCompartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer Id.
+        /// </summary>
+        public static string DrawerSaturationDataGridHeaderDrawerId {
+            get {
+                return ResourceManager.GetString("DrawerSaturationDataGridHeaderDrawerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filling.
+        /// </summary>
+        public static string DrawerSaturationDataGridHeaderFilling {
+            get {
+                return ResourceManager.GetString("DrawerSaturationDataGridHeaderFilling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filling %.
+        /// </summary>
+        public static string DrawerSaturationDataGridHeaderFillingPercentage {
+            get {
+                return ResourceManager.GetString("DrawerSaturationDataGridHeaderFillingPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missions.
+        /// </summary>
+        public static string DrawerSaturationDataGridHeaderMissions {
+            get {
+                return ResourceManager.GetString("DrawerSaturationDataGridHeaderMissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DrawerSpaceSaturazionDrawerMeasure.
         /// </summary>
         public static string DrawerSpaceSaturazionDrawerMeasure {

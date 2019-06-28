@@ -851,4 +851,24 @@
     <value>State</value>
     <comment>Stato</comment>
   </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Compartments</value>
+    <comment>Compartimenti</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Drawer Id</value>
+    <comment>Id Cassetto</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Filling</value>
+    <comment>Riempimento</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Filling %</value>
+    <comment>Riempimento %</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Missions</value>
+    <comment>Missioni</comment>
+  </data>
 </root>
