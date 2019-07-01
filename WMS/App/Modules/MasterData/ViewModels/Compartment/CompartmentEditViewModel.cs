@@ -120,11 +120,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     result = false;
                 }
 
-                if (result)
-                {
-                    this.ShowDetails = true;
-                }
-
                 return result;
             }
         }
