@@ -1501,6 +1501,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderCell {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderDrawer {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderHeight {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderSide {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderState {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderWeight {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compaction.
         /// </summary>
         public static string OtherNavigationCompaction {

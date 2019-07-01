@@ -871,4 +871,28 @@
     <value>Missions</value>
     <comment>Missioni</comment>
   </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Cell</value>
+    <comment>Cella</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Drawer</value>
+    <comment>Cassetto</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Height</value>
+    <comment>Altezza</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Side</value>
+    <comment>Lato</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>State</value>
+    <comment>Stato</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Weight</value>
+    <comment>Peso</comment>
+  </data>
 </root>
