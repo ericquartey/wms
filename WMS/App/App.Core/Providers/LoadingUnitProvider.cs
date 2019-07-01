@@ -20,9 +20,11 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellProvider cellProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
+        private readonly Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
+        private readonly Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
+        private readonly Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
 
         private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
 
@@ -38,8 +40,9 @@ namespace Ferretto.WMS.App.Core.Providers
             ICellProvider cellProvider,
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
-            WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService)
+            Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
+            Data.WebAPI.Contracts.ICellsDataService cellsDataService,
+            Data.WebAPI.Contracts.IItemsDataService itemsDataService)
         {
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
@@ -48,6 +51,7 @@ namespace Ferretto.WMS.App.Core.Providers
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.cellsDataService = cellsDataService;
+            this.itemsDataService = itemsDataService;
         }
 
         #endregion
@@ -102,6 +106,48 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<LoadingUnit>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<LoadingUnit>>> GetAllAllowedByItemIdAsync(
+            int itemId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            try
+            {
+                var loadingUnits = await this.itemsDataService.GetAllowedLoadingUnitsAsync(
+                    itemId,
+                    skip,
+                    take,
+                    orderBySortOptions.ToQueryString());
+
+                var result = loadingUnits
+                    .Select(l => new LoadingUnit
+                    {
+                        Id = l.Id,
+                        Code = l.Code,
+                        LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
+                        LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
+                        AbcClassDescription = l.AbcClassDescription,
+                        AreaName = l.AreaName,
+                        AisleName = l.AisleName,
+                        CellFloor = l.CellFloor,
+                        CellColumn = l.CellColumn,
+                        CellSide = (Side?)l.CellSide,
+                        CellNumber = l.CellNumber,
+                        CellPositionDescription = l.CellPositionDescription,
+                        AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
+                        WeightFillRate = l.WeightFillRate.GetValueOrDefault(),
+                        Policies = l.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<LoadingUnit>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<LoadingUnit>>(e);
             }
         }
 

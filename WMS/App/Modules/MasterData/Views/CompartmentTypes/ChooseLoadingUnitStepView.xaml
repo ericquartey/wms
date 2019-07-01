@@ -40,7 +40,7 @@
                 <wms:WmsGridControl MaxWidth="2000"
                                     MaxHeight="2000"
                                     CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
-                                    ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
+                                    ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
                                     Visibility="{Binding Path=HasLoadingUnits, Converter={StaticResource BTVC}}">
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="80*"
