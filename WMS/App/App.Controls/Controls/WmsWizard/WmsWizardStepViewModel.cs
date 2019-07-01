@@ -3,7 +3,7 @@ using Ferretto.WMS.App.Controls.Services;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class StepViewModel : BaseServiceNavigationViewModel, IStepNavigableViewModel
+    public class WmsWizardStepViewModel : BaseServiceNavigationViewModel, IWmsWizardStepViewModel
     {
         #region Fields
 

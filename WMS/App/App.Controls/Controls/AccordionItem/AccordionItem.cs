@@ -20,15 +20,6 @@ namespace Ferretto.WMS.App.Controls
 
         #endregion
 
-        #region Constructors
-
-        public AccordionItem()
-        {
-            this.IsExpanded = false;
-        }
-
-        #endregion
-
         #region Properties
 
         public bool IsExpandButtonVisible

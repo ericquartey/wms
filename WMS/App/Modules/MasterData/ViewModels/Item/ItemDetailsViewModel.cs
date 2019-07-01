@@ -373,7 +373,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPESSTEPS,
+                Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPESWIZARD,
                 this.Model);
         }
 

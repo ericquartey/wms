@@ -4,7 +4,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class StepsViewModel : BaseServiceNavigationViewModel, IStepsViewModel
+    public class WmsWizardViewModel : BaseServiceNavigationViewModel, IWmsWizardViewModel
     {
         #region Fields
 

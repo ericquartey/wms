@@ -157,6 +157,7 @@
                 <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                 AttachedActionBar="{Binding ElementName=NewCompartmentTypeBar}"
                                                 AttachedBarItem="NewCompartmentTypeBarItem"
+                                                FocusedStart="WidthText"
                                                 IsOpen="{Binding IsAddShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource inputAreaControlStyle}" />
 

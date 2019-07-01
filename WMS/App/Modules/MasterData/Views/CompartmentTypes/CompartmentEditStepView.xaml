@@ -12,32 +12,32 @@
              mc:Ignorable="d">
 
     <Grid Height="420">
-        <GroupBox Header="{Binding Title}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="7,15,0,0"
+                   FontSize="{DynamicResource FontSizeMedium}"
+                   Text="{Binding Title}" />
+
+        <GroupBox Grid.Row="1"
+                  Margin="10,0,0,0"
+                  Header="{x:Static res:MasterData.CreateNewCompartementDesiredCompartmentType}">
+            <Grid Margin="20,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.7*" />
                     <ColumnDefinition Width="0.3*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="1"
-                           Grid.ColumnSpan="2"
-                           HorizontalAlignment="Left"
-                           Text="{x:Static res:MasterData.CreateNewCompartementDesiredCompartmentType}" />
-
-                <GroupBox Grid.Row="2"
+                <GroupBox Margin="0,-10,0,0"
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}">
-
                     <ctrls:TrayControl x:Name="TrayControl"
                                        Margin="0,0,0,0"
                                        HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
                                        Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                       DimensionHeight="{Binding LoadingUnitDetails.Length}"
+                                       DimensionHeight="{Binding LoadingUnitDetails.Depth}"
                                        DimensionWidth="{Binding LoadingUnitDetails.Width}"
                                        IsCompartmentSelectable="false"
                                        IsReadOnly="true"
@@ -48,19 +48,15 @@
                                        ShowRuler="True" />
                 </GroupBox>
 
-                <ScrollViewer Grid.Row="2"
-                              Grid.Column="1"
-                              Margin="0,-10,0,10"
+                <ScrollViewer Grid.Column="1"
+                              Margin="0,-20,0,10"
                               Focusable="False"
                               IsTabStop="True">
-
                     <masterdata:CompartmentEditView MinHeight="520"
                                                     VerticalAlignment="Stretch"
                                                     VerticalContentAlignment="Stretch"
                                                     DataContext="{Binding CompartmentAdd}" />
-
                 </ScrollViewer>
-
             </Grid>
         </GroupBox>
     </Grid>

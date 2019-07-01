@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
-        <CodeAnalysisRuleSet>..\..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
