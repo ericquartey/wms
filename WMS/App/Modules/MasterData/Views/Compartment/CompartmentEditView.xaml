@@ -162,7 +162,7 @@
                                     Grid.ColumnSpan="3"
                                     wms:ShowTitle.Show="True"
                                     AllowUpdateTwoWayBoundPropertiesOnSynchronization="False"
-                                    DisplayMember="Description"
+                                    DisplayMember="Code"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                     PopupWidth="500"
