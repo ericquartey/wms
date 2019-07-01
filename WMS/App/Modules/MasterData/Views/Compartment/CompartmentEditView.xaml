@@ -241,6 +241,7 @@
                         <wms:AccordionItem FontSize="12"
                                            FontWeight="Normal"
                                            IsExpandButtonVisible="True"
+                                           IsExpanded="{Binding ShowDetails}"
                                            TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
                             <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
