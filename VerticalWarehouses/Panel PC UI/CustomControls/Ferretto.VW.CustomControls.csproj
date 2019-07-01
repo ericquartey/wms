@@ -50,6 +50,7 @@
     <None Remove="Controls\BusyButton.xaml" />
     <None Remove="Controls\BusyIndicator.xaml" />
     <None Remove="Controls\CustomControlCellStatisticsDataGrid.xaml" />
+    <None Remove="Controls\CustomControlDrawerDataGrid.xaml" />
     <None Remove="Controls\CustomControlDrawerSaturationDataGrid.xaml" />
     <None Remove="Controls\CustomProgressBarControl.xaml" />
   </ItemGroup>

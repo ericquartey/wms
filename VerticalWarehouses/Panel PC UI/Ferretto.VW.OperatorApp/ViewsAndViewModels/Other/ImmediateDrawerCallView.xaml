@@ -14,22 +14,14 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
-        
-        <DataGrid    HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
-                     Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-                     HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
 
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}"  Header="Cassetto" Width="100"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Altezza" Width="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Peso" Width="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cella" Width="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Lato" Width="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stato" Width="80"/>
-            </DataGrid.Columns>
-
-        </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                  Height="350"
+                  Margin="170,90,0,0"
+                  VerticalAlignment="Top"
+                  Width="600"
+                        Content="{Binding DataGridViewModel}">
+        </ContentControl>
         
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,90,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonUp}"
