@@ -121,7 +121,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     itemId,
                     skip,
                     take,
-                    orderBySortOptions.ToQueryString());
+                    orderBy: orderBySortOptions.ToQueryString());
 
                 var result = loadingUnits
                     .Select(l => new LoadingUnit
