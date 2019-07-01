@@ -17,9 +17,10 @@ namespace Ferretto.WMS.App.Core.Models
             this.ShowToast = showToast;
         }
 
-        public OperationResult(System.Exception exception)
+        public OperationResult(System.Exception exception, bool showToast = true)
         {
             this.Success = false;
+            this.ShowToast = showToast;
 
             if (exception != null)
             {
