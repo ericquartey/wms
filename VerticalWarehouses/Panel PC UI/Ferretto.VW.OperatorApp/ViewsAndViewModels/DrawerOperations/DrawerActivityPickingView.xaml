@@ -95,7 +95,7 @@
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
         <Button Margin="280,0,0,20"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Bottom"
                 Command="{Binding DrawerDetailsButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />

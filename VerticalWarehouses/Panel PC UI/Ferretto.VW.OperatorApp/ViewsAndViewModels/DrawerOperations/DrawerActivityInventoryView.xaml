@@ -92,9 +92,9 @@
                                                    RenderTransformOrigin="0.499,0.627"
                                                    InputText="{Binding StoredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <Button Margin="280,528,0,0"
+        <Button Margin="280,0,0,20"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Bottom"
                 Command="{Binding DrawerActivityInventoryDetailsButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
