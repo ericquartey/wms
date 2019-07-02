@@ -165,7 +165,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
             Views.PrintMissionsTable(missions);
 
-            var abortOperationId = Views.ReadOperationId();
+            var abortOperationId = Views.ReadInt("Insert mission operation id:");
             if (abortOperationId >= 0)
             {
                 await this.automationProvider.AbortOperationAsync(abortOperationId);
@@ -178,8 +178,8 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
             Views.PrintMissionsTable(missions);
 
-            var missionId = Views.ReadMissionId();
-            var quantity = Views.ReadQuantity();
+            var missionId = Views.ReadInt("Insert mission id:");
+            var quantity = Views.ReadInt("Insert mission quantity:");
             if (missionId >= 0)
             {
                 if (quantity > 0)
@@ -200,7 +200,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
             Views.PrintMissionsTable(missions);
 
-            var operationId = Views.ReadOperationId();
+            var operationId = Views.ReadInt("Insert mission operation id:");
             if (operationId >= 0)
             {
                 await this.ExecuteOperationAsync(operationId);
@@ -252,7 +252,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     }
 
                 case UserSelection.ExecuteList:
-                    var executeListId = Views.ReadListId();
+                    var executeListId = Views.ReadInt("Insert list id:");
                     if (executeListId >= 0)
                     {
                         await this.ExecuteListAsync(executeListId);

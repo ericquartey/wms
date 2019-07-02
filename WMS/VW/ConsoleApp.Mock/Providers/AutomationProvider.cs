@@ -51,7 +51,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.baysDataService.ActivateAsync(bayId);
         }
 
-        public async Task<MissionInfo> CompleteLoadingUnitMissionAsync(int missionId)
+        public async Task<Mission> CompleteLoadingUnitMissionAsync(int missionId)
         {
             return await this.missionsDataService.CompleteLoadingUnitAsync(missionId);
         }
@@ -103,7 +103,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return await this.missionsDataService.GetByIdAsync(missionId);
         }
 
-        public async Task<IEnumerable<Mission>> GetMissionsAsync(int machineId)
+        public async Task<IEnumerable<MissionInfo>> GetMissionsAsync(int machineId)
         {
             return await this.machinesDataService.GetMissionsByIdAsync(machineId);
         }
