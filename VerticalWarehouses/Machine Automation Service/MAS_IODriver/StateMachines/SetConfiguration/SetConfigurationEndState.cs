@@ -1,11 +1,15 @@
-﻿using Ferretto.VW.MAS_IODriver.Interface;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 {
-    public class ClearOutputsState : IoStateBase
+    public class SetConfigurationEndState : IoStateBase
     {
         #region Fields
 
@@ -13,29 +17,26 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private readonly IoSHDStatus status;
 
-        private readonly IoIndex index;
-
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ClearOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
+        public SetConfigurationEndState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-            this.index = index;
         }
 
         #endregion
 
         #region Destructors
 
-        ~ClearOutputsState()
+        ~SetConfigurationEndState()
         {
             this.Dispose(false);
         }
@@ -46,28 +47,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
-
-            if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
-                message.ValidOutputs &&
-                message.OutputsCleared)
-            {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.index, this.logger));
-            }
+            this.logger.LogTrace("1:Method Start");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.logger.LogDebug($"1: Received Message = {message.ToString()}");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs &&
-                message.OutputsCleared;
-
-            //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.index, this.logger));
+                var endNotification = new FieldNotificationMessage(null, "Set configuration IO complete", FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver, FieldMessageType.SetConfigurationIO, MessageStatus.OperationEnd);
+
+                this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+                this.ParentStateMachine.PublishNotificationEvent(endNotification);
             }
         }
 

@@ -33,6 +33,8 @@
     "Inverter1Port": 17221,
     "IOExpansion1": "198.168.0.1",
     "IOExpansion1Port": 19550,
+    "IOExpansion2": "198.168.0.2",
+    "IOExpansion2Port": 19550,
     "InverterIndexMaster": 0,
     "InverterIndexShutter1": 2,
     "InverterIndexBay1": 3,

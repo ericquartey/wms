@@ -41,5 +41,7 @@
         SensorsChanged,
 
         IoDriverException,
+
+        SetConfigurationIO
     }
 }

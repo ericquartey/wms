@@ -1,16 +1,12 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_IODriver.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
@@ -22,11 +18,9 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedSHDIoDriver : BackgroundService
+    public partial class  HostedSHDIoDriver : BackgroundService
     {
         #region Fields
-
-        private const int IO_POLLING_INTERVAL = 100;  // 50
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -36,13 +30,9 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue;
+        private readonly IVertimagConfiguration vertimagConfiguration;
 
-        private readonly Task ioReceiveTask;
-
-        private readonly Task ioSendTask;
-
-        private readonly IoSHDStatus ioSHDStatus;
+        private readonly Dictionary<IoIndex, IIoDevice> ioDevices;
 
         private readonly ILogger logger;
 
@@ -50,33 +40,17 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly ISHDTransport shdTransport;
-
-        private IIoStateMachine currentStateMachine;
-
         private bool disposed;
 
-        private bool forceIoStatusPublish;
-
-        //TEMP used only in ReceiveIoDataTaskFunction
-        private bool[] inputData;
-
-        //TEMP used only in ReceiveIoDataTaskFunction
-        private bool[] outputData;
-
-        private Timer pollIoTimer;
-
         private CancellationToken stoppingToken;
-
-        private SHDTransport_Utility utility;
 
         #endregion
 
         #region Constructors
 
         public HostedSHDIoDriver(IEventAggregator eventAggregator,
-            ISHDTransport shdTransport,
             IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger)
         {
             logger.LogTrace("1:Method Start");
@@ -84,24 +58,15 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger = logger;
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-            this.shdTransport = shdTransport;
+            this.vertimagConfiguration = vertimagConfiguration;
 
-            this.utility = new SHDTransport_Utility(eventAggregator);
-
-            this.outputData = new bool[8];
-            this.inputData = new bool[16];
-
-            this.ioSHDStatus = new IoSHDStatus();
-
-            this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDWriteMessage>();
+            this.ioDevices = new Dictionary<IoIndex, IIoDevice>();
 
             this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
-            this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
-            this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
             this.InitializeMethodSubscriptions();
         }
@@ -128,7 +93,6 @@ namespace Ferretto.VW.MAS_IODriver
 
             if (disposing)
             {
-                this.pollIoTimer?.Dispose();
                 base.Dispose();
             }
 
@@ -173,31 +137,35 @@ namespace Ferretto.VW.MAS_IODriver
                     return;
                 }
                 this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
-                if (this.currentStateMachine != null)
-                {
-                    var errorNotification = new FieldNotificationMessage(null, "I/O operation already in progress", FieldMessageActor.Any,
-                        FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace($"4:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
-
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
-                    continue;
-                }
+                IoIndex currentDevice;
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.SwitchAxis:
-                        this.ExecuteSwitchAxis(receivedMessage);
+                        switch (receivedMessage.DeviceIndex)
+                        {
+                            case (byte)IoIndex.IoDevice1:
+                                this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
+                                break;
+                            default:
+                                break;
+                        }
                         break;
 
                     case FieldMessageType.IoReset:
-                        this.ExecuteIoReset();
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteIoReset();
                         break;
 
                     case FieldMessageType.SensorsChanged:
-                        this.ExecuteSensorsStateUpdate(receivedMessage);
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
+                        break;
+
+                    default:
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
@@ -239,8 +207,11 @@ namespace Ferretto.VW.MAS_IODriver
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
+                        await this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
-                        this.StartPollingIoMessage();
+                        this.ioDevices[IoIndex.IoDevice1].ExecuteIoPowerUp();
+                        this.ioDevices[IoIndex.IoDevice2].ExecuteIoPowerUp();
+
                         break;
 
                     case FieldMessageType.IoPowerUp:
@@ -248,174 +219,20 @@ namespace Ferretto.VW.MAS_IODriver
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            var index = (IoIndex)receivedMessage.DeviceIndex;
+                            this.ioDevices[index].DestroyStateMachine();
                         }
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task ReceiveIoDataTaskFunction()
+        private async Task StartHardwareCommunications()
         {
-            this.logger.LogTrace("1:Method Start");
-
-            var formatDataOperation = SHDFormatDataOperation.Data;
-            byte fwRelease = 0x00;
-            byte errorCode = 0x00;
-            var configurationData = new byte[25];
-
-            do
+            foreach (var device in this.ioDevices.Values)
             {
-                //TODO Attention: handle the message fragmentation
-
-                var nBytesReceived = 0;
-                try
-                {
-                    var telegram = await this.shdTransport.ReadAsync(this.stoppingToken);
-
-                    if (telegram.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    this.utility.ParsingDataBytes(
-                        telegram,
-                        out nBytesReceived,
-                        out formatDataOperation,
-                        out fwRelease,
-                        ref this.inputData,
-                        ref this.outputData,
-                        out configurationData,
-                        out errorCode);
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogCritical($"3:Exception: {ex.Message} while reading async error - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
-
-                    throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
-                }
-
-                lock (this.ioSHDStatus)
-                {
-                    this.ioSHDStatus.FwRelease = fwRelease;
-                }
-
-                switch (formatDataOperation)
-                {
-                    case SHDFormatDataOperation.Data:
-
-                        // TODO Check the fault output lines status
-
-                        // update IO status
-                        if (this.ioSHDStatus.UpdateInputStates(this.inputData) || this.forceIoStatusPublish)
-                        {
-                            var data = new SensorsChangedFieldMessageData();
-                            data.SensorsStates = this.inputData;
-                            var notificationMessage = new FieldNotificationMessage(
-                                data,
-                                "Update IO sensors",
-                                FieldMessageActor.FiniteStateMachines,
-                                FieldMessageActor.IoDriver,
-                                FieldMessageType.SensorsChanged,
-                                MessageStatus.OperationExecuting,
-                                ErrorLevel.NoError);
-                            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-
-                            this.forceIoStatusPublish = false;
-                        }
-
-                        var messageData = new IoSHDReadMessage(
-                            formatDataOperation,
-                            fwRelease,
-                            this.inputData,
-                            this.outputData,
-                            configurationData,
-                            errorCode);
-                        this.logger.LogTrace($"4:{messageData}");
-
-                        this.currentStateMachine?.ProcessResponseMessage(messageData);
-
-                        break;
-
-                    case SHDFormatDataOperation.Ack:
-
-                        var messageConfig = new IoSHDReadMessage(
-                            formatDataOperation,
-                            fwRelease,
-                            this.inputData,
-                            this.outputData,
-                            configurationData,
-                            errorCode);
-                        this.logger.LogTrace($"4: Configuration message={messageConfig}");
-
-                        this.currentStateMachine?.ProcessResponseMessage(messageConfig);
-
-                        break;
-
-                    default:
-                        break;
-                }
-            } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private async Task SendIoCommandTaskFunction()
-        {
-            do
-            {
-                var shdMessage = new IoSHDWriteMessage();
-                try
-                {
-                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
-
-                    this.logger.LogDebug($"1:message={shdMessage}");
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogDebug("2:Method End operation cancelled");
-
-                    return;
-                }
-
-                byte[] telegram;
-                switch (shdMessage.CodeOperation)
-                {
-                    case SHDCodeOperation.Data:
-                        if (shdMessage.ValidOutputs)
-                        {
-                            telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
-                            await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
-
-                            this.logger.LogTrace($"3:message={shdMessage}");
-                        }
-                        break;
-
-                    case SHDCodeOperation.Configuration:
-                        {
-                            telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
-                            await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
-
-                            this.logger.LogTrace($"4:message={shdMessage}");
-                        }
-                        break;
-
-                    case SHDCodeOperation.SetIP:
-                        {
-                            // TODO
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-            } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void SendIoMessageData(object state)
-        {
-            var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
-
-            this.ioCommandQueue.Enqueue(message);
+                device.StartHardwareCommunications();
+            }
         }
 
         private void SendMessage(IFieldMessageData messageData)
@@ -432,69 +249,35 @@ namespace Ferretto.VW.MAS_IODriver
             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
         }
 
-        private async Task StartHardwareCommunications()
+        private async Task InitializeIoDevice()
         {
-            var ioAddress = await
-                this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-            var ioPort = await
-                this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+            var ioDevicesList = await this.vertimagConfiguration.GetInstalledIoListAsync();
+            IIoDevice ioDevice = null;
 
-            this.logger.LogTrace($"1:ioAddress={ioAddress}:ioPort={ioPort}");
-
-            this.shdTransport.Configure(ioAddress, ioPort);
-
-            try
+            foreach (var ioIndex in ioDevicesList )
             {
-                await this.shdTransport.ConnectAsync();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+                switch (ioIndex)
+                {
+                    case IoIndex.IoDevice1:
+                        var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
+                        break;
 
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
-            }
+                    case IoIndex.IoDevice2:
+                        var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
+                        break;
 
-            if (!this.shdTransport.IsConnected)
-            {
-                this.logger.LogCritical("3:Failed to connect to Modbus I/O master");
+                    case IoIndex.IoDevice3:
+                        var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
+                        break;
+                }
 
-                throw new IoDriverException("Failed to connect to Modbus I/O master");
-            }
-
-            this.ioSHDStatus.IpAddress = ioAddress.ToString();
-
-            try
-            {
-                this.ioReceiveTask.Start();
-                this.ioSendTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"4:Exception: {ex.Message} while starting service hardware threads - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
-
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
-            }
-
-            // PowerUp
-            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
-            this.currentStateMachine.Start();
-        }
-
-        private void StartPollingIoMessage()
-        {
-            this.logger.LogDebug($"1:Create Timer to poll data");
-
-            this.pollIoTimer?.Dispose();
-
-            try
-            {
-                this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"2:Exception: {ex.Message} Timer Creation Failed");
-
-                throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
+                this.ioDevices.Add(ioIndex, ioDevice);
             }
         }
 
