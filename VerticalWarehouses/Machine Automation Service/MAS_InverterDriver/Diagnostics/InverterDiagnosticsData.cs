@@ -1,5 +1,6 @@
 ﻿// ReSharper disable ArrangeThisQualifier
 
+using System;
 using System.Diagnostics;
 
 namespace Ferretto.VW.MAS_InverterDriver.Diagnostics
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS_InverterDriver.Diagnostics
 
         private long totalValues;
 
+        private double totalValuesSquared;
+
         #endregion
 
         #region Constructors
@@ -32,19 +35,24 @@ namespace Ferretto.VW.MAS_InverterDriver.Diagnostics
         #region Properties
 
         /// <summary>
-        /// Gets average value in microseconds
+        /// Gets average value in milliseconds
         /// </summary>
-        public float AverageValue => (this.averageValue * (float)this.nanosecondsPerTick) / 1000000.0f;
+        public double AverageValue => (this.averageValue * (double)this.nanosecondsPerTick) / 1000000.0d;
 
         /// <summary>
-        /// Gets average value in microseconds
+        /// Gets average value in milliseconds
         /// </summary>
-        public float MaxValue => (this.maxValue * (float)this.nanosecondsPerTick) / 1000000.0f;
+        public double MaxValue => (this.maxValue * (double)this.nanosecondsPerTick) / 1000000.0d;
 
         /// <summary>
-        /// Gets average value in microseconds
+        /// Gets average value in milliseconds
         /// </summary>
-        public float MinValue => (this.minValue * (float)this.nanosecondsPerTick) / 1000000.0f;
+        public double MinValue => (this.minValue * (double)this.nanosecondsPerTick) / 1000000.0d;
+
+        /// <summary>
+        /// Gets Standard Deviation value in milliseconds
+        /// </summary>
+        public double StandardDeviation => Math.Sqrt((this.totalValuesSquared - (this.TotalSamples * Math.Pow(this.averageValue, 2))) / this.TotalSamples) / 1000000.0d;
 
         public long TotalSamples { get; private set; }
 
@@ -65,6 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.Diagnostics
             }
 
             this.totalValues += newValue;
+            this.totalValuesSquared += Math.Pow(newValue, 2);
             this.TotalSamples++;
 
             this.averageValue = this.totalValues / this.TotalSamples;
