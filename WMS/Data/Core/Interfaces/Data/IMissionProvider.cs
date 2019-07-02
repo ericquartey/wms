@@ -11,6 +11,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IReadSingleAsyncProvider<Mission, int>,
         ICreateRangeAsyncProvider<Mission, int>,
         ICreateAsyncProvider<Mission, int>,
+        IUpdateAsyncProvider<Mission, int>,
         IGetUniqueValuesAsyncProvider
     {
         #region Methods

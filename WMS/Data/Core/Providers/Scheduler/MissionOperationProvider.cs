@@ -12,6 +12,7 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -33,6 +34,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IMapper mapper;
 
+        private readonly IMissionProvider missionProvider;
+
         private readonly IItemListRowExecutionProvider rowExecutionProvider;
 
         #endregion
@@ -46,6 +49,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ICompartmentOperationProvider compartmentOperationProvider,
             IItemListRowExecutionProvider rowExecutionProvider,
             IItemProvider itemProvider,
+            IMissionProvider missionProvider,
             ILoadingUnitProvider loadingUnitProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ILogger<MissionOperationProvider> logger)
@@ -55,6 +59,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.logger = logger;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.itemProvider = itemProvider;
+            this.missionProvider = missionProvider;
             this.rowExecutionProvider = rowExecutionProvider;
             this.loadingUnitProvider = loadingUnitProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
@@ -76,10 +81,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                         id));
             }
 
-            if (!operation.CanExecuteOperation(nameof(MissionPolicy.Abort)))
+            if (!operation.CanExecuteOperation(nameof(MissionOperationPolicy.Abort)))
             {
                 return new BadRequestOperationResult<MissionOperation>(
-                    operation.GetCanExecuteOperationReason(nameof(MissionPolicy.Abort)), operation);
+                    operation.GetCanExecuteOperationReason(nameof(MissionOperationPolicy.Abort)), operation);
             }
 
             return await this.AbortAsync(operation);
@@ -105,10 +110,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                         id));
             }
 
-            if (!operation.CanExecuteOperation(nameof(MissionPolicy.Complete)))
+            if (!operation.CanExecuteOperation(nameof(MissionOperationPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionOperation>(
-                    operation.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)),
+                    operation.GetCanExecuteOperationReason(nameof(MissionOperationPolicy.Complete)),
                     operation);
             }
 
@@ -168,28 +173,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionOperation>();
             }
 
-            if (!operation.CanExecuteOperation(nameof(MissionPolicy.Execute)))
+            if (!operation.CanExecuteOperation(nameof(MissionOperationPolicy.Execute)))
             {
                 return new BadRequestOperationResult<MissionOperation>(
-                    operation.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)),
+                    operation.GetCanExecuteOperationReason(nameof(MissionOperationPolicy.Execute)),
                     operation);
             }
 
             operation.Status = MissionOperationStatus.Executing;
             var result = await this.UpdateAsync(operation);
 
-            if (operation.ItemListRowId.HasValue)
-            {
-                var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
-                await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
-            }
+            await this.UpdateMissionStatusAsync(operation);
+
+            await this.UpdateRowStatusAsync(operation, DateTime.UtcNow);
 
             return result;
         }
 
         public async Task<IEnumerable<MissionOperation>> GetAllAsync(int skip, int take, IEnumerable<SortOption> orderBySortOptions = null, string whereString = null, string searchString = null)
         {
-            var models = await this.DataContext.MissionOperations
+            var operations = await this.DataContext.MissionOperations
                 .ProjectTo<MissionOperation>(this.mapper.ConfigurationProvider)
                 .ToArrayAsync<MissionOperation, Common.DataModels.MissionOperation>(
                     skip,
@@ -198,7 +201,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     whereString,
                     null);
 
-            return models;
+            SetPolicies(operations);
+
+            return operations;
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
@@ -212,9 +217,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<MissionOperation> GetByIdAsync(int id)
         {
-            return await this.DataContext.MissionOperations
+            var operation = await this.DataContext.MissionOperations
                 .ProjectTo<MissionOperation>(this.mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(o => o.Id == id);
+
+            SetPolicies(operation);
+
+            return operation;
         }
 
         public async Task<IEnumerable<MissionOperation>> GetByListRowIdAsync(int listRowId)
@@ -240,39 +249,63 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.NotificationService.PushUpdate(model);
             this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId });
 
             return result;
         }
 
-        public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)
+        public async Task UpdateMissionStatusAsync(MissionOperation operation)
         {
+            var mission = await this.missionProvider.GetByIdAsync(operation.MissionId);
+
+            mission.Status = Mission.GetStatus(
+                mission.OperationsCount,
+                mission.NewOperationsCount,
+                mission.ExecutingOperationsCount,
+                mission.CompletedOperationsCount,
+                mission.IncompleteOperationsCount,
+                mission.ErrorOperationsCount);
+
+            await this.missionProvider.UpdateAsync(mission);
+        }
+
+        public async Task UpdateRowStatusAsync(MissionOperation operation, DateTime now)
+        {
+            if (!operation.ItemListRowId.HasValue)
+            {
+                return;
+            }
+
+            var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
+            row.DispatchedQuantity += operation.DispatchedQuantity;
+
             var involvedOperations = await this.GetByListRowIdAsync(row.Id);
 
-            var completeMissionsCount = involvedOperations.Count(o => o.Status == MissionOperationStatus.Completed);
-            var hasExecutingMissions = involvedOperations.Any(o => o.Status == MissionOperationStatus.Executing);
-            var hasErroredMissions = involvedOperations.Any(o => o.Status == MissionOperationStatus.Error);
-            var hasIncompleteMissions = involvedOperations.Any(o => o.Status == MissionOperationStatus.Incomplete);
+            var completeOperationsCount = involvedOperations.Count(o => o.Status == MissionOperationStatus.Completed);
+            var hasExecutingOperations = involvedOperations.Any(o => o.Status == MissionOperationStatus.Executing);
+            var hasErroredOperations = involvedOperations.Any(o => o.Status == MissionOperationStatus.Error);
+            var hasIncompleteOperations = involvedOperations.Any(o => o.Status == MissionOperationStatus.Incomplete);
 
             if (!involvedOperations.Any())
             {
                 row.Status = ItemListRowStatus.New;
             }
-            else if (completeMissionsCount == involvedOperations.Count()
+            else if (completeOperationsCount == involvedOperations.Count()
                 && involvedOperations.Sum(o => o.DispatchedQuantity).CompareTo(row.RequestedQuantity) == 0)
             {
                 row.Status = ItemListRowStatus.Completed;
                 row.CompletionDate = now;
             }
-            else if (hasErroredMissions)
+            else if (hasErroredOperations)
             {
                 row.Status = ItemListRowStatus.Error;
             }
-            else if (hasExecutingMissions)
+            else if (hasExecutingOperations)
             {
                 row.Status = ItemListRowStatus.Executing;
                 row.LastExecutionDate = now;
             }
-            else if (hasIncompleteMissions)
+            else if (hasIncompleteOperations)
             {
                 row.Status = ItemListRowStatus.Incomplete;
             }
@@ -300,6 +333,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        private static void SetPolicies(IEnumerable<MissionOperation> operations)
+        {
+            foreach (var operation in operations)
+            {
+                SetPolicies(operation);
+            }
+        }
+
+        private static void SetPolicies(BaseModel<int> operation)
+        {
+            if (operation is IMissionOperationPolicy operationPolicyDescriptor)
+            {
+                operation.AddPolicy(operationPolicyDescriptor.ComputeCompletePolicy());
+                operation.AddPolicy(operationPolicyDescriptor.ComputeAbortPolicy());
+                operation.AddPolicy(operationPolicyDescriptor.ComputeExecutePolicy());
+            }
+        }
+
         private static void UpdateCompartmentAfterPick(CandidateCompartment compartment, double quantity, DateTime now)
         {
             compartment.ReservedForPick -= quantity;
@@ -307,18 +358,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             RemovePairingIfEmpty(compartment);
 
             compartment.LastPickDate = now;
-        }
-
-        private static void UpdateOperationQuantityAndStatus(MissionOperation operation, double? quantity)
-        {
-            if (quantity.HasValue)
-            {
-                operation.DispatchedQuantity += quantity.Value;
-            }
-
-            operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
-                ? MissionOperationStatus.Completed
-                : MissionOperationStatus.Incomplete;
         }
 
         private async Task<IOperationResult<MissionOperation>> AbortAsync(MissionOperation operation)
@@ -349,6 +388,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             operation.Status = MissionOperationStatus.Incomplete;
+            var updateResult = await this.UpdateAsync(operation);
+
+            await this.UpdateMissionStatusAsync(operation);
 
             var compartmentUpdateResult = await this.compartmentOperationProvider.UpdateAsync(compartment);
             if (!compartmentUpdateResult.Success)
@@ -357,13 +399,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     compartmentUpdateResult.Description);
             }
 
-            var updateResult = await this.UpdateAsync(operation);
-
-            if (operation.ItemListRowId.HasValue)
-            {
-                var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
-                await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
-            }
+            await this.UpdateRowStatusAsync(operation, DateTime.UtcNow);
 
             return updateResult;
         }
@@ -416,19 +452,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 item.LastPickDate = now;
 
-                UpdateOperationQuantityAndStatus(operation, quantity);
-
+                operation.DispatchedQuantity += quantity;
+                operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
+                    ? MissionOperationStatus.Completed
+                    : MissionOperationStatus.Incomplete;
                 var result = await this.UpdateAsync(operation);
+
+                await this.UpdateMissionStatusAsync(operation);
+
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
                 await this.itemProvider.UpdateAsync(item);
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
-
-                if (operation.ItemListRowId.HasValue)
-                {
-                    var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
-                    row.DispatchedQuantity += operation.DispatchedQuantity;
-                    await this.UpdateRowStatusAsync(row, now);
-                }
+                await this.UpdateRowStatusAsync(operation, now);
 
                 scope.Complete();
 
@@ -476,19 +511,22 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 item.LastPutDate = now;
 
-                UpdateOperationQuantityAndStatus(operation, quantity);
+                operation.DispatchedQuantity += quantity;
+                operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
+                    ? MissionOperationStatus.Completed
+                    : MissionOperationStatus.Incomplete;
 
                 var result = await this.UpdateAsync(operation);
+
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+
                 await this.itemProvider.UpdateAsync(item);
+
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
 
-                if (operation.ItemListRowId.HasValue)
-                {
-                    var row = await this.rowExecutionProvider.GetByIdAsync(operation.ItemListRowId.Value);
-                    row.DispatchedQuantity += operation.DispatchedQuantity;
-                    await this.UpdateRowStatusAsync(row, now);
-                }
+                await this.UpdateMissionStatusAsync(operation);
+
+                await this.UpdateRowStatusAsync(operation, now);
 
                 scope.Complete();
 

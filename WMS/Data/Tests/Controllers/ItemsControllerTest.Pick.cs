@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult));
+            Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), GetDescription(actionResult.Result));
 
             #endregion
         }

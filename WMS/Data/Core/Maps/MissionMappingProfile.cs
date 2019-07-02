@@ -10,6 +10,9 @@ namespace Ferretto.WMS.Data.Core.Maps
 
         public MissionMappingProfile()
         {
+            this.CreateMap<Common.DataModels.MissionStatus, MissionStatus>()
+                .ConvertUsing(value => (MissionStatus)value);
+
             this.CreateMap<Common.DataModels.LoadingUnit, LoadingUnitMissionInfo>()
                 .ForMember(l => l.Width, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Width))
                 .ForMember(l => l.Depth, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Depth))

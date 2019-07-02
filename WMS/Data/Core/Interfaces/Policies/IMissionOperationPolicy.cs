@@ -1,6 +1,6 @@
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Interfaces.Policies
+namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IMissionOperationPolicy
     {

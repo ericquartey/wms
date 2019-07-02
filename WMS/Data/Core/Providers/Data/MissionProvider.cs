@@ -10,7 +10,6 @@ using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Interfaces.Policies;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
@@ -208,8 +207,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext.Missions.ProjectTo<MissionWithLoadingUnitDetails>(this.mapper.ConfigurationProvider));
         }
 
+        public async Task<IOperationResult<Mission>> UpdateAsync(Mission model)
+        {
+            var result = await this.UpdateAsync(
+               model,
+               this.DataContext.Missions,
+               this.DataContext,
+               false);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
+                    "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",
             Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<MissionWithLoadingUnitDetails, bool>> BuildSearchExpression(string search)

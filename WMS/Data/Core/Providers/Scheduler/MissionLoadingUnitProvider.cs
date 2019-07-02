@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -6,7 +5,6 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Interfaces.Policies;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +22,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IMissionProvider missionProvider;
 
-        private readonly IMissionOperationProvider operationProvider;
-
         private readonly ISchedulerRequestExecutionProvider requestProvider;
 
         #endregion
@@ -37,7 +33,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             INotificationService notificationService,
             IMapper mapper,
             IMissionProvider missionProvider,
-            IMissionOperationProvider operationProvider,
             ISchedulerRequestExecutionProvider requestProvider,
             ILogger<MissionLoadingUnitProvider> logger)
             : base(dataContext, notificationService)
@@ -45,7 +40,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.logger = logger;
             this.mapper = mapper;
             this.missionProvider = missionProvider;
-            this.operationProvider = operationProvider;
             this.requestProvider = requestProvider;
         }
 
@@ -63,16 +57,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            var operation = mission.Operations.FirstOrDefault();
+            mission.Status = MissionStatus.Incomplete;
 
-            if (operation == null)
-            {
-                return new UnprocessableEntityOperationResult<Mission>(Resources.Mission.UnableToAbortTheMissionBecauseItHasNoAssociatedOperations);
-            }
+            await this.missionProvider.UpdateAsync(mission);
 
-            operation.Status = MissionOperationStatus.Incomplete;
-
-            await this.operationProvider.UpdateAsync(operation);
             var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
@@ -92,15 +80,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            var operation = mission.Operations.FirstOrDefault();
-            if (operation == null)
-            {
-                return new UnprocessableEntityOperationResult<Mission>(Resources.Mission.UnableToAbortTheMissionBecauseItHasNoAssociatedOperations);
-            }
+            mission.Status = MissionStatus.Completed;
 
-            operation.Status = MissionOperationStatus.Completed;
+            await this.missionProvider.UpdateAsync(mission);
 
-            await this.operationProvider.UpdateAsync(operation);
             var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
@@ -116,7 +99,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (request == null)
             {
-                return null;
+                throw new System.ArgumentNullException(nameof(request));
             }
 
             var mission = new Mission

@@ -1,5 +1,5 @@
 using System;
-using Ferretto.WMS.Data.Core.Interfaces.Policies;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {

@@ -1,5 +1,5 @@
 using System;
-using Ferretto.WMS.Data.Core.Interfaces.Policies;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -16,11 +16,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int ItemId { get; set; }
 
-        public ItemList ItemList { get; set; }
-
         public int? ItemListId { get; set; }
-
-        public ItemListRow ItemListRow { get; set; }
 
         public int? ItemListRowId { get; set; }
 

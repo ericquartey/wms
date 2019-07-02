@@ -4,7 +4,7 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal static class CompartmentProviderPolicies
+    internal static class CompartmentPolicyExtensions
     {
         #region Methods
 

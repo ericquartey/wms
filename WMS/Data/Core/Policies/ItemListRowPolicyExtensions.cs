@@ -5,7 +5,7 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal static class ItemListRowProviderPolicies
+    internal static class ItemListRowPolicyExtensions
     {
         #region Methods
 

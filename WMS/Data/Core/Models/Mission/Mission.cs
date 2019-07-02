@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.Utils;
-using Ferretto.WMS.Data.Core.Interfaces.Policies;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -37,13 +37,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public int Priority { get; set; }
 
-        public MissionStatus Status => GetStatus(
-            this.OperationsCount,
-            this.NewOperationsCount,
-            this.ExecutingOperationsCount,
-            this.CompletedOperationsCount,
-            this.IncompleteOperationsCount,
-            this.ErrorOperationsCount);
+        public MissionStatus Status { get; set; }
 
         #endregion
 

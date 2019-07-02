@@ -22,14 +22,14 @@ namespace Ferretto.WMS.Data.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Mission {
+    public class MissionOperation {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Mission() {
+        internal MissionOperation() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.WMS.Data.Resources.Mission", typeof(Mission).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.WMS.Data.Resources.MissionOperation", typeof(MissionOperation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,38 @@ namespace Ferretto.WMS.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only loading unit missions can be aborted..
+        ///   Looks up a localized string similar to Unable to abort the operation because it has no associated operations..
         /// </summary>
-        public static string OnlyLoadingUnitMissionsCanBeAborted {
+        public static string UnableToAbortTheOperationBecauseItHasNoAssociatedOperations {
             get {
-                return ResourceManager.GetString("OnlyLoadingUnitMissionsCanBeAborted", resourceCulture);
+                return ResourceManager.GetString("UnableToAbortTheOperationBecauseItHasNoAssociatedOperations", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only loading unit missions can be completed..
+        ///   Looks up a localized string similar to Unable to abort the operation because of its current state..
         /// </summary>
-        public static string OnlyLoadingUnitMissionsCanBeCompleted {
+        public static string UnableToAbortTheOperationBecauseOfItsCurrentState {
             get {
-                return ResourceManager.GetString("OnlyLoadingUnitMissionsCanBeCompleted", resourceCulture);
+                return ResourceManager.GetString("UnableToAbortTheOperationBecauseOfItsCurrentState", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only loading unit missions can be executed..
+        ///   Looks up a localized string similar to Unable to complete the operation because of its current state..
         /// </summary>
-        public static string OnlyLoadingUnitMissionsCanBeExecuted {
+        public static string UnableToCompleteTheOperationBecauseOfItsCurrentState {
             get {
-                return ResourceManager.GetString("OnlyLoadingUnitMissionsCanBeExecuted", resourceCulture);
+                return ResourceManager.GetString("UnableToCompleteTheOperationBecauseOfItsCurrentState", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to abort the mission because it has no associated operations..
+        ///   Looks up a localized string similar to Unable to execute the operation because of its current state..
         /// </summary>
-        public static string UnableToAbortTheMissionBecauseItHasNoAssociatedOperations {
+        public static string UnableToExecuteTheOperationBecauseOfItsCurrentState {
             get {
-                return ResourceManager.GetString("UnableToAbortTheMissionBecauseItHasNoAssociatedOperations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to abort the mission because of its current state..
-        /// </summary>
-        public static string UnableToAbortTheMissionBecauseOfItsCurrentState {
-            get {
-                return ResourceManager.GetString("UnableToAbortTheMissionBecauseOfItsCurrentState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to complete the mission because of its current state..
-        /// </summary>
-        public static string UnableToCompleteTheMissionBecauseOfItsCurrentState {
-            get {
-                return ResourceManager.GetString("UnableToCompleteTheMissionBecauseOfItsCurrentState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to execute the mission because of its current state..
-        /// </summary>
-        public static string UnableToExecuteTheMissionBecauseOfItsCurrentState {
-            get {
-                return ResourceManager.GetString("UnableToExecuteTheMissionBecauseOfItsCurrentState", resourceCulture);
+                return ResourceManager.GetString("UnableToExecuteTheOperationBecauseOfItsCurrentState", resourceCulture);
             }
         }
     }

@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CannotDeleteTheCompartmentBecausePairingIsFixed" xml:space="preserve">
-    <value>Impossibile cancellare lo scomparto perché ha un abbinamento fisso con un articolo.</value>
+  <data name="UnableToAbortTheOperationBecauseItHasNoAssociatedOperations" xml:space="preserve">
+    <value>Unable to abort the operation because it has no associated operations.</value>
   </data>
-  <data name="CannotDeleteTheCompartmentBecauseStockIsNotZero" xml:space="preserve">
-    <value>Impossibile cancellare lo scomparto perché la giacenza non è zero.</value>
+  <data name="UnableToAbortTheOperationBecauseOfItsCurrentState" xml:space="preserve">
+    <value>Unable to abort the operation because of its current state.</value>
+  </data>
+  <data name="UnableToCompleteTheOperationBecauseOfItsCurrentState" xml:space="preserve">
+    <value>Unable to complete the operation because of its current state.</value>
+  </data>
+  <data name="UnableToExecuteTheOperationBecauseOfItsCurrentState" xml:space="preserve">
+    <value>Unable to execute the operation because of its current state.</value>
   </data>
 </root>
