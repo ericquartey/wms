@@ -146,10 +146,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.Refresh));
 
             await base.OnAppearAsync();
-
-            this.SelectedFilter = this.Filters.First();
-
-            await this.LoadDataAsync(null);
         }
 
         private async Task<IEnumerable<LoadingUnit>> GetAllAllowedByItemIdAsync(

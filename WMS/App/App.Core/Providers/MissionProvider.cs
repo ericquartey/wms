@@ -73,13 +73,7 @@ namespace Ferretto.WMS.App.Core.Providers
                             Status = (MissionOperationStatus)o.Status,
                             CompartmentType = string.Format(General.CompartmentTypeListFormatReduced, o.CompartmentWidth, o.CompartmentHeight),
                             ItemMeasureUnitDescription = o.ItemMeasureUnitDescription,
-#pragma warning disable SA1515 // Single-line comment must be preceded by blank line
-#pragma warning disable SA1005 // Single line comments must begin with single space
-
-                            // *** *AISLE NAME
                             MaterialStatusDescription = o.MaterialStatusDescription,
-#pragma warning restore SA1005 // Single line comments must begin with single space
-#pragma warning restore SA1515 // Single-line comment must be preceded by blank line
                             PackageTypeDescription = o.PackageTypeDescription,
                             DispatchedQuantity = o.DispatchedQuantity,
                         })
