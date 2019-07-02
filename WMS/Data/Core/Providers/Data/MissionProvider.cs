@@ -122,11 +122,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
-        public async Task<MissionWithLoadingUnitDetails> GetByIdAsync(int id)
+        public async Task<Mission> GetByIdAsync(int id)
         {
             var mission = await this.DataContext.Missions
                 .Where(m => m.Id == id)
-                .ProjectTo<MissionWithLoadingUnitDetails>(this.mapper.ConfigurationProvider)
+                .ProjectTo<Mission>(this.mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
             SetPolicies(mission);
@@ -134,11 +134,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             return mission;
         }
 
-        public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<MissionInfo>>> GetByMachineIdAsync(int id)
         {
             if (await this.DataContext.Machines.AnyAsync(m => m.Id == id) == false)
             {
-                return new NotFoundOperationResult<IEnumerable<Mission>>();
+                return new NotFoundOperationResult<IEnumerable<MissionInfo>>();
             }
 
             var missions = await this.DataContext.Missions
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (mission, machine) => new { Mission = mission, Machine = machine })
                 .Where(j => j.Machine.Id == id)
                 .Select(j => j.Mission)
-                .ProjectTo<Mission>(this.mapper.ConfigurationProvider)
+                .ProjectTo<MissionInfo>(this.mapper.ConfigurationProvider)
                 .ToArrayAsync();
 
             foreach (var mission in missions)
@@ -157,7 +157,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 SetPolicies(mission);
             }
 
-            return new SuccessOperationResult<IEnumerable<Mission>>(missions);
+            return new SuccessOperationResult<IEnumerable<MissionInfo>>(missions);
         }
 
         public async Task<IOperationResult<MissionWithLoadingUnitDetails>> GetDetailsByIdAsync(int id)
@@ -175,6 +175,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             SetPolicies(missionDetails);
 
             return new SuccessOperationResult<MissionWithLoadingUnitDetails>(missionDetails);
+        }
+
+        public async Task<MissionInfo> GetInfoByIdAsync(int id)
+        {
+            var mission = await this.DataContext.Missions
+             .Where(m => m.Id == id)
+             .ProjectTo<MissionInfo>(this.mapper.ConfigurationProvider)
+             .SingleOrDefaultAsync();
+
+            SetPolicies(mission);
+
+            return mission;
         }
 
         public async Task<Mission> GetNewByLoadingUnitIdAsync(int loadingUnitId)

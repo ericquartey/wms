@@ -905,7 +905,7 @@
     <value>Mission Count</value>
   </data>
   <data name="MachineCompartmentCount" xml:space="preserve">
-    <value>Compartment Count</value>
+    <value>Compartments Count</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
     <value>Compartments Count</value>

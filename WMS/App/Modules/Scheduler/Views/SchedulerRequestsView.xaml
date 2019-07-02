@@ -288,8 +288,8 @@
                                         <wms:InfoText Grid.Row="7"
                                                       Grid.Column="0"
                                                       Grid.ColumnSpan="2"
-                                                      wms:ShowTitle.Show="True"
                                                       Margin="0,0,0,8"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=LoadingUnitTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                         <ScrollViewer Grid.RowSpan="8"
@@ -329,7 +329,7 @@
                         <dxg:GridColumn Width="100*"
                                         FieldName="ListDescription" />
                         <dxg:GridColumn Width="100*"
-                                        FieldName="ListRowDescription" />
+                                        FieldName="ListRowCode" />
                         <dxg:GridColumn Width="70*"
                                         CellDisplayTemplate="{StaticResource IsInstantBooleanCellTemplate}"
                                         FieldName="IsInstant" />

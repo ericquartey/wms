@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class MissionsController :
         BaseController,
         IReadAllPagedController<MissionInfo>,
-        IReadSingleController<MissionWithLoadingUnitDetails, int>,
+        IReadSingleController<MissionInfo, int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -45,11 +45,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(typeof(MissionInfo), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult<MissionInfo>> CompleteLoadingUnitAsync(int id)
+        public async Task<ActionResult<Mission>> CompleteLoadingUnitAsync(int id)
         {
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
             if (!result.Success)
@@ -110,9 +110,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(MissionInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<MissionWithLoadingUnitDetails>> GetByIdAsync(int id)
+        public async Task<ActionResult<MissionInfo>> GetByIdAsync(int id)
         {
-            var result = await this.missionProvider.GetByIdAsync(id);
+            var result = await this.missionProvider.GetInfoByIdAsync(id);
             if (result == null)
             {
                 var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);

@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 if (request is ItemSchedulerRequest itemRequest)
                 {
-                    this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.Type}) is the next in line to be processed.");
+                    this.logger.LogDebug($"Scheduler Request (id={request.Id}, {request.OperationType} {request.Type}) is the next in line to be processed.");
 
                     switch (request.OperationType)
                     {
@@ -155,6 +155,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .OrderCompartmentsByManagementType(candidateCompartments, item.ManagementType, request.OperationType)
                 .ToListAsync();
 
+            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {availableCompartments.Count} compartments can statisfy the request.");
+
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
             var createdMissionsCount = 0;
             var missionOperations = new List<MissionOperation>();
@@ -169,12 +171,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 compartment.ReservedForPick += quantityToExtractFromCompartment;
                 request.ReservedQuantity += quantityToExtractFromCompartment;
 
-                await this.compartmentOperationProvider.UpdateAsync(compartment);
                 if (request.QuantityLeftToReserve.Equals(0))
                 {
                     request.Status = SchedulerRequestStatus.Completed;
                 }
 
+                await this.compartmentOperationProvider.UpdateAsync(compartment);
                 await this.schedulerRequestSchedulerProvider.UpdateAsync(request);
 
                 if (compartment.Availability.Equals(0))
@@ -199,6 +201,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         mission = creationResult.Entity;
                         createdMissionsCount++;
+
+                        this.logger.LogDebug(
+                            $"Scheduler Request (id={request.Id}): created new pick mission id={mission.Id}.");
                     }
                     else
                     {
@@ -208,10 +213,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var operation = CreateOperation(request, item, compartment, quantityToExtractFromCompartment, mission);
 
-                this.logger.LogWarning(
-                    $"Scheduler Request (id={request.Id}): generating pick mission (CompartmentId={operation.CompartmentId}, " +
-                    $"BayId={mission.BayId}, Quantity={operation.RequestedQuantity}). " +
-                    $"A total quantity of {request.QuantityLeftToReserve} still needs to be dispatched.");
+                this.logger.LogDebug(
+                    $"Scheduler Request (id={request.Id}): created new pick operation for a quantity of {quantityToExtractFromCompartment} from compartment id={compartment.Id}.");
 
                 missionOperations.Add(operation);
             }
@@ -219,7 +222,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.missionOperationProvider.CreateRangeAsync(missionOperations);
 
             this.logger.LogDebug(
-                $"Scheduler Request (id={request.Id}): a total of {queuableMissionsCount} missions were queued on bay.");
+                $"Scheduler Request (id={request.Id}): a total of {missionOperations.Count} operations were generated.");
+
+            if (request.QuantityLeftToReserve > 0)
+            {
+                this.logger.LogWarning(
+                    $"Scheduler Request (id={request.Id}): a total quantity of {request.QuantityLeftToReserve} still needs to be dispatched.");
+            }
 
             return missionOperations;
         }
@@ -277,14 +286,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 compartment.PackageTypeId = request.PackageTypeId;
 
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
-                if (request.QuantityLeftToReserve.CompareTo(0) == 0)
+                if (request.QuantityLeftToReserve.Equals(0))
                 {
                     request.Status = SchedulerRequestStatus.Completed;
                 }
 
                 await this.schedulerRequestSchedulerProvider.UpdateAsync(request);
 
-                if (compartment.RemainingCapacity.CompareTo(0) == 0)
+                if (compartment.RemainingCapacity.Equals(0))
                 {
                     availableCompartments.Remove(compartment);
                 }
@@ -304,6 +313,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         mission = creationResult.Entity;
                         createdMissionsCount++;
+
+                        this.logger.LogDebug($"Scheduler Request (id={request.Id}): created new put mission id={mission.Id}.");
                     }
                     else
                     {
@@ -313,10 +324,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var operation = CreateOperation(request, item, compartment, quantityToPutInCompartment, mission);
 
-                this.logger.LogWarning(
-                    $"Scheduler Request (id={request.Id}): generating put mission (CompartmentId={operation.CompartmentId}, " +
-                    $"BayId={mission.BayId}, Quantity={operation.RequestedQuantity}). " +
-                    $"A total quantity of {request.QuantityLeftToReserve} still needs to be dispatched.");
+                this.logger.LogDebug(
+                     $"Scheduler Request (id={request.Id}): created new put operation for a quantity of {quantityToPutInCompartment} into compartment id={compartment.Id}.");
 
                 missionOperations.Add(operation);
             }
@@ -324,7 +333,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.missionOperationProvider.CreateRangeAsync(missionOperations);
 
             this.logger.LogDebug(
-                $"Scheduler Request (id={request.Id}): a total of {queuableMissionsCount} missions were queued on bay.");
+              $"Scheduler Request (id={request.Id}): a total of {missionOperations.Count} operations were generated.");
+
+            if (request.QuantityLeftToReserve > 0)
+            {
+                this.logger.LogWarning(
+                    $"Scheduler Request (id={request.Id}): a total quantity of {request.QuantityLeftToReserve} still needs to be dispatched.");
+            }
 
             return missionOperations;
         }
