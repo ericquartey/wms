@@ -939,4 +939,60 @@
     <value>State</value>
     <comment>Stato</comment>
   </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Current gross weight</value>
+    <comment>Peso lordo corrente</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Drawer</value>
+    <comment>Cassetto</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Height</value>
+    <comment>Altezza</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Max %</value>
+    <comment>Max %</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Max weight</value>
+    <comment>Peso massimo</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Tare</value>
+    <comment>Tara</comment>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Element</value>
+    <comment>Elemento</comment>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Quantità</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Item</value>
+    <comment>Articolo</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Machine</value>
+    <comment>Macchina</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Quantità</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Row</value>
+    <comment>Riga</comment>
+  </data>
 </root>

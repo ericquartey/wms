@@ -55,6 +55,7 @@
     <None Remove="Controls\CustomControlErrorsDataGrid.xaml" />
     <None Remove="Controls\CustomControlListDataGrid.xaml" />
     <None Remove="Controls\CustomControlMaintenanceDataGrid.xaml" />
+    <None Remove="Controls\CustomControlMaintenanceDetailDataGrid.xaml" />
     <None Remove="Controls\CustomProgressBarControl.xaml" />
   </ItemGroup>
 

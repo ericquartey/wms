@@ -1717,6 +1717,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current gross weight.
+        /// </summary>
+        public static string StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight {
+            get {
+                return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer.
+        /// </summary>
+        public static string StatisticsDrawerWeightSaturationDataGridHeaderDrawer {
+            get {
+                return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string StatisticsDrawerWeightSaturationDataGridHeaderHeight {
+            get {
+                return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max %.
+        /// </summary>
+        public static string StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage {
+            get {
+                return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max weight.
+        /// </summary>
+        public static string StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight {
+            get {
+                return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tare.
+        /// </summary>
+        public static string StatisticsDrawerWeightSaturationDataGridHeaderTare {
+            get {
+                return ResourceManager.GetString("StatisticsDrawerWeightSaturationDataGridHeaderTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string StatisticsErrorDataGridHeaderError {
@@ -1843,6 +1897,33 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string StatisticsMaintenanceDetailDataGridHeaderDescription {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDetailDataGridHeaderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Element.
+        /// </summary>
+        public static string StatisticsMaintenanceDetailDataGridHeaderElement {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDetailDataGridHeaderElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string StatisticsMaintenanceDetailDataGridHeaderQuantity {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDetailDataGridHeaderQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationCells.
         /// </summary>
         public static string StatisticsNavigationCells {
@@ -1911,6 +1992,51 @@ namespace Ferretto.VW.Resources {
         public static string WaitingListDataGridHeaderType {
             get {
                 return ResourceManager.GetString("WaitingListDataGridHeaderType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string WaitingListDetailDataGridHeaderDescription {
+            get {
+                return ResourceManager.GetString("WaitingListDetailDataGridHeaderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string WaitingListDetailDataGridHeaderItem {
+            get {
+                return ResourceManager.GetString("WaitingListDetailDataGridHeaderItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine.
+        /// </summary>
+        public static string WaitingListDetailDataGridHeaderMachine {
+            get {
+                return ResourceManager.GetString("WaitingListDetailDataGridHeaderMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string WaitingListDetailDataGridHeaderQuantity {
+            get {
+                return ResourceManager.GetString("WaitingListDetailDataGridHeaderQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row.
+        /// </summary>
+        public static string WaitingListDetailDataGridHeaderRow {
+            get {
+                return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
             }
         }
     }
