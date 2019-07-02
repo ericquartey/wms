@@ -112,4 +112,10 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlErrorsDataGridViewModel}">
         <customviewsandviewmodels:CustomControlErrorsDataGrid />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlListDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlListDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlMaintenanceDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlMaintenanceDataGrid />
+    </DataTemplate>
 </ResourceDictionary>

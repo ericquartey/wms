@@ -907,4 +907,36 @@
     <value>Total %</value>
     <comment>Totale %</comment>
   </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>List</value>
+    <comment>Lista</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Machines</value>
+    <comment>Macchine</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Type</value>
+    <comment>Tipo</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Kit</value>
+    <comment>Kit</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Request</value>
+    <comment>Richiesta</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>State</value>
+    <comment>Stato</comment>
+  </data>
 </root>

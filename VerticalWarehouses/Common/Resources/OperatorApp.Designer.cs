@@ -1807,6 +1807,42 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string StatisticsMaintenanceDataGridHeaderDescription {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kit.
+        /// </summary>
+        public static string StatisticsMaintenanceDataGridHeaderKit {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderKit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request.
+        /// </summary>
+        public static string StatisticsMaintenanceDataGridHeaderRequest {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string StatisticsMaintenanceDataGridHeaderState {
+            get {
+                return ResourceManager.GetString("StatisticsMaintenanceDataGridHeaderState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to StatisticsNavigationCells.
         /// </summary>
         public static string StatisticsNavigationCells {
@@ -1839,6 +1875,42 @@ namespace Ferretto.VW.Resources {
         public static string StatisticsNavigationItems {
             get {
                 return ResourceManager.GetString("StatisticsNavigationItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string WaitingListDataGridHeaderDescription {
+            get {
+                return ResourceManager.GetString("WaitingListDataGridHeaderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List.
+        /// </summary>
+        public static string WaitingListDataGridHeaderList {
+            get {
+                return ResourceManager.GetString("WaitingListDataGridHeaderList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machines.
+        /// </summary>
+        public static string WaitingListDataGridHeaderMachines {
+            get {
+                return ResourceManager.GetString("WaitingListDataGridHeaderMachines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string WaitingListDataGridHeaderType {
+            get {
+                return ResourceManager.GetString("WaitingListDataGridHeaderType", resourceCulture);
             }
         }
     }
