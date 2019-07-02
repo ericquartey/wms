@@ -2,13 +2,14 @@
 using Ferretto.VW.MachineAutomationService.Contracts;
 using Ferretto.VW.MachineAutomationService.Hubs;
 
-namespace Ferretto.WMS.Data.Core
+namespace Ferretto.WMS.Data.Core.Models
 {
     public class MachinesLiveDataContext : IMachinesLiveDataContext
     {
         #region Fields
 
-        private readonly Dictionary<int, MachineStatus> machineStatuses = new Dictionary<int, MachineStatus>();
+        private readonly Dictionary<int, VW.MachineAutomationService.Hubs.MachineStatus> machineStatuses =
+            new Dictionary<int, VW.MachineAutomationService.Hubs.MachineStatus>();
 
         #endregion
 
@@ -20,13 +21,13 @@ namespace Ferretto.WMS.Data.Core
 
         #region Methods
 
-        public MachineStatus GetMachineStatus(int machineId)
+        public VW.MachineAutomationService.Hubs.MachineStatus GetMachineStatus(int machineId)
         {
             lock (this.machineStatuses)
             {
                 if (!this.machineStatuses.ContainsKey(machineId))
                 {
-                    var newMachineStatus = new MachineStatus
+                    var newMachineStatus = new VW.MachineAutomationService.Hubs.MachineStatus
                     {
                         MachineId = machineId,
                         ElevatorStatus = new ElevatorStatus(),
