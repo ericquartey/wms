@@ -3,7 +3,7 @@ using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public interface IStepNavigableViewModel : INavigableViewModel
+    public interface IWmsWizardStepViewModel : INavigableViewModel
     {
         #region Properties
 

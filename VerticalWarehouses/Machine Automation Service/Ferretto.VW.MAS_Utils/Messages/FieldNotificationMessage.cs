@@ -30,13 +30,15 @@ namespace Ferretto.VW.MAS_Utils.Messages
             FieldMessageActor source,
             FieldMessageType type,
             MessageStatus status,
-            ErrorLevel level = ErrorLevel.NoError)
+            ErrorLevel level = ErrorLevel.NoError,
+            byte deviceIndex = 0x00)
         {
             this.Data = data;
             this.Description = description;
             this.Destination = destination;
             this.Source = source;
             this.Type = type;
+            this.DeviceIndex = deviceIndex;
             this.Status = status;
             this.ErrorLevel = level;
         }
@@ -50,6 +52,8 @@ namespace Ferretto.VW.MAS_Utils.Messages
         public string Description { get; }
 
         public FieldMessageActor Destination { get; set; }
+
+        public byte DeviceIndex { get; set; }
 
         public ErrorLevel ErrorLevel { get; }
 

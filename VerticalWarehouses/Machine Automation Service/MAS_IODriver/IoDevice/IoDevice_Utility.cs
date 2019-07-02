@@ -9,23 +9,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public class SHDTransport_Utility
+    public partial class IoDevice
     {
-        #region Fields
-
-        private IEventAggregator eventAggregator;
-
-        #endregion
-
-        #region Constructors
-
-        public SHDTransport_Utility(IEventAggregator eventAggregator)
-        {
-            this.eventAggregator = eventAggregator;
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>

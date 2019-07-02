@@ -7,7 +7,7 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class AssociateCompartmentTypesViewModel : StepViewModel
+    public class AssociateCompartmentTypesStepViewModel : WmsWizardStepViewModel
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public AssociateCompartmentTypesViewModel()
+        public AssociateCompartmentTypesStepViewModel()
         {
             this.InitializeData();
         }
@@ -80,7 +80,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.selectedOption.Id == this.options.First().Id)
             {
-                return (nameof(MasterData), Common.Utils.Modules.MasterData.ITEMCOMPARTMENTTYPESTOITEMSTEPVIEWMODEL, this.Data);
+                return (nameof(MasterData), Common.Utils.Modules.MasterData.CHOOSECOMPARTMENTTYPESSTEP, this.Data);
             }
             else
             {

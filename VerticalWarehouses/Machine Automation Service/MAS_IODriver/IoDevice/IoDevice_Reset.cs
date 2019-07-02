@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedSHDIoDriver
+    public partial class IoDevice
     {
         #region Methods
 
-        private void ExecuteIoReset()
+        public void ExecuteIoReset()
         {
             this.currentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
