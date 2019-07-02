@@ -54,7 +54,7 @@
                                             Grid.Row="1"
                                             Grid.ColumnSpan="2"
                                             wms:ShowTitle.Show="True"
-                                            DisplayMember="Description"
+                                            DisplayMember="Code"
                                             EditValue="{Binding CompartmentTypeInput.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                             ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                             PopupWidth="500"
@@ -255,6 +255,7 @@
                                     <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                                     AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
                                                                     AttachedBarItem="AssociateAreaBarItem"
+                                                                    FocusedStart="ItemLookUp"
                                                                     IsOpen="{Binding IsAddAssociateItemShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Style="{StaticResource inputAreaControlStyle}" />
                                     <wms:ActionBar x:Name="AssociateAreaBar"

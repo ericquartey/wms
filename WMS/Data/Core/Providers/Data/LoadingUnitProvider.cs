@@ -99,6 +99,35 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new UnprocessableEntityOperationResult<LoadingUnitDetails>();
         }
 
+        public async Task<IEnumerable<LoadingUnit>> GetAllAllowedByItemIdAsync(
+            int id,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions,
+            string where,
+            string search)
+        {
+            var models = await this.GetAllBase()
+                .Where(l => this.DataContext.ItemsAreas.Where(
+                    ia => ia.ItemId == 6)
+                            .Select(ia => ia.AreaId)
+                            .Contains(l.AreaId))
+                .Where(l => l.HasCompartments)
+                .ToArrayAsync<LoadingUnit, Common.DataModels.LoadingUnit>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    where,
+                    BuildSearchExpression(search));
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
+        }
+
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
             int skip,
             int take,
@@ -299,6 +328,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
                     LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
                     AbcClassDescription = l.AbcClass.Description,
+                    AreaId = l.Cell.Aisle.AreaId,
                     AreaName = l.Cell.Aisle.Area.Name,
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
@@ -308,6 +338,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                     CompartmentsCount = l.Compartments.Count(),
+                    HasCompartments = l.LoadingUnitType.HasCompartments,
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Operations.Any(o =>
                             o.Status != Common.DataModels.MissionOperationStatus.Completed
