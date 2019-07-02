@@ -52,6 +52,7 @@
     <None Remove="Controls\CustomControlCellStatisticsDataGrid.xaml" />
     <None Remove="Controls\CustomControlDrawerDataGrid.xaml" />
     <None Remove="Controls\CustomControlDrawerSaturationDataGrid.xaml" />
+    <None Remove="Controls\CustomControlErrorsDataGrid.xaml" />
     <None Remove="Controls\CustomProgressBarControl.xaml" />
   </ItemGroup>
 

@@ -109,4 +109,7 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerDataGridViewModel}">
         <customviewsandviewmodels:CustomControlDrawerDataGrid />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlErrorsDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlErrorsDataGrid />
+    </DataTemplate>
 </ResourceDictionary>

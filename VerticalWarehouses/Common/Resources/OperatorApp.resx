@@ -895,4 +895,16 @@
     <value>Weight</value>
     <comment>Peso</comment>
   </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Errore</comment>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Total</value>
+    <comment>Totale</comment>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Total %</value>
+    <comment>Totale %</comment>
+  </data>
 </root>

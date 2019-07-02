@@ -1717,6 +1717,33 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string StatisticsErrorDataGridHeaderError {
+            get {
+                return ResourceManager.GetString("StatisticsErrorDataGridHeaderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string StatisticsErrorDataGridHeaderTotal {
+            get {
+                return ResourceManager.GetString("StatisticsErrorDataGridHeaderTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total %.
+        /// </summary>
+        public static string StatisticsErrorDataGridHeaderTotalPercentage {
+            get {
+                return ResourceManager.GetString("StatisticsErrorDataGridHeaderTotalPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to StatisticsGeneralDataAreaFilling.
         /// </summary>
         public static string StatisticsGeneralDataAreaFilling {

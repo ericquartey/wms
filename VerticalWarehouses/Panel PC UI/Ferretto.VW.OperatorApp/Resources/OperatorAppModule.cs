@@ -117,6 +117,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterType<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
             this.container.RegisterType<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
             this.container.RegisterType<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
+            this.container.RegisterType<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
 
             navigationServiceInstance.Initialize(this.container);
             feedbackNotifier.Initialize(this.container);
@@ -135,6 +136,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             cellsStatisticsVMInstance.InitializeViewModel(this.container);
             drawerSpaceSaturationVMInstance.InitializeViewModel(this.container);
             immediateDrawerCallVMInstance.InitializeViewModel(this.container);
+            errorsStatisticsVMInstance.InitializeViewModel(this.container);
 
             bayManagerInstance.Initialize(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
