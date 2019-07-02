@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 
@@ -39,7 +40,7 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Methods
 
-        protected override async Task LoadDataAsync()
+        protected override async Task LoadDataAsync(ModelChangedPubSubEvent e)
         {
             if (this.SelectedFilterDataSource is DataSourceCollection<Mission, int> enumerableSource)
             {

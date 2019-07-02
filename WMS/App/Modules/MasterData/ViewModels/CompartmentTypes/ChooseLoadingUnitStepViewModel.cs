@@ -150,7 +150,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.SelectedFilter = this.Filters.First();
 
-            await this.LoadDataAsync();
+            await this.LoadDataAsync(null);
         }
 
         #endregion
