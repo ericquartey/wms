@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.App.Controls
 {
-    public interface IStepsViewModel
+    public interface IWmsWizardViewModel
     {
         #region Methods
 

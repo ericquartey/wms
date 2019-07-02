@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Title {
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Associate a Compartment Type to this Item : {0}.
+        ///   Looks up a localized string similar to Associate a compartment type to this item: {0}.
         /// </summary>
         public static string AssociateCompartmentTypeToThisItem {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create Compartment for this Item : {0}.
+        ///   Looks up a localized string similar to Create compartment for this item: {0}.
         /// </summary>
         public static string CreateCompartmentForThisItem {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Details : {0}.
+        ///   Looks up a localized string similar to Item Details: {0}.
         /// </summary>
         public static string ItemDetailsView {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit Details : {0}.
+        ///   Looks up a localized string similar to Loading Unit Details: {0}.
         /// </summary>
         public static string LoadingUnitDetailsView {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit : {0}.
+        ///   Looks up a localized string similar to Loading Unit: {0}.
         /// </summary>
         public static string LoadingUnitEditView {
             get {

@@ -49,7 +49,7 @@
 
         //INFO Various Inputs
 
-        SecurityFunctionActive = 19,
+        NormalState = 19,
 
         MushroomHeadButtonBay1 = 20,
 

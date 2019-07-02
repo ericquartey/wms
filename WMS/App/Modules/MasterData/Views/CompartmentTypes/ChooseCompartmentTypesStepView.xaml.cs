@@ -2,11 +2,11 @@
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public partial class AssociateCompartmentTypesView : WmsView
+    public partial class ChooseCompartmentTypesStepView : WmsView
     {
         #region Constructors
 
-        public AssociateCompartmentTypesView()
+        public ChooseCompartmentTypesStepView()
         {
             this.InitializeComponent();
         }

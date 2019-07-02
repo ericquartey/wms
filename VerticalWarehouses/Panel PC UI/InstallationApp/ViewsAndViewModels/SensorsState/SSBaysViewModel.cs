@@ -105,6 +105,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
+            this.DisableSensorsState();
             this.updateSensorsStateToken = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                  .Subscribe(
                  message => this.UpdateSensorsStates(message.Data.SensorsStates),
@@ -137,6 +138,24 @@ namespace Ferretto.VW.InstallationApp
             this.HeightControlCheckBay3 = this.ioSensorsStatus.HeightControlCheckBay3;
             this.ShutterSensorABay3 = this.ioSensorsStatus.ShutterSensorABay3;
             this.ShutterSensorBBay3 = this.ioSensorsStatus.ShutterSensorBBay3;
+        }
+
+        private void DisableSensorsState()
+        {
+            this.LuPresentInBay1 = false;
+            this.HeightControlCheckBay1 = false;
+            this.ShutterSensorABay1 = false;
+            this.ShutterSensorBBay1 = false;
+
+            this.LuPresentInBay2 = false;
+            this.HeightControlCheckBay2 = false;
+            this.ShutterSensorABay2 = false;
+            this.ShutterSensorBBay2 = false;
+
+            this.LuPresentInBay3 = false;
+            this.HeightControlCheckBay3 = false;
+            this.ShutterSensorABay3 = false;
+            this.ShutterSensorBBay3 = false;
         }
 
         #endregion

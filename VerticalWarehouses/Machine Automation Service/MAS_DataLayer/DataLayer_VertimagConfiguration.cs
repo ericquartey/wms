@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
@@ -88,6 +89,53 @@ namespace Ferretto.VW.MAS_DataLayer
             await Task.Delay(5, this.stoppingToken);
 
             return installedInverters;
+        }
+
+        public async Task<List<IoIndex>> GetInstalledIoListAsync()
+        {
+            long setupNetworkIoIndex;
+            var installedIoDevices = new List<IoIndex>();
+
+            foreach (IoIndex ioIndex in Enum.GetValues(typeof(IoIndex)))
+            {
+                switch (ioIndex)
+                {
+                    case IoIndex.IoDevice1:
+                        setupNetworkIoIndex = (long)SetupNetwork.IOExpansion1;
+                        break;
+
+                    case IoIndex.IoDevice2:
+                        setupNetworkIoIndex = (long)SetupNetwork.IOExpansion2;
+                        break;
+
+                    case IoIndex.IoDevice3:
+                        setupNetworkIoIndex = (long)SetupNetwork.IOExpansion3;
+                        break;
+
+                    default:
+                        setupNetworkIoIndex = (long)SetupNetwork.Undefined;
+                        break;
+                }
+
+                try
+                {
+                    var ipAddress = await this.GetIPAddressConfigurationValueAsync(setupNetworkIoIndex, (long)ConfigurationCategory.SetupNetwork);
+                    if (ipAddress != null)
+                    {
+                        installedIoDevices.Add(ioIndex);
+                    }
+                }
+                catch (DataLayerPersistentException ex)
+                {
+                    this.logger.LogTrace($"SetUp Network parameter not found: {setupNetworkIoIndex} - Message: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogTrace($"{ex.Message}");
+                }
+            }
+
+            return installedIoDevices;
         }
 
         #endregion

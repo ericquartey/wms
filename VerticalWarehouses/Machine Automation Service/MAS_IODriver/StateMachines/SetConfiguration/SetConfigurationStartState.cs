@@ -1,10 +1,12 @@
-﻿using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Ferretto.VW.MAS_IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 {
-    public class PowerUpStartState : IoStateBase
+    public class SetConfigurationStartState : IoStateBase
     {
         #region Fields
 
@@ -14,27 +16,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private bool disposed;
 
-        private IoIndex index;
-
         #endregion
 
         #region Constructors
 
-        public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
+        public SetConfigurationStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-            this.index = index;
         }
 
         #endregion
 
         #region Destructors
 
-        ~PowerUpStartState()
+        ~SetConfigurationStartState()
         {
             this.Dispose(false);
         }
@@ -45,12 +44,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
-
-            if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
-            {
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.logger));
-            }
+            
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
@@ -61,7 +55,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             {
                 this.logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.logger));
+                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.logger));
             }
         }
 
