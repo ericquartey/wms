@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+
 // TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;

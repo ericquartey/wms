@@ -1,25 +1,25 @@
-﻿using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Modularity;
-using Prism.Events;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
-using System.Configuration;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Prism.Ioc;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-
-namespace Ferretto.VW.OperatorApp.Resources
+﻿namespace Ferretto.VW.OperatorApp.Resources
 {
+    using System.Configuration;
+    using Ferretto.VW.CustomControls.Controls;
+    using Ferretto.VW.CustomControls.Interfaces;
+    using Ferretto.VW.MAS_AutomationService.Contracts;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.ServiceUtilities;
+    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
+    using Prism.Events;
+    using Prism.Ioc;
+    using Prism.Modularity;
+    using Unity;
+
     public class OperatorAppModule : IModule
     {
         #region Fields

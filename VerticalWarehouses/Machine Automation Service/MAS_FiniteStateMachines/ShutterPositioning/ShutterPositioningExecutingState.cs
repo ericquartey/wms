@@ -7,8 +7,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningExecutingState : StateBase
@@ -84,7 +84,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         public override void Start()
         {
             var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
-            var commandMessage = new FieldCommandMessage(commandMessageData,
+            var commandMessage = new FieldCommandMessage(
+                commandMessageData,
                 $"Move to {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
@@ -95,7 +96,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
-            var notificationMessage = new NotificationMessage(notificationMessageData,
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
                 $"Move {this.shutterPosition}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,

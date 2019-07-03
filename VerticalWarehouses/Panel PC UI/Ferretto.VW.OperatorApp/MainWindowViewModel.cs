@@ -1,20 +1,20 @@
-﻿using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.Resources;
-using Ferretto.VW.OperatorApp.Resources.Enumerations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
-using Ferretto.VW.Utils.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.OperatorApp
+﻿namespace Ferretto.VW.OperatorApp
 {
+    using System.Windows.Input;
+    using Ferretto.VW.Common_Utils.Messages.Data;
+    using Ferretto.VW.MAS_Utils.Events;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.Resources;
+    using Ferretto.VW.OperatorApp.Resources.Enumerations;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+    using Ferretto.VW.Utils.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void ClickedOnMachineOnMarchEvent();

@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.setupOutputLines = SETUP_OUTPUTLINES_DEFAULT;
             this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
             this.useSetupOutputLines = false;
-            this.ipAddress = "";
+            this.ipAddress = string.Empty;
         }
 
         #endregion
@@ -112,7 +112,6 @@ namespace Ferretto.VW.MAS_IODriver
         #endregion
 
         // Add other output signals names
-
         #region Methods
 
         public bool MatchOutputs(bool[] outputsState)

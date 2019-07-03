@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
@@ -7,7 +6,6 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
-using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 
@@ -22,26 +20,29 @@ namespace Ferretto.VW.MAS_AutomationService
             var random = new Random();
             while (true)
             {
-                var SensorsState = new bool[] { (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
+                var sensorsState = new bool[]
+                {
+                    (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
                                                  (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
                                                  (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
                                                  (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
                                                  (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
                                                  (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0)};
+                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0)
+                };
 
-                Console.WriteLine(SensorsState[0].ToString() + " " + SensorsState[1].ToString() + " " + SensorsState[2].ToString() + " " + SensorsState[3].ToString() +
-                                  SensorsState[4].ToString() + " " + SensorsState[5].ToString() + " " + SensorsState[6].ToString() + " " + SensorsState[7].ToString() +
-                                  SensorsState[8].ToString() + " " + SensorsState[9].ToString() + " " + SensorsState[10].ToString() + " " + SensorsState[11].ToString() +
-                                  SensorsState[12].ToString() + " " + SensorsState[13].ToString() + " " + SensorsState[14].ToString() + " " + SensorsState[15].ToString() +
-                                  SensorsState[16].ToString() + " " + SensorsState[17].ToString() + " " + SensorsState[18].ToString() + " " + SensorsState[19].ToString() +
-                                  SensorsState[20].ToString() + " " + SensorsState[21].ToString() + " " + SensorsState[22].ToString() + " " + SensorsState[23].ToString() +
-                                  SensorsState[24].ToString() + " " + SensorsState[25].ToString() + " " + SensorsState[26].ToString() + " " + SensorsState[27].ToString() +
-                                  SensorsState[28].ToString() + " " + SensorsState[29].ToString() + " " + SensorsState[30].ToString() + " " + SensorsState[31].ToString());
+                Console.WriteLine(sensorsState[0].ToString() + " " + sensorsState[1].ToString() + " " + sensorsState[2].ToString() + " " + sensorsState[3].ToString() +
+                                  sensorsState[4].ToString() + " " + sensorsState[5].ToString() + " " + sensorsState[6].ToString() + " " + sensorsState[7].ToString() +
+                                  sensorsState[8].ToString() + " " + sensorsState[9].ToString() + " " + sensorsState[10].ToString() + " " + sensorsState[11].ToString() +
+                                  sensorsState[12].ToString() + " " + sensorsState[13].ToString() + " " + sensorsState[14].ToString() + " " + sensorsState[15].ToString() +
+                                  sensorsState[16].ToString() + " " + sensorsState[17].ToString() + " " + sensorsState[18].ToString() + " " + sensorsState[19].ToString() +
+                                  sensorsState[20].ToString() + " " + sensorsState[21].ToString() + " " + sensorsState[22].ToString() + " " + sensorsState[23].ToString() +
+                                  sensorsState[24].ToString() + " " + sensorsState[25].ToString() + " " + sensorsState[26].ToString() + " " + sensorsState[27].ToString() +
+                                  sensorsState[28].ToString() + " " + sensorsState[29].ToString() + " " + sensorsState[30].ToString() + " " + sensorsState[31].ToString());
 
                 var dataInterface = new SensorsChangedMessageData();
-                dataInterface.SensorsStates = SensorsState;
+                dataInterface.SensorsStates = sensorsState;
 
                 var notify = new NotificationMessage(dataInterface, "Sensors status", MessageActor.Any, MessageActor.AutomationService, MessageType.SensorsChanged, MessageStatus.OperationExecuting);
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notify);

@@ -7,7 +7,6 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
@@ -38,7 +37,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         //INFO ANG Inputs
-
         #region Properties
 
         public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;

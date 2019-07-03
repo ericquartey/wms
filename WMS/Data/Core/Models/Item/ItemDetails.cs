@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MeasureUnitId { get; set; }
 
-        public int MissionsCount { get; set; }
+        public int MissionOperationsCount { get; set; }
 
         public string Note { get; set; }
 

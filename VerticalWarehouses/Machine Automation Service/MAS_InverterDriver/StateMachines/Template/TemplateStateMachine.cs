@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 {
     public class TemplateStateMachine : InverterStateMachineBase

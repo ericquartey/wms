@@ -21,10 +21,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var packageType1 = new Common.DataModels.PackageType { Id = 1, Description = "Package Type #1" };
-            var packageType2 = new Common.DataModels.PackageType { Id = 2, Description = "Package Type #2" };
-            var packageType3 = new Common.DataModels.PackageType { Id = 3, Description = "Package Type #3" };
-            var packageType4 = new Common.DataModels.PackageType { Id = 4, Description = "Package Type #4" };
+            var packageType1 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #1" };
+            var packageType2 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #2" };
+            var packageType3 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #3" };
+            var packageType4 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #4" };
             using (var context = this.CreateContext())
             {
                 context.PackageTypes.Add(packageType1);
@@ -81,10 +81,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var packageType1 = new Common.DataModels.PackageType { Id = 1, Description = "Package Type #1" };
-            var packageType2 = new Common.DataModels.PackageType { Id = 2, Description = "Package Type #2" };
-            var packageType3 = new Common.DataModels.PackageType { Id = 3, Description = "Package Type #3" };
-            var packageType4 = new Common.DataModels.PackageType { Id = 4, Description = "Package Type #4" };
+            var packageType1 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #1" };
+            var packageType2 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #2" };
+            var packageType3 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #3" };
+            var packageType4 = new Common.DataModels.PackageType { Id = GetNewId(), Description = "Package Type #4" };
             using (var context = this.CreateContext())
             {
                 context.PackageTypes.Add(packageType1);

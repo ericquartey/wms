@@ -12,6 +12,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
@@ -129,7 +130,7 @@ namespace Ferretto.WMS.App.Controls
 
         public override void LoadRelatedData()
         {
-            this.LoadDataAsync();
+            this.LoadDataAsync(null);
         }
 
         public override async Task UpdateFilterTilesCountsAsync()
@@ -150,7 +151,7 @@ namespace Ferretto.WMS.App.Controls
             // do nothing: derived classes can customize the behaviour of this command
         }
 
-        protected override Task LoadDataAsync()
+        protected override Task LoadDataAsync(ModelChangedPubSubEvent e)
         {
             Application.Current.Dispatcher.InvokeAsync(
                 async () =>

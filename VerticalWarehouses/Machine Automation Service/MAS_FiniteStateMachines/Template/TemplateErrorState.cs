@@ -6,8 +6,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 {
     public class TemplateErrorState : StateBase
@@ -86,7 +86,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         {
             //TODO Identify Operation Target Inverter
             var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
+            var stopMessage = new FieldCommandMessage(
+                stopMessageData,
                 $"Reset Inverter Axis {this.currentAxis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,

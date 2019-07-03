@@ -12,8 +12,6 @@ using System.Collections.ObjectModel;
 using Ferretto.VW.CustomControls.Utils;
 using Ferretto.VW.CustomControls.Interfaces;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
-{
     public class MaintenanceMainPageViewModel : BindableBase, IMaintenanceMainPageViewModel
     {
         #region Fields

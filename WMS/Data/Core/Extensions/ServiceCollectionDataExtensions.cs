@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.Extensions.DependencyInjection;
 

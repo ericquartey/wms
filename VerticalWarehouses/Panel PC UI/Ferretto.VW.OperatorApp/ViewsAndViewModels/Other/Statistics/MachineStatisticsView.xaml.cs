@@ -24,6 +24,5 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         {
             InitializeComponent();
         }
-
     }
 }

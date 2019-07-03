@@ -1,15 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.InstallationApp
 {
+    using System.Windows;
+    using System.Windows.Input;
+    using Ferretto.VW.InstallationApp.Resources;
+    using Ferretto.VW.InstallationApp.Resources.Enumerables;
+    using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void ClickedOnMachineOnMarchEvent();
@@ -153,7 +153,8 @@ namespace Ferretto.VW.InstallationApp
             false,
             message => message.Type == InstallationApp_EventMessageType.EnterView);
 
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) =>
             {
                 this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
                 this.ExitViewButtonRegionCurrentViewModel = null;
@@ -163,7 +164,8 @@ namespace Ferretto.VW.InstallationApp
             false,
             message => message.Type == InstallationApp_EventMessageType.ExitView);
 
-            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
+                (message) =>
             {
                 this.IsErrorViewButtonVisible = Visibility.Visible;
             },

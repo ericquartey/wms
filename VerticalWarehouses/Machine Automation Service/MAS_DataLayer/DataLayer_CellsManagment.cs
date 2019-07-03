@@ -15,13 +15,12 @@ namespace Ferretto.VW.MAS_DataLayer
         //{
         //    return this.inMemoryDataContext.Cells.ToList();
         //}
-
         #region Methods
 
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
         public async Task<LoadingUnitPosition> GetFreeBlockPositionAsync(decimal loadingUnitHeight, int loadingUnitId)
         {
-            var cellSpacing = 1;//this.GetIntegerConfigurationValue((long)ConfigurationValueEnum.CellSpacing, (long)ConfigurationCategory.GeneralInfoEnum);
+            var cellSpacing = 1; //this.GetIntegerConfigurationValue((long)ConfigurationValueEnum.CellSpacing, (long)ConfigurationCategory.GeneralInfoEnum);
 
             var cellsNumber = (int)Math.Ceiling(loadingUnitHeight / cellSpacing);
 

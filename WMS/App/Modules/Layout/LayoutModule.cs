@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<MenuView, MenuViewModel>();
             navigationService.Register<LoginView, LoginViewModel>();
 
-            var localisationService = ServiceLocator.Current.GetService(typeof(ILocalizationService)) as ILocalizationService;
+            var localisationService = ServiceLocator.Current.GetService(typeof(ILocalizationDataService)) as ILocalizationDataService;
             localisationService.SetAcceptedLanguage(System.Globalization.CultureInfo.CurrentUICulture.ToString());
         }
 

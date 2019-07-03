@@ -252,7 +252,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 notificationService
                     .SentNotifications
                     .Any(
-                        n => n.ModelType == typeof(MissionExecution)
+                        n => n.ModelType == typeof(Mission)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
             Assert.IsTrue(

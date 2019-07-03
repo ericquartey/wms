@@ -1,15 +1,15 @@
-﻿using System.Configuration;
-using Ferretto.VW.VWApp.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Unity;
-using Prism.Events;
-using Prism.Ioc;
-using Prism.Modularity;
-using Ferretto.VW.WmsCommunication;
-using Ferretto.VW.WmsCommunication.Interfaces;
-
-namespace Ferretto.VW.VWApp
+﻿namespace Ferretto.VW.VWApp
 {
+    using System.Configuration;
+    using Ferretto.VW.VWApp.Interfaces;
+    using Ferretto.VW.WmsCommunication;
+    using Ferretto.VW.WmsCommunication.Interfaces;
+    using Ferretto.WMS.Data.WebAPI.Contracts;
+    using Prism.Events;
+    using Prism.Ioc;
+    using Prism.Modularity;
+    using Unity;
+
     public class VWAppModule : IModule
     {
         #region Fields

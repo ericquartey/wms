@@ -114,7 +114,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             //TEMP Send a command to move shutter to:
             // - Close position, if shutter is of type Shutter2Type
             // - Half-open position, if shutter is of type Shutter3Type
-
             var shutterPositionTarget = ShutterPosition.None;
             switch (this.shutterControlMessageData.ShutterType)
             {

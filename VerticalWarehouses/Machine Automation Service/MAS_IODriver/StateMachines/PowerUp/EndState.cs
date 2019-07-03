@@ -3,19 +3,19 @@ using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
     public class EndState : IoStateBase
     {
         #region Fields
 
+        private readonly IoIndex index;
+
         private readonly ILogger logger;
 
         private readonly IoSHDStatus status;
-
-        private readonly IoIndex index;
 
         private bool disposed;
 
@@ -52,8 +52,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
-                var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd, ErrorLevel.NoError, (byte)this.index);
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "I/O power up complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.IoPowerUp,
+                    MessageStatus.OperationEnd,
+                    ErrorLevel.NoError,
+                    (byte)this.index);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -68,8 +75,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
-                var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd, ErrorLevel.NoError, (byte)this.index);
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "I/O power up complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.IoPowerUp,
+                    MessageStatus.OperationEnd,
+                    ErrorLevel.NoError,
+                    (byte)this.index);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

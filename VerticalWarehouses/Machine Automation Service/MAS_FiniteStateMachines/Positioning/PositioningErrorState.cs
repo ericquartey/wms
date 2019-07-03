@@ -59,7 +59,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
-                var notificationMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                var notificationMessageData = new PositioningMessageData(
+                    this.positioningMessageData.AxisMovement,
                 this.positioningMessageData.MovementType,
                 this.positioningMessageData.TargetPosition,
                 this.positioningMessageData.TargetSpeed,
@@ -92,7 +93,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public override void Start()
         {
             var description = this.positioningMessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
-            var stopMessage = new FieldCommandMessage(null,
+            var stopMessage = new FieldCommandMessage(
+                null,
                     description,
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,

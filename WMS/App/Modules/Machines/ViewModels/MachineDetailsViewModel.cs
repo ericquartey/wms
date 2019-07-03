@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Modules.Machines
 
         protected override Task ExecuteRevertCommandAsync()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         protected override async Task LoadDataAsync()

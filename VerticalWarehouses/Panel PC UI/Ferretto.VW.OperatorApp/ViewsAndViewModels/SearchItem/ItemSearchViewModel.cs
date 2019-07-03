@@ -16,8 +16,6 @@ using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.CustomControls.Utils;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
-{
     public class ItemSearchViewModel : BindableBase, IItemSearchViewModel
     {
         #region Fields

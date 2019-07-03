@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -47,7 +48,15 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Area> AreaChoices
         {
             get => this.areaChoices;
-            set => this.SetProperty(ref this.areaChoices, value);
+            set
+            {
+                if (this.SetProperty(ref this.areaChoices, value)
+                    &&
+                    this.areaChoices?.Count() == 1)
+                {
+                    this.AreaId = this.areaChoices.First().Id;
+                }
+            }
         }
 
         [Required]
