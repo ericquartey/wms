@@ -1996,11 +1996,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Always)]
         public int CompartmentsCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("emptyCompartmentsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int EmptyCompartmentsCount { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Depth { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("emptyCompartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int EmptyCompartmentsCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("itemCompartmentsCount", Required = Newtonsoft.Json.Required.Always)]
         public int ItemCompartmentsCount { get; set; }
