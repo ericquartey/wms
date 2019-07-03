@@ -21,8 +21,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_AutomationService
 {
     public class Startup
@@ -133,7 +133,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             // HACK commented out module initialization for development purpose
             //services.AddHostedService<MissionsManager>();
-
             services.AddHostedService<AutomationService>();
 
             services.AddWebApiServices(wmsServiceAddress);

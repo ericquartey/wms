@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class StatisticsGeneralDataViewModel : BindableBase, IStatisticsGeneralDataViewModel
     {
         #region Fields

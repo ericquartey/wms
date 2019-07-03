@@ -4,7 +4,6 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
     public class MissionMessageData : IMissionMessageData

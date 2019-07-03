@@ -24,7 +24,8 @@ namespace Ferretto.VW.MAS_IODriver
                 else
                 {
                     this.logger.LogTrace("2:Wrong message Data data type");
-                    var errorNotification = new FieldNotificationMessage(receivedMessage.Data,
+                    var errorNotification = new FieldNotificationMessage(
+                        receivedMessage.Data,
                         "Wrong message Data data type",
                         FieldMessageActor.Any,
                         FieldMessageActor.IoDriver,

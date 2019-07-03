@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.InstallationApp
 {
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class WeightControlViewModel : BindableBase, IWeightControlViewModel
     {
         #region Fields

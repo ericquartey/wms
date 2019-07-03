@@ -47,7 +47,7 @@ namespace Ferretto.Common.DataModels
 
         public int? MaterialStatusId { get; set; }
 
-        public List<Mission> Missions { get; set; }
+        public IEnumerable<MissionOperation> MissionOperations { get; set; }
 
         public PackageType PackageType { get; set; }
 

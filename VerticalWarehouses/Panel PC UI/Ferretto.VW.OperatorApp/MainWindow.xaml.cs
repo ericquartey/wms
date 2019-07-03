@@ -1,16 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using Ferretto.VW.OperatorApp.Resources;
-using Ferretto.VW.OperatorApp.Resources.Enumerations;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
-using Ferretto.VW.OperatorApp.Interfaces;
-
-namespace Ferretto.VW.OperatorApp
+﻿namespace Ferretto.VW.OperatorApp
 {
+    using System;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Animation;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.Resources;
+    using Ferretto.VW.OperatorApp.Resources.Enumerations;
+    using Prism.Events;
+
     public delegate void FinishedMachineModeChangeStateEvent();
 
     public delegate void FinishedMachineOnMarchChangeStateEvent();

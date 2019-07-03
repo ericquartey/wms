@@ -59,6 +59,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        public override string ToString()
+        {
+            return string.IsNullOrEmpty(this.ModelId)
+                ? $"{this.ModelType.Name} {this.OperationType}"
+                : $"{this.ModelType.Name}({this.ModelId}) {this.OperationType}";
+        }
+
         private bool Equals(Notification other)
         {
             return string.Equals(this.ModelId, other.ModelId, StringComparison.Ordinal) &&

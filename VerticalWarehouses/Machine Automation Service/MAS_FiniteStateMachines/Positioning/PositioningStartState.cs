@@ -100,7 +100,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public override void Start()
         {
             var ioCommandMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
-            var ioCommandMessage = new FieldCommandMessage(ioCommandMessageData,
+            var ioCommandMessage = new FieldCommandMessage(
+                ioCommandMessageData,
                 $"Switch Axis {this.positioningMessageData.AxisMovement}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
@@ -112,7 +113,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.positioningMessageData.AxisMovement, InverterIndex.MainInverter);
-            var inverterCommandMessage = new FieldCommandMessage(inverterCommandMessageData,
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
                 $"Switch Axis {this.positioningMessageData.AxisMovement}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,

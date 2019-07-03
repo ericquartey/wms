@@ -56,7 +56,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         //    this.NavigationButtonScrollViewer.LineUp();
         //    //TODO: scroll up and down nav button height
         //}
-
         #endregion
     }
 }

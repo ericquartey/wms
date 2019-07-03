@@ -8,7 +8,6 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 {
     public class PowerOffErrorState : InverterStateBase
@@ -52,7 +51,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
             Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex systemIndex);
 
             var notificationMessageData = new InverterPowerOffFieldMessageData(systemIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+            var notificationMessage = new FieldNotificationMessage(
+                notificationMessageData,
                 "Inverter Power Off Error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

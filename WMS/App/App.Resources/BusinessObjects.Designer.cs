@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -1596,6 +1596,51 @@ namespace Ferretto.WMS.App.Resources {
         public static string Mission {
             get {
                 return ResourceManager.GetString("Mission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string MissionOperationStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MissionOperationStatusError {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executing.
+        /// </summary>
+        public static string MissionOperationStatusExecuting {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string MissionOperationStatusIncomplete {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string MissionOperationStatusNew {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusNew", resourceCulture);
             }
         }
         

@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.CustomControls
 {
-    public interface ILinqTree<T>
+    public interface ILinqTree<out T>
     {
         #region Properties
 

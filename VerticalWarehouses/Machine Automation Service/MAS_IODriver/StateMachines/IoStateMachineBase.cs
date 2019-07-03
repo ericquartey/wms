@@ -5,19 +5,19 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines
 {
     public abstract class IoStateMachineBase : IIoStateMachine
     {
         #region Fields
 
-        protected IEventAggregator EventAggregator;
+        protected IEventAggregator eventAggregator;
 
         protected BlockingConcurrentQueue<IoSHDWriteMessage> IoCommandQueue;
 
-        protected ILogger Logger;
+        protected ILogger logger;
 
         private bool disposed;
 
@@ -71,9 +71,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
-            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
         public abstract void Start();

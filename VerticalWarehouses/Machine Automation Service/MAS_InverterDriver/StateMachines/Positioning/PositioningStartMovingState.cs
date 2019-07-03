@@ -5,7 +5,6 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
     public class PositioningStartMovingState : InverterStateBase
@@ -53,8 +52,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             {
                 currentStatus.PositionControlWord.NewSetPoint = true;
             }
-            //TODO complete type failure check
 
+            // TODO complete type failure check
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
 
             this.logger.LogTrace($"1:inverterMessage={inverterMessage}");

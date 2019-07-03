@@ -100,7 +100,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 //TEMP The FSM must be defined the inverter to stop (by the inverter index)
                 var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
 
-                var stopMessage = new FieldCommandMessage(data,
+                var stopMessage = new FieldCommandMessage(
+                    data,
                     this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,

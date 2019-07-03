@@ -5,7 +5,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 namespace Ferretto.WMS.Data.Core.Models
 {
     [Resource(nameof(ItemList))]
-    public class ItemListOperation : BaseModel<int>, IPolicyItemList
+    public class ItemListOperation : BaseModel<int>, IItemListPolicy
     {
         #region Properties
 

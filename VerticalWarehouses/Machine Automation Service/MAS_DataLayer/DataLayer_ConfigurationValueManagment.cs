@@ -236,7 +236,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task<string> GetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
         {
-            var returnStringValue = "";
+            var returnStringValue = string.Empty;
             ConfigurationValue primaryConfigurationValue;
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
@@ -283,7 +283,9 @@ namespace Ferretto.VW.MAS_DataLayer
             if (configurationValueEnum == (long)SetupStatus.VerticalHomingDone)
             {
                 if (this.setupStatusVolatile != null)
+                {
                     this.setupStatusVolatile.VerticalHomingDone = value;
+                }
 
                 return;
             }
@@ -436,7 +438,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                     await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
-                catch (Exception ex)
+                catch
                 {
                     secondaryPartitionError = true;
                 }

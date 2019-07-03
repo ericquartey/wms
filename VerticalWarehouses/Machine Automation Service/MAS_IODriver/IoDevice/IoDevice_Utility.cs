@@ -5,7 +5,6 @@ using Ferretto.VW.MAS_IODriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -35,7 +34,9 @@ namespace Ferretto.VW.MAS_IODriver
             nBytesReceived = 0;
 
             if (telegram == null)
+            {
                 return;
+            }
 
             byte codeOp = 0x00;
 
@@ -55,8 +56,10 @@ namespace Ferretto.VW.MAS_IODriver
                             case NBYTES_TELEGRAM_DATA:
                                 // Fw release
                                 fwRelease = telegram[1];
+
                                 // Code op
                                 codeOp = telegram[2];
+
                                 // Error code
                                 errorCode = telegram[3];
 
@@ -72,6 +75,7 @@ namespace Ferretto.VW.MAS_IODriver
 
                                 // Payload input (Low byte)
                                 var payloadInputLow = telegram[5];
+
                                 // Payload input (High byte)
                                 var payloadInputHigh = telegram[6];
 
@@ -91,6 +95,7 @@ namespace Ferretto.VW.MAS_IODriver
                             case NBYTES_TELEGRAM_ACK:
                                 // Fw release
                                 fwRelease = telegram[1];
+
                                 // Code op
                                 codeOp = telegram[2];
 
@@ -109,9 +114,10 @@ namespace Ferretto.VW.MAS_IODriver
                     case 0x11: // new release
                         switch (nBytesReceived)
                         {
-                            case NBYTES_TELEGRAM_DATA + 11:  // 26
-                                                             // Fw release
+                            case NBYTES_TELEGRAM_DATA + 11: // 26
+                                                            // Fw release
                                 fwRelease = telegram[1];
+
                                 // Code op
                                 codeOp = telegram[2];
 
@@ -128,6 +134,7 @@ namespace Ferretto.VW.MAS_IODriver
 
                                 // Payload input (Low byte)
                                 var payloadInputLow = telegram[6];
+
                                 // Payload input (High byte)
                                 var payloadInputHigh = telegram[7];
 
@@ -147,6 +154,7 @@ namespace Ferretto.VW.MAS_IODriver
                             case NBYTES_TELEGRAM_ACK:
                                 // Fw release
                                 fwRelease = telegram[1];
+
                                 // Code op
                                 codeOp = telegram[2];
 
@@ -168,7 +176,8 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                var errorNotification = new FieldNotificationMessage(null,
+                var errorNotification = new FieldNotificationMessage(
+                    null,
                         $"Exception {ex.Message} while parsing received IO raw message bytes",
                         FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver,

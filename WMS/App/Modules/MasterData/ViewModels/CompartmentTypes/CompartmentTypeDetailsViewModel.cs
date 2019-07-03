@@ -145,7 +145,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRevertCommandAsync()
         {
-            throw new System.NotImplementedException();
+            throw new System.NotSupportedException();
         }
 
         protected override async Task LoadDataAsync()

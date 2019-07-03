@@ -97,7 +97,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         {
             //TEMP Start means:
             // Send a InverterShutterPositioningMessage to move the shutter in Open position, before start the cycles
-
             var messageData = new ShutterPositioningFieldMessageData(
                 ShutterPosition.Opened,
                 ShutterMovementDirection.Up,

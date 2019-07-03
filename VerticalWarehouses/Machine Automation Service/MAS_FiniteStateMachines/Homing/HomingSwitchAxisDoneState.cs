@@ -6,8 +6,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     public class HomingSwitchAxisDoneState : StateBase
@@ -81,7 +81,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         public override void Start()
         {
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
-            var commandMessage = new FieldCommandMessage(calibrateAxisData,
+            var commandMessage = new FieldCommandMessage(
+                calibrateAxisData,
                 $"Homing {this.axisToCalibrate} State Started",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,

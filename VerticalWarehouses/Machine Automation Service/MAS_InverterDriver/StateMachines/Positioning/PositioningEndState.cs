@@ -6,7 +6,6 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
     public class PositioningEndState : InverterStateBase
@@ -48,7 +47,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            var notificationMessage = new FieldNotificationMessage(null,
+            var notificationMessage = new FieldNotificationMessage(
+                null,
                 "Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

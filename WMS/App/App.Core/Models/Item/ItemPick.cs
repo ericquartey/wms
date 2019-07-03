@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -47,7 +48,15 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Area> AreaChoices
         {
             get => this.areaChoices;
-            set => this.SetProperty(ref this.areaChoices, value);
+            set
+            {
+                if (this.SetProperty(ref this.areaChoices, value)
+                    &&
+                    this.areaChoices?.Count() == 1)
+                {
+                    this.AreaId = this.areaChoices.First().Id;
+                }
+            }
         }
 
         [Required]
@@ -60,6 +69,10 @@ namespace Ferretto.WMS.App.Core.Models
                 if (this.SetProperty(ref this.areaId, value))
                 {
                     this.IsAreaIdSpecified = this.areaId.HasValue;
+
+                    this.BayChoices = this.areaId.HasValue
+                        ? this.areaChoices.SingleOrDefault(a => a.Id == this.AreaId.Value)?.Bays
+                        : null;
                 }
             }
         }
@@ -67,7 +80,15 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Bay> BayChoices
         {
             get => this.bayChoices;
-            set => this.SetProperty(ref this.bayChoices, value);
+            set
+            {
+                if (this.SetProperty(ref this.bayChoices, value)
+                    &&
+                    this.bayChoices.Count() == 1)
+                {
+                    this.BayId = this.BayChoices.Single().Id;
+                }
+            }
         }
 
         [Required]

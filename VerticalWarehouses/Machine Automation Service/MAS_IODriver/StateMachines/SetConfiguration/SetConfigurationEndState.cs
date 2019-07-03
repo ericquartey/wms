@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -56,8 +53,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
             if (this.status.MatchOutputs(message.Outputs))
             {
-                var endNotification = new FieldNotificationMessage(null, "Set configuration IO complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.SetConfigurationIO, MessageStatus.OperationEnd);
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "Set configuration IO complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.SetConfigurationIO,
+                    MessageStatus.OperationEnd);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
