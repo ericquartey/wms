@@ -10,9 +10,10 @@
              mc:Ignorable="d" >
 
     <Grid Width="1024" Height="608">
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,40,0,0"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeader}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,40,0,0"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeader}" />
 
         <ContentControl HorizontalAlignment="Left"
                         Height="300"
@@ -22,37 +23,49 @@
                         Content="{Binding DataGridViewModel}">
         </ContentControl>
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,210,20,0"
-            Content="{x:Static Resources:OperatorApp.CommonUp}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,200,20,0"
+                  Content="{x:Static Resources:OperatorApp.CommonUp}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,275,20,0"
-            Content="{x:Static Resources:OperatorApp.CommonDown}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,265,20,0"
+                  Content="{x:Static Resources:OperatorApp.CommonDown}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-            Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,140,0,0" MaxWidth="255"
-            ContentText="Manutenzione richiesta"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailElementStatus}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,90,0,0" MaxWidth="200"
-            ContentText="3"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailStopRequired}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,90,0,0" MaxWidth="200"
-            ContentText="30.235"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailTotalCycles}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0" MaxWidth="200"
-            ContentText="15.000"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,90,0,0" MaxWidth="200"
-            ContentText="15.235"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,140,0,0" MaxWidth="200"
-            ContentText="NO"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailPlatformRequired}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="380,140,0,0" MaxWidth="255"
+                                               ContentText="Manutenzione richiesta"
+                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailElementStatus}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,90,0,0" MaxWidth="200"
+                                               ContentText="3"
+                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailStopRequired}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,90,0,0" MaxWidth="200"
+                                               ContentText="30.235"
+                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailTotalCycles}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,140,0,0" MaxWidth="200"
+                                               ContentText="15.000"
+                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,90,0,0" MaxWidth="200"
+                                               ContentText="15.235"
+                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,140,0,0" MaxWidth="200"
+                                               ContentText="NO"
+                                               LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailPlatformRequired}"/>
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="366,40,0,0"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeaderKit}" />
 
+        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,146,0,0"
+                   Width="25" Height="25"
+                   Fill="Red"  />
 
     </Grid>
 </UserControl>

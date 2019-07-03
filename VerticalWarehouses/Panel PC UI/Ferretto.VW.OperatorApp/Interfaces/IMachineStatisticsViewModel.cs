@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IItemStatisticsViewModel : IViewModel
+    public interface IMachineStatisticsViewModel : IViewModel
     {
     }
 }

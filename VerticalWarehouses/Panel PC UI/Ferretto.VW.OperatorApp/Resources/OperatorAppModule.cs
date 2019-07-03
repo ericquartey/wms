@@ -62,7 +62,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
             var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
             var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
-            var itemStatisticsVMInstance = new ItemStatisticsViewModel(container.Resolve<IEventAggregator>());
+            var machineStatisticsVMInstance = new MachineStatisticsViewModel(container.Resolve<IEventAggregator>());
             var drawerSpaceSaturationVMInstance = new DrawerSpaceSaturationViewModel(container.Resolve<IEventAggregator>());
             var detailListInWaitVMInstance = new DetailListInWaitViewModel(container.Resolve<IEventAggregator>());
             var cellsStatisticsVMInstance = new CellsStatisticsViewModel(container.Resolve<IEventAggregator>());
@@ -98,7 +98,6 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
             this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
             this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
-            this.container.RegisterInstance<IItemStatisticsViewModel>(itemStatisticsVMInstance);
             this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
             this.container.RegisterInstance<IDetailListInWaitViewModel>(detailListInWaitVMInstance);
             this.container.RegisterInstance<ICellsStatisticsViewModel>(cellsStatisticsVMInstance);
@@ -112,6 +111,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerActivityInventoryViewModel>(drawerActivityInventoryVMInstance);
             this.container.RegisterInstance<IDrawerActivityInventoryDetailViewModel>(drawerActivityInventoryDetailVMInstance);
             this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
+            this.container.RegisterInstance<IMachineStatisticsViewModel>(machineStatisticsVMInstance);
 
             this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
             this.container.RegisterType<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
@@ -147,7 +147,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             drawerWeightSaturationVMInstance.InitializeViewModel(this.container);
             maintenanceDetailVMInstance.InitializeViewModel(this.container);
             detailListInWaitVMInstance.InitializeViewModel(this.container);
-            itemStatisticsVMInstance.InitializeViewModel(this.container);
+            machineStatisticsVMInstance.InitializeViewModel(this.container);
 
             bayManagerInstance.Initialize(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();

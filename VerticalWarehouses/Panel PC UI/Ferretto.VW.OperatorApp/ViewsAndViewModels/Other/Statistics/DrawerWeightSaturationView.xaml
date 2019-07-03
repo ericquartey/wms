@@ -46,7 +46,5 @@
             ContentText="65.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxNetRange}"/>
 
-
-
     </Grid>
 </UserControl>

@@ -268,6 +268,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a CommonListType.
+        /// </summary>
+        public static string CommonListType {
+            get {
+                return ResourceManager.GetString("CommonListType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CommonNote.
         ///   Looks up a localized string similar to Note:.
         /// </summary>
         public static string CommonNote {
@@ -601,7 +611,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compaction drawer procedure.
+        ///   Cerca una stringa localizzata simile a DrawerCompactingFront.
+        /// </summary>
+        public static string DrawerCompactingFront {
+            get {
+                return ResourceManager.GetString("DrawerCompactingFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Compaction drawer procedure.
         /// </summary>
         public static string DrawerCompactingHeader {
             get {
@@ -621,18 +640,18 @@ namespace Ferretto.VW.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Compact back side.
         /// </summary>
-        public static string DrawerCompactingRearCompact {
+        public static string DrawerCompactingRear {
             get {
-                return ResourceManager.GetString("DrawerCompactingRearCompact", resourceCulture);
+                return ResourceManager.GetString("DrawerCompactingRear", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Side:.
+        ///   Cerca una stringa localizzata simile a Compact back side.
         /// </summary>
-        public static string DrawerCompactingSide {
+        public static string DrawerCompactingRearCompact {
             get {
-                return ResourceManager.GetString("DrawerCompactingSide", resourceCulture);
+                return ResourceManager.GetString("DrawerCompactingRearCompact", resourceCulture);
             }
         }
         
@@ -970,7 +989,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer call.
+        ///   Cerca una stringa localizzata simile a GeneralInfoWmsStatus.
+        /// </summary>
+        public static string GeneralInfoWmsStatus {
+            get {
+                return ResourceManager.GetString("GeneralInfoWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Drawer call.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
             get {
@@ -1078,20 +1106,38 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemSearchChangeSearch.
-        /// </summary>
-        public static string ItemSearchChangeSearch {
-            get {
-                return ResourceManager.GetString("ItemSearchChangeSearch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item detail.
+        ///   Cerca una stringa localizzata simile a Item detail.
         /// </summary>
         public static string ItemSearchDetail {
             get {
                 return ResourceManager.GetString("ItemSearchDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchGridDescription.
+        /// </summary>
+        public static string ItemSearchGridDescription {
+            get {
+                return ResourceManager.GetString("ItemSearchGridDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchGridItem.
+        /// </summary>
+        public static string ItemSearchGridItem {
+            get {
+                return ResourceManager.GetString("ItemSearchGridItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchGridMachine.
+        /// </summary>
+        public static string ItemSearchGridMachine {
+            get {
+                return ResourceManager.GetString("ItemSearchGridMachine", resourceCulture);
             }
         }
         
@@ -1141,70 +1187,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewHeader.
-        /// </summary>
-        public static string ItemStatisticsViewHeader {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewItemA.
-        /// </summary>
-        public static string ItemStatisticsViewItemA {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewItemA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewItemB.
-        /// </summary>
-        public static string ItemStatisticsViewItemB {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewItemB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewItemC.
-        /// </summary>
-        public static string ItemStatisticsViewItemC {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewItemC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewTotalItemsStored.
-        /// </summary>
-        public static string ItemStatisticsViewTotalItemsStored {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewTotalItemsStored", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewTotalMovements.
-        /// </summary>
-        public static string ItemStatisticsViewTotalMovements {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewTotalMovements", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemStatisticsViewUpdate.
-        /// </summary>
-        public static string ItemStatisticsViewUpdate {
-            get {
-                return ResourceManager.GetString("ItemStatisticsViewUpdate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to LIFO Period:.
+        ///   Cerca una stringa localizzata simile a LIFO Period:.
         /// </summary>
         public static string LIFOPeriod {
             get {
@@ -1213,7 +1196,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List.
+        ///   Cerca una stringa localizzata simile a List.
         /// </summary>
         public static string List {
             get {
@@ -1222,7 +1205,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List description:.
+        ///   Cerca una stringa localizzata simile a List description:.
         /// </summary>
         public static string ListDescription {
             get {
@@ -1231,7 +1214,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List:.
+        ///   Cerca una stringa localizzata simile a List:.
         /// </summary>
         public static string ListLabel {
             get {
@@ -1240,7 +1223,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lists.
+        ///   Cerca una stringa localizzata simile a Lists.
         /// </summary>
         public static string Lists {
             get {
@@ -1249,7 +1232,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List detail.
+        ///   Cerca una stringa localizzata simile a List detail.
         /// </summary>
         public static string ListsInWaitDetail {
             get {
@@ -1258,7 +1241,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute list.
+        ///   Cerca una stringa localizzata simile a Execute list.
         /// </summary>
         public static string ListsInWaitExecute {
             get {
@@ -1267,7 +1250,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for execution lists.
+        ///   Cerca una stringa localizzata simile a Waiting for execution lists.
         /// </summary>
         public static string ListsInWaitHeader {
             get {
@@ -1276,7 +1259,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note:.
+        ///   Cerca una stringa localizzata simile a Note:.
         /// </summary>
         public static string ListsInWaitNote {
             get {
@@ -1285,7 +1268,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machine.
+        ///   Cerca una stringa localizzata simile a Machine.
         /// </summary>
         public static string Machine {
             get {
@@ -1294,11 +1277,137 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machines.
+        ///   Cerca una stringa localizzata simile a Machines.
         /// </summary>
         public static string Machines {
             get {
                 return ResourceManager.GetString("Machines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsHeader.
+        /// </summary>
+        public static string MachineStatisticsHeader {
+            get {
+                return ResourceManager.GetString("MachineStatisticsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBays.
+        /// </summary>
+        public static string MachineStatisticsSectionBays {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionBays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBaysBay1.
+        /// </summary>
+        public static string MachineStatisticsSectionBaysBay1 {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionBaysBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBaysBay2.
+        /// </summary>
+        public static string MachineStatisticsSectionBaysBay2 {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionBaysBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBaysBay3.
+        /// </summary>
+        public static string MachineStatisticsSectionBaysBay3 {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionBaysBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionOrizzontal.
+        /// </summary>
+        public static string MachineStatisticsSectionOrizzontal {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionOrizzontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionOrizzontalTotalCycles.
+        /// </summary>
+        public static string MachineStatisticsSectionOrizzontalTotalCycles {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionOrizzontalTotalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutters.
+        /// </summary>
+        public static string MachineStatisticsSectionShutters {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionShutters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutterShutter1.
+        /// </summary>
+        public static string MachineStatisticsSectionShutterShutter1 {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionShutterShutter1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutterShutter2.
+        /// </summary>
+        public static string MachineStatisticsSectionShutterShutter2 {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionShutterShutter2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutterShutter3.
+        /// </summary>
+        public static string MachineStatisticsSectionShutterShutter3 {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionShutterShutter3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionVertical.
+        /// </summary>
+        public static string MachineStatisticsSectionVertical {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionVertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionVerticalTotalCycles.
+        /// </summary>
+        public static string MachineStatisticsSectionVerticalTotalCycles {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionVerticalTotalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionVerticalTotalKm.
+        /// </summary>
+        public static string MachineStatisticsSectionVerticalTotalKm {
+            get {
+                return ResourceManager.GetString("MachineStatisticsSectionVerticalTotalKm", resourceCulture);
             }
         }
         
@@ -1348,7 +1457,16 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailPlatformRequired.
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailHeaderKit.
+        /// </summary>
+        public static string MaintenanceDetailHeaderKit {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailHeaderKit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailPlatformRequired.
         /// </summary>
         public static string MaintenanceDetailPlatformRequired {
             get {
@@ -2082,6 +2200,15 @@ namespace Ferretto.VW.Resources {
         public static string WaitingListDetailDataGridHeaderRow {
             get {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsNavigationMachine.
+        /// </summary>
+        public static string StatisticsNavigationMachine {
+            get {
+                return ResourceManager.GetString("StatisticsNavigationMachine", resourceCulture);
             }
         }
     }

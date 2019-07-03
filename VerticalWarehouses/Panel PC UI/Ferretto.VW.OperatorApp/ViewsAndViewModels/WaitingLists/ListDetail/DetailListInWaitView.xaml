@@ -11,13 +11,13 @@
 
     <Grid Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.DetailListInWaitHeader}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.DetailListInWaitHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" MaxWidth="500"
-            ContentText="E' possibile eseguire solo le righe evidenziate."
-            LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,530,0,0" MaxWidth="500"
+                                               ContentText="E' possibile eseguire solo le righe evidenziate."
+                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
         <ContentControl HorizontalAlignment="Left"
                         Width="620"
@@ -33,14 +33,20 @@
             ContentText="Lista in attesa di essere eseguita"
             LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,20,0"
-            Content="{x:Static Resources:OperatorApp.CommonUp}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static Resources:OperatorApp.CommonUp}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,215,20,0"
-            Content="{x:Static Resources:OperatorApp.CommonDown}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static Resources:OperatorApp.CommonDown}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-            Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" MaxWidth="500"
+                                               ContentText="Prelievo"
+                                               LabelText="{x:Static Resources:OperatorApp.CommonListType}"/>
 
     </Grid>
 </UserControl>

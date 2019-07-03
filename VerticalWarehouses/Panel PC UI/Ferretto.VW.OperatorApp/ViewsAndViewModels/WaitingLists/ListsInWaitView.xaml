@@ -11,7 +11,7 @@
 
     <Grid  Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.ListsInWaitHeader}" />
 
@@ -23,8 +23,8 @@
                   Content="{x:Static Resources:OperatorApp.CommonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,285,20,0"
-                  Content="{x:Static Resources:OperatorApp.ListsInWaitDetail}"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"
+                  Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                   Command="{Binding DetailListButtonCommand}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
@@ -32,7 +32,7 @@
                   Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,510,0,0" MaxWidth="500"
                                                ContentText="Lista non eseguibile nella macchina corrente"
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 

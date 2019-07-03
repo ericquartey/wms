@@ -40,8 +40,16 @@
             <local:HelpDrawerActivityRefillingDetail></local:HelpDrawerActivityRefillingDetail>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityInventoryDetailViewModel}">
+            <local:HelpDrawerActivityInventoryDetail></local:HelpDrawerActivityInventoryDetail>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityRefillingViewModel}">
             <local:HelpDrawerActivityRefilling></local:HelpDrawerActivityRefilling>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityInventoryViewModel}">
+            <local:HelpDrawerActivityInventory></local:HelpDrawerActivityInventory>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelswaitinglistslistdetail:DetailListInWaitViewModel}">
@@ -76,20 +84,50 @@
             <local:HelpDrawerWeightSaturation></local:HelpDrawerWeightSaturation>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:MachineStatisticsViewModel}">
+            <local:HelpMachineStatistics></local:HelpMachineStatistics>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:StatisticsGeneralDataViewModel}">
+            <local:HelpStatisticsGeneralData></local:HelpStatisticsGeneralData>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:CellsStatisticsViewModel}">
+            <local:HelpCellsStatistics></local:HelpCellsStatistics>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:ErrorsStatisticsViewModel}">
+            <local:HelpErrorsStatistics></local:HelpErrorsStatistics>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceMainPageViewModel}">
+            <local:HelpMaintenanceMainPage></local:HelpMaintenanceMainPage>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceDetailViewModel}">
+            <local:HelpMaintenanceDetail></local:HelpMaintenanceDetail>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:GeneralInfoViewModel}">
+            <local:HelpGeneralInfo></local:HelpGeneralInfo>
+        </DataTemplate>
+
     </Window.Resources>
 
-    <Grid Width="1024"
-          Height="768"
+    <Grid Width="1024" Height="768"
           Background="{DynamicResource VWAPP_BACKGROUND}">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="688"></RowDefinition>
             <RowDefinition Height="80"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <ContentPresenter Name="HelpContentRegion" Grid.Row="0"
                           Height="688"
                           Width="1024"
                           Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </ContentPresenter>
+        
         <Button Grid.Row="1"
                 Content="Back"
                 HorizontalAlignment="Right"

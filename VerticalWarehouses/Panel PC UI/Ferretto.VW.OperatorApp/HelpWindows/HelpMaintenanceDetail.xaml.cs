@@ -13,17 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.OperatorApp.HelpWindows
 {
     /// <summary>
-    /// Logica di interazione per ItemStatisticsView.xaml
+    /// Logica di interazione per HelpMaintenanceDetail.xaml
     /// </summary>
-    public partial class ItemStatisticsView : UserControl
+    public partial class HelpMaintenanceDetail : UserControl
     {
-        public ItemStatisticsView()
+        #region Constructors
+
+        public HelpMaintenanceDetail()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
+        #endregion
     }
 }

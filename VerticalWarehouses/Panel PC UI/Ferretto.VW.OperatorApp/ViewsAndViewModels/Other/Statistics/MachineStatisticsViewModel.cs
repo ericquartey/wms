@@ -14,7 +14,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class ItemStatisticsViewModel : BindableBase, IItemStatisticsViewModel
+    public class MachineStatisticsViewModel : BindableBase, IMachineStatisticsViewModel
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public ItemStatisticsViewModel(IEventAggregator eventAggregator)
+        public MachineStatisticsViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;

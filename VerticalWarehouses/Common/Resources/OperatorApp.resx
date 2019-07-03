@@ -417,9 +417,9 @@
     <value>Compaction drawer procedure</value>
     <comment>Page Header</comment>
   </data>
-  <data name="DrawerCompactingSide" xml:space="preserve">
-    <value>Side:</value>
-    <comment>Label text</comment>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+    <comment>Section header</comment>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
     <value>Fragments quantity:</value>
@@ -487,34 +487,6 @@
   <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
     <value>StatisticsGeneralDataUtilization</value>
     <comment>Progress bar label text</comment>
-  </data>
-  <data name="ItemStatisticsViewHeader" xml:space="preserve">
-    <value>ItemStatisticsViewHeader</value>
-    <comment>Page header</comment>
-  </data>
-  <data name="ItemStatisticsViewItemA" xml:space="preserve">
-    <value>ItemStatisticsViewItemA</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewItemB" xml:space="preserve">
-    <value>ItemStatisticsViewItemB</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewItemC" xml:space="preserve">
-    <value>ItemStatisticsViewItemC</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewTotalItemsStored" xml:space="preserve">
-    <value>ItemStatisticsViewTotalItemsStored</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewTotalMovements" xml:space="preserve">
-    <value>ItemStatisticsViewTotalMovements</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewUpdate" xml:space="preserve">
-    <value>ItemStatisticsViewUpdate</value>
-    <comment>Button text</comment>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
     <value>DrawerSpaceSaturazionHeader</value>
@@ -699,9 +671,6 @@
   <data name="StatisticsNavigationErrors" xml:space="preserve">
     <value>StatisticsNavigationErrors</value>
     <comment>Button text</comment>
-  </data>
-  <data name="ItemSearchChangeSearch" xml:space="preserve">
-    <value>ItemSearchChangeSearch</value>
   </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>Refilling operation</value>
@@ -1014,5 +983,93 @@
   <data name="StatisticsItemDataGridHeaderMovementsQuantity" xml:space="preserve">
     <value>Movementes quantity</value>
     <comment>Numero movimenti</comment>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>StatisticsNavigationMachine</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>MachineStatisticsHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>MachineStatisticsSectionVertical</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionVerticalTotalKm" xml:space="preserve">
+    <value>MachineStatisticsSectionVerticalTotalKm</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionVerticalTotalCycles" xml:space="preserve">
+    <value>MachineStatisticsSectionVerticalTotalCycles</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>MachineStatisticsSectionShutters</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter1" xml:space="preserve">
+    <value>MachineStatisticsSectionShutterShutter1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter2" xml:space="preserve">
+    <value>MachineStatisticsSectionShutterShutter2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter3" xml:space="preserve">
+    <value>MachineStatisticsSectionShutterShutter3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionOrizzontal" xml:space="preserve">
+    <value>MachineStatisticsSectionOrizzontal</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionOrizzontalTotalCycles" xml:space="preserve">
+    <value>MachineStatisticsSectionOrizzontalTotalCycles</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>MachineStatisticsSectionBays</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>MachineStatisticsSectionBaysBay1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>MachineStatisticsSectionBaysBay2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>MachineStatisticsSectionBaysBay3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>ItemSearchGridItem</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>ItemSearchGridDescription</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>ItemSearchGridMachine</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+    <comment>Section Header</comment>
+  </data>
+  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
+    <value>MaintenanceDetailHeaderKit</value>
+    <comment>Page header object</comment>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>CommonListType</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>GeneralInfoWmsStatus</value>
+    <comment>Label text</comment>
   </data>
 </root>
