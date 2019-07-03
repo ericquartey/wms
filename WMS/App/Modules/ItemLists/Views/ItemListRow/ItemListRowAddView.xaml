@@ -100,7 +100,7 @@
                                         Margin="0,0,20,0"
                                         wms:ShowTitle.Show="True"
                                         BusinessObjectValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                        DisplayMember="Description"
+                                        DisplayMember="Code"
                                         ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                         PopupWidth="800"
                                         ValueMember="Id">

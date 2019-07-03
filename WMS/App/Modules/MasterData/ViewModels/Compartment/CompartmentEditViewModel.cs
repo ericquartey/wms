@@ -48,6 +48,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Item selectedItem;
 
+        private bool showDetails;
+
         #endregion
 
         #region Constructors
@@ -105,19 +107,20 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get
             {
+                var result = true;
                 if (this.Model == null ||
                     !this.Model.ItemId.HasValue)
                 {
-                    return false;
+                    result = false;
                 }
 
                 if (!this.Model.Stock.HasValue ||
                     this.Model.Stock.Value <= 0)
                 {
-                    return false;
+                    result = false;
                 }
 
-                return true;
+                return result;
             }
         }
 
@@ -152,6 +155,8 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.selectedItem;
             set => this.SetProperty(ref this.selectedItem, value);
         }
+
+        public bool ShowDetails { get => this.showDetails; set => this.SetProperty(ref this.showDetails, value); }
 
         #endregion
 
@@ -198,10 +203,12 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Title = App.Resources.MasterData.AddCompartment;
                 this.ColorRequired = ColorRequired.CreateMode;
+                this.ShowDetails = false;
             }
             else
             {
                 this.Title = App.Resources.MasterData.EditCompartment;
+                this.ShowDetails = this.Model.HasDetails;
             }
 
             Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
