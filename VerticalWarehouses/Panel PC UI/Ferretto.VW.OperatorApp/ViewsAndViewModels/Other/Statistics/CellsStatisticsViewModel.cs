@@ -13,6 +13,8 @@ using Ferretto.VW.WmsCommunication.Interfaces;
 using System.Collections.ObjectModel;
 using Ferretto.VW.CustomControls.Utils;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+{
     public class CellsStatisticsViewModel : BindableBase, ICellsStatisticsViewModel
     {
         #region Fields

@@ -13,6 +13,8 @@ using Ferretto.VW.CustomControls.Utils;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.CustomControls.Interfaces;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+{
     public class DrawerSpaceSaturationViewModel : BindableBase, IDrawerSpaceSaturationViewModel
     {
         #region Fields

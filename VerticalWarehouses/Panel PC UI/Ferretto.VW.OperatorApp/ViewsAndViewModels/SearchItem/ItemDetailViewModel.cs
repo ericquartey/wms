@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Drawing;
 using Ferretto.VW.CustomControls.Utils;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+{
     public class ItemDetailViewModel : BindableBase, IItemDetailViewModel
     {
         #region Fields
