@@ -8,21 +8,29 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
+        private IEnumerable<BayDetails> bays;
+
+        private decimal currentLoadingUnitPosition;
+
+        private int? faultCode;
+
         private MachineStatus? status;
+
+        private int userLogged;
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<BayDetails> Bays { get; set; }
+        public IEnumerable<BayDetails> Bays { get => this.bays; set => this.SetProperty(ref this.bays, value); }
 
         public int? CurrentLoadingUnitId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineElevatorPosition), ResourceType = typeof(BusinessObjects))]
-        public decimal CurrentLoadingUnitPosition { get; set; }
+        public decimal CurrentLoadingUnitPosition { get => this.currentLoadingUnitPosition; set => this.SetProperty(ref this.currentLoadingUnitPosition, value); }
 
         [Display(Name = nameof(BusinessObjects.MachineFaultCode), ResourceType = typeof(BusinessObjects))]
-        public int? FaultCode { get; set; }
+        public int? FaultCode { get => this.faultCode; set => this.SetProperty(ref this.faultCode, value); }
 
         public long? GrossWeight { get; set; }
 
@@ -42,6 +50,8 @@ namespace Ferretto.WMS.App.Core.Models
                 }
             }
         }
+
+        public int UserLogged { get => this.userLogged; set => this.SetProperty(ref this.userLogged, value); }
 
         [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
         public int WeightFillRate { get; set; }
