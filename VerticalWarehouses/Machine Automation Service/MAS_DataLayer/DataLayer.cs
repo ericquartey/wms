@@ -19,9 +19,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
+
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : BackgroundService, IDataLayer
@@ -104,12 +104,14 @@ namespace Ferretto.VW.MAS_DataLayer
             this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
 
             var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandLogEvent.Subscribe(commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
+            commandLogEvent.Subscribe(
+                commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
                 false);
 
             var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationLogEvent.Subscribe(notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
+            notificationLogEvent.Subscribe(
+                notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
                 false);
 
@@ -163,7 +165,8 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
             }
-            //TEMP catch (DataLayerException ex)
+
+            // TEMP catch (DataLayerException ex)
             catch (Exception ex)
             {
                 this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
@@ -174,7 +177,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.suppressSecondary = false;
 
-            var errorNotification = new NotificationMessage(null,
+            var errorNotification = new NotificationMessage(
+                null,
                                                             "DataLayer initialization complete",
                                                             MessageActor.Any,
                                                             MessageActor.DataLayer,
@@ -445,7 +449,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task ReceiveNotificationTaskFunction()
@@ -499,7 +504,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
 
                 await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task SaveConfigurationDataAsync(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
@@ -549,6 +555,7 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
                 this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
@@ -585,8 +592,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 catch (Exception ex)
                 {
                     this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
-                    //TEMP throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
 
+                    //TEMP throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
                     this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
                 }
             }

@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             this.comTout = (short)(this.configurationData[0] + (this.configurationData[1] << 8));
-            this.useSetupOutputLines = (this.configurationData[2] == 0);
+            this.useSetupOutputLines = this.configurationData[2] == 0;
             this.setupOutputLines = this.configurationData[3];
             this.debounceInput = this.configurationData[4];
         }
@@ -193,7 +193,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.outputs = new bool[TOTAL_OUTPUTS];
 
             // TODO Check arguments
-
             this.comTout = comTout;
             this.useSetupOutputLines = useSetupOutputLines;
             this.setupOutputLines = setupOutputLines;
@@ -201,9 +200,12 @@ namespace Ferretto.VW.MAS_IODriver
 
             var bytes = BitConverter.GetBytes(this.comTout);
             if (!BitConverter.IsLittleEndian)
+            {
                 Array.Reverse(bytes);
+            }
+
             Array.Copy(bytes, 0, this.configurationData, 0, sizeof(short));
-            this.configurationData[2] = (this.useSetupOutputLines) ? (byte)0x00 : (byte)0x01;
+            this.configurationData[2] = this.useSetupOutputLines ? (byte)0x00 : (byte)0x01;
             this.configurationData[3] = this.setupOutputLines;
             this.configurationData[4] = this.debounceInput;
         }
@@ -219,7 +221,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
 
-            if (ipAddress != "")
+            if (ipAddress != string.Empty)
             {
                 var address = IPAddress.Parse(ipAddress);
                 var bytes = address.GetAddressBytes();
@@ -297,25 +299,27 @@ namespace Ferretto.VW.MAS_IODriver
 
             // nBytes
             telegram[0] = (byte)nBytesToSend;
+
             // Fw release
             telegram[1] = fwRelease;
+
             // Code op
             switch (this.codeOperation)
             {
                 case SHDCodeOperation.Data:
-                    telegram[2] = (byte)0x00;
+                    telegram[2] = 0x00;
                     break;
 
                 case SHDCodeOperation.Configuration:
-                    telegram[2] = (byte)0x01;
+                    telegram[2] = 0x01;
                     break;
 
                 case SHDCodeOperation.SetIP:
-                    telegram[2] = (byte)0x02;
+                    telegram[2] = 0x02;
                     break;
 
                 default:
-                    telegram[2] = (byte)0x00;
+                    telegram[2] = 0x00;
                     break;
             }
 

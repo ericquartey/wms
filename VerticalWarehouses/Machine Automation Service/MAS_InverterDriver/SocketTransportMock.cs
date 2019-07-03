@@ -7,7 +7,6 @@ using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public class SocketTransportMock : ISocketTransport, IDisposable
@@ -44,7 +43,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.lastWriteMessage = new InverterMessage((short)0x00, (short)InverterParameterId.ControlWordParam);
 
-            this.homingTimer = new Timer(HomingTick, null, -1, Timeout.Infinite);
+            this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
 
             this.homingTimerActive = false;
         }
@@ -109,7 +108,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.readCompleteEventSlim.Reset();
 
                 InverterMessage currentMessage;
-                lock (lastWriteMessage)
+                lock (this.lastWriteMessage)
                 {
                     currentMessage = this.lastWriteMessage;
                 }
@@ -121,7 +120,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (currentMessage.IsReadMessage)
                 {
-                    return BuildReadMessage(currentMessage);
+                    return this.BuildReadMessage(currentMessage);
                 }
 
                 return this.BuildRawStatusMessage();
@@ -132,13 +131,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
-            return await ParseWriteMessage(inverterMessage, stoppingToken);
+            return await this.ParseWriteMessage(inverterMessage, stoppingToken);
         }
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
         {
             await Task.Delay(delay, stoppingToken);
-            return await WriteAsync(inverterMessage, stoppingToken);
+            return await this.WriteAsync(inverterMessage, stoppingToken);
         }
 
         private byte[] BuildDigitalInputsMessage(InverterMessage currentMessage)
@@ -147,28 +146,28 @@ namespace Ferretto.VW.MAS_InverterDriver
             InverterParameterId parameterId;
             byte dataSet;
 
-            lock (lastWriteMessage)
+            lock (this.lastWriteMessage)
             {
                 systemIndex = currentMessage.SystemIndex;
                 parameterId = currentMessage.ParameterId;
                 dataSet = currentMessage.DataSetIndex;
             }
 
-            string inputValues = " 8 3 1 1 ";
+            var inputValues = " 8 3 1 1 ";
 
-            byte[] rawMessage = new byte[6 + inputValues.Length];
+            var rawMessage = new byte[6 + inputValues.Length];
 
             rawMessage[0] = 0x00;
             rawMessage[1] = 0x06;
             rawMessage[2] = systemIndex;
             rawMessage[3] = dataSet;
 
-            byte[] parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+            var parameterBytes = BitConverter.GetBytes((ushort)parameterId);
 
             rawMessage[4] = parameterBytes[0];
             rawMessage[5] = parameterBytes[1];
 
-            byte[] payloadBytes = Encoding.ASCII.GetBytes(inputValues);
+            var payloadBytes = Encoding.ASCII.GetBytes(inputValues);
             Array.Copy(payloadBytes, 0, rawMessage, 6, payloadBytes.Length);
 
             return rawMessage;
@@ -255,26 +254,26 @@ namespace Ferretto.VW.MAS_InverterDriver
             InverterParameterId parameterId;
             byte dataSet;
 
-            lock (lastWriteMessage)
+            lock (this.lastWriteMessage)
             {
                 systemIndex = this.lastWriteMessage.SystemIndex;
                 parameterId = this.lastWriteMessage.ParameterId;
                 dataSet = this.lastWriteMessage.DataSetIndex;
             }
 
-            byte[] rawMessage = new byte[8];
+            var rawMessage = new byte[8];
 
             rawMessage[0] = 0x00;
             rawMessage[1] = 0x06;
             rawMessage[2] = systemIndex;
             rawMessage[3] = dataSet;
 
-            byte[] parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+            var parameterBytes = BitConverter.GetBytes((ushort)parameterId);
 
             rawMessage[4] = parameterBytes[0];
             rawMessage[5] = parameterBytes[1];
 
-            byte[] payloadBytes = BitConverter.GetBytes(this.statusWord);
+            var payloadBytes = BitConverter.GetBytes(this.statusWord);
             rawMessage[6] = payloadBytes[0];
             rawMessage[7] = payloadBytes[1];
 
@@ -368,17 +367,17 @@ namespace Ferretto.VW.MAS_InverterDriver
             switch (inverterMessage.ParameterId)
             {
                 case InverterParameterId.StatusWordParam:
-                    return await ProcessStatusWordPayload(inverterMessage, stoppingToken);
+                    return await this.ProcessStatusWordPayload(inverterMessage, stoppingToken);
 
                 case InverterParameterId.DigitalInputsOutputs:
-                    return await ProcessDigitalInputs(inverterMessage, stoppingToken);
+                    return await this.ProcessDigitalInputs(inverterMessage, stoppingToken);
             }
             return inverterMessage.GetReadMessage().Length;
         }
 
         private async Task<int> ParseWriteMessage(byte[] inverterMessage, CancellationToken stoppingToken)
         {
-            InverterMessage message = new InverterMessage(inverterMessage);
+            var message = new InverterMessage(inverterMessage);
 
             lock (this.lastWriteMessage)
             {
@@ -398,10 +397,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             switch (inverterMessage.ParameterId)
             {
                 case InverterParameterId.ControlWordParam:
-                    return await ProcessControlWordPayload(inverterMessage, stoppingToken);
+                    return await this.ProcessControlWordPayload(inverterMessage, stoppingToken);
 
                 case InverterParameterId.SetOperatingModeParam:
-                    return await ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
+                    return await this.ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
             }
 
             return inverterMessage.GetWriteMessage().Length;
@@ -432,7 +431,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task<int> ProcessSetOperatingModePayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
-            operatingMode = Enum.Parse<InverterOperationMode>(inverterMessage.UShortPayload.ToString());
+            this.operatingMode = Enum.Parse<InverterOperationMode>(inverterMessage.UShortPayload.ToString());
 
             await Task.Delay(5, stoppingToken);
 
@@ -448,15 +447,15 @@ namespace Ferretto.VW.MAS_InverterDriver
             switch (this.operatingMode)
             {
                 case InverterOperationMode.Homing:
-                    BuildHomingStatusWord();
+                    this.BuildHomingStatusWord();
                     break;
 
                 case InverterOperationMode.Position:
-                    BuildPositionStatusWord();
+                    this.BuildPositionStatusWord();
                     break;
 
                 case InverterOperationMode.Velocity:
-                    BuildVelocityStatusWord();
+                    this.BuildVelocityStatusWord();
                     break;
             }
             this.readCompleteEventSlim.Set();

@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS_AutomationService
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                     this.logger.LogTrace($"2:Waiting for process:{this.commandQueue.Count}");
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException)
                 {
                     this.logger.LogTrace("3:Method End - Operation Canceled");
                     return;
@@ -151,7 +151,8 @@ namespace Ferretto.VW.MAS_AutomationService
                 switch (receivedMessage.Type)
                 {
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
@@ -265,7 +266,8 @@ namespace Ferretto.VW.MAS_AutomationService
                     default:
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("9:Method End");
 

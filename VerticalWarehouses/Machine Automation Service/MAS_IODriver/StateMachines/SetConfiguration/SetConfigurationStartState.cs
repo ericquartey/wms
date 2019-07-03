@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_IODriver.Interface;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
@@ -44,7 +41,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)

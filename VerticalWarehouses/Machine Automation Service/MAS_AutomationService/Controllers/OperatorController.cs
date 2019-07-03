@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using System.Collections.ObjectModel;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Microsoft.Extensions.Logging;
-
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+﻿namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Ferretto.VW.Common_Utils.Messages;
+    using Ferretto.VW.Common_Utils.Messages.Data;
+    using Ferretto.VW.Common_Utils.Messages.Enumerations;
+    using Ferretto.VW.MAS_Utils.Events;
+    using Ferretto.WMS.Data.WebAPI.Contracts;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using Prism.Events;
+
     [Route("1.0.0/Operator/[controller]")]
     [ApiController]
     public class OperatorController : ControllerBase
