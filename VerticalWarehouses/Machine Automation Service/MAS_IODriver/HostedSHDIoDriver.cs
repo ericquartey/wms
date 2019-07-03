@@ -18,7 +18,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedSHDIoDriver : BackgroundService
+    public class HostedSHDIoDriver : BackgroundService
     {
         #region Fields
 
