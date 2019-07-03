@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class DrawerSpaceSaturationViewModel : BindableBase, IDrawerSpaceSaturationViewModel
     {
         #region Fields

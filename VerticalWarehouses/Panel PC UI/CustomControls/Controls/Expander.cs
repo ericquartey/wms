@@ -9,7 +9,11 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached("HideToggleButton", typeof(bool), typeof(Expander), new FrameworkPropertyMetadata(false));
+        public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached(
+            nameof(HideToggleButton),
+            typeof(bool),
+            typeof(Expander),
+            new FrameworkPropertyMetadata(false));
 
         private Grid gridHeaderSite;
 
@@ -63,7 +67,7 @@ namespace Ferretto.VW.CustomControls.Controls
                      .FirstOrDefault();
                     if (toggleButtonFound != null)
                     {
-                        this.toggleButton = toggleButtonFound as ToggleButton;
+                        this.toggleButton = toggleButtonFound;
                     }
                 }
                 if (this.gridHeaderSite == null)
@@ -73,14 +77,12 @@ namespace Ferretto.VW.CustomControls.Controls
                      .FirstOrDefault(n => n.Name == "GridHeaderSite");
                     if (gridFound != null)
                     {
-                        this.gridHeaderSite = gridFound as Grid;
+                        this.gridHeaderSite = gridFound;
                     }
                 }
                 var actualHeight = this.ActualHeight - 4;
-                if (this.gridHeaderSite.Height != actualHeight)
-                {
-                    this.gridHeaderSite.Height = actualHeight;
-                }
+
+                this.gridHeaderSite.Height = actualHeight;
             }
         }
 

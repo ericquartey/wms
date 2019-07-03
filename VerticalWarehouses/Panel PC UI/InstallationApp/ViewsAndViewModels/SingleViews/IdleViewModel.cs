@@ -1,10 +1,10 @@
-﻿using Prism.Events;
-using Prism.Mvvm;
-using Ferretto.VW.Utils.Interfaces;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.InstallationApp
 {
+    using System.Threading.Tasks;
+    using Ferretto.VW.Utils.Interfaces;
+    using Prism.Events;
+    using Prism.Mvvm;
+
     public class IdleViewModel : BindableBase, IIdleViewModel
     {
         #region Fields

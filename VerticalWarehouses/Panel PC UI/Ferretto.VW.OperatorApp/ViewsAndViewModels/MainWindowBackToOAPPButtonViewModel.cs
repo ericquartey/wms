@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
+    using System.Threading.Tasks;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class MainWindowBackToOAPPButtonViewModel : BindableBase, IMainWindowBackToOAPPButtonViewModel
     {
         #region Fields

@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Ferretto.VW.CustomControls.Controls
 {
@@ -69,11 +58,11 @@ namespace Ferretto.VW.CustomControls.Controls
             }
 
             ScrollViewer retour = null;
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element) && retour == null; i++)
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(element) && retour == null; i++)
             {
                 if (VisualTreeHelper.GetChild(element, i) is ScrollViewer)
                 {
-                    retour = (ScrollViewer)(VisualTreeHelper.GetChild(element, i));
+                    retour = (ScrollViewer)VisualTreeHelper.GetChild(element, i);
                 }
                 else
                 {
