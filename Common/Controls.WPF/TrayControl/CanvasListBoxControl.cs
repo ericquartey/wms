@@ -654,12 +654,19 @@ namespace Ferretto.Common.Controls.WPF
             context.Pop();
         }
 
-        private string GetColorFilter(IDrawableCompartment compartment)
+        private string GetColorFilter(IDrawableCompartment compartment, IDrawableCompartment compartmentDetails = null)
         {
             if (this.IsReadOnly == false &&
                 this.SelectedColorFilterFunc != null)
             {
-                return this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+                if (compartmentDetails != null)
+                {
+                    return this.SelectedColorFilterFunc.Invoke(compartmentDetails, compartment);
+                }
+                else
+                {
+                    return this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+                }
             }
 
             return this.DefaultCompartmentColor;
@@ -772,7 +779,7 @@ namespace Ferretto.Common.Controls.WPF
 
             foreach (var item in this.Items.AsCompartmentViewModel())
             {
-                item.ColorFill = this.SelectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? this.DefaultCompartmentColor;
+                item.ColorFill = this.GetColorFilter(this.SelectedCompartment, item.CompartmentDetails);
             }
         }
 
