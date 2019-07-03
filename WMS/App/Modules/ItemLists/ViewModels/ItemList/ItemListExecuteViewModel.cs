@@ -93,12 +93,12 @@ namespace Ferretto.WMS.Modules.ItemLists
 
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListRequestAccepted, StatusType.Success, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListRequestAccepted, StatusType.Success));
                 this.Disappear();
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
             }
         }
 

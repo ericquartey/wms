@@ -52,13 +52,13 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListRowSavedSuccessfully, StatusType.Success, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListRowSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -89,7 +89,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error, result.ShowToast));
+                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
                 }
             }
 

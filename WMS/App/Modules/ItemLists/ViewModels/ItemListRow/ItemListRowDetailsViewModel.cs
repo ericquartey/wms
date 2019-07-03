@@ -99,12 +99,11 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.EventService.Invoke(
                     new StatusPubSubEvent(
                         App.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                        StatusType.Success,
-                        result.ShowToast));
+                        StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             return result.Success;
@@ -141,15 +140,13 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.EventService.Invoke(new StatusPubSubEvent(
                     App.Resources.ItemLists.ItemListRowSavedSuccessfully,
-                    StatusType.Success,
-                    result.ShowToast));
+                    StatusType.Success));
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Errors.UnableToSaveChanges,
-                    StatusType.Error,
-                    result.ShowToast));
+                    StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -224,13 +221,12 @@ namespace Ferretto.WMS.Modules.ItemLists
                         this.EventService.Invoke(
                             new StatusPubSubEvent(
                                 App.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                                StatusType.Success,
-                                result.ShowToast));
+                                StatusType.Success));
                         this.HistoryViewService.Previous();
                     }
                     else
                     {
-                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
                     }
                 }
 

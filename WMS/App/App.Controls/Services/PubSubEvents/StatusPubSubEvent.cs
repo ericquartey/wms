@@ -29,13 +29,12 @@ namespace Ferretto.WMS.App.Controls.Services
         public StatusPubSubEvent(
             string message = null,
             StatusType type = StatusType.Info,
-            bool showToast = true,
             NotificationFlowDirection flowDirection = NotificationFlowDirection.RightBottom)
         {
             this.Type = type;
             this.Message = message?
                 .Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-            if (showToast && !string.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(message))
             {
                 this.ShowNotification(type, message, flowDirection);
             }

@@ -92,12 +92,12 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.compartmentTypeProvider.DeleteAsync(this.CurrentItem.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeDeletedSuccessfully, StatusType.Success, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeDeletedSuccessfully, StatusType.Success));
                 this.SelectedItem = null;
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
         }
 
@@ -114,12 +114,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (resultCreate.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeCreatedSuccessfully, StatusType.Success, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AssociationCompartmentTypeCreatedSuccessfully, StatusType.Success));
                 this.IsAddShown = false;
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(resultCreate.Description, StatusType.Error, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(resultCreate.Description, StatusType.Error));
             }
 
             this.IsBusy = false;

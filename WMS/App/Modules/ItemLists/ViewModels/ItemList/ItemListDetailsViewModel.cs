@@ -165,8 +165,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.EventService.Invoke(
                     new StatusPubSubEvent(
                         App.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                        StatusType.Success,
-                        result.ShowToast));
+                        StatusType.Success));
                 this.SelectedItemListRow = null;
 
                 await this.LoadDataAsync();
@@ -175,8 +174,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Errors.UnableToSaveChanges,
-                    StatusType.Error,
-                    result.ShowToast));
+                    StatusType.Error));
             }
         }
 
@@ -187,12 +185,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     App.Resources.ItemLists.ItemListDeletedSuccessfully,
-                    StatusType.Success,
-                    result.ShowToast));
+                    StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             return result.Success;
@@ -229,15 +226,13 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.EventService.Invoke(new StatusPubSubEvent(
                     App.Resources.ItemLists.ItemListSavedSuccessfully,
-                    StatusType.Success,
-                    result.ShowToast));
+                    StatusType.Success));
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Errors.UnableToSaveChanges,
-                    StatusType.Error,
-                    result.ShowToast));
+                    StatusType.Error));
             }
 
             this.IsBusy = false;

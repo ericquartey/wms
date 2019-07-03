@@ -231,11 +231,11 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.itemProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             return result.Success;
@@ -270,11 +270,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -354,11 +354,11 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.ItemAreaInput = null;
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AreaAssociationCreatedSuccessfully, StatusType.Success, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AreaAssociationCreatedSuccessfully, StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsAddAreaShown = false;
@@ -391,11 +391,11 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.areaProvider.DeleteAllowedByItemIdAsync(this.selectedAllowedItemArea.Id, this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AreaAssociationDeletedSuccessfully, StatusType.Success, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.AreaAssociationDeletedSuccessfully, StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = true;

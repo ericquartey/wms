@@ -35,13 +35,13 @@ namespace Ferretto.WMS.Modules.MasterData
             var resultCreate = await this.itemProvider.CreateAsync(this.Model);
             if (resultCreate.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error, result.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
             }
 
             this.IsBusy = false;

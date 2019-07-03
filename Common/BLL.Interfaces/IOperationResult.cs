@@ -8,8 +8,6 @@
 
         TModel Entity { get; }
 
-        bool ShowToast { get; }
-
         bool Success { get; }
 
         #endregion

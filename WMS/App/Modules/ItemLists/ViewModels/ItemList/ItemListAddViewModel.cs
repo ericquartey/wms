@@ -37,13 +37,13 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListSavedSuccessfully, StatusType.Success, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.ItemLists.ItemListSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error, resultCreate.ShowToast));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
