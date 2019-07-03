@@ -1861,6 +1861,51 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string StatisticsItemDataGridHeaderClass {
+            get {
+                return ResourceManager.GetString("StatisticsItemDataGridHeaderClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item %.
+        /// </summary>
+        public static string StatisticsItemDataGridHeaderItemPercentage {
+            get {
+                return ResourceManager.GetString("StatisticsItemDataGridHeaderItemPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item quantity.
+        /// </summary>
+        public static string StatisticsItemDataGridHeaderItemQuantity {
+            get {
+                return ResourceManager.GetString("StatisticsItemDataGridHeaderItemQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movements %.
+        /// </summary>
+        public static string StatisticsItemDataGridHeaderMovementsPercentage {
+            get {
+                return ResourceManager.GetString("StatisticsItemDataGridHeaderMovementsPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movementes quantity.
+        /// </summary>
+        public static string StatisticsItemDataGridHeaderMovementsQuantity {
+            get {
+                return ResourceManager.GetString("StatisticsItemDataGridHeaderMovementsQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string StatisticsMaintenanceDataGridHeaderDescription {

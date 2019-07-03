@@ -995,4 +995,24 @@
     <value>Row</value>
     <comment>Riga</comment>
   </data>
+  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
+    <value>Class</value>
+    <comment>Classe</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderItemPercentage" xml:space="preserve">
+    <value>Item %</value>
+    <comment>Articolo %</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderItemQuantity" xml:space="preserve">
+    <value>Item quantity</value>
+    <comment>Quantità articolo</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderMovementsPercentage" xml:space="preserve">
+    <value>Movements %</value>
+    <comment>Movimenti %</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderMovementsQuantity" xml:space="preserve">
+    <value>Movementes quantity</value>
+    <comment>Numero movimenti</comment>
+  </data>
 </root>

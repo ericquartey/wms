@@ -24,21 +24,12 @@
             ContentText="39.562"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewTotalMovements}"/>
 
-        <DataGrid    HorizontalAlignment="Left" Height="146" Margin="240,300,0,0" VerticalAlignment="Top" Width="536" FontFamily="Helvetica Neue" FontSize="16"
-                     Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-                     HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-                     <!--SelectionChanged="DataGrid_SelectionChanged"-->
-            
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Classe" CanUserResize="False" MaxWidth="70" MinWidth="70"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Articolo" CanUserResize="False" MaxWidth="90" MinWidth="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Num. articoli" CanUserResize="False" MaxWidth="110" MinWidth="110"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Num. movimenti" MaxWidth="130" MinWidth="130"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% movimenti" MaxWidth="150" MinWidth="150"/>
-            </DataGrid.Columns>
-
-        </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                        Height="146" Margin="240,300,0,0"
+                        VerticalAlignment="Top"
+                        Width="536"
+                        Content="{Binding DataGridViewModel}" >
+        </ContentControl>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,180,0,0" MaxWidth="300"
             ContentText="2.235"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewItemB}"/>

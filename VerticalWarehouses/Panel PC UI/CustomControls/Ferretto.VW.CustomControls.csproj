@@ -54,6 +54,7 @@
     <None Remove="Controls\CustomControlDrawerSaturationDataGrid.xaml" />
     <None Remove="Controls\CustomControlDrawerWeightSaturationDataGrid.xaml" />
     <None Remove="Controls\CustomControlErrorsDataGrid.xaml" />
+    <None Remove="Controls\CustomControlItemStatisticsDataGrid.xaml" />
     <None Remove="Controls\CustomControlListDataGrid.xaml" />
     <None Remove="Controls\CustomControlListDetailDataGrid.xaml" />
     <None Remove="Controls\CustomControlMaintenanceDataGrid.xaml" />
