@@ -438,6 +438,21 @@ namespace Ferretto.Common.Controls.WPF
             this.DrawGridLines(drawingContext);
         }
 
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+
+            if (e == null)
+            {
+                return;
+            }
+
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is CompartmentViewModel newCompartment)
+            {
+                this.SelectedCompartment = newCompartment.CompartmentDetails;
+            }
+        }
+
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is CanvasListBoxControl canvasListBox)
