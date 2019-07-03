@@ -50,25 +50,6 @@
     <ProjectReference Include="..\BLL\Ferretto.WMS.App.Modules.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Views\CompartmentTypes\AssociateCompartmentTypesItemsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\CompartmentTypes\AssociateCompartmentTypesStepView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\CompartmentTypes\AssociateCompartmentTypesView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\CompartmentTypes\AssociateCompartmentTypesWizardView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\CompartmentTypes\ChooseCompartmentTypesStepView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\CompartmentTypes\ItemCompartmentTypesToItemStepView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
+  
 
 </Project>
