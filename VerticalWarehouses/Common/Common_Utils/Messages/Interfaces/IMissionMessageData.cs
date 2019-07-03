@@ -1,5 +1,5 @@
-﻿using Ferretto.WMS.Data.WebAPI.Contracts;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
