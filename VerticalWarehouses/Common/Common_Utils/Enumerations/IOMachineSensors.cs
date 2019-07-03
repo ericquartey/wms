@@ -2,8 +2,7 @@
 {
     public enum IOMachineSensors
     {
-
-        //INFO Elevator Sensors
+        #region INFO Elevator Sensors
 
         EmergencyEndRun = 0,
 
@@ -13,7 +12,9 @@
 
         CradleMotorSelected = 3,
 
-        //INFO Cradle Sensors
+        #endregion
+
+        #region INFO Cradle Sensors
 
         ZeroPawl = 4,
 
@@ -21,7 +22,9 @@
 
         LuPresentInOperatorSide = 6,
 
-        //INFO Bays & HeightControl Sensors
+        #endregion
+
+        #region INFO Bays & HeightControl Sensors
 
         LUPresentInBay1 = 7,
 
@@ -47,7 +50,9 @@
 
         ShutterSensorBBay3 = 18,
 
-        //INFO Various Inputs
+        #endregion
+
+        #region INFO Various Inputs
 
         NormalState = 19,
 
@@ -73,6 +78,8 @@
 
         MicroCarterRightSideBay3 = 30,
 
-        AntiIntrusionShutterBay3 = 31
+        AntiIntrusionShutterBay3 = 31,
+
+        #endregion
     }
 }
