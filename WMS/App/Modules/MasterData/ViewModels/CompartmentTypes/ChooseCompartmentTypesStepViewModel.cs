@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -25,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ItemCompartmentType selectedItemCompartmentType;
 
-        private ObservableCollection<ItemCompartmentType> unassociateItemCompartmentTypesDataSource;
+        private ObservableCollection<ItemCompartmentType> unassociatedItemCompartmentTypesDataSource;
 
         #endregion
 
@@ -73,10 +72,10 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ObservableCollection<ItemCompartmentType> UnassociateItemCompartmentTypesDataSource
+        public ObservableCollection<ItemCompartmentType> UnassociatedItemCompartmentTypesDataSource
         {
-            get => this.unassociateItemCompartmentTypesDataSource;
-            set => this.SetProperty(ref this.unassociateItemCompartmentTypesDataSource, value);
+            get => this.unassociatedItemCompartmentTypesDataSource;
+            set => this.SetProperty(ref this.unassociatedItemCompartmentTypesDataSource, value);
         }
 
         #endregion
@@ -95,12 +94,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override string GetError()
         {
-            if (this.unassociateItemCompartmentTypesDataSource == null)
+            if (this.unassociatedItemCompartmentTypesDataSource == null)
             {
                 return null;
             }
 
-            return this.unassociateItemCompartmentTypesDataSource.Select(ict => ict.Error).FirstOrDefault(ict => !string.IsNullOrEmpty(ict));
+            return this.unassociatedItemCompartmentTypesDataSource.Select(ict => ict.Error).FirstOrDefault(ict => !string.IsNullOrEmpty(ict));
         }
 
         public override async Task<bool> SaveAsync()
@@ -149,7 +148,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             var newItemComaratmentTypes = new List<ItemCompartmentType>();
 
-            var filtered = this.UnassociateItemCompartmentTypesDataSource.Where(uct => uct.IsActive);
+            var filtered = this.UnassociatedItemCompartmentTypesDataSource.Where(uct => uct.IsActive);
 
             foreach (var itemCompartmentType in filtered)
             {
@@ -162,17 +161,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool IsValid()
         {
-            if (this.unassociateItemCompartmentTypesDataSource == null)
+            if (this.unassociatedItemCompartmentTypesDataSource == null)
             {
                 return false;
             }
 
-            if (this.unassociateItemCompartmentTypesDataSource.Any(ct => !string.IsNullOrEmpty(ct.Error)))
+            if (this.unassociatedItemCompartmentTypesDataSource.Any(ct => !string.IsNullOrEmpty(ct.Error)))
             {
                 return false;
             }
 
-            return this.unassociateItemCompartmentTypesDataSource.FirstOrDefault(ict => ict.IsActive) != null;
+            return this.unassociatedItemCompartmentTypesDataSource.FirstOrDefault(ict => ict.IsActive) != null;
         }
 
         private async Task LoadUnassociateCompartmentTypesAsync()
@@ -188,13 +187,13 @@ namespace Ferretto.WMS.Modules.MasterData
             if (itemsCompartmentTypesResult.Success &&
                 itemsCompartmentTypesResult.Entity.Any())
             {
-                this.UnassociateItemCompartmentTypesDataSource = new ObservableCollection<ItemCompartmentType>(itemsCompartmentTypesResult.Entity);
+                this.UnassociatedItemCompartmentTypesDataSource = new ObservableCollection<ItemCompartmentType>(itemsCompartmentTypesResult.Entity);
                 this.HasUnassociatedItemCompartmentTypes = true;
             }
             else
             {
                 this.HasUnassociatedItemCompartmentTypes = false;
-                this.UnassociateItemCompartmentTypesDataSource = null;
+                this.UnassociatedItemCompartmentTypesDataSource = null;
             }
         }
 
@@ -237,9 +236,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void SetValidation(bool enable)
         {
-            foreach (var unassociateItemCompartmentType in this.unassociateItemCompartmentTypesDataSource)
+            foreach (var unassociatedItemCompartmentType in this.unassociatedItemCompartmentTypesDataSource)
             {
-                unassociateItemCompartmentType.IsValidationEnabled = enable;
+                unassociatedItemCompartmentType.IsValidationEnabled = enable;
             }
         }
 
