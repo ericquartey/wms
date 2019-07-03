@@ -32,7 +32,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime LastModificationDate { get; set; }
 
-        public IEnumerable<Mission> Missions { get; set; }
+        public IEnumerable<MissionOperation> MissionOperations { get; set; }
 
         public int? Priority { get; set; }
 

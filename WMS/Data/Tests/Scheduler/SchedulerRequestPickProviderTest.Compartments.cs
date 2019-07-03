@@ -174,7 +174,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -224,7 +224,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -285,7 +285,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = subX,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -352,7 +352,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 new Common.DataModels.Compartment
                 {
-                    Id = 1,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -361,7 +361,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 },
                 new Common.DataModels.Compartment
                 {
-                    Id = 2,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -370,7 +370,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 },
                 new Common.DataModels.Compartment
                 {
-                    Id = 3,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -379,7 +379,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 },
                 new Common.DataModels.Compartment
                 {
-                    Id = 4,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -444,7 +444,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = "S1",
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -502,7 +502,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -511,7 +511,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 3,
@@ -573,7 +573,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -582,7 +582,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
@@ -862,7 +862,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,

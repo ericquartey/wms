@@ -101,9 +101,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        protected override async Task LoadDataAsync()
+        protected override async Task LoadDataAsync(ModelChangedPubSubEvent e)
         {
-            await base.LoadDataAsync();
+            await base.LoadDataAsync(e);
             this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 

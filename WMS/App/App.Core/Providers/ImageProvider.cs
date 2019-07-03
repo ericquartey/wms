@@ -197,7 +197,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     return ImageFormat.Wmf;
 
                 default:
-                    throw new NotImplementedException($"The file extension '{extension}' is not recognized.");
+                    throw new NotSupportedException($"The file extension '{extension}' is not recognized.");
             }
         }
 

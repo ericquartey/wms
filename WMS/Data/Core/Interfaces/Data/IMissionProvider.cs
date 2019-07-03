@@ -7,15 +7,22 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IMissionProvider :
-        IReadAllPagedAsyncProvider<Mission, int>,
+        IReadAllPagedAsyncProvider<MissionInfo, int>,
         IReadSingleAsyncProvider<Mission, int>,
+        ICreateRangeAsyncProvider<Mission, int>,
+        ICreateAsyncProvider<Mission, int>,
+        IUpdateAsyncProvider<Mission, int>,
         IGetUniqueValuesAsyncProvider
     {
         #region Methods
 
-        Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id);
+        Task<IOperationResult<IEnumerable<MissionInfo>>> GetByMachineIdAsync(int id);
 
-        Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id);
+        Task<IOperationResult<MissionWithLoadingUnitDetails>> GetDetailsByIdAsync(int id);
+
+        Task<MissionInfo> GetInfoByIdAsync(int id);
+
+        Task<Mission> GetNewByLoadingUnitIdAsync(int loadingUnitId);
 
         #endregion
     }

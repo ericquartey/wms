@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 notificationService
                     .SentNotifications
                     .Any(
-                        n => n.ModelId == this.Bay1.Id.ToString()
+                        n => n.ModelId == this.Cell1.Id.ToString()
                             && n.ModelType == typeof(CellDetails)
                             && n.OperationType == HubEntityOperation.Updated),
                 "An update notification should be generated");

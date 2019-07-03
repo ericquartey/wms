@@ -9,7 +9,7 @@ namespace Ferretto.WMS.App.Core.Models
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
-        public string AreaDescription { get; set; }
+        public string AreaName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
         public string BayDescription { get; set; }
@@ -23,9 +23,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
-        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
-        public string ItemUnitMeasure { get; set; }
-
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime LastModificationDate { get; set; }
 
@@ -33,10 +30,10 @@ namespace Ferretto.WMS.App.Core.Models
         public string ListDescription { get; set; }
 
         [Display(Name = nameof(Scheduler.ItemListRow), ResourceType = typeof(Scheduler))]
-        public string ListRowDescription { get; set; }
+        public string ListRowCode { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitDescription { get; set; }
+        public string LoadingUnitCode { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
@@ -46,6 +43,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get; set; }
+
+        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
+        public string MeasureUnitDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.OperationType), ResourceType = typeof(BusinessObjects))]
         public OperationType? OperationType { get; set; }
