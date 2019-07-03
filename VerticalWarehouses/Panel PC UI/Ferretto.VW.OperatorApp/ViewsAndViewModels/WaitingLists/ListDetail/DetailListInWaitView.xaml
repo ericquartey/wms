@@ -19,18 +19,13 @@
             ContentText="E' possibile eseguire solo le righe evidenziate."
             LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
-        <DataGrid HorizontalAlignment="Left" Width="620" Height="350" Margin="170,150,0,0" VerticalAlignment="Top" FontFamily="Helvetica Neue" FontSize="16"
-            Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-            HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-            RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Riga" CanUserResize="False" MaxWidth="60" MinWidth="60"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Articolo" CanUserResize="False" MaxWidth="120" MinWidth="120"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Descrizione" MaxWidth="250" MinWidth="250"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Quantita'"  MaxWidth="90" MinWidth="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Macchina"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                        Width="620"
+                        Height="350"
+                        Margin="170,150,0,0"
+                        VerticalAlignment="Top"
+                        Content="{Binding DataGridViewModel}">
+        </ContentControl>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,90,0,0" MaxWidth="500"
             ContentText="1256"
             LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>

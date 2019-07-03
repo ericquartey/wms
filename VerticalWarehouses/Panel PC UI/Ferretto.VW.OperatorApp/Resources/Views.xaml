@@ -121,4 +121,7 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerWeightSaturationDataGridViewModel}">
         <customviewsandviewmodels:CustomControlDrawerWeightSaturationDataGrid />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlListDetailDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlListDetailDataGrid />
+    </DataTemplate>
 </ResourceDictionary>

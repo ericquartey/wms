@@ -7,7 +7,7 @@ using Ferretto.VW.Utils.Interfaces;
 
 namespace Ferretto.VW.CustomControls.Interfaces
 {
-    internal interface ICustomControlListDetailDataGridViewModel : IViewModel
+    public interface ICustomControlListDetailDataGridViewModel : IViewModel
     {
     }
 }
