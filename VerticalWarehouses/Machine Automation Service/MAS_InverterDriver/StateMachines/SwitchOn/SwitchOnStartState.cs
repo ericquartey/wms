@@ -9,7 +9,6 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 {
     public class SwitchOnStartState : InverterStateBase
@@ -65,7 +64,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
             Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
             var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn, inverterIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+            var notificationMessage = new FieldNotificationMessage(
+                notificationMessageData,
                 $"Switch On Inverter for axis {this.axisToSwitchOn}",
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageActor.InverterDriver,

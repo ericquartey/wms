@@ -234,7 +234,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-
                         {
                             return this.NotFound("Parameter not found");
                         }
@@ -245,7 +244,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-                    break;
 
                 case ConfigurationCategory.OffsetCalibration:
                     Enum.TryParse(typeof(OffsetCalibration), parameter, out var offsetCalibrationParameterId);
@@ -267,7 +265,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-                    break;
 
                 default:
                     break;

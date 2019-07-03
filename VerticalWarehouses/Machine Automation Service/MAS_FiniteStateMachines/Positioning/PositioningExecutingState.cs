@@ -83,7 +83,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         else
                         {
                             // INFO Even to go Up and Odd for Down
-                            this.commandMessage = new FieldCommandMessage(this.numberExecutedSteps % 2 == 0 ? this.positioningUpFieldMessageData : this.positioningDownFieldMessageData,
+                            this.commandMessage = new FieldCommandMessage(
+                                this.numberExecutedSteps % 2 == 0 ? this.positioningUpFieldMessageData : this.positioningDownFieldMessageData,
                                 $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageActor.FiniteStateMachines,
@@ -101,7 +102,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                             this.positioningMessageData.ExecutedCycles = executedSteps;
 
                             // Notification message
-                            var notificationMessage = new NotificationMessage(this.positioningMessageData,
+                            var notificationMessage = new NotificationMessage(
+                                this.positioningMessageData,
                                 $"Current position {beltBurnishingPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
@@ -127,7 +129,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         {
                             this.positioningMessageData.CurrentPosition = data.CurrentPosition;
 
-                            var notificationMessage = new NotificationMessage(this.positioningMessageData,
+                            var notificationMessage = new NotificationMessage(
+                                this.positioningMessageData,
                                 $"Current Encoder position: {data.CurrentPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
@@ -157,7 +160,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             {
                 this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
 
-                this.commandMessage = new FieldCommandMessage(this.positioningFieldMessageData,
+                this.commandMessage = new FieldCommandMessage(
+                    this.positioningFieldMessageData,
                     $"{this.positioningMessageData.AxisMovement} Positioning State Started",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
@@ -168,8 +172,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 if (this.positioningMessageData.MovementType == MovementType.Relative)
                 {
                     var distance = this.positioningMessageData.UpperBound - this.positioningMessageData.LowerBound;
+
                     // Build message for UP
-                    this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                    this.positioningUpMessageData = new PositioningMessageData(
+                        this.positioningMessageData.AxisMovement,
                                                                           this.positioningMessageData.MovementType,
                                                                           distance,
                                                                           this.positioningMessageData.TargetSpeed,
@@ -181,7 +187,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                           this.positioningMessageData.Resolution);
 
                     // Build message for DOWN
-                    this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                    this.positioningDownMessageData = new PositioningMessageData(
+                        this.positioningMessageData.AxisMovement,
                                                                           this.positioningMessageData.MovementType,
                                                                           -distance,
                                                                           this.positioningMessageData.TargetSpeed,
@@ -195,7 +202,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 else
                 {
                     // Build message for UP
-                    this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                    this.positioningUpMessageData = new PositioningMessageData(
+                        this.positioningMessageData.AxisMovement,
                                                                           this.positioningMessageData.MovementType,
                                                                           this.positioningMessageData.UpperBound,
                                                                           this.positioningMessageData.TargetSpeed,
@@ -207,7 +215,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                           this.positioningMessageData.Resolution);
 
                     // Build message for DOWN
-                    this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                    this.positioningDownMessageData = new PositioningMessageData(
+                        this.positioningMessageData.AxisMovement,
                                                                           this.positioningMessageData.MovementType,
                                                                           this.positioningMessageData.LowerBound,
                                                                           this.positioningMessageData.TargetSpeed,
@@ -224,7 +233,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.positioningDownMessageData);
 
                 // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
-                this.commandMessage = new FieldCommandMessage(this.positioningUpFieldMessageData,
+                this.commandMessage = new FieldCommandMessage(
+                    this.positioningUpFieldMessageData,
                     "Belt Burninshing Started",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,

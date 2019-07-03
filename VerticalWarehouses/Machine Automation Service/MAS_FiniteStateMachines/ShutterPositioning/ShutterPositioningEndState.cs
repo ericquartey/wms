@@ -6,8 +6,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningEndState : StateBase
@@ -101,7 +101,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 var data = new InverterStopFieldMessageData(InverterIndex.Slave2);
 
-                var stopMessage = new FieldCommandMessage(data,
+                var stopMessage = new FieldCommandMessage(
+                    data,
                     "Reset Inverter ShutterPositioning",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,

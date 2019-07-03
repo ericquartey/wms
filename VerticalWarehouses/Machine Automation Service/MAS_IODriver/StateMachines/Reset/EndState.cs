@@ -3,8 +3,8 @@ using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 {
     public class EndState : IoStateBase
@@ -50,8 +50,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
                 this.logger.LogTrace("End State State ProcessMessage Notification Event");
-                var endNotification = new FieldNotificationMessage(null, "IO Reset complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.IoReset, MessageStatus.OperationEnd);
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "IO Reset complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.IoReset,
+                    MessageStatus.OperationEnd);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -67,8 +72,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             if (this.status.MatchOutputs(message.Outputs))
             {
                 this.logger.LogTrace("End State State ProcessMessage Notification Event");
-                var endNotification = new FieldNotificationMessage(null, "IO Reset complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.IoReset, MessageStatus.OperationEnd);
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "IO Reset complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.IoReset,
+                    MessageStatus.OperationEnd);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

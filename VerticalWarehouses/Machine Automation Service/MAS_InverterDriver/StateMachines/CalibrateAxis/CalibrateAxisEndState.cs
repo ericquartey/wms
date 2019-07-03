@@ -5,8 +5,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisEndState : InverterStateBase
@@ -51,7 +51,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
-            var endNotification = new FieldNotificationMessage(messageData,
+            var endNotification = new FieldNotificationMessage(
+                messageData,
                 "Axis calibration complete",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

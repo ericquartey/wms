@@ -7,7 +7,6 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 {
     public abstract class InverterStatusBase : IInverterStatusBase
