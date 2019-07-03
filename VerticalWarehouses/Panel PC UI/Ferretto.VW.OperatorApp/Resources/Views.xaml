@@ -118,4 +118,7 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlMaintenanceDataGridViewModel}">
         <customviewsandviewmodels:CustomControlMaintenanceDataGrid />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerWeightSaturationDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlDrawerWeightSaturationDataGrid />
+    </DataTemplate>
 </ResourceDictionary>
