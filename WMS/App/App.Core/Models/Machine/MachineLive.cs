@@ -16,8 +16,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private MachineStatus? status;
 
-        private int userLogged;
-
         #endregion
 
         #region Properties
@@ -50,8 +48,6 @@ namespace Ferretto.WMS.App.Core.Models
                 }
             }
         }
-
-        public int UserLogged { get => this.userLogged; set => this.SetProperty(ref this.userLogged, value); }
 
         [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
         public int WeightFillRate { get; set; }
