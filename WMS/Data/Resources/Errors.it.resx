@@ -189,12 +189,6 @@
   <data name="AbortionIsNotSupportedForMissionType" xml:space="preserve">
     <value>La cancellazione non è supportata per il tipo missione '{0}'.</value>
   </data>
-  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment" xml:space="preserve">
-    <value>Impossibile completare la missione specificata perché non ha uno scomparto associato.</value>
-  </data>
-  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem" xml:space="preserve">
-    <value>Impossibile completare la missione specificata perché non ha un articolo associato.</value>
-  </data>
   <data name="ActualPickedQuantityCannotBeGreaterThanTheRemainingQuantityToDispatch" xml:space="preserve">
     <value>La quantità prelevata ({0}) non può essere maggiore della rimanente quantità da evadere ({1}).</value>
   </data>

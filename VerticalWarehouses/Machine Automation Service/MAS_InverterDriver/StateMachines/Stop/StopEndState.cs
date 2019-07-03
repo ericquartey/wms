@@ -8,7 +8,6 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 {
     public class StopEndState : InverterStateBase
@@ -54,7 +53,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
             var notificationMessageData = new InverterStopFieldMessageData(inverterIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+            var notificationMessage = new FieldNotificationMessage(
+                notificationMessageData,
                 "Inverter Stop End",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

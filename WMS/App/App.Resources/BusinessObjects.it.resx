@@ -741,7 +741,7 @@
     <value>Contatore Missioni</value>
   </data>
   <data name="MachineCompartmentCount" xml:space="preserve">
-    <value>Contatore Cassetti</value>
+    <value>Totale Scomparti</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
     <value>Totale Scomparti</value>
@@ -751,5 +751,20 @@
   </data>
   <data name="WeightFillRate" xml:space="preserve">
     <value>Percentuale di Riempimento Peso</value>
+  </data>
+  <data name="MissionOperationStatusCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="MissionOperationStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="MissionOperationStatusExecuting" xml:space="preserve">
+    <value>In Esecuzione</value>
+  </data>
+  <data name="MissionOperationStatusIncomplete" xml:space="preserve">
+    <value>Incompleta</value>
+  </data>
+  <data name="MissionOperationStatusNew" xml:space="preserve">
+    <value>Nuova</value>
   </data>
 </root>

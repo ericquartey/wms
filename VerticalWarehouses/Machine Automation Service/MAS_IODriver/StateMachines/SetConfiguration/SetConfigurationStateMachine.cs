@@ -23,10 +23,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
         {
             logger.LogTrace("1:Method Start");
 
-            this.Logger = logger;
+            this.logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.EventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion
@@ -44,21 +44,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             base.ProcessMessage(message);
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             base.ProcessResponseMessage(message);
         }
 
         public override void Start()
         {
-            this.CurrentState = new SetConfigurationStartState(this, this.status, this.Logger);
+            this.CurrentState = new SetConfigurationStartState(this, this.status, this.logger);
             this.CurrentState?.Start();
         }
 

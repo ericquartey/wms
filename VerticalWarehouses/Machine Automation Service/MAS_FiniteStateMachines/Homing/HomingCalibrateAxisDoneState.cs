@@ -6,8 +6,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     public class HomingCalibrateAxisDoneState : StateBase
@@ -103,7 +103,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         public override void Start()
         {
             var ioCommandMessageData = new SwitchAxisFieldMessageData(this.axisToSwitch);
-            var ioCommandMessage = new FieldCommandMessage(ioCommandMessageData,
+            var ioCommandMessage = new FieldCommandMessage(
+                ioCommandMessageData,
                 $"Switch Axis {this.axisToSwitch}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
@@ -115,7 +116,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
             var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitch, InverterIndex.MainInverter);
-            var inverterCommandMessage = new FieldCommandMessage(inverterCommandMessageData,
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
                 $"Switch Axis {this.axisToSwitch}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,

@@ -14,8 +14,8 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver
 {
     public partial class HostedSHDIoDriver : BackgroundService
@@ -48,7 +48,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedSHDIoDriver(IEventAggregator eventAggregator,
+        public HostedSHDIoDriver(
+            IEventAggregator eventAggregator,
             IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger)
@@ -206,7 +207,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogTrace("1:Commands Subscription");
 
             var commandEvent = this.eventAggregator.GetEvent<FieldCommandEvent>();
-            commandEvent.Subscribe(commandMessage => { this.commandQueue.Enqueue(commandMessage); },
+            commandEvent.Subscribe(
+                commandMessage => { this.commandQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
                 false,
                 commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any);
@@ -214,7 +216,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogTrace("1:Notifications Subscription");
 
             var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
-            notificationEvent.Subscribe(notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
+            notificationEvent.Subscribe(
+                notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
                 false,
                 notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
@@ -260,7 +263,8 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void SendMessage(IFieldMessageData messageData)

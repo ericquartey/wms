@@ -7,7 +7,6 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 {
     public class TemplateStartState : InverterStateBase
@@ -57,7 +56,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-            var notificationMessage = new FieldNotificationMessage(null,
+            var notificationMessage = new FieldNotificationMessage(
+                null,
                 $"Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

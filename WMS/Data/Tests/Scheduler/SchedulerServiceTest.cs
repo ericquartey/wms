@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
@@ -35,11 +36,11 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemSchedulerService>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 8,
@@ -47,7 +48,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment2 = new Common.DataModels.Compartment
             {
-                Id = 2,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit2Cell2.Id,
                 Stock = 2,
@@ -86,9 +87,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     1,
                     context.Missions.Count(),
                     "Only one mission should be generated.");
+
+                Assert.AreEqual(
+                    1,
+                    context.Missions.Include(m => m.Operations).First().Operations.Count(),
+                    "Only one mission operation should be generated.");
+
                 Assert.AreEqual(
                     compartment1.Id,
-                    context.Missions.First().CompartmentId,
+                    context.Missions.First().Operations.First().CompartmentId,
                     "The chosen compartment should be the one in the first aisle");
             }
 
@@ -102,16 +109,16 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 AND an item with volume as management type  \
                 AND one compartment is fuller than other \
                WHEN a immediate pick request is performed for the item on the aisle \
-               THEN the chosen compartment should be the less fuller one")]
+               THEN the chosen compartment should be the emptiest one")]
         public async Task PickItemAsync_TwoCompartmentsInSameAislesTest()
         {
             #region Arrange
 
-            var schedulerService = this.GetService<ISchedulerService>();
+            var schedulerService = this.GetService<IItemSchedulerService>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 8,
@@ -119,7 +126,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment2 = new Common.DataModels.Compartment
             {
-                Id = 2,
+                Id = GetNewId(),
                 ItemId = this.ItemVolume.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 2,
@@ -158,10 +165,16 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     1,
                     context.Missions.Count(),
                     "Only one mission should be generated.");
+
+                Assert.AreEqual(
+                    1,
+                    context.Missions.Include(m => m.Operations).First().Operations.Count(),
+                    "Only one mission operation should be generated.");
+
                 Assert.AreEqual(
                     compartment2.Id,
-                    context.Missions.First().CompartmentId,
-                    "The chosen compartment should be the one in the first aisle");
+                    context.Missions.First().Operations.First().CompartmentId,
+                    "The chosen compartment should be the one in the first aisle.");
             }
 
             #endregion

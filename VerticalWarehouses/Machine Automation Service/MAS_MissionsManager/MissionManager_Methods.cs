@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using System;
 using System.Collections.Generic;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
 using System.Linq;
-using System;
+using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_MissionsManager
@@ -19,7 +18,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private async Task ChooseAndExecuteMission()
         {
-            for (int i = 0; i < this.baysManager.Bays.Count; i++)
+            for (var i = 0; i < this.baysManager.Bays.Count; i++)
             {
                 if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
                 {
@@ -46,13 +45,13 @@ namespace Ferretto.VW.MAS_MissionsManager
                         i = this.baysManager.Bays.Count;
                         this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: executing mission {mission.Id}");
                     }
-                    catch (SwaggerException swaggerException)
+                    catch (SwaggerException)
                     {
                     }
-                    catch (InvalidOperationException invalidOperationException)
+                    catch (InvalidOperationException)
                     {
                     }
-                    catch (ArgumentNullException argumentNullException)
+                    catch (ArgumentNullException)
                     {
                     }
                 }
@@ -100,7 +99,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             var ipAddresses = new string[] { ip1.ToString(), ip2.ToString(), ip3.ToString() };
             var bayTypes = new int[] { await this.generalInfo.Bay1Type, await this.generalInfo.Bay2Type, await this.generalInfo.Bay3Type };
             var baysQuantity = await this.generalInfo.BaysQuantity;
-            for (int i = 0; i < baysQuantity; i++)
+            for (var i = 0; i < baysQuantity; i++)
             {
                 this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
                 {
@@ -116,7 +115,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         private bool IsAnyBayServiceable()
         {
             var returnValue = false;
-            for (int i = 0; i < this.baysManager.Bays.Count; i++)
+            for (var i = 0; i < this.baysManager.Bays.Count; i++)
             {
                 if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available)
                 {
@@ -129,7 +128,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         private bool IsAnyMissionExecutable()
         {
             var returnValue = false;
-            for (int i = 0; i < this.baysManager.Bays.Count; i++)
+            for (var i = 0; i < this.baysManager.Bays.Count; i++)
             {
                 if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
                 {

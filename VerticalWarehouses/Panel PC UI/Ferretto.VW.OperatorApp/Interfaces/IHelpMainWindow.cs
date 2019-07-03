@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.OperatorApp
-
 {
     public interface IHelpMainWindow
     {

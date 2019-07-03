@@ -37,7 +37,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         //INFO AGL Inputs
-
         #region Properties
 
         public bool AGL_FreeSensor1 => this.aglInverterInputs?[(int)InverterSensors.AGL_FreeSensor1] ?? false;

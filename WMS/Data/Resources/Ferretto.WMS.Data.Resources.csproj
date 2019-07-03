@@ -67,6 +67,11 @@
           <AutoGen>True</AutoGen>
           <DependentUpon>Mission.resx</DependentUpon>
         </Compile>
+        <Compile Update="MissionOperation.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>MissionOperation.resx</DependentUpon>
+        </Compile>
         <Compile Update="SchedulerRequest.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
@@ -110,6 +115,10 @@
         <EmbeddedResource Update="Mission.resx">
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Mission.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="MissionOperation.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>MissionOperation.Designer.cs</LastGenOutput>
         </EmbeddedResource>
         <EmbeddedResource Update="SchedulerRequest.resx">
           <Generator>PublicResXFileCodeGenerator</Generator>

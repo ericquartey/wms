@@ -905,7 +905,7 @@
     <value>Mission Count</value>
   </data>
   <data name="MachineCompartmentCount" xml:space="preserve">
-    <value>Compartment Count</value>
+    <value>Compartments Count</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
     <value>Compartments Count</value>
@@ -917,5 +917,20 @@
   </data>
   <data name="WeightFillRate" xml:space="preserve">
     <value>Weight Fill Rate</value>
+  </data>
+     <data name="MissionOperationStatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="MissionOperationStatusError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MissionOperationStatusExecuting" xml:space="preserve">
+    <value>Executing</value>
+  </data>
+  <data name="MissionOperationStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+  </data>
+  <data name="MissionOperationStatusNew" xml:space="preserve">
+    <value>New</value>
   </data>
 </root>

@@ -1,8 +1,10 @@
 using System;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Compartment))]
     public class CandidateCompartment : BaseModel<int>, IOrderableCompartment
     {
         #region Properties

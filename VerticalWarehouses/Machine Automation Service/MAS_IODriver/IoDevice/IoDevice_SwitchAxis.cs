@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_IODriver
         public void ExecuteSwitchAxis(FieldCommandMessage receivedMessage)
         {
             this.logger.LogTrace("1:Method Start");
-            
+
             if (receivedMessage.Data is ISwitchAxisFieldMessageData switchAxisMessageData)
             {
                 switch (switchAxisMessageData.AxisToSwitchOn)
@@ -23,8 +23,13 @@ namespace Ferretto.VW.MAS_IODriver
                     case Axis.Horizontal:
                         if (this.ioSHDStatus.CradleMotorOn)
                         {
-                            var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Horizontal axis completed", FieldMessageActor.Any,
-                                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
+                            var endNotification = new FieldNotificationMessage(
+                                receivedMessage.Data,
+                                "Switch to Horizontal axis completed",
+                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
+                                FieldMessageType.SwitchAxis,
+                                MessageStatus.OperationEnd);
 
                             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -44,8 +49,13 @@ namespace Ferretto.VW.MAS_IODriver
                     case Axis.Vertical:
                         if (this.ioSHDStatus.ElevatorMotorOn)
                         {
-                            var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Vertical axis completed", FieldMessageActor.Any,
-                                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
+                            var endNotification = new FieldNotificationMessage(
+                                receivedMessage.Data,
+                                "Switch to Vertical axis completed",
+                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
+                                FieldMessageType.SwitchAxis,
+                                MessageStatus.OperationEnd);
 
                             this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -65,9 +75,13 @@ namespace Ferretto.VW.MAS_IODriver
                     case Axis.Both:
                         if (receivedMessage.Destination == FieldMessageActor.IoDriver)
                         {
-                            var errorNotification = new FieldNotificationMessage(receivedMessage.Data,
-                                "Invalid I/O operation", FieldMessageActor.Any,
-                                FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError,
+                            var errorNotification = new FieldNotificationMessage(
+                                receivedMessage.Data,
+                                "Invalid I/O operation",
+                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
+                                receivedMessage.Type,
+                                MessageStatus.OperationError,
                                 ErrorLevel.Error);
 
                             this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");

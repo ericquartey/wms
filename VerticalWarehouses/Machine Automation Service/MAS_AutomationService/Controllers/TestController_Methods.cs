@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
             await Task.Delay(2000);
+
             //this.eventAggregator.GetEvent<NotificationEvent>()
             //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
             //await Task.Delay(2000);
@@ -54,6 +55,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
             await Task.Delay(2000);
+
             //this.eventAggregator.GetEvent<NotificationEvent>()
             //    .Publish(new NotificationMessage(null, "Vertical Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationStart));
             //await Task.Delay(2000);
@@ -69,6 +71,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
             await Task.Delay(2000);
+
             //this.eventAggregator.GetEvent<NotificationEvent>()
             //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
             //await Task.Delay(2000);
@@ -89,7 +92,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             await Task.Delay(2000);
             resolutionCalibrationMessageData.Resolution = 1.0001m;
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(resolutionCalibrationMessageData,
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                resolutionCalibrationMessageData,
                 "Resolution Calibration Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationEnd));
         }
 
@@ -207,7 +211,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var bayNumber = 2; var speed = 100;
             var dataInterface = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                dataInterface,
                 "Simulated Shutter Error",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
                  MessageStatus.OperationError));

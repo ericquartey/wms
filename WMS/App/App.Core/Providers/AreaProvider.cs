@@ -130,7 +130,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     .Select(a => new Area
                     {
                         Id = a.Id,
-                        Name = a.Name
+                        Name = a.Name,
+                        Bays = a.Bays.Select(b => new Bay { Id = b.Id, Description = b.Description })
                     });
 
                 return new OperationResult<IEnumerable<Area>>(true, result);

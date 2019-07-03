@@ -7,8 +7,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningStartState : StateBase
@@ -88,7 +88,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             var messageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
 
-            var commandMessage = new FieldCommandMessage(messageData,
+            var commandMessage = new FieldCommandMessage(
+                messageData,
                 $"Get shutter status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
