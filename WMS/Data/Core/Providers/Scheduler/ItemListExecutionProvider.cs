@@ -25,8 +25,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IItemListRowExecutionProvider rowExecutionProvider;
 
-        private readonly ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider;
-
         #endregion
 
         #region Constructors
@@ -36,12 +34,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             ILogger<ItemListExecutionProvider> logger,
             IItemListRowExecutionProvider rowExecutionProvider,
             IBayProvider bayProvider,
-            ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
             this.rowExecutionProvider = rowExecutionProvider;
-            this.schedulerRequestExecutionProvider = schedulerRequestExecutionProvider;
             this.bayProvider = bayProvider;
             this.logger = logger;
         }
@@ -134,8 +130,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new UnprocessableEntityOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         Resources.ItemList.NoneOfTheListRowsCouldBeProcessed);
                 }
-
-                await this.schedulerRequestExecutionProvider.CreateRangeAsync(requests);
 
                 if (bayId.HasValue)
                 {
