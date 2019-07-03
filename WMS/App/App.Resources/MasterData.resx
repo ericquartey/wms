@@ -434,7 +434,7 @@
     <value>Create a New Compartment</value>
   </data>
   <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
-    <value>Choose how you want to associate a Compartment Type to this Item</value>
+    <value>Choose how you want to associate a compartment type to this item:</value>
   </data>
   <data name="AssociateACompartmentType" xml:space="preserve">
     <value>Associate a Compartment Type</value>
@@ -469,17 +469,17 @@
     <comment>Notification - Successful operation</comment>
   </data>
   <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
-    <value>Choose which existing types to associate with current Item, and specify the maximum capacity</value>
+    <value>Choose which existing types to associate with current item, and specify the maximum capacity:</value>
     <comment>Wizard - second step -</comment>
   </data>
   <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
-    <value>No Unassociate Compartment Types available</value>
+    <value>No unassociated Compartment Types available</value>
   </data>
   <data name="MinStep" xml:space="preserve">
     <value>(Min. Step: {0})</value>
   </data>
   <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
-    <value>Choose the Loading Unit where you want to create a new Compartment Type</value>
+    <value>Choose the loading unit where you want to create a new compartment type:</value>
     <comment>Wizard - ChooseLoadingUnitStepView -</comment>
   </data>
   <data name="NoLoadingUnitsAvailable" xml:space="preserve">
@@ -491,7 +491,7 @@
     <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
   </data>
   <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
-    <value>Create a new Compartment of the desired Compartment Type</value>
+    <value>Create a new compartment of the desired compartment type:</value>
     <comment>Wizard - CompartmentEditStepView -</comment>
   </data>
 </root>

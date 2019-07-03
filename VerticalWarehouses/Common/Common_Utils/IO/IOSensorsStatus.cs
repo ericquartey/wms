@@ -23,14 +23,6 @@ namespace Ferretto.VW.Common_Utils.IO
 
         #endregion
 
-        //INFO Vertical Sensors
-
-        //INFO Cradle Sensors
-
-        //INFO Bays & HeightControl Sensors
-
-        //INFO VariousInputs Sensors
-
         #region Properties
 
         public bool AntiIntrusionShutterBay1 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay1] ?? false;
@@ -81,7 +73,7 @@ namespace Ferretto.VW.Common_Utils.IO
 
         public bool MushroomHeadButtonBay3 => this.inputs?[(int)IOMachineSensors.MushroomHeadButtonBay3] ?? false;
 
-        public bool SecurityFunctionActive => this.inputs?[(int)IOMachineSensors.SecurityFunctionActive] ?? false;
+        public bool SecurityFunctionActive => this.inputs?[(int)IOMachineSensors.NormalState] ?? false;
 
         public bool ShutterSensorABay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay1] ?? false;
 

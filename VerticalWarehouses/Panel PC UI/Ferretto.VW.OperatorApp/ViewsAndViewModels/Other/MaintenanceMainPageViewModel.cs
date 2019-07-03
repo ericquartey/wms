@@ -74,7 +74,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         {
             var random = new Random();
             this.kits = new ObservableCollection<DataGridKit>();
-            for (int i = 0; i < random.Next(0, 30); i++)
+            for (int i = 0; i < random.Next(3, 30); i++)
             {
                 this.kits.Add(new DataGridKit
                 {

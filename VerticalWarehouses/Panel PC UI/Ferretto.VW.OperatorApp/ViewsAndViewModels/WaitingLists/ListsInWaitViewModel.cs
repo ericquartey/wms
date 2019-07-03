@@ -75,7 +75,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
         {
             var random = new Random();
             this.lists = new ObservableCollection<DataGridList>();
-            for (int i = 0; i < random.Next(0, 30); i++)
+            for (int i = 0; i < random.Next(1, 30); i++)
             {
                 this.lists.Add(new DataGridList
                 {

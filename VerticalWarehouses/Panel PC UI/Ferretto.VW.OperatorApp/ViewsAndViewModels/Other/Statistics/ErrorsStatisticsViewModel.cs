@@ -68,7 +68,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         {
             var random = new Random();
             this.errors = new ObservableCollection<DataGridError>();
-            for (int i = 0; i < random.Next(0, 30); i++)
+            for (int i = 0; i < random.Next(3, 30); i++)
             {
                 errors.Add(new DataGridError
                 {

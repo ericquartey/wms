@@ -137,6 +137,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<IEnumerable<Mission>>(missions);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S3776: Refactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.",
+            Justification = "To be removed when using AutoMapper")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S3358: Extract this nested ternary operation into an independent statement.",
+            Justification = "To be removed when using AutoMapper")]
         public async Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
             var missionDetails = await this.DataContext.Missions
@@ -157,14 +165,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub1 = m.Sub1,
                     Sub2 = m.Sub2,
                     Type = (MissionType)m.Type,
-                    Item = new ItemMissionInfo
+                    Item = m.Item == null ? null : new ItemMissionInfo
                     {
                         Id = m.Item.Id,
                         Code = m.Item.Code,
                         Description = m.Item.Description,
                         Image = m.Item.Image
                     },
-                    LoadingUnit = new LoadingUnitMissionInfo
+                    LoadingUnit = m.LoadingUnit == null ? null : new LoadingUnitMissionInfo
                     {
                         Id = m.LoadingUnit.Id,
                         Width = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
@@ -175,16 +183,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Width = c.HasRotation ? c.CompartmentType.Depth : c.CompartmentType.Width,
                             Depth = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Depth,
                             Stock = c.Stock,
-                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : double.NaN,
+                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : (double?)null,
                         })
                     },
-                    ItemList = new ItemListMissionInfo
+                    ItemList = m.ItemList == null ? null : new ItemListMissionInfo
                     {
                         Id = m.ItemList.Id,
                         Code = m.ItemList.Code,
                         Description = m.ItemList.Description
                     },
-                    ItemListRow = new ItemListRowMissionInfo
+                    ItemListRow = m.ItemListRow == null ? null : new ItemListRowMissionInfo
                     {
                         Id = m.ItemListRow.Id,
                         Code = m.ItemListRow.Code

@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedSHDIoDriver
+    public partial class IoDevice
     {
         #region Methods
 
-        private void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage)
+        public void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage)
         {
             this.logger.LogTrace("1:Method Start");
 

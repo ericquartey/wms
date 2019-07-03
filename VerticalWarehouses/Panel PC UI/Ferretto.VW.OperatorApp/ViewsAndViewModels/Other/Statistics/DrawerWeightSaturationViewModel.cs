@@ -67,7 +67,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             var random = new Random();
             this.drawers = new ObservableCollection<DataGridDrawerWeightSaturation>();
 
-            for (int i = 0; i < random.Next(0, 30); i++)
+            for (int i = 0; i < random.Next(2, 30); i++)
             {
                 this.drawers.Add(new DataGridDrawerWeightSaturation
                 {

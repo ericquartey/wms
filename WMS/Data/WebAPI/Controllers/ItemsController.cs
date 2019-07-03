@@ -4,9 +4,14 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Resources;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Compartment = Ferretto.WMS.Data.Core.Models.Compartment;
+using Item = Ferretto.WMS.Data.Core.Models.Item;
+using ItemArea = Ferretto.WMS.Data.Core.Models.ItemArea;
+using LoadingUnit = Ferretto.WMS.Data.Core.Models.LoadingUnit;
 using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -28,6 +33,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentProvider compartmentProvider;
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         private readonly IItemAreaProvider itemAreaProvider;
 
         private readonly IItemProvider itemProvider;
@@ -44,12 +51,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemAreaProvider itemAreaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            ILoadingUnitProvider loadingUnitProvider,
             ISchedulerService schedulerService)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.itemAreaProvider = itemAreaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
@@ -178,7 +187,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemAreaProvider.GetByItemIdAsync(id);
             if (result == null)
             {
-                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                var message = string.Format(Resources.Errors.NoEntityExists, id);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
@@ -189,6 +198,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-loading-units")]
+        public async Task<ActionResult<IEnumerable<AllowedItemArea>>> GetAllowedLoadingUnitsAsync(
+            int id,
+            int skip = 0,
+            int take = 0,
+            string where = null,
+            string orderBy = null,
+            string search = null)
+        {
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+                var result = await this.loadingUnitProvider.GetAllAllowedByItemIdAsync(
+                    id,
+                    skip,
+                    take,
+                    orderByExpression,
+                    where,
+                    search);
+                if (result == null)
+                {
+                    var message = string.Format(Errors.NoEntityExists, id);
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = message,
+                        Status = StatusCodes.Status404NotFound
+                    });
+                }
+
+                return this.Ok(result);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
+        }
+
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/areas")]
@@ -197,7 +246,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.areaProvider.GetByItemIdAsync(id);
             if (result == null)
             {
-                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                var message = string.Format(Resources.Errors.NoEntityExists, id);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
