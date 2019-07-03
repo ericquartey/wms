@@ -160,8 +160,18 @@ namespace Ferretto.WMS.App.Controls
         /// <param name="notificationFlowDirection"> Direction in which new notifications will appear.</param>
         private static void SetWindowDirection(Window window, NotificationFlowDirection notificationFlowDirection)
         {
+            var left = (int)window.Owner.Left;
+            var top = (int)window.Owner.Top;
+            if (window.Owner.WindowState == WindowState.Maximized)
+            {
+                var offsetSize = FormControl.GetMainApplicationOffsetSize();
+
+                top = (int)offsetSize.screenTop - 15;
+                left = (int)offsetSize.screenLeft - 15;
+            }
+
             var workingArea = new System.Drawing.Rectangle(
-                new System.Drawing.Point((int)window.Owner.Left, (int)window.Owner.Top),
+                new System.Drawing.Point(left, top),
                 new System.Drawing.Size((int)window.Owner.Width, (int)window.Owner.Height));
             Debug.WriteLine($"WA=> H={workingArea.Height} W={workingArea.Width} X={workingArea.Top} Y={workingArea.Left}");
             var transform = PresentationSource.FromVisual(Application.Current.MainWindow).CompositionTarget.TransformFromDevice;
