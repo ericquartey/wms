@@ -10,7 +10,7 @@
              xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.ItemDetails}"
              MinWidth="200"
@@ -248,6 +248,7 @@
                                     <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                                     AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
                                                                     AttachedBarItem="AssociateAreaBarItem"
+                                                                    FocusedStart="SelectedArea"
                                                                     IsOpen="{Binding IsAddAreaShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Style="{StaticResource inputAreaControlStyle}" />
                                     <wms:ActionBar x:Name="AssociateAreaBar"
@@ -384,7 +385,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.Length, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
@@ -530,7 +531,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <GroupBox Margin="20,0"
-                              Header="{x:Static res:MasterData.Image}">
+                              Header="{x:Static res:BusinessObjects.Image}">
 
                         <wms:WmsImageEdit MaxWidth="300"
                                           MaxHeight="400"

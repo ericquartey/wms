@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -101,7 +101,7 @@ namespace Ferretto.WMS.App.Controls
             this.currentView.Disappear();
             this.currentView = this.registeredViews.Pop();
             this.currentViewContainer.Content = this.currentView;
-            ((IStepsViewModel)this.DataContext).SetIsSaveVisible(false);
+            ((IWmsWizardViewModel)this.DataContext).SetIsSaveVisible(false);
             this.Refresh();
         }
 
@@ -115,7 +115,7 @@ namespace Ferretto.WMS.App.Controls
 
         internal virtual void UpdateCanSave()
         {
-            ((IStepsViewModel)this.DataContext).UpdateCanSave();
+            ((IWmsWizardViewModel)this.DataContext).UpdateCanSave();
         }
 
         protected override void OnClosed(EventArgs e)
@@ -138,7 +138,7 @@ namespace Ferretto.WMS.App.Controls
         {
             this.currentView = this.navigationService.GetNewView(moduleName, viewName, data);
             this.currentViewContainer.Content = this.currentView;
-            ((IStepsViewModel)this.DataContext).SetIsSaveVisible(false);
+            ((IWmsWizardViewModel)this.DataContext).SetIsSaveVisible(false);
         }
 
         private void AssociateView()
@@ -168,14 +168,14 @@ namespace Ferretto.WMS.App.Controls
 
         private bool CanSave()
         {
-            ((IStepsViewModel)this.DataContext).SetIsSaveVisible(true);
+            ((IWmsWizardViewModel)this.DataContext).SetIsSaveVisible(true);
             return this.GetStepViewModel().CanSave();
         }
 
         private async Task CommandExecuteEventAsync(StepsPubSubEvent e)
         {
             if (this.currentView == null ||
-                !(((FrameworkElement)this.currentViewContainer.Content).DataContext is IStepNavigableViewModel))
+                !(((FrameworkElement)this.currentViewContainer.Content).DataContext is IWmsWizardStepViewModel))
             {
                 e.CanExecute = false;
                 return;
@@ -225,20 +225,20 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        private IStepNavigableViewModel GetStepViewModel()
+        private IWmsWizardStepViewModel GetStepViewModel()
         {
-            return ((FrameworkElement)this.currentViewContainer.Content).DataContext as IStepNavigableViewModel;
+            return ((FrameworkElement)this.currentViewContainer.Content).DataContext as IWmsWizardStepViewModel;
         }
 
         private void Refresh()
         {
-            ((IStepsViewModel)this.DataContext).Refresh();
+            ((IWmsWizardViewModel)this.DataContext).Refresh();
             this.UpdateError();
         }
 
         private void UpdateError()
         {
-            ((IStepsViewModel)this.DataContext).UpdateError(this.GetStepViewModel().GetError());
+            ((IWmsWizardViewModel)this.DataContext).UpdateError(this.GetStepViewModel().GetError());
         }
 
         #endregion

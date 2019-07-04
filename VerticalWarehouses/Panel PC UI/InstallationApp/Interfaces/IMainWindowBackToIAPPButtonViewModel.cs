@@ -9,6 +9,8 @@ namespace Ferretto.VW.InstallationApp
 
         CompositeCommand BackButtonCommand { get; set; }
 
+        string Note { get; set; }
+
         #endregion
     }
 }

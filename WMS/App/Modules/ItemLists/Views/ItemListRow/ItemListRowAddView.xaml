@@ -4,7 +4,7 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                   xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                    Title="{x:Static res:Navigation.ItemListRowAdd}"
                    d:DesignHeight="450"
@@ -100,7 +100,7 @@
                                         Margin="0,0,20,0"
                                         wms:ShowTitle.Show="True"
                                         BusinessObjectValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                        DisplayMember="Description"
+                                        DisplayMember="Code"
                                         ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                         PopupWidth="800"
                                         ValueMember="Id">

@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -20,7 +20,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? inventoryTolerance;
 
-        private double? length;
+        private double? depth;
 
         private int? pickTolerance;
 
@@ -52,13 +52,13 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.averageWeight, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Description), ResourceType = typeof(BusinessObjects))]
         public string Description { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemFifoPickTime), ResourceType = typeof(BusinessObjects))]
@@ -75,7 +75,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.fifoTimePut, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Height), ResourceType = typeof(BusinessObjects))]
         public double? Height
         {
             get => this.height;
@@ -88,33 +88,33 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.image, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemInventoryTolerance), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.InventoryTolerance), ResourceType = typeof(BusinessObjects))]
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
             set => this.SetProperty(ref this.inventoryTolerance, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Category), ResourceType = typeof(BusinessObjects))]
         public string ItemCategoryDescription { get; set; }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastPickDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastPutDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LastPutDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPutDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemLength), ResourceType = typeof(BusinessObjects))]
-        public double? Length
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth
         {
-            get => this.length;
-            set => this.SetProperty(ref this.length, value);
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
@@ -123,7 +123,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemPickTolerance), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.PickTolerance), ResourceType = typeof(BusinessObjects))]
         public int? PickTolerance
         {
             get => this.pickTolerance;
@@ -154,28 +154,28 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.totalAvailable, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemReservedForPick), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ReservedForPick), ResourceType = typeof(BusinessObjects))]
         public double TotalReservedForPick
         {
             get => this.totalReservedForPick;
             set => this.SetProperty(ref this.totalReservedForPick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemReservedToPut), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ReservedToPut), ResourceType = typeof(BusinessObjects))]
         public double TotalReservedToPut
         {
             get => this.totalReservedToPut;
             set => this.SetProperty(ref this.totalReservedToPut, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemStock), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Stock), ResourceType = typeof(BusinessObjects))]
         public double TotalStock
         {
             get => this.totalStock;
             set => this.SetProperty(ref this.totalStock, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width
         {
             get => this.width;

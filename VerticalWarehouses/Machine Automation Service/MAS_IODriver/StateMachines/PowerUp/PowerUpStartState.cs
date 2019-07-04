@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
@@ -13,17 +14,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private bool disposed;
 
+        private IoIndex index;
+
         #endregion
 
         #region Constructors
 
-        public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
+            this.index = index;
         }
 
         #endregion
@@ -45,7 +49,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
             {
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.logger));
             }
         }
 
@@ -57,7 +61,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             {
                 this.logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.logger));
             }
         }
 

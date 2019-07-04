@@ -8,7 +8,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.CompartmentTypeDetails}"
              MinWidth="200"
@@ -54,7 +54,7 @@
                                             Grid.Row="1"
                                             Grid.ColumnSpan="2"
                                             wms:ShowTitle.Show="True"
-                                            DisplayMember="Description"
+                                            DisplayMember="Code"
                                             EditValue="{Binding CompartmentTypeInput.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                             ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                             PopupWidth="500"
@@ -230,7 +230,7 @@
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding Path=Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False" />
 
                         </Grid>
@@ -255,6 +255,7 @@
                                     <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                                     AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
                                                                     AttachedBarItem="AssociateAreaBarItem"
+                                                                    FocusedStart="ItemLookUp"
                                                                     IsOpen="{Binding IsAddAssociateItemShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Style="{StaticResource inputAreaControlStyle}" />
                                     <wms:ActionBar x:Name="AssociateAreaBar"

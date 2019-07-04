@@ -4,9 +4,9 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -24,13 +24,13 @@ namespace Ferretto.VW.InstallationApp
 
         private IEventAggregator eventAggregator;
 
-        private IInstallationService installationService;
-
         private IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentiInMachineSide;
 
         private bool luPresentInOperatorSide;
+
+        private IUpdateSensorsService updateSensorsService;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
@@ -81,23 +81,24 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
         public async Task OnEnterViewAsync()
         {
+            this.DisableVerticalandCradleSensorsState();
             this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                 message => this.UpdateVerticalandCradleSensorsState(message.Data.SensorsStates),
                 ThreadOption.PublisherThread,
                 false);
 
-            this.installationService.ExecuteSensorsChangedAsync();
+            await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateVerticalandCradleSensorsState);
+            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVerticalandCradleSensorsState);
         }
 
         private void UpdateVerticalandCradleSensorsState(bool[] message)
@@ -111,6 +112,17 @@ namespace Ferretto.VW.InstallationApp
             this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
             this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
             this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
+        }
+
+        private void DisableVerticalandCradleSensorsState()
+        {
+            this.EmergencyEndRun = false;
+            this.ZeroVerticalSensor = false;
+            this.ElevatorEngineSelected = false;
+            this.CradleEngineSelected = false;
+            this.ZeroPawlSensor = false;
+            this.LuPresentiInMachineSide = false;
+            this.LuPresentInOperatorSide = false;
         }
 
         #endregion

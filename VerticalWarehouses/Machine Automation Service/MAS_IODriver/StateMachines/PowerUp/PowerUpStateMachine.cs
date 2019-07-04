@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -20,17 +21,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private bool pulseOneTime;
 
+        private IoIndex index;
+
         #endregion
 
         #region Constructors
 
-        public PowerUpStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public PowerUpStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IoIndex index, IEventAggregator eventAggregator, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.Logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
+            this.index = index;
             this.pulseOneTime = false;
             this.EventAggregator = eventAggregator;
         }
@@ -83,7 +87,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new PowerUpStartState(this, this.status, this.Logger);
+            this.CurrentState = new PowerUpStartState(this, this.status, this.index, this.Logger);
             this.CurrentState?.Start();
         }
 

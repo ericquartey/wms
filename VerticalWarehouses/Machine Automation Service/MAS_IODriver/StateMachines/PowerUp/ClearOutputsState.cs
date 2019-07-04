@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -12,19 +13,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private readonly IoSHDStatus status;
 
+        private readonly IoIndex index;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ClearOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public ClearOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
+            this.index = index;
         }
 
         #endregion
@@ -48,7 +52,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
                 message.ValidOutputs &&
                 message.OutputsCleared)
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.index, this.logger));
             }
         }
 
@@ -63,7 +67,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.index, this.logger));
             }
         }
 

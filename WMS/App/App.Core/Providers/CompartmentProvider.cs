@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentStatusId = compartment.CompartmentStatusId,
                         CompartmentTypeId = compartment.CompartmentTypeId.GetValueOrDefault(),
                         CreationDate = DateTime.Now,
-                        Height = compartment.Height.Value,
+                        Depth = compartment.Depth.Value,
                         IsItemPairingFixed = compartment.IsItemPairingFixed,
                         ItemId = compartment.ItemId,
                         LoadingUnitId = compartment.LoadingUnitId.GetValueOrDefault(),
@@ -125,7 +125,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentStatusId = model.CompartmentStatusId,
                     CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
                     CreationDate = DateTime.Now,
-                    Height = model.Height.Value,
+                    Depth = model.Depth.Value,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     ItemId = model.ItemId,
                     LoadingUnitId = model.LoadingUnitId.GetValueOrDefault(),
@@ -187,8 +187,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentStatusDescription = c.CompartmentStatusDescription,
                         CompartmentTypeDescription = string.Format(
                             General.CompartmentTypeListFormatReduced,
-                            c.HasRotation ? c.Width : c.Height,
-                            c.HasRotation ? c.Height : c.Width),
+                            c.HasRotation ? c.Width : c.Depth,
+                            c.HasRotation ? c.Depth : c.Width),
                         Id = c.Id,
                         IsItemPairingFixed = c.IsItemPairingFixed,
                         ItemDescription = c.ItemDescription,
@@ -257,7 +257,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentTypeId = compartment.CompartmentTypeId,
                     CreationDate = compartment.CreationDate,
                     FifoStartDate = compartment.FifoStartDate,
-                    Height = compartment.HasRotation ? compartment.Width : compartment.Height,
+                    Depth = compartment.HasRotation ? compartment.Width : compartment.Depth,
                     Id = compartment.Id,
                     InventoryDate = compartment.InventoryDate,
                     IsItemPairingFixed = compartment.IsItemPairingFixed,
@@ -283,7 +283,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Stock = compartment.ItemId.HasValue ? compartment.Stock : default(double?),
                     Sub1 = compartment.Sub1,
                     Sub2 = compartment.Sub2,
-                    Width = compartment.HasRotation ? compartment.Height : compartment.Width,
+                    Width = compartment.HasRotation ? compartment.Depth : compartment.Width,
                     XPosition = compartment.XPosition,
                     YPosition = compartment.YPosition,
                     Policies = compartment.GetPolicies(),
@@ -341,7 +341,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentTypeId = c.CompartmentTypeId,
                     CreationDate = c.CreationDate,
                     FifoStartDate = c.FifoStartDate,
-                    Height = c.HasRotation ? c.Width : c.Height,
+                    Depth = c.HasRotation ? c.Width : c.Depth,
                     Id = c.Id,
                     InventoryDate = c.InventoryDate,
                     IsItemPairingFixed = c.IsItemPairingFixed,
@@ -364,7 +364,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Stock = c.ItemId.HasValue ? c.Stock : default(double?),
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
-                    Width = c.HasRotation ? c.Height : c.Width,
+                    Width = c.HasRotation ? c.Depth : c.Width,
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     Policies = c.GetPolicies(),
@@ -378,13 +378,13 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<double?>> GetMaxCapacityAsync(double? width, double? height, int itemId)
+        public async Task<IOperationResult<double?>> GetMaxCapacityAsync(double? width, double? depth, int itemId)
         {
             try
             {
-                if (width.HasValue && height.HasValue)
+                if (width.HasValue && depth.HasValue)
                 {
-                    var result = await this.compartmentsDataService.GetMaxCapacityAsync(width.Value, height.Value, itemId);
+                    var result = await this.compartmentsDataService.GetMaxCapacityAsync(width.Value, depth.Value, itemId);
                     return new OperationResult<double?>(true, result);
                 }
 
@@ -449,7 +449,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
                         CreationDate = model.CreationDate,
                         FifoStartDate = model.FifoStartDate,
-                        Height = model.Height.Value,
+                        Depth = model.Depth.Value,
                         Id = model.Id,
                         InventoryDate = model.InventoryDate,
                         IsItemPairingFixed = model.IsItemPairingFixed,

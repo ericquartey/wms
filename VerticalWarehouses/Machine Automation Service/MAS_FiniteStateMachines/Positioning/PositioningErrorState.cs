@@ -69,7 +69,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
                 this.positioningMessageData.Resolution,
-                this.positioningMessageData.ResolutionCalibrationSteps,
                 MessageVerbosity.Error);
 
                 var notificationMessage = new NotificationMessage(
@@ -103,7 +102,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            var notificationMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+            var notificationMessageData = new PositioningMessageData(
+                this.positioningMessageData.AxisMovement,
                 this.positioningMessageData.MovementType,
                 this.positioningMessageData.TargetPosition,
                 this.positioningMessageData.TargetSpeed,
@@ -113,7 +113,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
                 this.positioningMessageData.Resolution,
-                this.positioningMessageData.ResolutionCalibrationSteps,
                 MessageVerbosity.Info);
 
             var notificationMessage = new NotificationMessage(

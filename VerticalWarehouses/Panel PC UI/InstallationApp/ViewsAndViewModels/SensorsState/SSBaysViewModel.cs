@@ -3,9 +3,9 @@ using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Unity;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -22,8 +22,6 @@ namespace Ferretto.VW.InstallationApp
         private bool heightControlCheckBay2;
 
         private bool heightControlCheckBay3;
-
-        private IInstallationService installationService;
 
         private IOSensorsStatus ioSensorsStatus;
 
@@ -44,6 +42,8 @@ namespace Ferretto.VW.InstallationApp
         private bool shutterSensorBBay2;
 
         private bool shutterSensorBBay3;
+
+        private IUpdateSensorsService updateSensorsService;
 
         private SubscriptionToken updateSensorsStateToken;
 
@@ -100,18 +100,19 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationService = this.container.Resolve<IInstallationService>();
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
         public async Task OnEnterViewAsync()
         {
+            this.DisableSensorsState();
             this.updateSensorsStateToken = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                  .Subscribe(
                  message => this.UpdateSensorsStates(message.Data.SensorsStates),
                  ThreadOption.PublisherThread,
                  false);
 
-            await this.installationService.ExecuteSensorsChangedAsync();
+            await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -137,6 +138,24 @@ namespace Ferretto.VW.InstallationApp
             this.HeightControlCheckBay3 = this.ioSensorsStatus.HeightControlCheckBay3;
             this.ShutterSensorABay3 = this.ioSensorsStatus.ShutterSensorABay3;
             this.ShutterSensorBBay3 = this.ioSensorsStatus.ShutterSensorBBay3;
+        }
+
+        private void DisableSensorsState()
+        {
+            this.LuPresentInBay1 = false;
+            this.HeightControlCheckBay1 = false;
+            this.ShutterSensorABay1 = false;
+            this.ShutterSensorBBay1 = false;
+
+            this.LuPresentInBay2 = false;
+            this.HeightControlCheckBay2 = false;
+            this.ShutterSensorABay2 = false;
+            this.ShutterSensorBBay2 = false;
+
+            this.LuPresentInBay3 = false;
+            this.HeightControlCheckBay3 = false;
+            this.ShutterSensorABay3 = false;
+            this.ShutterSensorBBay3 = false;
         }
 
         #endregion

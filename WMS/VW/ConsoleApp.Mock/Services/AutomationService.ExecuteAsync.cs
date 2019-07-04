@@ -50,7 +50,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
             Views.DisplayUserOptions(this.machineStatus);
             var selection = Views.PromptForUserSelection();
-            while (exitRequested == false)
+            while (!exitRequested)
             {
                 Console.Clear();
                 try

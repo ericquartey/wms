@@ -18,6 +18,10 @@ using System.Linq;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using System.Collections;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.WmsCommunication.Source;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using System.Drawing;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -39,6 +43,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private Func<IDrawableCompartment, IDrawableCompartment, string> filterColorFunc;
 
+        private Image image;
+
         private string itemCode;
 
         private string itemDescription;
@@ -47,8 +53,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private string listDescription;
 
-        private ILoadingUnitsDataService loadingUnitsDataService;
-
         private IOperatorService operatorService;
 
         private string requestedQuantity;
@@ -56,6 +60,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         private TrayControlCompartment selectedCompartment;
 
         private ObservableCollection<TrayControlCompartment> viewCompartments;
+
+        private IWmsDataProvider wmsDataProvider;
+
+        private IWmsImagesProvider wmsImagesProvider;
 
         #endregion
 
@@ -77,7 +85,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
 
         public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
-            () => NavigationService.NavigateToView<DrawerActivityPickingDetailViewModel, IDrawerActivityPickingDetailViewModel>()));
+            async () => await this.DrawerDetailsButtonMethod()));
 
         public string EvadedQuantity { get => this.evadedQuantity; set => this.SetProperty(ref this.evadedQuantity, value); }
 
@@ -86,6 +94,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             get { return this.filterColorFunc; }
             set { this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value); }
         }
+
+        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -112,22 +122,26 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             int quantity;
             if (int.TryParse(this.EvadedQuantity, out quantity) && quantity >= 0)
             {
-                await this.operatorService.PickAsync(this.container.Resolve<IBayManager>().CurrentMission.Id, quantity);
+                var bay = this.container.Resolve<IBayManager>();
+                await this.operatorService.PickAsync(bay.BayId, bay.CurrentMission.Id, quantity);
                 this.container.Resolve<IBayManager>().CurrentMission = null;
                 this.UpdateView();
+                this.EvadedQuantity = string.Empty;
             }
         }
 
         public void ExitFromViewMethod()
         {
-            // TODO
+            this.Image?.Dispose();
+            this.image?.Dispose();
         }
 
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.loadingUnitsDataService = this.container.Resolve<ILoadingUnitsDataService>();
+            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
             this.operatorService = this.container.Resolve<IOperatorService>();
+            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
         }
 
         public async Task OnEnterViewAsync()
@@ -148,7 +162,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             // TODO
         }
 
-        public async void UpdateView()
+        public void UpdateView()
         {
             var mission = this.container.Resolve<IBayManager>().CurrentMission;
             var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
@@ -166,7 +180,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                             break;
 
                         case MissionType.Pick:
-                            await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
                             NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
@@ -182,45 +195,42 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             }
         }
 
+        private async Task DrawerDetailsButtonMethod()
+        {
+            var bayManager = this.container.Resolve<IBayManager>();
+            var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(bayManager.CurrentMission);
+
+            NavigationService.NavigateToView<DrawerActivityPickingDetailViewModel, IDrawerActivityPickingDetailViewModel>(itemDetailObject);
+        }
+
         private async Task GetTrayControlDataAsync(IBayManager bayManager)
         {
             try
             {
-                var loadingUnitId = (int)bayManager.CurrentMission.LoadingUnitId;
-                var compartmentId = (int)bayManager.CurrentMission.CompartmentId;
-                var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(loadingUnitId);
-                if (compartments != null && compartments.Count > 0)
-                {
-                    this.ViewCompartments = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
-                    {
-                        Height = x.Height,
-                        Id = x.Id,
-                        LoadingUnitId = x.LoadingUnitId,
-                        Width = x.Width,
-                        XPosition = x.XPosition,
-                        YPosition = x.YPosition
-                    }));
-                    this.SelectedCompartment = this.ViewCompartments.First(x => x.Id == compartmentId);
-                }
+                this.ViewCompartments = await this.wmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
+                this.SelectedCompartment = await this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ApplicationException(ex.Message);
             }
         }
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            this.ListCode = bayManager.CurrentMission.ItemListId.ToString(); // TODO Check if it's the desired value (which is list's Id)
+            this.Image?.Dispose();
+            this.image?.Dispose();
+            this.Image = null;
+            this.image = null;
+            this.ListCode = bayManager.CurrentMission.ItemListId.ToString();
             this.ItemCode = bayManager.CurrentMission.ItemId.ToString();
-            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)bayManager.CurrentMission.LoadingUnitId);
-            var compartment = compartments.First(x => x.Id == (int)bayManager.CurrentMission.CompartmentId);
-            var compartmentXpos = compartment.XPosition;
-            var compartmentYpos = compartment.YPosition;
-            this.CompartmentPosition = $"{compartmentXpos}, {compartmentYpos}";
+            this.CompartmentPosition = await this.wmsDataProvider.GetCompartmentPosition(bayManager.CurrentMission);
             this.ListDescription = bayManager.CurrentMission.ItemListDescription;
             this.ItemDescription = bayManager.CurrentMission.ItemDescription;
             this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
+            var imageCode = await this.wmsDataProvider.GetItemImageCodeAsync((int)bayManager.CurrentMission.ItemId);
+            var imageStram = await this.wmsImagesProvider.GetImageAsync(imageCode);
+            this.Image = Image.FromStream(imageStram);
         }
 
         #endregion

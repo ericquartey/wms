@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
             get => this.areaId;
@@ -58,7 +58,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayChoices, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestBay), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
@@ -109,7 +109,7 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        if (this.areaId.HasValue == false ||
+                        if (!this.areaId.HasValue ||
                             this.areaId.Value == 0)
                         {
                             return this.GetErrorMessageForInvalid(columnName);
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
 
                     case nameof(this.BayId):
-                        if ((this.bayId.HasValue == false ||
+                        if ((!this.bayId.HasValue ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
                             return this.GetErrorMessageForInvalid(columnName);

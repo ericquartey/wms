@@ -1,9 +1,10 @@
-﻿using Prism.Mvvm;
-using Unity;
-using Prism.Events;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using System.Threading.Tasks;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -15,13 +16,21 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
+        private IInstallationStatusService installationStatusService;
+
+        private bool isBayControlButtonActive;
+
         private bool isBeltBurnishingButtonActive;
 
-        private bool isCellsControlButtonActive = true;
+        private bool isCellsControlButtonActive;
 
-        private bool isCellsPanelControlButtonActive = true;
+        private bool isCellsPanelControlButtonActive;
+
+        private bool isCellsSideControlButtonActive;
 
         private bool isDownScrollButtonActive = true;
+
+        private bool isDrawerLoadingUnloadingTestButtonActive;
 
         private bool isGateControlButtonActive = true;
 
@@ -29,9 +38,15 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isInstallationStateButtonActive = true;
 
+        private bool isLoadFirstDrawerButtonActive;
+
+        private bool isLoadingDrawersButtonActive;
+
         private bool isLowSpeedMovementsTestButtonActive = true;
 
         private bool isOriginVerticalAxisButtonActive = true;
+
+        private bool isSaveRestoreConfigButtonActive = true;
 
         private bool isSensorsStateButtonActive = true;
 
@@ -39,9 +54,9 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isUpScrollButtonActive = true;
 
-        private bool isVerticalOffsetCalibrationButtonActive = true;
+        private bool isVerticalOffsetCalibrationButtonActive;
 
-        private bool isWeightControlButtonActive = true;
+        private bool isWeightControlButtonActive;
 
         #endregion
 
@@ -57,7 +72,7 @@ namespace Ferretto.VW.InstallationApp
                 message => message.Type == InstallationApp_EventMessageType.EnterView);
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { this.UpdateDataFromDataManager(); },
+                async (message) => { await this.UpdateButtonsEnableStateAsync(); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Type == InstallationApp_EventMessageType.ExitView);
@@ -67,13 +82,23 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
+        public bool IsBayControlButtonActive { get => this.isBayControlButtonActive; set => this.SetProperty(ref this.isBayControlButtonActive, value); }
+
         public bool IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
 
         public bool IsCellsControlButtonActive { get => this.isCellsControlButtonActive; set => this.SetProperty(ref this.isCellsControlButtonActive, value); }
 
         public bool IsCellsPanelControlButtonActive { get => this.isCellsPanelControlButtonActive; set => this.SetProperty(ref this.isCellsPanelControlButtonActive, value); }
 
+        public bool IsCellsSideControlButtonActive { get => this.isCellsSideControlButtonActive; set => this.SetProperty(ref this.isCellsSideControlButtonActive, value); }
+
         public bool IsDownScrollButtonActive { get => this.isDownScrollButtonActive; set => this.SetProperty(ref this.isDownScrollButtonActive, value); }
+
+        public bool IsDrawerLoadingUnloadingTestButtonActive
+        {
+            get => this.isDrawerLoadingUnloadingTestButtonActive;
+            set => this.SetProperty(ref this.isDrawerLoadingUnloadingTestButtonActive, value);
+        }
 
         public bool IsGateControlButtonActive { get => this.isGateControlButtonActive; set => this.SetProperty(ref this.isGateControlButtonActive, value); }
 
@@ -81,9 +106,15 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsInstallationStateButtonActive { get => this.isInstallationStateButtonActive; set => this.SetProperty(ref this.isInstallationStateButtonActive, value); }
 
+        public bool IsLoadFirstDrawerButtonActive { get => this.isLoadFirstDrawerButtonActive; set => this.SetProperty(ref this.isLoadFirstDrawerButtonActive, value); }
+
+        public bool IsLoadingDrawersButtonActive { get => this.isLoadingDrawersButtonActive; set => this.SetProperty(ref this.isLoadingDrawersButtonActive, value); }
+
         public bool IsLowSpeedMovementsTestButtonActive { get => this.isLowSpeedMovementsTestButtonActive; set => this.SetProperty(ref this.isLowSpeedMovementsTestButtonActive, value); }
 
         public bool IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
+
+        public bool IsSaveRestoreConfigButtonActive { get => this.isSaveRestoreConfigButtonActive; set => this.SetProperty(ref this.isSaveRestoreConfigButtonActive, value); }
 
         public bool IsSensorsStateButtonActive { get => this.isSensorsStateButtonActive; set => this.SetProperty(ref this.isSensorsStateButtonActive, value); }
 
@@ -106,15 +137,16 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public async Task InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.UpdateDataFromDataManager();
+            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
+            await this.UpdateButtonsEnableStateAsync();
         }
 
         public Task OnEnterViewAsync()
         {
-            return null;
+            return Task.CompletedTask;
         }
 
         public void SetAllNavigationButtonDisabled()
@@ -140,8 +172,11 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void UpdateDataFromDataManager()
+        private async Task UpdateButtonsEnableStateAsync()
         {
+            var installationStatus = await this.installationStatusService.GetStatusAsync();
+            var checkHomingDone = installationStatus[0];
+
             this.IsInstallationStateButtonActive = true;
             this.IsUpScrollButtonActive = true;
             this.IsDownScrollButtonActive = true;
@@ -149,13 +184,20 @@ namespace Ferretto.VW.InstallationApp
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
-            this.IsBeltBurnishingButtonActive = true;
-            this.IsSetYResolutionButtonActive = true;
-            this.IsGateHeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
-            this.IsWeightControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
-            this.IsVerticalOffsetCalibrationButtonActive = true; // TODO: Reference value missing in InstallationInfo file
-            this.IsCellsPanelControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
-            this.IsCellsControlButtonActive = true; // TODO: Reference value missing in InstallationInfo file
+            this.IsBeltBurnishingButtonActive = checkHomingDone;
+            this.IsSetYResolutionButtonActive = checkHomingDone;
+
+            this.IsGateHeightControlButtonActive = true;                     // TODO: Reference value missing in InstallationInfo file
+            this.IsWeightControlButtonActive = checkHomingDone;              // TODO: Reference value missing in InstallationInfo file
+            this.IsVerticalOffsetCalibrationButtonActive = checkHomingDone;  // TODO: Reference value missing in InstallationInfo file
+            this.IsCellsPanelControlButtonActive = checkHomingDone;          // TODO: Reference value missing in InstallationInfo file
+            this.IsCellsControlButtonActive = checkHomingDone;               // TODO: Reference value missing in InstallationInfo file
+            this.IsCellsSideControlButtonActive = checkHomingDone;
+            this.IsBayControlButtonActive = true;
+            this.IsDrawerLoadingUnloadingTestButtonActive = checkHomingDone;
+            this.IsLoadFirstDrawerButtonActive = checkHomingDone;
+            this.IsLoadingDrawersButtonActive = checkHomingDone;
+            this.IsSaveRestoreConfigButtonActive = true;
         }
 
         #endregion

@@ -25,6 +25,8 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public double? AreaFillRate { get; set; }
 
+        public int AreaId { get; set; }
+
         public string AreaName { get; set; }
 
         public int? CellColumn { get; set; }
@@ -45,9 +47,14 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int CompartmentsCount { get; set; }
 
+        public bool HasCompartments { get; set; }
+
         public string LoadingUnitStatusDescription { get; set; }
 
         public string LoadingUnitTypeDescription { get; set; }
+
+        [PositiveOrZero]
+        public double? WeightFillRate { get; set; }
 
         #endregion
     }

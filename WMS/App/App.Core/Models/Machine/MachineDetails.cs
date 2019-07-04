@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -22,13 +22,13 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
         public long? ActualWeight { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineAisle), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
         public int AreaFillRate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineAutomaticTime), ResourceType = typeof(BusinessObjects))]
@@ -80,7 +80,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineGrossWeight), ResourceType = typeof(BusinessObjects))]
         public long? GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 
-        [Display(Name = nameof(BusinessObjects.MachineImage), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Image), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineInputLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
@@ -115,7 +115,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineLongitude), ResourceType = typeof(BusinessObjects))]
         public double? Longitude { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineTypeDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
         public string MachineTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatus), ResourceType = typeof(BusinessObjects))]
@@ -154,7 +154,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachinePowerOnTime), ResourceType = typeof(BusinessObjects))]
         public long? PowerOnTime { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineRegistrationNumber), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineServiceUrl), ResourceType = typeof(BusinessObjects))]

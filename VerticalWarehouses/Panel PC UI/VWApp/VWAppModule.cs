@@ -5,6 +5,8 @@ using Unity;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
+using Ferretto.VW.WmsCommunication;
+using Ferretto.VW.WmsCommunication.Interfaces;
 
 namespace Ferretto.VW.VWApp
 {
@@ -23,15 +25,17 @@ namespace Ferretto.VW.VWApp
         public VWAppModule(IUnityContainer container)
         {
             this.container = container;
-            var eventAggregator = new EventAggregator();
-            this.container.RegisterInstance<IEventAggregator>(eventAggregator);
-            var notificationCatcher = new NotificationCatcher(eventAggregator, container);
-            this.container.RegisterInstance<INotificationCatcher>(notificationCatcher);
             var wmsServiceAddress = ConfigurationManager.AppSettings.Get(WmsServiceAddress);
-            var itemsDataService = DataServiceFactory.GetService<IItemsDataService>(new System.Uri(wmsServiceAddress));
-            this.container.RegisterInstance<IItemsDataService>(itemsDataService);
-            var loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(new System.Uri(wmsServiceAddress));
-            this.container.RegisterInstance<ILoadingUnitsDataService>(loadingUnitsDataService);
+            var wmsUri = new System.Uri(wmsServiceAddress);
+            var eventAggregator = new EventAggregator();
+            var notificationCatcher = new NotificationCatcher(eventAggregator, container);
+            var wmsDataProvider = new WmsDataProvider(this.container, wmsUri);
+            var wmsImagesProvider = new WmsImagesProvider(this.container, wmsUri);
+
+            this.container.RegisterInstance<IEventAggregator>(eventAggregator);
+            this.container.RegisterInstance<INotificationCatcher>(notificationCatcher);
+            this.container.RegisterInstance<IWmsDataProvider>(wmsDataProvider);
+            this.container.RegisterInstance<IWmsImagesProvider>(wmsImagesProvider);
         }
 
         #endregion

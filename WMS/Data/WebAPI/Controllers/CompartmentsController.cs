@@ -162,9 +162,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(double?), StatusCodes.Status200OK)]
         [HttpGet("max-capacity")]
-        public async Task<ActionResult<double?>> GetMaxCapacityAsync(double width, double height, int itemId)
+        public async Task<ActionResult<double?>> GetMaxCapacityAsync(double width, double depth, int itemId)
         {
-            return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));
+            return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, depth, itemId));
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]

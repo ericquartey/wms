@@ -91,15 +91,15 @@ namespace Ferretto.WMS.App.Tests
         [DataRow(1.0, 1.0, false, false)]
         public void SizeValidation(
             double? width,
-            double? height,
+            double? depth,
             bool widthHasError,
-            bool heightHasError)
+            bool depthHasError)
         {
             var compartmentDetails = new CompartmentDetails
             {
                 IsValidationEnabled = true,
                 Width = width,
-                Height = height
+                Depth = depth
             };
 
             Assert.AreEqual(
@@ -108,8 +108,8 @@ namespace Ferretto.WMS.App.Tests
                 compartmentDetails.Error);
 
             Assert.AreEqual(
-                heightHasError,
-                !string.IsNullOrEmpty(compartmentDetails[nameof(compartmentDetails.Height)]),
+                depthHasError,
+                !string.IsNullOrEmpty(compartmentDetails[nameof(compartmentDetails.Depth)]),
                 compartmentDetails.Error);
         }
 
@@ -135,7 +135,7 @@ namespace Ferretto.WMS.App.Tests
                 XPosition = 0,
                 YPosition = 0,
                 Width = 1,
-                Height = 1,
+                Depth = 1,
                 LoadingUnitId = 1,
                 Stock = stock,
                 IsItemPairingFixed = isPairingFixed,

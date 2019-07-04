@@ -20,9 +20,11 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellProvider cellProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
+        private readonly Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
+        private readonly Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
+        private readonly Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
 
         private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
 
@@ -38,8 +40,9 @@ namespace Ferretto.WMS.App.Core.Providers
             ICellProvider cellProvider,
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
-            WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService)
+            Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
+            Data.WebAPI.Contracts.ICellsDataService cellsDataService,
+            Data.WebAPI.Contracts.IItemsDataService itemsDataService)
         {
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
@@ -48,6 +51,7 @@ namespace Ferretto.WMS.App.Core.Providers
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.cellsDataService = cellsDataService;
+            this.itemsDataService = itemsDataService;
         }
 
         #endregion
@@ -105,6 +109,48 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<IEnumerable<LoadingUnit>>> GetAllAllowedByItemIdAsync(
+            int itemId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            try
+            {
+                var loadingUnits = await this.itemsDataService.GetAllowedLoadingUnitsAsync(
+                    itemId,
+                    skip,
+                    take,
+                    orderBy: orderBySortOptions.ToQueryString());
+
+                var result = loadingUnits
+                    .Select(l => new LoadingUnit
+                    {
+                        Id = l.Id,
+                        Code = l.Code,
+                        LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
+                        LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
+                        AbcClassDescription = l.AbcClassDescription,
+                        AreaName = l.AreaName,
+                        AisleName = l.AisleName,
+                        CellFloor = l.CellFloor,
+                        CellColumn = l.CellColumn,
+                        CellSide = (Side?)l.CellSide,
+                        CellNumber = l.CellNumber,
+                        CellPositionDescription = l.CellPositionDescription,
+                        AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
+                        WeightFillRate = l.WeightFillRate.GetValueOrDefault(),
+                        Policies = l.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<LoadingUnit>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<LoadingUnit>>(e);
+            }
+        }
+
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
             int skip,
             int take,
@@ -133,6 +179,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CellNumber = l.CellNumber,
                         CellPositionDescription = l.CellPositionDescription,
                         AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
+                        WeightFillRate = l.WeightFillRate.GetValueOrDefault(),
                         Policies = l.GetPolicies(),
                     });
             }
@@ -190,21 +237,21 @@ namespace Ferretto.WMS.App.Core.Providers
                         HandlingParametersCorrection = l.HandlingParametersCorrection,
                         Height = l.Height,
                         Id = l.Id,
-                        InCycleCount = l.InCycleCount,
+                        InMissionCount = l.InMissionCount,
                         InventoryDate = l.InventoryDate,
                         IsCellPairingFixed = l.IsCellPairingFixed,
                         LastHandlingDate = l.LastHandlingDate,
                         LastPickDate = l.LastPickDate,
                         LastPutDate = l.LastPutDate,
-                        Length = l.Length,
+                        Depth = l.Depth,
                         LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
                         LoadingUnitStatusId = l.LoadingUnitStatusId,
                         LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
                         LoadingUnitTypeHasCompartments = l.LoadingUnitTypeHasCompartments,
                         LoadingUnitTypeId = l.LoadingUnitTypeId,
                         Note = l.Note,
-                        OtherCycleCount = l.OtherCycleCount,
-                        OutCycleCount = l.OutCycleCount,
+                        OtherMissionCount = l.OtherMissionCount,
+                        OutMissionCount = l.OutMissionCount,
                         Policies = l.GetPolicies(),
                         ReferenceType = (ReferenceType)l.ReferenceType,
                         Weight = l.Weight,
@@ -254,13 +301,13 @@ namespace Ferretto.WMS.App.Core.Providers
                     HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
                     Height = loadingUnit.Height,
                     Id = loadingUnit.Id,
-                    InCycleCount = loadingUnit.InCycleCount,
+                    InMissionCount = loadingUnit.InMissionCount,
                     InventoryDate = loadingUnit.InventoryDate,
                     IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
                     LastHandlingDate = loadingUnit.LastHandlingDate,
                     LastPickDate = loadingUnit.LastPickDate,
                     LastPutDate = loadingUnit.LastPutDate,
-                    Length = loadingUnit.Length,
+                    Depth = loadingUnit.Depth,
                     LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
                     LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
                     LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
@@ -269,8 +316,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
                     LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
                     Note = loadingUnit.Note,
-                    OtherCycleCount = loadingUnit.OtherCycleCount,
-                    OutCycleCount = loadingUnit.OutCycleCount,
+                    OtherMissionCount = loadingUnit.OtherMissionCount,
+                    OutMissionCount = loadingUnit.OutMissionCount,
                     Policies = loadingUnit.GetPolicies(),
                     ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
                     Weight = loadingUnit.Weight,
@@ -319,8 +366,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         FifoStartDate = c.FifoStartDate,
                         LastPutDate = c.LastPutDate,
                         LastPickDate = c.LastPickDate,
-                        Width = c.HasRotation ? c.Height : c.Width,
-                        Height = c.HasRotation ? c.Width : c.Height,
+                        Width = c.HasRotation ? c.Depth : c.Width,
+                        Depth = c.HasRotation ? c.Width : c.Depth,
                         XPosition = c.XPosition,
                         YPosition = c.YPosition,
                         LoadingUnitId = c.LoadingUnitId,
@@ -342,7 +389,7 @@ namespace Ferretto.WMS.App.Core.Providers
             try
             {
                 var loadingUnitDetails = new LoadingUnitDetails();
-                loadingUnitDetails.Length = 1;
+                loadingUnitDetails.Depth = 1;
                 await this.AddEnumerationsAsync(loadingUnitDetails);
                 return new OperationResult<LoadingUnitDetails>(true, loadingUnitDetails);
             }
@@ -387,7 +434,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LoadingUnitTypeId = model.LoadingUnitTypeId.GetValueOrDefault(),
                         LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
                         Width = model.Width,
-                        Length = model.Length,
+                        Depth = model.Depth,
                         Note = model.Note,
                         IsCellPairingFixed = model.IsCellPairingFixed,
                         ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
@@ -400,9 +447,9 @@ namespace Ferretto.WMS.App.Core.Providers
                         InventoryDate = model.InventoryDate,
                         LastPickDate = model.LastPickDate,
                         LastPutDate = model.LastPutDate,
-                        InCycleCount = model.InCycleCount,
-                        OutCycleCount = model.OutCycleCount,
-                        OtherCycleCount = model.OtherCycleCount,
+                        InMissionCount = model.InMissionCount,
+                        OutMissionCount = model.OutMissionCount,
+                        OtherMissionCount = model.OtherMissionCount,
                         CellId = model.CellId,
                         AisleId = model.AisleId,
                         AreaId = model.AreaId,

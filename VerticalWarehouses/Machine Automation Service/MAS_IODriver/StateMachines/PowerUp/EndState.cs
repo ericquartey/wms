@@ -15,19 +15,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private readonly IoSHDStatus status;
 
+        private readonly IoIndex index;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public EndState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public EndState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
+            this.index = index;
         }
 
         #endregion
@@ -50,7 +53,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
                 var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd);
+                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd, ErrorLevel.NoError, (byte)this.index);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -66,7 +69,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             if (this.status.MatchOutputs(message.Outputs))
             {
                 var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd);
+                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd, ErrorLevel.NoError, (byte)this.index);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

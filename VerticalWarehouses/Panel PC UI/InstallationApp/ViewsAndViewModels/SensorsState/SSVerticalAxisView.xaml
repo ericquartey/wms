@@ -35,14 +35,14 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}"
-                                    SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorState="{Binding ElevatorEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
         <custom:CustomSensorControl Margin="230,220,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.CradleEngineSelected}"
-                                    SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorState="{Binding CradleEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
         <TextBlock Margin="230,300,0,0"

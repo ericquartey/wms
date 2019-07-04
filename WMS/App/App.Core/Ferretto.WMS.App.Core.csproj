@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
@@ -28,7 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\..\..\Common\Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
-    <ProjectReference Include="..\..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\App.Resources\Ferretto.WMS.App.Resources.csproj" />
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
     <ProjectReference Include="..\..\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
  </ItemGroup>

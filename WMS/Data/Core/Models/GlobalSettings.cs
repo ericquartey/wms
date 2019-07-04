@@ -1,0 +1,13 @@
+﻿namespace Ferretto.WMS.Data.Core
+{
+    public class GlobalSettings
+    {
+        #region Properties
+
+        public int Id { get; set; }
+
+        public double MinStepCompartment { get; set; }
+
+        #endregion
+    }
+}

@@ -8,7 +8,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.CompartmentTypes}"
              MinHeight="300"
@@ -54,13 +54,17 @@
                                           HorizontalAlignment="Stretch"
                                           wms:ShowTitle.Show="True"
                                           EditValue="{Binding NewCompartmentType.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EnableCorrection="True"
+                                          Increment="{Binding GlobalSettings.MinStepCompartment}"
                                           Style="{DynamicResource SpinEditDecimalStyle}" />
                             <wms:SpinEdit x:Name="HeightText"
                                           Grid.Row="1"
                                           Grid.Column="2"
                                           HorizontalAlignment="Stretch"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding NewCompartmentType.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding NewCompartmentType.Depth, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          EnableCorrection="True"
+                                          Increment="{Binding GlobalSettings.MinStepCompartment}"
                                           Style="{DynamicResource SpinEditDecimalStyle}" />
 
                             <TextBlock x:Name="Error"
@@ -153,6 +157,7 @@
                 <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                 AttachedActionBar="{Binding ElementName=NewCompartmentTypeBar}"
                                                 AttachedBarItem="NewCompartmentTypeBarItem"
+                                                FocusedStart="WidthText"
                                                 IsOpen="{Binding IsAddShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource inputAreaControlStyle}" />
 
@@ -221,15 +226,13 @@
 
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="300*"
-                                        wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                         FieldName="Width">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="300*"
-                                        wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
-                                        FieldName="Height">
+                                        FieldName="Depth">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>

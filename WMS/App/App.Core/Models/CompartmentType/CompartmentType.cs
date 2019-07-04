@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -14,14 +14,14 @@ namespace Ferretto.WMS.App.Core.Models
         public int EmptyCompartmentsCount { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentTypeHeightDescription), ResourceType = typeof(BusinessObjects))]
-        public double? Height { get; set; }
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double? Depth { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentTypeItemCompartmentsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemCompartmentsCount { get; set; }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.CompartmentTypeWidthDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Width), ResourceType = typeof(BusinessObjects))]
         public double? Width { get; set; }
 
         #endregion
@@ -49,9 +49,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                         return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
-                    case nameof(this.Height):
+                    case nameof(this.Depth):
 
-                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Depth, columnName);
                 }
 
                 return null;

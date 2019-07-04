@@ -186,7 +186,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.ItemPickCommenced,
+                    App.Resources.MasterData.ItemPickCommenced,
                     StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);

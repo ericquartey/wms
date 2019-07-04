@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Resources;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemCategoryId = model.ItemCategoryId,
                     LastPickDate = model.LastPickDate,
                     LastPutDate = model.LastPutDate,
-                    Length = model.Length,
+                    Depth = model.Depth,
                     ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
                     MeasureUnitId = model.MeasureUnitId,
                     Note = model.Note,
@@ -108,7 +108,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public async Task<IOperationResult<ItemCompartmentType>> CreateCompartmentTypeAssociationAsync(
             int itemId,
             int compartmentTypeId,
-            int? maxCapacity)
+            int maxCapacity)
         {
             try
             {
@@ -215,7 +215,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastModificationDate = i.LastModificationDate,
                         LastPickDate = i.LastPickDate,
                         LastPutDate = i.LastPutDate,
-                        Length = i.Length,
+                        Depth = i.Depth,
                         MeasureUnitDescription = i.MeasureUnitDescription,
                         PickTolerance = i.PickTolerance,
                         ReorderPoint = i.ReorderPoint,
@@ -312,7 +312,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastModificationDate = i.LastModificationDate,
                         LastPickDate = i.LastPickDate,
                         LastPutDate = i.LastPutDate,
-                        Length = i.Length,
+                        Depth = i.Depth,
                         MeasureUnitDescription = i.MeasureUnitDescription,
                         PickTolerance = i.PickTolerance,
                         ReorderPoint = i.ReorderPoint,
@@ -419,7 +419,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LastModificationDate = item.LastModificationDate,
                     LastPickDate = item.LastPickDate,
                     LastPutDate = item.LastPutDate,
-                    Length = item.Length,
+                    Depth = item.Depth,
                     ManagementType = (ItemManagementType)item.ManagementType,
                     MeasureUnitDescription = item.MeasureUnitDescription,
                     MeasureUnitId = item.MeasureUnitId,
@@ -592,7 +592,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         ItemCategoryId = model.ItemCategoryId,
                         LastPickDate = model.LastPickDate,
                         LastPutDate = model.LastPutDate,
-                        Length = model.Length,
+                        Depth = model.Depth,
                         ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
                         MeasureUnitDescription = model.MeasureUnitDescription,
                         MeasureUnitId = model.MeasureUnitId,
@@ -618,7 +618,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
             int itemId,
             int compartmentTypeId,
-            int? maxCapacity)
+            int maxCapacity)
         {
             try
             {

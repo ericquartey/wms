@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
+using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -27,7 +28,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
-    public class FiniteStateMachines : BackgroundService
+    public partial class FiniteStateMachines : BackgroundService
     {
         #region Fields
 
@@ -51,6 +52,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
+        private readonly IVertimagConfiguration vertimagConfiguration;
+
         private bool disposed;
 
         private bool forceInverterIoStatusPublish;
@@ -61,17 +64,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private CancellationToken stoppingToken;
 
+        private List<IoIndex> ioIndexDeviceList;
+
         #endregion
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement)
+        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger,
+            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
 
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+
+            this.vertimagConfiguration = vertimagConfiguration;
 
             this.machineSensorsStatus = new MachineSensorsStatus();
 
@@ -199,6 +207,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.SensorsChanged:
                         this.ProcessSensorsChangedMessage();
                         break;
+
+                    case MessageType.CheckCondition:
+                        this.ProcessCheckConditionMessage(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -242,12 +254,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case FieldMessageType.SensorsChanged:
+
                         this.logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                         {
-                            if (this.machineSensorsStatus.UpdateInputs(dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
+                            byte ioIndex = receivedMessage.DeviceIndex;
+
+                            if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
+
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
 
                                 msg = new NotificationMessage(
@@ -265,10 +281,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
+
                         this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
                         {
-                            if (this.machineSensorsStatus.UpdateInputs(dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                            byte inverterIndex = receivedMessage.DeviceIndex;
+
+                            if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
@@ -385,6 +404,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 switch (receivedMessage.Type)
                 {
                     case MessageType.DataLayerReady:
+
+                        // TEMP Retrieve the current configuration of IO devices
+                        this.RetrieveIoDevicesConfigurationAsync();
+
                         var fieldNotification = new FieldNotificationMessage(null,
                             "Data Layer Ready",
                             FieldMessageActor.Any,
@@ -535,138 +558,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void ProcessHomingMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IHomingMessageData data)
-            {
-                this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
-                }
-            }
-        }
-
-        private void ProcessPositioningMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IPositioningMessageData data)
-            {
-                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
-                }
-            }
-        }
-
-        private void ProcessSensorsChangedMessage()
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            // Send a field message to force the Update of sensors (input lines) to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, false, 0);
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Update Inverter digital input status",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate);
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
-
-            // Send a field message to force the Update of sensors (input lines) to IoDriver
-            var IoDataMessage = new SensorsChangedFieldMessageData();
-            IoDataMessage.SensorsStatus = true;
-            var IoMessage = new FieldCommandMessage(
-                IoDataMessage,
-                "Update IO digital input",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SensorsChanged);
-
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(IoMessage);
-
-            this.forceInverterIoStatusPublish = true;
-            this.forceRemoteIoStatusPublish = true;
-        }
-
-        private void ProcessShutterControlMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IShutterControlMessageData data)
-            {
-                // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
-                data.ShutterType = ShutterType.Shutter2Type;
-
-                this.currentStateMachine = new ShutterControlStateMachine(this.eventAggregator, data, this.logger);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
-                }
-            }
-        }
-
-        private void ProcessShutterPositioningMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IShutterPositioningMessageData data)
-            {
-                this.currentStateMachine = new ShutterPositioningStateMachine(this.eventAggregator, data, this.logger);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
-                }
-            }
-        }
-
-        private void ProcessStopMessage(CommandMessage receivedMessage)
-        {
-            this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
-
-            this.currentStateMachine?.Stop();
-        }
-
         private void SendMessage(IMessageData data)
         {
             var msg = new NotificationMessage(
@@ -678,6 +569,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        private async Task RetrieveIoDevicesConfigurationAsync()
+        {
+            this.ioIndexDeviceList = await this.vertimagConfiguration.GetInstalledIoListAsync();
         }
 
         #endregion
