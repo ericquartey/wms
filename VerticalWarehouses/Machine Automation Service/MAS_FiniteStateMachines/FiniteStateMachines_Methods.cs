@@ -143,6 +143,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             if (message.Data is IPositioningMessageData data)
             {
+                this.logger.LogTrace($"A:Target position {data.TargetPosition}");
+                this.logger.LogTrace($"B:Current position {data.CurrentPosition}");
+
                 this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
