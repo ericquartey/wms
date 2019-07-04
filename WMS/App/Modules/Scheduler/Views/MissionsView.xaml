@@ -8,8 +8,8 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
+             xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.Missions}"
              MinHeight="300"
@@ -29,7 +29,7 @@
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.RequestedQuantity"
                                  TargetNullValue="" />
-                        <Binding Path="Data.MeasureUnitDescription"
+                        <Binding Path="Data.ItemMeasureUnitDescription"
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
@@ -43,7 +43,7 @@
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.DispatchedQuantity"
                                  TargetNullValue="" />
-                        <Binding Path="Data.MeasureUnitDescription"
+                        <Binding Path="Data.ItemMeasureUnitDescription"
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>

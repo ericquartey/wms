@@ -3176,8 +3176,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MissionOperationInfo : BaseModelOfInt32
     {
-        [Newtonsoft.Json.JsonProperty("compartmentHeight", Required = Newtonsoft.Json.Required.Always)]
-        public double CompartmentHeight { get; set; }
+        [Newtonsoft.Json.JsonProperty("compartmentDepth", Required = Newtonsoft.Json.Required.Always)]
+        public double CompartmentDepth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("compartmentWidth", Required = Newtonsoft.Json.Required.Always)]
         public double CompartmentWidth { get; set; }
