@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Fields
 
-        private const int AXIS_POSITION_UPDATE_INTERVAL = 50;
+        private const int AXIS_POSITION_UPDATE_INTERVAL = 100;
 
         private const int HEARTBEAT_TIMEOUT = 300;   // 300
 

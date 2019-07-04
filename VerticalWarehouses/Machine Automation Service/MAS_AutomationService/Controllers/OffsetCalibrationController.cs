@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var referenceCell = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
                 (long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
 
-            var position = 2048; //TODO Retrieve the position related to the cellReference value
+            var position = 10; //TODO Retrieve the position related to the cellReference value
 
             var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);

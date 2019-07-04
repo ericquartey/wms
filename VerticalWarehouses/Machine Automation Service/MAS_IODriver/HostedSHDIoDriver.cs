@@ -167,7 +167,8 @@ namespace Ferretto.VW.MAS_IODriver
                     default:
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task InitializeIoDevice()
