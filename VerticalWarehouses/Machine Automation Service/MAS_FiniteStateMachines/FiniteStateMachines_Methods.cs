@@ -37,7 +37,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     break;
 
                 //TEMP Add here other condition getters
-
                 default:
                     break;
             }
@@ -47,32 +46,34 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <summary>
         /// This routine contains all conditions to be satisfied before to do an homing operation.
         /// </summary>
-        private bool IsHomingToExecute(out ConditionToCheckType condition)
-        {
-            //TEMP The following conditions must be checked in order to execute an homing operation
+        //TEMP
+        //private bool IsHomingToExecute(out ConditionToCheckType condition)
+        //{
+        //    //TEMP The following conditions must be checked in order to execute an homing operation
 
-            condition = ConditionToCheckType.MachineIsInEmergencyState;
-            if (this.EvaluateCondition(condition))
-            {
-                return false;
-            }
+        //    condition = ConditionToCheckType.MachineIsInEmergencyState;
+        //    if (this.EvaluateCondition(condition))
+        //    {
+        //        this.logger.LogTrace("1:MachineIsInEmergencyState");
+        //        return false;
+        //    }
 
-            condition = ConditionToCheckType.DrawerIsPartiallyOnCradle;
-            if (this.EvaluateCondition(condition))
-            {
-                return false;
-            }
+        //    condition = ConditionToCheckType.DrawerIsPartiallyOnCradle;
+        //    if (this.EvaluateCondition(condition))
+        //    {
+        //        this.logger.LogTrace("1:DrawerIsPartiallyOnCradle");
+        //        return false;
+        //    }
 
-            //TEMP This condition does not satisfied by the Bender machine
-            //condition = ConditionToCheckType.SensorInZeroOnCradle;
-            //if (!this.EvaluateCondition(condition))
-            //{
-            //    return false;
-            //}
+        //    //TEMP This condition does not satisfied by the Bender machine
+        //    //condition = ConditionToCheckType.SensorInZeroOnCradle;
+        //    //if (!this.EvaluateCondition(condition))
+        //    //{
+        //    //    return false;
+        //    //}
 
-            return true;
-        }
-
+        //    return true;
+        //}
         private void ProcessCheckConditionMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
@@ -101,22 +102,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             if (message.Data is IHomingMessageData data)
             {
                 //TEMP Check the conditions before start an homing procedure
-                if (!this.IsHomingToExecute(out var condition))
-                {
-                    var notificationData = new HomingMessageData(data.AxisToCalibrate);
+                //if (!this.IsHomingToExecute(out var condition))
+                //{
+                //    var notificationData = new HomingMessageData(data.AxisToCalibrate);
 
-                    var msg = new NotificationMessage(
-                        notificationData,
-                        $"Condition: {condition}",
-                        MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
-                        MessageType.Homing,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Error);
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                //    var msg = new NotificationMessage(
+                //        notificationData,
+                //        $"Condition: {condition}",
+                //        MessageActor.Any,
+                //        MessageActor.FiniteStateMachines,
+                //        MessageType.Homing,
+                //        MessageStatus.OperationError,
+                //        ErrorLevel.Error);
+                //    this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
-                    return;
-                }
+                //    return;
+                //}
 
                 //TEMP Instantiate the homing states machine
                 this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
@@ -131,7 +132,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -154,7 +155,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -174,16 +175,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
-            var IoDataMessage = new SensorsChangedFieldMessageData();
-            IoDataMessage.SensorsStatus = true;
-            var IoMessage = new FieldCommandMessage(
-                IoDataMessage,
-                "Update IO digital input",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SensorsChanged);
+            foreach (var index in this.ioIndexDeviceList)
+            {
+                var ioDataMessage = new SensorsChangedFieldMessageData();
+                ioDataMessage.SensorsStatus = true;
+                var ioMessage = new FieldCommandMessage(
+                    ioDataMessage,
+                    "Update IO digital input",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.SensorsChanged,
+                    (byte)index);
 
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(IoMessage);
+                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
+            }
 
             this.forceInverterIoStatusPublish = true;
             this.forceRemoteIoStatusPublish = true;
@@ -210,7 +215,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -233,7 +238,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }

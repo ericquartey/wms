@@ -1,20 +1,20 @@
-﻿using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.Resources;
-using Ferretto.VW.OperatorApp.Resources.Enumerations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
-using Ferretto.VW.Utils.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.OperatorApp
+﻿namespace Ferretto.VW.OperatorApp
 {
+    using System.Windows.Input;
+    using Ferretto.VW.Common_Utils.Messages.Data;
+    using Ferretto.VW.MAS_Utils.Events;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.Resources;
+    using Ferretto.VW.OperatorApp.Resources.Enumerations;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+    using Ferretto.VW.Utils.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void ClickedOnMachineOnMarchEvent();
@@ -27,6 +27,8 @@ namespace Ferretto.VW.OperatorApp
 
         private readonly HelpMainWindow helpWindow;
 
+        private ICommand backToVWAPPCommand;
+
         private IUnityContainer container;
 
         private BindableBase contentRegionCurrentViewModel;
@@ -35,6 +37,8 @@ namespace Ferretto.VW.OperatorApp
 
         private bool isPopupOpen;
 
+        private string loggedUser;
+
         private bool machineModeSelectionBool;
 
         private bool machineOnMarchSelectionBool;
@@ -42,6 +46,8 @@ namespace Ferretto.VW.OperatorApp
         private BindableBase navigationRegionCurrentViewModel;
 
         private ICommand openClosePopupCommand;
+
+        private ICommand openHelpWindow;
 
         #endregion
 
@@ -65,11 +71,21 @@ namespace Ferretto.VW.OperatorApp
 
         #region Properties
 
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
+        {
+            this.IsPopupOpen = false;
+            this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.BackToVWApp));
+            ClickedOnMachineModeEventHandler = null;
+            ClickedOnMachineOnMarchEventHandler = null;
+        }));
+
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
 
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
 
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
+
+        public string LoggedUser { get => this.loggedUser; set => this.SetProperty(ref this.loggedUser, value); }
 
         public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
 
@@ -78,6 +94,12 @@ namespace Ferretto.VW.OperatorApp
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
         public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
+
+        public ICommand OpenHelpWindow => this.openHelpWindow ?? (this.openHelpWindow = new DelegateCommand(() =>
+        {
+            this.helpWindow.Show();
+            this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
+        }));
 
         #endregion
 

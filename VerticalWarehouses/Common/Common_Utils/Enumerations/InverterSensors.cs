@@ -2,66 +2,156 @@
 {
     public enum InverterSensors
     {
-        //INFO ANG Inverter Inputs
+        #region INFO ANG Inverter Inputs
 
-        ANG_HardwareSensorSTOA = 0,                                    //S1IND-STO (hardware)
+        /// <summary>
+        /// S1IND-STO (hardware)
+        /// </summary>
+        ANG_HardwareSensorSTOA = 0,
 
-        ANG_HardwareSensorSS1 = 1,                                     //S2IND-SS1 (hardware)
+        /// <summary>
+        /// S2IND-SS1 (hardware)
+        /// </summary>
+        ANG_HardwareSensorSS1 = 1,
 
-        ANG_ZeroElevatorSensor = 2,                                    //S3IND-Sensore zero elevatore
+        /// <summary>
+        /// S3IND-Sensore zero elevatore
+        /// </summary>
+        ANG_ZeroElevatorSensor = 2,
 
-        ANG_OverrunElevatorSensor = 3,                                 //S4IND-Extracorsa elevatore
+        /// <summary>
+        /// S4IND-Extracorsa elevatore
+        /// </summary>
+        ANG_OverrunElevatorSensor = 3,
 
-        ANG_BarrierCalibration = 4,                                    //S5IND-Taratura barriera
+        /// <summary>
+        /// S5IND-Taratura barriera
+        /// </summary>
+        ANG_BarrierCalibration = 4,
 
-        ANG_ZeroCradleSensor = 5,                                      //S6IND-Sensore zero culla
+        /// <summary>
+        /// S6IND-Sensore zero culla
+        /// </summary>
+        ANG_ZeroCradleSensor = 5,
 
-        ANG_HardwareSensorSTOB = 6,                                    //S7IND-STO (hardware)
+        /// <summary>
+        /// S7IND-STO (hardware)
+        /// </summary>
+        ANG_HardwareSensorSTOB = 6,
 
-        ANG_OpticalMeasuringBarrier = 7,                               //MFI1-Barriera ottica di misura
+        /// <summary>
+        /// MFI1-Barriera ottica di misura
+        /// </summary>
+        ANG_OpticalMeasuringBarrier = 7,
 
-        ANG_PresenceDrawerOnCradleMachineSide = 8,                     //MF2-Presenza cassetto su culla lato macchina
+        /// <summary>
+        /// MF2-Presenza cassetto su culla lato macchina
+        /// </summary>
+        ANG_PresenceDrawerOnCradleMachineSide = 8,
 
-        ANG_PresenceDraweronCradleOperatoreSide = 9,                   //MF3-Presenza cassetto su culla lato operatore
+        /// <summary>
+        /// MF3-Presenza cassetto su culla lato operatore
+        /// </summary>
+        ANG_PresenceDraweronCradleOperatoreSide = 9,
 
-        ANG_ElevatorMotorTemprature = 10,                              //MF4-Temperatura motore elevatore
+        /// <summary>
+        /// MF4-Temperatura motore elevatore
+        /// </summary>
+        ANG_ElevatorMotorTemprature = 10,
 
-        //INFO AGL Inverter Inputs
+        #endregion
 
-        AGL_HardwareSensorSTOA = 0, //11,                                   //STO (hardware)
+        #region INFO AGL Inverter Inputs
 
-        AGL_HardwareSensorSS1 = 1, //12,                                    //IN1D-SS1 (hardware)
+        /// <summary>
+        /// STO (hardware)
+        /// </summary>
+        AGL_HardwareSensorSTOA = 0, //11,
 
-        AGL_ShutterSensorA = 2, //13,                                       //IN2D-Sensore serranda (A)
+        /// <summary>
+        /// IN1D-SS1 (hardware)
+        /// </summary>
+        AGL_HardwareSensorSS1 = 1, //12,
 
-        AGL_ShutterSensorB = 3, //14,                                       //IN3D-Sensore serranda (B)
+        /// <summary>
+        /// IN2D-Sensore serranda (A)
+        /// </summary>
+        AGL_ShutterSensorA = 2, //13,
 
-        AGL_FreeSensor1 = 4, //15,                                          //IN4D-Libero
+        /// <summary>
+        /// IN3D-Sensore serranda (B)
+        /// </summary>
+        AGL_ShutterSensorB = 3, //14,
 
-        AGL_FreeSensor2 = 5, //16,                                          //IN5D-Libero
+        /// <summary>
+        /// IN4D-Libero
+        /// </summary>
+        AGL_FreeSensor1 = 4, //15,
 
-        AGL_FreeSensor3 = 6, //17,                                          //MFI1-Libero
+        /// <summary>
+        /// IN5D-Libero
+        /// </summary>
+        AGL_FreeSensor2 = 5, //16,
 
-        AGL_FreeSensor4 = 7, //18,                                          //MFI2-Libero
+        /// <summary>
+        /// MFI1-Libero
+        /// </summary>
+        AGL_FreeSensor3 = 6, //17,
 
-        AGL_HardwareSensorSTOB = 8, //19,                                   //STO (hardware)
+        /// <summary>
+        /// MFI2-Libero
+        /// </summary>
+        AGL_FreeSensor4 = 7, //18,
 
-        //INFO ACU Inverter Inputs
+        /// <summary>
+        /// STO (hardware)
+        /// </summary>
+        AGL_HardwareSensorSTOB = 8, //19,
 
-        ACU_HardwareSensorSTOA = 20,                                   //S1IND-STO (hardware)
+        #endregion
 
-        ACU_HardwareSensorSS1 = 21,                                    //S2IND-SS1 (hardware)
+        #region INFO ACU Inverter Inputs
 
-        ACU_ZeroSensor = 22,                                           //S3IND-Sensore zero
+        /// <summary>
+        /// S1IND-STO (hardware)
+        /// </summary>
+        ACU_HardwareSensorSTOA = 20,
 
-        ACU_EncoderCanalB = 23,                                        //S4IND-Encoder canale B
+        /// <summary>
+        /// S2IND-SS1 (hardware)
+        /// </summary>
+        ACU_HardwareSensorSS1 = 21,
 
-        ACU_EncoderCanalA = 24,                                        //S5IND-Encoder canale A
+        /// <summary>
+        /// S3IND-Sensore zero
+        /// </summary>
+        ACU_ZeroSensor = 22,
 
-        ACU_FreeSensor1 = 25,                                          //S6IND-Libero
+        /// <summary>
+        /// S4IND-Encoder canale B
+        /// </summary>
+        ACU_EncoderCanalB = 23,
 
-        ACU_HardwareSensorSTOB = 26,                                   //S7IND-STO (hardware)
+        /// <summary>
+        /// S5IND-Encoder canale A
+        /// </summary>
+        ACU_EncoderCanalA = 24,
 
-        ACU_FreeSensor2 = 27                                           //MF1-Libero
+        /// <summary>
+        /// S6IND-Libero
+        /// </summary>
+        ACU_FreeSensor1 = 25,
+
+        /// <summary>
+        /// S7IND-STO (hardware)
+        /// </summary>
+        ACU_HardwareSensorSTOB = 26,
+
+        /// <summary>
+        /// MF1-Libero
+        /// </summary>
+        ACU_FreeSensor2 = 27,
+
+        #endregion
     }
 }

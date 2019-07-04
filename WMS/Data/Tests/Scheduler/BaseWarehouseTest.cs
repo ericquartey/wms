@@ -1,5 +1,6 @@
 ﻿using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Tests;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         protected Cell Cell1Aisle1 { get; private set; }
 
         protected Cell Cell2Aisle2 { get; private set; }
+
+        protected CompartmentType CompartmentType { get; private set; }
 
         protected Item Item1 { get; private set; }
 
@@ -60,21 +63,27 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         protected void InitializeDatabase()
         {
-            this.Area1 = new Area { Id = 1, Name = "Area #1" };
-            this.Aisle1Area1 = new Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };
-            this.Aisle2Area1 = new Aisle { Id = 2, AreaId = this.Area1.Id, Name = "Aisle #2" };
-            this.Machine1Aisle1 = new Machine { Id = 1, AisleId = this.Aisle1Area1.Id };
-            this.Machine2Aisle2 = new Machine { Id = 2, AisleId = this.Aisle2Area1.Id };
-            this.Cell1Aisle1 = new Cell { Id = 1, AisleId = this.Aisle1Area1.Id };
-            this.Cell2Aisle2 = new Cell { Id = 2, AisleId = this.Aisle2Area1.Id };
-            this.LoadingUnitType = new LoadingUnitType { Id = 1 };
-            this.LoadingUnit1Cell1 = new LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1Aisle1.Id, LoadingUnitTypeId = this.LoadingUnitType.Id };
-            this.LoadingUnit2Cell2 = new LoadingUnit { Id = 2, Code = "Loading Unit #2", CellId = this.Cell2Aisle2.Id, LoadingUnitTypeId = this.LoadingUnitType.Id };
-            this.Bay1Aisle1 = new Bay { Id = 1, Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine1Aisle1.Id };
-            this.Bay2Aisle2 = new Bay { Id = 2, Description = "Bay #2", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine2Aisle2.Id };
-            this.Item1 = new Item { Id = 1, Code = "Item #1", ManagementType = ItemManagementType.FIFO };
-            this.ItemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO, FifoTimePick = 1, FifoTimePut = 1 };
-            this.ItemVolume = new Item { Id = 3, Code = "Item #3", ManagementType = ItemManagementType.Volume };
+            this.Area1 = new Area { Id = GetNewId(), Name = "Area #1" };
+            this.Aisle1Area1 = new Aisle { Id = GetNewId(), AreaId = this.Area1.Id, Name = "Aisle #1" };
+            this.Aisle2Area1 = new Aisle { Id = GetNewId(), AreaId = this.Area1.Id, Name = "Aisle #2" };
+            this.Machine1Aisle1 = new Machine { Id = GetNewId(), AisleId = this.Aisle1Area1.Id };
+            this.Machine2Aisle2 = new Machine { Id = GetNewId(), AisleId = this.Aisle2Area1.Id };
+            this.Cell1Aisle1 = new Cell { Id = GetNewId(), AisleId = this.Aisle1Area1.Id };
+            this.Cell2Aisle2 = new Cell { Id = GetNewId(), AisleId = this.Aisle2Area1.Id };
+            this.LoadingUnitType = new LoadingUnitType { Id = GetNewId() };
+            this.LoadingUnit1Cell1 = new LoadingUnit { Id = GetNewId(), Code = "Loading Unit #1", CellId = this.Cell1Aisle1.Id, LoadingUnitTypeId = this.LoadingUnitType.Id };
+            this.LoadingUnit2Cell2 = new LoadingUnit { Id = GetNewId(), Code = "Loading Unit #2", CellId = this.Cell2Aisle2.Id, LoadingUnitTypeId = this.LoadingUnitType.Id };
+            this.Bay1Aisle1 = new Bay { Id = GetNewId(), Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine1Aisle1.Id };
+            this.Bay2Aisle2 = new Bay { Id = GetNewId(), Description = "Bay #2", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine2Aisle2.Id };
+            this.Item1 = new Item { Id = GetNewId(), Code = "Item #1", ManagementType = ItemManagementType.FIFO };
+            this.ItemFifo = new Item { Id = GetNewId(), Code = "Item #2", ManagementType = ItemManagementType.FIFO, FifoTimePick = 1, FifoTimePut = 1 };
+            this.ItemVolume = new Item { Id = GetNewId(), Code = "Item #3", ManagementType = ItemManagementType.Volume };
+            this.CompartmentType = new CompartmentType
+            {
+                Id = GetNewId(),
+                Depth = 1,
+                Width = 1
+            };
 
             using (var context = this.CreateContext())
             {
@@ -93,6 +102,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 context.Items.Add(this.Item1);
                 context.Items.Add(this.ItemFifo);
                 context.Items.Add(this.ItemVolume);
+                context.CompartmentTypes.Add(this.CompartmentType);
 
                 context.ItemsAreas.Add(new ItemArea { AreaId = this.Area1.Id, ItemId = this.Item1.Id });
                 context.ItemsAreas.Add(new ItemArea { AreaId = this.Area1.Id, ItemId = this.ItemFifo.Id });

@@ -31,7 +31,6 @@ namespace Ferretto.VW.OperatorApp.HelpWindows
 
         private void CustomInputFieldControlFocusable_Loaded(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

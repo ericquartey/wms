@@ -48,6 +48,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Item selectedItem;
 
+        private bool showDetails;
+
         #endregion
 
         #region Constructors
@@ -105,19 +107,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get
             {
-                if (this.Model == null ||
-                    !this.Model.ItemId.HasValue)
+                if (this.Model?.ItemId == null)
                 {
                     return false;
                 }
 
-                if (!this.Model.Stock.HasValue ||
-                    this.Model.Stock.Value <= 0)
-                {
-                    return false;
-                }
-
-                return true;
+                return this.Model.Stock.HasValue && this.Model.Stock.Value > 0;
             }
         }
 
@@ -142,7 +137,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.mode, value))
                 {
-                    this.IsAdd = (this.mode == AppearMode.Add) ? true : false;
+                    this.IsAdd = this.mode == AppearMode.Add;
                 }
             }
         }
@@ -152,6 +147,8 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.selectedItem;
             set => this.SetProperty(ref this.selectedItem, value);
         }
+
+        public bool ShowDetails { get => this.showDetails; set => this.SetProperty(ref this.showDetails, value); }
 
         #endregion
 
@@ -198,10 +195,12 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Title = App.Resources.MasterData.AddCompartment;
                 this.ColorRequired = ColorRequired.CreateMode;
+                this.ShowDetails = false;
             }
             else
             {
                 this.Title = App.Resources.MasterData.EditCompartment;
+                this.ShowDetails = this.Model.HasDetails;
             }
 
             Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;

@@ -28,8 +28,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
             var item2 = new DataModels.Item { Id = 2, Code = "Item #2" };
 
-            var compartmentType = new DataModels.CompartmentType { Id = 1 };
-            var itemCompartmentType = new DataModels.ItemCompartmentType { ItemId = 1, MaxCapacity = 100, CompartmentTypeId = 1 };
+            var compartmentType = new DataModels.CompartmentType { Id = GetNewId() };
+            var itemCompartmentType = new DataModels.ItemCompartmentType
+            {
+                ItemId = GetNewId(),
+                MaxCapacity = 100,
+                CompartmentTypeId = compartmentType.Id
+            };
 
             var compartment1 = new DataModels.Compartment
             {
@@ -38,7 +43,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Sub1 = "S1",
                 Lot = "AAA",
                 LoadingUnitId = this.LoadingUnit1.Id,
-                CompartmentTypeId = 1,
+                CompartmentTypeId = compartmentType.Id,
             };
             var compartment2 = new DataModels.Compartment
             {
@@ -57,7 +62,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Sub2 = "S2",
                 Lot = "BBB",
                 LoadingUnitId = this.LoadingUnit1.Id,
-                CompartmentTypeId = 1,
+                CompartmentTypeId = compartmentType.Id,
             };
             var compartment4 = new DataModels.Compartment
             {
@@ -66,7 +71,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Sub1 = "S1",
                 Sub2 = "S2",
                 LoadingUnitId = this.LoadingUnit1.Id,
-                CompartmentTypeId = 1,
+                CompartmentTypeId = compartmentType.Id,
                 ReservedForPick = 25,
                 ReservedToPut = 10,
             };
@@ -95,14 +100,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #endregion
 
             #region Act
-            var answer = await controller.GetPickAvailabilityAsync(itemId, itemOption);
+
+            var actionResult = await controller.GetPickAvailabilityAsync(itemId, itemOption);
 
             #endregion
 
             #region Assert
 
-            Assert.AreNotEqual(null, answer.Result);
-            var value = ((ObjectResult)answer.Result).Value;
+            Assert.AreNotEqual(null, actionResult.Result);
+            var value = ((ObjectResult)actionResult.Result).Value;
             Assert.AreEqual(outQuantity, value);
 
             #endregion
@@ -120,7 +126,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = GetNewId(), Code = "Item #1" };
 
             ItemDetails existingModel;
 
@@ -257,7 +263,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 this.ServiceProvider.GetService(typeof(IItemAreaProvider)) as IItemAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
+                this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
+                this.ServiceProvider.GetService(typeof(IItemSchedulerService)) as IItemSchedulerService);
         }
 
         #endregion

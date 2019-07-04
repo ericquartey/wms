@@ -25,6 +25,8 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private readonly VW.MachineAutomationService.Hubs.MachineStatus machineStatus;
 
+        private Bay activeBay;
+
         #endregion
 
         #region Constructors
@@ -56,19 +58,17 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         #region Methods
 
-        public async Task CompleteMissionAsync(int missionId, int quantity)
+        public async Task CompleteOperationAsync(int operationId, int quantity)
         {
             try
             {
-                var mission = await this.automationProvider.CompleteMissionAsync(missionId, quantity);
-
+                var operation = await this.automationProvider.CompleteOperationAsync(operationId, quantity);
+                var mission = await this.automationProvider.GetMissionByIdAsync(operation.MissionId);
                 if (mission.BayId.HasValue)
                 {
-                    var loadingUnitId = await this.automationProvider.GetLoadingUnitIdFromMissionAsync(mission);
-
                     Console.Write("Moving tray from bay to elevator ... ");
 
-                    await Task.Delay(1000);
+                    await Task.Delay(2000);
 
                     this.machineStatus
                         .BaysStatus
@@ -76,8 +76,8 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                         .LoadingUnitId = null;
                     await this.machineHub.Clients?.All.LoadingUnitInBayChanged(mission.BayId.Value, null);
 
-                    this.machineStatus.ElevatorStatus.LoadingUnitId = loadingUnitId;
-                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(loadingUnitId);
+                    this.machineStatus.ElevatorStatus.LoadingUnitId = mission.LoadingUnitId;
+                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(mission.LoadingUnitId);
 
                     Console.WriteLine("done.");
 
@@ -89,7 +89,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unable to complete mission with id={missionId}: {ex.Message}");
+                Console.WriteLine($"Unable to complete operation with id={operationId}: {ex.Message}");
                 throw;
             }
         }
@@ -101,37 +101,36 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.automationProvider.ExecuteListAsync(listId, bay.AreaId, bay.Id);
         }
 
-        public async Task ExecuteMissionAsync(int missionId)
+        public async Task ExecuteOperationAsync(int operationId)
         {
             try
             {
-                var mission = await this.automationProvider.ExecuteMissionAsync(missionId);
+                var operation = await this.automationProvider.ExecuteOperationAsync(operationId);
+                var mission = await this.automationProvider.GetMissionByIdAsync(operation.MissionId);
 
                 if (mission.BayId.HasValue)
                 {
-                    var loadingUnitId = await this.automationProvider.GetLoadingUnitIdFromMissionAsync(mission);
-
-                    this.machineStatus.ElevatorStatus.LoadingUnitId = loadingUnitId;
-                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(loadingUnitId);
+                    this.machineStatus.ElevatorStatus.LoadingUnitId = mission.LoadingUnitId;
+                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(mission.LoadingUnitId);
 
                     await this.MoveElevatorAsync(100, 0);
                     Console.Write("Moving tray into bay ... ");
 
-                    await Task.Delay(1000);
+                    await Task.Delay(2000);
                     this.machineStatus.ElevatorStatus.LoadingUnitId = null;
                     await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(null);
 
                     this.machineStatus.BaysStatus
                        .Single(b => b.BayId == mission.BayId.Value)
-                       .LoadingUnitId = loadingUnitId;
-                    await this.machineHub.Clients?.All.LoadingUnitInBayChanged(mission.BayId.Value, loadingUnitId);
+                       .LoadingUnitId = mission.LoadingUnitId;
+                    await this.machineHub.Clients?.All.LoadingUnitInBayChanged(mission.BayId.Value, mission.LoadingUnitId);
 
                     Console.WriteLine("done.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unable to execute mission with id={missionId}: {ex.Message}");
+                Console.WriteLine($"Unable to execute operation with id={operationId}: {ex.Message}");
                 throw;
             }
         }
@@ -143,24 +142,72 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
         {
             var bays = await this.automationProvider.GetBaysAsync(this.machineStatus.MachineId);
 
-            Bay selectedBay = null;
+            this.activeBay = null;
             if (bays.Count() == 1)
             {
-                selectedBay = bays.Single();
+                this.activeBay = bays.Single();
             }
             else
             {
-                selectedBay = Views.PromptForBaySelection(bays);
+                this.activeBay = Views.PromptForBaySelection(bays);
             }
 
-            Console.WriteLine($"Logging to bay: {selectedBay.Description}");
+            Console.WriteLine($"Logging to bay: {this.activeBay.Description}");
 
-            await this.automationProvider.ActivateBayAsync(selectedBay.Id);
+            await this.machineHub.Clients?.All.UserChanged(1, this.activeBay.Id);
         }
 
         private static bool ElevatorReachedTargetPosition(decimal position, decimal startPosition, decimal targetPosition)
         {
             return startPosition > targetPosition ? position <= targetPosition : position >= targetPosition;
+        }
+
+        private async Task AbortMissionOperationAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var abortOperationId = Views.ReadInt("Insert mission operation id:");
+            if (abortOperationId >= 0)
+            {
+                await this.automationProvider.AbortOperationAsync(abortOperationId);
+                Console.WriteLine($"Mission execution request sent.");
+            }
+        }
+
+        private async Task CompleteMissionActionAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var missionId = Views.ReadInt("Insert mission id:");
+            var quantity = Views.ReadInt("Insert mission quantity:");
+            if (missionId >= 0)
+            {
+                if (quantity > 0)
+                {
+                    await this.CompleteOperationAsync(missionId, quantity);
+                }
+                else
+                {
+                    await this.automationProvider.CompleteLoadingUnitMissionAsync(missionId);
+                }
+
+                Console.WriteLine($"Request sent.");
+            }
+        }
+
+        private async Task ExecuteOperationActionAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var operationId = Views.ReadInt("Insert mission operation id:");
+            if (operationId >= 0)
+            {
+                await this.ExecuteOperationAsync(operationId);
+                Console.WriteLine($"Operation execution request sent.");
+            }
         }
 
         private async Task<bool> ExecuteOperationAsync(UserSelection selection)
@@ -174,7 +221,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     break;
 
                 case UserSelection.ExecuteMission:
-                    await this.ExecuteMissionActionAsync();
+                    await this.ExecuteOperationActionAsync();
 
                     break;
 
@@ -193,7 +240,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     {
                         this.machineStatus.Mode = MachineMode.Fault;
 
-                        const int faultCode = 0;
+                        var faultCode = new Random().Next(10000);
 
                         await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, faultCode);
                         break;
@@ -207,7 +254,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     }
 
                 case UserSelection.ExecuteList:
-                    var executeListId = Views.ReadListId();
+                    var executeListId = Views.ReadInt("Insert list id:");
                     if (executeListId >= 0)
                     {
                         await this.ExecuteListAsync(executeListId);
@@ -237,6 +284,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     break;
 
                 case UserSelection.Exit:
+                    await this.LogOutUserAsync();
                     exitRequested = true;
                     break;
 
@@ -255,51 +303,12 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return exitRequested;
         }
 
-        private async Task AbortMissionOperationAsync()
+        private async Task LogOutUserAsync()
         {
-            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
-            Views.PrintMissionsTable(missions);
-
-            var abortMissionId = Views.ReadMissionId();
-            if (abortMissionId >= 0)
+            if (this.activeBay != null)
             {
-                await this.automationProvider.AbortMissionAsync(abortMissionId);
-                Console.WriteLine($"Mission execution request sent.");
-            }
-        }
-
-        private async Task ExecuteMissionActionAsync()
-        {
-            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
-            Views.PrintMissionsTable(missions);
-
-            var executeMissionId = Views.ReadMissionId();
-            if (executeMissionId >= 0)
-            {
-                await this.ExecuteMissionAsync(executeMissionId);
-                Console.WriteLine($"Mission execution request sent.");
-            }
-        }
-
-        private async Task CompleteMissionActionAsync()
-        {
-            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
-            Views.PrintMissionsTable(missions);
-
-            var missionId = Views.ReadMissionId();
-            var quantity = Views.ReadQuantity();
-            if (missionId >= 0)
-            {
-                if (quantity > 0)
-                {
-                    await this.CompleteMissionAsync(missionId, quantity);
-                }
-                else
-                {
-                    await this.automationProvider.CompleteLoadingUnitMissionAsync(missionId);
-                }
-
-                Console.WriteLine($"Request sent.");
+                await this.machineHub.Clients?.All.UserChanged(null, this.activeBay.Id);
+                this.activeBay = null;
             }
         }
 
@@ -314,7 +323,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 this.machineStatus.ElevatorStatus.Position = position;
                 await this.machineHub.Clients?.All.ElevatorPositionChanged(position);
 
-                await Task.Delay(50);
+                await Task.Delay(70);
                 Console.Write($".");
 
                 position += increment;

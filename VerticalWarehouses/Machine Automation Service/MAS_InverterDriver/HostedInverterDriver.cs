@@ -92,7 +92,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator,
+        public HostedInverterDriver(
+            IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
             IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
@@ -298,7 +299,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task NotificationReceiveTaskFunction()
@@ -394,7 +396,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task ReceiveInverterData()
@@ -500,7 +503,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.EvaluateReadMessage(currentMessage, inverterIndex);
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task SendInverterCommand()
@@ -544,7 +548,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                             break;
                     }
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void SendOperationErrorMessage(IFieldMessageData messageData, FieldMessageType type)

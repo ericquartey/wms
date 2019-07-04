@@ -7,12 +7,11 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="688"
+    
+    <Grid Width="1024" Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200"
-               Height="60"
+        <Image Width="200" Height="60"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
@@ -63,7 +62,7 @@
                   Content="{x:Static res:OperatorApp.ImmediateDrawerCallDrawerCall}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Cassetto bloccato."
                                                LabelText="{x:Static res:OperatorApp.CommonNote}"/>
         
@@ -131,7 +130,6 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallDrawerCall}" />
-                    <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
 
     </Grid>
 </UserControl>

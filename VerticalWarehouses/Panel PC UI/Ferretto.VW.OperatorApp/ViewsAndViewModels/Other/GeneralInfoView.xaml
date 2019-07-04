@@ -14,16 +14,16 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,40,0,0" MaxWidth="500"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.GeneralInfoHeader}" />
-        
+
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,100,0,0" MaxWidth="300"
                                                ContentText="VRT EF 84 L 990-BIS H 6345"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoModel}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,320,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,260,0,0" MaxWidth="300"
                                                ContentText="2017-02-12"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoInstallationDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,170,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,160,0,0" MaxWidth="300"
                                                ContentText="54"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoTotDrawers}"/>
 
@@ -31,21 +31,33 @@
                                                ContentText="VW_190012"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoSerial}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,170,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,160,0,0" MaxWidth="300"
                                                ContentText="1.1.01 Beta"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoSwRelease}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,320,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,260,0,0" MaxWidth="300"
                                                ContentText="2019-03-05"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoNextMaintenanceDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,390,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,320,0,0" MaxWidth="300"
                                                ContentText="2018-03-05"
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoLastMaintenanceDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,390,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,320,0,0" MaxWidth="300"
                                                ContentText="Manutenzione richiesta."
                                                LabelText="{x:Static Resources:OperatorApp.GeneralInfoOperativeStatus}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="130,420,0,0" MaxWidth="300"
+                                               ContentText="WMS in linea."
+                                               LabelText="{x:Static Resources:OperatorApp.GeneralInfoWmsStatus}"/>
+
+        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Margin="90,426,0,0"
+                   Width="25" Height="25"
+                   Fill="Green"  />
+
+        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,326,0,0"
+                   Width="25" Height="25"
+                   Fill="Red"  />
 
     </Grid>
 </UserControl>

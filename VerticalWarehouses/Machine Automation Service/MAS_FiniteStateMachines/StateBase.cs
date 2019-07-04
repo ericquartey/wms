@@ -4,7 +4,6 @@ using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public abstract class StateBase : IState

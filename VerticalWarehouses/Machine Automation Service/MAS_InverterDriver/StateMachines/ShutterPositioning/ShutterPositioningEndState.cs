@@ -53,7 +53,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            var endNotification = new FieldNotificationMessage(this.shutterPositionData,
+            var endNotification = new FieldNotificationMessage(
+                this.shutterPositionData,
                 "Shutter Positioning complete",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

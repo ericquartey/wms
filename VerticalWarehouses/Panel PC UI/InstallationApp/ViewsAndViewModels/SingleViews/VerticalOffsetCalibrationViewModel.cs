@@ -159,6 +159,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 const string Category = "OffsetCalibration";
                 this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
+
                 //TEMP temporary commented because there is not a cell map
                 //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
                 this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();

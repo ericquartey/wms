@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Editors;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 
@@ -54,10 +55,17 @@ namespace Ferretto.WMS.App.Controls
 
         private void OnMouseDown(MouseDownInfo mouseDownInfo)
         {
-            if (mouseDownInfo.OriginalSource is UIElement baseEdit)
+            if (mouseDownInfo.OriginalSource is UIElement uiElement &&
+                this.EnableCorrection)
             {
-                var spineditParent = LayoutTreeHelper.GetVisualParents(baseEdit).OfType<SpinEdit>().FirstOrDefault();
-                if (this.EnableCorrection && spineditParent == null)
+                if (LayoutTreeHelper.GetVisualParents(uiElement).OfType<SpinEdit>().FirstOrDefault() != null)
+                {
+                    if (LayoutTreeHelper.GetVisualParents((DependencyObject)mouseDownInfo.OriginalSource).OfType<ButtonsControl>().FirstOrDefault() != null)
+                    {
+                        this.ApplyCorrection();
+                    }
+                }
+                else
                 {
                     this.ApplyCorrection();
                 }

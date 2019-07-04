@@ -4,8 +4,8 @@ using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisStartHomingState : InverterStateBase
@@ -60,8 +60,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             {
                 currentStatus.HomingControlWord.HomingOperation = true;
             }
-            //TODO complete type failure check
 
+            //TODO complete type failure check
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value);
 
             this.logger.LogTrace($"1:inverterMessage={inverterMessage}");

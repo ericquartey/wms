@@ -2,7 +2,6 @@
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.Common_Utils.Messages
 {
     public class NotificationMessage
@@ -13,7 +12,8 @@ namespace Ferretto.VW.Common_Utils.Messages
         {
         }
 
-        public NotificationMessage(IMessageData data,
+        public NotificationMessage(
+            IMessageData data,
             string description,
             MessageActor destination,
             MessageActor source,

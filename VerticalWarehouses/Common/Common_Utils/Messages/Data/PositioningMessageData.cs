@@ -2,7 +2,6 @@
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
     public class PositioningMessageData : IPositioningMessageData
@@ -13,8 +12,17 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         {
         }
 
-        public PositioningMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration,
-            decimal deceleration, int numberCycles, decimal lowerBound, decimal upperBound, decimal resolution,
+        public PositioningMessageData(
+            Axis axisMovement,
+            MovementType movementType,
+            decimal target,
+            decimal speed,
+            decimal acceleration,
+            decimal deceleration,
+            int numberCycles,
+            decimal lowerBound,
+            decimal upperBound,
+            decimal resolution,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;

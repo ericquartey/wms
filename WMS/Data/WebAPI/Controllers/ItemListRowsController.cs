@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        private readonly ISchedulerService schedulerService;
+        private readonly IItemListSchedulerService schedulerService;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            ISchedulerService schedulerService,
+            IItemListSchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
         {
             this.logger = logger;

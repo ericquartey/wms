@@ -158,7 +158,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 this.ServiceProvider.GetService(typeof(IItemAreaProvider)) as IItemAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
+                this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
+                this.ServiceProvider.GetService(typeof(IItemSchedulerService)) as IItemSchedulerService);
         }
 
         #endregion

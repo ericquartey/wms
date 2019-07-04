@@ -112,9 +112,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentFifoStartDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? FifoStartDate { get; set; }
-
         [Required]
         [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
         public double? Depth
@@ -122,6 +119,22 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.depth;
 
             set => this.SetProperty(ref this.depth, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentFifoStartDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? FifoStartDate { get; set; }
+
+        public bool HasDetails
+        {
+            get
+            {
+                if (this.Lot != null || this.MaterialStatusId != null || this.Sub1 != null || this.Sub2 != null || this.PackageTypeId != null || this.RegistrationNumber != null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]

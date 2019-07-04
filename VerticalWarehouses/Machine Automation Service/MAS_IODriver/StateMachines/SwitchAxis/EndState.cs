@@ -4,8 +4,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
     public class EndState : IoStateBase
@@ -60,8 +60,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         public override void Start()
         {
             var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
-            var endNotification = new FieldNotificationMessage(messageData, "Motor Switch complete", FieldMessageActor.Any,
-                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
+            var endNotification = new FieldNotificationMessage(
+                messageData,
+                "Motor Switch complete",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.SwitchAxis,
+                MessageStatus.OperationEnd);
 
             this.logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

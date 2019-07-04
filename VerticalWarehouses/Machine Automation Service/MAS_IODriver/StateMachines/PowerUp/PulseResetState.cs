@@ -1,12 +1,15 @@
 ﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
     public class PulseResetState : IoStateBase
     {
         #region Fields
+
+        private readonly IoIndex index;
 
         private readonly ILogger logger;
 
@@ -14,19 +17,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private bool disposed;
 
-        private IoSHDStatus status;
+        private readonly IoSHDStatus status;
 
         #endregion
 
         #region Constructors
 
-        public PulseResetState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public PulseResetState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
+            this.index = index;
             this.ackResetSecurityON = false;
         }
 
@@ -49,7 +53,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (message.ValidOutputs && !message.ResetSecurity)
             {
-                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.index, this.logger));
             }
         }
 
@@ -69,7 +73,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (this.ackResetSecurityON && checkMessage)
             {
-                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.index, this.logger));
             }
         }
 

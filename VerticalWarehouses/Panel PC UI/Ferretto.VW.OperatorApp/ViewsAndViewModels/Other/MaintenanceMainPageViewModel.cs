@@ -7,6 +7,10 @@ using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.CustomControls.Controls;
+using System.Collections.ObjectModel;
+using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.CustomControls.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
@@ -14,11 +18,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
+        private IUnityContainer container;
+
+        private BindableBase dataGridViewModel;
+
+        private CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
+
         private IEventAggregator eventAggregator;
+
+        private ObservableCollection<DataGridKit> kits;
 
         private ICommand maintenanceDetailButtonCommand;
 
-        private IUnityContainer container;
+        private DataGridKit selectedKit;
 
         #endregion
 
@@ -33,6 +45,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #endregion
 
         #region Properties
+
+        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand MaintenanceDetailButtonCommand => this.maintenanceDetailButtonCommand ?? (this.maintenanceDetailButtonCommand = new DelegateCommand(() =>
         {
@@ -50,9 +64,30 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             // TODO
         }
 
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
+            this.dataGridViewModelRef = this.container.Resolve<ICustomControlMaintenanceDataGridViewModel>() as CustomControlMaintenanceDataGridViewModel;
+        }
+
         public async Task OnEnterViewAsync()
         {
-            // TODO
+            var random = new Random();
+            this.kits = new ObservableCollection<DataGridKit>();
+            for (int i = 0; i < random.Next(3, 30); i++)
+            {
+                this.kits.Add(new DataGridKit
+                {
+                    Kit = $"Kit {i}",
+                    Description = $"Kit number {i}",
+                    State = $"State",
+                    Request = "Request"
+                }
+                );
+            }
+            this.dataGridViewModelRef.Kits = this.kits;
+            this.dataGridViewModelRef.SelectedKit = this.kits[0];
+            this.DataGridViewModel = this.dataGridViewModelRef;
         }
 
         public void SubscribeMethodToEvent()

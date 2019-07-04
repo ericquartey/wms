@@ -417,9 +417,9 @@
     <value>Compaction drawer procedure</value>
     <comment>Page Header</comment>
   </data>
-  <data name="DrawerCompactingSide" xml:space="preserve">
-    <value>Side:</value>
-    <comment>Label text</comment>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+    <comment>Section header</comment>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
     <value>Fragments quantity:</value>
@@ -487,34 +487,6 @@
   <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
     <value>StatisticsGeneralDataUtilization</value>
     <comment>Progress bar label text</comment>
-  </data>
-  <data name="ItemStatisticsViewHeader" xml:space="preserve">
-    <value>ItemStatisticsViewHeader</value>
-    <comment>Page header</comment>
-  </data>
-  <data name="ItemStatisticsViewItemA" xml:space="preserve">
-    <value>ItemStatisticsViewItemA</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewItemB" xml:space="preserve">
-    <value>ItemStatisticsViewItemB</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewItemC" xml:space="preserve">
-    <value>ItemStatisticsViewItemC</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewTotalItemsStored" xml:space="preserve">
-    <value>ItemStatisticsViewTotalItemsStored</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewTotalMovements" xml:space="preserve">
-    <value>ItemStatisticsViewTotalMovements</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemStatisticsViewUpdate" xml:space="preserve">
-    <value>ItemStatisticsViewUpdate</value>
-    <comment>Button text</comment>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
     <value>DrawerSpaceSaturazionHeader</value>
@@ -700,9 +672,6 @@
     <value>StatisticsNavigationErrors</value>
     <comment>Button text</comment>
   </data>
-  <data name="ItemSearchChangeSearch" xml:space="preserve">
-    <value>ItemSearchChangeSearch</value>
-  </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>Refilling operation</value>
     <comment>Page header</comment>
@@ -829,6 +798,278 @@
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
     <value>ItemDetailWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Tot Back</value>
+    <comment>Tot Post</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>Tot Back %</value>
+    <comment>Tot Post %</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Tot Front</value>
+    <comment>Tot Ant</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>Tot Front %</value>
+    <comment>Tot Ant %</comment>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>State</value>
+    <comment>Stato</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Compartments</value>
+    <comment>Compartimenti</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Drawer Id</value>
+    <comment>Id Cassetto</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Filling</value>
+    <comment>Riempimento</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Filling %</value>
+    <comment>Riempimento %</comment>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Missions</value>
+    <comment>Missioni</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Cell</value>
+    <comment>Cella</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Drawer</value>
+    <comment>Cassetto</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Height</value>
+    <comment>Altezza</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Side</value>
+    <comment>Lato</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>State</value>
+    <comment>Stato</comment>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Weight</value>
+    <comment>Peso</comment>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Errore</comment>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Total</value>
+    <comment>Totale</comment>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Total %</value>
+    <comment>Totale %</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>List</value>
+    <comment>Lista</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Machines</value>
+    <comment>Macchine</comment>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Type</value>
+    <comment>Tipo</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Kit</value>
+    <comment>Kit</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Request</value>
+    <comment>Richiesta</comment>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>State</value>
+    <comment>Stato</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Current gross weight</value>
+    <comment>Peso lordo corrente</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Drawer</value>
+    <comment>Cassetto</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Height</value>
+    <comment>Altezza</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Max %</value>
+    <comment>Max %</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Max weight</value>
+    <comment>Peso massimo</comment>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Tare</value>
+    <comment>Tara</comment>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Element</value>
+    <comment>Elemento</comment>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Quantità</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Descrizione</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Item</value>
+    <comment>Articolo</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Machine</value>
+    <comment>Macchina</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Quantità</comment>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Row</value>
+    <comment>Riga</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
+    <value>Class</value>
+    <comment>Classe</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderItemPercentage" xml:space="preserve">
+    <value>Item %</value>
+    <comment>Articolo %</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderItemQuantity" xml:space="preserve">
+    <value>Item quantity</value>
+    <comment>Quantità articolo</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderMovementsPercentage" xml:space="preserve">
+    <value>Movements %</value>
+    <comment>Movimenti %</comment>
+  </data>
+  <data name="StatisticsItemDataGridHeaderMovementsQuantity" xml:space="preserve">
+    <value>Movementes quantity</value>
+    <comment>Numero movimenti</comment>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>StatisticsNavigationMachine</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>MachineStatisticsHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>MachineStatisticsSectionVertical</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionVerticalTotalKm" xml:space="preserve">
+    <value>MachineStatisticsSectionVerticalTotalKm</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionVerticalTotalCycles" xml:space="preserve">
+    <value>MachineStatisticsSectionVerticalTotalCycles</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>MachineStatisticsSectionShutters</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter1" xml:space="preserve">
+    <value>MachineStatisticsSectionShutterShutter1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter2" xml:space="preserve">
+    <value>MachineStatisticsSectionShutterShutter2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter3" xml:space="preserve">
+    <value>MachineStatisticsSectionShutterShutter3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionOrizzontal" xml:space="preserve">
+    <value>MachineStatisticsSectionOrizzontal</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionOrizzontalTotalCycles" xml:space="preserve">
+    <value>MachineStatisticsSectionOrizzontalTotalCycles</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>MachineStatisticsSectionBays</value>
+    <comment>Section header</comment>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>MachineStatisticsSectionBaysBay1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>MachineStatisticsSectionBaysBay2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>MachineStatisticsSectionBaysBay3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>ItemSearchGridItem</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>ItemSearchGridDescription</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>ItemSearchGridMachine</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+    <comment>Section Header</comment>
+  </data>
+  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
+    <value>MaintenanceDetailHeaderKit</value>
+    <comment>Page header object</comment>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>CommonListType</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>GeneralInfoWmsStatus</value>
     <comment>Label text</comment>
   </data>
 </root>

@@ -22,20 +22,17 @@ namespace Ferretto.VW.CustomControls.Behaviours
 
         private void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is DataGrid dataGrid)
+            if (sender is DataGrid dataGrid && dataGrid?.SelectedItem != null)
             {
-                if (dataGrid.SelectedItem != null)
-                {
-                    dataGrid.Dispatcher.BeginInvoke(
-                        (Action)(() =>
+                dataGrid.Dispatcher.BeginInvoke(
+                    (Action)(() =>
+                    {
+                        dataGrid.UpdateLayout();
+                        if (dataGrid.SelectedItem != null)
                         {
-                            dataGrid.UpdateLayout();
-                            if (dataGrid.SelectedItem != null)
-                            {
-                                dataGrid.ScrollIntoView(dataGrid.SelectedItem);
-                            }
-                        }));
-                }
+                            dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        }
+                    }));
             }
         }
 

@@ -47,5 +47,5 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Machine Automation Service'
   inputs:
-    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/publish'
+    PathtoPublish: 'VerticalWarehouses/Machine Automation Service/MAS_AutomationService/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win10-x64/publish'
     ArtifactName: 'automation_service'

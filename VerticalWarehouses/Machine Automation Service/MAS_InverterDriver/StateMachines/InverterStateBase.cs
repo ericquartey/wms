@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public abstract class InverterStateBase : IInverterState

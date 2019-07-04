@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             this.logger.LogTrace("1:Method Start");
 
-            var returnStringValue = "";
+            var returnStringValue = string.Empty;
             RuntimeValue primaryRuntimeValue;
 
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.String))

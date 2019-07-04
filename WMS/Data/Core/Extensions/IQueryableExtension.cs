@@ -201,7 +201,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 filteredItems = filteredItems.Skip(skipValue);
             }
 
-            var takeValue = take < 0 ? int.MaxValue : take;
+            var takeValue = take <= 0 ? int.MaxValue : take;
             if (takeValue != int.MaxValue)
             {
                 filteredItems = filteredItems.Take(takeValue);

@@ -1,15 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.InstallationApp
 {
+    using System.Windows;
+    using System.Windows.Input;
+    using Ferretto.VW.InstallationApp.Resources;
+    using Ferretto.VW.InstallationApp.Resources.Enumerables;
+    using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void ClickedOnMachineOnMarchEvent();
@@ -39,6 +39,8 @@ namespace Ferretto.VW.InstallationApp
         private bool isPopupOpen;
 
         private Visibility isServiceViewButtonVisible;
+
+        private string loggedUser;
 
         private bool machineModeSelectionBool;
 
@@ -105,6 +107,8 @@ namespace Ferretto.VW.InstallationApp
 
         public Visibility IsServiceViewButtonVisible { get => this.isServiceViewButtonVisible; set => this.SetProperty(ref this.isServiceViewButtonVisible, value); }
 
+        public string LoggedUser { get => this.loggedUser; set => this.SetProperty(ref this.loggedUser, value); }
+
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 
         public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
@@ -149,7 +153,8 @@ namespace Ferretto.VW.InstallationApp
             false,
             message => message.Type == InstallationApp_EventMessageType.EnterView);
 
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) =>
             {
                 this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
                 this.ExitViewButtonRegionCurrentViewModel = null;
@@ -159,7 +164,8 @@ namespace Ferretto.VW.InstallationApp
             false,
             message => message.Type == InstallationApp_EventMessageType.ExitView);
 
-            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
+                (message) =>
             {
                 this.IsErrorViewButtonVisible = Visibility.Visible;
             },

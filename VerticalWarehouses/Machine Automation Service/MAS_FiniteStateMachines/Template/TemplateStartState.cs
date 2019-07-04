@@ -6,8 +6,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 {
     public class TemplateStartState : StateBase
@@ -80,7 +80,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         public override void Start()
         {
             var commandMessageData = new SwitchAxisFieldMessageData(this.axisToCalibrate);
-            var commandMessage = new FieldCommandMessage(commandMessageData,
+            var commandMessage = new FieldCommandMessage(
+                commandMessageData,
                 $"Switch Axis {this.axisToCalibrate}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,

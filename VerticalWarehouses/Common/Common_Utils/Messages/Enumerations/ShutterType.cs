@@ -6,6 +6,6 @@
 
         Shutter2Type = 1,
 
-        Shutter3Type =2
+        Shutter3Type = 2
     }
 }
