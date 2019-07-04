@@ -121,23 +121,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             return returnValue;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void OnDisposing()
         {
             this.requestStatusWordMessageTimer?.Dispose();
             this.requestStatusWordMessageTimer = null;
-
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         private void RequestStatusWordMessage(object state)
