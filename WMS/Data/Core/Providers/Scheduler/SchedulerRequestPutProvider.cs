@@ -119,6 +119,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     await this.CompileRequestDataAsync(itemOptions, row, previousRowRequestPriority, compartmentSet, qualifiedRequest);
 
                     qualifiedRequest.RequestedQuantity = Math.Min(compartmentSet.RemainingCapacity, itemOptions.RequestedQuantity);
+
+                    System.Diagnostics.Debug.Assert(
+                        qualifiedRequest.RequestedQuantity > 0,
+                        "The requested quantity should always be positive");
+
                     itemOptions.RequestedQuantity -= qualifiedRequest.RequestedQuantity;
 
                     qualifiedRequests.Add(qualifiedRequest);
@@ -183,7 +188,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var compartmentSet in compartmentSets)
             {
-                if (selectedSets.Sum(s => s.RemainingCapacity) < requestedQuantity)
+                if (selectedSets.Sum(s => s.RemainingCapacity) < requestedQuantity
+                    && compartmentSet.RemainingCapacity > 0)
                 {
                     selectedSets.Add(compartmentSet);
                 }
@@ -299,10 +305,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                         FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now)
                     });
 
+            System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): A total of {aggregatedCompartments.Count()} compartment sets match the request.");
+
             var aggregatedRequests = this.DataContext.SchedulerRequests
                 .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
 
-            return aggregatedCompartments
+            System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): There are {aggregatedRequests.Count()} accepted requests for the same item.");
+
+            var compartmentSets = aggregatedCompartments
             .GroupJoin(
                 aggregatedRequests,
                 c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
@@ -325,6 +335,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                 RegistrationNumber = g.c.RegistrationNumber,
                 FifoStartDate = g.c.FifoStartDate
             });
+
+            System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): There is a total of {compartmentSets.Sum(c => c.Availability)} availability in the identified sets.");
+            System.Diagnostics.Debug.WriteLine(
+                string.Join(
+                    Environment.NewLine,
+                    compartmentSets.Select(
+                        c => string.Format(
+                                "Availability={0}, Sub1='{1}', Sub2='{2}', Lot='{3}', PackageTypeId={4}, MaterialStatusId={5}, RegistrationNumber='{6}'",
+                                c.Availability,
+                                c.Sub1,
+                                c.Sub2,
+                                c.Lot,
+                                c.PackageTypeId,
+                                c.MaterialStatusId,
+                                c.RegistrationNumber))));
+
+            return compartmentSets;
         }
 
         #endregion

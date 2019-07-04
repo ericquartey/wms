@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Utils;
+﻿using System.Collections.Generic;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -8,6 +9,8 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Properties
 
         public string Name { get; set; }
+
+        public IEnumerable<Bay> Bays { get; set; }
 
         #endregion
     }

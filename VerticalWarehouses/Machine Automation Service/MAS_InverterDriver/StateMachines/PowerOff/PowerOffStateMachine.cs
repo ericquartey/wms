@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 {
     public class PowerOffStateMachine : InverterStateMachineBase

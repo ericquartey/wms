@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Controls
 
         #region Methods
 
-        protected abstract Task LoadDataAsync();
+        protected abstract Task LoadDataAsync(ModelChangedPubSubEvent e);
 
         protected override void OnDispose()
         {
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
-                        async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
+                        async eventArgs => { await this.LoadDataAsync(eventArgs).ConfigureAwait(true); },
                         true,
                         e => attributes.Any(a =>
                             a.ResourceName == e.ResourceName));

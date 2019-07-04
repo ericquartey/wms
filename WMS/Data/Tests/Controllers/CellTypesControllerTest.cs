@@ -21,10 +21,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var cellType1 = new Common.DataModels.CellType { Id = 1, Description = "Cell Type #1" };
-            var cellType2 = new Common.DataModels.CellType { Id = 2, Description = "Cell Type #2" };
-            var cellType3 = new Common.DataModels.CellType { Id = 3, Description = "Cell Type #3" };
-            var cellType4 = new Common.DataModels.CellType { Id = 4, Description = "Cell Type #4" };
+            var cellType1 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #1" };
+            var cellType2 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #2" };
+            var cellType3 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #3" };
+            var cellType4 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #4" };
             using (var context = this.CreateContext())
             {
                 context.CellTypes.Add(cellType1);
@@ -81,10 +81,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var cellType1 = new Common.DataModels.CellType { Id = 1, Description = "Cell Type #1" };
-            var cellType2 = new Common.DataModels.CellType { Id = 2, Description = "Cell Type #2" };
-            var cellType3 = new Common.DataModels.CellType { Id = 3, Description = "Cell Type #3" };
-            var cellType4 = new Common.DataModels.CellType { Id = 4, Description = "Cell Type #4" };
+            var cellType1 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #1" };
+            var cellType2 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #2" };
+            var cellType3 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #3" };
+            var cellType4 = new Common.DataModels.CellType { Id = GetNewId(), Description = "Cell Type #4" };
 
             using (var context = this.CreateContext())
             {

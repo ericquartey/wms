@@ -66,9 +66,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         }
 
         [TestMethod]
-        [DataRow(1)]
-        [DataRow(2)]
-        public async Task GetByIdAsync_Found(int aisleId)
+        public async Task GetByIdAsync_Found()
         {
             #region Arrange
 
@@ -78,7 +76,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(aisleId);
+            var actionResult = await controller.GetByIdAsync(this.Aisle1.Id);
 
             #endregion
 
@@ -86,7 +84,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
             var result = (Aisle)((OkObjectResult)actionResult.Result).Value;
-            Assert.AreEqual(aisleId, result.Id);
+            Assert.AreEqual(this.Aisle1.Id, result.Id);
 
             #endregion
         }
@@ -124,28 +122,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult1 = await controller.GetCellsAsync(1);
-            var actionResult2 = await controller.GetCellsAsync(2);
-            var actionResult3 = await controller.GetCellsAsync(3);
+            var actionResult1 = await controller.GetCellsAsync(this.Aisle1.Id);
+            var actionResult2 = await controller.GetCellsAsync(this.Aisle2.Id);
+            var actionResult3 = await controller.GetCellsAsync(this.Aisle3.Id);
 
             #endregion
 
             #region Assert
 
             Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-            var result1 = (IEnumerable<Cell>)((OkObjectResult)actionResult1.Result).Value;
+            var result1 = ((OkObjectResult)actionResult1.Result).Value as IEnumerable<Cell>;
             Assert.IsNotNull(result1.SingleOrDefault(c => c.Id == this.Cell1.Id));
             Assert.IsNotNull(result1.SingleOrDefault(c => c.Id == this.Cell2.Id));
 
             Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
-            var result2 = (IEnumerable<Cell>)((OkObjectResult)actionResult2.Result).Value;
+            var result2 = ((OkObjectResult)actionResult2.Result).Value as IEnumerable<Cell>;
             Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell3.Id));
             Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell4.Id));
             Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell5.Id));
             Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell6.Id));
 
             Assert.IsInstanceOfType(actionResult3.Result, typeof(OkObjectResult));
-            var result3 = (IEnumerable<Cell>)((OkObjectResult)actionResult3.Result).Value;
+            var result3 = ((OkObjectResult)actionResult3.Result).Value as IEnumerable<Cell>;
             Assert.AreEqual(0, result3.Count());
 
             #endregion

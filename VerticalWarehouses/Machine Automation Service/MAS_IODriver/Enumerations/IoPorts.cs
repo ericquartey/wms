@@ -2,7 +2,7 @@
 {
     public enum IoPorts
     {
-        //INFO Outputs
+        #region Outputs
 
         ResetSecurity = 0,
 
@@ -18,7 +18,9 @@
 
         ReadyWarehouseRobot = 7,
 
-        //INFO Inputs
+        #endregion
+
+        #region Inputs
 
         NormalState = 0,
 
@@ -47,5 +49,7 @@
         HookTrolley = 14,
 
         FinePickingRobot = 15
+
+        #endregion
     }
 }

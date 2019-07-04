@@ -1,19 +1,19 @@
 ﻿using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
     public class ClearOutputsState : IoStateBase
     {
         #region Fields
 
+        private readonly IoIndex index;
+
         private readonly ILogger logger;
 
         private readonly IoSHDStatus status;
-
-        private readonly IoIndex index;
 
         private bool disposed;
 

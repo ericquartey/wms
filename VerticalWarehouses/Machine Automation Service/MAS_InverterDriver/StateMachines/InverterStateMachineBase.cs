@@ -7,8 +7,8 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
     public abstract class InverterStateMachineBase : IInverterStateMachine
@@ -24,7 +24,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         private const int CONTROL_WORD_TIMEOUT = 5000;
 
         //private readonly Timer controlWordCheckTimer;
-
         private bool disposed;
 
         #endregion
@@ -34,6 +33,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         protected InverterStateMachineBase(ILogger logger)
         {
             this.Logger = logger;
+
             //this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
         }
 
@@ -123,7 +123,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         private void ControlWordCheckTimeout(object state)
         {
             //this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
-            var errorNotification = new FieldNotificationMessage(null,
+            var errorNotification = new FieldNotificationMessage(
+                null,
                 "Control Word set timeout",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -132,6 +133,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
                 ErrorLevel.Error);
 
             this.PublishNotificationEvent(errorNotification);
+
             //TODO move current FSM to relevant EndState (Backlog item 2646)
         }
 

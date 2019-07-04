@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Unity;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.InstallationApp
 {
+    using System.Threading.Tasks;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class SSMainViewModel : BindableBase, ISSMainViewModel, IViewModelRequiresContainer
     {
         #region Fields

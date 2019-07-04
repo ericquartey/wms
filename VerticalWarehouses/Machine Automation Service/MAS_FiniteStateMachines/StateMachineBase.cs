@@ -5,8 +5,8 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public abstract class StateMachineBase : IStateMachine
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-            lock (CurrentState)
+            lock (this.CurrentState)
             {
                 this.CurrentState = newState;
                 this.CurrentState.Start();

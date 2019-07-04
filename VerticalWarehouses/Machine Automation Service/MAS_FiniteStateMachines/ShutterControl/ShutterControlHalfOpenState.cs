@@ -117,7 +117,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             //TEMP Send a command to move the shutter
             // - Open position, if movementDirection field is Up
             // - Close position, if movementDirection field is Down
-
             var shutterPositionTarget = ShutterPosition.None;
             switch (this.movementDirection)
             {

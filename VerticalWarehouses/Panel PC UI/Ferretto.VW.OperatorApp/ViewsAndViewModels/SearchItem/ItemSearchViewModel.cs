@@ -1,22 +1,22 @@
-﻿using System.Threading.Tasks;
-using System;
-using System.Windows.Input;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-using Ferretto.VW.CustomControls;
-using System.Collections.ObjectModel;
-using System.Threading;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Ferretto.VW.CustomControls;
+    using Ferretto.VW.CustomControls.Controls;
+    using Ferretto.VW.CustomControls.Interfaces;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+    using Ferretto.VW.WmsCommunication.Interfaces;
+    using Ferretto.WMS.Data.WebAPI.Contracts;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class ItemSearchViewModel : BindableBase, IItemSearchViewModel
     {
         #region Fields

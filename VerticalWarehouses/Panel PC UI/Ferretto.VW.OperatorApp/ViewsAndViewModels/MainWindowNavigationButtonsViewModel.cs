@@ -1,20 +1,20 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
-using Prism.Mvvm;
-using System.Windows.Input;
-using Prism.Commands;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Unity;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+    using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+    using Ferretto.WMS.Data.WebAPI.Contracts;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class MainWindowNavigationButtonsViewModel : BindableBase, IMainWindowNavigationButtonsViewModel
     {
         #region Fields

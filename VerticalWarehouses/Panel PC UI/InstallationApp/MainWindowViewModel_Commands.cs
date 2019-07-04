@@ -1,16 +1,16 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using Ferretto.VW.InstallationApp.Interfaces;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Unity;
-using Prism.Commands;
-using Prism.Mvvm;
-using Ferretto.VW.Utils.Interfaces;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.InstallationApp
 {
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+    using Ferretto.VW.InstallationApp.Interfaces;
+    using Ferretto.VW.InstallationApp.Resources;
+    using Ferretto.VW.InstallationApp.Resources.Enumerables;
+    using Ferretto.VW.Utils.Interfaces;
+    using Prism.Commands;
+    using Prism.Mvvm;
+    using Unity;
+
     public partial class MainWindowViewModel
     {
         #region Fields

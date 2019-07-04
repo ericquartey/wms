@@ -9,7 +9,6 @@ using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -158,14 +157,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await base.OnAppearAsync().ConfigureAwait(true);
         }
 
-        private async void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)
+        private void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)
         {
             this.HideSidePanel();
 
             if (e.IsCanceled == false)
             {
                 this.SelectedCompartmentTray = null;
-                await this.LoadDataAsync();
 
                 switch (e.Model)
                 {

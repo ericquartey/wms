@@ -13,7 +13,6 @@ queue:
 trigger:
   branches:
     include:
-    - master
     - release/*
 
 variables:
