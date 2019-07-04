@@ -27,13 +27,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public DateTime? FifoStartDate { get; set; }
-
-        public bool HasRotation { get; set; }
-
         [Required]
         [Positive]
         public double? Depth { get; set; }
+
+        public DateTime? FifoStartDate { get; set; }
+
+        public bool HasRotation { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 
@@ -64,7 +64,16 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public double? MaxCapacity { get; set; }
 
+        [PositiveOrZero]
+        public int OtherMissionOperationCount { get; set; }
+
         public int? PackageTypeId { get; set; }
+
+        [PositiveOrZero]
+        public int PickMissionOperationCount { get; set; }
+
+        [PositiveOrZero]
+        public int PutMissionOperationCount { get; set; }
 
         public string RegistrationNumber { get; set; }
 
