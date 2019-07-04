@@ -83,14 +83,14 @@ namespace Ferretto.VW.SQLiteTarget
             this.logConnection = new SQLiteConnection($"Data Source={this.DbName};Version=3");
             this.logConnection.Open();
 
-            string sqlQuery = @"SELECT name FROM sqlite_master WHERE type='table' AND name='LogEntries'";
+            var sqlQuery = @"SELECT name FROM sqlite_master WHERE type='table' AND name='LogEntries'";
             object checkResult = null;
             try
             {
                 var checkCommand = new SQLiteCommand(sqlQuery, this.logConnection);
                 checkResult = checkCommand.ExecuteScalar();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.logConnection.Close();
                 this.logConnection = null;
@@ -98,14 +98,14 @@ namespace Ferretto.VW.SQLiteTarget
 
             if (checkResult == null)
             {
-                string sqlCommand =
+                var sqlCommand =
                     @"CREATE TABLE 'LogEntries' ( 'Exception' TEXT NULL, 'Level' TEXT NULL, 'LogEntryID' INTEGER NOT NULL CONSTRAINT 'PK_LogEntries' PRIMARY KEY AUTOINCREMENT, 'LoggerName' TEXT NULL, 'Message' TEXT NULL, 'TimeStamp' TEXT NOT NULL)";
                 try
                 {
                     var createTableCommand = new SQLiteCommand(sqlCommand, this.logConnection);
                     createTableCommand.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     this.logConnection.Close();
                     this.logConnection = null;

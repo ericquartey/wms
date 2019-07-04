@@ -20,15 +20,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IInverterShutterPositioningFieldMessageData shutterPositionData, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus,
-              IEventAggregator eventAggregator, ILogger logger) : base(logger)
+        public ShutterPositioningStateMachine(
+            IInverterShutterPositioningFieldMessageData shutterPositionData,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IInverterStatusBase inverterStatus,
+              IEventAggregator eventAggregator,
+              ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.InverterCommandQueue = inverterCommandQueue;
             this.shutterPositionData = shutterPositionData;
             this.inverterStatus = inverterStatus;
-            this.EventAggregator = eventAggregator;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

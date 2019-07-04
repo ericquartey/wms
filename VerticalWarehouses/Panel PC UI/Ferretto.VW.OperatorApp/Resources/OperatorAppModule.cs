@@ -1,25 +1,25 @@
-﻿namespace Ferretto.VW.OperatorApp.Resources
-{
-    using System.Configuration;
-    using Ferretto.VW.CustomControls.Controls;
-    using Ferretto.VW.CustomControls.Interfaces;
-    using Ferretto.VW.MAS_AutomationService.Contracts;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.ServiceUtilities;
-    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
-    using Prism.Events;
-    using Prism.Ioc;
-    using Prism.Modularity;
-    using Unity;
+﻿using System.Configuration;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
+using Prism.Events;
+using Prism.Ioc;
+using Prism.Modularity;
+using Unity;
 
+namespace Ferretto.VW.OperatorApp.Resources
+{
     public class OperatorAppModule : IModule
     {
         #region Fields
@@ -62,7 +62,7 @@
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
             var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
             var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
-            var itemStatisticsVMInstance = new ItemStatisticsViewModel(container.Resolve<IEventAggregator>());
+            var machineStatisticsVMInstance = new MachineStatisticsViewModel(container.Resolve<IEventAggregator>());
             var drawerSpaceSaturationVMInstance = new DrawerSpaceSaturationViewModel(container.Resolve<IEventAggregator>());
             var detailListInWaitVMInstance = new DetailListInWaitViewModel(container.Resolve<IEventAggregator>());
             var cellsStatisticsVMInstance = new CellsStatisticsViewModel(container.Resolve<IEventAggregator>());
@@ -98,7 +98,6 @@
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
             this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
             this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
-            this.container.RegisterInstance<IItemStatisticsViewModel>(itemStatisticsVMInstance);
             this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
             this.container.RegisterInstance<IDetailListInWaitViewModel>(detailListInWaitVMInstance);
             this.container.RegisterInstance<ICellsStatisticsViewModel>(cellsStatisticsVMInstance);
@@ -112,8 +111,18 @@
             this.container.RegisterInstance<IDrawerActivityInventoryViewModel>(drawerActivityInventoryVMInstance);
             this.container.RegisterInstance<IDrawerActivityInventoryDetailViewModel>(drawerActivityInventoryDetailVMInstance);
             this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
+            this.container.RegisterInstance<IMachineStatisticsViewModel>(machineStatisticsVMInstance);
 
             this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
+            this.container.RegisterType<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
+            this.container.RegisterType<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
+            this.container.RegisterType<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
+            this.container.RegisterType<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
+            this.container.RegisterType<ICustomControlListDataGridViewModel, CustomControlListDataGridViewModel>();
+            this.container.RegisterType<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
+            this.container.RegisterType<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
+            this.container.RegisterType<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
+            this.container.RegisterType<ICustomControlItemStatisticsDataGridViewModel, CustomControlItemStatisticsDataGridViewModel>();
 
             navigationServiceInstance.Initialize(this.container);
             feedbackNotifier.Initialize(this.container);
@@ -129,8 +138,18 @@
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
             itemSearchVMInstance.InitializeViewModel(this.container);
             itemDetailVMInstance.InitializeViewModel(this.container);
-            bayManagerInstance.Initialize(this.container);
+            cellsStatisticsVMInstance.InitializeViewModel(this.container);
+            drawerSpaceSaturationVMInstance.InitializeViewModel(this.container);
+            immediateDrawerCallVMInstance.InitializeViewModel(this.container);
+            errorsStatisticsVMInstance.InitializeViewModel(this.container);
+            listsInWaitVMInstance.InitializeViewModel(this.container);
+            maintenanceMainPageVMInstance.InitializeViewModel(this.container);
+            drawerWeightSaturationVMInstance.InitializeViewModel(this.container);
+            maintenanceDetailVMInstance.InitializeViewModel(this.container);
+            detailListInWaitVMInstance.InitializeViewModel(this.container);
+            machineStatisticsVMInstance.InitializeViewModel(this.container);
 
+            bayManagerInstance.Initialize(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
         }
 

@@ -95,7 +95,8 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 throw new IoDriverException(
                     "Failed to create Transport Socket client",
-                    IoDriverExceptionCode.TcpClientCreationFailed, ex);
+                    IoDriverExceptionCode.TcpClientCreationFailed,
+                    ex);
             }
 
             try
@@ -108,7 +109,8 @@ namespace Ferretto.VW.MAS_IODriver
                 this.transportClient = null;
                 throw new IoDriverException(
                     "Failed to connect to IO Hardware",
-                    IoDriverExceptionCode.TcpInverterConnectionFailed, ex);
+                    IoDriverExceptionCode.TcpInverterConnectionFailed,
+                    ex);
             }
 
             try
@@ -121,7 +123,8 @@ namespace Ferretto.VW.MAS_IODriver
                 this.transportClient = null;
                 throw new IoDriverException(
                     "Failed to retrieve socket communication stream",
-                    IoDriverExceptionCode.GetNetworkStreamFailed, ex);
+                    IoDriverExceptionCode.GetNetworkStreamFailed,
+                    ex);
             }
         }
 

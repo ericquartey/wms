@@ -5,6 +5,16 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public class BayDetails : BusinessObject
     {
+        #region Fields
+
+        private bool isActive;
+
+        private int? loadingUnitInBayId;
+
+        private int? userLogged;
+
+        #endregion
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
@@ -22,12 +32,13 @@ namespace Ferretto.WMS.App.Core.Models
         public string Image { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayIsActive), ResourceType = typeof(BusinessObjects))]
-        public bool IsActive { get; set; }
+        public bool IsActive { get => this.isActive; set => this.SetProperty(ref this.isActive, value); }
 
         [Display(Name = nameof(BusinessObjects.BayLoadingUnitInBay), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitInBayDescription { get; set; }
 
-        public int? LoadingUnitInBayId { get; set; }
+        [Display(Name = nameof(BusinessObjects.BayLoadingUnitInBay), ResourceType = typeof(BusinessObjects))]
+        public int? LoadingUnitInBayId { get => this.loadingUnitInBayId; set => this.SetProperty(ref this.loadingUnitInBayId, value); }
 
         [Display(Name = nameof(BusinessObjects.BayLoadingUnitsBufferSize), ResourceType = typeof(BusinessObjects))]
         public int? LoadingUnitsBufferSize { get; set; }
@@ -39,7 +50,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int Priority { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayUserLogged), ResourceType = typeof(BusinessObjects))]
-        public int? UserLogged { get; set; }
+        public int? UserLogged { get => this.userLogged; set => this.SetProperty(ref this.userLogged, value); }
 
         #endregion
     }

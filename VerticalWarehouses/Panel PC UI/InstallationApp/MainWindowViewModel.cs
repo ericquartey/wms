@@ -40,6 +40,8 @@
 
         private Visibility isServiceViewButtonVisible;
 
+        private string loggedUser;
+
         private bool machineModeSelectionBool;
 
         private bool machineOnMarchSelectionBool;
@@ -104,6 +106,8 @@
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
 
         public Visibility IsServiceViewButtonVisible { get => this.isServiceViewButtonVisible; set => this.SetProperty(ref this.isServiceViewButtonVisible, value); }
+
+        public string LoggedUser { get => this.loggedUser; set => this.SetProperty(ref this.loggedUser, value); }
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 

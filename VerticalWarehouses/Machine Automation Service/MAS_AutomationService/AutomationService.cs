@@ -63,8 +63,7 @@ namespace Ferretto.VW.MAS_AutomationService
             IMachinesDataService machinesDataService,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IMissionsDataService missionDataService,
-            IBaysManager baysManager
-            )
+            IBaysManager baysManager)
         {
             logger.LogTrace("1:Method Start");
             this.eventAggregator = eventAggregator;

@@ -4,9 +4,10 @@
     {
         #region Constructors
 
-        public UserChangedEventArgs(int bayId, int? userId)
+        public UserChangedEventArgs(int machineId, int bayId, int? userId)
         {
             this.BayId = bayId;
+            this.MachineId = machineId;
             this.UserId = userId;
         }
 
@@ -15,6 +16,8 @@
         #region Properties
 
         public int BayId { get; }
+
+        public int MachineId { get; }
 
         public int? UserId { get; }
 

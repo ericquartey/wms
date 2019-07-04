@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.CustomControls.Utils;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.CustomControls.Controls
@@ -10,19 +10,19 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        private ObservableCollection<TestArticle> articles;
+        private ObservableCollection<DataGridItem> articles;
 
-        private TestArticle selectedArticle;
+        private DataGridItem selectedArticle;
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<TestArticle> Articles { get => this.articles; set => this.SetProperty(ref this.articles, value); }
+        public ObservableCollection<DataGridItem> Articles { get => this.articles; set => this.SetProperty(ref this.articles, value); }
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public TestArticle SelectedArticle { get => this.selectedArticle; set => this.SetProperty(ref this.selectedArticle, value); }
+        public DataGridItem SelectedArticle { get => this.selectedArticle; set => this.SetProperty(ref this.selectedArticle, value); }
 
         #endregion
 
@@ -35,7 +35,8 @@ namespace Ferretto.VW.CustomControls.Controls
 
         public Task OnEnterViewAsync()
         {
-            return null;
+            // HACK
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

@@ -13,13 +13,27 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(CustomInputFieldControlFocusable));
+        public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register(
+            nameof(BorderColor),
+            typeof(SolidColorBrush),
+            typeof(CustomInputFieldControlFocusable));
 
-        public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register("Highlighted", typeof(bool), typeof(CustomInputFieldControlFocusable));
+        public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
+            nameof(Highlighted),
+            typeof(bool),
+            typeof(CustomInputFieldControlFocusable));
 
-        public static readonly DependencyProperty InputProperty = DependencyProperty.Register("InputText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty InputProperty = DependencyProperty.Register(
+            nameof(InputText),
+            typeof(string),
+            typeof(CustomInputFieldControlFocusable),
+            new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+            nameof(LabelText),
+            typeof(string),
+            typeof(CustomInputFieldControlFocusable),
+            new PropertyMetadata(string.Empty));
 
         #endregion
 

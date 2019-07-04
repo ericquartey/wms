@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             if (disposing)
             {
-                base.Dispose();
+                this.Dispose();
             }
 
             this.disposed = true;
@@ -246,8 +246,11 @@ namespace Ferretto.VW.MAS_IODriver
                     case FieldMessageType.DataLayerReady:
                         await this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
-                        this.ioDevices[IoIndex.IoDevice1].ExecuteIoPowerUp();
-                        this.ioDevices[IoIndex.IoDevice2].ExecuteIoPowerUp();
+
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
                         break;
 

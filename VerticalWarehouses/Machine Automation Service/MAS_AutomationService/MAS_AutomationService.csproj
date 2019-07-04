@@ -11,10 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="wwwroot\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="nlog.config" />
     <Content Remove="VertimagConfiguration.json" />
   </ItemGroup>

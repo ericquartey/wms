@@ -7,6 +7,7 @@
     <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoDarkGray">#293133</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoRed">#e2001a</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoOrange">#ffa500</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoBlack">#0A0A0A</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoGreen">#57A639</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoPureWhite">#ffffff</SolidColorBrush>
@@ -54,5 +55,6 @@
 
     <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <FontFamily x:Key="VWAPP_GridFont">pack://application:,,,/Fonts/#Microsoft-sans-serif.ttf</FontFamily>
 
 </ResourceDictionary>

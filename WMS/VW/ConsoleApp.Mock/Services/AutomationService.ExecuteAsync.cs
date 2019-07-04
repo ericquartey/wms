@@ -47,7 +47,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 this.machineStatus.MachineId = selectedMachine.Id;
 
                 var bays = await this.automationProvider.GetBaysAsync(this.machineStatus.MachineId);
-                this.machineStatus.BaysStatus = bays.Select(b => new BayStatus { BayId = b.Id });
+                this.machineStatus.BaysStatus = bays.Select(b => new BayStatus { BayId = b.Id }).ToArray();
 
                 this.machineStatus.Mode = MachineMode.Auto;
                 await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, null);

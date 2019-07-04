@@ -45,7 +45,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\Divieto_Dark.png" />
+    <None Remove="Images\Divieto_Light.png" />
+    <None Remove="Images\Punto_Interrogativo.png" />
+    <None Remove="Images\Punto_Interrogativo_2.png" />
+    <None Remove="Images\Punto_Interrogativo_3.png" />
     <None Remove="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Divieto_Dark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Divieto_Light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Punto_Interrogativo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Punto_Interrogativo_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Punto_Interrogativo_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

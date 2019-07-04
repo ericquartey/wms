@@ -11,31 +11,30 @@ namespace Ferretto.VW.CustomControls.Behaviours
         protected override void OnAttached()
         {
             base.OnAttached();
-            this.AssociatedObject.SelectionChanged += this.AssociatedObject_SelectionChanged;
+            this.AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            this.AssociatedObject.SelectionChanged -= this.AssociatedObject_SelectionChanged;
+            this.AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
         }
 
-        private void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private static void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is DataGrid dataGrid)
+            if (sender is DataGrid dataGrid
+                &&
+                dataGrid?.SelectedItem != null)
             {
-                if (dataGrid.SelectedItem != null)
-                {
-                    dataGrid.Dispatcher.BeginInvoke(
-                        (Action)(() =>
+                dataGrid.Dispatcher.BeginInvoke(
+                    (Action)(() =>
+                    {
+                        dataGrid.UpdateLayout();
+                        if (dataGrid.SelectedItem != null)
                         {
-                            dataGrid.UpdateLayout();
-                            if (dataGrid.SelectedItem != null)
-                            {
-                                dataGrid.ScrollIntoView(dataGrid.SelectedItem);
-                            }
-                        }));
-                }
+                            dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                        }
+                    }));
             }
         }
 

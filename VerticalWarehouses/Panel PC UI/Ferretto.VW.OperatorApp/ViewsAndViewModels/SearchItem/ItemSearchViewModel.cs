@@ -1,29 +1,31 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.VW.CustomControls;
-    using Ferretto.VW.CustomControls.Controls;
-    using Ferretto.VW.CustomControls.Interfaces;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-    using Ferretto.VW.WmsCommunication.Interfaces;
-    using Ferretto.WMS.Data.WebAPI.Contracts;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System;
+using System.Windows.Input;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Unity;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Ferretto.VW.CustomControls;
+using System.Collections.ObjectModel;
+using System.Threading;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.CustomControls.Utils;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+{
     public class ItemSearchViewModel : BindableBase, IItemSearchViewModel
     {
         #region Fields
 
         private const int DEFAULT_DELAY = 300;
 
-        private const int DEFAULT_QUANTITY_ITEM = 10;
+        private const int DEFAULT_QUANTITY_ITEM = 20;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly SynchronizationContext uiContext;
 
@@ -38,8 +40,6 @@
         private CustomControlArticleDataGridViewModel dataGridViewModelRef;
 
         private ICommand downDataGridButtonCommand;
-
-        private IEventAggregator eventAggregator;
 
         private bool hasUserTyped;
 
@@ -141,7 +141,7 @@
                         items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, this.currentItemIndex, DEFAULT_QUANTITY_ITEM);
                         this.IsSearching = false;
                     }
-                    catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+                    catch (WMS.Data.WebAPI.Contracts.SwaggerException)
                     {
                         this.IsSearching = false;
                     }
@@ -151,7 +151,7 @@
                     }
                     if (items != null && items.Count > 0)
                     {
-                        var viewItems = new ObservableCollection<TestArticle>();
+                        var viewItems = new ObservableCollection<DataGridItem>();
                         var random = new Random();
                         for (var i = 0; i < items.Count; i++)
                         {
@@ -170,7 +170,7 @@
                                     machines = string.Concat(machines, $" {random.Next(1, 200)},");
                                 }
                             }
-                            var item = new TestArticle
+                            var item = new DataGridItem
                             {
                                 Article = items[i].Code,
                                 Description = items[i].Description,
@@ -181,7 +181,7 @@
                             viewItems.Add(item);
                             this.loadedItems.Add(items[i]);
                         }
-                        for (int i = 0; i < viewItems.Count; i++)
+                        for (var i = 0; i < viewItems.Count; i++)
                         {
                             (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles.Add(viewItems[i]);
                         }
@@ -238,7 +238,7 @@
             {
                 items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
             {
                 this.currentItemIndex = 0;
                 this.IsSearching = false;
@@ -256,9 +256,10 @@
                 this.loadedItems = items;
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
+
             if (items != null && items.Count > 0)
             {
-                var viewItems = new ObservableCollection<TestArticle>();
+                var viewItems = new ObservableCollection<DataGridItem>();
                 var random = new Random();
                 for (var i = 0; i < items.Count; i++)
                 {
@@ -277,7 +278,7 @@
                             machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
                     }
-                    var item = new TestArticle
+                    var item = new DataGridItem
                     {
                         Article = items[i].Code,
                         Description = items[i].Description,

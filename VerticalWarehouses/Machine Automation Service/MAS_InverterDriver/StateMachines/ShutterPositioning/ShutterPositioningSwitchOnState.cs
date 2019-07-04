@@ -11,25 +11,19 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
-
-        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningSwitchOnState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
+        public ShutterPositioningSwitchOnState(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            IInverterShutterPositioningFieldMessageData shutterPositionData,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
             this.shutterPositionData = shutterPositionData;
         }
 
@@ -48,58 +42,42 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.inverterStatus.CommonControlWord.SwitchOn = true;
+            this.InverterStatus.CommonControlWord.SwitchOn = true;
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.InverterStatus).ProfileVelocityControlWord.Value);
 
-            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
 
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
+                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
             }
 
-            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus.CommonStatusWord.IsSwitchedOn)
+            if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
+                this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                 returnValue = true;
             }
 
             return returnValue;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -24,15 +24,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         #region Constructors
 
-        public ResetStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public ResetStateMachine(
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.IoCommandQueue = ioCommandQueue;
-            this.eventAggregator = eventAggregator;
             this.status = status;
-            this.logger = logger;
-            this.pulseOneTime = false;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -50,7 +52,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
@@ -62,7 +64,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs && message.ResetSecurity;
@@ -79,7 +81,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetOutputsState(this, this.status, this.logger);
+            this.CurrentState = new ResetOutputsState(this, this.status, this.Logger);
             this.CurrentState?.Start();
         }
 
@@ -105,7 +107,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         {
             var pulseIoMessage = new IoSHDWriteMessage();
 
-            this.logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
             this.status.UpdateOutputStates(pulseIoMessage.Outputs);
 
             this.EnqueueMessage(pulseIoMessage);

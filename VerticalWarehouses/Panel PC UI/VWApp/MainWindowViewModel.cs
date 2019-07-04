@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.Utils.Source.Events;
 using Ferretto.VW.VWApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -20,9 +21,11 @@ namespace Ferretto.VW.VWApp
 
         public IUnityContainer Container;
 
+        private readonly IEventAggregator eventAggregator;
+
         private ICommand changeSkin;
 
-        private IEventAggregator eventAggregator;
+        private bool isDarkSkinChecked = true;
 
         private bool isLoginButtonWorking = false;
 
@@ -47,19 +50,30 @@ namespace Ferretto.VW.VWApp
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.eventAggregator.GetEvent<ChangeSkinEvent>().Subscribe(() => App.ChangeSkin());
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => (Application.Current as App).ChangeSkin()));
+        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => App.ChangeSkin()));
 
         public string Error => null;
 
+        public bool IsDarkSkinChecked
+        {
+            get => this.isDarkSkinChecked;
+            set
+            {
+                this.eventAggregator.GetEvent<ChangeSkinEvent>().Publish();
+                this.SetProperty(ref this.isDarkSkinChecked, value);
+            }
+        }
+
         public bool IsLoginButtonWorking { get => this.isLoginButtonWorking; set => this.SetProperty(ref this.isLoginButtonWorking, value); }
 
-        public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(async () => await this.ExecuteLoginButtonCommand()));
+        public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(async () => await this.ExecuteLoginButtonCommandAsync()));
 
         public string LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
 
@@ -94,7 +108,7 @@ namespace Ferretto.VW.VWApp
             return true;
         }
 
-        private async Task ExecuteLoginButtonCommand()
+        private async Task ExecuteLoginButtonCommandAsync()
         {
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
@@ -104,14 +118,15 @@ namespace Ferretto.VW.VWApp
                         try
                         {
                             this.IsLoginButtonWorking = true;
-                            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
-                            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
+                            ((App)Application.Current).InstallationAppMainWindowInstance = (InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>();
+                            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = (InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>();
                             await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
                             this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
                             this.IsLoginButtonWorking = false;
+                            (((App)Application.Current).InstallationAppMainWindowInstance.DataContext as InstallationApp.MainWindowViewModel).LoggedUser = "Installer";
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
                         }
@@ -125,13 +140,15 @@ namespace Ferretto.VW.VWApp
                         try
                         {
                             this.IsLoginButtonWorking = true;
-                            ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
-                            ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
+                            ((App)Application.Current).OperatorAppMainWindowInstance = (OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>();
+                            ((App)Application.Current).OperatorAppMainWindowInstance.DataContext =
+                                (OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>();
                             this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
                             await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            (((App)Application.Current).OperatorAppMainWindowInstance.DataContext as OperatorApp.MainWindowViewModel).LoggedUser = "Operator";
                             ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
                         }
