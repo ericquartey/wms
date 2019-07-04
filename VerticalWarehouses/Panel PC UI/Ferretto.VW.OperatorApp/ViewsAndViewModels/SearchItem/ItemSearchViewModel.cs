@@ -227,7 +227,56 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public async Task OnEnterViewAsync()
         {
-            // TODO
+            var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
+            try
+            {
+                items = await this.wmsDataProvider.GetItemsAsync(" ", 0, DEFAULT_QUANTITY_ITEM);
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                this.loadedItems = null;
+                this.loadedItems = items;
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
+            }
+            if (items != null && items.Count > 0)
+            {
+                var viewItems = new ObservableCollection<DataGridItem>();
+                var random = new Random();
+                for (var i = 0; i < items.Count; i++)
+                {
+                    var machines = string.Empty;
+                    if (items[i].Machines != null)
+                    {
+                        for (var j = 0; j < items[i].Machines.Count; j++)
+                        {
+                            machines = string.Concat(machines, $" {items[i].Machines[j].Id},");
+                        }
+                    }
+                    else
+                    {
+                        for (var k = 0; k < random.Next(1, 4); k++)
+                        {
+                            machines = string.Concat(machines, $" {random.Next(1, 200)},");
+                        }
+                    }
+                    var item = new DataGridItem
+                    {
+                        Article = items[i].Code,
+                        Description = items[i].Description,
+                        AvailableQuantity = items[i].TotalAvailable,
+                        ImageCode = items[i].Image,
+                        Machine = machines
+                    };
+                    viewItems.Add(item);
+                }
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
+                this.currentItemIndex = 0;
+                this.AvailableQuantity = viewItems[0].AvailableQuantity.ToString();
+            }
         }
 
         public async void SearchItemAsync(object stateInfo)
