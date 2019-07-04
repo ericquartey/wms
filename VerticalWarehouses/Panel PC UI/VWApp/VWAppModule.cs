@@ -4,7 +4,6 @@
     using Ferretto.VW.VWApp.Interfaces;
     using Ferretto.VW.WmsCommunication;
     using Ferretto.VW.WmsCommunication.Interfaces;
-    using Ferretto.WMS.Data.WebAPI.Contracts;
     using Prism.Events;
     using Prism.Ioc;
     using Prism.Modularity;

@@ -32,10 +32,16 @@ namespace Ferretto.VW.WmsCommunication
         public WmsDataProvider(IUnityContainer container, Uri wmsConnectionString)
         {
             this.container = container;
-            this.itemsDataService = DataServiceFactory.GetService<IItemsDataService>(wmsConnectionString);
-            this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
-            this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
-            this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
+            try
+            {
+                this.itemsDataService = DataServiceFactory.GetService<IItemsDataService>(wmsConnectionString);
+                this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
+                this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
+                this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         #endregion
@@ -104,7 +110,7 @@ namespace Ferretto.VW.WmsCommunication
             {
                 returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
                 {
-                    Height = x.Depth,
+                    Height = x.Height,
                     Id = x.Id,
                     LoadingUnitId = x.LoadingUnitId,
                     Width = x.Width,
