@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             : base(parentMachine, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

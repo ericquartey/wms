@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         private async Task ExecuteShutterPositioningMovementMethod()
         {
             var speedRate = 1.2m;
-            var dto = new ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection.Up, 1);
+            var dto = new ShutterPositioningMovementMessageDataDto(ShutterMovementDirection.Up, 1);
             dto.ShutterType = ShutterType.NoType;
             var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate);
 

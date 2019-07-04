@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.currentAxis = currentAxis;
             this.errorMessage = errorMessage;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

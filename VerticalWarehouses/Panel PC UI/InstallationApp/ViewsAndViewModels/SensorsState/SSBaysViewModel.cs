@@ -124,17 +124,17 @@ namespace Ferretto.VW.InstallationApp
         {
             this.ioSensorsStatus.UpdateInputStates(message);
 
-            this.LuPresentInBay1 = this.ioSensorsStatus.LUPresentInBay1;
+            this.LuPresentInBay1 = this.ioSensorsStatus.LuPresentInBay1;
             this.HeightControlCheckBay1 = this.ioSensorsStatus.HeightControlCheckBay1;
             this.ShutterSensorABay1 = this.ioSensorsStatus.ShutterSensorABay1;
             this.ShutterSensorBBay1 = this.ioSensorsStatus.ShutterSensorBBay1;
 
-            this.LuPresentInBay2 = this.ioSensorsStatus.LUPresentInBay2;
+            this.LuPresentInBay2 = this.ioSensorsStatus.LuPresentInBay2;
             this.HeightControlCheckBay2 = this.ioSensorsStatus.HeightControlCheckBay2;
             this.ShutterSensorABay2 = this.ioSensorsStatus.ShutterSensorABay2;
             this.ShutterSensorBBay2 = this.ioSensorsStatus.ShutterSensorBBay2;
 
-            this.LuPresentInBay3 = this.ioSensorsStatus.LUPresentInBay3;
+            this.LuPresentInBay3 = this.ioSensorsStatus.LuPresentInBay3;
             this.HeightControlCheckBay3 = this.ioSensorsStatus.HeightControlCheckBay3;
             this.ShutterSensorABay3 = this.ioSensorsStatus.ShutterSensorABay3;
             this.ShutterSensorBBay3 = this.ioSensorsStatus.ShutterSensorBBay3;

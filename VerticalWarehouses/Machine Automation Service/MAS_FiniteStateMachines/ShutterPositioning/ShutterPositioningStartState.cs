@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             : base(parentMachine, logger)
         {
             this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

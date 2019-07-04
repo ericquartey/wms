@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         {
             this.stopRequested = stopRequested;
             this.axisToStop = axisToStop;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

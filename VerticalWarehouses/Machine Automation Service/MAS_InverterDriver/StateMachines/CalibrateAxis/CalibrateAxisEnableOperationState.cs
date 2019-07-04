@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

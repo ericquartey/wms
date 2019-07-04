@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             : base(parentMachine, logger)
         {
             this.shutterControlMessageData = shutterControlMessageData;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

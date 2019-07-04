@@ -105,14 +105,14 @@ namespace Ferretto.VW.InstallationApp
         {
             this.IsButtonForwardEnabled = false;
 
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 
         private async Task MoveForwardHorizontalAxisHandlerAsync()
         {
             this.IsButtonBackEnabled = false;
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 

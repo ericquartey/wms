@@ -40,8 +40,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.shutterPosition = shutterPosition;
             this.errorMessage = errorMessage;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

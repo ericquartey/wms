@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         {
             this.shutterControlMessageData = shutterControlMessageData;
             this.movementDirection = movementDirection;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

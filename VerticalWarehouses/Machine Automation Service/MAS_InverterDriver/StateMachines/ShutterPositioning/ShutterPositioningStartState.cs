@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.shutterPositionData = shutterPositionData;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

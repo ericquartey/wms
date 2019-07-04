@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         {
             this.stopRequested = stopRequested;
             this.shutterControlMessageData = shutterControlMessageData;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

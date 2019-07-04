@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost("ExecutePositioning")]
-        public async Task ExecutePositioningAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        public async Task ExecutePositioningAsync([FromBody]ShutterPositioningMovementMessageDataDto data)
         {
             await this.ExecutePositioning_MethodAsync(data);
         }
@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     MessageType.ShutterControl));
         }
 
-        private async Task ExecutePositioning_MethodAsync(ShutterPositioningMovementMessageDataDTO data)
+        private async Task ExecutePositioning_MethodAsync(ShutterPositioningMovementMessageDataDto data)
         {
             switch (data.ShutterType)
             {

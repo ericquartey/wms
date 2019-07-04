@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             bool stopRequested = false)
             : base(parentMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.stopRequested = stopRequested;
             this.shutterPosition = shutterPosition;
             this.shutterPositioningMessageData = shutterPositioningMessageData;

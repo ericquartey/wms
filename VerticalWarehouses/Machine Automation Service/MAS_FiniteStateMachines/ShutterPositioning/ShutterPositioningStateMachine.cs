@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.CurrentState = new EmptyState(logger);
 
             this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

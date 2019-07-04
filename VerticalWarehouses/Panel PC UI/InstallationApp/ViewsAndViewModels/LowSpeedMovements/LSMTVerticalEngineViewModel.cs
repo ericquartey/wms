@@ -80,14 +80,14 @@ namespace Ferretto.VW.InstallationApp
         public async Task MoveDownVerticalAxisAsync()
         {
             this.IsButtonUpEnabled = false;
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
             this.IsButtonDownEnabled = false;
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 

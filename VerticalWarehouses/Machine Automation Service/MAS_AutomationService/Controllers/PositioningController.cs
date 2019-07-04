@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #region Methods
 
         [HttpPost("Execute")]
-        public async Task ExecuteAsync([FromBody]MovementMessageDataDTO data)
+        public async Task ExecuteAsync([FromBody]MovementMessageDataDto data)
         {
             await this.ExecutePositioning_MethodAsync(data);
         }
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.Stop_Method();
         }
 
-        private async Task ExecutePositioning_MethodAsync(MovementMessageDataDTO data)
+        private async Task ExecutePositioning_MethodAsync(MovementMessageDataDto data)
         {
             decimal maxSpeed = 0;
             decimal maxAcceleration = 0;

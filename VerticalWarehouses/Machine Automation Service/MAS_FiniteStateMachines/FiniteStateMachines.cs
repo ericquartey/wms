@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
 
             await Task.CompletedTask;
@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"2:Exception: {ex.Message}");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
                     return;
                 }
@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"2:Exception: {ex.Message}");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
                     return;
                 }
@@ -405,7 +405,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
                     return;
                 }
@@ -447,7 +447,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     {
                                         this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                                        this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                                     }
 
                                     this.logger.LogTrace($"5:Deallocation FSM {this.currentStateMachine?.GetType()}");

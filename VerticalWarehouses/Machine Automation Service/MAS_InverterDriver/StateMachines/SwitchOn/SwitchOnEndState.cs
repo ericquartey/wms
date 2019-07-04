@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
-
-            logger.LogTrace("1:Method Start");
         }
 
         #endregion

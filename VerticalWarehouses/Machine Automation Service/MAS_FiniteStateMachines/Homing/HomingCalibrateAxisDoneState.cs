@@ -35,8 +35,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.axisToSwitch = axisCalibrated == Axis.Horizontal
                 ? Axis.Vertical
                 : Axis.Horizontal;
-
-            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

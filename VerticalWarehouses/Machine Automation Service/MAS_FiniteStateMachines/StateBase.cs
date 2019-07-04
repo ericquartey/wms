@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.ParentStateMachine = parentStateMachine;
             this.Logger = logger;
+
+            this.Logger.LogTrace($"State '{this.GetType().Name}' initialised.");
         }
 
         #endregion

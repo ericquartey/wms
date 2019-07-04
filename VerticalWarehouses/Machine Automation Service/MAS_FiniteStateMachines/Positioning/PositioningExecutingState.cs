@@ -44,8 +44,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             : base(parentMachine, logger)
         {
             this.positioningMessageData = positioningMessageData;
-
-            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             this.ParentStateMachine = parentStateMachine;
 
             this.Logger = logger;
+
+            this.Logger.LogTrace($"Inverter state '{this.GetType().Name}' initialized.");
         }
 
         #endregion
