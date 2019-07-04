@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
 
         bool ANG_ZeroElevatorSensor { get; }
 
-        decimal CurrentPosition { get; }
-
         IHomingControlWord HomingControlWord { get; }
 
         IHomingStatusWord HomingStatusWord { get; }
