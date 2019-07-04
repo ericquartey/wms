@@ -50,7 +50,7 @@ namespace Ferretto.VW.VWApp
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.eventAggregator.GetEvent<ChangeSkinEvent>().Subscribe(() => (App.Current as App)?.ChangeSkin());
+            this.eventAggregator.GetEvent<ChangeSkinEvent>().Subscribe(() => App.ChangeSkin());
         }
 
         #endregion
