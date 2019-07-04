@@ -60,6 +60,8 @@ namespace Ferretto.VW.OperatorApp.Resources
             var immediateDrawerCallVMInstance = new ImmediateDrawerCallViewModel(container.Resolve<IEventAggregator>());
             var generalInfoVMInstance = new GeneralInfoViewModel(container.Resolve<IEventAggregator>());
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
+            var drawerCompactingDetailVMInstance = new DrawerCompactingDetailViewModel(container.Resolve<IEventAggregator>());
+
             var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
             var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
             var machineStatisticsVMInstance = new MachineStatisticsViewModel(container.Resolve<IEventAggregator>());
@@ -96,6 +98,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
             this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
+            this.container.RegisterInstance<IDrawerCompactingDetailViewModel>(drawerCompactingDetailVMInstance);
             this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
             this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
             this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);

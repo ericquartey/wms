@@ -888,4 +888,56 @@
     <value>GeneralInfoWmsStatus</value>
     <comment>Label text</comment>
   </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>DrawerCompactingDetailHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>DrawerCompactingDetailDrawer</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>DrawerCompactingDetailSourceCell</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>DrawerCompactingDetailDestinationCell</value>
+    <comment>label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>DrawerCompactingDetailActualStep</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>DrawerCompactingDetailVerticalPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>DrawerCompactingDetailOrizzontalPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>DrawerCompactingDetailRemainingFragment</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>DrawerCompactingDetailRecoveredSpace</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>DrawerCompactingDetailSpaceToRecover</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
+    <value>DrawerCompactingDetailAbort</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>DrawerCompactingAntStop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>DrawerCompactingProcedureStatus</value>
+    <comment>Label text</comment>
+  </data>
 </root>

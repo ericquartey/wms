@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class DrawerCompactingViewModel : BindableBase, IDrawerCompactingViewModel
+    public class DrawerCompactingDetailViewModel : BindableBase, IDrawerCompactingDetailViewModel
     {
         #region Fields
 
         private IEventAggregator eventAggregator;
 
-        private ICommand drawerCompactingDetailButtonCommand;
-
-        private IUnityContainer container;
-
         #endregion
 
         #region Constructors
 
-        public DrawerCompactingViewModel(IEventAggregator eventAggregator)
+        public DrawerCompactingDetailViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
@@ -33,12 +28,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #endregion
 
         #region Properties
-
-        public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<DrawerCompactingDetailViewModel, IDrawerCompactingDetailViewModel>();
-        }));
-
 
         public BindableBase NavigationViewModel { get; set; }
 

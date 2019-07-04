@@ -82,6 +82,7 @@
       <None Remove="ViewsAndViewModels\ListsInWaitView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowBackToOAPPButtonView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\DrawerCompactingDetailView.xaml" />
       <None Remove="ViewsAndViewModels\Other\DrawerCompactingView.xaml" />
       <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
       <None Remove="ViewsAndViewModels\Other\MaintenanceDetailView.xaml" />
@@ -199,6 +200,9 @@
     </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\Other\DrawerCompactingDetailView.xaml.cs">
+      <DependentUpon>DrawerCompactingDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Update="ViewsAndViewModels\Other\Statistics\MachineStatisticsView.xaml.cs">
       <DependentUpon>MachineStatisticsView.xaml</DependentUpon>

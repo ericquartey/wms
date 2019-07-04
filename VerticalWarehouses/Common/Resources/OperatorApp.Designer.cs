@@ -196,7 +196,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonButtonConfirm.
+        ///   Cerca una stringa localizzata simile a Confirm.
         /// </summary>
         public static string CommonButtonConfirm {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonButtonDetail.
+        ///   Cerca una stringa localizzata simile a Detail.
         /// </summary>
         public static string CommonButtonDetail {
             get {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonCompartmentPosition.
+        ///   Cerca una stringa localizzata simile a Position:.
         /// </summary>
         public static string CommonCompartmentPosition {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonDown.
+        ///   Cerca una stringa localizzata simile a Down.
         /// </summary>
         public static string CommonDown {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonItemCode.
+        ///   Cerca una stringa localizzata simile a Item code:.
         /// </summary>
         public static string CommonItemCode {
             get {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonItemDescription.
+        ///   Cerca una stringa localizzata simile a Item description:.
         /// </summary>
         public static string CommonItemDescription {
             get {
@@ -250,7 +250,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonListCode.
+        ///   Cerca una stringa localizzata simile a List code:.
         /// </summary>
         public static string CommonListCode {
             get {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonListDescription.
+        ///   Cerca una stringa localizzata simile a List description:.
         /// </summary>
         public static string CommonListDescription {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonNote.
+        ///   Cerca una stringa localizzata simile a Note:.
         /// </summary>
         public static string CommonNote {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonPackingListCode.
+        ///   Cerca una stringa localizzata simile a Packing list code:.
         /// </summary>
         public static string CommonPackingListCode {
             get {
@@ -295,7 +295,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonPackingListDescription.
+        ///   Cerca una stringa localizzata simile a Packing list description:.
         /// </summary>
         public static string CommonPackingListDescription {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonUp.
+        ///   Cerca una stringa localizzata simile a Up.
         /// </summary>
         public static string CommonUp {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityInventoryDetailHeader.
+        ///   Cerca una stringa localizzata simile a Inventory operation detail.
         /// </summary>
         public static string DrawerActivityInventoryDetailHeader {
             get {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityInventoryHeader.
+        ///   Cerca una stringa localizzata simile a Inventory operation.
         /// </summary>
         public static string DrawerActivityInventoryHeader {
             get {
@@ -385,7 +385,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityInventoryQtyStored.
+        ///   Cerca una stringa localizzata simile a Stored quantity;.
         /// </summary>
         public static string DrawerActivityInventoryQtyStored {
             get {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailHeader.
+        ///   Cerca una stringa localizzata simile a Picking item detail.
         /// </summary>
         public static string DrawerActivityPickingDetailHeader {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailLotto.
+        ///   Cerca una stringa localizzata simile a Batch:.
         /// </summary>
         public static string DrawerActivityPickingDetailLotto {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailMaterialStatus.
+        ///   Cerca una stringa localizzata simile a Material status:.
         /// </summary>
         public static string DrawerActivityPickingDetailMaterialStatus {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailPackagingType.
+        ///   Cerca una stringa localizzata simile a Packaging type:.
         /// </summary>
         public static string DrawerActivityPickingDetailPackagingType {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailProductionDate.
+        ///   Cerca una stringa localizzata simile a Production date:.
         /// </summary>
         public static string DrawerActivityPickingDetailProductionDate {
             get {
@@ -439,7 +439,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailQtyRequest.
+        ///   Cerca una stringa localizzata simile a Requested quantity:.
         /// </summary>
         public static string DrawerActivityPickingDetailQtyRequest {
             get {
@@ -448,7 +448,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityPickingDetailRowList.
+        ///   Cerca una stringa localizzata simile a List&apos;s row:.
         /// </summary>
         public static string DrawerActivityPickingDetailRowList {
             get {
@@ -493,7 +493,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingCapacityMaxAdjust.
+        ///   Cerca una stringa localizzata simile a Update max capacity.
         /// </summary>
         public static string DrawerActivityRefillingCapacityMaxAdjust {
             get {
@@ -502,7 +502,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailHeader.
+        ///   Cerca una stringa localizzata simile a Refilling operation detail.
         /// </summary>
         public static string DrawerActivityRefillingDetailHeader {
             get {
@@ -511,7 +511,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailListRow.
+        ///   Cerca una stringa localizzata simile a List&apos;s row.
         /// </summary>
         public static string DrawerActivityRefillingDetailListRow {
             get {
@@ -520,7 +520,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailLotto.
+        ///   Cerca una stringa localizzata simile a Batch:.
         /// </summary>
         public static string DrawerActivityRefillingDetailLotto {
             get {
@@ -529,7 +529,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailMaterialStatus.
+        ///   Cerca una stringa localizzata simile a Material status:.
         /// </summary>
         public static string DrawerActivityRefillingDetailMaterialStatus {
             get {
@@ -538,7 +538,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailPackagingType.
+        ///   Cerca una stringa localizzata simile a Packaging type:.
         /// </summary>
         public static string DrawerActivityRefillingDetailPackagingType {
             get {
@@ -547,7 +547,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailProductionDate.
+        ///   Cerca una stringa localizzata simile a Production date:.
         /// </summary>
         public static string DrawerActivityRefillingDetailProductionDate {
             get {
@@ -556,7 +556,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingDetailQtyRequest.
+        ///   Cerca una stringa localizzata simile a Requested quantity:.
         /// </summary>
         public static string DrawerActivityRefillingDetailQtyRequest {
             get {
@@ -565,7 +565,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingHeader.
+        ///   Cerca una stringa localizzata simile a Refilling operation.
         /// </summary>
         public static string DrawerActivityRefillingHeader {
             get {
@@ -574,7 +574,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingQtyRefilled.
+        ///   Cerca una stringa localizzata simile a Refilled quantity:.
         /// </summary>
         public static string DrawerActivityRefillingQtyRefilled {
             get {
@@ -583,7 +583,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingQtyToRefill.
+        ///   Cerca una stringa localizzata simile a Requested quantity:.
         /// </summary>
         public static string DrawerActivityRefillingQtyToRefill {
             get {
@@ -597,6 +597,114 @@ namespace Ferretto.VW.Resources {
         public static string DrawerCompactingAntCompact {
             get {
                 return ResourceManager.GetString("DrawerCompactingAntCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingAntStop.
+        /// </summary>
+        public static string DrawerCompactingAntStop {
+            get {
+                return ResourceManager.GetString("DrawerCompactingAntStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailAbort.
+        /// </summary>
+        public static string DrawerCompactingDetailAbort {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailAbort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailActualStep.
+        /// </summary>
+        public static string DrawerCompactingDetailActualStep {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailActualStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailDestinationCell.
+        /// </summary>
+        public static string DrawerCompactingDetailDestinationCell {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailDrawer.
+        /// </summary>
+        public static string DrawerCompactingDetailDrawer {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailHeader.
+        /// </summary>
+        public static string DrawerCompactingDetailHeader {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailOrizzontalPosition.
+        /// </summary>
+        public static string DrawerCompactingDetailOrizzontalPosition {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailOrizzontalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailRecoveredSpace.
+        /// </summary>
+        public static string DrawerCompactingDetailRecoveredSpace {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailRecoveredSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailRemainingFragment.
+        /// </summary>
+        public static string DrawerCompactingDetailRemainingFragment {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailRemainingFragment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailSourceCell.
+        /// </summary>
+        public static string DrawerCompactingDetailSourceCell {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailSourceCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailSpaceToRecover.
+        /// </summary>
+        public static string DrawerCompactingDetailSpaceToRecover {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailSpaceToRecover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingDetailVerticalPosition.
+        /// </summary>
+        public static string DrawerCompactingDetailVerticalPosition {
+            get {
+                return ResourceManager.GetString("DrawerCompactingDetailVerticalPosition", resourceCulture);
             }
         }
         
@@ -633,6 +741,15 @@ namespace Ferretto.VW.Resources {
         public static string DrawerCompactingMaxSpaceRecoverable {
             get {
                 return ResourceManager.GetString("DrawerCompactingMaxSpaceRecoverable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingProcedureStatus.
+        /// </summary>
+        public static string DrawerCompactingProcedureStatus {
+            get {
+                return ResourceManager.GetString("DrawerCompactingProcedureStatus", resourceCulture);
             }
         }
         

@@ -696,4 +696,43 @@
   <data name="GeneralInfoWmsStatus" xml:space="preserve">
     <value>Stato del WMS:</value>
   </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Visualizza dettagli compattazione.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Cassetto in spostamento:</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Cella sorgente:</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Cella di destinazione</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Fase corrente:</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Quota asse verticale:</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Posizione asse orizzontale:</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Frammenti residui:</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Spazio recuperato mm.:</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Spazio da recuperare mm.:</value>
+  </data>
+  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
+    <value>Termina</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Termina compattazione</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>Stato attuale:</value>
+  </data>
 </root>
