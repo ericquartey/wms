@@ -385,6 +385,33 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other Missions Operation Count.
+        /// </summary>
+        public static string CompartmentOtherMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentOtherMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Missions Operation Count.
+        /// </summary>
+        public static string CompartmentPickMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentPickMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Missions Operation Count.
+        /// </summary>
+        public static string CompartmentPutMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentPutMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Status.
         /// </summary>
         public static string CompartmentStatus {
@@ -997,15 +1024,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In Missions Count.
-        /// </summary>
-        public static string LoadingUnitInMissionCount {
-            get {
-                return ResourceManager.GetString("LoadingUnitInMissionCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cell Pairing.
         /// </summary>
         public static string LoadingUnitIsCellPairingFixed {
@@ -1024,20 +1042,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other Missions Count.
+        ///   Looks up a localized string similar to Missions Count.
         /// </summary>
-        public static string LoadingUnitOtherMissionCount {
+        public static string LoadingUnitMissionCount {
             get {
-                return ResourceManager.GetString("LoadingUnitOtherMissionCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Out Missions Count.
-        /// </summary>
-        public static string LoadingUnitOutMissionCount {
-            get {
-                return ResourceManager.GetString("LoadingUnitOutMissionCount", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitMissionCount", resourceCulture);
             }
         }
         
@@ -1150,7 +1159,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment Count.
+        ///   Looks up a localized string similar to Compartments Count.
         /// </summary>
         public static string MachineCompartmentCount {
             get {
