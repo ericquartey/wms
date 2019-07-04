@@ -717,6 +717,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<Mission> ExecuteLoadingUnitAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<MissionInfo>> GetAllAsync(int? skip = null, int? take = null, string where = null, string orderBy = null, string search = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -1643,6 +1647,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreationDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
+        public double Depth { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("emptyWeight", Required = Newtonsoft.Json.Required.Always)]
         public double EmptyWeight { get; set; }
     
@@ -1651,9 +1658,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("inMissionCount", Required = Newtonsoft.Json.Required.Always)]
-        public int InMissionCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? InventoryDate { get; set; }
@@ -1673,9 +1677,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("lastPutDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastPutDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
-        public double Depth { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("loadingUnitStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LoadingUnitStatusDescription { get; set; }
     
@@ -1694,14 +1695,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("maxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public int MaxNetWeight { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("missionCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Note { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("otherMissionCount", Required = Newtonsoft.Json.Required.Always)]
-        public int OtherMissionCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("outMissionCount", Required = Newtonsoft.Json.Required.Always)]
-        public int OutMissionCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("referenceType", Required = Newtonsoft.Json.Required.Always)]
         public ReferenceType ReferenceType { get; set; }
@@ -1794,14 +1792,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreationDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
+        public double Depth { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("fifoStartDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? FifoStartDate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("hasRotation", Required = Newtonsoft.Json.Required.Always)]
         public bool HasRotation { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
-        public double Depth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? InventoryDate { get; set; }
@@ -1845,8 +1843,17 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("maxCapacity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? MaxCapacity { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("otherMissionOperationCount", Required = Newtonsoft.Json.Required.Always)]
+        public int OtherMissionOperationCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("packageTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PackageTypeId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pickMissionOperationCount", Required = Newtonsoft.Json.Required.Always)]
+        public int PickMissionOperationCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("putMissionOperationCount", Required = Newtonsoft.Json.Required.Always)]
+        public int PutMissionOperationCount { get; set; }
     
         [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RegistrationNumber { get; set; }

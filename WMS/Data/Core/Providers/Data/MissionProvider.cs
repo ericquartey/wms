@@ -194,7 +194,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(m =>
                     m.LoadingUnitId == loadingUnitId
                     &&
-                    m.Operations.All(o => o.Status == Common.DataModels.MissionOperationStatus.New))
+                    m.Operations.All(o => o.Status == Common.DataModels.MissionOperationStatus.New)
+                    &&
+
+                    // exclude loading unit missions (they do not have operations)
+                    m.Operations.Any())
                 .ProjectTo<Mission>(this.mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }

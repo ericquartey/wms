@@ -165,6 +165,7 @@
                                     DisplayMember="Code"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
+                                    IsEnabled="{Binding IsItemLookUpEnabled, Mode=OneWay}"
                                     PopupWidth="500"
                                     ValueMember="Id">
                         <wms:LookUpEdit.PopupContentTemplate>

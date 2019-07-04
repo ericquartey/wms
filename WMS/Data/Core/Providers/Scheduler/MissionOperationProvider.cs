@@ -355,6 +355,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             compartment.ReservedForPick -= quantity;
             compartment.Stock -= quantity;
+            compartment.PickMissionOperationCount++;
             RemovePairingIfEmpty(compartment);
 
             compartment.LastPickDate = now;
@@ -542,6 +543,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             compartment.ReservedToPut -= Math.Min(quantity, compartment.ReservedToPut);
             compartment.Stock += quantity;
             compartment.LastPutDate = now;
+            compartment.PutMissionOperationCount++;
 
             if (compartment.MaxCapacity.HasValue
                 &&

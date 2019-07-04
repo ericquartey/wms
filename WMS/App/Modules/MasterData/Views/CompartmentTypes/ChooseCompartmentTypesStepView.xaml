@@ -31,12 +31,12 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock HorizontalAlignment="Left"
-                           Text="{x:Static res:MasterData.NoUnassociateItemCompartmentTypesAvailable}"
+                           Text="{x:Static res:MasterData.NoUnassociatedItemCompartmentTypesAvailable}"
                            Visibility="{Binding Path=HasUnassociatedItemCompartmentTypes, Converter={StaticResource BTVIC}}" />
 
                 <wms:WmsGridControl MaxWidth="2000"
                                     MaxHeight="2000"
-                                    ItemsSource="{Binding UnassociateItemCompartmentTypesDataSource}"
+                                    ItemsSource="{Binding UnassociatedItemCompartmentTypesDataSource}"
                                     SelectedBusinessObject="{Binding SelectedItemCompartmentType, Mode=TwoWay}"
                                     Visibility="{Binding Path=HasUnassociatedItemCompartmentTypes, Converter={StaticResource BTVC}}">
                     <dxg:GridControl.View>
