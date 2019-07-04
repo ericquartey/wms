@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.Utils.Source.Events;
 using Ferretto.VW.VWApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.VWApp
         private readonly IEventAggregator eventAggregator;
 
         private ICommand changeSkin;
+
+        private bool isDarkSkinChecked = true;
 
         private bool isLoginButtonWorking = false;
 
@@ -47,6 +50,7 @@ namespace Ferretto.VW.VWApp
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.eventAggregator.GetEvent<ChangeSkinEvent>().Subscribe(() => (App.Current as App)?.ChangeSkin());
         }
 
         #endregion
@@ -56,6 +60,16 @@ namespace Ferretto.VW.VWApp
         public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => App.ChangeSkin()));
 
         public string Error => null;
+
+        public bool IsDarkSkinChecked
+        {
+            get => this.isDarkSkinChecked;
+            set
+            {
+                this.eventAggregator.GetEvent<ChangeSkinEvent>().Publish();
+                this.SetProperty(ref this.isDarkSkinChecked, value);
+            }
+        }
 
         public bool IsLoginButtonWorking { get => this.isLoginButtonWorking; set => this.SetProperty(ref this.isLoginButtonWorking, value); }
 
@@ -109,6 +123,7 @@ namespace Ferretto.VW.VWApp
                             await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
                             this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
                             this.IsLoginButtonWorking = false;
+                            (((App)Application.Current).InstallationAppMainWindowInstance.DataContext as InstallationApp.MainWindowViewModel).LoggedUser = "Installer";
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
                         catch (Exception)
@@ -130,6 +145,7 @@ namespace Ferretto.VW.VWApp
                                 (OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>();
                             this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
                             await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            (((App)Application.Current).OperatorAppMainWindowInstance.DataContext as OperatorApp.MainWindowViewModel).LoggedUser = "Operator";
                             ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         }
                         catch (Exception)

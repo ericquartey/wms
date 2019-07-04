@@ -298,15 +298,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = GetNewId(), Depth = 1, Width = 2 };
 
             Common.DataModels.Compartment[] compartments =
             {
-                    new Common.DataModels.Compartment { Id = 1, CompartmentTypeId = 1, Stock = 10 },
-                    new Common.DataModels.Compartment { Id = 2, CompartmentTypeId = 1, Stock = 0 },
-                    new Common.DataModels.Compartment { Id = 3, CompartmentTypeId = 1, Stock = 10 },
-                    new Common.DataModels.Compartment { Id = 4, CompartmentTypeId = 1, Stock = 0 },
-                    new Common.DataModels.Compartment { Id = 5, CompartmentTypeId = 1, Stock = 0 },
+                    new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 10 },
+                    new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 0 },
+                    new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 10 },
+                    new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 0 },
+                    new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 0 },
                 };
             using (var context = this.CreateContext())
             {
@@ -323,7 +323,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(compartmentType1.Id);
 
             #endregion
 
@@ -405,14 +405,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var compartmentType1 = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 };
+            var compartmentType1 = new Common.DataModels.CompartmentType { Id = GetNewId(), Depth = 1, Width = 2 };
 
             Common.DataModels.Compartment[] compartments =
             {
-                    new Common.DataModels.Compartment { Id = 1, CompartmentTypeId = 1 },
-                    new Common.DataModels.Compartment { Id = 2, CompartmentTypeId = 1 },
-                    new Common.DataModels.Compartment { Id = 3, CompartmentTypeId = 1 },
-                };
+                new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id },
+                new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id },
+                new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id },
+            };
 
             using (var context = this.CreateContext())
             {
@@ -429,7 +429,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(compartmentType1.Id);
 
             #endregion
 

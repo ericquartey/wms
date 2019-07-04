@@ -121,6 +121,6 @@
     <value>Impossibile cancellare lo scomparto perché ha un abbinamento fisso con un articolo.</value>
   </data>
   <data name="CannotDeleteTheCompartmentBecauseStockIsNotZero" xml:space="preserve">
-    <value>Impossibile cancellare lo scomparto perché la quantità non è zero.</value>
+    <value>Impossibile cancellare lo scomparto perché la giacenza non è zero.</value>
   </data>
 </root>

@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly ISchedulerService schedulerService;
+        private readonly IItemListSchedulerService schedulerService;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public ItemListsController(
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider,
-            ISchedulerService schedulerService)
+            IItemListSchedulerService schedulerService)
         {
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;

@@ -24,7 +24,7 @@ namespace Ferretto.VW.CustomControls.Behaviours
         {
             if (sender is DataGrid dataGrid
                 &&
-                dataGrid.SelectedItem != null)
+                dataGrid?.SelectedItem != null)
             {
                 dataGrid.Dispatcher.BeginInvoke(
                     (Action)(() =>

@@ -225,7 +225,7 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
-  <data name="UpdateResolution" xml:space="preserve">
-    <value>Aggiorna Risoluzione</value>
+  <data name="CheckBoxDark" xml:space="preserve">
+    <value>  Tema scuro.</value>
   </data>
 </root>

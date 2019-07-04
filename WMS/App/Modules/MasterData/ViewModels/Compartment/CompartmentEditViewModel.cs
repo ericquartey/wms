@@ -107,20 +107,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get
             {
-                var result = true;
-                if (this.Model == null ||
-                    !this.Model.ItemId.HasValue)
+                if (this.Model?.ItemId == null)
                 {
-                    result = false;
+                    return false;
                 }
 
-                if (!this.Model.Stock.HasValue ||
-                    this.Model.Stock.Value <= 0)
-                {
-                    result = false;
-                }
-
-                return result;
+                return this.Model.Stock.HasValue && this.Model.Stock.Value > 0;
             }
         }
 
@@ -145,7 +137,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.mode, value))
                 {
-                    this.IsAdd = (this.mode == AppearMode.Add) ? true : false;
+                    this.IsAdd = this.mode == AppearMode.Add;
                 }
             }
         }

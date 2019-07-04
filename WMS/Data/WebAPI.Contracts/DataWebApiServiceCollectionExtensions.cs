@@ -49,12 +49,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMachinesDataService>(baseUrl, httpClient));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMaterialStatusesDataService>(baseUrl, httpClient));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMeasureUnitsDataService>(baseUrl, httpClient));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionOperationsDataService>(baseUrl, httpClient));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionsDataService>(baseUrl, httpClient));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IPackageTypesDataService>(baseUrl, httpClient));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<ISchedulerRequestsDataService>(baseUrl, httpClient));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IUsersDataService>(baseUrl, httpClient));
 
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILocalizationService>(baseUrl, httpClient));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILocalizationDataService>(baseUrl, httpClient));
 
             return serviceCollection;
         }

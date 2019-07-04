@@ -340,8 +340,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CompartmentsCount = l.Compartments.Count(),
                     HasCompartments = l.LoadingUnitType.HasCompartments,
                     ActiveMissionsCount = l.Missions.Count(
-                        m => m.Status != Common.DataModels.MissionStatus.Completed
-                            && m.Status != Common.DataModels.MissionStatus.Incomplete),
+                        m => m.Operations.Any(o =>
+                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            &&
+                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Depth)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
@@ -349,10 +351,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     WeightFillRate = loadingUnitsMachines.Any(wl => wl.l.Id == l.Id &&
                                                                     wl.m.TotalMaxWeight.HasValue &&
                                                                     wl.m.TotalMaxWeight.Value > 0) ? loadingUnitsMachines.Select(lm => new
-                                                            {
-                                                                WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
-                                                                LoadingUnitId = lm.l.Id
-                                                            }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : (double?)0,
+                                                                    {
+                                                                        WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
+                                                                        LoadingUnitId = lm.l.Id
+                                                                    }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : 0,
                 });
         }
 
@@ -398,9 +400,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Depth),
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                    ActiveMissionsCount = l.Missions.Count(
-                        m => m.Status != Common.DataModels.MissionStatus.Completed
-                            && m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    ActiveMissionsCount = l.Missions.Count(m =>
+                        m.Operations.Any(o =>
+                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            &&
+                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
                 });
         }
 

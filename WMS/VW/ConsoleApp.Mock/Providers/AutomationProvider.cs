@@ -11,11 +11,11 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private readonly IBaysDataService baysDataService;
 
-        private readonly ICompartmentsDataService compartmentsDataService;
-
         private readonly IItemListsDataService listsDataService;
 
         private readonly IMachinesDataService machinesDataService;
+
+        private readonly IMissionOperationsDataService missionOperationsDataService;
 
         private readonly IMissionsDataService missionsDataService;
 
@@ -25,14 +25,14 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         public AutomationProvider(
           IMissionsDataService missionsDataService,
+          IMissionOperationsDataService missionOperationsDataService,
           IMachinesDataService machinesDataService,
-          ICompartmentsDataService compartmentsDataService,
           IItemListsDataService listsDataService,
           IBaysDataService baysDataService)
         {
             this.missionsDataService = missionsDataService;
+            this.missionOperationsDataService = missionOperationsDataService;
             this.machinesDataService = machinesDataService;
-            this.compartmentsDataService = compartmentsDataService;
             this.baysDataService = baysDataService;
             this.listsDataService = listsDataService;
         }
@@ -41,9 +41,9 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         #region Methods
 
-        public async Task<Mission> AbortMissionAsync(int missionId)
+        public async Task<MissionOperation> AbortOperationAsync(int operationId)
         {
-            return await this.missionsDataService.AbortAsync(missionId);
+            return await this.missionOperationsDataService.AbortAsync(operationId);
         }
 
         public async Task ActivateBayAsync(int bayId)
@@ -51,14 +51,14 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.baysDataService.ActivateAsync(bayId);
         }
 
-        public async Task<MissionExecution> CompleteLoadingUnitMissionAsync(int missionId)
+        public async Task<Mission> CompleteLoadingUnitMissionAsync(int missionId)
         {
             return await this.missionsDataService.CompleteLoadingUnitAsync(missionId);
         }
 
-        public async Task<MissionExecution> CompleteMissionAsync(int missionId, int quantity)
+        public async Task<MissionOperation> CompleteOperationAsync(int operationId, int quantity)
         {
-            return await this.missionsDataService.CompleteItemAsync(missionId, quantity);
+            return await this.missionOperationsDataService.CompleteItemAsync(operationId, quantity);
         }
 
         public async Task ExecuteListAsync(int listId, int areaId, int bayId)
@@ -66,9 +66,9 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.listsDataService.ExecuteAsync(listId, areaId, bayId);
         }
 
-        public async Task<MissionExecution> ExecuteMissionAsync(int missionId)
+        public async Task<MissionOperation> ExecuteOperationAsync(int operationId)
         {
-            return await this.missionsDataService.ExecuteAsync(missionId);
+            return await this.missionOperationsDataService.ExecuteAsync(operationId);
         }
 
         public async Task<Bay> GetBayAsync(int bayId)
@@ -93,28 +93,17 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     null);
         }
 
-        public async Task<int?> GetLoadingUnitIdFromMissionAsync(MissionExecution mission)
-        {
-            if (mission == null)
-            {
-                throw new System.ArgumentNullException(nameof(mission));
-            }
-
-            if (mission.CompartmentId.HasValue)
-            {
-                var compartment = await this.compartmentsDataService.GetByIdAsync(mission.CompartmentId.Value);
-                return compartment.LoadingUnitId;
-            }
-
-            return null;
-        }
-
         public async Task<IEnumerable<Machine>> GetMachinesAsync()
         {
             return await this.machinesDataService.GetAllAsync();
         }
 
-        public async Task<IEnumerable<Mission>> GetMissionsAsync(int machineId)
+        public async Task<MissionInfo> GetMissionByIdAsync(int missionId)
+        {
+            return await this.missionsDataService.GetByIdAsync(missionId);
+        }
+
+        public async Task<IEnumerable<MissionInfo>> GetMissionsAsync(int machineId)
         {
             return await this.machinesDataService.GetMissionsByIdAsync(machineId);
         }

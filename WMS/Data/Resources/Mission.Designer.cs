@@ -61,6 +61,42 @@ namespace Ferretto.WMS.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only loading unit missions can be aborted..
+        /// </summary>
+        public static string OnlyLoadingUnitMissionsCanBeAborted {
+            get {
+                return ResourceManager.GetString("OnlyLoadingUnitMissionsCanBeAborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only loading unit missions can be completed..
+        /// </summary>
+        public static string OnlyLoadingUnitMissionsCanBeCompleted {
+            get {
+                return ResourceManager.GetString("OnlyLoadingUnitMissionsCanBeCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only loading unit missions can be executed..
+        /// </summary>
+        public static string OnlyLoadingUnitMissionsCanBeExecuted {
+            get {
+                return ResourceManager.GetString("OnlyLoadingUnitMissionsCanBeExecuted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to abort the mission because it has no associated operations..
+        /// </summary>
+        public static string UnableToAbortTheMissionBecauseItHasNoAssociatedOperations {
+            get {
+                return ResourceManager.GetString("UnableToAbortTheMissionBecauseItHasNoAssociatedOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to abort the mission because of its current state..
         /// </summary>
         public static string UnableToAbortTheMissionBecauseOfItsCurrentState {
