@@ -12,17 +12,21 @@
 
         SetMachineFault,
 
-        DisplayMissions,
+        DisplayOperation,
 
-        ExecuteMission,
+        ExecuteOperation,
 
-        CompleteMission,
+        CompleteOperation,
 
-        AbortMission,
+        AbortOperation,
 
         DisplayLists,
 
         ExecuteList,
+
+        ExecuteLoadingUnitMission,
+
+        CompleteLoadingUnitMission,
 
         Exit
     }

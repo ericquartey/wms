@@ -61,6 +61,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusId = j.c.MaterialStatusId,
                     PackageTypeId = j.c.PackageTypeId,
                     RegistrationNumber = j.c.RegistrationNumber,
+                    OtherMissionOperationCount = j.c.OtherMissionOperationCount,
+                    PickMissionOperationCount = j.c.PickMissionOperationCount,
+                    PutMissionOperationCount = j.c.PutMissionOperationCount,
                 })
                 .SingleOrDefaultAsync();
         }
@@ -120,6 +123,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Sub1 = c.Sub1,
                             Sub2 = c.Sub2,
                             IsItemPairingFixed = c.IsItemPairingFixed,
+                            OtherMissionOperationCount = c.OtherMissionOperationCount,
+                            PickMissionOperationCount = c.PickMissionOperationCount,
+                            PutMissionOperationCount = c.PutMissionOperationCount,
                         })
                         .Where(c => c.Availability > 0);
 

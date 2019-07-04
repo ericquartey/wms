@@ -32,8 +32,6 @@ namespace Ferretto.Common.DataModels
 
         public int Id { get; set; }
 
-        public int InMissionCount { get; set; }
-
         public DateTime? InventoryDate { get; set; }
 
         public bool IsCellPairingFixed { get; set; }
@@ -54,13 +52,11 @@ namespace Ferretto.Common.DataModels
 
         public int LoadingUnitTypeId { get; set; }
 
+        public int MissionCount { get; set; }
+
         public IEnumerable<Mission> Missions { get; set; }
 
         public string Note { get; set; }
-
-        public int OtherMissionCount { get; set; }
-
-        public int OutMissionCount { get; set; }
 
         public ReferenceType ReferenceType { get; set; }
 
