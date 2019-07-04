@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             lock (this.responseMessage)
             {
-                this.buildResponseMessage(dataMessage);
+                this.BuildResponseMessage(dataMessage);
             }
 
             await Task.Delay(3, stoppingToken);
@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS_IODriver
             return rawMessage;
         }
 
-        private void buildResponseMessage(byte[] inputTelegram)
+        private void BuildResponseMessage(byte[] inputTelegram)
         {
             var relProtocol = inputTelegram[1];
             var codeOperation = inputTelegram[2];

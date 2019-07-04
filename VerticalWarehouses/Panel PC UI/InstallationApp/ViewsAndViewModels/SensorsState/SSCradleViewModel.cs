@@ -17,7 +17,7 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private IOSensorsStatus ioSensorsStatus;
+        private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentiInMachineSide;
 

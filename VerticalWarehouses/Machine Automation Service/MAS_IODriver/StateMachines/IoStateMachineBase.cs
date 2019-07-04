@@ -13,13 +13,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
     {
         #region Fields
 
-        protected IEventAggregator eventAggregator;
-
         protected BlockingConcurrentQueue<IoSHDWriteMessage> IoCommandQueue;
 
-        protected ILogger logger;
-
         private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public IoStateMachineBase(
+            IEventAggregator eventAggregator,
+            ILogger logger)
+        {
+            this.EventAggregator = eventAggregator;
+            this.Logger = logger;
+        }
 
         #endregion
 
@@ -35,6 +43,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
         #region Properties
 
         protected IIoState CurrentState { get; set; }
+
+        protected IEventAggregator EventAggregator { get; }
+
+        protected ILogger Logger { get; }
 
         #endregion
 
@@ -71,9 +83,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
-            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
         public abstract void Start();

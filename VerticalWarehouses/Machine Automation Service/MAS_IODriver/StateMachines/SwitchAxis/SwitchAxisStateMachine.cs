@@ -32,17 +32,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(
+            Axis axisToSwitchOn,
+            bool switchOffOtherAxis,
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.eventAggregator = eventAggregator;
             this.pulseOneTime = false;
-            this.logger = logger;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -65,7 +70,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
             }
 
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessMessage(message);
         }
@@ -81,7 +86,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 this.pulseOneTime = true;
             }
 
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessResponseMessage(message);
         }
@@ -89,12 +94,12 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.logger.LogTrace($"1:Switch off other axis={this.switchOffOtherAxis}");
+            this.Logger.LogTrace($"1:Switch off other axis={this.switchOffOtherAxis}");
 
             if (this.switchOffOtherAxis)
             {
-                this.logger.LogTrace("2:Change State to SwitchOffMotorState");
-                this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.status, this.logger, this);
+                this.Logger.LogTrace("2:Change State to SwitchOffMotorState");
+                this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.status, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
@@ -104,15 +109,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SwitchAxis,
                     MessageStatus.OperationStart);
-                this.logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
+                this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
                 this.CurrentState?.Start();
             }
             else
             {
-                this.logger.LogTrace("4:Change State to SwitchOnMotorState");
-                this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.status, this.logger, this);
+                this.Logger.LogTrace("4:Change State to SwitchOnMotorState");
+                this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.status, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
@@ -122,7 +127,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SwitchAxis,
                     MessageStatus.OperationStart);
-                this.logger.LogTrace($"5:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
+                this.Logger.LogTrace($"5:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
                 this.CurrentState?.Start();
@@ -149,8 +154,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         private void DelayElapsed(object state)
         {
-            this.logger.LogTrace("1:Change State to SwitchOnMotorState");
-            this.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.status, this.logger, this));
+            this.Logger.LogTrace("1:Change State to SwitchOnMotorState");
+            this.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.status, this.Logger, this));
         }
 
         #endregion

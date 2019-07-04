@@ -520,22 +520,30 @@ namespace Ferretto.VW.MAS_DataLayer
                 switch (generalInfoConfigurationDataType)
                 {
                     case ConfigurationDataType.Boolean:
-                        await this.SetBoolConfigurationValueAsync(configurationData, (long)elementCategory,
+                        await this.SetBoolConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
                             jsonDataValue.Value<bool>());
                         break;
 
                     case ConfigurationDataType.Date:
-                        await this.SetDateTimeConfigurationValueAsync(configurationData, (long)elementCategory,
+                        await this.SetDateTimeConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
                             jsonDataValue.Value<DateTime>());
                         break;
 
                     case ConfigurationDataType.Integer:
-                        await this.SetIntegerConfigurationValueAsync(configurationData, (long)elementCategory,
+                        await this.SetIntegerConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
                             jsonDataValue.Value<int>());
                         break;
 
                     case ConfigurationDataType.Float:
-                        await this.SetDecimalConfigurationValueAsync(configurationData, (long)elementCategory,
+                        await this.SetDecimalConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
                             jsonDataValue.Value<decimal>());
                         break;
 

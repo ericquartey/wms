@@ -12,6 +12,10 @@ namespace Ferretto.VW.Common_Utils.Messages
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S107:Methods should not have too many parameters",
+            Justification = "Check if we really need this constructor.")]
         public NotificationMessage(
             IMessageData data,
             string description,
@@ -36,21 +40,21 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         #region Properties
 
-        public IMessageData Data { get; }
+        public IMessageData Data { get; set; }
 
-        public string Description { get; }
+        public string Description { get; set; }
 
         public MessageActor Destination { get; set; }
 
-        public ErrorLevel ErrorLevel { get; }
+        public ErrorLevel ErrorLevel { get; set; }
 
         public MessageActor Source { get; set; }
 
         public MessageStatus Status { get; set; }
 
-        public MessageType Type { get; }
+        public MessageType Type { get; set; }
 
-        public MessageVerbosity Verbosity { get; }
+        public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Info;
 
         #endregion
     }

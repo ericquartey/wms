@@ -33,7 +33,8 @@ namespace Ferretto.VW.CustomControls.Controls
 
         public Task OnEnterViewAsync()
         {
-            return null;
+            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

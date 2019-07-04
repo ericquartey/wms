@@ -27,7 +27,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool elevatorEngineSelected;
 
-        private IOSensorsStatus ioSensorsStatus;
+        private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool microCarterLeftSideBay1;
 
@@ -132,6 +132,26 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVariousInputsSensorsState);
         }
 
+        private void DisableVariousInputsSensorsState()
+        {
+            this.SecurityFunctionActive = false;
+
+            this.MushroomHeadButtonBay1 = false;
+            this.MicroCarterLeftSideBay1 = false;
+            this.MicroCarterRightSideBay1 = false;
+            this.AntiIntrusionShutterBay1 = false;
+
+            this.MushroomHeadButtonBay2 = false;
+            this.MicroCarterLeftSideBay2 = false;
+            this.MicroCarterRightSideBay2 = false;
+            this.AntiIntrusionShutterBay2 = false;
+
+            this.MushroomHeadButtonBay3 = false;
+            this.MicroCarterLeftSideBay3 = false;
+            this.MicroCarterRightSideBay3 = false;
+            this.AntiIntrusionShutterBay3 = false;
+        }
+
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
             this.ioSensorsStatus.UpdateInputStates(message);
@@ -152,26 +172,6 @@ namespace Ferretto.VW.InstallationApp
             this.MicroCarterLeftSideBay3 = this.ioSensorsStatus.MicroCarterLeftSideBay3;
             this.MicroCarterRightSideBay3 = this.ioSensorsStatus.MicroCarterRightSideBay3;
             this.AntiIntrusionShutterBay3 = !this.ioSensorsStatus.AntiIntrusionShutterBay3;
-        }
-
-        private void DisableVariousInputsSensorsState()
-        {
-            this.SecurityFunctionActive = false;
-
-            this.MushroomHeadButtonBay1 = false;
-            this.MicroCarterLeftSideBay1 = false;
-            this.MicroCarterRightSideBay1 = false;
-            this.AntiIntrusionShutterBay1 = false;
-
-            this.MushroomHeadButtonBay2 = false;
-            this.MicroCarterLeftSideBay2 = false;
-            this.MicroCarterRightSideBay2 = false;
-            this.AntiIntrusionShutterBay2 = false;
-
-            this.MushroomHeadButtonBay3 = false;
-            this.MicroCarterLeftSideBay3 = false;
-            this.MicroCarterRightSideBay3 = false;
-            this.AntiIntrusionShutterBay3 = false;
         }
 
         #endregion

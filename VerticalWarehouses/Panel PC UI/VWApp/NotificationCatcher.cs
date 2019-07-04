@@ -69,10 +69,6 @@ namespace Ferretto.VW.VWApp
             }
             if (e.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> cc)
             {
-                var data = cc.Data;
-                var dataDescription = cc.Description;
-                var status = cc.Status;
-
                 this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Publish(cc);
 
                 if (cc.Status == MessageStatus.OperationError)
@@ -82,8 +78,6 @@ namespace Ferretto.VW.VWApp
             }
             if (e.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> sw)
             {
-                var data = sw.Data;
-
                 this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Publish(sw);
 
                 if (sw.Status == MessageStatus.OperationError)
@@ -93,8 +87,6 @@ namespace Ferretto.VW.VWApp
             }
             if (e.NotificationMessage is NotificationMessageUI<ShutterPositioningMessageData> sp)
             {
-                var data = sp.Data;
-
                 this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
 
                 if (sp.Status == MessageStatus.OperationError)
@@ -131,20 +123,31 @@ namespace Ferretto.VW.VWApp
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
 
-                if (vp.Status == MessageStatus.OperationError)
+                if (vp.Status == MessageStatus.OperationError
+                    &&
+                    vp.Data is PositioningMessageData positioningData)
                 {
-                    if (vp.Data is PositioningMessageData positioningData)
+                    var actionType = ActionType.None;
+                    switch (positioningData.AxisMovement)
                     {
-                        var actionType = ActionType.None;
-                        switch (positioningData.AxisMovement)
-                        {
-                            case Axis.Both: actionType = ActionType.Homing; break;
-                            case Axis.Vertical: actionType = ActionType.VerticalHoming; break;
-                            case Axis.Horizontal: actionType = ActionType.HorizontalHoming; break;
-                            case Axis.None: break;
-                        }
-                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, actionType, ActionStatus.Error));
+                        case Axis.Both:
+                            actionType = ActionType.Homing;
+                            break;
+
+                        case Axis.Vertical:
+                            actionType = ActionType.VerticalHoming;
+                            break;
+
+                        case Axis.Horizontal:
+                            actionType = ActionType.HorizontalHoming;
+                            break;
+
+                        case Axis.None:
+                            break;
                     }
+
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
+                        new MAS_EventMessage(NotificationType.Error, actionType, ActionStatus.Error));
                 }
             }
 
