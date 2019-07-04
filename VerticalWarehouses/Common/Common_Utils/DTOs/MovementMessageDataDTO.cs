@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.Common_Utils.DTOs
 {
-    public class MovementMessageDataDTO
+    public class MovementMessageDataDto
     {
         #region Constructors
 
-        public MovementMessageDataDTO(Axis axis, MovementType movementType, uint speedPercentage, decimal displacement)
+        public MovementMessageDataDto(Axis axis, MovementType movementType, uint speedPercentage, decimal displacement)
         {
             this.Displacement = displacement;
             this.Axis = axis;

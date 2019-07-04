@@ -87,8 +87,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var dataLayerConfiguration = new DataLayerConfiguration(
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
-                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
-            );
+                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile"));
 
             services.AddApiVersioning(o =>
             {

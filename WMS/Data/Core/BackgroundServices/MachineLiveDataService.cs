@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Data.Core
                         .Select(b => new BayStatus
                         {
                             BayId = b.Id
-                        });
+                        }).ToArray();
 
                     if (System.Uri.TryCreate(machine.ServiceUrl, System.UriKind.Absolute, out var machineServiceUrl))
                     {
@@ -118,6 +118,9 @@ namespace Ferretto.WMS.Data.Core
             machineHubClient.ConnectionStatusChanged += this.MachineHubClient_ConnectionStatusChanged;
             machineHubClient.ModeChanged += this.MachineHubClient_ModeChanged;
             machineHubClient.MachineStatusReceived += this.MachineHubClient_MachineStatusReceived;
+            machineHubClient.ElevatorPositionChanged += this.MachineHubClient_ElevatorPositionChanged;
+            machineHubClient.UserChanged += this.MachineHubClient_UserChanged;
+            machineHubClient.LoadingUnitInBayChanged += this.MachineHubClient_LoadingUnitInBayChanged;
             machineHubClient.MaxReconnectTimeoutMilliseconds = this.configuration.GetMaxMachineReconnectTimeoutMilliseconds();
 
             this.logger.LogInformation($"Connecting to live machine hub (machine id={machineHubClient.MachineId}) ...");
@@ -144,6 +147,33 @@ namespace Ferretto.WMS.Data.Core
                     .SingleOrDefault(hub => hub.MachineId == e.MachineId);
 
                 await machineHub.RequestCurrentStateAsync();
+            }
+        }
+
+        private void MachineHubClient_ElevatorPositionChanged(object sender, ElevatorPositionChangedEventArgs e)
+        {
+            var machineStatus = this.liveMachinesDataContext.GetMachineStatus(e.MachineId);
+
+            if (machineStatus.ElevatorStatus == null)
+            {
+                machineStatus.ElevatorStatus = new ElevatorStatus();
+            }
+
+            machineStatus.ElevatorStatus.Position = e.Position;
+
+            this.NotifyUpdate(e.MachineId);
+        }
+
+        private void MachineHubClient_LoadingUnitInBayChanged(object sender, LoadingUnitChangedEventArgs e)
+        {
+            var machineStatus = this.liveMachinesDataContext.GetMachineStatus(e.MachineId);
+
+            var bayStatus = machineStatus.BaysStatus.SingleOrDefault(b => b.BayId == e.BayId);
+            if (bayStatus != null)
+            {
+                bayStatus.LoadingUnitId = e.LoadingUnitId;
+
+                this.NotifyUpdate(e.MachineId);
             }
         }
 
@@ -195,9 +225,26 @@ namespace Ferretto.WMS.Data.Core
                 {
                     machineStatus.FaultCode = e.FaultCode;
                 }
+                else
+                {
+                    machineStatus.FaultCode = null;
+                }
             }
 
             this.NotifyUpdate(e.MachineId);
+        }
+
+        private void MachineHubClient_UserChanged(object sender, UserChangedEventArgs e)
+        {
+            var machineStatus = this.liveMachinesDataContext.GetMachineStatus(e.MachineId);
+
+            var bayStatus = machineStatus.BaysStatus.SingleOrDefault(b => b.BayId == e.BayId);
+            if (bayStatus != null)
+            {
+                bayStatus.LoggedUserId = e.UserId;
+
+                this.NotifyUpdate(e.MachineId);
+            }
         }
 
         private void NotifyUpdate(int machineId)

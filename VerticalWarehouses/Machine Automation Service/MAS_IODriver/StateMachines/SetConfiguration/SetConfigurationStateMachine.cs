@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -19,14 +16,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         #region Constructors
 
-        public SetConfigurationStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public SetConfigurationStateMachine(
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.eventAggregator = eventAggregator;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -44,21 +44,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             base.ProcessMessage(message);
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             base.ProcessResponseMessage(message);
         }
 
         public override void Start()
         {
-            this.CurrentState = new SetConfigurationStartState(this, this.status, this.logger);
+            this.CurrentState = new SetConfigurationStartState(this, this.status, this.Logger);
             this.CurrentState?.Start();
         }
 

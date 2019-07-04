@@ -136,6 +136,12 @@ namespace Ferretto.WMS.App.Controls
             {
                 this.ContentText = this.Content;
             }
+
+            if (this.ContentText == null)
+            {
+                this.IsPropertyNull = true;
+                this.ContentText = General.NotSpecified;
+            }
         }
 
         private static DateTime? ComputeDateValue(System.Reflection.PropertyInfo propertyInfo, object value)

@@ -4,15 +4,18 @@
     {
         #region Constructors
 
-        public LoadingUnitChangedEventArgs(int machineId, int? loadingUnitId)
+        public LoadingUnitChangedEventArgs(int machineId, int? bayId, int? loadingUnitId)
         {
             this.MachineId = machineId;
             this.LoadingUnitId = loadingUnitId;
+            this.BayId = bayId;
         }
 
         #endregion
 
         #region Properties
+
+        public int? BayId { get; }
 
         public int? LoadingUnitId { get; }
 

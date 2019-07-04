@@ -147,7 +147,7 @@ namespace Ferretto.VW.InstallationApp
                 Category = "BeltBurnishing";
                 this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
             }
         }
@@ -207,6 +207,7 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (Exception)
             {
+                // do nothing
             }
         }
 
@@ -220,6 +221,7 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (Exception)
             {
+                // do nothing
             }
         }
 

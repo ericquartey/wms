@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
     {
         #region Fields
 
-        private readonly ILogger logger;
-
         private readonly IoSHDStatus status;
 
         private bool disposed;
@@ -20,13 +18,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         #region Constructors
 
-        public SetConfigurationEndState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public SetConfigurationEndState(
+            IIoStateMachine parentStateMachine,
+            IoSHDStatus status,
+            ILogger logger)
+            : base(parentStateMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentStateMachine;
             this.status = status;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -44,12 +44,12 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogDebug($"1: Received Message = {message.ToString()}");
+            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
 
             if (this.status.MatchOutputs(message.Outputs))
             {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
                     FieldMessageType.SetConfigurationIO,
                     MessageStatus.OperationEnd);
 
-                this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+                this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                 this.ParentStateMachine.PublishNotificationEvent(endNotification);
             }
@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
             }
 
-            this.logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
         }
