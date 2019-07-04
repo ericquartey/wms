@@ -108,7 +108,7 @@ namespace Ferretto.VW.WmsCommunication
             {
                 returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
                 {
-                    Height = x.Height,
+                    Height = x.Depth,
                     Id = x.Id,
                     LoadingUnitId = x.LoadingUnitId,
                     Width = x.Width,
@@ -129,6 +129,13 @@ namespace Ferretto.VW.WmsCommunication
 
         public async Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity)
         {
+            // HACK BUG 3381 WORKAROUND - DEVELOPMENT ONLY
+            if (bayId == 0 || areaId == 0)
+            {
+                areaId = 2;
+                bayId = 2;
+            }
+            // END HACK
             try
             {
                 await this.itemsDataService.PickAsync(itemId, new ItemOptions
