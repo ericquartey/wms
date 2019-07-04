@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         private readonly ILogger<MissionLoadingUnitProvider> logger;
 
         private readonly IMapper mapper;
@@ -33,6 +35,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             INotificationService notificationService,
             IMapper mapper,
             IMissionProvider missionProvider,
+            ILoadingUnitProvider loadingUnitProvider,
             ISchedulerRequestExecutionProvider requestProvider,
             ILogger<MissionLoadingUnitProvider> logger)
             : base(dataContext, notificationService)
@@ -40,6 +43,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.logger = logger;
             this.mapper = mapper;
             this.missionProvider = missionProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
             this.requestProvider = requestProvider;
         }
 
@@ -83,10 +87,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             mission.Status = MissionStatus.Completed;
 
             await this.missionProvider.UpdateAsync(mission);
-
             var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
+                await this.loadingUnitProvider.UpdateMissionCountAsync(updatedMission.LoadingUnitId);
+
                 this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
                 this.NotificationService.PushUpdate(mission);
                 return new SuccessOperationResult<Mission>(updatedMission);
@@ -107,14 +112,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 BayId = request.BayId,
                 LoadingUnitId = request.LoadingUnitId,
                 Priority = request.Priority.Value,
-                Operations = new[]
-                {
-                    new MissionOperation
-                    {
-                        Type = MissionOperationType.Pick,
-                        Priority = request.Priority.Value
-                    }
-                }
             };
 
             this.logger.LogWarning(

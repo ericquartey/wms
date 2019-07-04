@@ -263,8 +263,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IOperationResult<LoadingUnitDetails>> UpdateMissionCountAsync(int id)
+        {
+            var model = await this.GetByIdAsync(id);
+            model.MissionCount++;
+
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
+                model,
+                this.DataContext.LoadingUnits,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
+                    "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",
             Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
@@ -388,9 +403,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     InventoryDate = l.InventoryDate,
                     LastPickDate = l.LastPickDate,
                     LastPutDate = l.LastPutDate,
-                    InMissionCount = l.InMissionCount,
-                    OutMissionCount = l.OutMissionCount,
-                    OtherMissionCount = l.OtherMissionCount,
+                    MissionCount = l.MissionCount,
                     CellId = l.CellId,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
