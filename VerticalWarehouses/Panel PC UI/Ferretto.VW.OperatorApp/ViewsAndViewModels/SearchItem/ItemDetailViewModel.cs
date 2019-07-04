@@ -1,27 +1,28 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.IO;
-    using System.Net;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using Ferretto.VW.CustomControls;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.WmsCommunication.Interfaces;
-    using Ferretto.WMS.Data.WebAPI.Contracts;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.CustomControls;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Unity;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using System.Net;
+using System.IO;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using System.Windows.Media;
+using System.Drawing;
+using Ferretto.VW.CustomControls.Utils;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+{
     public class ItemDetailViewModel : BindableBase, IItemDetailViewModel
     {
         #region Fields
 
-        private TestArticle article;
+        private DataGridItem article;
 
         private string articleCode;
 
@@ -49,7 +50,7 @@
 
         #region Properties
 
-        public TestArticle Article
+        public DataGridItem Article
         {
             get => this.article;
             set

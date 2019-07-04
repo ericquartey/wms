@@ -19,7 +19,6 @@
     <SolidColorBrush x:Key="VWAPP_HelpStepTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 
-
     <SolidColorBrush x:Key="VWAPP_CCInput_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
     <SolidColorBrush x:Key="VWAPP_CCInput_Highlighted_Normal"

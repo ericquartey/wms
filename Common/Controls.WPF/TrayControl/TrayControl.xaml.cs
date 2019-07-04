@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Ferretto.Common.Controls.WPF
 {
@@ -324,6 +325,7 @@ namespace Ferretto.Common.Controls.WPF
         private void TrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 2, e.NewSize.Width - 2);
+            this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
 
         #endregion

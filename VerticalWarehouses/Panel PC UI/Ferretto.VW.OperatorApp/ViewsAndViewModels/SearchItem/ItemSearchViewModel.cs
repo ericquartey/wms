@@ -1,29 +1,30 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
-{
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.VW.CustomControls;
-    using Ferretto.VW.CustomControls.Controls;
-    using Ferretto.VW.CustomControls.Interfaces;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-    using Ferretto.VW.WmsCommunication.Interfaces;
-    using Ferretto.WMS.Data.WebAPI.Contracts;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System;
+using System.Windows.Input;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Unity;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Ferretto.VW.CustomControls;
+using System.Collections.ObjectModel;
+using System.Threading;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.CustomControls.Utils;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+{
     public class ItemSearchViewModel : BindableBase, IItemSearchViewModel
     {
         #region Fields
 
         private const int DEFAULT_DELAY = 300;
 
-        private const int DEFAULT_QUANTITY_ITEM = 10;
+        private const int DEFAULT_QUANTITY_ITEM = 20;
 
         private readonly SynchronizationContext uiContext;
 
@@ -151,7 +152,7 @@
                     }
                     if (items != null && items.Count > 0)
                     {
-                        var viewItems = new ObservableCollection<TestArticle>();
+                        var viewItems = new ObservableCollection<DataGridItem>();
                         var random = new Random();
                         for (var i = 0; i < items.Count; i++)
                         {
@@ -170,7 +171,7 @@
                                     machines = string.Concat(machines, $" {random.Next(1, 200)},");
                                 }
                             }
-                            var item = new TestArticle
+                            var item = new DataGridItem
                             {
                                 Article = items[i].Code,
                                 Description = items[i].Description,
@@ -258,7 +259,7 @@
             }
             if (items != null && items.Count > 0)
             {
-                var viewItems = new ObservableCollection<TestArticle>();
+                var viewItems = new ObservableCollection<DataGridItem>();
                 var random = new Random();
                 for (var i = 0; i < items.Count; i++)
                 {
@@ -277,7 +278,7 @@
                             machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
                     }
-                    var item = new TestArticle
+                    var item = new DataGridItem
                     {
                         Article = items[i].Code,
                         Description = items[i].Description,

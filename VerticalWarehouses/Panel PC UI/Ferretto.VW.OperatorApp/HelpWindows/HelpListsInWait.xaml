@@ -7,12 +7,11 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="688"
+    
+    <Grid Width="1024" Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200"
-               Height="60"
+        <Image Width="200" Height="60"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
@@ -29,7 +28,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}" />
+                    Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridType}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
@@ -57,39 +56,36 @@
                   Content="{x:Static res:OperatorApp.ListsInWaitExecute}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="Lista non eseguibile"
                                                LabelText="{x:Static res:OperatorApp.CommonNote}"/>
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Lista" />
-                     <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
-        
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
-                     Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Descrizione" />
-                     <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
+                     Text="Tipo" />
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Macchine" />
-                     <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
+                     Text="Descrizione" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridDescription}" />
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0"
+                     Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Macchine" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridDescription}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,360,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridMachine}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpCommonNote}" />
@@ -108,6 +104,16 @@
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpListsInWaitListsExecute}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
+                    Width="180"
+                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                    Text="Lista" />
 
     </Grid>
 </UserControl>

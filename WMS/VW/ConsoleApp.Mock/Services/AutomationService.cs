@@ -25,6 +25,8 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private readonly VW.MachineAutomationService.Hubs.MachineStatus machineStatus;
 
+        private Bay activeBay;
+
         #endregion
 
         #region Constructors
@@ -66,7 +68,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 {
                     Console.Write("Moving tray from bay to elevator ... ");
 
-                    await Task.Delay(1000);
+                    await Task.Delay(2000);
 
                     this.machineStatus
                         .BaysStatus
@@ -114,7 +116,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     await this.MoveElevatorAsync(100, 0);
                     Console.Write("Moving tray into bay ... ");
 
-                    await Task.Delay(1000);
+                    await Task.Delay(2000);
                     this.machineStatus.ElevatorStatus.LoadingUnitId = null;
                     await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(null);
 
@@ -140,19 +142,19 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
         {
             var bays = await this.automationProvider.GetBaysAsync(this.machineStatus.MachineId);
 
-            Bay selectedBay = null;
+            this.activeBay = null;
             if (bays.Count() == 1)
             {
-                selectedBay = bays.Single();
+                this.activeBay = bays.Single();
             }
             else
             {
-                selectedBay = Views.PromptForBaySelection(bays);
+                this.activeBay = Views.PromptForBaySelection(bays);
             }
 
-            Console.WriteLine($"Logging to bay: {selectedBay.Description}");
+            Console.WriteLine($"Logging to bay: {this.activeBay.Description}");
 
-            await this.automationProvider.ActivateBayAsync(selectedBay.Id);
+            await this.machineHub.Clients?.All.UserChanged(1, this.activeBay.Id);
         }
 
         private static bool ElevatorReachedTargetPosition(decimal position, decimal startPosition, decimal targetPosition)
@@ -238,7 +240,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     {
                         this.machineStatus.Mode = MachineMode.Fault;
 
-                        const int faultCode = 0;
+                        var faultCode = new Random().Next(10000);
 
                         await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, faultCode);
                         break;
@@ -282,6 +284,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     break;
 
                 case UserSelection.Exit:
+                    await this.LogOutUserAsync();
                     exitRequested = true;
                     break;
 
@@ -300,6 +303,15 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return exitRequested;
         }
 
+        private async Task LogOutUserAsync()
+        {
+            if (this.activeBay != null)
+            {
+                await this.machineHub.Clients?.All.UserChanged(null, this.activeBay.Id);
+                this.activeBay = null;
+            }
+        }
+
         private async Task MoveElevatorAsync(decimal startPosition, decimal targetPosition)
         {
             Console.Write("Moving elevator ");
@@ -311,7 +323,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 this.machineStatus.ElevatorStatus.Position = position;
                 await this.machineHub.Clients?.All.ElevatorPositionChanged(position);
 
-                await Task.Delay(50);
+                await Task.Delay(70);
                 Console.Write($".");
 
                 position += increment;

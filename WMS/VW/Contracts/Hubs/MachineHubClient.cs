@@ -115,7 +115,7 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
                 nameof(IMachineHub.EchoCurrentStatus),
                 this.OnMachineStatusReceived);
 
-            this.connection.On<int?>(
+            this.connection.On<int, int?>(
                 nameof(IMachineHub.LoadingUnitInBayChanged),
                 this.OnLoadingUnitInBayChanged);
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
                 nameof(IMachineHub.ModeChanged),
                 this.OnModeChanged);
 
-            this.connection.On<int, int?>(
+            this.connection.On<int?, int>(
                 nameof(IMachineHub.UserChanged),
                 this.OnUserChanged);
 
@@ -144,14 +144,14 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
             this.ElevatorPositionChanged?.Invoke(this, new ElevatorPositionChangedEventArgs(this.MachineId, position));
         }
 
-        private void OnLoadingUnitInBayChanged(int? loadingUnitId)
+        private void OnLoadingUnitInBayChanged(int bayId, int? loadingUnitId)
         {
-            this.LoadingUnitInBayChanged?.Invoke(this, new LoadingUnitChangedEventArgs(this.MachineId, loadingUnitId));
+            this.LoadingUnitInBayChanged?.Invoke(this, new LoadingUnitChangedEventArgs(this.MachineId, bayId, loadingUnitId));
         }
 
         private void OnLoadingUnitInElevatorChanged(int? loadingUnitId)
         {
-            this.LoadingUnitInElevatorChanged?.Invoke(this, new LoadingUnitChangedEventArgs(this.MachineId, loadingUnitId));
+            this.LoadingUnitInElevatorChanged?.Invoke(this, new LoadingUnitChangedEventArgs(this.MachineId, null, loadingUnitId));
         }
 
         private void OnMachineStatusReceived(MachineStatus machineStatus)
@@ -164,9 +164,9 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
             this.ModeChanged?.Invoke(this, new ModeChangedEventArgs(this.MachineId, mode, faultCode));
         }
 
-        private void OnUserChanged(int bayId, int? userId)
+        private void OnUserChanged(int? userId, int bayId)
         {
-            this.UserChanged?.Invoke(this, new UserChangedEventArgs(bayId, userId));
+            this.UserChanged?.Invoke(this, new UserChangedEventArgs(this.MachineId, bayId, userId));
         }
 
         private async Task WaitForReconnectionAsync()

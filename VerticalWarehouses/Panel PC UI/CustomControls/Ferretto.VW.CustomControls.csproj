@@ -49,11 +49,23 @@
   <ItemGroup>
     <None Remove="Controls\BusyButton.xaml" />
     <None Remove="Controls\BusyIndicator.xaml" />
+    <None Remove="Controls\CustomControlCellStatisticsDataGrid.xaml" />
+    <None Remove="Controls\CustomControlDrawerDataGrid.xaml" />
+    <None Remove="Controls\CustomControlDrawerSaturationDataGrid.xaml" />
+    <None Remove="Controls\CustomControlDrawerWeightSaturationDataGrid.xaml" />
+    <None Remove="Controls\CustomControlErrorsDataGrid.xaml" />
+    <None Remove="Controls\CustomControlItemStatisticsDataGrid.xaml" />
+    <None Remove="Controls\CustomControlListDataGrid.xaml" />
+    <None Remove="Controls\CustomControlListDetailDataGrid.xaml" />
+    <None Remove="Controls\CustomControlMaintenanceDataGrid.xaml" />
+    <None Remove="Controls\CustomControlMaintenanceDetailDataGrid.xaml" />
     <None Remove="Controls\CustomProgressBarControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
+    <None Remove="Skins\DarkCustomControlDataGrid.xaml" />
+    <None Remove="Skins\LightCustomControlDataGrid.xaml" />
     <None Remove="Styles\CustomControlArticleDataGridStyle.xaml" />
     <None Remove="Templates\DataGridRepeatButtonControlTemplate.xaml" />
     <None Remove="Templates\DataGridScrollButtonControlTemplate.xaml" />
@@ -74,6 +86,15 @@
     <Compile Update="Controls\CustomShutterControlSensorsThreePositions.xaml.cs">
       <DependentUpon>CustomShutterControlSensorsThreePositions.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Fonts\Microsoft-sans-serif.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\RobotoCondensed-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
  
