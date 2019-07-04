@@ -48,9 +48,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? maxCapacity;
 
+        private int otherMissionOperationCount;
+
         private IEnumerable<Enumeration> packageTypeChoices;
 
         private int? packageTypeId;
+
+        private int pickMissionOperationCount;
+
+        private int putMissionOperationCount;
 
         private string registrationNumber;
 
@@ -244,6 +250,14 @@ namespace Ferretto.WMS.App.Core.Models
             }
         }
 
+        [Required]
+        [Display(Name = nameof(BusinessObjects.CompartmentOtherMissionOperationCount), ResourceType = typeof(BusinessObjects))]
+        public int OtherMissionOperationCount
+        {
+            get => this.otherMissionOperationCount;
+            set => this.SetProperty(ref this.otherMissionOperationCount, value);
+        }
+
         public IEnumerable<Enumeration> PackageTypeChoices
         {
             get => this.packageTypeChoices;
@@ -255,6 +269,22 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.packageTypeId;
             set => this.SetProperty(ref this.packageTypeId, value);
+        }
+
+        [Required]
+        [Display(Name = nameof(BusinessObjects.CompartmentPickMissionOperationCount), ResourceType = typeof(BusinessObjects))]
+        public int PickMissionOperationCount
+        {
+            get => this.pickMissionOperationCount;
+            set => this.SetProperty(ref this.pickMissionOperationCount, value);
+        }
+
+        [Required]
+        [Display(Name = nameof(BusinessObjects.CompartmentPutMissionOperationCount), ResourceType = typeof(BusinessObjects))]
+        public int PutMissionOperationCount
+        {
+            get => this.putMissionOperationCount;
+            set => this.SetProperty(ref this.putMissionOperationCount, value);
         }
 
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
