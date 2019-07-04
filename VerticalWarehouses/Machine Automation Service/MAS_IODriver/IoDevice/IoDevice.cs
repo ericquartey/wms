@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public IoDevice(IEventAggregator eventAggregator, IPAddress ipAddress, int port, IoIndex index, ILogger logger)
+        public IoDevice(IEventAggregator eventAggregator, ISHDTransport shdTransport, IPAddress ipAddress, int port, IoIndex index, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
@@ -68,7 +68,15 @@ namespace Ferretto.VW.MAS_IODriver
             this.index = index;
             this.logger = logger;
 
-            this.shdTransport = new SHDTransport();
+            if (shdTransport is SHDTransport)
+            {
+                this.shdTransport = new SHDTransport();
+            }
+            else
+            {
+                this.shdTransport = new SHDTransportMock();
+            }
+
             this.ioSHDStatus = new IoSHDStatus();
 
             this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDWriteMessage>();
