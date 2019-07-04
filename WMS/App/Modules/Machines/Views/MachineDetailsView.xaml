@@ -26,6 +26,7 @@
                 <Grid DataContext="{Binding Row}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -48,17 +49,17 @@
                                   wms:ShowTitle.Show="True"
                                   Content="{Binding Priority}" />
                     <wms:InfoText Grid.Row="1"
-                                  Grid.Column="1"
+                                  Grid.Column="2"
                                   wms:ShowTitle.Show="True"
                                   Content="{Binding IsActive}" />
                     <wms:InfoText Grid.Row="2"
-                                  Grid.Column="1"
+                                  Grid.Column="2"
                                   wms:ShowTitle.Show="True"
                                   Content="{Binding UserLogged}" />
                     <wms:InfoText Grid.Row="3"
-                                  Grid.Column="1"
+                                  Grid.Column="2"
                                   wms:ShowTitle.Show="True"
-                                  Content="{Binding LoadingUnitInBayDescription}" />
+                                  Content="{Binding LoadingUnitInBayId}" />
 
                 </Grid>
 
@@ -205,11 +206,11 @@
                                       IsPillVisible="True" />
                         <wms:InfoText Grid.Row="1"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.FaultCode}"
-                                      IsPillVisible="True" />
+                                      Content="{Binding MachineLive.FaultCode}"
+                                      IsPillVisible="False" />
                         <wms:InfoText Grid.Row="2"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.CurrentLoadingUnitPosition}" />
+                                      Content="{Binding MachineLive.CurrentLoadingUnitPosition}" />
                     </Grid>
                 </GroupBox>
 
@@ -236,7 +237,7 @@
                                              TextOut="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Type="MinMaxCurrentH" />
                         <wms:ProgressBarEdit Grid.Row="1"
-                                             Margin="0,5,5,5"
+                                             Margin="0,0,5,5"
                                              EditValue="{Binding Model.NetWeight}"
                                              Maximum="{Binding Model.NetMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Minimum="0"
@@ -311,7 +312,7 @@
                                             MaxHeight="5000"
                                             Margin="3"
                                             CurrentItem="{Binding SelectedBay, Mode=TwoWay}"
-                                            ItemsSource="{Binding Model.Bays, Mode=OneWay}"
+                                            ItemsSource="{Binding MachineLive.Bays, Mode=OneWay}"
                                             SelectionMode="Row"
                                             ShowBorder="False">
 

@@ -136,7 +136,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         BayTypeDescription = b.BayTypeDescription,
                         AreaId = b.AreaId,
                         MachineId = b.MachineId,
-                    });
+                    }).ToArray();
 
                 return new OperationResult<IEnumerable<BayDetails>>(true, result);
             }
