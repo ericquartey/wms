@@ -126,6 +126,31 @@ namespace Ferretto.WMS.Data.Core.Providers
             return mission;
         }
 
+        public async Task<IOperationResult<Mission>> ExecuteAsync(int id)
+        {
+            var mission = await this.GetByIdAsync(id);
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Execute)))
+            {
+                return new BadRequestOperationResult<Mission>(
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)),
+                    mission);
+            }
+
+            mission.Status = MissionStatus.Executing;
+
+            await this.missionProvider.UpdateAsync(mission);
+
+            var updatedMission = await this.GetByIdAsync(id);
+            if (updatedMission != null)
+            {
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
+                this.NotificationService.PushUpdate(mission);
+                return new SuccessOperationResult<Mission>(updatedMission);
+            }
+
+            return new UnprocessableEntityOperationResult<Mission>();
+        }
+
         public async Task<Mission> GetByIdAsync(int id)
         {
             var mission = await this.DataContext.Missions
