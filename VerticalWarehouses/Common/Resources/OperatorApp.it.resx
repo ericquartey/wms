@@ -342,8 +342,8 @@
   <data name="DrawerCompactingHeader" xml:space="preserve">
     <value>Procedura di compattazione cassetti.</value>
   </data>
-  <data name="DrawerCompactingSide" xml:space="preserve">
-    <value>Lato:</value>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>Dati lato anteriore.</value>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
     <value>Numero frammenti:</value>
@@ -395,27 +395,6 @@
   </data>
   <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
     <value>Coefficiente di utilizzo:</value>
-  </data>
-  <data name="ItemStatisticsViewHeader" xml:space="preserve">
-    <value>Statistica articoli : analisi curva A, B, C.</value>
-  </data>
-  <data name="ItemStatisticsViewItemA" xml:space="preserve">
-    <value>Articoli di classe A:</value>
-  </data>
-  <data name="ItemStatisticsViewItemB" xml:space="preserve">
-    <value>Articoli di classe B:</value>
-  </data>
-  <data name="ItemStatisticsViewItemC" xml:space="preserve">
-    <value>Articoli di classe C:</value>
-  </data>
-  <data name="ItemStatisticsViewTotalItemsStored" xml:space="preserve">
-    <value>Totale articoli stoccati:</value>
-  </data>
-  <data name="ItemStatisticsViewTotalMovements" xml:space="preserve">
-    <value>Totale movimenti articoli:</value>
-  </data>
-  <data name="ItemStatisticsViewUpdate" xml:space="preserve">
-    <value>Aggiorna dati</value>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
     <value>Statistiche : saturazione spazio cassetti.</value>
@@ -517,7 +496,7 @@
     <value>Dettaglio</value>
   </data>
   <data name="MaintenanceDetailHeader" xml:space="preserve">
-    <value>Manutenzione :  002350467 - Catenaria elevatore.</value>
+    <value>Dettaglio manutenzione : </value>
   </data>
   <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
     <value>Totale cicli effettuati:</value>
@@ -532,7 +511,7 @@
     <value>Stato elemento:</value>
   </data>
   <data name="MaintenanceDetailStopRequired" xml:space="preserve">
-    <value>Fermo macchine richiesto ore:</value>
+    <value>Fermo macchina richiesto ore:</value>
   </data>
   <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
     <value>Piattaforma di sollevamento:</value>
@@ -554,9 +533,6 @@
   </data>
   <data name="StatisticsNavigationErrors" xml:space="preserve">
     <value>Statistiche errori</value>
-  </data>
-  <data name="ItemSearchChangeSearch" xml:space="preserve">
-    <value>Cambia chiave di ricerca</value>
   </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>Operazione di versamento.</value>
@@ -653,5 +629,71 @@
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
     <value>Peso medio gr. :</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Statistiche macchina</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Statistiche macchina.</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Dati asse verticale.</value>
+  </data>
+  <data name="MachineStatisticsSectionVerticalTotalKm" xml:space="preserve">
+    <value>Totale Km. percorsi:</value>
+  </data>
+  <data name="MachineStatisticsSectionVerticalTotalCycles" xml:space="preserve">
+    <value>Totale cicli effettuati:</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Dati serrande.</value>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter1" xml:space="preserve">
+    <value>Cicli serranda 1:</value>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter2" xml:space="preserve">
+    <value>Cicli serranda 2:</value>
+  </data>
+  <data name="MachineStatisticsSectionShutterShutter3" xml:space="preserve">
+    <value>Cicli serranda 3:</value>
+  </data>
+  <data name="MachineStatisticsSectionOrizzontal" xml:space="preserve">
+    <value>Dati asse catena.</value>
+  </data>
+  <data name="MachineStatisticsSectionOrizzontalTotalCycles" xml:space="preserve">
+    <value>Totale cicli effettuati:</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Dati baie.</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>Cassetti movimentati baia 1:</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>Cassetti movimentati baia 2:</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>Cassetti movimentati baia 3:</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Descrizione articolo</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Macchine</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>Dati lato posteriore.</value>
+  </data>
+  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
+    <value> 002350467 - Catenaria elevatore.</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Tipo lista:</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>Stato del WMS:</value>
   </data>
 </root>

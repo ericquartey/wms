@@ -39,7 +39,10 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpCellsStatistics.xaml" />
       <None Remove="HelpWindows\HelpDetailListInWait.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityInventory.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityInventoryDetail.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
@@ -47,13 +50,19 @@
       <None Remove="HelpWindows\HelpDrawerSpaceSaturation.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
       <None Remove="HelpWindows\HelpDrawerWeightSaturation.xaml" />
+      <None Remove="HelpWindows\HelpErrorsStatistics.xaml" />
+      <None Remove="HelpWindows\HelpGeneralInfo.xaml" />
       <None Remove="HelpWindows\HelpImmediateDrawerCall.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
       <None Remove="HelpWindows\HelpItemSearch.xaml" />
       <None Remove="HelpWindows\HelpItemSearchDetail.xaml" />
       <None Remove="HelpWindows\HelpListsInWait.xaml" />
+      <None Remove="HelpWindows\HelpMachineStatistics.xaml" />
+      <None Remove="HelpWindows\HelpMaintenanceDetail.xaml" />
+      <None Remove="HelpWindows\HelpMaintenanceMainPage.xaml" />
       <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
+      <None Remove="HelpWindows\HelpStatisticsGeneralData.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
@@ -81,7 +90,7 @@
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
-      <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\MachineStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsNavigationView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
@@ -146,6 +155,33 @@
     <Compile Update="HelpWindows\HelpDrawerWeightSaturation.xaml.cs">
       <DependentUpon>HelpDrawerWeightSaturation.xaml</DependentUpon>
     </Compile>
+    <Compile Update="HelpWindows\HelpMachineStatistics.xaml.cs">
+      <DependentUpon>HelpMachineStatistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpMaintenanceMainPage.xaml.cs">
+      <DependentUpon>HelpMaintenanceMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpMaintenanceDetail.xaml.cs">
+      <DependentUpon>HelpMaintenanceDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpGeneralInfo.xaml.cs">
+      <DependentUpon>HelpGeneralInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsStatistics.xaml.cs">
+      <DependentUpon>HelpCellsStatistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpErrorsStatistics.xaml.cs">
+      <DependentUpon>HelpErrorsStatistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityInventory.xaml.cs">
+      <DependentUpon>HelpDrawerActivityInventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityInventoryDetail.xaml.cs">
+      <DependentUpon>HelpDrawerActivityInventoryDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpStatisticsGeneralData.xaml.cs">
+      <DependentUpon>HelpStatisticsGeneralData.xaml</DependentUpon>
+    </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -163,6 +199,9 @@
     </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\Other\Statistics\MachineStatisticsView.xaml.cs">
+      <DependentUpon>MachineStatisticsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

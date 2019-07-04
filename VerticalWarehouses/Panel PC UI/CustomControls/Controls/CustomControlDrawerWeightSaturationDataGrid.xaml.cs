@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.CustomControls.Controls
 {
     /// <summary>
-    /// Logica di interazione per ItemStatisticsView.xaml
+    /// Interaction logic for CustomControlDrawerWeightSaturationDataGrid.xaml
     /// </summary>
-    public partial class ItemStatisticsView : UserControl
+    public partial class CustomControlDrawerWeightSaturationDataGrid : UserControl
     {
-        public ItemStatisticsView()
+        public CustomControlDrawerWeightSaturationDataGrid()
         {
             InitializeComponent();
         }

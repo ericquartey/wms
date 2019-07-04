@@ -7,4 +7,5 @@
 
     <BitmapImage x:Key="Ferretto_Logo"
                  UriSource="/Ferretto.VW.CustomControls;Component/Assets/ferrettogrouplogo_light.png" />
+    
 </ResourceDictionary>

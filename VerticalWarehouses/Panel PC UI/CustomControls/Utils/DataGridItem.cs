@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.CustomControls
+namespace Ferretto.VW.CustomControls.Utils
 {
-    public class TestArticle : BindableBase
+    public class DataGridItem : BindableBase
     {
         #region Fields
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.CustomControls
 
         #region Constructors
 
-        public TestArticle(string article, string description, string machine, string imageCode)
+        public DataGridItem(string article, string description, string machine, string imageCode)
         {
             this.article = article;
             this.description = description;
@@ -33,7 +33,7 @@ namespace Ferretto.VW.CustomControls
             this.imageCode = imageCode;
         }
 
-        public TestArticle()
+        public DataGridItem()
         {
         }
 

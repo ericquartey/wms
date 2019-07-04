@@ -12,51 +12,42 @@
 
     <Grid   Width="1024" Height="608">
         
-            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,40,0,0" MaxWidth="500"
+            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0" MaxWidth="500"
                         Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                         Text="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionHeader}" />
 
-            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="540,100,0,0" MaxWidth="300"
+            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="520,90,0,0" MaxWidth="300"
                                                    ContentText="3.050 x 840"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}"/>
 
-            <DataGrid    HorizontalAlignment="Left" Height="330" Margin="180,170,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
-                         Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-                         HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                         RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-                         <!--SelectionChanged="DataGrid_SelectionChanged"-->
-
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cassetto" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Missioni" CanUserResize="False" MaxWidth="90" MinWidth="90"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Scomparti" CanUserResize="False" MaxWidth="110" MinWidth="110"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Riempimento" MaxWidth="120" MinWidth="120"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% riempimento" MaxWidth="150" MinWidth="150"/>
-                </DataGrid.Columns>
-
-            </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                      Height="330"
+                      Margin="180,170,0,0"
+                      VerticalAlignment="Top"
+                      Width="600"
+                      Content="{Binding DataGridViewModel}">
+        </ContentControl>
         
-            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,100,0,0" MaxWidth="300"
+            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" MaxWidth="300"
                                                    ContentText="55"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}"/>
         
-            <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="575,520,0,0" MaxWidth="300"
+            <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,510,0,0" MaxWidth="300"
                                                 ProgressionValue="65"
                                                 LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"/>
         
-            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,170,20,0"
+            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,20,0"
                      Content="{x:Static Resources:OperatorApp.CommonUp}"
                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,235,20,0"
+            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,215,20,0"
                       Content="{x:Static Resources:OperatorApp.CommonDown}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,365,20,0"
+            <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
                       Command="{Binding DrawerWeightSaturationButtonCommand}"
                       Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionWeightAnalisys}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                      <!--IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 
 
     </Grid>

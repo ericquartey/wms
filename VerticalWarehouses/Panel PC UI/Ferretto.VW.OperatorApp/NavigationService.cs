@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.CustomControls;
+using Ferretto.VW.CustomControls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
@@ -104,7 +105,7 @@ namespace Ferretto.VW.OperatorApp
                     where T : BindableBase, I
             where I : IViewModel
         {
-            if (parameterObject is TestArticle article)
+            if (parameterObject is DataGridItem item)
             {
                 if (_container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
                 {
@@ -112,7 +113,7 @@ namespace Ferretto.VW.OperatorApp
                     {
                         navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
-                    desiredViewModel.Article = article;
+                    desiredViewModel.Article = item;
                     await desiredViewModel.OnEnterViewAsync();
                     mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                     mainWindowViewModel.NavigationRegionCurrentViewModel = null;
