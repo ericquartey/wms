@@ -17,23 +17,13 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,100,0,0" MaxWidth="300"
             ContentText="38.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}"/>
-        <DataGrid    HorizontalAlignment="Left" Height="300" Margin="180,220,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
-            Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-            HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-            RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-            <!--SelectionChanged="DataGrid_SelectionChanged"-->
-
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cassetto" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Altezza" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Peso max." CanUserResize="False" MaxWidth="100" MinWidth="100"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Tara" MaxWidth="80" MinWidth="80"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Peso attuale lordo" MaxWidth="160" MinWidth="160"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% max" MaxWidth="100" MinWidth="100"/>
-
-            </DataGrid.Columns>
-
-        </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                        Height="300"
+                        Margin="180,220,0,0"
+                        VerticalAlignment="Top"
+                        Width="600"
+                        Content="{Binding DataGridViewModel}">
+        </ContentControl>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,100,0,0" MaxWidth="300"
             ContentText="55"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationTotalDrawers}"/>
@@ -55,8 +45,6 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,155,0,0" MaxWidth="300"
             ContentText="65.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxNetRange}"/>
-
-
 
     </Grid>
 </UserControl>

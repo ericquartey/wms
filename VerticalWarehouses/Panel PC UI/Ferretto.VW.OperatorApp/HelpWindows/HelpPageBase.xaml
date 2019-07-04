@@ -7,12 +7,11 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="688"
+    
+    <Grid Width="1024" Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200"
-               Height="60"
+        <Image Width="200" Height="60"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
@@ -31,10 +30,10 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
 
-        <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
-                                                       Width="180"
-                                                       ContentText="125,36"
-                                                       LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
+                                               Width="180"
+                                               ContentText="125,36"
+                                               LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
@@ -58,19 +57,18 @@
                                                      LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
-                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
+                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Articolo" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
+                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                    Text="Articolo" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
-        <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
-
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
 
     </Grid>
 </UserControl>
