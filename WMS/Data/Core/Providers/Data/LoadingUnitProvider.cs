@@ -109,7 +109,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var models = await this.GetAllBase()
                 .Where(l => this.DataContext.ItemsAreas.Where(
-                    ia => ia.ItemId == 6)
+                    ia => ia.ItemId == id)
                             .Select(ia => ia.AreaId)
                             .Contains(l.AreaId))
                 .Where(l => l.HasCompartments)

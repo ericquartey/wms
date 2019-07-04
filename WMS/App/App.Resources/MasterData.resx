@@ -472,7 +472,7 @@
     <value>Choose which existing types to associate with current item, and specify the maximum capacity:</value>
     <comment>Wizard - second step -</comment>
   </data>
-  <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
+  <data name="NoUnassociatedItemCompartmentTypesAvailable" xml:space="preserve">
     <value>No unassociated Compartment Types available</value>
   </data>
   <data name="MinStep" xml:space="preserve">
