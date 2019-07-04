@@ -32,6 +32,8 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         Task<IEnumerable<MissionInfo>> GetMissionsAsync(int machineId);
 
+        Task ExecuteLoadingUnitMissionAsync(int missionId);
+
         #endregion
     }
 }

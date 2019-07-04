@@ -383,6 +383,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Depth : j.cmp.CompartmentType.Width,
                     XPosition = j.cmp.XPosition,
                     YPosition = j.cmp.YPosition,
+                    OtherMissionOperationCount = j.cmp.OtherMissionOperationCount,
+                    PickMissionOperationCount = j.cmp.PickMissionOperationCount,
+                    PutMissionOperationCount = j.cmp.PutMissionOperationCount,
                 });
         }
 

@@ -72,9 +72,10 @@
                             <Setter TargetName="TileBorder" Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="TileImage" Property="ColorizeBrush" Value="{DynamicResource CommonSecondaryUltralight}" />
-                            <Setter TargetName="TileNameLabel" Property="Foreground" Value="{DynamicResource CommonSecondaryUltralight}" />
-                            <Setter TargetName="TileCountLabel" Property="Foreground" Value="{DynamicResource CommonSecondaryUltralight}" />
+                            <Setter TargetName="TileBorder" Property="Background" Value="{DynamicResource CommonBackground}" />
+                            <Setter TargetName="TileImage" Property="ColorizeBrush" Value="{DynamicResource CommonSecondaryLight}" />
+                            <Setter TargetName="TileNameLabel" Property="Foreground" Value="{DynamicResource CommonSecondaryLight}" />
+                            <Setter TargetName="TileCountLabel" Property="Foreground" Value="{DynamicResource CommonSecondaryLight}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
 

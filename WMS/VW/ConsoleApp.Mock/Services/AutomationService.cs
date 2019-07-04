@@ -197,6 +197,32 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             }
         }
 
+        private async Task CompleteLoadingUnitMissionActionAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var missionId = Views.ReadInt("Insert mission id:");
+            if (missionId >= 0)
+            {
+                await this.automationProvider.CompleteLoadingUnitMissionAsync(missionId);
+                Console.WriteLine($"Request sent.");
+            }
+        }
+
+        private async Task ExecuteLoadingUnitMissionActionAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var missionId = Views.ReadInt("Insert mission id:");
+            if (missionId >= 0)
+            {
+                await this.automationProvider.ExecuteLoadingUnitMissionAsync(missionId);
+                Console.WriteLine($"Request sent.");
+            }
+        }
+
         private async Task ExecuteOperationActionAsync()
         {
             var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
@@ -215,12 +241,12 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var exitRequested = false;
             switch (selection)
             {
-                case UserSelection.CompleteMission:
+                case UserSelection.CompleteOperation:
                     await this.CompleteMissionActionAsync();
 
                     break;
 
-                case UserSelection.ExecuteMission:
+                case UserSelection.ExecuteOperation:
                     await this.ExecuteOperationActionAsync();
 
                     break;
@@ -246,7 +272,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                         break;
                     }
 
-                case UserSelection.AbortMission:
+                case UserSelection.AbortOperation:
                     {
                         await this.AbortMissionOperationAsync();
 
@@ -263,7 +289,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
                     break;
 
-                case UserSelection.DisplayMissions:
+                case UserSelection.DisplayOperation:
 
                     var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
 
@@ -293,6 +319,14 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     // to the PanelPC associated to the specified bay
                     await this.NotifyUserLoginAsync();
                     Console.WriteLine($"Request sent.");
+                    break;
+
+                case UserSelection.CompleteLoadingUnitMission:
+                    await this.CompleteLoadingUnitMissionActionAsync();
+
+                    break;
+                case UserSelection.ExecuteLoadingUnitMission:
+                    await this.ExecuteLoadingUnitMissionActionAsync();
                     break;
 
                 default:

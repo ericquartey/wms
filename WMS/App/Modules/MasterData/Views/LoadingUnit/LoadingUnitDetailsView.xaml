@@ -436,13 +436,7 @@
                                       Content="{Binding Model.LastPutDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.InMissionCount}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.OutMissionCount}" />
-                        <wms:InfoText HorizontalAlignment="Left"
-                                      wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.OtherMissionCount}" />
+                                      Content="{Binding Model.MissionCount}" />
                     </StackPanel>
                 </GroupBox>
 

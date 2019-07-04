@@ -373,17 +373,9 @@
     <value>Last Handling Date</value>
     <comment>Loading Unit - </comment>
   </data>
-  <data name="LoadingUnitInMissionCount" xml:space="preserve">
-    <value>In Missions Count</value>
-    <comment>Loading Unit - Put Missions Count</comment>
-  </data>
-  <data name="LoadingUnitOutMissionCount" xml:space="preserve">
-    <value>Out Missions Count</value>
-    <comment>Loading Unit - Pick Missions Count</comment>
-  </data>
-  <data name="LoadingUnitOtherMissionCount" xml:space="preserve">
-    <value>Other Missions Count</value>
-    <comment>Loading Unit - Other Missions Count</comment>
+  <data name="LoadingUnitMissionCount" xml:space="preserve">
+    <value>Missions Count</value>
+    <comment>Loading Unit - Missions Count</comment>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>
@@ -918,7 +910,7 @@
   <data name="WeightFillRate" xml:space="preserve">
     <value>Weight Fill Rate</value>
   </data>
-     <data name="MissionOperationStatusCompleted" xml:space="preserve">
+  <data name="MissionOperationStatusCompleted" xml:space="preserve">
     <value>Completed</value>
   </data>
   <data name="MissionOperationStatusError" xml:space="preserve">
@@ -932,5 +924,17 @@
   </data>
   <data name="MissionOperationStatusNew" xml:space="preserve">
     <value>New</value>
+  </data>
+  <data name="CompartmentPickMissionOperationCount" xml:space="preserve">
+    <value>Pick Missions Operation Count</value>
+    <comment>Compartment - Pick Missions Operation Count</comment>
+  </data>
+  <data name="CompartmentPutMissionOperationCount" xml:space="preserve">
+    <value>Put Missions Operation Count</value>
+    <comment>Compartment - Put Missions Operation Count</comment>
+  </data>
+  <data name="CompartmentOtherMissionOperationCount" xml:space="preserve">
+    <value>Other Missions Operation Count</value>
+    <comment>Compartment - Other Missions Operation Count</comment>
   </data>
 </root>

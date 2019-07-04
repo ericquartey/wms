@@ -42,15 +42,19 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             Console.WriteLine();
             Console.WriteLine("Missions");
             Console.WriteLine("--------");
-            Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
-            Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
-            Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
-            Console.WriteLine($"{(int)UserSelection.AbortMission} - Abort mission");
+            Console.WriteLine($"{(int)UserSelection.DisplayOperation} - Display missions");
+            Console.WriteLine($"{(int)UserSelection.ExecuteOperation} - Execute mission");
+            Console.WriteLine($"{(int)UserSelection.CompleteOperation} - Complete mission");
+            Console.WriteLine($"{(int)UserSelection.AbortOperation} - Abort mission");
             Console.WriteLine();
             Console.WriteLine("Lists");
             Console.WriteLine("-----");
             Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
             Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
+            Console.WriteLine("Loading Unit");
+            Console.WriteLine("-----");
+            Console.WriteLine($"{(int)UserSelection.ExecuteLoadingUnitMission} - Execute LU Mission");
+            Console.WriteLine($"{(int)UserSelection.CompleteLoadingUnitMission} - Complete LU Mission");
         }
 
         public static void PrintListsTable(IEnumerable<ItemList> lists)
@@ -274,16 +278,24 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private static void PrintMissionTableRow(MissionInfo mission)
         {
-            Console.WriteLine(
-                $"| +  | {mission.Priority, 8} |     | {mission.Status, -10} |                                          |            |");
-
-            foreach (var operation in mission.Operations)
+            if (mission.Operations.Count > 0)
             {
-                var trimmedDescription = operation.ItemDescription.Substring(0, Math.Min(40, operation.ItemDescription.Length));
-                var quantities = $"{operation.DispatchedQuantity, 2} / {operation.RequestedQuantity, 2}";
-
                 Console.WriteLine(
-               $"|  > | {operation.Priority, 8} | {operation.Id, 3} | {operation.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+                    $"| +  | {mission.Priority, 8} |     | {mission.Status, -10} |                                          |            |");
+
+                foreach (var operation in mission.Operations)
+                {
+                    var trimmedDescription = operation.ItemDescription.Substring(0, Math.Min(40, operation.ItemDescription.Length));
+                    var quantities = $"{operation.DispatchedQuantity, 2} / {operation.RequestedQuantity, 2}";
+
+                    Console.WriteLine(
+                   $"|  > | {operation.Priority, 8} | {operation.Id, 3} | {operation.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+                }
+            }
+            else
+            {
+                Console.WriteLine(
+                   $"| >> | {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | Loading Unit                             |            |");
             }
         }
 

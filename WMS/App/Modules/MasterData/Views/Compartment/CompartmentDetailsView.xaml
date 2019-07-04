@@ -457,6 +457,15 @@
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastPickDate}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.PickMissionOperationCount}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.PutMissionOperationCount}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.OtherMissionOperationCount}" />
                     </StackPanel>
 
                 </GroupBox>

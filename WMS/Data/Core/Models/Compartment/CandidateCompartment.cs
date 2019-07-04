@@ -55,6 +55,14 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Sub2 { get; set; }
 
-        #endregion
-    }
+        [PositiveOrZero]
+        public int OtherMissionOperationCount { get; set; }
+
+        [PositiveOrZero]
+        public int PickMissionOperationCount { get; set; }
+
+        [PositiveOrZero]
+        public int PutMissionOperationCount { get; set; }
+            #endregion
+        }
 }
