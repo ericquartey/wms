@@ -108,14 +108,27 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand AcceptButtonCommand => this.acceptButtonCommand ?? (this.acceptButtonCommand = new DelegateCommand(async () => await this.AcceptButtonMethodAsync()));
+        public ICommand AcceptButtonCommand =>
+            this.acceptButtonCommand
+            ??
+            (this.acceptButtonCommand = new DelegateCommand(async () => await this.AcceptButtonMethodAsync()));
 
-        public ICommand CancelButtonCommand => this.cancelButtonCommand ?? (this.cancelButtonCommand = new DelegateCommand(() => this.CancelButtonMethod()));
+        public ICommand CancelButtonCommand =>
+            this.cancelButtonCommand
+            ??
+            (this.cancelButtonCommand = new DelegateCommand(() => this.CancelButtonMethod()));
 
-        public ICommand CloseProcedureButtonCommand => this.closeProcedureButtonCommand ?? (
-            this.closeProcedureButtonCommand = new DelegateCommand(async () => await this.CloseProcedureButtonMethodAsync()));
+        public ICommand CloseProcedureButtonCommand =>
+            this.closeProcedureButtonCommand
+            ??
+            (this.closeProcedureButtonCommand = new DelegateCommand(
+                async () => await this.CloseProcedureButtonMethodAsync()));
 
-        public string CurrentResolution { get => this.currentResolution; set => this.SetProperty(ref this.currentResolution, value); }
+        public string CurrentResolution
+        {
+            get => this.currentResolution;
+            set => this.SetProperty(ref this.currentResolution, value);
+        }
 
         public string DesiredFinalPosition
         {
@@ -137,8 +150,11 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public ICommand InitialPositionButtonCommand => this.initialPositionButtonCommand ?? (
-            this.initialPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync(ResolutionCalibrationSteps.InitialPosition)));
+        public ICommand InitialPositionButtonCommand =>
+            this.initialPositionButtonCommand
+            ??
+            (this.initialPositionButtonCommand = new DelegateCommand(
+                async () => await this.SetPositionButtonMethodAsync(ResolutionCalibrationSteps.InitialPosition)));
 
         public bool IsAcceptButtonActive { get => this.isAcceptButtonActive; set => this.SetProperty(ref this.isAcceptButtonActive, value); }
 
@@ -172,9 +188,17 @@ namespace Ferretto.VW.InstallationApp
             set => this.SetProperty(ref this.isReadInitialPositionActive, value);
         }
 
-        public bool IsSetPositionButtonActive { get => this.isSetPositionButtonActive; set => this.SetProperty(ref this.isSetPositionButtonActive, value); }
+        public bool IsSetPositionButtonActive
+        {
+            get => this.isSetPositionButtonActive;
+            set => this.SetProperty(ref this.isSetPositionButtonActive, value);
+        }
 
-        public bool IsUpdateResolutionButtonActive { get => this.isUpdateResolutionButtonActive; set => this.SetProperty(ref this.isUpdateResolutionButtonActive, value); }
+        public bool IsUpdateResolutionButtonActive
+        {
+            get => this.isUpdateResolutionButtonActive;
+            set => this.SetProperty(ref this.isUpdateResolutionButtonActive, value);
+        }
 
         public string MesuredInitialPosition
         {
@@ -196,11 +220,19 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public ICommand MoveButtonCommand => this.moveButtonCommand ?? (this.moveButtonCommand = new DelegateCommand(() => this.MoveButtonMethod()));
+        public ICommand MoveButtonCommand =>
+            this.moveButtonCommand
+            ??
+            (this.moveButtonCommand = new DelegateCommand(
+                async () => await this.MoveButtonMethodAsync()));
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public string NewResolution { get => this.newResolution; set => this.SetProperty(ref this.newResolution, value); }
+        public string NewResolution
+        {
+            get => this.newResolution;
+            set => this.SetProperty(ref this.newResolution, value);
+        }
 
         public string ReadFinalPosition
         {
@@ -222,7 +254,11 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public string RepositionLenght { get => this.repositionLenght; set => this.SetProperty(ref this.repositionLenght, value); }
+        public string RepositionLenght
+        {
+            get => this.repositionLenght;
+            set => this.SetProperty(ref this.repositionLenght, value);
+        }
 
         public string Resolution
         {
@@ -230,10 +266,16 @@ namespace Ferretto.VW.InstallationApp
             set => this.SetProperty(ref this.currentResolution, value);
         }
 
-        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (
-            this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync(ResolutionCalibrationSteps.StartProcedure)));
+        public ICommand SetPositionButtonCommand =>
+            this.setPositionButtonCommand
+            ?? (this.setPositionButtonCommand = new DelegateCommand(
+                async () => await this.SetPositionButtonMethodAsync(ResolutionCalibrationSteps.StartProcedure)));
 
-        public ICommand UpdateResolutionCommand => this.updateResolutionCommand ?? (this.updateResolutionCommand = new DelegateCommand(() => this.UpdateResolutionMethodAsync()));
+        public ICommand UpdateResolutionCommand =>
+            this.updateResolutionCommand
+            ??
+            (this.updateResolutionCommand = new DelegateCommand(
+                async () => await this.UpdateResolutionMethodAsync()));
 
         #endregion
 
@@ -423,7 +465,7 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async Task MoveButtonMethod()
+        private async Task MoveButtonMethodAsync()
         {
             this.resolutionCalibrationSteps = ResolutionCalibrationSteps.Move;
             decimal.TryParse(this.DesiredFinalPosition, out var position);
@@ -431,8 +473,9 @@ namespace Ferretto.VW.InstallationApp
             {
                 await this.resolutionCalibrationService.ExecuteAsync(position, ResolutionCalibrationSteps.Move);
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
+                // do nothing
             }
         }
 
@@ -445,8 +488,9 @@ namespace Ferretto.VW.InstallationApp
             {
                 await this.resolutionCalibrationService.ExecuteAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
+                // do nothing
             }
         }
 

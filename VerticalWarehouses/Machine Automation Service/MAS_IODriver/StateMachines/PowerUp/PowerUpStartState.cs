@@ -8,26 +8,27 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
     {
         #region Fields
 
-        private readonly ILogger logger;
+        private readonly IoIndex index;
 
         private readonly IoSHDStatus status;
 
         private bool disposed;
 
-        private IoIndex index;
-
         #endregion
 
         #region Constructors
 
-        public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, IoIndex index, ILogger logger)
+        public PowerUpStartState(
+            IIoStateMachine parentStateMachine,
+            IoSHDStatus status,
+            IoIndex index,
+            ILogger logger)
+            : base(parentStateMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentStateMachine;
             this.status = status;
             this.index = index;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -45,23 +46,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
             {
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.logger));
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
             {
-                this.logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
+                this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.logger));
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 
@@ -73,7 +74,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
                 this.status.SetupOutputLines,
                 this.status.DebounceInput);
 
-            this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+            this.Logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
 
             this.ParentStateMachine.EnqueueMessage(message);
         }

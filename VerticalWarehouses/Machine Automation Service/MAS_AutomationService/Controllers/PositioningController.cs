@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         MessageActor.WebApi,
                         MessageType.Positioning));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // TODO
             }

@@ -21,17 +21,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IInverterPositioningFieldMessageData data, IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base(logger)
+        public PositioningStateMachine(
+            IInverterPositioningFieldMessageData data,
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
-
             this.data = data;
+            this.inverterStatus = inverterStatus;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

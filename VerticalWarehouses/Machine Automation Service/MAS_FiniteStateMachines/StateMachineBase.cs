@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        protected readonly ILogger Logger;
-
         private bool disposed;
 
         #endregion
@@ -23,6 +21,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected StateMachineBase(IEventAggregator eventAggregator, ILogger logger)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             this.Logger = logger;
             this.EventAggregator = eventAggregator;
         }
@@ -43,6 +46,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         protected IState CurrentState { get; set; }
 
         protected IEventAggregator EventAggregator { get; }
+
+        protected ILogger Logger { get; }
 
         #endregion
 

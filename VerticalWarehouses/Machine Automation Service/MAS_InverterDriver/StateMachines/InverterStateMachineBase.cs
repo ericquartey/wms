@@ -15,13 +15,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        protected IEventAggregator EventAggregator;
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
-
-        protected ILogger Logger;
-
         private const int CONTROL_WORD_TIMEOUT = 5000;
+
+        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
 
         //private readonly Timer controlWordCheckTimer;
         private bool disposed;
@@ -30,9 +26,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         #region Constructors
 
-        protected InverterStateMachineBase(ILogger logger)
+        protected InverterStateMachineBase(
+            ILogger logger,
+            IEventAggregator eventAggregator,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue)
         {
             this.Logger = logger;
+            this.EventAggregator = eventAggregator;
+            this.inverterCommandQueue = inverterCommandQueue;
 
             //this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
         }
@@ -51,6 +52,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         #region Properties
 
         protected IInverterState CurrentState { get; set; }
+
+        protected IEventAggregator EventAggregator { get; }
+
+        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue => this.inverterCommandQueue;
+
+        protected ILogger Logger { get;  }
 
         #endregion
 

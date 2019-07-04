@@ -1,24 +1,22 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+{
     public class MaintenanceMainPageViewModel : BindableBase, IMaintenanceMainPageViewModel
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IUnityContainer container;
+
+        private readonly IEventAggregator eventAggregator;
 
         private ICommand maintenanceDetailButtonCommand;
-
-        private IUnityContainer container;
 
         #endregion
 

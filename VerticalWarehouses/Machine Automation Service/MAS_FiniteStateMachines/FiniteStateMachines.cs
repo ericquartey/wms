@@ -65,8 +65,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, IVertimagConfiguration vertimagConfiguration)
+        public FiniteStateMachines(
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
 
@@ -168,8 +171,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                 if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
-                    var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
-                        MessageActor.FiniteStateMachines, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                    var errorNotification = new NotificationMessage(
+                        null,
+                        "Inverter operation already in progress",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        receivedMessage.Type,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Error);
 
                     this.logger.LogTrace($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 

@@ -1,22 +1,18 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+{
     public class GeneralInfoViewModel : BindableBase, IGeneralInfoViewModel
     {
         #region Fields
 
         private IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 

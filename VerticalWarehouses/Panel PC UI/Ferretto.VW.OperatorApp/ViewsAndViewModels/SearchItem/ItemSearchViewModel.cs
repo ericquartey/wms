@@ -11,7 +11,6 @@
     using Ferretto.VW.OperatorApp.Interfaces;
     using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
     using Ferretto.VW.WmsCommunication.Interfaces;
-    using Ferretto.WMS.Data.WebAPI.Contracts;
     using Prism.Commands;
     using Prism.Events;
     using Prism.Mvvm;
@@ -24,6 +23,8 @@
         private const int DEFAULT_DELAY = 300;
 
         private const int DEFAULT_QUANTITY_ITEM = 10;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly SynchronizationContext uiContext;
 
@@ -38,8 +39,6 @@
         private CustomControlArticleDataGridViewModel dataGridViewModelRef;
 
         private ICommand downDataGridButtonCommand;
-
-        private IEventAggregator eventAggregator;
 
         private bool hasUserTyped;
 
@@ -141,7 +140,7 @@
                         items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, this.currentItemIndex, DEFAULT_QUANTITY_ITEM);
                         this.IsSearching = false;
                     }
-                    catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+                    catch (WMS.Data.WebAPI.Contracts.SwaggerException)
                     {
                         this.IsSearching = false;
                     }
@@ -181,7 +180,7 @@
                             viewItems.Add(item);
                             this.loadedItems.Add(items[i]);
                         }
-                        for (int i = 0; i < viewItems.Count; i++)
+                        for (var i = 0; i < viewItems.Count; i++)
                         {
                             (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles.Add(viewItems[i]);
                         }
@@ -238,7 +237,7 @@
             {
                 items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
             {
                 this.currentItemIndex = 0;
                 this.IsSearching = false;
@@ -256,6 +255,7 @@
                 this.loadedItems = items;
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
+
             if (items != null && items.Count > 0)
             {
                 var viewItems = new ObservableCollection<TestArticle>();

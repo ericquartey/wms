@@ -39,7 +39,6 @@
             NavigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
         }));
 
-
         public BindableBase NavigationViewModel { get; set; }
 
         #endregion

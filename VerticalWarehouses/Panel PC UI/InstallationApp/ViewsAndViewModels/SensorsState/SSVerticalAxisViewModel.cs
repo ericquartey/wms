@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Events;
@@ -22,9 +21,9 @@ namespace Ferretto.VW.InstallationApp
 
         private bool emergencyEndRun;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
-        private IOSensorsStatus ioSensorsStatus;
+        private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentiInMachineSide;
 
@@ -101,6 +100,17 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVerticalandCradleSensorsState);
         }
 
+        private void DisableVerticalandCradleSensorsState()
+        {
+            this.EmergencyEndRun = false;
+            this.ZeroVerticalSensor = false;
+            this.ElevatorEngineSelected = false;
+            this.CradleEngineSelected = false;
+            this.ZeroPawlSensor = false;
+            this.LuPresentiInMachineSide = false;
+            this.LuPresentInOperatorSide = false;
+        }
+
         private void UpdateVerticalandCradleSensorsState(bool[] message)
         {
             this.ioSensorsStatus.UpdateInputStates(message);
@@ -112,17 +122,6 @@ namespace Ferretto.VW.InstallationApp
             this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
             this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
             this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
-        }
-
-        private void DisableVerticalandCradleSensorsState()
-        {
-            this.EmergencyEndRun = false;
-            this.ZeroVerticalSensor = false;
-            this.ElevatorEngineSelected = false;
-            this.CradleEngineSelected = false;
-            this.ZeroPawlSensor = false;
-            this.LuPresentiInMachineSide = false;
-            this.LuPresentInOperatorSide = false;
         }
 
         #endregion

@@ -39,8 +39,6 @@
             NavigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>();
         }));
 
-
-
         public BindableBase NavigationViewModel { get; set; }
 
         #endregion

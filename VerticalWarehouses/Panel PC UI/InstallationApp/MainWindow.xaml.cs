@@ -75,7 +75,9 @@ namespace Ferretto.VW.InstallationApp
             this.MachineModeControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, ca);
             await Task.Delay(3000);
             this.MachineModeControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
-            this.MachineModeControl.RectangleBrush = (!this.MachineModeControl.MachineModeState) ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Auto"] : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Manual"];
+            this.MachineModeControl.RectangleBrush = (!this.MachineModeControl.MachineModeState)
+                ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Auto"]
+                : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Manual"];
             this.RaiseFinishedMachineModeChangeStateEvent();
         }
 

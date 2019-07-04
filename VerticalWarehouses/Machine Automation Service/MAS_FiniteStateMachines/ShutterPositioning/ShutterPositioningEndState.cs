@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly ILogger logger;
-
         private readonly ShutterPosition shutterPosition;
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
@@ -28,13 +26,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningEndState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, ILogger logger, bool stopRequested = false)
+        public ShutterPositioningEndState(
+            IStateMachine parentMachine,
+            IShutterPositioningMessageData shutterPositioningMessageData,
+            ShutterPosition shutterPosition,
+            ILogger logger,
+            bool stopRequested = false)
+            : base(parentMachine, logger)
         {
             logger.LogTrace("1:Method Start");
 
-            this.logger = logger;
             this.stopRequested = stopRequested;
-            this.ParentStateMachine = parentMachine;
             this.shutterPosition = shutterPosition;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
         }
@@ -55,12 +57,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             switch (message.Type)
             {
@@ -80,7 +82,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.Logger));
                             break;
                     }
                     break;
@@ -90,12 +92,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
-            this.logger?.LogTrace("1:Method Start");
+            this.Logger?.LogTrace("1:Method Start");
 
             if (this.stopRequested)
             {
@@ -126,7 +128,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

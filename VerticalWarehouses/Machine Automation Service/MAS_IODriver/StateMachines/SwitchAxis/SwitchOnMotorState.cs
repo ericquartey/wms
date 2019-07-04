@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         private readonly Axis axisToSwitchOn;
 
-        private readonly ILogger logger;
-
         private readonly IoSHDStatus status;
 
         private bool disposed;
@@ -21,14 +19,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchOnMotorState(Axis axisToSwitchOn, IoSHDStatus status, ILogger logger, IIoStateMachine parentStateMachine)
+        public SwitchOnMotorState(
+            Axis axisToSwitchOn,
+            IoSHDStatus status,
+            ILogger logger,
+            IIoStateMachine parentStateMachine)
+            : base(parentStateMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
-            this.ParentStateMachine = parentStateMachine;
-            this.logger = logger;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -46,35 +47,39 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             if (message.ValidOutputs)
             {
-                this.logger.LogTrace($"2:Axis to switch on={this.axisToSwitchOn}:Cradle motor on={message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
+                this.Logger.LogTrace($"2:Axis to switch on={this.axisToSwitchOn}:Cradle motor on={message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
 
-                if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
+                if ((this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn)
+                    ||
+                    (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
-                    this.logger.LogTrace("3:Change State to EndState");
-                    this.ParentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.status, this.logger, this.ParentStateMachine));
+                    this.Logger.LogTrace("3:Change State to EndState");
+                    this.ParentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.status, this.Logger, this.ParentStateMachine));
                 }
             }
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                                message.ValidOutputs;
 
             if (this.status.MatchOutputs(message.Outputs) && checkMessage)
             {
-                this.logger.LogTrace($"2:Axis to switch on={this.axisToSwitchOn}:Cradle motor on={message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
+                this.Logger.LogTrace($"2:Axis to switch on={this.axisToSwitchOn}:Cradle motor on={message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
 
-                if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
+                if ((this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn)
+                    ||
+                    (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
-                    this.logger.LogTrace("3:Change State to EndState");
-                    this.ParentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.status, this.logger, this.ParentStateMachine));
+                    this.Logger.LogTrace("3:Change State to EndState");
+                    this.ParentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.status, this.Logger, this.ParentStateMachine));
                 }
             }
         }
@@ -83,7 +88,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         {
             var switchOnAxisIoMessage = new IoSHDWriteMessage();
 
-            this.logger.LogTrace($"1:Switch on axis io={switchOnAxisIoMessage}");
+            this.Logger.LogTrace($"1:Switch on axis io={switchOnAxisIoMessage}");
 
             switch (this.axisToSwitchOn)
             {
@@ -96,7 +101,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     break;
             }
 
-            this.logger.LogTrace($"2:{switchOnAxisIoMessage}");
+            this.Logger.LogTrace($"2:{switchOnAxisIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(switchOnAxisIoMessage.Outputs);

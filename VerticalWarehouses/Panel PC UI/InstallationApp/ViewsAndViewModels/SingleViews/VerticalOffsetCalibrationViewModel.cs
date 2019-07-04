@@ -164,7 +164,7 @@ namespace Ferretto.VW.InstallationApp
                 //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
                 this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
                 this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
@@ -202,7 +202,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 await this.offsetCalibrationService.ExecutePositioningAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.NoteString = "Couldn't get response from this http request.";
                 throw; // TEMP Define a better throw exception

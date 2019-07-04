@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ferretto.VW.CustomControls.Interfaces;
 using Prism.Mvvm;
@@ -35,7 +34,8 @@ namespace Ferretto.VW.CustomControls.Controls
 
         public Task OnEnterViewAsync()
         {
-            return null;
+            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()
