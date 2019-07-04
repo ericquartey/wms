@@ -86,6 +86,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
+        public void Release()
+        {
+            this.CurrentState?.Release();
+        }
+
+        /// <inheritdoc />
         public abstract void Start();
 
         /// <inheritdoc />

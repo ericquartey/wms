@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Fields
 
-        private const int AXIS_POSITION_UPDATE_INTERVAL = 100;
+        private const int AXIS_POSITION_UPDATE_INTERVAL = 50;
 
         private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
@@ -242,7 +242,12 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (receivedMessage.Type == FieldMessageType.InverterStop)
                 {
+                    this.currentStateMachine?.Release();
+
                     this.currentStateMachine?.Dispose();
+
+                    this.logger.LogTrace("4: Stop the timer for update shaft position");
+                    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
                     this.ProcessStopMessage(receivedMessage);
 
@@ -338,8 +343,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                                 this.currentStateMachine?.Dispose();
                                 this.currentStateMachine = null;
 
-                                //this.logger.LogTrace("4: Stop the timer for update shaft position");
-                                //this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                                this.logger.LogTrace("4: Stop the timer for update shaft position");
+                                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                             }
 
                             break;

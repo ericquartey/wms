@@ -599,8 +599,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (this.IsInverterStarted(inverterStatus))
                 {
-                    //this.logger.LogTrace("3: Start timer for update shaft position");
-                    //this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                    this.logger.LogTrace("3: Start timer for update shaft position");
+                    this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                     this.currentAxis = positioningData.AxisMovement;
 
                     this.shaftPositionUpdateNumberOfTimes = 0;

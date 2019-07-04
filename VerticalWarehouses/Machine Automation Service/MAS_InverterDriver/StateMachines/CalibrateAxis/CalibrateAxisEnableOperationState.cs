@@ -46,6 +46,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Release()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Start()
         {
             this.logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");

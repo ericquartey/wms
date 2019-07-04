@@ -48,6 +48,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
             this.logger.LogTrace("1:Method Start");

@@ -48,6 +48,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
             this.inverterStatus.CommonControlWord.QuickStop = false;

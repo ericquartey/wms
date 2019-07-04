@@ -26,6 +26,11 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
 
         /// <summary>
+        /// Release all resources.
+        /// </summary>
+        void Release();
+
+        /// <summary>
         /// Start states machine.
         /// </summary>
         void Start();

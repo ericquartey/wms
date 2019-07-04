@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
                 this.status.SetupOutputLines,
                 this.status.DebounceInput);
 
-            this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+            this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}, Debounce={this.status.DebounceInput}]");
 
             this.ParentStateMachine.EnqueueMessage(message);
         }
