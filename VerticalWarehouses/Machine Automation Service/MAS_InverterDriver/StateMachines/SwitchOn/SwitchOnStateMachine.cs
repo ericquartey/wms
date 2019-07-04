@@ -21,15 +21,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
         #region Constructors
 
-        public SwitchOnStateMachine(Axis axisToSwitchOn, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base(logger)
+        public SwitchOnStateMachine(
+            Axis axisToSwitchOn,
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogDebug("1:Method Start");
-
             this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
             this.axisToSwitchOn = axisToSwitchOn;
+
+            this.Logger.LogDebug("1:Method Start");
         }
 
         #endregion

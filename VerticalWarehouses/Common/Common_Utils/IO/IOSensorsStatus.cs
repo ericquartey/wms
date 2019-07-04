@@ -10,7 +10,7 @@ namespace Ferretto.VW.Common_Utils.IO
 
         private const int TOTALSENSOR_INPUTS = 32;
 
-        private bool[] inputs;
+        private readonly bool[] inputs;
 
         #endregion
 
@@ -43,15 +43,19 @@ namespace Ferretto.VW.Common_Utils.IO
 
         public bool HeightControlCheckBay3 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay3] ?? false;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Performance",
+            "CA1819:Properties should not return arrays",
+            Justification = "Code may need to be refactored")]
         public bool[] Inputs => this.inputs;
 
         public bool LuPresentiInMachineSide => this.inputs?[(int)IOMachineSensors.LuPresentiInMachineSide] ?? false;
 
-        public bool LUPresentInBay1 => this.inputs?[(int)IOMachineSensors.LUPresentInBay1] ?? false;
+        public bool LuPresentInBay1 => this.inputs?[(int)IOMachineSensors.LUPresentInBay1] ?? false;
 
-        public bool LUPresentInBay2 => this.inputs?[(int)IOMachineSensors.LUPresentInBay2] ?? false;
+        public bool LuPresentInBay2 => this.inputs?[(int)IOMachineSensors.LUPresentInBay2] ?? false;
 
-        public bool LUPresentInBay3 => this.inputs?[(int)IOMachineSensors.LUPresentInBay3] ?? false;
+        public bool LuPresentInBay3 => this.inputs?[(int)IOMachineSensors.LUPresentInBay3] ?? false;
 
         public bool LuPresentInOperatorSide => this.inputs?[(int)IOMachineSensors.LuPresentInOperatorSide] ?? false;
 
@@ -95,6 +99,10 @@ namespace Ferretto.VW.Common_Utils.IO
 
         #region Methods
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Minor Code Smell",
+            "S1227:break statements should not be used except for switch cases",
+            Justification = "Code to be reviewed.")]
         public bool UpdateInputStates(bool[] newInputStates)
         {
             if (newInputStates == null)

@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus, true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 completionPersist = false;
             }
@@ -278,7 +278,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newResolution);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 resultAssignment = false;
             }

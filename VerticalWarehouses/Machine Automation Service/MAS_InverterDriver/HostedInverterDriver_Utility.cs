@@ -652,8 +652,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("3:Starting Power Off FSM");
-                    this.currentStateMachine = new PowerOffStateMachine(inverterStatus, this.inverterCommandQueue,
-                        this.eventAggregator, this.logger);
+                    this.currentStateMachine = new PowerOffStateMachine(
+                        inverterStatus,
+                        this.inverterCommandQueue,
+                        this.eventAggregator,
+                        this.logger);
                     this.currentStateMachine?.Start();
                 }
                 else
@@ -832,7 +835,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     var dataByte = (ushort)inverterIndex % 2;
 
-                    for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+                    for (var index = 8 * dataByte; index < 8 + (8 * dataByte); index++)
                     {
                         returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
                     }

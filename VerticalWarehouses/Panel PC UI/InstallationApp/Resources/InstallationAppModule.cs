@@ -157,7 +157,7 @@ namespace Ferretto.VW.InstallationApp
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToIAPPButtonVMInstance.InitializeViewModel(this.container);
             resolutionCalibrationVerticalAxisVMInstance.InitializeViewModel(this.container);
-            mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
+            mainWindowNavigationButtonsVMInstance.InitializeViewModelAsync(this.container);
 
             sSMainVMInstance.InitializeViewModel(this.container);
             sSNavigationButtonsVMInstance.InitializeViewModel(this.container);

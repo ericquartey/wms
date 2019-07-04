@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.CustomControls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Controls;
-using System.Collections.ObjectModel;
-using Ferretto.VW.CustomControls.Utils;
-using Ferretto.VW.CustomControls.Interfaces;
+using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
@@ -18,19 +17,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly DataGridKit selectedKit;
+
         private IUnityContainer container;
 
         private BindableBase dataGridViewModel;
 
         private CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
 
-        private IEventAggregator eventAggregator;
-
         private ObservableCollection<DataGridKit> kits;
 
         private ICommand maintenanceDetailButtonCommand;
-
-        private DataGridKit selectedKit;
 
         #endregion
 
@@ -74,7 +73,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         {
             var random = new Random();
             this.kits = new ObservableCollection<DataGridKit>();
-            for (int i = 0; i < random.Next(3, 30); i++)
+            for (var i = 0; i < random.Next(3, 30); i++)
             {
                 this.kits.Add(new DataGridKit
                 {

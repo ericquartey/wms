@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
@@ -8,9 +10,30 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        protected IInverterStateMachine ParentStateMachine;
-
         private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public InverterStateBase(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+        {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            this.InverterStatus = inverterStatus;
+
+            this.ParentStateMachine = parentStateMachine;
+
+            this.Logger = logger;
+
+            this.Logger.LogTrace($"Inverter state '{this.GetType().Name}' initialized.");
+        }
 
         #endregion
 
@@ -26,6 +49,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         #region Properties
 
         public virtual string Type => this.GetType().ToString();
+
+        protected IInverterStatusBase InverterStatus { get; }
+
+        protected ILogger Logger { get; }
+
+        protected IInverterStateMachine ParentStateMachine { get; }
 
         #endregion
 
@@ -49,7 +78,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public abstract bool ValidateCommandResponse(InverterMessage message);
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -58,9 +87,16 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
             if (disposing)
             {
+                this.OnDisposing();
             }
 
             this.disposed = true;
+        }
+
+        protected virtual void OnDisposing()
+        {
+            // Do nothing here.
+            // Derived classes can override this method to dispose of specific resources.
         }
 
         #endregion

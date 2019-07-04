@@ -10,25 +10,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 {
     public class TemplateErrorState : InverterStateBase
     {
-        #region Fields
-
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
-
-        #endregion
-
         #region Constructors
 
-        public TemplateErrorState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public TemplateErrorState(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
         }
 
         #endregion
@@ -59,7 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
-            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }
@@ -67,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             //True means I want to request a status word.
             return false;
@@ -75,26 +64,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             //True means I got the expected response. Do not request more status words
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

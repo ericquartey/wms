@@ -29,6 +29,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public ShutterPositioningMessageData(IShutterPositioningMessageData shutterpositioningMessageData)
         {
+            if (shutterpositioningMessageData == null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterpositioningMessageData));
+            }
+
             this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
             this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
             this.ShutterType = shutterpositioningMessageData.ShutterType;

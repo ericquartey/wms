@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus, true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 completionPersist = false;
             }
@@ -361,7 +361,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis, newOffset);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 resultAssignment = false;
             }

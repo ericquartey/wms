@@ -217,7 +217,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 throw new InverterDriverException(
                     "Error reading data from Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamReadFailure, ex);
+                    InverterDriverExceptionCode.NetworkStreamReadFailure,
+                    ex);
             }
 
             return this.receiveBuffer;
@@ -250,7 +251,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 throw new InverterDriverException(
                     "Error writing data to Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure,
+                    ex);
             }
 
             return 0;
@@ -286,7 +288,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 throw new InverterDriverException(
                     "Error writing data to Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure,
+                    ex);
             }
 
             return 0;

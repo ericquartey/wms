@@ -15,23 +15,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
-
         #endregion
 
         #region Constructors
 
-        public CalibrateAxisEndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
+        public CalibrateAxisEndState(
+            IInverterStateMachine parentStateMachine,
+            Axis axisToCalibrate,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
             this.axisToCalibrate = axisToCalibrate;
         }
 
@@ -64,7 +58,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 FieldMessageType.CalibrateAxis,
                 MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }
@@ -72,32 +66,16 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

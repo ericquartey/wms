@@ -48,7 +48,6 @@
             this.NavigationViewModel = this.container.Resolve<IStatisticsNavigationViewModel>() as StatisticsNavigationViewModel;
         }
 
-
         public async Task OnEnterViewAsync()
         {
             // TODO

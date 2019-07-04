@@ -13,24 +13,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
-
         #endregion
 
         #region Constructors
 
-        public CalibrateAxisEnableOperationState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
+        public CalibrateAxisEnableOperationState(
+            IInverterStateMachine parentStateMachine,
+            Axis axisToCalibrate,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
-            this.ParentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
-            this.inverterStatus = inverterStatus;
         }
 
         #endregion
@@ -53,14 +47,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            this.logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");
+            this.Logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.inverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;
-            this.inverterStatus.CommonControlWord.EnableOperation = true;
+            this.InverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;
+            this.InverterStatus.CommonControlWord.EnableOperation = true;
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -68,47 +62,31 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
             }
 
-            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
                 returnValue = true;
             }
 
             return returnValue;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

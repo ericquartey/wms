@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
     {
         #region Fields
 
-        private readonly ILogger logger;
-
         private readonly IoSHDStatus status;
 
         private bool disposed;
@@ -17,13 +15,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         #region Constructors
 
-        public SetConfigurationStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public SetConfigurationStartState(
+            IIoStateMachine parentStateMachine,
+            IoSHDStatus status,
+            ILogger logger)
+            : base(parentStateMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentStateMachine;
             this.status = status;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -45,13 +45,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
             {
-                this.logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
+                this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 
-                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new SetConfigurationEndState(this.ParentStateMachine, this.status, this.Logger));
             }
         }
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
                 this.status.SetupOutputLines,
                 this.status.DebounceInput);
 
-            this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+            this.Logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
 
             this.ParentStateMachine.EnqueueMessage(message);
         }

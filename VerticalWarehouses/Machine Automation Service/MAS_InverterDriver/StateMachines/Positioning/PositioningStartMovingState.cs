@@ -14,12 +14,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         private const int STATUS_WORD_REQUEST_INTERVAL = 100;
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
-
         private bool positioningReachedReset;
 
         private Timer requestStatusWordMessageTimer;
@@ -28,13 +22,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStartMovingState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public PositioningStartMovingState(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
-            this.logger = logger;
         }
 
         #endregion
@@ -59,7 +52,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.inverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
                 currentStatus.PositionControlWord.NewSetPoint = true;
             }
@@ -69,9 +62,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             this.requestStatusWordMessageTimer?.Dispose();
             this.requestStatusWordMessageTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
 
-            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -79,7 +72,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             if (message.ParameterId == InverterParameterId.ControlWordParam)
             {
@@ -95,18 +88,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = true;
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
                 if (!currentStatus.PositionStatusWord.PositioningAttained)
                 {
@@ -118,12 +111,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     //TEMP Stop the timer
                     this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
 
-                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
             }
 
-            this.logger.LogDebug($"2:Method End with return value {returnValue}");
+            this.Logger.LogDebug($"2:Method End with return value {returnValue}");
 
             return returnValue;
         }
@@ -149,9 +142,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         private void RequestStatusWordMessage(object state)
         {
-            var readStatusWordMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.StatusWordParam);
+            var readStatusWordMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.StatusWordParam);
 
-            this.logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
+            this.Logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
 
             this.ParentStateMachine.EnqueueMessage(readStatusWordMessage);
         }
