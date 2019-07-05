@@ -3044,9 +3044,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("itemsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ItemsCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("itemListsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ItemListsCount { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("lastPowerOn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastPowerOn { get; set; }
     

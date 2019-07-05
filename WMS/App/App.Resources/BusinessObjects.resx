@@ -890,9 +890,6 @@
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Create New Compartment Type</value>
   </data>
-  <data name="MachineItemListsCount" xml:space="preserve">
-    <value>Item Lists Count</value>
-  </data>
   <data name="MachineMissionsCount" xml:space="preserve">
     <value>Missions Count</value>
   </data>

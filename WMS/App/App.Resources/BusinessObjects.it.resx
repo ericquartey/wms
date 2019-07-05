@@ -728,9 +728,6 @@
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Crea nuovo Tipo Scomparto</value>
   </data>
-  <data name="MachineItemListsCount" xml:space="preserve">
-    <value>Contatori Liste</value>
-  </data>
   <data name="MachineMissionsCount" xml:space="preserve">
     <value>Contatore Missioni</value>
   </data>

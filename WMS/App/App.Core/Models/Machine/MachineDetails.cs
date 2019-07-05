@@ -94,9 +94,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineItemsCount), ResourceType = typeof(BusinessObjects))]
         public int? ItemsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineItemListsCount), ResourceType = typeof(BusinessObjects))]
-        public int? ItemListsCount { get; set; }
-
         [Display(Name = nameof(BusinessObjects.MachineLastPowerOn), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPowerOn { get; set; }
 

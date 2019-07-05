@@ -55,8 +55,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemsCount { get; set; }
 
-        public int? ItemListsCount { get; set; }
-
         public DateTime? LastPowerOn { get; set; }
 
         public DateTime? LastServiceDate { get; set; }

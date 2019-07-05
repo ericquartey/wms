@@ -1285,15 +1285,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Lists Count.
-        /// </summary>
-        public static string MachineItemListsCount {
-            get {
-                return ResourceManager.GetString("MachineItemListsCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Items Count.
         /// </summary>
         public static string MachineItemsCount {

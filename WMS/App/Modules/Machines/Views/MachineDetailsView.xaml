@@ -316,7 +316,6 @@
                                             SelectionMode="Row"
                                             ShowBorder="False">
 
-
                             <dxg:GridControl.View>
                                 <dxg:CardView AllowCardResizing="false"
                                               AllowEditing="False"
@@ -451,7 +450,6 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -481,42 +479,30 @@
                                    Width="24"
                                    Height="24"
                                    HorizontalAlignment="Left"
-                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Material/action/1x_web/ic_list_black_24dp.png" />
-                            <wms:InfoText Grid.Row="2"
-                                          Grid.Column="1"
-                                          Margin="10,0,0,0"
-                                          wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ItemListsCount}" />
-
-                            <Image Grid.Row="3"
-                                   Width="24"
-                                   Height="24"
-                                   HorizontalAlignment="Left"
                                    Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-grid-50.png" />
-                            <wms:InfoText Grid.Row="3"
+                            <wms:InfoText Grid.Row="2"
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.CellsCount}" />
 
-                            <Image Grid.Row="4"
+                            <Image Grid.Row="3"
                                    Width="24"
                                    Height="24"
                                    HorizontalAlignment="Left"
                                    Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-view-module-50.png" />
-                            <wms:InfoText Grid.Row="4"
+                            <wms:InfoText Grid.Row="3"
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.CompartmentsCount}" />
 
-
-                            <Image Grid.Row="5"
+                            <Image Grid.Row="4"
                                    Width="24"
                                    Height="24"
                                    HorizontalAlignment="Left"
                                    Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-target-50.png" />
-                            <wms:InfoText Grid.Row="5"
+                            <wms:InfoText Grid.Row="4"
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
