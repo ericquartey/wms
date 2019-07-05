@@ -309,7 +309,7 @@
   <data name="LoadingUnitCreationDate" xml:space="preserve">
     <value>Data Creazione</value>
   </data>
-  <data name="LoadingUnitMissionCount" xml:space="preserve">
+  <data name="LoadingUnitMissionsCount" xml:space="preserve">
     <value>Numero Missioni </value>
   </data>
   <data name="Priority" xml:space="preserve">
@@ -665,13 +665,13 @@
   <data name="MachineServiceUrl" xml:space="preserve">
     <value>Url di Servizio</value>
   </data>
-  <data name="MachineLoadingUnitCount" xml:space="preserve">
+  <data name="MachineLoadingUnitsCount" xml:space="preserve">
     <value>Numero di Unità di carico</value>
   </data>
-  <data name="MachineCellCount" xml:space="preserve">
+  <data name="MachineCellsCount" xml:space="preserve">
     <value>Numero di Celle</value>
   </data>
-  <data name="MachineItemCount" xml:space="preserve">
+  <data name="MachineItemsCount" xml:space="preserve">
     <value>Contatore Articoli</value>
   </data>
   <data name="BayIsActive" xml:space="preserve">
@@ -728,13 +728,13 @@
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Crea nuovo Tipo Scomparto</value>
   </data>
-  <data name="MachineItemListCount" xml:space="preserve">
+  <data name="MachineItemListsCount" xml:space="preserve">
     <value>Contatori Liste</value>
   </data>
-  <data name="MachineMissionCount" xml:space="preserve">
+  <data name="MachineMissionsCount" xml:space="preserve">
     <value>Contatore Missioni</value>
   </data>
-  <data name="MachineCompartmentCount" xml:space="preserve">
+  <data name="MachineCompartmentsCount" xml:space="preserve">
     <value>Totale Scomparti</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">

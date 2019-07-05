@@ -39,11 +39,11 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineBuildDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? BuildDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineCellCount), ResourceType = typeof(BusinessObjects))]
-        public int? CellCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineCellsCount), ResourceType = typeof(BusinessObjects))]
+        public int? CellsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineCompartmentCount), ResourceType = typeof(BusinessObjects))]
-        public int? CompartmentCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineCompartmentsCount), ResourceType = typeof(BusinessObjects))]
+        public int? CompartmentsCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineCradlesCount), ResourceType = typeof(BusinessObjects))]
         public int? CradlesCount { get; set; }
@@ -91,11 +91,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         public bool IsOnLine => this.Status != MachineStatus.Offline;
 
-        [Display(Name = nameof(BusinessObjects.MachineItemCount), ResourceType = typeof(BusinessObjects))]
-        public int? ItemCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineItemsCount), ResourceType = typeof(BusinessObjects))]
+        public int? ItemsCount { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineItemListCount), ResourceType = typeof(BusinessObjects))]
-        public int? ItemListCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineItemListsCount), ResourceType = typeof(BusinessObjects))]
+        public int? ItemListsCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineLastPowerOn), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPowerOn { get; set; }
@@ -106,8 +106,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineLatitude), ResourceType = typeof(BusinessObjects))]
         public double? Latitude { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineLoadingUnitCount), ResourceType = typeof(BusinessObjects))]
-        public int? LoadingUnitCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
+        public int? LoadingUnitsCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineLoadingUnitsPerCradle), ResourceType = typeof(BusinessObjects))]
         public int? LoadingUnitsPerCradle { get; set; }
@@ -124,8 +124,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineManualTime), ResourceType = typeof(BusinessObjects))]
         public long? ManualTime { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineMissionCount), ResourceType = typeof(BusinessObjects))]
-        public int? MissionCount { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineMissionsCount), ResourceType = typeof(BusinessObjects))]
+        public int? MissionsCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineMissionTime), ResourceType = typeof(BusinessObjects))]
         public long? MissionTime { get; set; }

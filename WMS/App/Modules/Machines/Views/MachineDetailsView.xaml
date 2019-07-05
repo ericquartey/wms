@@ -464,7 +464,7 @@
                             <wms:InfoText Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ItemCount}" />
+                                          Content="{Binding Model.ItemsCount}" />
 
                             <Image Grid.Row="1"
                                    Width="24"
@@ -475,7 +475,7 @@
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.LoadingUnitCount}" />
+                                          Content="{Binding Model.LoadingUnitsCount}" />
 
                             <Image Grid.Row="2"
                                    Width="24"
@@ -486,7 +486,7 @@
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ItemListCount}" />
+                                          Content="{Binding Model.ItemListsCount}" />
 
                             <Image Grid.Row="3"
                                    Width="24"
@@ -497,7 +497,7 @@
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.CellCount}" />
+                                          Content="{Binding Model.CellsCount}" />
 
                             <Image Grid.Row="4"
                                    Width="24"
@@ -508,7 +508,7 @@
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.CompartmentCount}" />
+                                          Content="{Binding Model.CompartmentsCount}" />
 
 
                             <Image Grid.Row="5"
@@ -520,7 +520,7 @@
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.MissionCount}" />
+                                          Content="{Binding Model.MissionsCount}" />
 
                         </Grid>
 

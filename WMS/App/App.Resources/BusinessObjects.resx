@@ -373,7 +373,7 @@
     <value>Last Handling Date</value>
     <comment>Loading Unit - </comment>
   </data>
-  <data name="LoadingUnitMissionCount" xml:space="preserve">
+  <data name="LoadingUnitMissionsCount" xml:space="preserve">
     <value>Missions Count</value>
     <comment>Loading Unit - Missions Count</comment>
   </data>
@@ -823,14 +823,14 @@
   <data name="MachineServiceUrl" xml:space="preserve">
     <value>Service Url</value>
   </data>
-  <data name="MachineLoadingUnitCount" xml:space="preserve">
-    <value>Loading Unit Count</value>
+  <data name="MachineLoadingUnitsCount" xml:space="preserve">
+    <value>Loading Units Count</value>
   </data>
-  <data name="MachineCellCount" xml:space="preserve">
-    <value>Cell Count</value>
+  <data name="MachineCellsCount" xml:space="preserve">
+    <value>Cells Count</value>
   </data>
-  <data name="MachineItemCount" xml:space="preserve">
-    <value>Item Count</value>
+  <data name="MachineItemsCount" xml:space="preserve">
+    <value>Items Count</value>
   </data>
   <data name="BayIsActive" xml:space="preserve">
     <value>Is Active</value>
@@ -890,13 +890,13 @@
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Create New Compartment Type</value>
   </data>
-  <data name="MachineItemListCount" xml:space="preserve">
-    <value>Item List Count</value>
+  <data name="MachineItemListsCount" xml:space="preserve">
+    <value>Item Lists Count</value>
   </data>
-  <data name="MachineMissionCount" xml:space="preserve">
-    <value>Mission Count</value>
+  <data name="MachineMissionsCount" xml:space="preserve">
+    <value>Missions Count</value>
   </data>
-  <data name="MachineCompartmentCount" xml:space="preserve">
+  <data name="MachineCompartmentsCount" xml:space="preserve">
     <value>Compartments Count</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">

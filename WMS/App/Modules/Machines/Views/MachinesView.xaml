@@ -50,11 +50,11 @@
                         <wms:InfoText wms:ShowTitle.Show="True"
                                       Content="{Binding MaintenanceStatus}"
                                       IsPillVisible="True" />
-                        <wms:ProgressBarEdit EditValue="{Binding Path=FillRate, Mode=TwoWay}"
+                        <wms:ProgressBarEdit EditValue="{Binding Path=AreaFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
                                              Minimum="0"
-                                             TextOut="{Binding Path=FillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             TextOut="{Binding Path=AreaFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
                                              Type="Percent" />
                     </StackPanel>
                 </Grid>

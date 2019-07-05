@@ -64,7 +64,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CustomerName = m.CustomerName,
                         Id = m.Id,
                         ErrorTime = m.ErrorTime,
-                        FillRate = m.FillRate,
+                        AreaFillRate = m.AreaFillRate,
                         Image = m.Image,
                         InstallationDate = m.InstallationDate,
                         LastPowerOn = m.LastPowerOn,
@@ -170,11 +170,11 @@ namespace Ferretto.WMS.App.Core.Providers
                     ServiceUrl = machine.ServiceUrl,
                     AreaFillRate = machine.AreaFillRate,
 
-                    ItemCount = machine.ItemCount,
-                    CellCount = machine.CellCount,
-                    CompartmentCount = machine.CompartmentCount,
-                    LoadingUnitCount = machine.LoadingUnitCount,
-                    MissionCount = machine.MissionCount,
+                    ItemsCount = machine.ItemsCount,
+                    CellsCount = machine.CellsCount,
+                    CompartmentsCount = machine.CompartmentsCount,
+                    LoadingUnitsCount = machine.LoadingUnitsCount,
+                    MissionsCount = machine.MissionsCount,
                 };
             }
             catch

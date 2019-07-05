@@ -263,10 +263,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<IOperationResult<LoadingUnitDetails>> UpdateMissionCountAsync(int id)
+        public async Task<IOperationResult<LoadingUnitDetails>> UpdateMissionsCountAsync(int id)
         {
             var model = await this.GetByIdAsync(id);
-            model.MissionCount++;
+            model.MissionsCount++;
 
             var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
                 model,
@@ -403,7 +403,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     InventoryDate = l.InventoryDate,
                     LastPickDate = l.LastPickDate,
                     LastPutDate = l.LastPutDate,
-                    MissionCount = l.MissionCount,
+                    MissionsCount = l.MissionsCount,
                     CellId = l.CellId,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,

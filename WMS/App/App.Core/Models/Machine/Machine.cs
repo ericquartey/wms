@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Models
         public long? ErrorTime { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
-        public int FillRate { get; set; }
+        public int AreaFillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Image), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }

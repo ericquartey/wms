@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public long? ErrorTime { get; set; }
 
         [PositiveOrZero]
-        public int FillRate { get; set; }
+        public int AreaFillRate { get; set; }
 
         [PositiveOrZero]
         public long? GrossMaxWeight { get; set; }

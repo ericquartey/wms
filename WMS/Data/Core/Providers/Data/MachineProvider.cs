@@ -144,7 +144,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (m.Nickname != null && m.Nickname.Contains(search))
                 || (m.RegistrationNumber != null && m.RegistrationNumber.Contains(search))
                 || (successConversionAsInt
-                    && Equals(m.FillRate, searchAsInt));
+                    && Equals(m.AreaFillRate, searchAsInt));
         }
 
         private static Machine GetMaintenanceStatus(Machine machine)
