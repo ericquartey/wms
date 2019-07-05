@@ -14,6 +14,8 @@
 
         public int Weight { get; set; }
 
+        public int WeightFillRate { get; set; }
+
         #endregion
     }
 }

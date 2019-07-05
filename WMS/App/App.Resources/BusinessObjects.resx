@@ -409,10 +409,6 @@
     <value>Machine</value>
     <comment>Machine</comment>
   </data>
-  <data name="MachineActualWeight" xml:space="preserve">
-    <value>Actual Weight [g]</value>
-    <comment>Machine - Actual Weight</comment>
-  </data>
   <data name="MachineAutomaticTime" xml:space="preserve">
     <value>Automatic Time</value>
     <comment>Machine - Automatic Time</comment>
@@ -586,10 +582,6 @@
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Maintenance Status</value>
     <comment>Machine - Maintenance Status</comment>
-  </data>
-  <data name="MachineAreaFillRate" xml:space="preserve">
-    <value>Area Fill Rate</value>
-    <comment>Machine - Fill Rate</comment>
   </data>
   <data name="MachineStatusAutomatic" xml:space="preserve">
     <value>Automatic</value>
@@ -851,19 +843,16 @@
     <value>Position of Elevator</value>
   </data>
   <data name="MachineGrossMaxWeight" xml:space="preserve">
-    <value>Gross Max Weight</value>
+    <value>Gross Max Weight [g]</value>
   </data>
   <data name="MachineGrossWeight" xml:space="preserve">
-    <value>Gross Weight</value>
+    <value>Gross Weight [g]</value>
   </data>
   <data name="MachineNetWeight" xml:space="preserve">
-    <value>Net Weight</value>
+    <value>Net Weight [g]</value>
   </data>
   <data name="MachineNetMaxWeight" xml:space="preserve">
-    <value>Net Max Weight</value>
-  </data>
-  <data name="MachineWeightFillRate" xml:space="preserve">
-    <value>Weight Fill Rate</value>
+    <value>Net Max Weight [g]</value>
   </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>Ready</value>

@@ -231,12 +231,14 @@
                         </Grid.RowDefinitions>
 
                         <wms:ProgressBarEdit Margin="0,0,5,5"
+                                             Height="41"
                                              EditValue="{Binding Model.GrossWeight}"
                                              Maximum="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Minimum="0"
                                              TextOut="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Type="MinMaxCurrentH" />
                         <wms:ProgressBarEdit Grid.Row="1"
+                                             Height="41"
                                              Margin="0,0,5,5"
                                              EditValue="{Binding Model.NetWeight}"
                                              Maximum="{Binding Model.NetMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -270,23 +272,23 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <wms:ProgressBarEdit x:Name="AreaFillRate"
-                                             Margin="0,0,5,5"
+                        <wms:ProgressBarEdit Margin="0,0,5,5"
+                                             Height="41"
                                              EditValue="{Binding Path=Model.AreaFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
                                              Minimum="0"
                                              TextOut="{Binding Path=Model.AreaFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
                                              Type="Percent" />
-                        <wms:ProgressBarEdit x:Name="WeightFillRate"
-                                             Grid.Row="1"
+                        <wms:ProgressBarEdit Grid.Row="1"
+                                             Height="41"
                                              Grid.Column="0"
                                              Margin="0,0,5,5"
-                                             EditValue="{Binding Path=MachineLive.WeightFillRate, Mode=TwoWay}"
+                                             EditValue="{Binding Path=Model.WeightFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
                                              Minimum="0"
-                                             TextOut="{Binding Path=MachineLive.WeightFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             TextOut="{Binding Path=Model.WeightFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
                                              Type="Percent" />
                     </Grid>
                 </GroupBox>

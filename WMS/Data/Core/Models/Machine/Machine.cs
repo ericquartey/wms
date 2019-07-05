@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -102,6 +102,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [PositiveOrZero]
         public long? TotalMaxWeight { get; set; }
+
+        public int WeightFillRate { get; set; }
 
         #endregion
     }

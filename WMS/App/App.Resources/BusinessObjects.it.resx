@@ -336,9 +336,6 @@
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
   </data>
-  <data name="MachineActualWeight" xml:space="preserve">
-    <value>Peso Effettivo [g]</value>
-  </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
     <value>Peso Massimo Totale [g]</value>
   </data>
@@ -483,9 +480,6 @@
   </data>
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Stato Manutenzione</value>
-  </data>
-  <data name="MachineAreaFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento Area</value>
   </data>
   <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
     <value>Scaduta</value>
@@ -693,19 +687,16 @@
     <value>Posizione dell'Elevatore</value>
   </data>
   <data name="MachineGrossMaxWeight" xml:space="preserve">
-    <value>Peso Lordo Massimo</value>
+    <value>Peso Lordo Massimo [g]</value>
   </data>
   <data name="MachineGrossWeight" xml:space="preserve">
-    <value>Peso Lordo</value>
+    <value>Peso Lordo [g]</value>
   </data>
   <data name="MachineNetMaxWeight" xml:space="preserve">
-    <value>Peso Massimo Netto</value>
+    <value>Peso Massimo Netto [g]</value>
   </data>
   <data name="MachineNetWeight" xml:space="preserve">
-    <value>Peso Netto</value>
-  </data>
-  <data name="MachineWeightFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento Peso</value>
+    <value>Peso Netto [g]</value>
   </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>Pronta</value>

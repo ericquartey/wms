@@ -1114,24 +1114,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Weight [g].
-        /// </summary>
-        public static string MachineActualWeight {
-            get {
-                return ResourceManager.GetString("MachineActualWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Area Fill Rate.
-        /// </summary>
-        public static string MachineAreaFillRate {
-            get {
-                return ResourceManager.GetString("MachineAreaFillRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Automatic Time.
         /// </summary>
         public static string MachineAutomaticTime {
@@ -1249,7 +1231,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gross Max Weight.
+        ///   Looks up a localized string similar to Gross Max Weight [g].
         /// </summary>
         public static string MachineGrossMaxWeight {
             get {
@@ -1258,7 +1240,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gross Weight.
+        ///   Looks up a localized string similar to Gross Weight [g].
         /// </summary>
         public static string MachineGrossWeight {
             get {
@@ -1429,7 +1411,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net Max Weight.
+        ///   Looks up a localized string similar to Net Max Weight [g].
         /// </summary>
         public static string MachineNetMaxWeight {
             get {
@@ -1438,7 +1420,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net Weight.
+        ///   Looks up a localized string similar to Net Weight [g].
         /// </summary>
         public static string MachineNetWeight {
             get {
@@ -1551,15 +1533,6 @@ namespace Ferretto.WMS.App.Resources {
         public static string MachineTotalMaxWeight {
             get {
                 return ResourceManager.GetString("MachineTotalMaxWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Weight Fill Rate.
-        /// </summary>
-        public static string MachineWeightFillRate {
-            get {
-                return ResourceManager.GetString("MachineWeightFillRate", resourceCulture);
             }
         }
         

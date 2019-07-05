@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -102,6 +102,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? TestDate { get; set; }
 
         public long? TotalMaxWeight { get; set; }
+
+        public int WeightFillRate { get; set; }
 
         #endregion
     }

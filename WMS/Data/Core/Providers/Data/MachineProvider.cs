@@ -314,12 +314,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (m, ll) => new
                     {
                         MachineId = m.Id,
+                        TotalMaxWeight = m.TotalMaxWeight,
                         Weights = ll.Select(l => new { l.Weight, l.EmptyWeight }),
                         LoadingUnitsCount = ll.Count(),
                         CompartmentsCount = ll.Sum(l => l.CompartmentsCount),
                         MissionsCount = ll.Sum(l => l.MissionsCount),
                     })
-                .Select(j => new MachinesLoadingUnitsInfo
+                .Select(j => new
                 {
                     Id = j.MachineId,
                     Weight = j.Weights.Sum(w => w.Weight),
@@ -327,6 +328,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitsCount = j.LoadingUnitsCount,
                     CompartmentsCount = j.CompartmentsCount,
                     MissionsCount = j.MissionsCount,
+                    TotalMaxWeight = j.TotalMaxWeight,
+                })
+                .Select(x => new MachinesLoadingUnitsInfo
+                {
+                    Id = x.Id,
+                    Weight = x.Weight,
+                    EmptyWeight = x.EmptyWeight,
+                    LoadingUnitsCount = x.LoadingUnitsCount,
+                    CompartmentsCount = x.CompartmentsCount,
+                    MissionsCount = x.MissionsCount,
+                    WeightFillRate = x.TotalMaxWeight != null ? (int)(100 * x.Weight / x.TotalMaxWeight) : 0,
                 });
         }
 
@@ -395,7 +407,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PowerOnTime = x.Machine.PowerOnTime,
                     RegistrationNumber = x.Machine.RegistrationNumber,
                     TestDate = x.Machine.TestDate,
-                    TotalMaxWeight = x.Machine.TotalMaxWeight
+                    TotalMaxWeight = x.Machine.TotalMaxWeight,
+                    WeightFillRate = x.LoadingUnitsInfo.WeightFillRate,
                 })
                 .Select(m => GetMaintenanceStatus(m));
         }
@@ -439,34 +452,38 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 .Select(x => new MachineDetails
                 {
-                    Id = x.Machine.Id,
-                    ActualWeight = x.Machine.ActualWeight,
                     AisleId = x.Machine.AisleId,
                     AisleName = x.Machine.Aisle.Name,
+                    AreaFillRate = (int)x.AreaOccupation.Occupation,
                     AreaName = x.Machine.Aisle.Area.Name,
                     AutomaticTime = x.Machine.AutomaticTime,
                     BuildDate = x.Machine.BuildDate,
+                    CellsCount = x.Machine.Aisle.Cells.Count(),
+                    CompartmentsCount = x.LoadingUnitsInfo.CompartmentsCount,
                     CradlesCount = x.Machine.CradlesCount,
                     CustomerAddress = x.Machine.CustomerAddress,
                     CustomerCity = x.Machine.CustomerCity,
-                    CustomerCountry = x.Machine.CustomerCountry,
                     CustomerCode = x.Machine.CustomerCode,
+                    CustomerCountry = x.Machine.CustomerCountry,
                     CustomerName = x.Machine.CustomerName,
                     ErrorTime = x.Machine.ErrorTime,
-                    AreaFillRate = (int)x.AreaOccupation.Occupation,
                     GrossMaxWeight = x.Machine.TotalMaxWeight,
                     GrossWeight = x.LoadingUnitsInfo.Weight,
+                    Id = x.Machine.Id,
                     Image = x.Machine.Image,
                     InputLoadingUnitsCount = x.Machine.InputLoadingUnitsCount,
                     InstallationDate = x.Machine.InstallationDate,
+                    ItemsCount = x.ItemsCount,
                     LastPowerOn = x.Machine.LastPowerOn,
                     LastServiceDate = x.Machine.LastServiceDate,
                     Latitude = x.Machine.Latitude,
-                    Longitude = x.Machine.Longitude,
+                    LoadingUnitsCount = x.LoadingUnitsInfo.LoadingUnitsCount,
                     LoadingUnitsPerCradle = x.Machine.LoadingUnitsPerCradle,
-                    MachineTypeId = x.Machine.MachineTypeId,
+                    Longitude = x.Machine.Longitude,
                     MachineTypeDescription = x.Machine.MachineType.Description,
+                    MachineTypeId = x.Machine.MachineTypeId,
                     ManualTime = x.Machine.ManualTime,
+                    MissionsCount = x.LoadingUnitsInfo.MissionsCount,
                     MissionTime = x.Machine.MissionTime,
                     Model = x.Machine.Model,
                     MovedLoadingUnitsCount = x.Machine.MovedLoadingUnitsCount,
@@ -477,14 +494,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OutputLoadingUnitsCount = x.Machine.OutputLoadingUnitsCount,
                     PowerOnTime = x.Machine.PowerOnTime,
                     RegistrationNumber = x.Machine.RegistrationNumber,
+                    ServiceUrl = x.Machine.ServiceUrl,
                     TestDate = x.Machine.TestDate,
                     TotalMaxWeight = x.Machine.TotalMaxWeight,
-                    ServiceUrl = x.Machine.ServiceUrl,
-                    CellsCount = x.Machine.Aisle.Cells.Count(),
-                    LoadingUnitsCount = x.LoadingUnitsInfo.LoadingUnitsCount,
-                    CompartmentsCount = x.LoadingUnitsInfo.CompartmentsCount,
-                    MissionsCount = x.LoadingUnitsInfo.MissionsCount,
-                    ItemsCount = x.ItemsCount,
+                    WeightFillRate = x.LoadingUnitsInfo.WeightFillRate,
                 })
                 .Select(m => GetMaintenanceStatus(m));
         }

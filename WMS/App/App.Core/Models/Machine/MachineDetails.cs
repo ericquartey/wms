@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.AreaFillRate), ResourceType = typeof(BusinessObjects))]
         public int AreaFillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
@@ -173,7 +173,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineTotalMaxWeight), ResourceType = typeof(BusinessObjects))]
         public long? TotalMaxWeight { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.WeightFillRate), ResourceType = typeof(BusinessObjects))]
         public int WeightFillRate { get; set; }
 
         #endregion

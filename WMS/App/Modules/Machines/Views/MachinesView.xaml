@@ -51,10 +51,18 @@
                                       Content="{Binding MaintenanceStatus}"
                                       IsPillVisible="True" />
                         <wms:ProgressBarEdit EditValue="{Binding Path=AreaFillRate, Mode=TwoWay}"
+                                             Height="35"
                                              IsPercent="True"
                                              Maximum="100"
                                              Minimum="0"
                                              TextOut="{Binding Path=AreaFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             Type="Percent" />
+                        <wms:ProgressBarEdit EditValue="{Binding Path=WeightFillRate, Mode=TwoWay}"
+                                             Height="35"
+                                             IsPercent="True"
+                                             Maximum="100"
+                                             Minimum="0"
+                                             TextOut="{Binding Path=WeightFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
                                              Type="Percent" />
                     </StackPanel>
                 </Grid>
