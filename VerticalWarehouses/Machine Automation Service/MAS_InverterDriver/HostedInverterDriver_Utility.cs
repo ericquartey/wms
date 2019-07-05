@@ -415,12 +415,14 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.heartbeatQueue.Dequeue(out var message);
 
-            this.logger.LogTrace($"1:message={message}");
+            //this.logger.LogTrace($"1:message={message}");
 
             try
             {
                 this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus);
                 var newMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+
+                this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
 
                 this.roundTripStopwatch.Reset();
                 this.roundTripStopwatch.Start();
