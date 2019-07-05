@@ -58,6 +58,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
         }
 
         /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
+        }
+
+        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");

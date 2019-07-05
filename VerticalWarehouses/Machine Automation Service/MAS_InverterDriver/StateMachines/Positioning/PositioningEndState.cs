@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -10,14 +11,22 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
     public class PositioningEndState : InverterStateBase
     {
+        #region Fields
+
+        private readonly bool stopRequested;
+
+        #endregion
+
         #region Constructors
 
         public PositioningEndState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
-            ILogger logger)
+            ILogger logger,
+            bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -40,17 +49,31 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
+            if (this.stopRequested)
+            {
+                if (this.InverterStatus is AngInverterStatus currentStatus)
+                {
+                    currentStatus.PositionControlWord.NewSetPoint = false;
+                }
+            }
+
             var notificationMessage = new FieldNotificationMessage(
                 null,
                 "Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.Positioning,
-                MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc />
