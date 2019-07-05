@@ -218,7 +218,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             do
             {
-                var shdMessage = new IoSHDWriteMessage();
+                IoSHDWriteMessage shdMessage;
                 try
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
