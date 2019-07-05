@@ -359,6 +359,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                         {
                             if (receivedMessage.Status == MessageStatus.OperationEnd)
                             {
+                                this.logger.LogTrace($"4:Deallocation SM {this.currentStateMachine?.GetType()}");
+
                                 this.currentStateMachine?.Dispose();
                                 this.currentStateMachine = null;
 
@@ -368,6 +370,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                             if (receivedMessage.Status == MessageStatus.OperationStop)
                             {
+                                this.logger.LogTrace($"5:Deallocation SM {this.currentStateMachine?.GetType()}");
+
                                 this.currentStateMachine?.Dispose();
                                 this.currentStateMachine = null;
 

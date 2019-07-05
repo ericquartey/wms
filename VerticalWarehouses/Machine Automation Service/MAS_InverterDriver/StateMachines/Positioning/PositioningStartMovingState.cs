@@ -74,6 +74,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
+            //TEMP Stop the timer
+            this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
+
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
         }
 
