@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public double CompartmentHeight { get; set; }
+        public double CompartmentDepth { get; set; }
 
         public double CompartmentWidth { get; set; }
 
