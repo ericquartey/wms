@@ -336,9 +336,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             var commandEvent = this.eventAggregator.GetEvent<FieldCommandEvent>();
             commandEvent.Subscribe(
                 message =>
-            {
-                this.commandQueue.Enqueue(message);
-            },
+                {
+                    this.commandQueue.Enqueue(message);
+                },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
@@ -346,9 +346,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
             notificationEvent.Subscribe(
                 message =>
-            {
-                this.notificationQueue.Enqueue(message);
-            },
+                {
+                    this.notificationQueue.Enqueue(message);
+                },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);

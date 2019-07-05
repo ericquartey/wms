@@ -72,6 +72,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         }
 
         /// <inheritdoc />
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
+        }
+
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)
