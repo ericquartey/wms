@@ -6,7 +6,6 @@ using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_MissionsManager;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -222,11 +221,11 @@ namespace Ferretto.VW.MAS_AutomationService
             var useMockedTransport = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             if (useMockedTransport)
             {
-                services.AddSingleton<ISHDTransport, SHDTransportMock>();
+                services.AddTransient<ISHDTransport, SHDTransportMock>();  // AddSingleton<
             }
             else
             {
-                services.AddSingleton<ISHDTransport, SHDTransport>();
+                services.AddTransient<ISHDTransport, SHDTransport>();  // AddSingleton<
             }
         }
 

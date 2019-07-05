@@ -68,14 +68,16 @@ namespace Ferretto.VW.MAS_IODriver
             this.index = index;
             this.logger = logger;
 
-            if (shdTransport is SHDTransport)
-            {
-                this.shdTransport = new SHDTransport();
-            }
-            else
-            {
-                this.shdTransport = new SHDTransportMock();
-            }
+            this.shdTransport = shdTransport;
+
+            //if (shdTransport is SHDTransport)
+            //{
+            //    this.shdTransport = new SHDTransport();
+            //}
+            //else
+            //{
+            //    this.shdTransport = new SHDTransportMock();
+            //}
 
             this.ioSHDStatus = new IoSHDStatus();
 
