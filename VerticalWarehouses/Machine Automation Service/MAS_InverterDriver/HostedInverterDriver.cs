@@ -92,7 +92,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator,
+        public HostedInverterDriver(
+            IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
             IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
@@ -242,7 +243,12 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (receivedMessage.Type == FieldMessageType.InverterStop)
                 {
+                    this.currentStateMachine?.Release();
+
                     this.currentStateMachine?.Dispose();
+
+                    this.logger.LogTrace("4: Stop the timer for update shaft position");
+                    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
                     this.ProcessStopMessage(receivedMessage);
 
@@ -293,7 +299,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task NotificationReceiveTaskFunction()
@@ -389,7 +396,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task ReceiveInverterData()
@@ -495,7 +503,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.EvaluateReadMessage(currentMessage, inverterIndex);
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task SendInverterCommand()
@@ -539,7 +548,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                             break;
                     }
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void SendOperationErrorMessage(IFieldMessageData messageData, FieldMessageType type)

@@ -146,7 +146,7 @@ namespace Ferretto.VW.InstallationApp
                 this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
                 this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
                 this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }

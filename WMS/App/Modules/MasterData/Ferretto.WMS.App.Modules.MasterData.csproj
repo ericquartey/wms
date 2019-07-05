@@ -50,4 +50,6 @@
     <ProjectReference Include="..\BLL\Ferretto.WMS.App.Modules.BLL.csproj" />
   </ItemGroup>
 
+  
+
 </Project>

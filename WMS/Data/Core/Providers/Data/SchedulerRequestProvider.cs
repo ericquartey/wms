@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -14,11 +16,21 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class SchedulerRequestProvider : BaseProvider, ISchedulerRequestProvider
     {
+        #region Fields
+
+        private readonly IMapper mapper;
+
+        #endregion
+
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext, INotificationService notificationService)
+        public SchedulerRequestProvider(
+            DatabaseContext dataContext,
+            INotificationService notificationService,
+            IMapper mapper)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
         }
 
         #endregion
@@ -54,16 +66,18 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<SchedulerRequest> GetByIdAsync(int id)
         {
             var result = await this.GetAllBase()
-                             .SingleOrDefaultAsync(i => i.Id == id);
+                .SingleOrDefaultAsync(i => i.Id == id);
+
+            // TODO: compute policies
             return result;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
-                       propertyName,
-                       this.DataContext.SchedulerRequests,
-                       this.GetAllBase());
+                propertyName,
+                this.DataContext.SchedulerRequests,
+                this.GetAllBase());
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -83,7 +97,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 (i.BayDescription != null && i.BayDescription.Contains(search))
                 || (i.ItemDescription != null && i.ItemDescription.Contains(search))
                 || (i.ListDescription != null && i.ListDescription.Contains(search))
-                || (i.ListRowDescription != null && i.ListRowDescription.Contains(search))
+                || (i.ListRowCode != null && i.ListRowCode.Contains(search))
                 || i.OperationType.ToString().Contains(search)
                 || (successConversionAsDouble
                     && Equals(i.RequestedQuantity, searchAsDouble));
@@ -92,32 +106,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<SchedulerRequest> GetAllBase()
         {
             return this.DataContext.SchedulerRequests
-                .Select(r => new SchedulerRequest
-                {
-                    Id = r.Id,
-                    AreaDescription = r.Area.Name,
-                    BayDescription = r.Bay.Description,
-                    CreationDate = r.CreationDate,
-                    ReservedQuantity = r.ReservedQuantity,
-                    IsInstant = r.IsInstant,
-                    ItemDescription = r.Item.Description,
-                    ItemUnitMeasure = r.Item.MeasureUnit.Description,
-                    LastModificationDate = r.LastModificationDate,
-                    ListDescription = r.List.Description,
-                    ListRowDescription = r.ListRow.Code,
-                    LoadingUnitDescription = r.LoadingUnit.Code,
-                    LoadingUnitTypeDescription = r.LoadingUnitType.Description,
-                    Lot = r.Lot,
-                    MaterialStatusDescription = r.MaterialStatus.Description,
-                    OperationType = (OperationType)r.OperationType,
-                    PackageTypeDescription = r.PackageType.Description,
-                    RegistrationNumber = r.RegistrationNumber,
-                    RequestedQuantity = r.RequestedQuantity,
-                    Sub1 = r.Sub1,
-                    Sub2 = r.Sub2,
-                    Type = (SchedulerRequestType)r.Type,
-                    Status = (SchedulerRequestStatus)r.Status,
-                });
+               .ProjectTo<SchedulerRequest>(this.mapper.ConfigurationProvider);
         }
 
         #endregion

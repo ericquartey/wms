@@ -3,8 +3,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
     public class PowerUpStateMachine : IoStateMachineBase
@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         #region Fields
 
         private const int PULSE_INTERVAL = 350;
+
+        private readonly IoIndex index;
 
         private readonly IoSHDStatus status;
 
@@ -21,22 +23,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private bool pulseOneTime;
 
-        private IoIndex index;
-
         #endregion
 
         #region Constructors
 
-        public PowerUpStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IoIndex index, IEventAggregator eventAggregator, ILogger logger)
+        public PowerUpStateMachine(
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IoIndex index,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.Logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.index = index;
-            this.pulseOneTime = false;
-            this.EventAggregator = eventAggregator;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion

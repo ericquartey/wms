@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
     <ResourceDictionary.MergedDictionaries>
+        
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinGeneral.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightVarious.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinImages.xaml" />
@@ -15,7 +16,8 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomMainWindowErrorButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomMainWindowToggleButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomControlLoggedUser.xaml" />
-
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomControlDataGrid.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
+        
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

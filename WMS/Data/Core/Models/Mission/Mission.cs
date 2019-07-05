@@ -1,6 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Ferretto.Common.Utils;
-using Ferretto.WMS.Data.Core.Interfaces.Policies;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -9,75 +10,74 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public string BayDescription { get; set; }
-
         public int? BayId { get; set; }
 
-        public string CellAisleName { get; set; }
+        [JsonIgnore]
+        public int CompletedOperationsCount { get; set; }
 
-        public int? CellId { get; set; }
+        [JsonIgnore]
+        public int ErrorOperationsCount { get; set; }
 
-        public int? CompartmentId { get; set; }
+        [JsonIgnore]
+        public int ExecutingOperationsCount { get; set; }
 
-        [Positive]
-        public double? CompartmentTypeDepth { get; set; }
+        [JsonIgnore]
+        public int IncompleteOperationsCount { get; set; }
 
-        [Positive]
-        public double? CompartmentTypeWidth { get; set; }
+        public int LoadingUnitId { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        [JsonIgnore]
+        public int NewOperationsCount { get; set; }
 
-        [PositiveOrZero]
-        public double DispatchedQuantity { get; set; }
+        public IEnumerable<MissionOperation> Operations { get; set; }
 
-        public string ItemDescription { get; set; }
-
-        public int? ItemId { get; set; }
-
-        public string ItemListDescription { get; set; }
-
-        public int? ItemListId { get; set; }
-
-        public string ItemListRowCode { get; set; }
-
-        public int? ItemListRowId { get; set; }
-
-        public string ItemMeasureUnitDescription { get; set; }
-
-        public DateTime? LastModificationDate { get; set; }
-
-        public string LoadingUnitCode { get; set; }
-
-        public int? LoadingUnitId { get; set; }
-
-        public string Lot { get; set; }
-
-        public string MaterialStatusDescription { get; set; }
-
-        public int? MaterialStatusId { get; set; }
-
-        public string PackageTypeDescription { get; set; }
-
-        public int? PackageTypeId { get; set; }
+        [JsonIgnore]
+        public int OperationsCount { get; private set; }
 
         [Positive]
         public int Priority { get; set; }
 
-        [PositiveOrZero]
-        public double QuantityRemainingToDispatch => this.RequestedQuantity - this.DispatchedQuantity;
+        public MissionStatus Status { get; set; }
 
-        public string RegistrationNumber { get; set; }
+        #endregion
 
-        [PositiveOrZero]
-        public double RequestedQuantity { get; set; } // TODO: create separate models for different kinds of missions (like SchedulerRequest) and put back this chec to CheckIfStrictlyPositive
+        #region Methods
 
-        public MissionStatus Status { get; set; } = MissionStatus.New;
+        internal static MissionStatus GetStatus(
+           int operationsCount,
+           int newOperationsCount,
+           int executingOperationsCount,
+           int completedOperationsCount,
+           int incompleteOperationsCount,
+           int errorOperationsCount)
+        {
+            if (operationsCount == 0 || operationsCount == newOperationsCount)
+            {
+                return MissionStatus.New;
+            }
 
-        public string Sub1 { get; set; }
+            if (operationsCount == completedOperationsCount)
+            {
+                return MissionStatus.Completed;
+            }
 
-        public string Sub2 { get; set; }
+            if (errorOperationsCount > 0)
+            {
+                return MissionStatus.Error;
+            }
 
-        public MissionType Type { get; set; }
+            if (executingOperationsCount > 0)
+            {
+                return MissionStatus.Executing;
+            }
+
+            if (incompleteOperationsCount > 0)
+            {
+                return MissionStatus.Incomplete;
+            }
+
+            return MissionStatus.Executing;
+        }
 
         #endregion
     }

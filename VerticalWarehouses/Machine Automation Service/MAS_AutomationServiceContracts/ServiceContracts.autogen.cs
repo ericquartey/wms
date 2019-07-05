@@ -177,11 +177,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     public partial interface IPositioningService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteAsync(MovementMessageDataDTO data);
+        System.Threading.Tasks.Task ExecuteAsync(MovementMessageDataDto data);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task ExecuteAsync(MovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteAsync(MovementMessageDataDto data, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -250,11 +250,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteControlTestAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecutePositioningAsync(ShutterPositioningMovementMessageDataDTO data);
+        System.Threading.Tasks.Task ExecutePositioningAsync(ShutterPositioningMovementMessageDataDto data);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task ExecutePositioningAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecutePositioningAsync(ShutterPositioningMovementMessageDataDto data, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter);
@@ -297,11 +297,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteResolutionCalibrationAsync(decimal readInitialPosition, decimal readFinalPosition, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDTO data);
+        System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDto data);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDto data, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteStopHomingAsync();
@@ -411,7 +411,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class MovementMessageDataDTO 
+    public partial class MovementMessageDataDto 
     {
         [Newtonsoft.Json.JsonProperty("axis", Required = Newtonsoft.Json.Required.Always)]
         public Axis Axis { get; set; }
@@ -430,9 +430,9 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static MovementMessageDataDTO FromJson(string data)
+        public static MovementMessageDataDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementMessageDataDTO>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementMessageDataDto>(data);
         }
     
     }
@@ -475,7 +475,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ShutterPositioningMovementMessageDataDTO 
+    public partial class ShutterPositioningMovementMessageDataDto 
     {
         [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
         public int BayNumber { get; set; }
@@ -491,9 +491,9 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static ShutterPositioningMovementMessageDataDTO FromJson(string data)
+        public static ShutterPositioningMovementMessageDataDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMovementMessageDataDTO>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMovementMessageDataDto>(data);
         }
     
     }

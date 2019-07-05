@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             lock (this.responseMessage)
             {
-                this.buildResponseMessage(dataMessage);
+                this.BuildResponseMessage(dataMessage);
             }
 
             await Task.Delay(3, stoppingToken);
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 if (el)
                 {
-                    value |= (byte)(1 << (index));
+                    value |= (byte)(1 << index);
                 }
                 index++;
             }
@@ -116,34 +116,47 @@ namespace Ferretto.VW.MAS_IODriver
 
             // nBytes
             rawMessage[0] = NBYTES_RECEIVE;
+
             // Fw release
             rawMessage[1] = 0x10;
+
             // Code op
             rawMessage[2] = 0x00;
+
             // Error code
             rawMessage[3] = 0x00;
 
             // Payload output
             var outputs = new bool[8];
-            for (var i = 0; i < 8; i++) { outputs[i] = false; }
+            for (var i = 0; i < 8; i++)
+            {
+                outputs[i] = false;
+            }
             rawMessage[4] = this.BoolArrayToByte(outputs);
 
             // Payload input
             var lowByteInputs = new bool[8];
             var highByteInputs = new bool[8];
-            for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
+            for (var i = 0; i < 8; i++)
+            {
+                lowByteInputs[i] = false;
+                highByteInputs[i] = false;
+            }
             rawMessage[5] = this.BoolArrayToByte(lowByteInputs);
             rawMessage[6] = this.BoolArrayToByte(highByteInputs);
 
             // Configuration data
             var configurationData = new byte[8];
-            for (var i = 0; i < 8; i++) { configurationData[i] = 0x00; }
+            for (var i = 0; i < 8; i++)
+            {
+                configurationData[i] = 0x00;
+            }
             Array.Copy(rawMessage, 7, configurationData, 0, configurationData.Length);
 
             return rawMessage;
         }
 
-        private void buildResponseMessage(byte[] inputTelegram)
+        private void BuildResponseMessage(byte[] inputTelegram)
         {
             var relProtocol = inputTelegram[1];
             var codeOperation = inputTelegram[2];
@@ -157,14 +170,23 @@ namespace Ferretto.VW.MAS_IODriver
                     this.responseMessage[3] = 0x00;            // error code
                     // Payload output (echo output values)
                     Array.Copy(inputTelegram, 3, this.responseMessage, 4, 1);
+
                     // Payload inputs (create some values)
                     var lowByteInputs = new bool[8];
                     var highByteInputs = new bool[8];  // according to the selection of axis, set the feedback DI8, DI9 digital values
-                    for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
+                    for (var i = 0; i < 8; i++)
+                    {
+                        lowByteInputs[i] = false;
+                        highByteInputs[i] = false;
+                    }
                     this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
                     this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
+
                     // configuration
-                    for (var i = 0; i < 8; i++) { this.responseMessage[7 + i] = 0x00; }
+                    for (var i = 0; i < 8; i++)
+                    {
+                        this.responseMessage[7 + i] = 0x00;
+                    }
 
                     break;
 

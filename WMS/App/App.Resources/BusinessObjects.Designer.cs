@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -381,6 +381,33 @@ namespace Ferretto.WMS.App.Resources {
         public static string CompartmentIsItemPairingFixed {
             get {
                 return ResourceManager.GetString("CompartmentIsItemPairingFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other Missions Operation Count.
+        /// </summary>
+        public static string CompartmentOtherMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentOtherMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Missions Operation Count.
+        /// </summary>
+        public static string CompartmentPickMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentPickMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Missions Operation Count.
+        /// </summary>
+        public static string CompartmentPutMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentPutMissionOperationCount", resourceCulture);
             }
         }
         
@@ -997,15 +1024,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In Missions Count.
-        /// </summary>
-        public static string LoadingUnitInMissionCount {
-            get {
-                return ResourceManager.GetString("LoadingUnitInMissionCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cell Pairing.
         /// </summary>
         public static string LoadingUnitIsCellPairingFixed {
@@ -1024,20 +1042,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other Missions Count.
+        ///   Looks up a localized string similar to Missions Count.
         /// </summary>
-        public static string LoadingUnitOtherMissionCount {
+        public static string LoadingUnitMissionCount {
             get {
-                return ResourceManager.GetString("LoadingUnitOtherMissionCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Out Missions Count.
-        /// </summary>
-        public static string LoadingUnitOutMissionCount {
-            get {
-                return ResourceManager.GetString("LoadingUnitOutMissionCount", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitMissionCount", resourceCulture);
             }
         }
         
@@ -1150,7 +1159,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment Count.
+        ///   Looks up a localized string similar to Compartments Count.
         /// </summary>
         public static string MachineCompartmentCount {
             get {
@@ -1596,6 +1605,51 @@ namespace Ferretto.WMS.App.Resources {
         public static string Mission {
             get {
                 return ResourceManager.GetString("Mission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string MissionOperationStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MissionOperationStatusError {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executing.
+        /// </summary>
+        public static string MissionOperationStatusExecuting {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string MissionOperationStatusIncomplete {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string MissionOperationStatusNew {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusNew", resourceCulture);
             }
         }
         

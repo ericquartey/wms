@@ -40,6 +40,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isHeaderVisible;
 
+        private bool isItemLookUpEnabled;
+
         private bool itemIdHasValue;
 
         private InfiniteAsyncSource itemsDataSource;
@@ -58,6 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsHeaderVisible = true;
             this.IsErrorsVisible = true;
+            this.isItemLookUpEnabled = true;
         }
 
         #endregion
@@ -103,24 +106,22 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isHeaderVisible, value);
         }
 
+        public bool IsItemLookUpEnabled
+        {
+            get => this.isItemLookUpEnabled;
+            set => this.SetProperty(ref this.isItemLookUpEnabled, value);
+        }
+
         public bool IsItemDetailsEnabled
         {
             get
             {
-                var result = true;
-                if (this.Model == null ||
-                    !this.Model.ItemId.HasValue)
+                if (this.Model?.ItemId == null)
                 {
-                    result = false;
+                    return false;
                 }
 
-                if (!this.Model.Stock.HasValue ||
-                    this.Model.Stock.Value <= 0)
-                {
-                    result = false;
-                }
-
-                return result;
+                return this.Model.Stock.HasValue && this.Model.Stock.Value > 0;
             }
         }
 
@@ -145,7 +146,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.mode, value))
                 {
-                    this.IsAdd = (this.mode == AppearMode.Add) ? true : false;
+                    this.IsAdd = this.mode == AppearMode.Add;
                 }
             }
         }

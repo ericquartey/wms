@@ -14,27 +14,11 @@
     "Bay3Type": 3
   },
 
-  //"SetupNetwork": {
-  //  "Inverter1": "169.254.231.248",
-  //  "Inverter1Port": 17221,
-  //  "IOExpansion1": "169.254.231.20",
-  //  "IOExpansion1Port": 19550,
-  //  "InverterIndexMaster": 0,
-  //  "InverterIndexShutter1": 2,
-  //  "InverterIndexBay1": 3,
-  //  "InverterIndexShutter2": 4,
-  //  "PPC1MasterIPAddress": "::1",
-  //  "PPC2SlaveIPAddress": "::2",
-  //  "PPC3SlaveIPAddress": "::3"
-  //},
-
   "SetupNetwork": {
-    "Inverter1": "198.168.0.100",
+    "Inverter1": "192.168.0.100",
     "Inverter1Port": 17221,
-    "IOExpansion1": "198.168.0.1",
+    "IOExpansion1": "192.168.0.1",
     "IOExpansion1Port": 19550,
-    "IOExpansion2": "198.168.0.2",
-    "IOExpansion2Port": 19550,
     "InverterIndexMaster": 0,
     "InverterIndexShutter1": 2,
     "InverterIndexBay1": 3,
@@ -43,6 +27,22 @@
     "PPC2SlaveIPAddress": "::2",
     "PPC3SlaveIPAddress": "::3"
   },
+
+  //"SetupNetwork": {
+  //  "Inverter1": "198.168.0.100",
+  //  "Inverter1Port": 17221,
+  //  "IOExpansion1": "198.168.0.1",
+  //  "IOExpansion1Port": 19550,
+  //  "IOExpansion2": "198.168.0.2",
+  //  "IOExpansion2Port": 19550,
+  //  "InverterIndexMaster": 0,
+  //  "InverterIndexShutter1": 2,
+  //  "InverterIndexBay1": 3,
+  //  "InverterIndexShutter2": 4,
+  //  "PPC1MasterIPAddress": "::1",
+  //  "PPC2SlaveIPAddress": "::2",
+  //  "PPC3SlaveIPAddress": "::3"
+  //},
 
   //TEMP To remove but temporary commented, until the test won't be ok
   //"SetupStatus": {

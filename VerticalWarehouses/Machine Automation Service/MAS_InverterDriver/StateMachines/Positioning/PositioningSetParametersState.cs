@@ -11,28 +11,24 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
-
         private readonly IInverterPositioningFieldMessageData data;
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
+        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
 
         #endregion
 
         #region Constructors
 
-        public PositioningSetParametersState(IInverterStateMachine parentStateMachine, IInverterPositioningFieldMessageData data, IInverterStatusBase inverterStatus, ILogger logger)
+        public PositioningSetParametersState(
+            IInverterStateMachine parentStateMachine,
+            IInverterPositioningFieldMessageData data,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogDebug("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentStateMachine;
             this.data = data;
-            this.inverterStatus = inverterStatus;
+
+            logger.LogDebug("1:Method Start");
         }
 
         #endregion
@@ -46,46 +42,56 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #endregion
 
+        #region Properties
+
+        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue => this.inverterCommandQueue;
+
+        #endregion
+
         #region Methods
+
+        public override void Release()
+        {
+        }
 
         /// <inheritdoc />
         public override void Start()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
+            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            this.logger.LogTrace($"2:message={message}:ID Parametro={message.ParameterId}");
+            this.Logger.LogTrace($"2:message={message}:ID Parametro={message.ParameterId}");
 
             switch (message.ParameterId)
             {
                 case InverterParameterId.PositionTargetPositionParam:
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
                     break;
 
                 case InverterParameterId.PositionTargetSpeedParam:
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
                     break;
 
                 case InverterParameterId.PositionAccelerationParam:
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
                     break;
 
                 case InverterParameterId.PositionDecelerationParam:
-                    this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.inverterStatus, this.logger));
+                    this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
                     break;
             }
 
@@ -95,25 +101,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -1,7 +1,4 @@
-using Ferretto.WMS.Data.Core.Interfaces;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -18,10 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
         private MissionsController MockController()
         {
-            return new MissionsController(
-                new Mock<ILogger<MissionsController>>().Object,
-                this.ServiceProvider.GetService(typeof(IMissionProvider)) as IMissionProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
+            return this.ServiceProvider.GetService(typeof(MissionsController)) as MissionsController;
         }
 
         #endregion

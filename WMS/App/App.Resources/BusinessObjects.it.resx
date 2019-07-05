@@ -309,14 +309,8 @@
   <data name="LoadingUnitCreationDate" xml:space="preserve">
     <value>Data Creazione</value>
   </data>
-  <data name="LoadingUnitInMissionCount" xml:space="preserve">
-    <value>Numero Missioni Versamento</value>
-  </data>
-  <data name="LoadingUnitOutMissionCount" xml:space="preserve">
-    <value>Numero Missioni Prelievo</value>
-  </data>
-  <data name="LoadingUnitOtherMissionCount" xml:space="preserve">
-    <value>Numero Altre Missioni</value>
+  <data name="LoadingUnitMissionCount" xml:space="preserve">
+    <value>Numero Missioni </value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorità</value>
@@ -741,7 +735,7 @@
     <value>Contatore Missioni</value>
   </data>
   <data name="MachineCompartmentCount" xml:space="preserve">
-    <value>Contatore Cassetti</value>
+    <value>Totale Scomparti</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
     <value>Totale Scomparti</value>
@@ -751,5 +745,29 @@
   </data>
   <data name="WeightFillRate" xml:space="preserve">
     <value>Percentuale di Riempimento Peso</value>
+  </data>
+  <data name="MissionOperationStatusCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="MissionOperationStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="MissionOperationStatusExecuting" xml:space="preserve">
+    <value>In Esecuzione</value>
+  </data>
+  <data name="MissionOperationStatusIncomplete" xml:space="preserve">
+    <value>Incompleta</value>
+  </data>
+  <data name="MissionOperationStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="CompartmentOtherMissionOperationCount" xml:space="preserve">
+    <value>Contatore Inventario Missioni Operazioni</value>
+  </data>
+  <data name="CompartmentPickMissionOperationCount" xml:space="preserve">
+    <value>Contatore Prelievo Missioni Operazioni</value>
+  </data>
+  <data name="CompartmentPutMissionOperationCount" xml:space="preserve">
+    <value>Contatore Versamento Missioni Operazioni</value>
   </data>
 </root>

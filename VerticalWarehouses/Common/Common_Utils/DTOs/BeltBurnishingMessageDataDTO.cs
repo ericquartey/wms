@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.Common_Utils.DTOs
 {
-    public class BeltBurnishingMessageDataDTO
+    public class BeltBurnishingMessageDataDto
     {
         #region Constructors
 
-        public BeltBurnishingMessageDataDTO(int cyclesQuantity)
+        public BeltBurnishingMessageDataDto(int cyclesQuantity)
         {
             this.CyclesQuantity = cyclesQuantity;
         }

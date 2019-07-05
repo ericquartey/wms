@@ -412,7 +412,7 @@
   <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
     <value>Tra i tipi scomparto esistenti, scegli quelli da associare a questo articolo specificando la capacità massima:</value>
   </data>
-  <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
+  <data name="NoUnassociatedItemCompartmentTypesAvailable" xml:space="preserve">
     <value>Non ci sono tipi scomparto associabili all'articolo.</value>
   </data>
   <data name="ItemListsTypeInventory" xml:space="preserve">

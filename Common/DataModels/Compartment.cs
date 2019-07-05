@@ -47,11 +47,17 @@ namespace Ferretto.Common.DataModels
 
         public int? MaterialStatusId { get; set; }
 
-        public List<Mission> Missions { get; set; }
+        public IEnumerable<MissionOperation> MissionOperations { get; set; }
+
+        public int OtherMissionOperationCount { get; set; }
 
         public PackageType PackageType { get; set; }
 
         public int? PackageTypeId { get; set; }
+
+        public int PickMissionOperationCount { get; set; }
+
+        public int PutMissionOperationCount { get; set; }
 
         public string RegistrationNumber { get; set; }
 

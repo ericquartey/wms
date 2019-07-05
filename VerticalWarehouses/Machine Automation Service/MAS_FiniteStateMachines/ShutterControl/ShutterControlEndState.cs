@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
     {
         #region Fields
 
-        private readonly ILogger logger;
-
         private readonly IShutterControlMessageData shutterControlMessageData;
 
         private readonly bool stopRequested;
@@ -25,13 +23,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Constructors
 
-        public ShutterControlEndState(IStateMachine parentMachine, IShutterControlMessageData shutterControlMessageData, ILogger logger, bool stopRequested = false)
+        public ShutterControlEndState(
+            IStateMachine parentMachine,
+            IShutterControlMessageData shutterControlMessageData,
+            ILogger logger,
+            bool stopRequested = false)
+            : base(parentMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
             this.stopRequested = stopRequested;
-            this.ParentStateMachine = parentMachine;
             this.shutterControlMessageData = shutterControlMessageData;
         }
 
@@ -51,13 +50,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             switch (message.Type)
             {
@@ -77,7 +76,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, message, this.Logger));
                             break;
                     }
                     break;
@@ -87,13 +86,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
         public override void Start()
         {
-            this.logger?.LogTrace("1:Method Start");
+            this.Logger?.LogTrace("1:Method Start");
 
             if (this.stopRequested)
             {
@@ -126,7 +125,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,8 +18,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
-
-        private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
@@ -89,17 +88,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
             switch (e.PropertyName)
             {
-                case nameof(this.Model.AreaId):
-                    IEnumerable<Bay> bayChoices = null;
-                    if (this.Model.AreaId.HasValue)
-                    {
-                        var result = await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value);
-                        bayChoices = result.Success ? result.Entity : null;
-                    }
-
-                    this.Model.BayChoices = bayChoices;
-                    break;
-
                 case nameof(this.Model.ItemDetails):
                     IEnumerable<Area> areaChoices = null;
                     if (this.Model.ItemDetails != null)

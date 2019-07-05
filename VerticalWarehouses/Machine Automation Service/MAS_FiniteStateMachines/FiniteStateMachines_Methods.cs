@@ -37,7 +37,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     break;
 
                 //TEMP Add here other condition getters
-
                 default:
                     break;
             }
@@ -75,7 +74,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         //    return true;
         //}
-
         private void ProcessCheckConditionMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
@@ -134,7 +132,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -157,7 +155,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -177,19 +175,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
-            foreach(var index in this.ioIndexDeviceList)
+            foreach (var index in this.ioIndexDeviceList)
             {
-                var IoDataMessage = new SensorsChangedFieldMessageData();
-                IoDataMessage.SensorsStatus = true;
-                var IoMessage = new FieldCommandMessage(
-                    IoDataMessage,
+                var ioDataMessage = new SensorsChangedFieldMessageData();
+                ioDataMessage.SensorsStatus = true;
+                var ioMessage = new FieldCommandMessage(
+                    ioDataMessage,
                     "Update IO digital input",
                     FieldMessageActor.IoDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.SensorsChanged,
                     (byte)index);
 
-                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(IoMessage);
+                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
             }
 
             this.forceInverterIoStatusPublish = true;
@@ -217,7 +215,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -240,7 +238,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }

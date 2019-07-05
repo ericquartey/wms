@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = GetNewId(), Code = "Item #1" };
             var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 10, ReservedToPut = 0 };
 
             using (var context = this.CreateContext())
@@ -49,9 +49,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-            var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
-            var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+            var item1 = new DataModels.Item { Id = GetNewId(), Code = "Item #1" };
+
+            var compartment1 = new DataModels.Compartment { Id = GetNewId(), LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+            var compartment2 = new DataModels.Compartment { Id = GetNewId(), LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);

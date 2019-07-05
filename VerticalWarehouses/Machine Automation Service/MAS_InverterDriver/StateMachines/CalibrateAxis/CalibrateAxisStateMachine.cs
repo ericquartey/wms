@@ -3,8 +3,8 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisStateMachine : InverterStateMachineBase
@@ -23,15 +23,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisStateMachine(Axis axisToCalibrate, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base(logger)
+        public CalibrateAxisStateMachine(
+            Axis axisToCalibrate,
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
             this.axisToCalibrate = axisToCalibrate;
-            this.InverterCommandQueue = inverterCommandQueue;
             this.inverterStatus = inverterStatus;
-            this.EventAggregator = eventAggregator;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

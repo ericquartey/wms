@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+
 // TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ITestService testService;
+
         private DelegateCommand closeButtonCommand;
 
         private IUnityContainer container;
@@ -31,8 +34,6 @@ namespace Ferretto.VW.InstallationApp
         private IShutterService shutterService;
 
         private DelegateCommand stopButtonCommand;
-
-        private ITestService testService;
 
         private SubscriptionToken updateShutterPositioningToken;
 
@@ -67,7 +68,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task DownShutterAsync()
         {
-            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
+            var messageData = new ShutterPositioningMovementMessageDataDto { BayNumber = 1, ShutterPositionMovement = 0 };
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 
@@ -108,7 +109,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task UpShutterAsync()
         {
-            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
+            var messageData = new ShutterPositioningMovementMessageDataDto { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 

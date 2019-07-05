@@ -26,11 +26,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         private readonly BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue;
-
-        private readonly ISHDTransport shdTransport;
 
         private readonly Task ioReceiveTask;
 
@@ -38,21 +34,25 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IoSHDStatus ioSHDStatus;
 
+        private readonly ILogger logger;
+
+        private readonly ISHDTransport shdTransport;
+
         private IIoStateMachine currentStateMachine;
 
-        private IPAddress ipAddress;
-
-        private int port;
-
-        private IoIndex index;
-
-        private Timer pollIoTimer;
-
-        private CancellationToken stoppingToken;
+        private bool disposed;
 
         private bool forceIoStatusPublish;
 
-        private bool disposed;
+        private IoIndex index;
+
+        private IPAddress ipAddress;
+
+        private Timer pollIoTimer;
+
+        private int port;
+
+        private CancellationToken stoppingToken;
 
         #endregion
 
@@ -90,22 +90,11 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
-        protected void Dispose(bool disposing)
+        public void DestroyStateMachine()
         {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this.pollIoTimer?.Dispose();
-            }
-
-            this.disposed = true;
+            this.currentStateMachine?.Dispose();
+            this.currentStateMachine = null;
         }
-
-        #endregion
 
         public async Task ReceiveIoDataTaskFunction()
         {
@@ -140,7 +129,6 @@ namespace Ferretto.VW.MAS_IODriver
                     ref outputData,
                     out configurationData,
                     out errorCode);
-
                 }
                 catch (Exception ex)
                 {
@@ -212,7 +200,8 @@ namespace Ferretto.VW.MAS_IODriver
                     default:
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         public async Task SendIoCommandTaskFunction()
@@ -264,7 +253,30 @@ namespace Ferretto.VW.MAS_IODriver
                     default:
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        public void SendIoMessageData(object state)
+        {
+            var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
+
+            this.ioCommandQueue.Enqueue(message);
+        }
+
+        public void SendMessage(IFieldMessageData messageData)
+        {
+            var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+            messageData,
+            "Io Driver Error",
+            FieldMessageActor.Any,
+            FieldMessageActor.IoDriver,
+            FieldMessageType.IoDriverException,
+            MessageStatus.OperationError,
+            ErrorLevel.Critical,
+            (byte)this.index);
+
+            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
         }
 
         public async Task StartHardwareCommunications()
@@ -316,7 +328,6 @@ namespace Ferretto.VW.MAS_IODriver
             try
             {
                 this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
-
             }
             catch (Exception ex)
             {
@@ -326,33 +337,21 @@ namespace Ferretto.VW.MAS_IODriver
             }
         }
 
-        public void DestroyStateMachine()
+        protected void Dispose(bool disposing)
         {
-            this.currentStateMachine?.Dispose();
-            this.currentStateMachine = null;
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.pollIoTimer?.Dispose();
+            }
+
+            this.disposed = true;
         }
 
-        public void SendIoMessageData(object state)
-        {
-            var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
-
-            this.ioCommandQueue.Enqueue(message);
-        }
-
-        public void SendMessage(IFieldMessageData messageData)
-        {
-            var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
-            messageData,
-            "Io Driver Error",
-            FieldMessageActor.Any,
-            FieldMessageActor.IoDriver,
-            FieldMessageType.IoDriverException,
-            MessageStatus.OperationError,
-            ErrorLevel.Critical,
-            (byte)this.index);
-
-            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
-        }
-
+        #endregion
     }
 }

@@ -2,18 +2,33 @@
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public abstract class StateBase : IState
     {
         #region Fields
 
-        protected IStateMachine ParentStateMachine;
-
         private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public StateBase(IStateMachine parentStateMachine, ILogger logger)
+        {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            this.ParentStateMachine = parentStateMachine;
+            this.Logger = logger;
+
+            this.Logger.LogTrace($"State '{this.GetType().Name}' initialised.");
+        }
 
         #endregion
 
@@ -29,6 +44,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         #region Properties
 
         public virtual string Type => this.GetType().ToString();
+
+        protected ILogger Logger { get; }
+
+        protected IStateMachine ParentStateMachine { get; }
 
         #endregion
 

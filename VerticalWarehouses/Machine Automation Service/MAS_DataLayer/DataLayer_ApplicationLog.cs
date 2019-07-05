@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer
@@ -39,7 +38,8 @@ namespace Ferretto.VW.MAS_DataLayer
                         await this.LogNotificationMessageAsync();
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task LogCommandMessageAsync()

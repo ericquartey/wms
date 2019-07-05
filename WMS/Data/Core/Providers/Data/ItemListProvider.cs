@@ -31,10 +31,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public static void SetPolicies(BaseModel<int> model)
         {
-            model.AddPolicy((model as IPolicyItemList).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as IItemListDeletePolicy).ComputeDeletePolicy());
-            model.AddPolicy((model as IPolicyItemList).ComputeExecutePolicy());
-            model.AddPolicy((model as IPolicyItemList).ComputeAddRowPolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeExecutePolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeAddRowPolicy());
         }
 
         public async Task<IOperationResult<ItemListDetails>> CreateAsync(ItemListDetails model)

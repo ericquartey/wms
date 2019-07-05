@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Modules.Machines
 
         #region Methods
 
-        protected override async Task LoadDataAsync()
+        protected override async Task LoadDataAsync(ModelChangedPubSubEvent e)
         {
             if (this.SelectedFilterDataSource is DataSourceCollection<Machine, int> enumerableSource)
             {

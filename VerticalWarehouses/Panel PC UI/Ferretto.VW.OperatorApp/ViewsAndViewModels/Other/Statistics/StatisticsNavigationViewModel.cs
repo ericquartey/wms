@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Ferretto.VW.OperatorApp.Interfaces;
+    using Prism.Commands;
+    using Prism.Events;
+    using Prism.Mvvm;
+    using Unity;
+
     public class StatisticsNavigationViewModel : BindableBase, IStatisticsNavigationViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand itemStatisticsButtonCommand;
+        private ICommand machineStatisticsButtonCommand;
         private ICommand drawerSpaceSaturationButtonCommand;
         private ICommand cellsStatisticsButtonCommand;
         private ICommand errorsStatisticsButtonCommand;
@@ -37,9 +37,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Properties
 
-        public ICommand ItemStatisticsButtonCommand => this.itemStatisticsButtonCommand ?? (this.itemStatisticsButtonCommand = new DelegateCommand(() =>
+        public ICommand MachineStatisticsButtonCommand => this.machineStatisticsButtonCommand ?? (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<ItemStatisticsViewModel, IItemStatisticsViewModel>();
+            NavigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
         }));
 
         public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>

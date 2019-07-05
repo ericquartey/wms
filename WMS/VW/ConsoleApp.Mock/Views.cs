@@ -9,6 +9,54 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
     {
         #region Methods
 
+        public static void DisplayHeader(string machineName)
+        {
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("   VertiMAG Panel PC   ");
+
+            if (!string.IsNullOrEmpty(machineName))
+            {
+                Console.WriteLine($"   {machineName}");
+            }
+
+            Console.WriteLine("-----------------------");
+        }
+
+        public static void DisplayUserOptions(VW.MachineAutomationService.Hubs.MachineStatus machineStatus, string machineName)
+        {
+            if (machineStatus == null)
+            {
+                throw new ArgumentNullException(nameof(machineStatus));
+            }
+
+            DisplayHeader(machineName);
+
+            Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
+            Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
+            Console.WriteLine();
+            Console.WriteLine("Machine");
+            Console.WriteLine("-------");
+            Console.WriteLine($"{(int)UserSelection.DisplayMachineStatus} - Display Status");
+            Console.WriteLine($"{(int)UserSelection.ToggleMachineMode} - Auto/Manual Toggle (current: {machineStatus.Mode})");
+            Console.WriteLine($"{(int)UserSelection.SetMachineFault} - Set Fault");
+            Console.WriteLine();
+            Console.WriteLine("Missions");
+            Console.WriteLine("--------");
+            Console.WriteLine($"{(int)UserSelection.DisplayOperation} - Display missions");
+            Console.WriteLine($"{(int)UserSelection.ExecuteOperation} - Execute mission");
+            Console.WriteLine($"{(int)UserSelection.CompleteOperation} - Complete mission");
+            Console.WriteLine($"{(int)UserSelection.AbortOperation} - Abort mission");
+            Console.WriteLine();
+            Console.WriteLine("Lists");
+            Console.WriteLine("-----");
+            Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
+            Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
+            Console.WriteLine("Loading Unit");
+            Console.WriteLine("-----");
+            Console.WriteLine($"{(int)UserSelection.ExecuteLoadingUnitMission} - Execute LU Mission");
+            Console.WriteLine($"{(int)UserSelection.CompleteLoadingUnitMission} - Complete LU Mission");
+        }
+
         public static void PrintListsTable(IEnumerable<ItemList> lists)
         {
             if (lists == null)
@@ -41,13 +89,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             Console.WriteLine($"|__________|_____|____________|");
         }
 
-        public static void DisplayHeader()
-        {
-            Console.WriteLine("-----------------------");
-            Console.WriteLine("   VertiMAG Panel PC   ");
-            Console.WriteLine("-----------------------");
-        }
-
         public static void PrintMachineStatus(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
         {
             if (machineStatus == null)
@@ -73,8 +114,16 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             }
         }
 
-        public static void PrintMissionsTable(IEnumerable<Mission> missions)
+        public static void PrintMissionsTable(IEnumerable<MissionInfo> missions)
         {
+            const string separatorLine =
+                "|----|----------|-----|------------|------------------------------------------|------------|";
+
+            if (missions == null)
+            {
+                throw new ArgumentNullException(nameof(missions));
+            }
+
             if (!missions.Any())
             {
                 Console.WriteLine("No missions are available.");
@@ -82,33 +131,32 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 return;
             }
 
-            Console.WriteLine("Available missions (by priority, then by creation date):");
+            Console.WriteLine("Available missions (by priority):");
 
             Console.WriteLine(
+                "|    " +
                 $"| {nameof(Mission.Priority), 8} " +
                 $"| {nameof(Mission.Id), 3} " +
                 $"| {nameof(Mission.Status), -10} " +
-                $"| {nameof(Mission.ItemDescription), -40} " +
-                $"| Quantities |");
+                $"| {nameof(MissionOperationInfo.ItemDescription), -40} " +
+                "| Quantities |");
 
-            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
+            Console.WriteLine(separatorLine);
 
             var completedMissions = missions
                    .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
-                   .OrderBy(m => m.Priority)
-                   .ThenBy(m => m.CreationDate);
+                   .OrderBy(m => m.Priority);
 
             foreach (var mission in missions
-                                        .Except(completedMissions)
-                                        .OrderBy(m => m.Priority)
-                                        .ThenBy(m => m.CreationDate))
+                .Except(completedMissions)
+                .OrderBy(m => m.Priority))
             {
                 PrintMissionTableRow(mission);
             }
 
             if (completedMissions.Any())
             {
-                Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
+                Console.WriteLine(separatorLine);
 
                 foreach (var mission in completedMissions)
                 {
@@ -116,7 +164,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 }
             }
 
-            Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
+            Console.WriteLine("|____|__________|_____|____________|__________________________________________|____________|");
         }
 
         public static Bay PromptForBaySelection(IEnumerable<Bay> bays)
@@ -136,10 +184,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
             do
             {
-                Console.WriteLine("Insert bay id:");
-                Console.Write("> ");
-
-                var bayId = Views.ReadBayId();
+                var bayId = Views.ReadInt("Insert bay id:");
 
                 selectedBay = bays.SingleOrDefault(b => b.Id == bayId);
                 if (selectedBay == null)
@@ -182,34 +227,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return selectedMachine;
         }
 
-        public static void DisplayUserOptions(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
-        {
-            if (machineStatus == null)
-            {
-                throw new ArgumentNullException(nameof(machineStatus));
-            }
-
-            DisplayHeader();
-
-            Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
-            Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
-            Console.WriteLine();
-            Console.WriteLine("Machine");
-            Console.WriteLine($"{(int)UserSelection.DisplayMachineStatus} - Display Status");
-            Console.WriteLine($"{(int)UserSelection.ToggleMachineMode} - Auto/Manual Toggle (current: {machineStatus.Mode})");
-            Console.WriteLine($"{(int)UserSelection.SetMachineFault} - Set Fault");
-            Console.WriteLine();
-            Console.WriteLine("Missions");
-            Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
-            Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
-            Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
-            Console.WriteLine($"{(int)UserSelection.AbortMission} - Abort mission");
-            Console.WriteLine();
-            Console.WriteLine("Lists");
-            Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
-            Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
-        }
-
         public static UserSelection PromptForUserSelection()
         {
             Console.WriteLine("Select option:");
@@ -235,60 +252,10 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return userSelection;
         }
 
-        public static int ReadBayId()
+        public static int ReadInt(string promptMessage)
         {
-            Console.Write("Insert bay id: ");
-            var bayIdString = Console.ReadLine();
-
-            if (int.TryParse(bayIdString, out var bayId))
-            {
-                return bayId;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse bay id.");
-            }
-
-            return -1;
-        }
-
-        public static int ReadListId()
-        {
-            Console.Write("Insert list id: ");
-            var listIdString = Console.ReadLine();
-
-            if (int.TryParse(listIdString, out var listId))
-            {
-                return listId;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse list id.");
-            }
-
-            return -1;
-        }
-
-        public static int ReadMissionId()
-        {
-            Console.Write("Insert mission id: ");
-            var missionIdString = Console.ReadLine();
-
-            if (int.TryParse(missionIdString, out var missionId))
-            {
-                return missionId;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse mission id.");
-            }
-
-            return -1;
-        }
-
-        public static int ReadQuantity()
-        {
-            Console.Write("Insert quantity: ");
+            Console.WriteLine(promptMessage);
+            Console.Write("> ");
             var quantityString = Console.ReadLine();
 
             if (int.TryParse(quantityString, out var quantity))
@@ -297,7 +264,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             }
             else
             {
-                Console.WriteLine("Unable to parse mission quantity.");
+                Console.WriteLine("Unable to parse value.");
             }
 
             return -1;
@@ -309,18 +276,27 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
         }
 
-        private static void PrintMissionTableRow(Mission mission)
+        private static void PrintMissionTableRow(MissionInfo mission)
         {
-            string trimmedDescription = null;
-            if (mission.ItemDescription != null)
+            if (mission.Operations.Count > 0)
             {
-                trimmedDescription = mission.ItemDescription?.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+                Console.WriteLine(
+                    $"| +  | {mission.Priority, 8} |     | {mission.Status, -10} |                                          |            |");
+
+                foreach (var operation in mission.Operations)
+                {
+                    var trimmedDescription = operation.ItemDescription.Substring(0, Math.Min(40, operation.ItemDescription.Length));
+                    var quantities = $"{operation.DispatchedQuantity, 2} / {operation.RequestedQuantity, 2}";
+
+                    Console.WriteLine(
+                   $"|  > | {operation.Priority, 8} | {operation.Id, 3} | {operation.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+                }
             }
-
-            var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
-
-            Console.WriteLine(
-                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
+            else
+            {
+                Console.WriteLine(
+                   $"| >> | {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | Loading Unit                             |            |");
+            }
         }
 
         #endregion

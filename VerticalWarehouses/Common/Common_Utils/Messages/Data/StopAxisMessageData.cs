@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
     public class StopAxisMessageData : IStopAxisMessageData

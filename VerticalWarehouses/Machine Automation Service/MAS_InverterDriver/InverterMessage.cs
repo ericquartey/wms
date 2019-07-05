@@ -3,10 +3,9 @@ using System.Text;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
+
 // ReSharper disable ParameterHidesMember
-
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public class InverterMessage
@@ -53,7 +52,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while copying payload in Copy Constructor",
+                throw new InverterDriverException(
+                    $"Exception {ex.Message} while copying payload in Copy Constructor",
                     ex);
             }
         }
@@ -172,7 +172,9 @@ namespace Ferretto.VW.MAS_InverterDriver
         public byte[] GetHeartbeatMessage(bool setBit)
         {
             if (this.parameterId != (short)InverterParameterId.ControlWordParam)
+            {
                 throw new InverterDriverException("Invalid parameter id");
+            }
 
             this.heartbeatMessage = true;
 
@@ -356,7 +358,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.SetOperatingModeParam:
                 case InverterParameterId.StatusDigitalSignals:
-                    if (this.payloadLength == 2) returnValue = BitConverter.ToUInt16(this.payload);
+                    if (this.payloadLength == 2)
+                    {
+                        returnValue = BitConverter.ToUInt16(this.payload);
+                    }
+
                     break;
 
                 case InverterParameterId.HomingCreepSpeedParam:
@@ -367,7 +373,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
                 case InverterParameterId.ActualPositionShaft:
-                    if (this.payloadLength == 4) returnValue = BitConverter.ToInt32(this.payload);
+                    if (this.payloadLength == 4)
+                    {
+                        returnValue = BitConverter.ToInt32(this.payload);
+                    }
+
                     break;
 
                 case InverterParameterId.DigitalInputsOutputs:
@@ -407,7 +417,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.PositionTargetPositionParam:
                 case InverterParameterId.PositionTargetSpeedParam:
                 case InverterParameterId.ActualPositionShaft:
-                    if (this.payloadLength == 4) returnValue = BitConverter.ToInt32(this.payload);
+                    if (this.payloadLength == 4)
+                    {
+                        returnValue = BitConverter.ToInt32(this.payload);
+                    }
+
                     break;
 
                 default:
@@ -451,7 +465,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.SetOperatingModeParam:
                 case InverterParameterId.StatusDigitalSignals:
-                    if (this.payloadLength == 2) returnValue = BitConverter.ToUInt16(this.payload);
+                    if (this.payloadLength == 2)
+                    {
+                        returnValue = BitConverter.ToUInt16(this.payload);
+                    }
                     break;
 
                 default:

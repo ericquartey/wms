@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
@@ -9,13 +11,11 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -136,8 +136,10 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 switch (receivedMessage.Type)
                 {
+                    // TODO
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
@@ -195,7 +197,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                     this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: NO serviceable bay present");
                     WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async void NotificationReceiveTaskFunction()
@@ -258,7 +261,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                         this.missionManagementTask.Start();
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
 
             return;
         }

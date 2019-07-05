@@ -35,6 +35,8 @@ namespace Ferretto.VW.InverterDriver
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly BitArray CtrlWord;
+
         private readonly InverterDriverState state;
 
         private int ActualPositionHorizontalShaft;
@@ -44,8 +46,6 @@ namespace Ferretto.VW.InverterDriver
         private Request[] BaseRequestArray;
 
         private bool BrakeResistanceOvertemperature;
-
-        private BitArray CtrlWord;
 
         private Request currentRequest;
 
@@ -62,8 +62,6 @@ namespace Ferretto.VW.InverterDriver
         private bool getStatusWordValue;
 
         private bool HeartBeat;
-
-        private HardwareInverterStatus hwInverterState;
 
         private int IndexOfBaseRequest;
 
@@ -114,7 +112,6 @@ namespace Ferretto.VW.InverterDriver
             this.state = InverterDriverState.Idle;
             this.IPAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
             this.PortAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
-            this.hwInverterState = HardwareInverterStatus.NotOperative;
             this.CtrlWord = new BitArray(BITS_16);
             this.StatusWord = new BitArray(BITS_16);
 
@@ -615,7 +612,6 @@ namespace Ferretto.VW.InverterDriver
             this.destroyThread();
             this.disconnect_from_inverter();
 
-            this.hwInverterState = HardwareInverterStatus.NotOperative;
             // logger.Log(LogLevel.Debug, String.Format("Release InverterDriver object."));
         }
 

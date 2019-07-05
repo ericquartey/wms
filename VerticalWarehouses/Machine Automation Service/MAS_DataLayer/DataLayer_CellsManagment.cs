@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_DataLayer
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
         public async Task<LoadingUnitPosition> GetFreeBlockPositionAsync(decimal loadingUnitHeight, int loadingUnitId)
         {
-            var cellSpacing = 1;//this.GetIntegerConfigurationValue((long)ConfigurationValueEnum.CellSpacing, (long)ConfigurationCategory.GeneralInfoEnum);
+            var cellSpacing = 1; //this.GetIntegerConfigurationValue((long)ConfigurationValueEnum.CellSpacing, (long)ConfigurationCategory.GeneralInfoEnum);
 
             var cellsNumber = (int)Math.Ceiling(loadingUnitHeight / cellSpacing);
 
@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             var filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
-            var filledLastCell = filledStartCell + inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2;
+            var filledLastCell = filledStartCell + (inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2);
 
             for (var currentCell = filledStartCell; currentCell <= filledLastCell; currentCell += 2)
             {
@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 cellTablePopulated = true;
 
-                if (cell.Side == Side.FrontEven)
+                if (cell.Side == Side.FrontOdd)
                 {
                     if (cellCounterEven != 0 && (cell.WorkingStatus == Status.Free || cell.WorkingStatus == Status.Disabled) && evenCellBeforePriority < cell.Priority)
                     {
