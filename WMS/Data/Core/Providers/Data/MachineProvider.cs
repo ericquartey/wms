@@ -358,7 +358,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(x => new Machine
                 {
                     Id = x.Machine.Id,
-                    ActualWeight = x.Machine.ActualWeight,
                     AisleId = x.Machine.AisleId,
                     AisleName = x.Machine.Aisle.Name,
                     AreaName = x.Machine.Aisle.Area.Name,

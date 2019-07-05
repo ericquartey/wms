@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
 
@@ -13,9 +13,6 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
-
-        [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
-        public long? ActualWeight { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }

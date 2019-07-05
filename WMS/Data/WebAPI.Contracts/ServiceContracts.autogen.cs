@@ -1177,9 +1177,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Machine : BaseModelOfInt32
     {
-        [Newtonsoft.Json.JsonProperty("actualWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? ActualWeight { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("aisleId", Required = Newtonsoft.Json.Required.Always)]
         public int AisleId { get; set; }
     
@@ -1302,6 +1299,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("totalMaxWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? TotalMaxWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightFillRate", Required = Newtonsoft.Json.Required.Always)]
+        public int WeightFillRate { get; set; }
     
         public string ToJson() 
         {
@@ -2972,9 +2972,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineDetails : BaseModelOfInt32
     {
-        [Newtonsoft.Json.JsonProperty("actualWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long? ActualWeight { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("aisleId", Required = Newtonsoft.Json.Required.Always)]
         public int AisleId { get; set; }
     
@@ -3118,6 +3115,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("totalMaxWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? TotalMaxWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightFillRate", Required = Newtonsoft.Json.Required.Always)]
+        public int WeightFillRate { get; set; }
     
         public string ToJson() 
         {

@@ -1,13 +1,10 @@
-﻿using System;
+using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
     public class Machine : BaseModel<int>, IMachineLiveData
     {
         #region Properties
-
-        [Positive]
-        public long? ActualWeight { get; set; }
 
         public int AisleId { get; set; }
 
