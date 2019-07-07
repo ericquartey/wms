@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier
@@ -64,6 +64,10 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
         public int CurrentPosition { get; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Performance",
+            "CA1819:Properties should not return arrays",
+            Justification = "Review the code to see if it is really necessary to return a plain array.")]
         public bool[] CurrentSensorStatus { get; }
 
         public bool SensorStatus { get; }
