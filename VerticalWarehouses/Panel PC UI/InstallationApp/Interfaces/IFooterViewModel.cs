@@ -1,13 +1,10 @@
 ﻿using Ferretto.VW.Utils.Interfaces;
-using Prism.Commands;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public interface IMainWindowBackToIAPPButtonViewModel : IViewModel
+    public interface IFooterViewModel : IViewModel
     {
         #region Properties
-
-        CompositeCommand BackButtonCommand { get; set; }
 
         string Note { get; set; }
 

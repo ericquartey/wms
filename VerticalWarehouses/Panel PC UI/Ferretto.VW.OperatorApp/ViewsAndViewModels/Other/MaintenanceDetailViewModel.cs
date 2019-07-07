@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
@@ -18,25 +15,35 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
+
+        private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly DataGridKit selectedKit;
 
         private BindableBase dataGridViewModel;
 
-        private CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
-
-        private IEventAggregator eventAggregator;
-
         private ObservableCollection<DataGridKit> kits;
-
-        private DataGridKit selectedKit;
 
         #endregion
 
         #region Constructors
 
-        public MaintenanceDetailViewModel(IEventAggregator eventAggregator)
+        public MaintenanceDetailViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
+            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDataGridViewModel;
+
             this.NavigationViewModel = null;
         }
 
@@ -44,7 +51,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Properties
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+        public BindableBase DataGridViewModel
+        {
+            get => this.dataGridViewModel;
+            set => this.SetProperty(ref this.dataGridViewModel, value);
+        }
+
+        public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -57,17 +70,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlMaintenanceDataGridViewModel>() as CustomControlMaintenanceDataGridViewModel;
-        }
-
         public async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.kits = new ObservableCollection<DataGridKit>();
-            for (int i = 0; i < random.Next(3, 30); i++)
+            for (var i = 0; i < random.Next(3, 30); i++)
             {
                 this.kits.Add(new DataGridKit
                 {

@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         #region Properties
 
+        bool IsConnected { get; }
+
         int MaxReconnectTimeoutMilliseconds { get; set; }
 
         #endregion

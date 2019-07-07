@@ -2,15 +2,15 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public partial class MainWindowBackToIAPPButtonView : UserControl
+    public partial class FooterView : UserControl
     {
         #region Constructors
 
-        public MainWindowBackToIAPPButtonView()
+        public FooterView()
         {
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

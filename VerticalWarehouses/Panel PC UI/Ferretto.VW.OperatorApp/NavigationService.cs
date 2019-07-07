@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.CustomControls;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
@@ -18,174 +16,189 @@ namespace Ferretto.VW.OperatorApp
     {
         #region Fields
 
-        public static Stack<BindableBase> navigationStackTrace;
+        private readonly IUnityContainer container;
 
-        private static IUnityContainer _container;
+        private readonly IEventAggregator eventAggregator;
 
-        private static IEventAggregator _eventAggregator;
+        private readonly IFooterViewModel footerViewModel;
 
-        private static IMainWindowBackToOAPPButtonViewModel footerViewModel;
+        private readonly Stack<BindableBase> navigationStack = new Stack<BindableBase>();
 
-        private static IMainWindowViewModel mainWindowViewModel;
+        private IMainWindowViewModel mainWindowViewModel;
 
         #endregion
 
         #region Constructors
 
-        public NavigationService(IEventAggregator eventAggregator)
+        public NavigationService(
+            IEventAggregator eventAggregator,
+            IUnityContainer container,
+            IFooterViewModel footerViewModel)
         {
-            _eventAggregator = eventAggregator;
-            navigationStackTrace = new Stack<BindableBase>();
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (container == null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
+            this.eventAggregator = eventAggregator;
+            this.container = container;
+            this.footerViewModel = footerViewModel;
         }
 
         #endregion
 
         #region Methods
 
-        public static void NavigateFromView()
+        public void NavigateFromView()
         {
-            if (navigationStackTrace.Count != 0 && navigationStackTrace.Pop() is IViewModel destinationViewModel)
+            this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
+
+            if (this.navigationStack.Count != 0 && this.navigationStack.Pop() is IViewModel destinationViewModel)
             {
-                if (mainWindowViewModel.ContentRegionCurrentViewModel is IViewModel vm)
+                if (this.mainWindowViewModel.ContentRegionCurrentViewModel is IViewModel vm)
                 {
                     vm.ExitFromViewMethod();
                 }
                 destinationViewModel.OnEnterViewAsync();
-                mainWindowViewModel.ContentRegionCurrentViewModel = destinationViewModel as BindableBase;
+                this.mainWindowViewModel.ContentRegionCurrentViewModel = destinationViewModel as BindableBase;
                 if (destinationViewModel is IViewModel destination && destination.NavigationViewModel != null)
                 {
-                    mainWindowViewModel.NavigationRegionCurrentViewModel = destination.NavigationViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = destination.NavigationViewModel;
                 }
                 else
                 {
-                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 }
             }
             else
             {
-                if (mainWindowViewModel.ContentRegionCurrentViewModel is IViewModel vm)
+                if (this.mainWindowViewModel.ContentRegionCurrentViewModel is IViewModel vm)
                 {
                     vm.ExitFromViewMethod();
                 }
-                mainWindowViewModel.ContentRegionCurrentViewModel = _container.Resolve<IIdleViewModel>() as IdleViewModel;
-                mainWindowViewModel.NavigationRegionCurrentViewModel = _container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
-                mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = null;
+                this.mainWindowViewModel.ContentRegionCurrentViewModel = this.container.Resolve<IIdleViewModel>() as IdleViewModel;
+                this.mainWindowViewModel.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
+                this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = null;
             }
         }
 
-        public static async void NavigateToView<T, I>()
-                    where T : BindableBase, I
+        public async void NavigateToView<T, I>()
+            where T : BindableBase, I
             where I : IViewModel
         {
-            if (_container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
+            this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
+
+            if (this.container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
             {
-                if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                 {
-                    navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                 }
                 await desiredViewModelWithNavView.OnEnterViewAsync();
-                mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModelWithNavView;
-                mainWindowViewModel.NavigationRegionCurrentViewModel = desiredViewModelWithNavView.NavigationViewModel;
-                mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModelWithNavView;
+                this.mainWindowViewModel.NavigationRegionCurrentViewModel = desiredViewModelWithNavView.NavigationViewModel;
+                this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
-            else if (_container.Resolve<I>() is T desiredViewModel)
+            else if (this.container.Resolve<I>() is T desiredViewModel)
             {
-                if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                 {
-                    navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                 }
                 await desiredViewModel.OnEnterViewAsync();
-                mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
-                mainWindowViewModel.NavigationRegionCurrentViewModel = null;
-                mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
+                this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
         }
 
-        public static async void NavigateToView<T, I>(object parameterObject)
-                    where T : BindableBase, I
+        public async void NavigateToView<T, I>(object parameterObject)
+            where T : BindableBase, I
             where I : IViewModel
         {
+            this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
+
             if (parameterObject is DataGridItem item)
             {
-                if (_container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
+                if (this.container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
                 {
-                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                     {
-                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                        this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
                     desiredViewModel.Article = item;
                     await desiredViewModel.OnEnterViewAsync();
-                    mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
-                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
-                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                    this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
                 }
             }
             if (parameterObject is DrawerActivityItemDetail itemDetail)
             {
-                if (_container.Resolve<I>() is DrawerActivityInventoryDetailViewModel inventoryViewModel)
+                if (this.container.Resolve<I>() is DrawerActivityInventoryDetailViewModel inventoryViewModel)
                 {
-                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                     {
-                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                        this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
                     inventoryViewModel.ItemDetail = itemDetail;
                     await inventoryViewModel.OnEnterViewAsync();
-                    mainWindowViewModel.ContentRegionCurrentViewModel = inventoryViewModel;
-                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
-                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                    this.mainWindowViewModel.ContentRegionCurrentViewModel = inventoryViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
                 }
-                else if (_container.Resolve<I>() is DrawerActivityPickingDetailViewModel pickingViewModel)
+                else if (this.container.Resolve<I>() is DrawerActivityPickingDetailViewModel pickingViewModel)
                 {
-                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                     {
-                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                        this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
                     pickingViewModel.ItemDetail = itemDetail;
                     await pickingViewModel.OnEnterViewAsync();
-                    mainWindowViewModel.ContentRegionCurrentViewModel = pickingViewModel;
-                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
-                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                    this.mainWindowViewModel.ContentRegionCurrentViewModel = pickingViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
                 }
-                else if (_container.Resolve<I>() is DrawerActivityRefillingDetailViewModel refillingViewModel)
+                else if (this.container.Resolve<I>() is DrawerActivityRefillingDetailViewModel refillingViewModel)
                 {
-                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                     {
-                        navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                        this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
                     refillingViewModel.ItemDetail = itemDetail;
                     await refillingViewModel.OnEnterViewAsync();
-                    mainWindowViewModel.ContentRegionCurrentViewModel = refillingViewModel;
-                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
-                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                    this.mainWindowViewModel.ContentRegionCurrentViewModel = refillingViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
                 }
             }
         }
 
-        public static async void NavigateToViewWithoutNavigationStack<T, I>()
+        public async void NavigateToViewWithoutNavigationStack<T, I>()
             where T : BindableBase, I
             where I : IViewModel
         {
-            if (_container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
+            this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
+
+            if (this.container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
             {
                 await desiredViewModelWithNavView.OnEnterViewAsync();
-                mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModelWithNavView;
-                mainWindowViewModel.NavigationRegionCurrentViewModel = desiredViewModelWithNavView.NavigationViewModel;
-                mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModelWithNavView;
+                this.mainWindowViewModel.NavigationRegionCurrentViewModel = desiredViewModelWithNavView.NavigationViewModel;
+                this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
-            else if (_container.Resolve<I>() is T desiredViewModel)
+            else if (this.container.Resolve<I>() is T desiredViewModel)
             {
                 await desiredViewModel.OnEnterViewAsync();
-                mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
-                mainWindowViewModel.NavigationRegionCurrentViewModel = null;
-                mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
+                this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
-        }
-
-        public void Initialize(IUnityContainer container)
-        {
-            _container = container;
-            mainWindowViewModel = _container.Resolve<IMainWindowViewModel>();
-            footerViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>();
         }
 
         #endregion

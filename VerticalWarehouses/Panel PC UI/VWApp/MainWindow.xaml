@@ -54,16 +54,22 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="VRT EF 84 L 990-BIS H 6345" />
-        <!--  ="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
+                   Text="{Binding Machine.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBlock Grid.Row="1"
-                   Margin="80,150,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                   Text="Serial n. : VW_190012" />
-        <!--  ="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /  -->
+        <StackPanel Grid.Row="1"
+                    Margin="80,150,0,0"
+                    Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Text="Serial Number: " />
+
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Text="{Binding Machine.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </StackPanel>
+
 
 
         <custom:CustomInputFieldControlFocusable Grid.Row="1"

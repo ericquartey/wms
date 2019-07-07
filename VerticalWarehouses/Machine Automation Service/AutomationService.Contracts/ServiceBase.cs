@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS_AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     public class ServiceBase
     {

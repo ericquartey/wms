@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Controls;
-using System.Collections.ObjectModel;
-using Ferretto.VW.CustomControls.Utils;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.CustomControls.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
@@ -19,29 +17,38 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly CustomControlDrawerSaturationDataGridViewModel dataGridViewModelRef;
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly INavigationService navigationService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
 
         private BindableBase dataGridViewModel;
-
-        private CustomControlDrawerSaturationDataGridViewModel dataGridViewModelRef;
 
         private ObservableCollection<DataGridDrawerSaturation> drawers;
 
         private ICommand drawerWeightSaturationButtonCommand;
 
-        private IEventAggregator eventAggregator;
-
         private DataGridDrawerSaturation selectedDrawer;
-
-        private IWmsDataProvider wmsDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public DrawerSpaceSaturationViewModel(IEventAggregator eventAggregator)
+        public DrawerSpaceSaturationViewModel(
+            IEventAggregator eventAggregator,
+            IWmsDataProvider wmsDataProvider,
+            INavigationService navigationService,
+            ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
             this.eventAggregator = eventAggregator;
+            this.wmsDataProvider = wmsDataProvider;
+            this.navigationService = navigationService;
+            this.dataGridViewModelRef = drawerSaturationDataGridViewModel as CustomControlDrawerSaturationDataGridViewModel;
+            this.dataGridViewModel = this.dataGridViewModelRef;
+
             this.NavigationViewModel = null;
         }
 
@@ -55,7 +62,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public ICommand DrawerWeightSaturationButtonCommand => this.drawerWeightSaturationButtonCommand ?? (this.drawerWeightSaturationButtonCommand = new DelegateCommand(() =>
                         {
-                            NavigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
+                            this.navigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
                         }));
 
         public BindableBase NavigationViewModel { get; set; }
@@ -71,19 +78,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlDrawerSaturationDataGridViewModel>() as CustomControlDrawerSaturationDataGridViewModel;
-            this.dataGridViewModel = this.dataGridViewModelRef;
-            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             this.Drawers = new ObservableCollection<DataGridDrawerSaturation>();
             var random = new Random();
-            for (int i = 0; i < random.Next(5, 20); i++)
+            for (var i = 0; i < random.Next(5, 20); i++)
             {
                 var cell = new DataGridDrawerSaturation
                 {

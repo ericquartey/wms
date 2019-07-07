@@ -80,8 +80,8 @@
     <DataTemplate DataType="{x:Type local:MainWindowNavigationButtonsViewModel}">
         <local:MainWindowNavigationButtonsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:MainWindowBackToIAPPButtonViewModel}">
-        <local:MainWindowBackToIAPPButtonView />
+    <DataTemplate DataType="{x:Type local:FooterViewModel}">
+        <local:FooterView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:LSMTMainViewModel}">
         <local:LSMTMainView />

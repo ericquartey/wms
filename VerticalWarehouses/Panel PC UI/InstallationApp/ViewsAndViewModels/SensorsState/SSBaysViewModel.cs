@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
@@ -15,6 +15,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IOSensorsStatus ioSensorsStatus;
+
         private IUnityContainer container;
 
         private bool heightControlCheckBay1;
@@ -22,8 +24,6 @@ namespace Ferretto.VW.InstallationApp
         private bool heightControlCheckBay2;
 
         private bool heightControlCheckBay3;
-
-        private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentInBay1;
 

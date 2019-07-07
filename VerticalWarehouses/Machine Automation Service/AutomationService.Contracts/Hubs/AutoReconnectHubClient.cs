@@ -40,6 +40,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         #region Properties
 
+        public bool IsConnected => this.connection?.State == HubConnectionState.Connected;
+
         public int MaxReconnectTimeoutMilliseconds { get; set; } = DefaultMaxReconnectTimeout;
 
         #endregion

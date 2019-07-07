@@ -4,6 +4,12 @@ namespace Ferretto.VW.App.Services
 {
     public interface IAuthenticationService
     {
+        #region Events
+
+        event System.EventHandler<UserAuthenticatedEventArgs> UserAuthenticated;
+
+        #endregion
+
         #region Properties
 
         /// <summary>

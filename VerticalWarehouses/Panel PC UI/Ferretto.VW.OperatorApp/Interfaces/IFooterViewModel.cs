@@ -1,13 +1,13 @@
-﻿using Ferretto.VW.Utils.Interfaces;
-using Prism.Commands;
+﻿using System.Windows.Input;
+using Ferretto.VW.Utils.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IMainWindowBackToOAPPButtonViewModel : IViewModel
+    public interface IFooterViewModel : IViewModel
     {
         #region Properties
 
-        CompositeCommand BackButtonCommand { get; set; }
+        ICommand NavigateBackCommand { get; }
 
         string Note { get; set; }
 
@@ -16,8 +16,6 @@ namespace Ferretto.VW.OperatorApp.Interfaces
         #region Methods
 
         void FinalizeBottomButtons();
-
-        void InitializeButtons();
 
         #endregion
     }

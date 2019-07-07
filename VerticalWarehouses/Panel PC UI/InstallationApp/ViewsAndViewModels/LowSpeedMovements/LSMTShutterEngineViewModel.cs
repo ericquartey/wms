@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 // TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
@@ -9,7 +9,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
-using ShutterMovementDirection = Ferretto.VW.MAS_AutomationService.Contracts.ShutterMovementDirection;
+using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.InstallationApp
 {

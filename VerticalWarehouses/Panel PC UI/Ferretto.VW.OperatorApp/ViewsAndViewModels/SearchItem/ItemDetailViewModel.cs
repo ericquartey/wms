@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Ferretto.VW.CustomControls;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Commands;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
-using System.Net;
-using System.IO;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using System.Windows.Media;
-using System.Drawing;
-using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -22,27 +12,39 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IWmsImagesProvider wmsImagesProvider;
+
         private DataGridItem article;
 
         private string articleCode;
 
         private string articleDescription;
 
-        private IUnityContainer container;
-
-        private IEventAggregator eventAggregator;
-
         private Image image;
-
-        private IWmsImagesProvider wmsImagesProvider;
 
         #endregion
 
         #region Constructors
 
-        public ItemDetailViewModel(IEventAggregator eventAggregator)
+        public ItemDetailViewModel(
+            IEventAggregator eventAggregator,
+            IWmsImagesProvider wmsImagesProvider)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (wmsImagesProvider == null)
+            {
+                throw new System.ArgumentNullException(nameof(wmsImagesProvider));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.wmsImagesProvider = wmsImagesProvider;
+
             this.NavigationViewModel = null;
         }
 
@@ -77,12 +79,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         {
             this.image?.Dispose();
             this.Image?.Dispose();
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
         }
 
         public async Task OnEnterViewAsync()

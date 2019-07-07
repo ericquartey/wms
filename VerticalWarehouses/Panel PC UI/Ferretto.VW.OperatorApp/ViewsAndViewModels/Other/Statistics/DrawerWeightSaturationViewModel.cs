@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -18,23 +14,26 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IEventAggregator eventAggregator;
 
         private BindableBase dataGridViewModel;
 
-        private CustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModelRef;
+        private readonly CustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModelRef;
 
         private ObservableCollection<DataGridDrawerWeightSaturation> drawers;
-
-        private IEventAggregator eventAggregator;
 
         #endregion
 
         #region Constructors
 
-        public DrawerWeightSaturationViewModel(IEventAggregator eventAggregator)
+        public DrawerWeightSaturationViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.eventAggregator = eventAggregator;
+            this.dataGridViewModelRef = drawerWeightSaturationDataGridViewModel as CustomControlDrawerWeightSaturationDataGridViewModel;
+            this.dataGridViewModel = this.dataGridViewModelRef;
+
             this.NavigationViewModel = null;
         }
 
@@ -55,19 +54,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlDrawerWeightSaturationDataGridViewModel>() as CustomControlDrawerWeightSaturationDataGridViewModel;
-            this.dataGridViewModel = this.dataGridViewModelRef;
-        }
-
         public async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.drawers = new ObservableCollection<DataGridDrawerWeightSaturation>();
 
-            for (int i = 0; i < random.Next(2, 30); i++)
+            for (var i = 0; i < random.Next(2, 30); i++)
             {
                 this.drawers.Add(new DataGridDrawerWeightSaturation
                 {
@@ -80,8 +72,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 }
                 );
             }
-            this.dataGridViewModelRef.Drawers = drawers;
-            this.dataGridViewModelRef.SelectedDrawer = drawers[0];
+            this.dataGridViewModelRef.Drawers = this.drawers;
+            this.dataGridViewModelRef.SelectedDrawer = this.drawers[0];
         }
 
         public void SubscribeMethodToEvent()

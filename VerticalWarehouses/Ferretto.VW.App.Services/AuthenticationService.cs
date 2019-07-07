@@ -4,6 +4,12 @@ namespace Ferretto.VW.App.Services
 {
     internal class AuthenticationService : IAuthenticationService
     {
+        #region Events
+
+        public event System.EventHandler<UserAuthenticatedEventArgs> UserAuthenticated;
+
+        #endregion
+
         #region Properties
 
         public string UserName { get; private set; }
@@ -29,6 +35,7 @@ namespace Ferretto.VW.App.Services
             if (isLoginSuccessful)
             {
                 this.UserName = userName;
+                this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName));
             }
 
             await Task.Delay(500);

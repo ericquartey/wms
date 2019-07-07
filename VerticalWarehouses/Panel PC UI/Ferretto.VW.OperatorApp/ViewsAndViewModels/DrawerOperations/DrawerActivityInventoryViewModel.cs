@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
@@ -28,6 +24,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly INavigationService navigationService;
 
         private string compartmentPosition;
 
@@ -63,9 +61,22 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Constructors
 
-        public DrawerActivityInventoryViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityInventoryViewModel(
+            IEventAggregator eventAggregator,
+            INavigationService navigationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (navigationService == null)
+            {
+                throw new ArgumentNullException(nameof(navigationService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
             this.NavigationViewModel = null;
             this.filterColorFunc = new EditFilter().ColorFunc;
         }
@@ -81,8 +92,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
-            get { return this.filterColorFunc; }
-            set { this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value); }
+            get => this.filterColorFunc;
+            set => this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value);
         }
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
@@ -152,21 +163,21 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                     switch (mission.Type)
                     {
                         case MissionType.Inventory:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                            this.navigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                             break;
 
                         case MissionType.Pick:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                            this.navigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
                         case MissionType.Put:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                            this.navigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                             break;
                     }
                 }
                 else
                 {
-                    NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                    this.navigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
                 }
             }
         }
@@ -176,7 +187,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             var bayManager = this.container.Resolve<IBayManager>();
             var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(bayManager.CurrentMission);
 
-            NavigationService.NavigateToView<DrawerActivityInventoryDetailViewModel, IDrawerActivityInventoryDetailViewModel>(itemDetailObject);
+            this.navigationService.NavigateToView<DrawerActivityInventoryDetailViewModel, IDrawerActivityInventoryDetailViewModel>(itemDetailObject);
         }
 
         private async Task GetTrayControlDataAsync(IBayManager bayManager)

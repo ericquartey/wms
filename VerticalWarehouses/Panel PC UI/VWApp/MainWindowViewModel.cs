@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Ferretto.VW.App.Models;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;
@@ -15,7 +17,7 @@ namespace Ferretto.VW.App
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private IUnityContainer container;
 
         private readonly IAuthenticationService authenticationService;
 
@@ -45,10 +47,51 @@ namespace Ferretto.VW.App
             IThemeService themeService,
             ISessionService sessionService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (authenticationService == null)
+            {
+                throw new ArgumentNullException(nameof(authenticationService));
+            }
+
+            if (themeService == null)
+            {
+                throw new ArgumentNullException(nameof(themeService));
+            }
+
+            if (sessionService == null)
+            {
+                throw new ArgumentNullException(nameof(sessionService));
+            }
+
             this.eventAggregator = eventAggregator;
             this.themeService = themeService;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
+
+#if DEBUG
+            this.UserLogin = new UserLogin
+            {
+                UserName = "installer",
+                Password = "password",
+            };
+
+            this.Machine = new Machine
+            {
+                Model = "VRT EF 84 L 990-BIS H 6345",
+                SerialNumber = "VW_190012"
+            };
+#else
+            this.UserLogin = new UserLogin();
+#endif
+        }
+
+        private void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            this.ErrorMessage = "Machine Automation Service connected!!!!!!!!!!!!!!!!!!!!!!!!";
         }
 
         #endregion
@@ -81,13 +124,10 @@ namespace Ferretto.VW.App
             (this.toggleThemeCommand = new DelegateCommand(() => this.ToggleTheme()));
 
         public UserLogin UserLogin { get; }
-#if DEBUG
-            = new UserLogin { UserName = "installer", Password = "password" };
 
-#else
-            = new UserLogin();
+        public Machine Machine { get; }
 
-#endif
+        public IOperatorHubClient operatorHubClient;
 
         #endregion
 
@@ -95,7 +135,18 @@ namespace Ferretto.VW.App
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = container;
+            this.container = container;
+        }
+
+        public void HACK_InitialiseHubOperator()
+        {
+            this.operatorHubClient = this.container.Resolve<IOperatorHubClient>();
+
+            this.operatorHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
+            if (!this.operatorHubClient.IsConnected)
+            {
+                this.ErrorMessage = "Machine Automation Service unavailable.";
+            }
         }
 
         private async Task ExecuteLoginCommandAsync()
@@ -152,7 +203,7 @@ namespace Ferretto.VW.App
 
             try
             {
-                var moduleManager = this.Container.Resolve<IModuleManager>();
+                var moduleManager = this.container.Resolve<IModuleManager>();
                 moduleManager.LoadModule("Installation");
 
                 this.IsBusy = false;
@@ -175,7 +226,7 @@ namespace Ferretto.VW.App
 
             try
             {
-                var moduleManager = this.Container.Resolve<IModuleManager>();
+                var moduleManager = this.container.Resolve<IModuleManager>();
                 moduleManager.LoadModule("Operator");
 
                 this.IsBusy = false;

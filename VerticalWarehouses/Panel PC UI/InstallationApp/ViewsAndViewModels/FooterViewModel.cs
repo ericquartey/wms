@@ -1,5 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -7,19 +11,21 @@ using Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class MainWindowBackToIAPPButtonViewModel : BindableBase, IMainWindowBackToIAPPButtonViewModel, IViewModelRequiresContainer
+    public class FooterViewModel : BindableBase, IFooterViewModel
     {
         #region Fields
+
+        private readonly IUnityContainer container;
 
         private readonly IEventAggregator eventAggregator;
 
         private Visibility cancelButtonVisibility = Visibility.Hidden;
 
-        private IUnityContainer container;
-
         private bool isBackButtonActive = true;
 
         private bool isCancelButtonActive;
+
+        private ICommand navigateBackCommand;
 
         private string note;
 
@@ -27,16 +33,17 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public MainWindowBackToIAPPButtonViewModel(IEventAggregator eventAggregator)
+        public FooterViewModel(
+            IEventAggregator eventAggregator,
+            IUnityContainer container)
         {
             this.eventAggregator = eventAggregator;
+            this.container = container;
         }
 
         #endregion
 
         #region Properties
-
-        public CompositeCommand BackButtonCommand { get; set; }
 
         public CompositeCommand CancelButtonCommand { get; set; }
 
@@ -45,6 +52,11 @@ namespace Ferretto.VW.InstallationApp
         public bool IsBackButtonActive { get => this.isBackButtonActive; set => this.SetProperty(ref this.isBackButtonActive, value); }
 
         public bool IsCancelButtonActive { get => this.isCancelButtonActive; set => this.SetProperty(ref this.isCancelButtonActive, value); }
+
+        public ICommand NavigateBackCommand =>
+            this.navigateBackCommand
+            ??
+            (this.navigateBackCommand = new DelegateCommand(() => this.NavigateBack()));
 
         public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
@@ -59,22 +71,6 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void FinalizeBottomButtons()
-        {
-            this.BackButtonCommand = null;
-        }
-
-        public void InitializeBottomButtons()
-        {
-            this.BackButtonCommand = new CompositeCommand();
-            this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
         public Task OnEnterViewAsync()
         {
             return null;
@@ -83,6 +79,19 @@ namespace Ferretto.VW.InstallationApp
         public void UnSubscribeMethodFromEvent()
         {
             // TODO
+        }
+
+        private void NavigateBack()
+        {
+            var mainWindowViewModel = (MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>();
+
+            (mainWindowViewModel.NavigationRegionCurrentViewModel as IViewModel)?.ExitFromViewMethod();
+
+            mainWindowViewModel.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            mainWindowViewModel.ContentRegionCurrentViewModel = this.container.Resolve<IIdleViewModel>() as BindableBase;
+
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(
+                new InstallationApp_EventMessage(InstallationApp_EventMessageType.ExitView));
         }
 
         #endregion
