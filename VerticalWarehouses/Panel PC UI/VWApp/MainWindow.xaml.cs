@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 
 namespace Ferretto.VW.App
@@ -23,10 +23,5 @@ namespace Ferretto.VW.App
         }
 
         #endregion
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

@@ -59,14 +59,11 @@
                             ?
                         </TextBlock>
                     </Button>
-                    <custom:CustomControlLoggedUser IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <custom:CustomControlLoggedUser Margin="20,0,20,0"
+                                                    IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LogOffCommand="{Binding BackToVWAPPCommand}"
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <Image Height="30"
-                           Margin="10,0,10,0"
-                           HorizontalAlignment="Center"
-                           Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_white_48dp.png" />
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                           CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

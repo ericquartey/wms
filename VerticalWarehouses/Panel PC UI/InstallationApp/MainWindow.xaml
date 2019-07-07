@@ -44,7 +44,8 @@
                     Background="{DynamicResource VWAPP_BACKGROUND}"
                     BorderThickness="0">
                 <StackPanel FlowDirection="RightToLeft"
-                            Orientation="Horizontal" ScrollViewer.CanContentScroll="True">
+                            Orientation="Horizontal"
+                            ScrollViewer.CanContentScroll="True">
                     <Button Width="60"
                             Height="60"
                             Margin="10,0,10,0"
@@ -60,14 +61,12 @@
                             ?
                         </TextBlock>
                     </Button>
-                    <custom:CustomControlLoggedUser IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <custom:CustomControlLoggedUser Margin="10,0,20,0"
+                                                    IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LogOffCommand="{Binding BackToVWAPPCommand}"
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <Image Height="30"
-                           HorizontalAlignment="Center"
-                           Margin="10,0,10,0"
-                           Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_white_48dp.png" />
+
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                           CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -80,10 +79,10 @@
                     <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                         ContentText="Error"
                                                         CustomCommand="{Binding ErrorButtonCommand}"
-                                                        Visibility="{Binding IsErrorViewButtonVisible}"/>
+                                                        Visibility="{Binding IsErrorViewButtonVisible}" />
                     <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
-                                                         ContentText="Service"
-                                                        CustomCommand="{Binding ErrorButtonCommand}" />
+                                                          ContentText="Service"
+                                                          CustomCommand="{Binding ErrorButtonCommand}" />
                 </StackPanel>
             </Border>
         </Grid>
