@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils;
+﻿using Ferretto.VW.CommonUtils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS_AutomationService

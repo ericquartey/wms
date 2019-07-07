@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_AutomationService.Contracts;
@@ -10,7 +10,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
-using MessageStatus = Ferretto.VW.Common_Utils.Messages.Enumerations.MessageStatus;
+using MessageStatus = Ferretto.VW.CommonUtils.Messages.Enumerations.MessageStatus;
 
 namespace Ferretto.VW.InstallationApp
 {

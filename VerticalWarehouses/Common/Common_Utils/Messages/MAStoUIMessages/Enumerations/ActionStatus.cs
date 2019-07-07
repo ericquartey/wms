@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations
 {
     public enum ActionStatus
     {

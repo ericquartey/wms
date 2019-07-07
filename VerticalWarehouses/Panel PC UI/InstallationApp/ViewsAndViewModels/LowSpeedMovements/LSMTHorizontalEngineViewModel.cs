@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;

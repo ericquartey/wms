@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.SignalRClientConsole
 {

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.DTOs
+﻿namespace Ferretto.VW.CommonUtils.DTOs
 {
     public class VerticalPositioningMessageDataDto
     {
