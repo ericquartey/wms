@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.Resources {
+namespace Ferretto.VW.App.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ferretto.VW.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.Resources.OperatorApp", typeof(OperatorApp).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.OperatorApp", typeof(OperatorApp).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -268,7 +268,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonListType.
+        ///   Looks up a localized string similar to CommonListType.
         /// </summary>
         public static string CommonListType {
             get {
@@ -277,7 +277,6 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a CommonNote.
         ///   Looks up a localized string similar to Note:.
         /// </summary>
         public static string CommonNote {
@@ -611,7 +610,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerCompactingFront.
+        ///   Looks up a localized string similar to DrawerCompactingFront.
         /// </summary>
         public static string DrawerCompactingFront {
             get {
@@ -620,7 +619,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Compaction drawer procedure.
+        ///   Looks up a localized string similar to Compaction drawer procedure.
         /// </summary>
         public static string DrawerCompactingHeader {
             get {
@@ -638,7 +637,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compact back side.
+        ///   Looks up a localized string similar to DrawerCompactingFront.
         /// </summary>
         public static string DrawerCompactingRear {
             get {
@@ -647,7 +646,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Compact back side.
+        ///   Looks up a localized string similar to Compact back side.
         /// </summary>
         public static string DrawerCompactingRearCompact {
             get {
@@ -989,7 +988,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a GeneralInfoWmsStatus.
+        ///   Looks up a localized string similar to GeneralInfoWmsStatus.
         /// </summary>
         public static string GeneralInfoWmsStatus {
             get {
@@ -998,7 +997,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Drawer call.
+        ///   Looks up a localized string similar to Drawer call.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
             get {
@@ -1106,7 +1105,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Item detail.
+        ///   Looks up a localized string similar to Item detail.
         /// </summary>
         public static string ItemSearchDetail {
             get {
@@ -1115,7 +1114,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemSearchGridDescription.
+        ///   Looks up a localized string similar to ItemSearchGridDescription.
         /// </summary>
         public static string ItemSearchGridDescription {
             get {
@@ -1124,7 +1123,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemSearchGridItem.
+        ///   Looks up a localized string similar to ItemSearchGridItem.
         /// </summary>
         public static string ItemSearchGridItem {
             get {
@@ -1133,7 +1132,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemSearchGridMachine.
+        ///   Looks up a localized string similar to ItemSearchGridMachine.
         /// </summary>
         public static string ItemSearchGridMachine {
             get {
@@ -1187,7 +1186,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a LIFO Period:.
+        ///   Looks up a localized string similar to LIFO Period:.
         /// </summary>
         public static string LIFOPeriod {
             get {
@@ -1196,7 +1195,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a List.
+        ///   Looks up a localized string similar to List.
         /// </summary>
         public static string List {
             get {
@@ -1205,7 +1204,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a List description:.
+        ///   Looks up a localized string similar to List description:.
         /// </summary>
         public static string ListDescription {
             get {
@@ -1214,7 +1213,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a List:.
+        ///   Looks up a localized string similar to List:.
         /// </summary>
         public static string ListLabel {
             get {
@@ -1223,7 +1222,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Lists.
+        ///   Looks up a localized string similar to Lists.
         /// </summary>
         public static string Lists {
             get {
@@ -1232,7 +1231,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a List detail.
+        ///   Looks up a localized string similar to List detail.
         /// </summary>
         public static string ListsInWaitDetail {
             get {
@@ -1241,7 +1240,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Execute list.
+        ///   Looks up a localized string similar to Execute list.
         /// </summary>
         public static string ListsInWaitExecute {
             get {
@@ -1250,7 +1249,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Waiting for execution lists.
+        ///   Looks up a localized string similar to Waiting for execution lists.
         /// </summary>
         public static string ListsInWaitHeader {
             get {
@@ -1259,7 +1258,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Note:.
+        ///   Looks up a localized string similar to Note:.
         /// </summary>
         public static string ListsInWaitNote {
             get {
@@ -1268,7 +1267,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Machine.
+        ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
             get {
@@ -1277,7 +1276,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Machines.
+        ///   Looks up a localized string similar to Machines.
         /// </summary>
         public static string Machines {
             get {
@@ -1286,7 +1285,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsHeader.
+        ///   Looks up a localized string similar to MachineStatisticsHeader.
         /// </summary>
         public static string MachineStatisticsHeader {
             get {
@@ -1295,7 +1294,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBays.
+        ///   Looks up a localized string similar to MachineStatisticsSectionBays.
         /// </summary>
         public static string MachineStatisticsSectionBays {
             get {
@@ -1304,7 +1303,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBaysBay1.
+        ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay1.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay1 {
             get {
@@ -1313,7 +1312,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBaysBay2.
+        ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay2.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay2 {
             get {
@@ -1322,7 +1321,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionBaysBay3.
+        ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay3.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay3 {
             get {
@@ -1331,7 +1330,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionOrizzontal.
+        ///   Looks up a localized string similar to MachineStatisticsSectionOrizzontal.
         /// </summary>
         public static string MachineStatisticsSectionOrizzontal {
             get {
@@ -1340,7 +1339,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionOrizzontalTotalCycles.
+        ///   Looks up a localized string similar to MachineStatisticsSectionOrizzontalTotalCycles.
         /// </summary>
         public static string MachineStatisticsSectionOrizzontalTotalCycles {
             get {
@@ -1349,7 +1348,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutters.
+        ///   Looks up a localized string similar to MachineStatisticsSectionShutters.
         /// </summary>
         public static string MachineStatisticsSectionShutters {
             get {
@@ -1358,7 +1357,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutterShutter1.
+        ///   Looks up a localized string similar to MachineStatisticsSectionShutterShutter1.
         /// </summary>
         public static string MachineStatisticsSectionShutterShutter1 {
             get {
@@ -1367,7 +1366,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutterShutter2.
+        ///   Looks up a localized string similar to MachineStatisticsSectionShutterShutter2.
         /// </summary>
         public static string MachineStatisticsSectionShutterShutter2 {
             get {
@@ -1376,7 +1375,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionShutterShutter3.
+        ///   Looks up a localized string similar to MachineStatisticsSectionShutterShutter3.
         /// </summary>
         public static string MachineStatisticsSectionShutterShutter3 {
             get {
@@ -1385,7 +1384,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionVertical.
+        ///   Looks up a localized string similar to MachineStatisticsSectionVertical.
         /// </summary>
         public static string MachineStatisticsSectionVertical {
             get {
@@ -1394,7 +1393,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionVerticalTotalCycles.
+        ///   Looks up a localized string similar to MachineStatisticsSectionVerticalTotalCycles.
         /// </summary>
         public static string MachineStatisticsSectionVerticalTotalCycles {
             get {
@@ -1403,7 +1402,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MachineStatisticsSectionVerticalTotalKm.
+        ///   Looks up a localized string similar to MachineStatisticsSectionVerticalTotalKm.
         /// </summary>
         public static string MachineStatisticsSectionVerticalTotalKm {
             get {
@@ -1457,7 +1456,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MaintenanceDetailHeaderKit.
+        ///   Looks up a localized string similar to MaintenanceDetailHeaderKit.
         /// </summary>
         public static string MaintenanceDetailHeaderKit {
             get {
@@ -1466,7 +1465,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MaintenanceDetailPlatformRequired.
+        ///   Looks up a localized string similar to MaintenanceDetailPlatformRequired.
         /// </summary>
         public static string MaintenanceDetailPlatformRequired {
             get {
@@ -2123,6 +2122,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to StatisticsNavigationMachine.
+        /// </summary>
+        public static string StatisticsNavigationMachine {
+            get {
+                return ResourceManager.GetString("StatisticsNavigationMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string WaitingListDataGridHeaderDescription {
@@ -2200,15 +2208,6 @@ namespace Ferretto.VW.Resources {
         public static string WaitingListDetailDataGridHeaderRow {
             get {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a StatisticsNavigationMachine.
-        /// </summary>
-        public static string StatisticsNavigationMachine {
-            get {
-                return ResourceManager.GetString("StatisticsNavigationMachine", resourceCulture);
             }
         }
     }

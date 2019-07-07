@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Ferretto.VW.Resources;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.CustomControls.Converters
 {

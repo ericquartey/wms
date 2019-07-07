@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Common_Utils.Messages;
@@ -30,7 +30,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private string noteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString = App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
 
@@ -148,7 +148,7 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (SwaggerException)
             {
-                this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+                this.NoteString = App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
         }
 
@@ -236,7 +236,7 @@ namespace Ferretto.VW.InstallationApp
 
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
-                this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+                this.NoteString = App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             }
             catch (Exception)
             {
@@ -252,20 +252,17 @@ namespace Ferretto.VW.InstallationApp
                 switch (s.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineStarted;
+                        this.NoteString = App.Resources.InstallationApp.SwitchEngineStarted;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
+                        this.NoteString = App.Resources.InstallationApp.SwitchEngineCompleted;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineError;
+                        this.NoteString = App.Resources.InstallationApp.SwitchEngineError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -276,20 +273,17 @@ namespace Ferretto.VW.InstallationApp
                 switch (c.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.HomingStarted;
+                        this.NoteString = App.Resources.InstallationApp.HomingStarted;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
+                        this.NoteString = App.Resources.InstallationApp.HomingCompleted;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.HomingError;
+                        this.NoteString = App.Resources.InstallationApp.HomingError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -299,26 +293,23 @@ namespace Ferretto.VW.InstallationApp
                 switch (h.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingStarted;
+                        this.NoteString = App.Resources.InstallationApp.HorizontalHomingStarted;
                         break;
 
                     case MessageStatus.OperationExecuting:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingExecuting;
+                        this.NoteString = App.Resources.InstallationApp.HorizontalHomingExecuting;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                        this.NoteString = App.Resources.InstallationApp.HorizontalHomingCompleted;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingError;
+                        this.NoteString = App.Resources.InstallationApp.HorizontalHomingError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    default:
                         break;
                 }
             }
