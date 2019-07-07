@@ -1,13 +1,16 @@
-﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.InstallationApp.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 
-namespace Ferretto.VW.InstallationApp.Resources
+namespace Ferretto.VW.App.Services
 {
     public class MAS_EventMessage
     {
         #region Constructors
 
-        public MAS_EventMessage(NotificationType notificationType, ActionType actionType, ActionStatus actionStatus, INotificationMessageData data = null)
+        public MAS_EventMessage(
+            NotificationType notificationType,
+            ActionType actionType,
+            ActionStatus actionStatus,
+            INotificationMessageData data = null)
         {
             this.ActionType = actionType;
             this.ActionStatus = actionStatus;

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InstallationApp.Interfaces
+﻿namespace Ferretto.VW.App.Services
 {
     public interface INotificationMessageData
     {
