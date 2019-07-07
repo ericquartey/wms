@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Windows;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.App
 {
     public partial class MainWindow : Window, IMainWindow
     {

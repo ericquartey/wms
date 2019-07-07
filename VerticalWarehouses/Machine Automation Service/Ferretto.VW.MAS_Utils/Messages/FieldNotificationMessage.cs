@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
@@ -12,15 +12,20 @@ namespace Ferretto.VW.MAS_Utils.Messages
         {
         }
 
-        public FieldNotificationMessage(FieldNotificationMessage other)
+        public FieldNotificationMessage(FieldNotificationMessage otherMessage)
         {
-            this.Data = other.Data;
-            this.Description = other.Description;
-            this.Destination = other.Destination;
-            this.Source = other.Source;
-            this.Type = other.Type;
-            this.Status = other.Status;
-            this.ErrorLevel = other.ErrorLevel;
+            if (otherMessage == null)
+            {
+                throw new System.ArgumentNullException(nameof(otherMessage));
+            }
+
+            this.Data = otherMessage.Data;
+            this.Description = otherMessage.Description;
+            this.Destination = otherMessage.Destination;
+            this.Source = otherMessage.Source;
+            this.Type = otherMessage.Type;
+            this.Status = otherMessage.Status;
+            this.ErrorLevel = otherMessage.ErrorLevel;
         }
 
         public FieldNotificationMessage(

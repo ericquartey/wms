@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
@@ -8,7 +8,15 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
     {
         #region Constructors
 
-        public PositioningFieldMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration, decimal deceleration, int numberCycles, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public PositioningFieldMessageData(
+            Axis axisMovement,
+            MovementType movementType,
+            decimal target,
+            decimal speed,
+            decimal acceleration,
+            decimal deceleration,
+            int numberCycles,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -20,16 +28,21 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.NumberCycles = numberCycles;
         }
 
-        public PositioningFieldMessageData(IPositioningMessageData verticalPositioningMessageData)
+        public PositioningFieldMessageData(IPositioningMessageData messageData)
         {
-            this.AxisMovement = verticalPositioningMessageData.AxisMovement;
-            this.MovementType = verticalPositioningMessageData.MovementType;
-            this.Resolution = verticalPositioningMessageData.Resolution;
-            this.TargetPosition = verticalPositioningMessageData.TargetPosition;
-            this.TargetSpeed = verticalPositioningMessageData.TargetSpeed;
-            this.TargetAcceleration = verticalPositioningMessageData.TargetAcceleration;
-            this.TargetDeceleration = verticalPositioningMessageData.TargetDeceleration;
-            this.Verbosity = verticalPositioningMessageData.Verbosity;
+            if (messageData == null)
+            {
+                throw new System.ArgumentNullException(nameof(messageData));
+            }
+
+            this.AxisMovement = messageData.AxisMovement;
+            this.MovementType = messageData.MovementType;
+            this.Resolution = messageData.Resolution;
+            this.TargetPosition = messageData.TargetPosition;
+            this.TargetSpeed = messageData.TargetSpeed;
+            this.TargetAcceleration = messageData.TargetAcceleration;
+            this.TargetDeceleration = messageData.TargetDeceleration;
+            this.Verbosity = messageData.Verbosity;
         }
 
         #endregion

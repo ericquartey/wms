@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
@@ -12,6 +12,8 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -144,18 +146,18 @@ namespace Ferretto.VW.InstallationApp
             this.DelayBetweenCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
 
 #if !DEBUG
-                var client = new HttpClient();
+            /*    var client = new System.Net.HttpClient();
                 var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
                 }
                 response = null;
-                response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
+                response = await client.GetAsync(new System.Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                }
+                }*/
 #endif
         }
 

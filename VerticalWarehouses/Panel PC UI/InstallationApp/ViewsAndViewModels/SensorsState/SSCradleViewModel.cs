@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_AutomationService.Contracts;
@@ -15,9 +15,9 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
         private readonly IOSensorsStatus ioSensorsStatus;
+
+        private IUnityContainer container;
 
         private bool luPresentiInMachineSide;
 

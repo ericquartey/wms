@@ -1,4 +1,4 @@
-﻿<Window x:Class="Ferretto.VW.OperatorApp.MainWindow"
+<Window x:Class="Ferretto.VW.OperatorApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
@@ -83,7 +83,7 @@
                     <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
                                                           ContentText="Service"
                                                           CustomCommand="{Binding ErrorButtonCommand}"
-                                                          Visibility="Collapsed"/>
+                                                          Visibility="Collapsed" />
                 </StackPanel>
             </Border>
         </Grid>

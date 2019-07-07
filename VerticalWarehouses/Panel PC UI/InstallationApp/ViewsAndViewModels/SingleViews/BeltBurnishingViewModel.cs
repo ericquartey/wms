@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Common_Utils.Messages;
@@ -254,9 +254,6 @@ namespace Ferretto.VW.InstallationApp
                     case MessageStatus.OperationExecuting:
                         this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
                         this.CurrentPosition = cp.Data.CurrentPosition.ToString();
-                        break;
-
-                    default:
                         break;
                 }
             }
