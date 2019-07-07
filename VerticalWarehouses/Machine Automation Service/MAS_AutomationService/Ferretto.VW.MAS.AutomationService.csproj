@@ -4,8 +4,6 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <OutputType>Exe</OutputType>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-    <RootNamespace>Ferretto.VW.MAS_AutomationService</RootNamespace>
-    <AssemblyName>Ferretto.VW.MAS_AutomationService</AssemblyName>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
@@ -38,14 +36,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
     <ProjectReference Include="..\..\SQLiteTarget\SQLiteTarget.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS_Utils.csproj" />
-    <ProjectReference Include="..\MAS_DataLayer\MAS_DataLayer.csproj" />
-    <ProjectReference Include="..\MAS_FiniteStateMachines\MAS_FiniteStateMachines.csproj" />
-    <ProjectReference Include="..\MAS_InverterDriver\MAS_InverterDriver.csproj" />
-    <ProjectReference Include="..\MAS_IODriver\MAS_IODriver.csproj" />
-    <ProjectReference Include="..\MAS_MissionsManager\MAS_MissionsManager.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
+    <ProjectReference Include="..\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
+    <ProjectReference Include="..\MAS_FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj" />
+    <ProjectReference Include="..\MAS_InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj" />
+    <ProjectReference Include="..\MAS_IODriver\Ferretto.VW.MAS.IODriver.csproj" />
+    <ProjectReference Include="..\MAS_MissionsManager\Ferretto.VW.MAS.MissionsManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>
