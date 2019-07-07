@@ -5,15 +5,12 @@ using System.Threading.Tasks;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Unity;
 
 namespace Ferretto.VW.WmsCommunication
 {
     public class WmsDataProvider : IWmsDataProvider
     {
         #region Fields
-
-        private readonly IUnityContainer container;
 
         private readonly IItemsDataService itemsDataService;
 
@@ -27,9 +24,8 @@ namespace Ferretto.VW.WmsCommunication
 
         #region Constructors
 
-        public WmsDataProvider(IUnityContainer container, Uri wmsConnectionString)
+        public WmsDataProvider(Uri wmsConnectionString)
         {
-            this.container = container;
             this.itemsDataService = DataServiceFactory.GetService<IItemsDataService>(wmsConnectionString);
             this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
             this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
@@ -102,7 +98,7 @@ namespace Ferretto.VW.WmsCommunication
             {
                 returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
                 {
-                    Height = x.Depth,
+                    Depth = x.Depth,
                     Id = x.Id,
                     LoadingUnitId = x.LoadingUnitId,
                     Width = x.Width,
