@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.InstallationApp.ServiceUtilities
+namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
-    public class MessageNotifiedEventArgs
+    public class MessageNotifiedEventArgs : System.EventArgs
     {
         #region Constructors
 

@@ -1,60 +1,17 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Ferretto.VW.InstallationApp.ServiceUtilities
+namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
-    public class InstallationHubClient : IInstallationHubClient
+    public class InstallationHubClient : AutoReconnectHubClient, IInstallationHubClient
     {
-        #region Fields
-
-        private readonly HubConnection hubConnection;
-
-        #endregion
-
         #region Constructors
 
         public InstallationHubClient(string url, string installationHubPath)
+            : base(new Uri(new Uri(url), installationHubPath))
         {
-            this.hubConnection = new HubConnectionBuilder()
-              .WithUrl(new Uri(new Uri(url), installationHubPath).AbsoluteUri)
-              .Build();
-
-            this.hubConnection.On<NotificationMessageUI<SensorsChangedMessageData>>(
-                "SensorsChangedNotify", this.OnSensorsChangedNotify);
-
-            this.hubConnection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
-                "CalibrateAxisNotify", this.OnCalibrateAxisNotify);
-
-            this.hubConnection.On<NotificationMessageUI<SwitchAxisMessageData>>(
-                "SwitchAxisNotify", this.OnSwitchAxisNotify);
-
-            this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
-                "ShutterPositioningNotify", this.OnShutterPositioningNotify);
-
-            this.hubConnection.On<NotificationMessageUI<ShutterControlMessageData>>(
-                "ShutterControlNotify", this.OnShutterControlNotify);
-
-            this.hubConnection.On<NotificationMessageUI<PositioningMessageData>>(
-                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
-
-            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
-                "HomingNotify", this.OnHomingNotify);
-
-            this.hubConnection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
-                "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
-
-            // -
-            // Add here the registration of handlers related to the notification events
-            // -
-            this.hubConnection.Closed += async (error) =>
-            {
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await this.hubConnection.StartAsync();
-            };
         }
 
         #endregion
@@ -67,14 +24,33 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Methods
 
-        public async Task ConnectAsync()
+        protected override void RegisterEvents(HubConnection connection)
         {
-            await this.hubConnection.StartAsync();
-        }
+            connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
+             "SensorsChangedNotify", this.OnSensorsChangedNotify);
 
-        public async Task DisconnectAsync()
-        {
-            await this.hubConnection.DisposeAsync();
+            connection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
+                "CalibrateAxisNotify", this.OnCalibrateAxisNotify);
+
+            connection.On<NotificationMessageUI<SwitchAxisMessageData>>(
+                "SwitchAxisNotify", this.OnSwitchAxisNotify);
+
+            connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
+                "ShutterPositioningNotify", this.OnShutterPositioningNotify);
+
+            connection.On<NotificationMessageUI<ShutterControlMessageData>>(
+                "ShutterControlNotify", this.OnShutterControlNotify);
+
+            connection.On<NotificationMessageUI<PositioningMessageData>>(
+                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
+
+            connection.On<NotificationMessageUI<HomingMessageData>>(
+                "HomingNotify", this.OnHomingNotify);
+
+            connection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
+                "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
+
+            base.RegisterEvents(connection);
         }
 
         /// <summary>

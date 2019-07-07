@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.OperatorApp.ServiceUtilities
+﻿namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
-    public class ReceivedMessageEventArgs
+    public class ReceivedMessageEventArgs : System.EventArgs
     {
         #region Constructors
 
@@ -13,7 +13,7 @@
 
         #region Properties
 
-        public string Message { get; set; }
+        public string Message { get; }
 
         #endregion
     }
