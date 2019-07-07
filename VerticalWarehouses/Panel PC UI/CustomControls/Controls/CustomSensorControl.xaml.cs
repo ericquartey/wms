@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
     public partial class CustomSensorControl : UserControl, INotifyPropertyChanged
     {

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Ferretto.VW.CustomControls.Behaviours
+namespace Ferretto.VW.App.Controls.Behaviours
 {
     public class ScrollIntoViewDataGridBehaviour : Behavior<DataGrid>
     {

@@ -1,4 +1,4 @@
-<Window x:Class="Ferretto.VW.App.MainWindow"
+﻿<Window x:Class="Ferretto.VW.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
@@ -45,7 +45,7 @@
                Margin="540,70,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png"
+               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
                Stretch="Fill" />
 
         <TextBlock Grid.Row="1"

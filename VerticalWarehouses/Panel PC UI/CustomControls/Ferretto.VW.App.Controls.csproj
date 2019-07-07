@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets Condition="$(VisualStudioVersion) &gt;= 16">$(MSBuildExtensionsPath)\Current\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets Condition="$(VisualStudioVersion) &lt; 16">$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -12,17 +13,24 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
-    <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
-    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -72,7 +80,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
@@ -86,9 +94,18 @@
     <Compile Update="Controls\CustomShutterControlSensorsThreePositions.xaml.cs">
       <DependentUpon>CustomShutterControlSensorsThreePositions.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Controls\VWIcon\VWIcon.xaml.cs">
+      <DependentUpon>VWIcon.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Controls\Icon\WmsIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\VWIcon\VWIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Fonts\Microsoft-sans-serif.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
