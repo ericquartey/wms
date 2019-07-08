@@ -2,9 +2,9 @@
 {
     public enum Side : long
     {
-        FrontEven,
+        FrontOdd,
 
-        BackOdd
+        BackEven
     }
 
     public enum Status : long
