@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
     public class InverterPositioningFieldMessageData : IInverterPositioningFieldMessageData
     {
