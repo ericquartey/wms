@@ -41,8 +41,30 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
-            //TODO: We need to know the current axis, in order to zeroed correctly the value of control word
-            this.InverterStatus.CommonControlWord.Value = 0x0000;
+            if (this.InverterStatus is IAngInverterStatus angInverter)
+            {
+                var horizontalAxis = (this.InverterStatus.CommonControlWord.Value & 0x8000) > 0;
+                if (horizontalAxis)
+                {
+                    this.InverterStatus.CommonControlWord.Value = 0x8000;
+                }
+                else
+                {
+                    this.InverterStatus.CommonControlWord.Value = 0x0000;
+                }
+            }
+
+            if (this.InverterStatus is IAglInverterStatus aglInverter)
+            {
+                // TODO
+            }
+
+            if (this.InverterStatus is IAcuInverterStatus acuInverter)
+            {
+                // TODO
+            }
+
+            //this.InverterStatus.CommonControlWord.Value = 0x0000;
 
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
