@@ -144,18 +144,18 @@ namespace Ferretto.VW.InstallationApp
             this.DelayBetweenCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
 
 #if !DEBUG
-                var client = new HttpClient();
-                var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                }
-                response = null;
-                response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                }
+                //var client = new HttpClient();
+                //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
+                //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                //{
+                //    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+                //}
+                //response = null;
+                //response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
+                //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                //{
+                //    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+                //}
 #endif
         }
 
