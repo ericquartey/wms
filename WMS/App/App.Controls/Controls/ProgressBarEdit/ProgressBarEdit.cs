@@ -17,8 +17,6 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public int HeightBar { get; set; }
-
         public string TextOut { get => (string)this.GetValue(TextOutProperty); set => this.SetValue(TextOutProperty, value); }
 
         public ProgressBarEditType Type { get => (ProgressBarEditType)this.GetValue(TypeProperty); set => this.SetValue(TypeProperty, value); }
@@ -32,7 +30,6 @@ namespace Ferretto.WMS.App.Controls
             if (d is ProgressBarEdit progressBar)
             {
                 var type = (ProgressBarEditType)e.NewValue;
-                progressBar.Height = 41;
                 switch (type)
                 {
                     case ProgressBarEditType.Percent:

@@ -262,7 +262,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         .Select(m1 => new Machine
                         {
                             Id = m1.Id,
-                            ActualWeight = m1.ActualWeight,
                             ErrorTime = m1.ErrorTime,
                             Image = m1.Image,
                             Model = m1.Model,
