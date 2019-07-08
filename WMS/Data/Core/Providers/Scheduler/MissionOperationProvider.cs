@@ -324,11 +324,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (hasExecutingOperations)
             {
-                if (list.FirstExecutionDate == null)
-                {
-                    list.FirstExecutionDate = now;
-                    list.LastModificationDate = now;
-                }
+                list.FirstExecutionDate = list.FirstExecutionDate ?? now;
             }
 
             await this.itemListProvider.UpdateAsync(list);
