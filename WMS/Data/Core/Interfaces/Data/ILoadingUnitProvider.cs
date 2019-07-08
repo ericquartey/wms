@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId);
 
-        Task<IOperationResult<LoadingUnitDetails>> UpdateMissionCountAsync(int id);
+        Task<IOperationResult<LoadingUnitDetails>> UpdateMissionsCountAsync(int id);
 
         #endregion
     }

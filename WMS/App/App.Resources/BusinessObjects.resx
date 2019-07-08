@@ -373,7 +373,7 @@
     <value>Last Handling Date</value>
     <comment>Loading Unit - </comment>
   </data>
-  <data name="LoadingUnitMissionCount" xml:space="preserve">
+  <data name="LoadingUnitMissionsCount" xml:space="preserve">
     <value>Missions Count</value>
     <comment>Loading Unit - Missions Count</comment>
   </data>
@@ -408,10 +408,6 @@
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
     <comment>Machine</comment>
-  </data>
-  <data name="MachineActualWeight" xml:space="preserve">
-    <value>Actual Weight [g]</value>
-    <comment>Machine - Actual Weight</comment>
   </data>
   <data name="MachineAutomaticTime" xml:space="preserve">
     <value>Automatic Time</value>
@@ -586,10 +582,6 @@
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Maintenance Status</value>
     <comment>Machine - Maintenance Status</comment>
-  </data>
-  <data name="MachineAreaFillRate" xml:space="preserve">
-    <value>Area Fill Rate</value>
-    <comment>Machine - Fill Rate</comment>
   </data>
   <data name="MachineStatusAutomatic" xml:space="preserve">
     <value>Automatic</value>
@@ -823,14 +815,14 @@
   <data name="MachineServiceUrl" xml:space="preserve">
     <value>Service Url</value>
   </data>
-  <data name="MachineLoadingUnitCount" xml:space="preserve">
-    <value>Loading Unit Count</value>
+  <data name="MachineLoadingUnitsCount" xml:space="preserve">
+    <value>Loading Units Count</value>
   </data>
-  <data name="MachineCellCount" xml:space="preserve">
-    <value>Cell Count</value>
+  <data name="MachineCellsCount" xml:space="preserve">
+    <value>Cells Count</value>
   </data>
-  <data name="MachineItemCount" xml:space="preserve">
-    <value>Item Count</value>
+  <data name="MachineItemsCount" xml:space="preserve">
+    <value>Items Count</value>
   </data>
   <data name="BayIsActive" xml:space="preserve">
     <value>Is Active</value>
@@ -851,19 +843,16 @@
     <value>Position of Elevator</value>
   </data>
   <data name="MachineGrossMaxWeight" xml:space="preserve">
-    <value>Gross Max Weight</value>
+    <value>Gross Max Weight [g]</value>
   </data>
   <data name="MachineGrossWeight" xml:space="preserve">
-    <value>Gross Weight</value>
+    <value>Gross Weight [g]</value>
   </data>
   <data name="MachineNetWeight" xml:space="preserve">
-    <value>Net Weight</value>
+    <value>Net Weight [g]</value>
   </data>
   <data name="MachineNetMaxWeight" xml:space="preserve">
-    <value>Net Max Weight</value>
-  </data>
-  <data name="MachineWeightFillRate" xml:space="preserve">
-    <value>Weight Fill Rate</value>
+    <value>Net Max Weight [g]</value>
   </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>Ready</value>
@@ -890,13 +879,10 @@
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Create New Compartment Type</value>
   </data>
-  <data name="MachineItemListCount" xml:space="preserve">
-    <value>Item List Count</value>
+  <data name="MachineMissionsCount" xml:space="preserve">
+    <value>Missions Count</value>
   </data>
-  <data name="MachineMissionCount" xml:space="preserve">
-    <value>Mission Count</value>
-  </data>
-  <data name="MachineCompartmentCount" xml:space="preserve">
+  <data name="MachineCompartmentsCount" xml:space="preserve">
     <value>Compartments Count</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">

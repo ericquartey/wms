@@ -6,7 +6,7 @@ namespace Ferretto.VW.WmsCommunication.Source
     {
         #region Properties
 
-        public double? Height { get; set; }
+        public double? Depth { get; set; }
 
         public int Id { get; set; }
 

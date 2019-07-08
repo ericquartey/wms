@@ -102,7 +102,7 @@ namespace Ferretto.VW.WmsCommunication
             {
                 returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
                 {
-                    Height = x.Depth,
+                    Depth = x.Depth,
                     Id = x.Id,
                     LoadingUnitId = x.LoadingUnitId,
                     Width = x.Width,
