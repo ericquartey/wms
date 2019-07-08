@@ -1,27 +1,29 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+{
     public class OtherNavigationViewModel : BindableBase, IOtherNavigationViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand drawerCompactingButtonCommand;
-        private ICommand immediateDrawerCallButtonCommand;
-        private ICommand maintenanceMainPageButtonCommand;
-        private ICommand statisticsButtonCommand;
         private IUnityContainer container;
+
+        private ICommand drawerCompactingButtonCommand;
+
+        private ICommand immediateDrawerCallButtonCommand;
+
+        private ICommand maintenanceMainPageButtonCommand;
+
+        private ICommand statisticsButtonCommand;
 
         #endregion
 
@@ -52,13 +54,12 @@
             NavigationService.NavigateToView<MaintenanceMainPageViewModel, IMaintenanceMainPageViewModel>();
         }));
 
-        public ICommand StatisticsButtonCommand => this.statisticsButtonCommand ?? (this.statisticsButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<StatisticsGeneralDataViewModel, IStatisticsGeneralDataViewModel>();
-        }));
-
-
         public BindableBase NavigationViewModel { get; set; }
+
+        public ICommand StatisticsButtonCommand => this.statisticsButtonCommand ?? (this.statisticsButtonCommand = new DelegateCommand(() =>
+                {
+                    NavigationService.NavigateToView<StatisticsGeneralDataViewModel, IStatisticsGeneralDataViewModel>();
+                }));
 
         #endregion
 

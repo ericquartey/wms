@@ -137,7 +137,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task InitializeViewModel(IUnityContainer container)
+        public async Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
             this.installationStatusService = this.container.Resolve<IInstallationStatusService>();

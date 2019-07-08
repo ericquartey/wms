@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDto data)
         {
             await this.ExecuteShutterPositioningMovementMethod();
         }

@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -218,7 +218,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }

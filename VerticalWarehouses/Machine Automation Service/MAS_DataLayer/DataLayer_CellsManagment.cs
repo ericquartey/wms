@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS_DataLayer
         //{
         //    return this.inMemoryDataContext.Cells.ToList();
         //}
+
         #region Methods
 
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
@@ -94,7 +95,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
 
             var filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
-            var filledLastCell = filledStartCell + inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2;
+            var filledLastCell = filledStartCell + (inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2);
 
             for (var currentCell = filledStartCell; currentCell <= filledLastCell; currentCell += 2)
             {

@@ -13,13 +13,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private const int PULSE_INTERVAL = 350;
 
+        private readonly IoIndex index;
+
         private readonly IoSHDStatus status;
 
         private Timer delayTimer;
 
         private bool disposed;
-
-        private readonly IoIndex index;
 
         private bool pulseOneTime;
 
@@ -27,16 +27,19 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Constructors
 
-        public PowerUpStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IoIndex index, IEventAggregator eventAggregator, ILogger logger)
+        public PowerUpStateMachine(
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IoIndex index,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.index = index;
-            this.pulseOneTime = false;
-            this.eventAggregator = eventAggregator;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -54,7 +57,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
                 message.ValidOutputs &&
@@ -68,7 +71,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                                message.ValidOutputs &&
@@ -87,7 +90,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new PowerUpStartState(this, this.status, this.index, this.logger);
+            this.CurrentState = new PowerUpStartState(this, this.status, this.index, this.Logger);
             this.CurrentState?.Start();
         }
 
@@ -114,7 +117,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             //TEMP Clear message IO
             var clearIoMessage = new IoSHDWriteMessage();
 
-            this.logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);

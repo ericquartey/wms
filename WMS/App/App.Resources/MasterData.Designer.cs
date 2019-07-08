@@ -909,9 +909,9 @@ namespace Ferretto.WMS.App.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No unassociated Compartment Types available.
         /// </summary>
-        public static string NoUnassociateItemCompartmentTypesAvailable {
+        public static string NoUnassociatedItemCompartmentTypesAvailable {
             get {
-                return ResourceManager.GetString("NoUnassociateItemCompartmentTypesAvailable", resourceCulture);
+                return ResourceManager.GetString("NoUnassociatedItemCompartmentTypesAvailable", resourceCulture);
             }
         }
         

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS_IODriver.Interface;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines
@@ -8,9 +9,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
     {
         #region Fields
 
-        protected IIoStateMachine ParentStateMachine;
-
         private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public IoStateBase(IIoStateMachine parentStateMachine, ILogger logger)
+        {
+            this.ParentStateMachine = parentStateMachine;
+            this.Logger = logger;
+        }
 
         #endregion
 
@@ -26,6 +35,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
         #region Properties
 
         public virtual string Type => this.GetType().ToString();
+
+        protected ILogger Logger { get; }
+
+        protected IIoStateMachine ParentStateMachine { get; }
 
         #endregion
 

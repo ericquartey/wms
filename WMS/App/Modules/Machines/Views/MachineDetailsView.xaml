@@ -231,12 +231,14 @@
                         </Grid.RowDefinitions>
 
                         <wms:ProgressBarEdit Margin="0,0,5,5"
+                                             Height="41"
                                              EditValue="{Binding Model.GrossWeight}"
                                              Maximum="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Minimum="0"
                                              TextOut="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              Type="MinMaxCurrentH" />
                         <wms:ProgressBarEdit Grid.Row="1"
+                                             Height="41"
                                              Margin="0,0,5,5"
                                              EditValue="{Binding Model.NetWeight}"
                                              Maximum="{Binding Model.NetMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -270,23 +272,23 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <wms:ProgressBarEdit x:Name="AreaFillRate"
-                                             Margin="0,0,5,5"
+                        <wms:ProgressBarEdit Margin="0,0,5,5"
+                                             Height="41"
                                              EditValue="{Binding Path=Model.AreaFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
                                              Minimum="0"
                                              TextOut="{Binding Path=Model.AreaFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
                                              Type="Percent" />
-                        <wms:ProgressBarEdit x:Name="WeightFillRate"
-                                             Grid.Row="1"
+                        <wms:ProgressBarEdit Grid.Row="1"
+                                             Height="41"
                                              Grid.Column="0"
                                              Margin="0,0,5,5"
-                                             EditValue="{Binding Path=MachineLive.WeightFillRate, Mode=TwoWay}"
+                                             EditValue="{Binding Path=Model.WeightFillRate, Mode=TwoWay}"
                                              IsPercent="True"
                                              Maximum="100"
                                              Minimum="0"
-                                             TextOut="{Binding Path=MachineLive.WeightFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             TextOut="{Binding Path=Model.WeightFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
                                              Type="Percent" />
                     </Grid>
                 </GroupBox>
@@ -315,7 +317,6 @@
                                             ItemsSource="{Binding MachineLive.Bays, Mode=OneWay}"
                                             SelectionMode="Row"
                                             ShowBorder="False">
-
 
                             <dxg:GridControl.View>
                                 <dxg:CardView AllowCardResizing="false"
@@ -451,7 +452,6 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -464,7 +464,7 @@
                             <wms:InfoText Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ItemCount}" />
+                                          Content="{Binding Model.ItemsCount}" />
 
                             <Image Grid.Row="1"
                                    Width="24"
@@ -475,52 +475,40 @@
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.LoadingUnitCount}" />
+                                          Content="{Binding Model.LoadingUnitsCount}" />
 
                             <Image Grid.Row="2"
                                    Width="24"
                                    Height="24"
                                    HorizontalAlignment="Left"
-                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Material/action/1x_web/ic_list_black_24dp.png" />
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-grid-50.png" />
                             <wms:InfoText Grid.Row="2"
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ItemListCount}" />
+                                          Content="{Binding Model.CellsCount}" />
 
                             <Image Grid.Row="3"
                                    Width="24"
                                    Height="24"
                                    HorizontalAlignment="Left"
-                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-grid-50.png" />
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-view-module-50.png" />
                             <wms:InfoText Grid.Row="3"
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.CellCount}" />
+                                          Content="{Binding Model.CompartmentsCount}" />
 
                             <Image Grid.Row="4"
                                    Width="24"
                                    Height="24"
                                    HorizontalAlignment="Left"
-                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-view-module-50.png" />
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-target-50.png" />
                             <wms:InfoText Grid.Row="4"
                                           Grid.Column="1"
                                           Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.CompartmentCount}" />
-
-
-                            <Image Grid.Row="5"
-                                   Width="24"
-                                   Height="24"
-                                   HorizontalAlignment="Left"
-                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-target-50.png" />
-                            <wms:InfoText Grid.Row="5"
-                                          Grid.Column="1"
-                                          Margin="10,0,0,0"
-                                          wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.MissionCount}" />
+                                          Content="{Binding Model.MissionsCount}" />
 
                         </Grid>
 

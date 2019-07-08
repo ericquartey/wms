@@ -426,7 +426,19 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MaterialStatusId");
 
+                    b.Property<int>("OtherMissionOperationCount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
                     b.Property<int?>("PackageTypeId");
+
+                    b.Property<int>("PickMissionOperationCount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("PutMissionOperationCount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
 
                     b.Property<string>("RegistrationNumber");
 
@@ -822,10 +834,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<double>("Height");
 
-                    b.Property<int>("InMissionCount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
-
                     b.Property<DateTime?>("InventoryDate");
 
                     b.Property<bool>("IsCellPairingFixed");
@@ -846,16 +854,12 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("LoadingUnitTypeId");
 
+                    b.Property<int>("MissionsCount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
                     b.Property<string>("Note")
                         .HasColumnType("text");
-
-                    b.Property<int>("OtherMissionCount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("OutMissionCount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
 
                     b.Property<string>("ReferenceType")
                         .IsRequired()
@@ -1029,8 +1033,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("ActualWeight");
 
                     b.Property<int>("AisleId");
 

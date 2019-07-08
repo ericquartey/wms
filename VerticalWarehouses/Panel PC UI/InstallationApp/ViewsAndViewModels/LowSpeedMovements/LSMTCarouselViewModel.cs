@@ -60,7 +60,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseCarouselAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 
@@ -86,7 +86,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OpenCarouselAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 

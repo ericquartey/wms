@@ -14,7 +14,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 
         int SpeedRate { get; set; }
 
-
         #endregion
     }
 }

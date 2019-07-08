@@ -48,6 +48,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
+        [Positive]
+        public double Depth { get; set; }
+
         [PositiveOrZero]
         public double EmptyWeight { get; set; }
 
@@ -56,9 +59,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [Positive]
         public double Height { get; set; }
-
-        [PositiveOrZero]
-        public int InMissionCount { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 
@@ -71,9 +71,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? LastPickDate { get; set; }
 
         public DateTime? LastPutDate { get; set; }
-
-        [Positive]
-        public double Depth { get; set; }
 
         public string LoadingUnitStatusDescription { get; set; }
 
@@ -88,13 +85,10 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int MaxNetWeight { get; set; }
 
+        [PositiveOrZero]
+        public int MissionsCount { get; set; }
+
         public string Note { get; set; }
-
-        [PositiveOrZero]
-        public int OtherMissionCount { get; set; }
-
-        [PositiveOrZero]
-        public int OutMissionCount { get; set; }
 
         public ReferenceType ReferenceType { get; set; }
 

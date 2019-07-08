@@ -5,7 +5,6 @@ using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Unity;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -26,6 +25,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private const int DEFAULT_QUANTITY_ITEM = 20;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly SynchronizationContext uiContext;
 
         private string availableQuantity;
@@ -39,8 +40,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private CustomControlArticleDataGridViewModel dataGridViewModelRef;
 
         private ICommand downDataGridButtonCommand;
-
-        private IEventAggregator eventAggregator;
 
         private bool hasUserTyped;
 
@@ -142,7 +141,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                         items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, this.currentItemIndex, DEFAULT_QUANTITY_ITEM);
                         this.IsSearching = false;
                     }
-                    catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+                    catch (WMS.Data.WebAPI.Contracts.SwaggerException)
                     {
                         this.IsSearching = false;
                     }
@@ -182,7 +181,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             viewItems.Add(item);
                             this.loadedItems.Add(items[i]);
                         }
-                        for (int i = 0; i < viewItems.Count; i++)
+                        for (var i = 0; i < viewItems.Count; i++)
                         {
                             (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles.Add(viewItems[i]);
                         }
@@ -239,7 +238,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             {
                 items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
             {
                 this.currentItemIndex = 0;
                 this.IsSearching = false;
@@ -257,6 +256,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 this.loadedItems = items;
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
+
             if (items != null && items.Count > 0)
             {
                 var viewItems = new ObservableCollection<DataGridItem>();

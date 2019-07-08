@@ -136,6 +136,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 switch (receivedMessage.Type)
                 {
+                    // TODO
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);

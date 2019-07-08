@@ -49,9 +49,15 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<MissionOperation> MissionOperations { get; set; }
 
+        public int OtherMissionOperationCount { get; set; }
+
         public PackageType PackageType { get; set; }
 
         public int? PackageTypeId { get; set; }
+
+        public int PickMissionOperationCount { get; set; }
+
+        public int PutMissionOperationCount { get; set; }
 
         public string RegistrationNumber { get; set; }
 

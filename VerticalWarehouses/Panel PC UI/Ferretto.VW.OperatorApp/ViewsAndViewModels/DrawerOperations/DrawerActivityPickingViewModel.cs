@@ -1,30 +1,24 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Drawing;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.Common.Controls.WPF;
-    using Ferretto.VW.MAS_AutomationService.Contracts;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.ServiceUtilities;
-    using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-    using Ferretto.VW.Utils.Source;
-    using Ferretto.VW.Utils.Source.Filters;
-    using Ferretto.VW.WmsCommunication.Interfaces;
-    using Ferretto.VW.WmsCommunication.Source;
-    using Ferretto.WMS.Data.WebAPI.Contracts;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.Common.Controls.WPF;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.Utils.Source.Filters;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.WmsCommunication.Source;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
+{
     public class DrawerActivityPickingViewModel : BindableBase, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
     {
         #region Fields
@@ -91,8 +85,8 @@
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
-            get { return this.filterColorFunc; }
-            set { this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value); }
+            get => this.filterColorFunc;
+            set => this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value);
         }
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
@@ -117,10 +111,9 @@
 
         #region Methods
 
-        public async void ConfirmMethod()
+        public async Task ConfirmMethod()
         {
-            int quantity;
-            if (int.TryParse(this.EvadedQuantity, out quantity) && quantity >= 0)
+            if (int.TryParse(this.EvadedQuantity, out var quantity) && quantity >= 0)
             {
                 var bay = this.container.Resolve<IBayManager>();
                 await this.operatorService.PickAsync(bay.BayId, bay.CurrentMission.Id, quantity);

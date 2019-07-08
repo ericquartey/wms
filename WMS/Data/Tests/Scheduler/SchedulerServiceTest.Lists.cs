@@ -219,6 +219,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                CompartmentTypeId = this.CompartmentType.Id,
                 Stock = 100
             };
 
@@ -1048,6 +1049,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                CompartmentTypeId = this.CompartmentType.Id,
                 Stock = 100
             };
 

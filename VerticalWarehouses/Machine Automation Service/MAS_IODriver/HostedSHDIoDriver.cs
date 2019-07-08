@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             if (disposing)
             {
-                base.Dispose();
+                this.Dispose();
             }
 
             this.disposed = true;

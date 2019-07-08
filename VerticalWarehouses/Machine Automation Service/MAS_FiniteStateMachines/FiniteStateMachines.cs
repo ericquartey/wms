@@ -65,8 +65,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, IVertimagConfiguration vertimagConfiguration)
+        public FiniteStateMachines(
+            IEventAggregator eventAggregator,
+            ILogger<FiniteStateMachines> logger,
+            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
 
@@ -136,7 +139,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
 
             await Task.CompletedTask;
@@ -161,15 +164,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"2:Exception: {ex.Message}");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
                     return;
                 }
 
                 if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
-                    var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
-                        MessageActor.FiniteStateMachines, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                    var errorNotification = new NotificationMessage(
+                        null,
+                        "Inverter operation already in progress",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        receivedMessage.Type,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Error);
 
                     this.logger.LogTrace($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
@@ -238,7 +247,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"2:Exception: {ex.Message}");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
                     return;
                 }
@@ -396,7 +405,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
 
                     return;
                 }
@@ -438,7 +447,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     {
                                         this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                                        this.SendMessage(new FSMExceptionMessageData(ex, string.Empty, 0));
+                                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                                     }
 
                                     this.logger.LogTrace($"5:Deallocation FSM {this.currentStateMachine?.GetType()}");

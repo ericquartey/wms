@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.Common_Utils.DTOs
 {
-    public class VerticalPositioningMessageDataDTO
+    public class VerticalPositioningMessageDataDto
     {
         #region Constructors
 
-        public VerticalPositioningMessageDataDTO(int cyclesQuantity)
+        public VerticalPositioningMessageDataDto(int cyclesQuantity)
         {
             this.CyclesQuantity = cyclesQuantity;
         }

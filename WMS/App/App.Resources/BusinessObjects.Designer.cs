@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -381,6 +381,33 @@ namespace Ferretto.WMS.App.Resources {
         public static string CompartmentIsItemPairingFixed {
             get {
                 return ResourceManager.GetString("CompartmentIsItemPairingFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other Missions Operation Count.
+        /// </summary>
+        public static string CompartmentOtherMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentOtherMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Missions Operation Count.
+        /// </summary>
+        public static string CompartmentPickMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentPickMissionOperationCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Missions Operation Count.
+        /// </summary>
+        public static string CompartmentPutMissionOperationCount {
+            get {
+                return ResourceManager.GetString("CompartmentPutMissionOperationCount", resourceCulture);
             }
         }
         
@@ -997,15 +1024,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In Missions Count.
-        /// </summary>
-        public static string LoadingUnitInMissionCount {
-            get {
-                return ResourceManager.GetString("LoadingUnitInMissionCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cell Pairing.
         /// </summary>
         public static string LoadingUnitIsCellPairingFixed {
@@ -1024,20 +1042,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other Missions Count.
+        ///   Looks up a localized string similar to Missions Count.
         /// </summary>
-        public static string LoadingUnitOtherMissionCount {
+        public static string LoadingUnitMissionsCount {
             get {
-                return ResourceManager.GetString("LoadingUnitOtherMissionCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Out Missions Count.
-        /// </summary>
-        public static string LoadingUnitOutMissionCount {
-            get {
-                return ResourceManager.GetString("LoadingUnitOutMissionCount", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitMissionsCount", resourceCulture);
             }
         }
         
@@ -1105,24 +1114,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Weight [g].
-        /// </summary>
-        public static string MachineActualWeight {
-            get {
-                return ResourceManager.GetString("MachineActualWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Area Fill Rate.
-        /// </summary>
-        public static string MachineAreaFillRate {
-            get {
-                return ResourceManager.GetString("MachineAreaFillRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Automatic Time.
         /// </summary>
         public static string MachineAutomaticTime {
@@ -1141,20 +1132,20 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell Count.
+        ///   Looks up a localized string similar to Cells Count.
         /// </summary>
-        public static string MachineCellCount {
+        public static string MachineCellsCount {
             get {
-                return ResourceManager.GetString("MachineCellCount", resourceCulture);
+                return ResourceManager.GetString("MachineCellsCount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment Count.
+        ///   Looks up a localized string similar to Compartments Count.
         /// </summary>
-        public static string MachineCompartmentCount {
+        public static string MachineCompartmentsCount {
             get {
-                return ResourceManager.GetString("MachineCompartmentCount", resourceCulture);
+                return ResourceManager.GetString("MachineCompartmentsCount", resourceCulture);
             }
         }
         
@@ -1240,7 +1231,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gross Max Weight.
+        ///   Looks up a localized string similar to Gross Max Weight [g].
         /// </summary>
         public static string MachineGrossMaxWeight {
             get {
@@ -1249,7 +1240,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gross Weight.
+        ///   Looks up a localized string similar to Gross Weight [g].
         /// </summary>
         public static string MachineGrossWeight {
             get {
@@ -1276,20 +1267,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Count.
+        ///   Looks up a localized string similar to Items Count.
         /// </summary>
-        public static string MachineItemCount {
+        public static string MachineItemsCount {
             get {
-                return ResourceManager.GetString("MachineItemCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item List Count.
-        /// </summary>
-        public static string MachineItemListCount {
-            get {
-                return ResourceManager.GetString("MachineItemListCount", resourceCulture);
+                return ResourceManager.GetString("MachineItemsCount", resourceCulture);
             }
         }
         
@@ -1321,11 +1303,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit Count.
+        ///   Looks up a localized string similar to Loading Units Count.
         /// </summary>
-        public static string MachineLoadingUnitCount {
+        public static string MachineLoadingUnitsCount {
             get {
-                return ResourceManager.GetString("MachineLoadingUnitCount", resourceCulture);
+                return ResourceManager.GetString("MachineLoadingUnitsCount", resourceCulture);
             }
         }
         
@@ -1393,11 +1375,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mission Count.
+        ///   Looks up a localized string similar to Missions Count.
         /// </summary>
-        public static string MachineMissionCount {
+        public static string MachineMissionsCount {
             get {
-                return ResourceManager.GetString("MachineMissionCount", resourceCulture);
+                return ResourceManager.GetString("MachineMissionsCount", resourceCulture);
             }
         }
         
@@ -1429,7 +1411,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net Max Weight.
+        ///   Looks up a localized string similar to Net Max Weight [g].
         /// </summary>
         public static string MachineNetMaxWeight {
             get {
@@ -1438,7 +1420,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net Weight.
+        ///   Looks up a localized string similar to Net Weight [g].
         /// </summary>
         public static string MachineNetWeight {
             get {
@@ -1551,15 +1533,6 @@ namespace Ferretto.WMS.App.Resources {
         public static string MachineTotalMaxWeight {
             get {
                 return ResourceManager.GetString("MachineTotalMaxWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Weight Fill Rate.
-        /// </summary>
-        public static string MachineWeightFillRate {
-            get {
-                return ResourceManager.GetString("MachineWeightFillRate", resourceCulture);
             }
         }
         
