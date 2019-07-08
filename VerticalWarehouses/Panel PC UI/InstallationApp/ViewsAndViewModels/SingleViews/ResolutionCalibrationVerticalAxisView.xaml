@@ -90,7 +90,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding UpdateResolutionCommand}"
-                Content="{x:Static res:General.UpdateResolution}"
+                Content="{x:Static res:InstallationApp.UpdateResolution}"
                 IsEnabled="{Binding IsUpdateResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Button Margin="700,340,0,0"

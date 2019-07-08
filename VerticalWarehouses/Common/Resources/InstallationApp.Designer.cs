@@ -2212,6 +2212,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Update Resolution.
+        /// </summary>
+        public static string UpdateResolution {
+            get {
+                return ResourceManager.GetString("UpdateResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Upper bound [mm]:.
         /// </summary>
         public static string UpperBound {

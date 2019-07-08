@@ -167,7 +167,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
             else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
             {
-                // Relative
                 if (this.positioningMessageData.MovementType == MovementType.Relative)
                 {
                     var distance = this.positioningMessageData.UpperBound - this.positioningMessageData.LowerBound;
@@ -198,7 +197,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         this.positioningMessageData.UpperBound,
                         this.positioningMessageData.Resolution);
                 }
-                // Absolute
                 else
                 {
                     // Build message for UP

@@ -1159,4 +1159,8 @@
     <value>Value inserted not valid</value>
     <comment>Value inserted not valid</comment>
   </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Update Resolution</value>
+    <comment>Update Resolution</comment>
+  </data>
 </root>
