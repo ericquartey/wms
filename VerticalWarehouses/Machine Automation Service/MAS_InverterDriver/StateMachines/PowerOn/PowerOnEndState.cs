@@ -35,6 +35,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex systemIndex);

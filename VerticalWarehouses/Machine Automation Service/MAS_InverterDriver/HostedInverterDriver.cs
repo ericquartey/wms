@@ -243,7 +243,12 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (receivedMessage.Type == FieldMessageType.InverterStop)
                 {
+                    this.currentStateMachine?.Release();
+
                     this.currentStateMachine?.Dispose();
+
+                    this.logger.LogTrace("4: Stop the timer for update shaft position");
+                    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
                     this.ProcessStopMessage(receivedMessage);
 

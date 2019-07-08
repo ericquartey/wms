@@ -34,6 +34,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
             var notificationMessage = new FieldNotificationMessage(

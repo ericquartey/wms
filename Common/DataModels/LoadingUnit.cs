@@ -52,7 +52,7 @@ namespace Ferretto.Common.DataModels
 
         public int LoadingUnitTypeId { get; set; }
 
-        public int MissionCount { get; set; }
+        public int MissionsCount { get; set; }
 
         public IEnumerable<Mission> Missions { get; set; }
 

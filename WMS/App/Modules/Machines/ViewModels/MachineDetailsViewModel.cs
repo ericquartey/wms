@@ -152,10 +152,7 @@ namespace Ferretto.WMS.Modules.Machines
                 Bays = this.Model.Bays,
                 Id = this.Model.Id,
                 Status = this.Model.Status,
-                NetWeight = this.Model.NetWeight,
-                GrossWeight = this.Model.GrossWeight,
             };
-            this.MachineLive.CalculateWeightFillRate();
         }
 
         private void OnMachineStatusChanged(MachineStatusPubSubEvent e)

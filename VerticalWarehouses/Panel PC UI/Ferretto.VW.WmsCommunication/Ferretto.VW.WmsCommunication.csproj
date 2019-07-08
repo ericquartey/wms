@@ -7,7 +7,7 @@
   <ItemGroup>
     <Reference Include="System.Runtime.Caching" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.9.0" />
     <PackageReference Include="Ferretto.Common.Controls.WPF" Version="0.9.0" />

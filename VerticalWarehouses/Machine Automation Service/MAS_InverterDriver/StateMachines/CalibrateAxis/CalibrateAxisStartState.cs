@@ -43,6 +43,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Release()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Start()
         {
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.Homing;

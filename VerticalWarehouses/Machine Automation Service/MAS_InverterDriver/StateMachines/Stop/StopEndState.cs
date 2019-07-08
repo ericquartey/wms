@@ -35,6 +35,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.Value = 0x0000;

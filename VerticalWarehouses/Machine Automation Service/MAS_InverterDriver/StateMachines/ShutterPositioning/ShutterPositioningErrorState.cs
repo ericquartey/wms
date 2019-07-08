@@ -41,6 +41,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
             var errorNotification = new FieldNotificationMessage(

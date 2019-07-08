@@ -37,7 +37,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? loadingUnitTypeId;
 
-        private int missionCount;
+        private int missionsCount;
 
         private string note;
 
@@ -190,11 +190,11 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitMissionCount), ResourceType = typeof(BusinessObjects))]
-        public int MissionCount
+        [Display(Name = nameof(BusinessObjects.LoadingUnitMissionsCount), ResourceType = typeof(BusinessObjects))]
+        public int MissionsCount
         {
-            get => this.missionCount;
-            set => this.SetProperty(ref this.missionCount, value);
+            get => this.missionsCount;
+            set => this.SetProperty(ref this.missionsCount, value);
         }
 
         [Display(Name = nameof(BusinessObjects.Notes), ResourceType = typeof(BusinessObjects))]
