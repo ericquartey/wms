@@ -74,7 +74,8 @@ namespace Ferretto.VW.WmsCommunication
                 PackageType = packageType.Description,
                 Position = $"{compartment.XPosition}, {compartment.YPosition}",
                 ProductionDate = item.CreationDate.ToShortDateString(),
-                RequestedQuantity = mission.RequestedQuantity.ToString()
+                RequestedQuantity = mission.RequestedQuantity.ToString(),
+                Image = item.Image
             };
             return returnValue;
         }

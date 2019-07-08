@@ -18,17 +18,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private IUnityContainer container;
 
         private BindableBase dataGridViewModel;
 
-        private CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
+        private CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
 
-        private IEventAggregator eventAggregator;
-
-        private ObservableCollection<DataGridKit> kits;
-
-        private DataGridKit selectedKit;
+        private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;
 
         #endregion
 
@@ -60,26 +58,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlMaintenanceDataGridViewModel>() as CustomControlMaintenanceDataGridViewModel;
+            this.dataGridViewModelRef = this.container.Resolve<ICustomControlMaintenanceDetailDataGridViewModel>() as CustomControlMaintenanceDetailDataGridViewModel;
         }
 
         public async Task OnEnterViewAsync()
         {
             var random = new Random();
-            this.kits = new ObservableCollection<DataGridKit>();
+            this.maintenanceDetails = new ObservableCollection<DataGridMaintenanceDetail>();
             for (int i = 0; i < random.Next(3, 30); i++)
             {
-                this.kits.Add(new DataGridKit
+                this.maintenanceDetails.Add(new DataGridMaintenanceDetail
                 {
-                    Kit = $"Kit {i}",
-                    Description = $"Kit number {i}",
-                    State = $"State",
-                    Request = "Request"
+                    Element = $"Element {i}",
+                    Description = $"This is element {i}",
+                    Quantity = random.Next(2, 40).ToString(),
                 }
                 );
             }
-            this.dataGridViewModelRef.Kits = this.kits;
-            this.dataGridViewModelRef.SelectedKit = this.kits[0];
+            this.dataGridViewModelRef.MaintenanceDetails = this.maintenanceDetails;
+            this.dataGridViewModelRef.SelectedMaintenanceDetail = this.maintenanceDetails[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
         }
 

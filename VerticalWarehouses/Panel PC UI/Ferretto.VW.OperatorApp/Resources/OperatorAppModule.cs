@@ -26,9 +26,9 @@ namespace Ferretto.VW.OperatorApp.Resources
 
         private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
-        private readonly string operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
+        private readonly IUnityContainer container;
 
-        private IUnityContainer container;
+        private readonly string operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
 
         #endregion
 
@@ -123,6 +123,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterType<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             this.container.RegisterType<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
             this.container.RegisterType<ICustomControlItemStatisticsDataGridViewModel, CustomControlItemStatisticsDataGridViewModel>();
+            this.container.RegisterType<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
 
             navigationServiceInstance.Initialize(this.container);
             feedbackNotifier.Initialize(this.container);
@@ -148,6 +149,9 @@ namespace Ferretto.VW.OperatorApp.Resources
             maintenanceDetailVMInstance.InitializeViewModel(this.container);
             detailListInWaitVMInstance.InitializeViewModel(this.container);
             machineStatisticsVMInstance.InitializeViewModel(this.container);
+            drawerActivityPickingDetailVMInstance.InitializeViewModel(this.container);
+            drawerActivityInventoryDetailVMInstance.InitializeViewModel(this.container);
+            drawerActivityRefillingDetailVMInstance.InitializeViewModel(this.container);
 
             bayManagerInstance.Initialize(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();

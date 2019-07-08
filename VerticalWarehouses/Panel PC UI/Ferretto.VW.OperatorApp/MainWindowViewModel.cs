@@ -14,7 +14,7 @@
 
     public delegate void ClickedOnMachineOnMarchEvent();
 
-    public partial class MainWindowViewModel : BindableBase, IMainWindowViewModel
+    public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         #region Fields
 
