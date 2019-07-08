@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -52,26 +53,26 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             // Start test code
-            //if (this.inverterStatus is AngInverterStatus currentStatus)
-            //{
-            //    this.Logger.LogTrace($"1:CurrentPositionAxisVertical = {currentStatus.CurrentPositionAxisVertical}");
-            //    this.Logger.LogTrace($"2:data.TargetPosition = {this.data.TargetPosition}");
+            if (this.inverterStatus is AngInverterStatus currentStatus)
+            {
+                this.Logger.LogTrace($"1:CurrentPositionAxisVertical = {currentStatus.CurrentPositionAxisVertical}");
+                this.Logger.LogTrace($"2:data.TargetPosition = {this.data.TargetPosition}");
 
-            //    if (currentStatus.CurrentPositionAxisVertical != this.data.TargetPosition)
-            //    {
-            //        this.CurrentState = new PositioningStartState(this, this.data, this.inverterStatus, this.Logger);
-            //    }
-            //    else
-            //    {
-            //        this.CurrentState = new PositioningEndState(this, this.inverterStatus, this.Logger);
-            //    }
+                if (currentStatus.CurrentPositionAxisVertical != this.data.TargetPosition)
+                {
+                    this.CurrentState = new PositioningStartState(this, this.data, this.inverterStatus, this.Logger);
+                }
+                else
+                {
+                    this.CurrentState = new PositioningEndState(this, this.inverterStatus, this.Logger);
+                }
 
-            //    this.CurrentState?.Start();
-            //}
+                this.CurrentState?.Start();
+            }
             // End test code
 
-            this.CurrentState = new PositioningStartState(this, this.data, this.inverterStatus, this.Logger);
-            this.CurrentState?.Start();
+            //this.CurrentState = new PositioningStartState(this, this.data, this.inverterStatus, this.Logger);
+            //this.CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)
