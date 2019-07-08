@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;

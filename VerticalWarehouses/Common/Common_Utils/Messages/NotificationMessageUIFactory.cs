@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.Common_Utils.Messages
+namespace Ferretto.VW.CommonUtils.Messages
 {
     public static class NotificationMessageUIFactory
     {

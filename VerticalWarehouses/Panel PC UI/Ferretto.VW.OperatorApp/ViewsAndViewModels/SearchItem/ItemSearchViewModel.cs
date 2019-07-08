@@ -1,19 +1,17 @@
-﻿using System.Threading.Tasks;
-using System;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls;
-using System.Collections.ObjectModel;
-using System.Threading;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -25,19 +23,23 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private const int DEFAULT_QUANTITY_ITEM = 20;
 
+        private readonly IBayManager bayManager;
+
+        private readonly CustomControlArticleDataGridViewModel dataGridViewModelRef;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly INavigationService navigationService;
 
         private readonly SynchronizationContext uiContext;
 
-        private string availableQuantity;
+        private readonly IWmsDataProvider wmsDataProvider;
 
-        private IUnityContainer container;
+        private string availableQuantity;
 
         private int currentItemIndex;
 
         private BindableBase dataGridViewModel;
-
-        private CustomControlArticleDataGridViewModel dataGridViewModelRef;
 
         private ICommand downDataGridButtonCommand;
 
@@ -61,15 +63,52 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private ICommand upDataGridButtonCommand;
 
-        private IWmsDataProvider wmsDataProvider;
-
         #endregion
 
         #region Constructors
 
-        public ItemSearchViewModel(IEventAggregator eventAggregator)
+        public ItemSearchViewModel(
+            IEventAggregator eventAggregator,
+            IFeedbackNotifier feedbackNotifier,
+            IWmsDataProvider wmsDataProvider,
+            IBayManager bayManager,
+            INavigationService navigationService,
+            ICustomControlArticleDataGridViewModel articleDataGridViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (feedbackNotifier == null)
+            {
+                throw new ArgumentNullException(nameof(feedbackNotifier));
+            }
+
+            if (wmsDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(wmsDataProvider));
+            }
+
+            if (bayManager == null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
+            if (navigationService == null)
+            {
+                throw new ArgumentNullException(nameof(navigationService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.FeedbackNotifier = feedbackNotifier;
+            this.wmsDataProvider = wmsDataProvider;
+            this.bayManager = bayManager;
+            this.navigationService = navigationService;
+            this.ArticleDataGridViewModel = articleDataGridViewModel;
+            this.dataGridViewModelRef = articleDataGridViewModel as CustomControlArticleDataGridViewModel;
+            this.dataGridViewModel = this.dataGridViewModelRef;
+
             this.NavigationViewModel = null;
             this.uiContext = SynchronizationContext.Current;
             this.loadedItems = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
@@ -79,11 +118,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #region Properties
 
+        public ICustomControlArticleDataGridViewModel ArticleDataGridViewModel { get; }
+
         public string AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
+        public IFeedbackNotifier FeedbackNotifier { get; }
 
         public bool IsItemCallButtonActive { get => this.isItemCallButtonActive; set => this.SetProperty(ref this.isItemCallButtonActive, value); }
 
@@ -91,10 +134,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public ICommand ItemCallCommand => this.itemCallCommand ?? (this.itemCallCommand = new DelegateCommand(() => this.ItemCallMethodAsync()));
 
-        public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() =>
-                                {
-                                    NavigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
-                                }));
+        public ICommand ItemDetailButtonCommand =>
+            this.itemDetailButtonCommand
+            ??
+            (this.itemDetailButtonCommand = new DelegateCommand(() =>
+                {
+                    this.navigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
+                }));
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -197,29 +243,27 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
-            this.dataGridViewModel = this.dataGridViewModelRef;
-            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
-        }
-
         public async void ItemCallMethodAsync()
         {
-            var bay = this.container.Resolve<IBayManager>();
             this.IsItemCallButtonActive = false;
 
-            var successfullRequest = await this.wmsDataProvider.PickAsync(this.loadedItems[this.currentItemIndex].Id, 2, bay.BayId, this.RequestedQuantity);
-            if (successfullRequest)
+            var itemToPick = this.loadedItems[this.currentItemIndex];
+
+            var success = await this.wmsDataProvider.PickAsync(
+                itemToPick.Id,
+                2,
+                this.bayManager.BayId,
+                this.RequestedQuantity);
+
+            if (success)
             {
-                this.container.Resolve<IFeedbackNotifier>().Notify($"Successfully called {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
+                this.FeedbackNotifier.Notify($"Successfully called {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
                 this.RequestedQuantity = 0;
                 this.IsItemCallButtonActive = true;
             }
             else
             {
-                this.container.Resolve<IFeedbackNotifier>().Notify($"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
+                this.FeedbackNotifier.Notify($"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
                 this.RequestedQuantity = 0;
                 this.IsItemCallButtonActive = true;
             }

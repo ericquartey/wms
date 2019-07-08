@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.App
 {
     public partial class MainWindow : Window, IMainWindow
     {
@@ -23,10 +23,5 @@ namespace Ferretto.VW.VWApp
         }
 
         #endregion
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

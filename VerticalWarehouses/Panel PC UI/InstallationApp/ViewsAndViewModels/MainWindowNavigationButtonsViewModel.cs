@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
@@ -57,6 +57,8 @@ namespace Ferretto.VW.InstallationApp
         private bool isVerticalOffsetCalibrationButtonActive;
 
         private bool isWeightControlButtonActive;
+
+        private BindableBase navigationViewModel;
 
         #endregion
 
@@ -126,7 +128,11 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
 
-        public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public BindableBase NavigationViewModel
+        {
+            get => this.navigationViewModel;
+            set => this.SetProperty(ref this.navigationViewModel, value);
+        }
 
         #endregion
 

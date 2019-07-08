@@ -28,7 +28,9 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator = eventAggregator;
             this.InitializeComponent();
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { this.HideAndUnsubscribe(); }, ThreadOption.PublisherThread, false,
+                (message) => { this.HideAndUnsubscribe(); },
+                ThreadOption.PublisherThread,
+                false,
                 message => message.Type == InstallationApp_EventMessageType.BackToVWApp);
             FinishedMachineModeChangeStateEventHandler += () => { };
             FinishedMachineOnMarchChangeStateEventHandler += () => { };

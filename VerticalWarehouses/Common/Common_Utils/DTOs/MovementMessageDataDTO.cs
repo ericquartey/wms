@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.DTOs
+namespace Ferretto.VW.CommonUtils.DTOs
 {
     public class MovementMessageDataDto
     {

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IWebApiExceptionMessageData : IMessageData
     {

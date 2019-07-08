@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.AspNetCore.Mvc;

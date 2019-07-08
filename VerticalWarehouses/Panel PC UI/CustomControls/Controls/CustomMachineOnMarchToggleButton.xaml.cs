@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomMachineOnMarchToggleButton.xaml
