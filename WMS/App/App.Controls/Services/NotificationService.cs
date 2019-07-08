@@ -11,13 +11,13 @@ namespace Ferretto.WMS.App.Controls.Services
     {
         #region Fields
 
+        private readonly IDataHubClient dataHubClient;
+
         private readonly IDialogService dialogService;
 
         private readonly IEventService eventService;
 
         private readonly Logger logger;
-
-        private readonly IDataHubClient dataHubClient;
 
         private bool isServiceHubConnected;
 
@@ -80,12 +80,6 @@ namespace Ferretto.WMS.App.Controls.Services
             await this.dataHubClient.ConnectAsync();
         }
 
-        private void NotifyErrorDialog()
-        {
-            var msg = this.isServiceHubConnected ? General.ConnetionToDataServiceRestored : General.ErrorOnConnetionToDataService;
-            this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
-        }
-
         private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             this.IsServiceHubConnected = e.IsConnected;
@@ -103,6 +97,12 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             this.eventService
                 .Invoke(new MachineStatusPubSubEvent(e.MachineStatus));
+        }
+
+        private void NotifyErrorDialog()
+        {
+            var msg = this.isServiceHubConnected ? General.ConnetionToDataServiceRestored : General.ErrorOnConnetionToDataService;
+            this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 
         #endregion

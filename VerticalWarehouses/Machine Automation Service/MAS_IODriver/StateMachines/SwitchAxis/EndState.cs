@@ -4,8 +4,8 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
     public class EndState : IoStateBase
@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         #region Fields
 
         private readonly Axis axisToSwitchOn;
-
-        private readonly ILogger logger;
 
         private readonly IoSHDStatus status;
 
@@ -24,14 +22,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public EndState(Axis axisToSwitchOn, IoSHDStatus status, ILogger logger, IIoStateMachine parentStateMachine)
+        public EndState(
+            Axis axisToSwitchOn,
+            IoSHDStatus status,
+            ILogger logger,
+            IIoStateMachine parentStateMachine)
+            : base(parentStateMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
             this.status = status;
-            this.ParentStateMachine = parentStateMachine;
             this.axisToSwitchOn = axisToSwitchOn;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -49,21 +50,26 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace($"1:Message processed: {message}");
+            this.Logger.LogTrace($"1:Message processed: {message}");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogTrace($"1:Message processed: {message}");
+            this.Logger.LogTrace($"1:Message processed: {message}");
         }
 
         public override void Start()
         {
             var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
-            var endNotification = new FieldNotificationMessage(messageData, "Motor Switch complete", FieldMessageActor.Any,
-                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
+            var endNotification = new FieldNotificationMessage(
+                messageData,
+                "Motor Switch complete",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.SwitchAxis,
+                MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }

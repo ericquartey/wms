@@ -14,6 +14,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using System.Windows.Media;
 using System.Drawing;
+using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -21,7 +22,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
     {
         #region Fields
 
-        private TestArticle article;
+        private DataGridItem article;
 
         private string articleCode;
 
@@ -49,7 +50,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #region Properties
 
-        public TestArticle Article
+        public DataGridItem Article
         {
             get => this.article;
             set

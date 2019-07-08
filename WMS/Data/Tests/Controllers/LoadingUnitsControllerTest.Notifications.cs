@@ -175,11 +175,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            await controller.WithdrawAsync(this.LoadingUnit1.Id, this.Bay1.Id);
+            var actionResult = await controller.WithdrawAsync(this.LoadingUnit1.Id, this.Bay1.Id);
 
             #endregion
 
             #region Assert
+
+            Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), GetDescription(actionResult.Result));
 
             Assert.IsTrue(
                 notificationService
@@ -193,7 +195,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 notificationService
                     .SentNotifications
                     .Any(
-                        n => n.ModelType == typeof(MissionExecution)
+                        n => n.ModelType == typeof(Mission)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
             Assert.IsTrue(

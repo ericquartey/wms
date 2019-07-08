@@ -155,10 +155,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.DataContext.SchedulerRequests
                .Where(r => r.Status == Common.DataModels.SchedulerRequestStatus.New)
-               .Where(r => r.BayId.HasValue
-                    && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
-                        m.Status != Common.DataModels.MissionStatus.Completed
-                        && m.Status != Common.DataModels.MissionStatus.Incomplete))
                .Where(r => !r.ListRowId.HasValue
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
                     || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Ready))

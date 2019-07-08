@@ -5,15 +5,13 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public abstract class StateMachineBase : IStateMachine
     {
         #region Fields
-
-        protected readonly ILogger Logger;
 
         private bool disposed;
 
@@ -23,6 +21,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected StateMachineBase(IEventAggregator eventAggregator, ILogger logger)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             this.Logger = logger;
             this.EventAggregator = eventAggregator;
         }
@@ -44,6 +47,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected IEventAggregator EventAggregator { get; }
 
+        protected ILogger Logger { get; }
+
         #endregion
 
         #region Methods
@@ -51,7 +56,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-            lock (CurrentState)
+            lock (this.CurrentState)
             {
                 this.CurrentState = newState;
                 this.CurrentState.Start();

@@ -60,7 +60,7 @@ namespace Ferretto.Common.DataModels
 
         public string MeasureUnitId { get; set; }
 
-        public IEnumerable<Mission> Missions { get; set; }
+        public IEnumerable<MissionOperation> MissionOperations { get; set; }
 
         public string Note { get; set; }
 

@@ -25,13 +25,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(this.Machine1.Id);
 
             #endregion
 
             #region Assert
 
-            var resultMachine = (MachineDetails)((OkObjectResult)actionResult.Result).Value;
+            var resultMachine = ((OkObjectResult)actionResult.Result).Value as MachineDetails;
             var totalWeight = this.LoadingUnit1.Weight + this.LoadingUnit2.Weight;
             Assert.IsTrue(resultMachine.GrossWeight == totalWeight);
 
@@ -49,13 +49,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(this.Machine1.Id);
 
             #endregion
 
             #region Assert
 
-            var resultMachine = (MachineDetails)((OkObjectResult)actionResult.Result).Value;
+            var resultMachine = ((OkObjectResult)actionResult.Result).Value as MachineDetails;
             var netMaxWeight = this.Machine1.TotalMaxWeight -
                 this.Machine1.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight));
             Assert.IsTrue(resultMachine.NetMaxWeight == netMaxWeight);
@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(this.Machine1.Id);
 
             #endregion
 

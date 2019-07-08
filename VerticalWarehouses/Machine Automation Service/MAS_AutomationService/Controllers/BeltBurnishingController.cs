@@ -120,7 +120,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-
                         {
                             return this.NotFound("Parameter not found");
                         }
@@ -143,7 +142,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             value2 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)horizontalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-
                         {
                             return this.NotFound("Parameter not found");
                         }
@@ -164,7 +162,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             value3 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-
                         {
                             return this.NotFound("Parameter not found");
                         }

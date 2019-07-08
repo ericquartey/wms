@@ -92,9 +92,11 @@
     <system:Double x:Key="FontSizeSmall">12</system:Double>
     <system:Double x:Key="FontSizeMedium">18</system:Double>
 
-    <!-- Input controls default Height  -->
+    <!--  Input controls default Height  -->
     <system:Double x:Key="InputControlHeight">22</system:Double>
 
+    <!--  Ruler default font size  -->
+    <system:Int32 x:Key="RulerFontSize">8</system:Int32>
 
     <!--  StatusBar  -->
     <system:Double x:Key="StatusBarHeight">20</system:Double>
@@ -114,3 +116,4 @@
                      Color="{StaticResource Black}" />
 
 </ResourceDictionary>
+

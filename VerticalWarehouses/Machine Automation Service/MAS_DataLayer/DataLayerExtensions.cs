@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private static OperationBuilder<SqlOperation> CreateUser(this MigrationBuilder migrationBuilder)
         {
-            return migrationBuilder.Sql("");
+            return migrationBuilder.Sql(string.Empty);
         }
 
         #endregion

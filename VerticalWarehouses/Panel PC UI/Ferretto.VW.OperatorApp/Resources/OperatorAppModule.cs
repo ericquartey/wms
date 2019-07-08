@@ -1,22 +1,22 @@
-﻿using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Modularity;
-using Prism.Events;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-using Ferretto.VW.CustomControls.Interfaces;
+﻿using System.Configuration;
 using Ferretto.VW.CustomControls.Controls;
-using System.Configuration;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
+using Prism.Events;
 using Prism.Ioc;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Prism.Modularity;
+using Unity;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -26,9 +26,9 @@ namespace Ferretto.VW.OperatorApp.Resources
 
         private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
-        private readonly string operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
+        private readonly IUnityContainer container;
 
-        private IUnityContainer container;
+        private readonly string operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
 
         #endregion
 
@@ -117,6 +117,16 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMachineStatisticsViewModel>(machineStatisticsVMInstance);
 
             this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
+            this.container.RegisterType<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
+            this.container.RegisterType<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
+            this.container.RegisterType<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
+            this.container.RegisterType<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
+            this.container.RegisterType<ICustomControlListDataGridViewModel, CustomControlListDataGridViewModel>();
+            this.container.RegisterType<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
+            this.container.RegisterType<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
+            this.container.RegisterType<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
+            this.container.RegisterType<ICustomControlItemStatisticsDataGridViewModel, CustomControlItemStatisticsDataGridViewModel>();
+            this.container.RegisterType<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
 
             navigationServiceInstance.Initialize(this.container);
             feedbackNotifier.Initialize(this.container);
@@ -132,8 +142,21 @@ namespace Ferretto.VW.OperatorApp.Resources
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
             itemSearchVMInstance.InitializeViewModel(this.container);
             itemDetailVMInstance.InitializeViewModel(this.container);
-            bayManagerInstance.Initialize(this.container);
+            cellsStatisticsVMInstance.InitializeViewModel(this.container);
+            drawerSpaceSaturationVMInstance.InitializeViewModel(this.container);
+            immediateDrawerCallVMInstance.InitializeViewModel(this.container);
+            errorsStatisticsVMInstance.InitializeViewModel(this.container);
+            listsInWaitVMInstance.InitializeViewModel(this.container);
+            maintenanceMainPageVMInstance.InitializeViewModel(this.container);
+            drawerWeightSaturationVMInstance.InitializeViewModel(this.container);
+            maintenanceDetailVMInstance.InitializeViewModel(this.container);
+            detailListInWaitVMInstance.InitializeViewModel(this.container);
+            machineStatisticsVMInstance.InitializeViewModel(this.container);
+            drawerActivityPickingDetailVMInstance.InitializeViewModel(this.container);
+            drawerActivityInventoryDetailVMInstance.InitializeViewModel(this.container);
+            drawerActivityRefillingDetailVMInstance.InitializeViewModel(this.container);
 
+            bayManagerInstance.Initialize(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
         }
 

@@ -1,8 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
+using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Editors.Flyout;
+using DevExpress.Xpf.Editors.Flyout.Native;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -21,6 +28,22 @@ namespace Ferretto.WMS.App.Controls
                                                  typeof(ActionBarInputPanelControl),
                                                  new FrameworkPropertyMetadata(default(string), null));
 
+        public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(
+                                                        nameof(FocusedStart),
+                                        typeof(string),
+                                        typeof(ActionBarInputPanelControl),
+                                        new FrameworkPropertyMetadata(default(string), null));
+
+        #endregion
+
+        #region Constructors
+
+        public ActionBarInputPanelControl()
+        {
+            var component = this;
+            DependencyPropertyDescriptor.FromProperty(IsOpenProperty, typeof(FlyoutBase)).AddValueChanged(component, handler: this.FlyoutControl_IsOpenChanged);
+        }
+
         #endregion
 
         #region Properties
@@ -35,6 +58,12 @@ namespace Ferretto.WMS.App.Controls
         {
             get => (string)this.GetValue(AttachedBarItemProperty);
             set => this.SetValue(AttachedBarItemProperty, value);
+        }
+
+        public string FocusedStart
+        {
+            get => (string)this.GetValue(FocusedStartProperty);
+            set => this.SetValue(FocusedStartProperty, value);
         }
 
         #endregion
@@ -64,6 +93,39 @@ namespace Ferretto.WMS.App.Controls
                     buttonItem.ItemClick += this.AttachedActionBarItem_ItemClick;
                 }
             }
+
+            var parent = LayoutTreeHelper.GetVisualParents(this).OfType<WmsView>().FirstOrDefault();
+            if (parent is WmsView wmsView)
+            {
+                wmsView.Unloaded += this.Parent_Unloaded;
+            }
+        }
+
+        private void FlyoutControl_IsOpenChanged(object sender, EventArgs e)
+        {
+            var flyoutControl = sender as FlyoutControl;
+            if (flyoutControl.IsOpen)
+            {
+                flyoutControl.Dispatcher.BeginInvoke(
+                        DispatcherPriority.ApplicationIdle,
+                        this.SetFocus(flyoutControl));
+            }
+        }
+
+        private void Parent_Unloaded(object sender, RoutedEventArgs e)
+        {
+            DependencyPropertyDescriptor.FromProperty(FlyoutBase.IsOpenProperty, typeof(FlyoutBase)).RemoveValueChanged(this, this.FlyoutControl_IsOpenChanged);
+        }
+
+        private Action SetFocus(FlyoutBase flyout)
+        {
+            return () =>
+            {
+                if (LayoutTreeHelper.GetVisualChildren(flyout.ChildContainer).OfType<BaseEdit>().FirstOrDefault(ui => ui.Name == this.FocusedStart) is BaseEdit elementToFocus)
+                {
+                    elementToFocus.Focus();
+                }
+            };
         }
 
         #endregion

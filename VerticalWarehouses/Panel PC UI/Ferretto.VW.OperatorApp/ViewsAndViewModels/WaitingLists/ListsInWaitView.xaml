@@ -36,18 +36,13 @@
                                                ContentText="Lista non eseguibile nella macchina corrente"
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
-        <DataGrid HorizontalAlignment="Left" Height="400" Margin="140,90,0,0" VerticalAlignment="Top" Width="650" FontFamily="Helvetica Neue" FontSize="16"
-                  Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-                  HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                  RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
-            
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Tipo" CanUserResize="False" MaxWidth="100" MinWidth="100"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Lista" CanUserResize="False" MaxWidth="100" MinWidth="100"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Descrizione" MaxWidth="280" MinWidth="280"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Macchine"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                        Height="410"
+                        Margin="170,90,0,0"
+                        VerticalAlignment="Top"
+                        Width="600"
+                        Content="{Binding DataGridViewModel}">
+        </ContentControl>
 
     </Grid>
 </UserControl>

@@ -45,9 +45,6 @@ namespace Ferretto.WMS.App.Modules.BLL
                 case Common.Utils.Modules.Scheduler.SCHEDULERREQUESTS:
                     return GetSchedulerRequestDataSources<TModel, TKey>();
 
-                case Common.Utils.Modules.MasterData.CHOOSELOADINGUNITSTEP:
-                    return GetLoadingUnitStepDataSources<TModel, TKey>();
-
                 default:
                     return new List<IDataSource<TModel, TKey>>();
             }
@@ -294,20 +291,6 @@ namespace Ferretto.WMS.App.Modules.BLL
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
-        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetLoadingUnitStepDataSources<TModel, TKey>()
-                            where TModel : IModel<TKey>
-        {
-            var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-
-            return new List<PagedDataSource<LoadingUnit, int>>
-            {
-                new PagedDataSource<LoadingUnit, int>(
-                    "ChooseLoadingUnitStepViewAll",
-                    Resources.MasterData.LoadingUnitAll,
-                    loadingUnitProvider),
-            }.Cast<IFilterDataSource<TModel, TKey>>();
-        }
-
         private static IEnumerable<IDataSource<TModel, TKey>> GetMachinesDataSources<TModel, TKey>()
                             where TModel : IModel<TKey>
         {
@@ -321,44 +304,42 @@ namespace Ferretto.WMS.App.Modules.BLL
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewAll",
                     Resources.Machines.MachineAll,
-                    async () => await machineProvider.GetAllAsync(0, int.MaxValue)),
+                    async () => await machineProvider.GetAllAsync(0, 0)),
 
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagXS",
                     Resources.Machines.MachineVertimagXS,
-                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagXSFilter)),
+                    async () => await machineProvider.GetAllAsync(0, 0, null, vertimagXSFilter)),
 
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagM",
                     Resources.Machines.MachineVertimagM,
-                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagMFilter))
+                    async () => await machineProvider.GetAllAsync(0, 0, null, vertimagMFilter))
             }.Cast<IDataSource<TModel, TKey>>();
         }
 
-        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
+        private static IEnumerable<IDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
             where TModel : IModel<TKey>
         {
             var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
 
-            return new List<PagedDataSource<Mission, int>>
+            return new List<DataSourceCollection<Mission, int>>
             {
-                new PagedDataSource<Mission, int>(
+                new DataSourceCollection<Mission, int>(
                     "MissionViewAll",
                     Resources.Scheduler.MissionAll,
-                    missionProvider),
+                    async () => await missionProvider.GetAllAsync(0, 0)),
 
-                new PagedDataSource<Mission, int>(
+                new DataSourceCollection<Mission, int>(
                     "MissionViewStatusCompleted",
                     Resources.Scheduler.MissionStatusCompleted,
-                    missionProvider,
-                    $"[Status] == '{MissionStatus.Completed}'"),
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.Completed}'")),
 
-                new PagedDataSource<Mission, int>(
+                new DataSourceCollection<Mission, int>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
-                    missionProvider,
-                    $"[Status] == '{MissionStatus.New}'")
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.New}'"))
+            }.Cast<IDataSource<TModel, TKey>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetSchedulerRequestDataSources<TModel, TKey>()

@@ -55,23 +55,37 @@ namespace Ferretto.VW.MAS_IODriver
         public async Task ConnectAsync()
         {
             if (this.ioAddress == null)
-                throw new ArgumentNullException(nameof(this.ioAddress),
+            {
+                throw new ArgumentNullException(
+                    nameof(this.ioAddress),
                     $"{nameof(this.ioAddress)} can't be null");
+            }
 
             if (this.ioAddress.AddressFamily != AddressFamily.InterNetwork)
-                throw new ArgumentException("IODevice Address is not a valid IPV4 address",
+            {
+                throw new ArgumentException(
+                    "IODevice Address is not a valid IPV4 address",
                     nameof(this.ioAddress));
+            }
 
             if (this.sendPort == 0)
+            {
                 throw new ArgumentNullException(nameof(this.sendPort), $"{nameof(this.sendPort)} can't be zero");
+            }
 
             if (this.sendPort < 1024 || this.sendPort > 65535)
-                throw new ArgumentOutOfRangeException(nameof(this.sendPort),
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(this.sendPort),
                     $"{nameof(this.sendPort)} value must be between 1204 and 65535");
+            }
 
             if (this.transportClient != null || this.transportStream != null)
-                throw new IoDriverException("Socket Transport is already open",
+            {
+                throw new IoDriverException(
+                    "Socket Transport is already open",
                     IoDriverExceptionCode.SocketOpen);
+            }
 
             try
             {
@@ -79,8 +93,10 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new IoDriverException("Failed to create Transport Socket client",
-                    IoDriverExceptionCode.TcpClientCreationFailed, ex);
+                throw new IoDriverException(
+                    "Failed to create Transport Socket client",
+                    IoDriverExceptionCode.TcpClientCreationFailed,
+                    ex);
             }
 
             try
@@ -91,8 +107,10 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.transportClient?.Dispose();
                 this.transportClient = null;
-                throw new IoDriverException("Failed to connect to IO Hardware",
-                    IoDriverExceptionCode.TcpInverterConnectionFailed, ex);
+                throw new IoDriverException(
+                    "Failed to connect to IO Hardware",
+                    IoDriverExceptionCode.TcpInverterConnectionFailed,
+                    ex);
             }
 
             try
@@ -103,8 +121,10 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.transportClient?.Dispose();
                 this.transportClient = null;
-                throw new IoDriverException("Failed to retrieve socket communication stream",
-                    IoDriverExceptionCode.GetNetworkStreamFailed, ex);
+                throw new IoDriverException(
+                    "Failed to retrieve socket communication stream",
+                    IoDriverExceptionCode.GetNetworkStreamFailed,
+                    ex);
             }
         }
 
@@ -132,12 +152,18 @@ namespace Ferretto.VW.MAS_IODriver
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
-                throw new IoDriverException("Transport Stream is null",
+            {
+                throw new IoDriverException(
+                    "Transport Stream is null",
                     IoDriverExceptionCode.UninitializedNetworkStream);
+            }
 
             if (!this.transportStream.CanRead)
-                throw new IoDriverException("Transport Stream not configured for reading data",
+            {
+                throw new IoDriverException(
+                    "Transport Stream not configured for reading data",
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
+            }
 
             try
             {
@@ -155,8 +181,10 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new IoDriverException("Error reading data from Transport Stream",
-                    IoDriverExceptionCode.NetworkStreamReadFailure, ex);
+                throw new IoDriverException(
+                    "Error reading data from Transport Stream",
+                    IoDriverExceptionCode.NetworkStreamReadFailure,
+                    ex);
             }
 
             return this.receiveBuffer;
@@ -166,12 +194,18 @@ namespace Ferretto.VW.MAS_IODriver
         public async ValueTask<int> WriteAsync(byte[] message, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
-                throw new IoDriverException("Transport Stream is null",
+            {
+                throw new IoDriverException(
+                    "Transport Stream is null",
                     IoDriverExceptionCode.UninitializedNetworkStream);
+            }
 
             if (!this.transportStream.CanWrite)
-                throw new IoDriverException("Transport Stream not configured for sending data",
+            {
+                throw new IoDriverException(
+                    "Transport Stream not configured for sending data",
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
+            }
 
             try
             {
@@ -189,12 +223,18 @@ namespace Ferretto.VW.MAS_IODriver
         public async ValueTask<int> WriteAsync(byte[] message, int delay, CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
-                throw new IoDriverException("Transport Stream is null",
+            {
+                throw new IoDriverException(
+                    "Transport Stream is null",
                     IoDriverExceptionCode.UninitializedNetworkStream);
+            }
 
             if (!this.transportStream.CanWrite)
-                throw new IoDriverException("Transport Stream not configured for sending data",
+            {
+                throw new IoDriverException(
+                    "Transport Stream not configured for sending data",
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
+            }
 
             try
             {

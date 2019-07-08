@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Ferretto.VW.MAS_IODriver.Enumerations;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver
 {
     public class IoMessage

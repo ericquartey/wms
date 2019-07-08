@@ -201,7 +201,7 @@
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         wms:ShowTitle.Show="True"
-                                        DisplayMember="Description"
+                                        DisplayMember="Code"
                                         EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
                                         PopupWidth="500"

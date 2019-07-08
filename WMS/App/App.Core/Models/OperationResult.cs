@@ -18,6 +18,7 @@ namespace Ferretto.WMS.App.Core.Models
         public OperationResult(System.Exception exception)
         {
             this.Success = false;
+
             if (exception != null)
             {
                 if (exception is SwaggerException<ProblemDetails> swaggerException)

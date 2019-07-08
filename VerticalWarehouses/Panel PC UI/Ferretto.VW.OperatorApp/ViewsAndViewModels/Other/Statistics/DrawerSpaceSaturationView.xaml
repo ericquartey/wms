@@ -20,20 +20,13 @@
                                                    ContentText="3.050 x 840"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}"/>
 
-            <DataGrid    HorizontalAlignment="Left" Height="340" Margin="140,150,0,0" VerticalAlignment="Top" Width="650" FontFamily="Helvetica Neue" FontSize="16"
-                         Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-                         HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                         RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cassetto" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Missioni" CanUserResize="False" MaxWidth="90" MinWidth="90"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Scomparti" CanUserResize="False" MaxWidth="110" MinWidth="110"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Riempimento" MaxWidth="120" MinWidth="120"/>
-                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% riempimento" MaxWidth="150" MinWidth="150"/>
-                </DataGrid.Columns>
-
-            </DataGrid>
+        <ContentControl HorizontalAlignment="Left"
+                      Height="330"
+                      Margin="180,170,0,0"
+                      VerticalAlignment="Top"
+                      Width="600"
+                      Content="{Binding DataGridViewModel}">
+        </ContentControl>
         
             <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" MaxWidth="300"
                                                    ContentText="55"

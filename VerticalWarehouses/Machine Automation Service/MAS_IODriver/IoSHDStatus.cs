@@ -57,14 +57,14 @@ namespace Ferretto.VW.MAS_IODriver
             this.setupOutputLines = SETUP_OUTPUTLINES_DEFAULT;
             this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
             this.useSetupOutputLines = false;
-            this.ipAddress = "";
+            this.ipAddress = string.Empty;
         }
 
         #endregion
 
         #region Properties
 
-        public bool AntiIntrusionShutterBay => this.inputs?[4] ?? false;
+        public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionShutterBay] ?? false;
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
@@ -72,13 +72,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
-        public bool CradleMotorSelected => this.inputs?[9] ?? false;
+        public bool CradleMotorSelected => this.inputs?[(int)IoPorts.CradleMotorFeedback] ?? false;
 
         public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
-        public bool ElevatorMotorSelected => this.inputs?[8] ?? false;
+        public bool ElevatorMotorSelected => this.inputs?[(int)IoPorts.ElevatorMotorFeedback] ?? false;
 
         public SHDFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
 
@@ -89,21 +89,21 @@ namespace Ferretto.VW.MAS_IODriver
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
-        public bool LoadingUnitExistenceInBay => this.inputs?[5] ?? false;
+        public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitExistenceInBay] ?? false;
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
-        public bool MicroCarterLeftSideBay => this.inputs?[2] ?? false;
+        public bool MicroCarterLeftSideBay => this.inputs?[(int)IoPorts.MicroCarterLeftSideBay] ?? false;
 
-        public bool MicroCarterRightSideBay => this.inputs?[3] ?? false;
+        public bool MicroCarterRightSideBay => this.inputs?[(int)IoPorts.MicroCarterRightSideBay] ?? false;
 
-        public bool MushroomEmergency => this.inputs?[1] ?? false;
+        public bool MushroomEmergency => this.inputs?[(int)IoPorts.MushroomEmergency] ?? false;
 
         public bool[] OutputData => this.outputs;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
-        public bool SecurityFunctionActive => this.inputs?[0] ?? false;
+        public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
 
@@ -112,7 +112,6 @@ namespace Ferretto.VW.MAS_IODriver
         #endregion
 
         // Add other output signals names
-
         #region Methods
 
         public bool MatchOutputs(bool[] outputsState)

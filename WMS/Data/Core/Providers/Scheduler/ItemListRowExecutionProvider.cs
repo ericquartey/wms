@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -89,17 +90,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             int areaId,
             int? bayId)
         {
-            var row = await this.GetByIdAsync(id);
-            if (row == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                return new NotFoundOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                    null,
-                    string.Format(
-                        Resources.Errors.UnableToExecuteTheListRowBecauseNoRowExists,
-                        id));
-            }
+                var row = await this.GetByIdAsync(id);
+                if (row == null)
+                {
+                    return new NotFoundOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        null,
+                        string.Format(
+                            Resources.Errors.UnableToExecuteTheListRowBecauseNoRowExists,
+                            id));
+                }
 
-            return await this.ExecutionAsync(row, areaId, bayId, false);
+                var result = await this.ExecutionAsync(row, areaId, bayId, false);
+
+                if (result.Success)
+                {
+                    scope.Complete();
+                }
+
+                return result;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionInListAsync(
@@ -228,18 +239,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(updateResult.Description);
             }
 
-            if (!executeAsPartOfList)
+            if (!executeAsPartOfList && bayId.HasValue)
             {
-                if (bayId.HasValue)
-                {
-                    await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
-                }
+                await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
+            }
 
-                var createResult = await this.schedulerRequestSchedulerProvider.CreateRangeAsync(rowRequests);
-                if (!createResult.Success)
-                {
-                    return new CreationErrorOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(createResult.Description);
-                }
+            var createResult = await this.schedulerRequestSchedulerProvider.CreateRangeAsync(rowRequests);
+            if (!createResult.Success)
+            {
+                return new CreationErrorOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(createResult.Description);
             }
 
             return new SuccessOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(rowRequests);

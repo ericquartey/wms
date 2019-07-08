@@ -18,48 +18,53 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}"
-                       Visibility="{Binding IsAdd, Converter={StaticResource BTVC}}">
+        <Grid Visibility="{Binding IsHeaderVisible, Converter={StaticResource BTVC}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}"
+                           Visibility="{Binding IsAdd, Converter={StaticResource BTVC}}">
 
-            <wms:ActionBarItem Command="{Binding CreateCommand}"
-                               Content="{x:Static res:General.Create}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
-                               GlyphSize="Custom"
-                               IsVisible="{Binding IsAdd}" />
+                <wms:ActionBarItem Command="{Binding CreateCommand}"
+                                   Content="{x:Static res:General.Create}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
+                                   GlyphSize="Custom"
+                                   IsVisible="{Binding IsAdd}" />
 
-            <wms:ActionBarItem Command="{Binding CancelCommand}"
-                               Content="{x:Static res:General.Cancel}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
-                               GlyphSize="Custom" />
-        </wms:ActionBar>
+                <wms:ActionBarItem Command="{Binding CancelCommand}"
+                                   Content="{x:Static res:General.Cancel}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}"
+                           Visibility="{Binding IsAdd, Converter={StaticResource BTVIC}}">
 
-        <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}"
-                       Visibility="{Binding IsAdd, Converter={StaticResource BTVIC}}">
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
+                                   Content="{x:Static res:General.Save}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding SaveReason}" />
 
-            <wms:ActionBarItem Command="{Binding SaveCommand}"
-                               Content="{x:Static res:General.Save}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding SaveReason}" />
+                <wms:ActionBarItem Command="{Binding DeleteCompartmentCommand}"
+                                   Content="{x:Static res:General.Delete}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding DeleteReason}" />
 
-            <wms:ActionBarItem Command="{Binding DeleteCompartmentCommand}"
-                               Content="{x:Static res:General.Delete}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding DeleteReason}" />
+                <wms:ActionBarItem Command="{Binding CancelCommand}"
+                                   Content="{x:Static res:General.Cancel}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+        </Grid>
 
-            <wms:ActionBarItem Command="{Binding CancelCommand}"
-                               Content="{x:Static res:General.Cancel}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
-                               GlyphSize="Custom" />
-        </wms:ActionBar>
         <ScrollViewer x:Name="ScrollView"
                       Grid.Row="1">
 
@@ -157,7 +162,7 @@
                                     Grid.ColumnSpan="3"
                                     wms:ShowTitle.Show="True"
                                     AllowUpdateTwoWayBoundPropertiesOnSynchronization="False"
-                                    DisplayMember="Description"
+                                    DisplayMember="Code"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                     PopupWidth="500"
@@ -236,6 +241,7 @@
                         <wms:AccordionItem FontSize="12"
                                            FontWeight="Normal"
                                            IsExpandButtonVisible="True"
+                                           IsExpanded="{Binding ShowDetails}"
                                            TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
                             <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
@@ -288,11 +294,13 @@
             </GroupBox>
 
         </ScrollViewer>
-        <TextBlock Grid.Row="2"
-                   Grid.ColumnSpan="3"
-                   MaxWidth="300"
-                   Style="{DynamicResource TextBlockErrorMessageStyle}"
-                   Text="{Binding Model.Error}"
-                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+        <ContentControl Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Visibility="{Binding IsErrorsVisible, Converter={StaticResource BTVC}}">
+            <TextBlock MaxWidth="300"
+                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                       Text="{Binding Model.Error}"
+                       Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+        </ContentControl>
     </Grid>
 </UserControl>

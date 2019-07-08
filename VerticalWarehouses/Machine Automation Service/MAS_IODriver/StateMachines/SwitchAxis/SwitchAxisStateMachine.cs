@@ -6,8 +6,8 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
     public class SwitchAxisStateMachine : IoStateMachineBase
@@ -32,17 +32,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(
+            Axis axisToSwitchOn,
+            bool switchOffOtherAxis,
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.EventAggregator = eventAggregator;
             this.pulseOneTime = false;
-            this.Logger = logger;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

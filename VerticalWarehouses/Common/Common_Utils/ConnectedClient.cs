@@ -6,14 +6,14 @@
 
         public ConnectedClient(string connectionID)
         {
-            this.ConnectionID = connectionID;
+            this.ConnectionId = connectionID;
         }
 
         #endregion
 
         #region Properties
 
-        public string ConnectionID { get; set; }
+        public string ConnectionId { get; set; }
 
         #endregion
     }

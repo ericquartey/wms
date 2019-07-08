@@ -115,7 +115,6 @@ namespace Ferretto.VW.SignalRClientConsole
             //    szMsg = string.Format("{0} - {1}", DateTime.Now.ToString(), $"Received NotificationMessageUI<CurrentPositionMessageData>. Object values =>  {cp.Data.BeltBurnishingPosition.ToString()}, {cp.Data.CurrentPosition.ToString()}, {cp.Data.ExecutedCycles.ToString()}");
             //    Console.WriteLine(szMsg);
             //}
-
             if (e.NotificationMessage is NotificationMessageUI<PositioningMessageData> vp)
             {
                 Console.ForegroundColor = ConsoleColor.Green;

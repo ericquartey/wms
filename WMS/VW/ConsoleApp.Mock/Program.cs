@@ -16,7 +16,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private static int Main(string[] args)
         {
-            Views.DisplayHeader();
+            Views.DisplayHeader(null);
 
             try
             {

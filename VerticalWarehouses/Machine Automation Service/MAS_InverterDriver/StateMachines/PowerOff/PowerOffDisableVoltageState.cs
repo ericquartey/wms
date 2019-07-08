@@ -4,30 +4,18 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 {
     public class PowerOffDisableVoltageState : InverterStateBase
     {
-        #region Fields
-
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
-
-        #endregion
-
         #region Constructors
 
-        public PowerOffDisableVoltageState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public PowerOffDisableVoltageState(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
         }
 
         #endregion
@@ -45,11 +33,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
-            this.inverterStatus.CommonControlWord.EnableVoltage = false;
+            this.InverterStatus.CommonControlWord.EnableVoltage = false;
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 
-            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -57,41 +45,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
+            this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
 
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

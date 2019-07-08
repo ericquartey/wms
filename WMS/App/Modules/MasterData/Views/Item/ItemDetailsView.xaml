@@ -248,6 +248,7 @@
                                     <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
                                                                     AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
                                                                     AttachedBarItem="AssociateAreaBarItem"
+                                                                    FocusedStart="SelectedArea"
                                                                     IsOpen="{Binding IsAddAreaShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Style="{StaticResource inputAreaControlStyle}" />
                                     <wms:ActionBar x:Name="AssociateAreaBar"

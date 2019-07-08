@@ -36,6 +36,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isAdd;
 
+        private bool isErrorsVisible;
+
+        private bool isHeaderVisible;
+
         private bool itemIdHasValue;
 
         private InfiniteAsyncSource itemsDataSource;
@@ -43,6 +47,18 @@ namespace Ferretto.WMS.Modules.MasterData
         private AppearMode mode;
 
         private Item selectedItem;
+
+        private bool showDetails;
+
+        #endregion
+
+        #region Constructors
+
+        public CompartmentEditViewModel()
+        {
+            this.IsHeaderVisible = true;
+            this.IsErrorsVisible = true;
+        }
 
         #endregion
 
@@ -75,25 +91,32 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isAdd, value);
         }
 
+        public bool IsErrorsVisible
+        {
+            get => this.isErrorsVisible;
+            set => this.SetProperty(ref this.isErrorsVisible, value);
+        }
+
+        public bool IsHeaderVisible
+        {
+            get => this.isHeaderVisible;
+            set => this.SetProperty(ref this.isHeaderVisible, value);
+        }
+
         public bool IsItemDetailsEnabled
         {
             get
             {
-                if (this.Model == null ||
-                    !this.Model.ItemId.HasValue)
+                if (this.Model?.ItemId == null)
                 {
                     return false;
                 }
 
-                if (!this.Model.Stock.HasValue ||
-                    this.Model.Stock.Value <= 0)
-                {
-                    return false;
-                }
-
-                return true;
+                return this.Model.Stock.HasValue && this.Model.Stock.Value > 0;
             }
         }
+
+        public bool IsValidModel => this.CheckValidModel();
 
         public bool ItemIdHasValue
         {
@@ -114,7 +137,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.mode, value))
                 {
-                    this.IsAdd = (this.mode == AppearMode.Add) ? true : false;
+                    this.IsAdd = this.mode == AppearMode.Add;
                 }
             }
         }
@@ -125,37 +148,13 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedItem, value);
         }
 
+        public bool ShowDetails { get => this.showDetails; set => this.SetProperty(ref this.showDetails, value); }
+
         #endregion
 
         #region Methods
 
-        public async Task InitializeDataAsync()
-        {
-            if (this.mode == AppearMode.Add)
-            {
-                this.Title = App.Resources.MasterData.AddCompartment;
-                this.ColorRequired = ColorRequired.CreateMode;
-            }
-            else
-            {
-                this.Title = App.Resources.MasterData.EditCompartment;
-            }
-
-            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
-
-            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
-        }
-
-        protected override void EvaluateCanExecuteCommands()
-        {
-            base.EvaluateCanExecuteCommands();
-
-            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected async Task<bool> ExecuteCreateCommandAsync()
+        public async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
@@ -187,7 +186,35 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = false;
 
-            return true;
+            return result.Success;
+        }
+
+        public async Task InitializeDataAsync()
+        {
+            if (this.mode == AppearMode.Add)
+            {
+                this.Title = App.Resources.MasterData.AddCompartment;
+                this.ColorRequired = ColorRequired.CreateMode;
+                this.ShowDetails = false;
+            }
+            else
+            {
+                this.Title = App.Resources.MasterData.EditCompartment;
+                this.ShowDetails = this.Model.HasDetails;
+            }
+
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
+            this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
+        }
+
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+
+            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
@@ -241,7 +268,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
-                if (this.Model.ItemId.HasValue)
+                if (this.selectedItem != null &&
+                    this.Model.ItemId.HasValue)
                 {
                     this.Model.ItemMeasureUnit = this.SelectedItem.MeasureUnitDescription;
                 }

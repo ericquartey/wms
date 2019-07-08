@@ -21,8 +21,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_AutomationService
 {
     public class Startup
@@ -87,8 +87,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var dataLayerConfiguration = new DataLayerConfiguration(
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
-                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
-            );
+                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile"));
 
             services.AddApiVersioning(o =>
             {

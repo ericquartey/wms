@@ -26,7 +26,6 @@ using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-
 namespace Ferretto.VW.MAS_InverterDriver
 {
     public partial class HostedInverterDriver
@@ -335,7 +334,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogTrace("1:Method Start");
 
             var commandEvent = this.eventAggregator.GetEvent<FieldCommandEvent>();
-            commandEvent.Subscribe(message =>
+            commandEvent.Subscribe(
+                message =>
             {
                 this.commandQueue.Enqueue(message);
             },
@@ -344,7 +344,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
 
             var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
-            notificationEvent.Subscribe(message =>
+            notificationEvent.Subscribe(
+                message =>
             {
                 this.notificationQueue.Enqueue(message);
             },
@@ -524,7 +525,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                             if (inverterStatus.CommonStatusWord.IsSwitchedOn)
                             {
                                 var notificationMessageData = new InverterSwitchOnFieldMessageData(switchOnData.AxisToSwitchOn, switchOnData.SystemIndex);
-                                var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                                var notificationMessage = new FieldNotificationMessage(
+                                    notificationMessageData,
                                     $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
                                     FieldMessageActor.Any,
                                     FieldMessageActor.InverterDriver,
@@ -647,8 +649,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("3:Starting Power Off FSM");
-                    this.currentStateMachine = new PowerOffStateMachine(inverterStatus, this.inverterCommandQueue,
-                        this.eventAggregator, this.logger);
+                    this.currentStateMachine = new PowerOffStateMachine(
+                        inverterStatus,
+                        this.inverterCommandQueue,
+                        this.eventAggregator,
+                        this.logger);
                     this.currentStateMachine?.Start();
                 }
                 else
@@ -811,8 +816,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             //TEMP NOTE ==>
             // int i = Array.IndexOf(this.inverterStatuses.Keys.ToArray(), (ushort)inverterIndex);  // retrieve the first occurrence in the dictionary
             // and use i instead the parameter inverterIndex
-            //
-
             var returnValue = new bool[8];
 
             if (!string.IsNullOrEmpty(currentMessageStringPayload))
@@ -829,7 +832,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     var dataByte = (ushort)inverterIndex % 2;
 
-                    for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+                    for (var index = 8 * dataByte; index < 8 + (8 * dataByte); index++)
                     {
                         returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
                     }

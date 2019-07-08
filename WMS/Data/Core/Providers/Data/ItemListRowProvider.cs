@@ -246,9 +246,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                    ActiveMissionsCount = l.Missions.Count(
-                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                            m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    ActiveMissionsCount = l.MissionOperations.Count(
+                        m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
+                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete),
                     Machines = this.DataContext.Compartments.Where(c => c.ItemId == l.ItemId)
                         .Join(
                             this.DataContext.Machines,
@@ -302,9 +302,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
 
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                    ActiveMissionsCount = l.Missions.Count(
-                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                            m.Status != Common.DataModels.MissionStatus.Incomplete)
+                    ActiveMissionsCount = l.MissionOperations.Count(
+                        m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
+                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete)
                 });
         }
 

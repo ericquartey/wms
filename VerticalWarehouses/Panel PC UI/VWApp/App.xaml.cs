@@ -38,7 +38,7 @@ namespace Ferretto.VW.VWApp
 
         #region Methods
 
-        public void ChangeSkin()
+        public static void ChangeSkin()
         {
             (Current as App).Resources.MergedDictionaries.Clear();
             var skinDictionary = new ResourceDictionary();
@@ -71,8 +71,5 @@ namespace Ferretto.VW.VWApp
         #endregion
     }
 }
-
-
-
 
 public enum Skin { Light, Dark, Medium }

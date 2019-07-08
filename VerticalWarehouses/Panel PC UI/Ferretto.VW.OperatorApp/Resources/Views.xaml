@@ -103,4 +103,34 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlArticleDataGridViewModel}">
         <customviewsandviewmodels:CustomControlArticleDataGrid />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlCellStatisticsDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlCellStatisticsDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerSaturationDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlDrawerSaturationDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlDrawerDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlErrorsDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlErrorsDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlListDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlListDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlMaintenanceDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlMaintenanceDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerWeightSaturationDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlDrawerWeightSaturationDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlListDetailDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlListDetailDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlItemStatisticsDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlItemStatisticsDataGrid />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlMaintenanceDetailDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlMaintenanceDetailDataGrid />
+    </DataTemplate>
 </ResourceDictionary>

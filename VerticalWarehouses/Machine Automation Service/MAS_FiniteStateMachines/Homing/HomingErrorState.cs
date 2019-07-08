@@ -5,8 +5,8 @@ using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
     public class HomingErrorState : StateBase
@@ -17,20 +17,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly FieldNotificationMessage errorMessage;
 
-        private readonly ILogger logger;
-
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public HomingErrorState(IStateMachine parentMachine, Axis currentAxis, FieldNotificationMessage errorMessage, ILogger logger)
+        public HomingErrorState(
+            IStateMachine parentMachine,
+            Axis currentAxis,
+            FieldNotificationMessage errorMessage,
+            ILogger logger)
+            : base(parentMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
             this.errorMessage = errorMessage;
         }
@@ -50,12 +49,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
@@ -76,19 +75,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
         public override void Start()
         {
-            var stopMessage = new FieldCommandMessage(null,
+            var stopMessage = new FieldCommandMessage(
+                null,
                 $"Reset Inverter Axis {this.currentAxis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop);
 
-            this.logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

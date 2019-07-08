@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 {
     public class PowerOffStateMachine : InverterStateMachineBase
@@ -22,15 +21,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Constructors
 
-        public PowerOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator,
-            ILogger logger, FieldCommandMessage nextCommandMessage = null) : base(logger)
+        public PowerOffStateMachine(
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger,
+            FieldCommandMessage nextCommandMessage = null)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
             this.nextCommandMessage = nextCommandMessage;
+            this.inverterStatus = inverterStatus;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

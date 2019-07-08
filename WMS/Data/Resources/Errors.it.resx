@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ValueOfMustBeStrictlyPositive" xml:space="preserve">
+    <value>l valore di '{0}' deve essere strettamente positivo.</value>
+  </data>
+  <data name="ValueOfMustBePositive" xml:space="preserve">
+    <value>l valore di '{0}' deve essere positivo.</value>
+  </data>
+  <data name="PropertyDoesNotExistOnEntity" xml:space="preserve">
+    <value>La proprietà '{0}' non esiste nell'entità '{1}'.</value>
+  </data>
+  <data name="TheSpecifiedPropertyIsNotFound" xml:space="preserve">
+    <value>La proprietà '{0}' specificata non è stata trovata.</value>
+  </data>
+  <data name="NoBayWithTheIdExists" xml:space="preserve">
+    <value>Non esiste nessuna baia con id {0}.</value>
+  </data>
+  <data name="CompartmentPositionAndSizeMustBeSpecified" xml:space="preserve">
+    <value>Posizione e dimensioni dello scomparto devono essere specificati.</value>
+  </data>
+  <data name="CouldNotGetContentTypeForFile" xml:space="preserve">
+    <value>Impossibile recuperare il content type per il file '{0}'.</value>
+  </data>
+  <data name="NewMaxCapacityMustBeEqualOrGreaterThanCurrent" xml:space="preserve">
+    <value>La nuova capacità massima {0} deve essere maggiore o uguale dell'attuale capacità massima {1}.</value>
+  </data>
+  <data name="OnlyPickAndPutRequestsAreSupported" xml:space="preserve">
+    <value>Sono supportate solo richieste di pick e put.</value>
+  </data>
+  <data name="UnableToInterpretEnumerationValueFor" xml:space="preserve">
+    <value>Impossibile interpretare il valore di enumerazione per '{0}'.</value>
+  </data>
+  <data name="TheListTypeIsNotSupported" xml:space="preserve">
+    <value>Il tipo lista '{0}' non è supportato.</value>
+  </data>
+  <data name="UnableToExecuteTheListRowBecauseNoRowExists" xml:space="preserve">
+    <value>Impossibile eseguire la riga lista perché non esiste nessuna riga con id={0}.</value>
+  </data>
+  <data name="UnableToSuspendTheListRowBecauseNoRowExists" xml:space="preserve">
+    <value>Impossibile sospendere la riga lista perché non esiste nessuna riga con id={0}.</value>
+  </data>
+  <data name="UnableToExecuteTheListRowBecauseOfTypeNotSupported" xml:space="preserve">
+    <value>Impossibile eseguire la riga lista (id={0}). Le righe di tipo '{1}' non sono supportate.</value>
+  </data>
+  <data name="UnableToExecuteTheListRowWithDescription" xml:space="preserve">
+    <value>Impossibile eseguire la riga lista (id={0}). {1}.</value>
+  </data>
+  <data name="CannotProcessSchedulerRequest" xml:space="preserve">
+    <value>Impossibile processare la richiesta schedulatore id={0}.</value>
+  </data>
+  <data name="PickMissionsCannotBeCreatedForSchedulerOperationType" xml:space="preserve">
+    <value>Non possono essere create missioni di prelievo per tipo operazione schedulatore '{0}'.</value>
+  </data>
+  <data name="PutMissionsCannotBeCreatedForSchedulerOperationType" xml:space="preserve">
+    <value>Non possono essere create missioni di versamento per tipo operazione schedulatore '{0}'.</value>
+  </data>
+  <data name="CannotCreatePickMissionFromRequestThatDoesNotSpecifyTargetBay" xml:space="preserve">
+    <value>Impossibile creare una missione di prelievo da una richiesta che non specifica la baia di destinazione.</value>
+  </data>
+  <data name="NoMissionWithIdExists" xml:space="preserve">
+    <value>Non esiste una missione con id '{0}'.</value>
+  </data>
+  <data name="ValueRepresentsAnInvalidQuantity" xml:space="preserve">
+    <value>Il valore '{0}' rappresenta una quantità non valida. La quantità evasa per una missione non può essere negativa o zero.</value>
+  </data>
+  <data name="CompletionIsNotSupportedForMissionType" xml:space="preserve">
+    <value>Il completamento non è supportato per il tipo missione '{0}'.</value>
+  </data>
+  <data name="OnlyLoadingUnitWithdrawalOperationsAreAllowed" xml:space="preserve">
+    <value>Sono possibili solo operazioni di estrazione di unità di carico.</value>
+  </data>
+  <data name="AbortionIsNotSupportedForMissionType" xml:space="preserve">
+    <value>La cancellazione non è supportata per il tipo missione '{0}'.</value>
+  </data>
+  <data name="ActualPickedQuantityCannotBeGreaterThanTheRemainingQuantityToDispatch" xml:space="preserve">
+    <value>La quantità prelevata ({0}) non può essere maggiore della rimanente quantità da evadere ({1}).</value>
+  </data>
+  <data name="UnableToCompleteTheSpecifiedMissionBecauseOfActualPutQuantity" xml:space="preserve">
+    <value>Impossibile completare la missione specificata. La quantità da versare ({0}) non può essere negativa o zero.</value>
+  </data>
+  <data name="UnableToCompleteTheSpecifiedMissionBecauseOfAssociatedCompartmentNotRetrieved" xml:space="preserve">
+    <value>Impossibile completare la missione specificata. Lo scomparto associato non può essere recuperato.</value>
+  </data>
+  <data name="UnableToCompleteTheSpecifiedMissionBecauseOfAssociatedLoadingUnitNotRetrieved" xml:space="preserve">
+    <value>Impossibile completare la missione specificata. L'unità di carico associata non può essere recuperata.</value>
+  </data>
+  <data name="TheMethodArgumentShouldNotBeNull" xml:space="preserve">
+    <value>L'argomento {0} del metodo non può essere nullo.</value>
+  </data>
+  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedLoadingUnit" xml:space="preserve">
+    <value>Impossibile completare la missione specificata perché non ha una unità di carico associata.</value>
+  </data>
+  <data name="ItemRequestHasMissingMandatoryFields" xml:space="preserve">
+    <value>Alla richiesta di articolo manca qualche campo obbligatorio.</value>
+  </data>
+  <data name="LoadingUnitRequestHasMissingMandatoryFields" xml:space="preserve">
+    <value>Alla richiesta di unità di carico manca qualche campo obbligatorio.</value>
+  </data>
+  <data name="TheSpecifiedSchedulerRequestTypeIsNotSupported" xml:space="preserve">
+    <value>Questo tipo richiesta schedulatore non è supportato.</value>
+  </data>
+  <data name="RequestedQuantityMustBePositive" xml:space="preserve">
+    <value>La quantità richiesta deve essere positiva.</value>
+  </data>
+  <data name="WhenRegistrationNumberIsSpecifiedTheRequestedQuantityMustBeOne" xml:space="preserve">
+    <value>Quando è specificato un numero seriale, la quantità richiesta deve essere 1.</value>
+  </data>
+  <data name="TheSpecifiedItemDoesNotExist" xml:space="preserve">
+    <value>L'articolo specificato non esiste.</value>
+  </data>
+  <data name="NotEnoughAvailableCompartmentsToServeTheRequest" xml:space="preserve">
+    <value>Non ci sono abbastanza scomparti disponibili per servire la richiesta.</value>
+  </data>
+  <data name="ThisRegistrationNumberIsAlreadyPresentForThisItem" xml:space="preserve">
+    <value>Questo numero seriale è già presente per questo articolo.</value>
+  </data>
+  <data name="CompartmentXPositionIsNotSpecified" xml:space="preserve">
+    <value>La posizione X dello scomparto non è specificata.</value>
+  </data>
+  <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
+    <value>La posizione Y dello scomparto non è specificata.</value>
+  </data>
+  <data name="CompartmentSizeIsNotSpecified" xml:space="preserve">
+    <value>La dimensione dello scomparto non è specificata.</value>
+  </data>
+  <data name="CompartmentStockGreaterThanMaxCapacity" xml:space="preserve">
+    <value>La quantità in magazzino dell'articolo non può superare la capacità massima dello scomparto.</value>
+  </data>
+  <data name="QuantityMustBeOneIfRegistrationNumber" xml:space="preserve">
+    <value>La quantità deve essere uguale a 1 se è specificato il Numero Seriale.</value>
+  </data>
+  <data name="CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed" xml:space="preserve">
+    <value>La giacenza non può essere zero quando lo scomparto non è ad abbinamento fisso.</value>
+  </data>
+  <data name="DuplicateCompartmentType" xml:space="preserve">
+    <value>Esiste già un tipo scomparto con le caratteristiche specificate.</value>
+  </data>
+  <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>L'insieme di scomparti specificato non può essere inserito nella unità di carico.</value>
+  </data>
+  <data name="NoEntityExists" xml:space="preserve">
+    <value>Nessuna entità con l'ID specifico {0} esiste.</value>
+  </data>
+</root>

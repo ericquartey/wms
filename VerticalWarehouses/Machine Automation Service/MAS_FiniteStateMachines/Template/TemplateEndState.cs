@@ -5,8 +5,8 @@ using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 {
     public class TemplateEndState : StateBase
@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         #region Fields
 
         private readonly Axis axisToStop;
-
-        private readonly ILogger logger;
 
         private readonly bool stopRequested;
 
@@ -25,13 +23,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         #region Constructors
 
-        public TemplateEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger, bool stopRequested = false)
+        public TemplateEndState(
+            IStateMachine parentMachine,
+            Axis axisToStop,
+            ILogger logger,
+            bool stopRequested = false)
+            : base(parentMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
             this.stopRequested = stopRequested;
-            this.ParentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
         }
 
@@ -46,18 +45,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         #endregion
 
-        /// <inheritdoc/>
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             switch (message.Type)
             {
@@ -80,7 +77,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.axisToStop, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.axisToStop, message, this.Logger));
                             break;
                     }
                     break;
@@ -90,7 +87,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -104,14 +101,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
                 MessageType.Homing,
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

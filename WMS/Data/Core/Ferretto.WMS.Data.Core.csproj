@@ -39,7 +39,7 @@
         <ProjectReference Include="..\..\VW\Contracts\Ferretto.VW.MachineAutomationService.Contracts.csproj" />
         <ProjectReference Include="..\..\VW\Hubs\Ferretto.VW.MachineAutomationService.Hubs.csproj" />
         <ProjectReference Include="..\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
-        <ProjectReference Include="..\Resources\Ferretto.WMS.Data.Resources\Ferretto.WMS.Data.Resources.csproj" />
+        <ProjectReference Include="..\Resources\Ferretto.WMS.Data.Resources.csproj" />
     </ItemGroup>
 
     <ItemGroup>

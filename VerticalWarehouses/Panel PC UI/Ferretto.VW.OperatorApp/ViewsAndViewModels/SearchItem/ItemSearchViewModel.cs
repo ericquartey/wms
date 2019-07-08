@@ -5,7 +5,6 @@ using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Unity;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -14,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -24,6 +24,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private const int DEFAULT_DELAY = 300;
 
         private const int DEFAULT_QUANTITY_ITEM = 20;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly SynchronizationContext uiContext;
 
@@ -38,8 +40,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private CustomControlArticleDataGridViewModel dataGridViewModelRef;
 
         private ICommand downDataGridButtonCommand;
-
-        private IEventAggregator eventAggregator;
 
         private bool hasUserTyped;
 
@@ -141,7 +141,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                         items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, this.currentItemIndex, DEFAULT_QUANTITY_ITEM);
                         this.IsSearching = false;
                     }
-                    catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+                    catch (WMS.Data.WebAPI.Contracts.SwaggerException)
                     {
                         this.IsSearching = false;
                     }
@@ -151,7 +151,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     }
                     if (items != null && items.Count > 0)
                     {
-                        var viewItems = new ObservableCollection<TestArticle>();
+                        var viewItems = new ObservableCollection<DataGridItem>();
                         var random = new Random();
                         for (var i = 0; i < items.Count; i++)
                         {
@@ -170,7 +170,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                                     machines = string.Concat(machines, $" {random.Next(1, 200)},");
                                 }
                             }
-                            var item = new TestArticle
+                            var item = new DataGridItem
                             {
                                 Article = items[i].Code,
                                 Description = items[i].Description,
@@ -181,7 +181,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             viewItems.Add(item);
                             this.loadedItems.Add(items[i]);
                         }
-                        for (int i = 0; i < viewItems.Count; i++)
+                        for (var i = 0; i < viewItems.Count; i++)
                         {
                             (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles.Add(viewItems[i]);
                         }
@@ -227,28 +227,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public async Task OnEnterViewAsync()
         {
-            // TODO
-        }
-
-        public async void SearchItemAsync(object stateInfo)
-        {
-            var autoEvent = (AutoResetEvent)stateInfo;
             var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
             try
             {
-                items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
+                items = await this.wmsDataProvider.GetItemsAsync(" ", 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            catch (Exception ex)
             {
-                this.currentItemIndex = 0;
-                this.IsSearching = false;
-                this.hasUserTyped = false;
-            }
-            catch (Exception)
-            {
-                this.currentItemIndex = 0;
-                this.IsSearching = false;
-                this.hasUserTyped = false;
             }
             finally
             {
@@ -258,7 +243,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
             if (items != null && items.Count > 0)
             {
-                var viewItems = new ObservableCollection<TestArticle>();
+                var viewItems = new ObservableCollection<DataGridItem>();
                 var random = new Random();
                 for (var i = 0; i < items.Count; i++)
                 {
@@ -277,7 +262,72 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
                     }
-                    var item = new TestArticle
+                    var item = new DataGridItem
+                    {
+                        Article = items[i].Code,
+                        Description = items[i].Description,
+                        AvailableQuantity = items[i].TotalAvailable,
+                        ImageCode = items[i].Image,
+                        Machine = machines
+                    };
+                    viewItems.Add(item);
+                }
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
+                this.currentItemIndex = 0;
+                this.AvailableQuantity = viewItems[0].AvailableQuantity.ToString();
+            }
+        }
+
+        public async void SearchItemAsync(object stateInfo)
+        {
+            var autoEvent = (AutoResetEvent)stateInfo;
+            var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
+            try
+            {
+                items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
+            }
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
+            {
+                this.currentItemIndex = 0;
+                this.IsSearching = false;
+                this.hasUserTyped = false;
+            }
+            catch (Exception)
+            {
+                this.currentItemIndex = 0;
+                this.IsSearching = false;
+                this.hasUserTyped = false;
+            }
+            finally
+            {
+                this.loadedItems = null;
+                this.loadedItems = items;
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
+            }
+
+            if (items != null && items.Count > 0)
+            {
+                var viewItems = new ObservableCollection<DataGridItem>();
+                var random = new Random();
+                for (var i = 0; i < items.Count; i++)
+                {
+                    var machines = string.Empty;
+                    if (items[i].Machines != null)
+                    {
+                        for (var j = 0; j < items[i].Machines.Count; j++)
+                        {
+                            machines = string.Concat(machines, $" {items[i].Machines[j].Id},");
+                        }
+                    }
+                    else
+                    {
+                        for (var k = 0; k < random.Next(1, 4); k++)
+                        {
+                            machines = string.Concat(machines, $" {random.Next(1, 200)},");
+                        }
+                    }
+                    var item = new DataGridItem
                     {
                         Article = items[i].Code,
                         Description = items[i].Description,

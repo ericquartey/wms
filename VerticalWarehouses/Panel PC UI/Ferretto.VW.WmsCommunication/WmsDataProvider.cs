@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
@@ -15,15 +13,15 @@ namespace Ferretto.VW.WmsCommunication
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
-        private IItemsDataService itemsDataService;
+        private readonly IItemsDataService itemsDataService;
 
-        private ILoadingUnitsDataService loadingUnitsDataService;
+        private readonly ILoadingUnitsDataService loadingUnitsDataService;
 
-        private IMaterialStatusesDataService materialStatusesDataService;
+        private readonly IMaterialStatusesDataService materialStatusesDataService;
 
-        private IPackageTypesDataService packageTypesDataService;
+        private readonly IPackageTypesDataService packageTypesDataService;
 
         #endregion
 
@@ -32,10 +30,16 @@ namespace Ferretto.VW.WmsCommunication
         public WmsDataProvider(IUnityContainer container, Uri wmsConnectionString)
         {
             this.container = container;
-            this.itemsDataService = DataServiceFactory.GetService<IItemsDataService>(wmsConnectionString);
-            this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
-            this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
-            this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
+            try
+            {
+                this.itemsDataService = DataServiceFactory.GetService<IItemsDataService>(wmsConnectionString);
+                this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
+                this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
+                this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         #endregion
@@ -45,7 +49,7 @@ namespace Ferretto.VW.WmsCommunication
         public async Task<string> GetCompartmentPosition(Mission mission)
         {
             var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)mission.LoadingUnitId);
-            var compartment = compartments.First(x => x.Id == (int)mission.CompartmentId);
+            var compartment = compartments.First(x => x.Id == mission.CompartmentId);
             var compartmentXpos = compartment.XPosition;
             var compartmentYpos = compartment.YPosition;
             return $"{compartmentXpos}, {compartmentYpos}";
@@ -70,7 +74,8 @@ namespace Ferretto.VW.WmsCommunication
                 PackageType = packageType.Description,
                 Position = $"{compartment.XPosition}, {compartment.YPosition}",
                 ProductionDate = item.CreationDate.ToShortDateString(),
-                RequestedQuantity = mission.RequestedQuantity.ToString()
+                RequestedQuantity = mission.RequestedQuantity.ToString(),
+                Image = item.Image
             };
             return returnValue;
         }
@@ -115,7 +120,9 @@ namespace Ferretto.VW.WmsCommunication
             return returnValue;
         }
 
-        public async Task<TrayControlCompartment> GetTrayControlSelectedCompartment(ObservableCollection<TrayControlCompartment> viewCompartments, Mission mission)
+        public async Task<TrayControlCompartment> GetTrayControlSelectedCompartment(
+            ObservableCollection<TrayControlCompartment> viewCompartments,
+            Mission mission)
         {
             var compartmentId = (int)mission.CompartmentId;
             return viewCompartments.First(x => x.Id == compartmentId);
@@ -123,6 +130,13 @@ namespace Ferretto.VW.WmsCommunication
 
         public async Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity)
         {
+            // HACK BUG 3381 WORKAROUND - DEVELOPMENT ONLY
+            if (bayId == 0 || areaId == 0)
+            {
+                areaId = 2;
+                bayId = 2;
+            }
+            // END HACK
             try
             {
                 await this.itemsDataService.PickAsync(itemId, new ItemOptions

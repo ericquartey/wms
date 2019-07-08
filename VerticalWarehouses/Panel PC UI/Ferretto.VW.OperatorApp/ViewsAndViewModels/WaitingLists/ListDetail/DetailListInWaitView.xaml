@@ -19,28 +19,19 @@
                                                ContentText="E' possibile eseguire solo le righe evidenziate."
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
-        <DataGrid HorizontalAlignment="Left" Width="650" Height="350" Margin="140,150,0,0" VerticalAlignment="Top" FontFamily="Helvetica Neue" FontSize="16"
-                  Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-                  HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                  RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
-            
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Riga" CanUserResize="False" MaxWidth="60" MinWidth="60"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Articolo" CanUserResize="False" MaxWidth="120" MinWidth="120"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Descrizione" MaxWidth="250" MinWidth="250"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Quantita'"  MaxWidth="90" MinWidth="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Macchina"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,90,0,0" MaxWidth="500"
-                                               ContentText="1256"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,90,0,0" MaxWidth="500"
-                                               ContentText="Lista in attesa di essere eseguita"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
-        
+        <ContentControl HorizontalAlignment="Left"
+                        Width="620"
+                        Height="350"
+                        Margin="170,150,0,0"
+                        VerticalAlignment="Top"
+                        Content="{Binding DataGridViewModel}">
+        </ContentControl>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,90,0,0" MaxWidth="500"
+            ContentText="1256"
+            LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,90,0,0" MaxWidth="500"
+            ContentText="Lista in attesa di essere eseguita"
+            LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
