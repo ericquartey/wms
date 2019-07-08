@@ -11,6 +11,7 @@ using Ferretto.WMS.App.Modules.BLL;
 namespace Ferretto.WMS.Modules.Machines
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
     public class MachinesViewModel : EntityListViewModel<Machine, int>
     {

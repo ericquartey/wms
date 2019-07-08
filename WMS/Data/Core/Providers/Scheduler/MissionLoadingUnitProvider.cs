@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
-                await this.loadingUnitProvider.UpdateMissionCountAsync(updatedMission.LoadingUnitId);
+                await this.loadingUnitProvider.UpdateMissionsCountAsync(updatedMission.LoadingUnitId);
 
                 this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
                 this.NotificationService.PushUpdate(mission);
