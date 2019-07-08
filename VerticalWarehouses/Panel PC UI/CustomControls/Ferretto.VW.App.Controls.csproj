@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LanguageTargets Condition="$(VisualStudioVersion) &gt;= 16">$(MSBuildExtensionsPath)\Current\Bin\Microsoft.CSharp.targets</LanguageTargets>
-    <LanguageTargets Condition="$(VisualStudioVersion) &lt; 16">$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -13,7 +12,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
@@ -82,21 +81,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\CustomProgressBarControl.xaml.cs">
-      <DependentUpon>CustomProgressBarControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\CustomShutterControlSensorsTwoPositions.xaml.cs">
-      <DependentUpon>CustomShutterControlSensorsTwoPositions.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\CustomShutterControlSensorsThreePositions.xaml.cs">
-      <DependentUpon>CustomShutterControlSensorsThreePositions.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\VWIcon\VWIcon.xaml.cs">
-      <DependentUpon>VWIcon.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
