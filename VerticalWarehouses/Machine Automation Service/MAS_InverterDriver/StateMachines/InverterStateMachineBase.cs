@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -95,6 +95,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
             this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+        }
+
+        /// <inheritdoc />
+        public void Release()
+        {
+            this.CurrentState?.Release();
         }
 
         /// <inheritdoc />

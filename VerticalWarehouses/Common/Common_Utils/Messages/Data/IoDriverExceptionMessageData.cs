@@ -1,8 +1,8 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.Common_Utils.Messages.Data
+namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class IoDriverExceptionMessageData : IIoDriverExceptionMessageData
     {

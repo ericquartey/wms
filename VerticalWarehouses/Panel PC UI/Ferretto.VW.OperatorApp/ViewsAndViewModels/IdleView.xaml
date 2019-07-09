@@ -8,7 +8,7 @@
 
     <Grid Height="500" Margin="280,50,0,0">
         <Image
-            Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png"
+            Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
             Stretch="Uniform" />
 
     </Grid>

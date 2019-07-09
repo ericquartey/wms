@@ -7,8 +7,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public long? ActualWeight { get; set; }
-
         public int AisleId { get; set; }
 
         public string AisleName { get; set; }
@@ -23,9 +21,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? BuildDate { get; set; }
 
-        public int? CellCount { get; set; }
+        public int? CellsCount { get; set; }
 
-        public int? CompartmentCount { get; set; }
+        public int? CompartmentsCount { get; set; }
 
         public int? CradlesCount { get; set; }
 
@@ -53,9 +51,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool IsOnLine => this.Status != MachineStatus.Offline;
 
-        public int? ItemCount { get; set; }
-
-        public int? ItemListCount { get; set; }
+        public int? ItemsCount { get; set; }
 
         public DateTime? LastPowerOn { get; set; }
 
@@ -63,9 +59,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public double? Latitude { get; set; }
 
-        public int? ListCount { get; set; }
-
-        public int? LoadingUnitCount { get; set; }
+        public int? LoadingUnitsCount { get; set; }
 
         public int? LoadingUnitsPerCradle { get; set; }
 
@@ -79,7 +73,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public long? ManualTime { get; set; }
 
-        public int? MissionCount { get; set; }
+        public int? MissionsCount { get; set; }
 
         public long? MissionTime { get; set; }
 
@@ -108,6 +102,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? TestDate { get; set; }
 
         public long? TotalMaxWeight { get; set; }
+
+        public int WeightFillRate { get; set; }
 
         #endregion
     }

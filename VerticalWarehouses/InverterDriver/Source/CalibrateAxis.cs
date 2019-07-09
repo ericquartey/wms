@@ -3,7 +3,7 @@ using System.Collections;
 using System.Threading;
 using NLog;
 
-namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.Drivers.Inverter
 {
     // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateAxisEndEventHandler();
@@ -12,41 +12,6 @@ namespace Ferretto.VW.InverterDriver
     public delegate void CalibrateAxisErrorEventHandler(CalibrationStatus ErrorDescription);
 
     public delegate void CalibrateAxisSetUpEndEventHandler();
-
-    public enum CalibrationStatus
-    {
-        CALIBRATION_COMPLEATED = 00,
-
-        // Calibration Errors
-        NO_ERROR = 10,
-
-        INVALID_OPERATION = 11,
-
-        INVALID_ARGUMENTS = 12,
-
-        OPERATION_FAILED = 13,
-
-        UNKNOWN_OPERATION = 14,
-
-        // Inverter Driver Error Status
-        INVERTER_DRIVER_NO_ERROR = 20,
-
-        INVERTER_DRIVER_HARDWARE_ERROR = 21,
-
-        INVERTER_DRIVER_IO_ERROR = 22,
-
-        INVERTER_DRIVER_INTERNAL_ERROR = 23,
-
-        INVERTER_DRIVER_UNKNOWN_ERROR = 24,
-    }
-
-    public enum CalibrationType
-    {
-        // The two possible kinds of calibration
-        VERTICAL_CALIBRATION = 0,
-
-        HORIZONTAL_CALIBRATION = 1,
-    }
 
     public class CalibrateAxis : ICalibrateAxis
     {
@@ -63,15 +28,14 @@ namespace Ferretto.VW.InverterDriver
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        // actualCalibrationAxis keep the actual calibration in execution,
-        // * 0: Vertical Calibration Axis
-        // * 1: Horizontal Calibration Axis
-        private CalibrationType actualCalibrationAxis;
+        private readonly CalibrationOrientation actualCalibrationAxis;
+
+        private readonly byte systemIndex;
 
         // Inverter driver
         private InverterDriver inverterDriver;
 
-        private ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
+        private ParameterId paramID = ParameterId.HOMING_MODE_PARAM;
 
         private bool setupParameters;
 
@@ -81,9 +45,7 @@ namespace Ferretto.VW.InverterDriver
         // Variable to keep the end of the execution
         private bool stopExecution;
 
-        private readonly byte systemIndex = 0x00;
-
-        private object valParam = "";
+        private object valParam = string.Empty;
 
         #endregion
 
@@ -101,11 +63,7 @@ namespace Ferretto.VW.InverterDriver
 
         #region Properties
 
-        public CalibrationType ActualCalibrationAxis
-        {
-            set => this.actualCalibrationAxis = value;
-            get => this.actualCalibrationAxis;
-        }
+        public CalibrationOrientation ActualCalibrationAxis { get; set; }
 
         /// <summary>
         /// Set Inverter driver.
@@ -140,16 +98,16 @@ namespace Ferretto.VW.InverterDriver
 
             this.stepCounter = 0;
 
-            if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical Calibration
-                this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
-            else // Horizontal Calibration
-                this.inverterDriver.CurrentActionType = ActionType.CalibrateHorizontalAxis;
+            this.inverterDriver.CurrentActionType =
+                this.actualCalibrationAxis == CalibrationOrientation.Vertical
+                ? ActionType.CalibrateVerticalAxis
+                : ActionType.CalibrateHorizontalAxis;
 
             logger.Log(LogLevel.Debug, "Start the routine for calibrate...");
             logger.Log(LogLevel.Debug, string.Format(" <-- SetAxisOrigin - Step: {0}", this.actualCalibrationAxis));
 
             // Start the routine
-            this.stepExecution();
+            this.StepExecution();
         }
 
         public void SetUpVerticalHomingParameters(int acc, int vFast, int vCreep)
@@ -167,7 +125,7 @@ namespace Ferretto.VW.InverterDriver
                     // Vertical Homing Parameters
                     case 0:
                         {
-                            this.paramID = ParameterID.HOMING_ACCELERATION;
+                            this.paramID = ParameterId.HOMING_ACCELERATION;
                             this.valParam = acc;
 
                             break;
@@ -175,7 +133,7 @@ namespace Ferretto.VW.InverterDriver
 
                     case 1:
                         {
-                            this.paramID = ParameterID.HOMING_FAST_SPEED_PARAM;
+                            this.paramID = ParameterId.HOMING_FAST_SPEED_PARAM;
                             this.valParam = vFast;
 
                             break;
@@ -183,14 +141,14 @@ namespace Ferretto.VW.InverterDriver
 
                     case 2:
                         {
-                            this.paramID = ParameterID.HOMING_CREEP_SPEED_PARAM;
+                            this.paramID = ParameterId.HOMING_CREEP_SPEED_PARAM;
                             this.valParam = vCreep;
 
                             break;
                         }
                     default:
                         {
-                            ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
+                            this.ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
 
                             break;
                         }
@@ -199,16 +157,21 @@ namespace Ferretto.VW.InverterDriver
                 // Set request to inverter
                 var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-                logger.Log(LogLevel.Debug, string.Format(" --> SetVerticalHomingParameters: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}, DataSetIndex: {3}", setUpCounter, this.paramID.ToString(), this.valParam, DATASET_INDEX));
+                logger.Debug(
+                    " --> SetVerticalHomingParameters: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}, DataSetIndex: {3}",
+                    setUpCounter,
+                    this.paramID.ToString(),
+                    this.valParam,
+                    DATASET_INDEX);
 
-                this.checkExistStatus(idExitStatus);
+                this.CheckExistStatus(idExitStatus);
 
                 setUpCounter++;
             }
 
-            logger.Log(LogLevel.Debug, string.Format(" --> ... SetVerticalHomingParameters End"));
+            logger.Debug(" --> ... SetVerticalHomingParameters End");
 
-            ThrowSetUpEnd?.Invoke();
+            this.ThrowSetUpEnd?.Invoke();
         }
 
         /// <summary>
@@ -220,14 +183,18 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                this.paramID = ParameterId.CONTROL_WORD_PARAM;
 
-                if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                    this.valParam = 0x0000; // 0000 0000 0000 0000
-                else // Horizontal
-                    this.valParam = 0x8000; // 1000 0000 0000 0000
+                this.valParam =
+                    this.actualCalibrationAxis == CalibrationOrientation.Vertical
+                    ? 0x0000
+                    : (object)0x8000; // 1000 0000 0000 0000
 
-                logger.Log(LogLevel.Debug, string.Format(" --> Send stop::  paramID: {0}, value: {1:X}", this.paramID.ToString(), this.valParam));
+                logger.Debug(
+                    " --> Send stop::  paramID: {0}, value: {1:X}",
+                    this.paramID.ToString(),
+                    this.valParam);
+
                 this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
                 this.stopExecution = true;
                 this.Terminate();
@@ -250,9 +217,9 @@ namespace Ferretto.VW.InverterDriver
             this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis -= this.EnquiryTelegram;
         }
 
-        private void checkExistStatus(InverterDriverExitStatus idStatus)
+        private void CheckExistStatus(InverterDriverExitStatus idStatus)
         {
-            logger.Log(LogLevel.Debug, "idStatus = " + idStatus.ToString());
+            logger.Debug($"idStatus = {idStatus}");
 
             if (idStatus != InverterDriverExitStatus.Success)
             {
@@ -260,15 +227,15 @@ namespace Ferretto.VW.InverterDriver
 
                 switch (idStatus)
                 {
-                    case (InverterDriverExitStatus.InvalidArgument):
+                    case InverterDriverExitStatus.InvalidArgument:
                         errorDescription = CalibrationStatus.INVALID_ARGUMENTS;
                         break;
 
-                    case (InverterDriverExitStatus.InvalidOperation):
+                    case InverterDriverExitStatus.InvalidOperation:
                         errorDescription = CalibrationStatus.INVALID_OPERATION;
                         break;
 
-                    case (InverterDriverExitStatus.Failure):
+                    case InverterDriverExitStatus.Failure:
                         errorDescription = CalibrationStatus.OPERATION_FAILED;
                         break;
 
@@ -280,8 +247,99 @@ namespace Ferretto.VW.InverterDriver
                 logger.Log(LogLevel.Debug, "errorDescription = " + errorDescription.ToString());
 
                 // Send the error description to the UI
-                ThrowErrorEvent?.Invoke(errorDescription);
+                this.ThrowErrorEvent?.Invoke(errorDescription);
             }
+        }
+
+        private bool CheckStatusWordValidity(BitArray statusWordBA01)
+        {
+            var isStatusWordValid = false;
+            switch (this.stepCounter)
+            {
+                case 0:
+                    {
+                        // 0x0050
+                        if (statusWordBA01[4] && statusWordBA01[6])
+                        {
+                            isStatusWordValid = true;
+                        }
+
+                        break;
+                    }
+
+                case 1:
+                    {
+                        // No check
+                        isStatusWordValid = true;
+
+                        break;
+                    }
+
+                case 2:
+                    {
+                        // 0x0031
+                        if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
+                        {
+                            isStatusWordValid = true;
+                        }
+
+                        break;
+                    }
+
+                case 3:
+                    {
+                        // 51 Dec = 0x0033
+                        if (statusWordBA01[0]
+                            && statusWordBA01[1]
+                            && statusWordBA01[4]
+                            && statusWordBA01[5])
+                        {
+                            isStatusWordValid = true;
+                        }
+
+                        break;
+                    }
+
+                case 4:
+                    {
+                        // Filter: 0xnn37
+                        if (statusWordBA01[0]
+                            && statusWordBA01[1]
+                            && statusWordBA01[2]
+                            && statusWordBA01[4]
+                            && statusWordBA01[5])
+                        {
+                            isStatusWordValid = true;
+                        }
+
+                        break;
+                    }
+
+                case 5:
+                    {
+                        // Filter: 0x1n37
+                        if (statusWordBA01[0]
+                            && statusWordBA01[1]
+                            && statusWordBA01[2]
+                            && statusWordBA01[4]
+                            && statusWordBA01[5]
+                            && statusWordBA01[12])
+                        {
+                            isStatusWordValid = true;
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        this.ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
+
+                        break;
+                    }
+            }
+
+            return isStatusWordValid;
         }
 
         /// <summary>
@@ -295,9 +353,6 @@ namespace Ferretto.VW.InverterDriver
             byte[] statusWord01;
 
             BitArray statusWordBA01;
-
-            // Variable to keep the right or wrong value of the status word
-            var statusWordValue = false;
 
             switch (type)
             {
@@ -328,98 +383,48 @@ namespace Ferretto.VW.InverterDriver
                     }
             }
 
-            statusWord01 = new byte[] { statusWord[0], statusWord[1] };
+            statusWord01 = new[] { statusWord[0], statusWord[1] };
             statusWordBA01 = new BitArray(statusWord01);
 
-            logger.Log(LogLevel.Debug, string.Format(" <-- EnquiryTelegram - Step: {0} - {1}", this.stepCounter, this.actualCalibrationAxis));
-            logger.Log(LogLevel.Debug, string.Format("Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - Bit 6: {6} - Bit 7: {7} - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} - Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}", statusWordBA01[0], statusWordBA01[1], statusWordBA01[2], statusWordBA01[3], statusWordBA01[4], statusWordBA01[5], statusWordBA01[6], statusWordBA01[7], statusWordBA01[8], statusWordBA01[9], statusWordBA01[10], statusWordBA01[11], statusWordBA01[12], statusWordBA01[13], statusWordBA01[14], statusWordBA01[15]));
+            logger.Debug(
+                $" <-- EnquiryTelegram - Step: {this.stepCounter} - {this.actualCalibrationAxis}");
+            logger.Debug(
+                "Bit 0: {0} - Bit 1: {1} - Bit 2: {2} - Bit 3: {3} - Bit 4: {4} - Bit 5: {5} - "
+                +
+                "Bit 6: {6} - Bit 7: {7} - Bit 8: {8} - Bit 9: {9} - Bit 10: {10} - Bit 11: {11} "
+                +
+                "- Bit 12: {12} - Bit 13: {13} - Bit 14: {14} - Bit 15: {15}",
+                statusWordBA01[0],
+                statusWordBA01[1],
+                statusWordBA01[2],
+                statusWordBA01[3],
+                statusWordBA01[4],
+                statusWordBA01[5],
+                statusWordBA01[6],
+                statusWordBA01[7],
+                statusWordBA01[8],
+                statusWordBA01[9],
+                statusWordBA01[10],
+                statusWordBA01[11],
+                statusWordBA01[12],
+                statusWordBA01[13],
+                statusWordBA01[14],
+                statusWordBA01[15]);
 
-            switch (this.stepCounter)
-            {
-                case 0:
-                    {
-                        // 0x0050
-                        if (statusWordBA01[4] && statusWordBA01[6])
-                        {
-                            statusWordValue = true;
-                        }
-
-                        break;
-                    }
-
-                case 1:
-                    {
-                        // No check
-                        statusWordValue = true;
-
-                        break;
-                    }
-
-                case 2:
-                    {
-                        // 0x0031
-                        if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
-                        {
-                            statusWordValue = true;
-                        }
-
-                        break;
-                    }
-
-                case 3:
-                    {
-                        // 51 Dec = 0x0033
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
-                        {
-                            statusWordValue = true;
-                        }
-
-                        break;
-                    }
-
-                case 4:
-                    {
-                        // Filter: 0xnn37
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5])
-                        {
-                            statusWordValue = true;
-                        }
-
-                        break;
-                    }
-
-                case 5:
-                    {
-                        // Filter: 0x1n37
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
-                        {
-                            statusWordValue = true;
-                        }
-
-                        break;
-                    }
-
-                default:
-                    {
-                        ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
-
-                        break;
-                    }
-            }
-
-            if (statusWordValue)
+            var isStatusWordValid = this.CheckStatusWordValidity(statusWordBA01);
+            if (isStatusWordValid)
             {
                 // The StatusWord is correct, we can go on with another step of Engine Movement
                 this.stepCounter++;
 
                 if (this.stepCounter < STEPS_NUMBER)
                 {
-                    logger.Log(LogLevel.Debug, "Ok: perform the next step. The next step is {0}", this.stepCounter);
-                    this.stepExecution();
+                    logger.Debug($"Ok: perform the next step. The next step is {this.stepCounter}");
+                    this.StepExecution();
                 }
                 else
                 {
-                    logger.Log(LogLevel.Debug, "Calibration ended!!");
+                    logger.Debug("Calibration ended.");
 
                     // The calibrate vertical axis routine is ended
                     if (!this.stopExecution)
@@ -427,15 +432,15 @@ namespace Ferretto.VW.InverterDriver
                         this.StopInverter();
                         this.stopExecution = true;
 
-                        ThrowEndEvent?.Invoke();
+                        this.ThrowEndEvent?.Invoke();
                     }
 
-                    logger.Log(LogLevel.Debug, "--> EnquiryTelegram:: Send stop inverter command");
+                    logger.Debug("--> EnquiryTelegram:: Send stop inverter command");
                 }
             }
             else
             {
-                logger.Log(LogLevel.Debug, "Button Stop Pushed: {0}", this.stopExecution);
+                logger.Debug($"Button Stop Pushed: {this.stopExecution}");
 
                 if (!this.stopExecution)
                 {
@@ -443,12 +448,15 @@ namespace Ferretto.VW.InverterDriver
                     Thread.Sleep(DELAY_TIME);
 
                     // New request to read the status Word
-                    var idExitStatus = this.inverterDriver.SendRequest(this.paramID, this.systemIndex, DATASET_INDEX);
+                    var idExitStatus = this.inverterDriver.SendRequest(
+                        this.paramID,
+                        this.systemIndex,
+                        DATASET_INDEX);
 
                     // Just wait...
                     Thread.Sleep(DELAY_TIME);
 
-                    this.checkExistStatus(idExitStatus);
+                    this.CheckExistStatus(idExitStatus);
                 }
             }
         }
@@ -466,15 +474,16 @@ namespace Ferretto.VW.InverterDriver
                 if (this.stepCounter < STEPS_NUMBER)
                 {
                     logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.stepCounter);
+
                     // There is not the need to check the Status Word value
                     if (this.stepCounter == 1)
                     {
                         this.stepCounter++;
-                        this.stepExecution();
+                        this.StepExecution();
                     }
                     else
                     {
-                        this.paramID = ParameterID.STATUS_WORD_PARAM;
+                        this.paramID = ParameterId.STATUS_WORD_PARAM;
                         logger.Log(LogLevel.Debug, " --> Select Telegram:: Send a request for STATUS WORD ...");
                         this.inverterDriver.SendRequest(this.paramID, this.systemIndex, DATASET_INDEX);
                     }
@@ -486,24 +495,24 @@ namespace Ferretto.VW.InverterDriver
                     if (!this.stopExecution)
                     {
                         this.stopExecution = true;
-                        ThrowEndEvent?.Invoke();
+                        this.ThrowEndEvent?.Invoke();
                     }
                 }
             }
             else // Up to now we don't check the value backed from the SelectTelegram
             {
-                logger.Log(LogLevel.Debug, "SetUp Parameters");
+                logger.Debug("SetUp Parameters");
 
-                logger.Log(LogLevel.Debug, "Value = {0} - ID Parameter = {1}", eventArgs.Value, eventArgs.ParamID);
+                logger.Debug($"Value = {eventArgs.Value} - ID Parameter = {eventArgs.ParamId}");
             }
         }
 
         /// <summary>
         /// Make execution for a given step.
         /// </summary>
-        private void stepExecution()
+        private void StepExecution()
         {
-            logger.Log(LogLevel.Debug, string.Format(" <-- stepExecution - Step: {0} - {1}", this.stepCounter, this.actualCalibrationAxis));
+            logger.Debug($" <-- stepExecution - Step: {this.stepCounter} - {this.actualCalibrationAxis}");
 
             // Select the operation
             switch (this.stepCounter)
@@ -511,19 +520,19 @@ namespace Ferretto.VW.InverterDriver
                 // Homing mode sequence
                 case 0: // Disable Voltage
                     {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                        this.paramID = ParameterId.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x0000; // 0000 0000 0000 0000
-                        else // Horizontal
-                            this.valParam = 0x8000; // 1000 0000 0000 0000
+                        this.valParam =
+                            this.actualCalibrationAxis == CalibrationOrientation.Vertical
+                            ? 0x0000
+                            : 0x8000; // 1000 0000 0000 0000
 
                         break;
                     }
 
                 case 1: // Homing mode operation
                     {
-                        this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
+                        this.paramID = ParameterId.SET_OPERATING_MODE_PARAM;
                         this.valParam = 0x0006; // 0000 0110 for Horizontal and Vertical Homing
 
                         break;
@@ -531,48 +540,49 @@ namespace Ferretto.VW.InverterDriver
 
                 case 2: // Shut Down
                     {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                        this.paramID = ParameterId.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x0006; // 0000 0000 0000 0110
-                        else // Horizontal
-                            this.valParam = 0x8006; // 1000 0000 0000 0110
+                        this.valParam =
+                            this.actualCalibrationAxis == CalibrationOrientation.Vertical
+                            ? 0x0006
+                            : 0x8006; // 1000 0000 0000 0110
 
                         break;
                     }
 
                 case 3: // Switch On
                     {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                        this.paramID = ParameterId.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x0007; // 0000 0000 0000 0111
-                        else // Horizontal
-                            this.valParam = 0x8007; // 1000 0000 0000 0111
+                        this.valParam =
+                            this.actualCalibrationAxis == CalibrationOrientation.Vertical
+                            ? 0x0007
+                            : 0x8007; // 1000 0000 0000 0111
 
                         break;
                     }
 
                 case 4: // Enable Operation
                     {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                        this.paramID = ParameterId.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x000F; // 0000 0000 0000 1111
-                        else // Horizontal
-                            this.valParam = 0x800F; // 1000 0000 0000 1111
+                        this.valParam =
+                            this.actualCalibrationAxis == CalibrationOrientation.Vertical
+                            ? 0x000F
+                            : 0x800F; // 1000 0000 0000 1111
 
                         break;
                     }
 
                 case 5: // Enable Operation and Starting Home
                     {
-                        this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                        this.paramID = ParameterId.CONTROL_WORD_PARAM;
 
-                        if (this.actualCalibrationAxis == CalibrationType.VERTICAL_CALIBRATION) // Vertical
-                            this.valParam = 0x001F; // 0000 0000 0001 1111
-                        else // Horizontal
-                            this.valParam = 0x801F; // 1000 0000 0001 1111
+                        this.valParam =
+                            this.actualCalibrationAxis ==
+                            CalibrationOrientation.Vertical
+                            ? 0x001F
+                            : 0x801F; // 1000 0000 0001 1111
 
                         break;
                     }
@@ -580,7 +590,7 @@ namespace Ferretto.VW.InverterDriver
                 default:
                     {
                         // Send the error description to the UI
-                        ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
+                        this.ThrowErrorEvent?.Invoke(CalibrationStatus.UNKNOWN_OPERATION);
 
                         break;
                     }
@@ -589,9 +599,13 @@ namespace Ferretto.VW.InverterDriver
             // Set request to inverter
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_INDEX, this.valParam);
 
-            logger.Log(LogLevel.Debug, string.Format(" --> StepExecution: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}", this.stepCounter, this.paramID.ToString(), this.valParam));
+            logger.Debug(
+                " --> StepExecution: {0}. Set parameter to inverter::  paramID: {1}, value: {2:X}",
+                this.stepCounter,
+                this.paramID.ToString(),
+                this.valParam);
 
-            this.checkExistStatus(idExitStatus);
+            this.CheckExistStatus(idExitStatus);
         }
 
         #endregion

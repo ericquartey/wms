@@ -7,8 +7,6 @@ namespace Ferretto.Common.DataModels
     {
         #region Properties
 
-        public long? ActualWeight { get; set; }
-
         public Aisle Aisle { get; set; }
 
         public int AisleId { get; set; }

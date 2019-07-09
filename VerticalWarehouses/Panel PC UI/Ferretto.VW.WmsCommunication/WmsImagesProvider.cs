@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Unity;
 using NLog;
 using System.Runtime.Caching;
 using System.Collections.Specialized;
@@ -20,23 +15,20 @@ namespace Ferretto.VW.WmsCommunication
 
         private const int MAX_CACHE_CAPACITY_MB = 200;
 
-        private const int MAX_CACHING_TIME_IN_MINUTES = 720; // INFO 60 minutes * 12 hours (avarage machine's daily work load)
+        private const int MAX_CACHING_TIME_IN_MINUTES = 60 * 12; // INFO 60 minutes * 12 hours (avarage machine's daily work load)
 
-        private readonly IUnityContainer container;
+        private readonly MemoryCache cache;
 
         private readonly IImagesDataService imagesDataService;
 
         private readonly Logger logger;
 
-        private MemoryCache cache;
-
         #endregion
 
         #region Constructors
 
-        public WmsImagesProvider(IUnityContainer container, Uri wmsConnectionString)
+        public WmsImagesProvider(Uri wmsConnectionString)
         {
-            this.container = container;
             this.imagesDataService = DataServiceFactory.GetService<IImagesDataService>(wmsConnectionString);
             this.logger = LogManager.GetCurrentClassLogger();
 
@@ -69,7 +61,7 @@ namespace Ferretto.VW.WmsCommunication
                             this.cache.Set(imageCode, cachedObject, policy);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         cachedObject = this.cache["rollback"] as Stream;
                         if (cachedObject == null)

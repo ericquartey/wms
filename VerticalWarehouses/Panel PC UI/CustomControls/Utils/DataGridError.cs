@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.CustomControls.Utils
+namespace Ferretto.VW.App.Controls.Utils
 {
     public class DataGridError : BindableBase
     {

@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public int MaxNetWeight { get; set; }
 
         [PositiveOrZero]
-        public int MissionCount { get; set; }
+        public int MissionsCount { get; set; }
 
         public string Note { get; set; }
 

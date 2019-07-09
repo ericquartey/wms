@@ -2,7 +2,6 @@
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
@@ -10,17 +9,24 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private IUnityContainer container;
-
         private readonly IEventAggregator eventAggregator;
 
         #endregion
 
         #region Constructors
 
-        public GeneralInfoViewModel(IEventAggregator eventAggregator)
+        public GeneralInfoViewModel(
+            IEventAggregator eventAggregator,
+            IOtherNavigationViewModel otherNavigationViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.OtherNavigationViewModel = otherNavigationViewModel;
+            this.NavigationViewModel = otherNavigationViewModel as OtherNavigationViewModel;
         }
 
         #endregion
@@ -29,6 +35,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         public BindableBase NavigationViewModel { get; set; }
 
+        public IOtherNavigationViewModel OtherNavigationViewModel { get; }
+
         #endregion
 
         #region Methods
@@ -36,12 +44,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.NavigationViewModel = this.container.Resolve<IOtherNavigationViewModel>() as OtherNavigationViewModel;
         }
 
         public async Task OnEnterViewAsync()

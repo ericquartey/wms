@@ -1,7 +1,6 @@
 ﻿namespace Ferretto.VW.InstallationApp
 {
     using System.Threading.Tasks;
-    using Ferretto.VW.Utils.Interfaces;
     using Prism.Events;
     using Prism.Mvvm;
 

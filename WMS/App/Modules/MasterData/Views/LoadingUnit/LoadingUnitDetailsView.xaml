@@ -436,7 +436,7 @@
                                       Content="{Binding Model.LastPutDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.MissionCount}" />
+                                      Content="{Binding Model.MissionsCount}" />
                     </StackPanel>
                 </GroupBox>
 

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum MessageActor
     {

@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
@@ -12,8 +12,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             ShutterPosition shutterPosition,
             ShutterMovementDirection shutterMovementDirection,
             ShutterType shutterType,
-           decimal speedRate,
-           MessageVerbosity verbosity = MessageVerbosity.Debug)
+            decimal speedRate,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Verbosity = verbosity;
             this.ShutterPosition = shutterPosition;
@@ -22,13 +22,18 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.SpeedRate = speedRate;
         }
 
-        public ShutterPositioningFieldMessageData(IShutterPositioningMessageData shutterPositioningMessageData)
+        public ShutterPositioningFieldMessageData(IShutterPositioningMessageData messageData)
         {
-            this.ShutterPosition = shutterPositioningMessageData.ShutterPosition;
-            this.ShutterMovementDirection = shutterPositioningMessageData.ShutterMovementDirection;
-            this.ShutterType = shutterPositioningMessageData.ShutterType;
-            this.SpeedRate = shutterPositioningMessageData.SpeedRate;
-            this.Verbosity = shutterPositioningMessageData.Verbosity;
+            if (messageData == null)
+            {
+                throw new System.ArgumentNullException(nameof(messageData));
+            }
+
+            this.ShutterPosition = messageData.ShutterPosition;
+            this.ShutterMovementDirection = messageData.ShutterMovementDirection;
+            this.ShutterType = messageData.ShutterType;
+            this.SpeedRate = messageData.SpeedRate;
+            this.Verbosity = messageData.Verbosity;
         }
 
         #endregion

@@ -60,7 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsHeaderVisible = true;
             this.IsErrorsVisible = true;
-            this.isItemLookUpEnabled = true;
+            this.IsItemLookUpEnabled = true;
         }
 
         #endregion
