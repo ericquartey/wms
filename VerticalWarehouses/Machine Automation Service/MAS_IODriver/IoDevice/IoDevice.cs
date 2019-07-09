@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int IO_POLLING_INTERVAL = 100;
+        private const int IO_POLLING_INTERVAL = 50;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -67,17 +67,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.port = port;
             this.index = index;
             this.logger = logger;
-
             this.shdTransport = shdTransport;
-
-            //if (shdTransport is SHDTransport)
-            //{
-            //    this.shdTransport = new SHDTransport();
-            //}
-            //else
-            //{
-            //    this.shdTransport = new SHDTransportMock();
-            //}
 
             this.ioSHDStatus = new IoSHDStatus();
 
@@ -170,11 +160,6 @@ namespace Ferretto.VW.MAS_IODriver
                                 ErrorLevel.NoError,
                                 (byte)this.index);
                             this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-
-                            if (this.index == IoIndex.IoDevice1)
-                            {
-                                this.logger.LogTrace($" >>  SHD Status Buffer value: 0:{data.SensorsStates[0]}, 1:{data.SensorsStates[1]}, 2:{data.SensorsStates[2]}, 3:{data.SensorsStates[3]}, 4:{data.SensorsStates[4]}, 5:{data.SensorsStates[5]}");
-                            }
 
                             this.forceIoStatusPublish = false;
                         }

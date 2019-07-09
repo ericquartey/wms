@@ -12,6 +12,7 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS_IODriver
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
+
+        private readonly IConfiguration configuration;
 
         private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
@@ -58,8 +61,8 @@ namespace Ferretto.VW.MAS_IODriver
             IEventAggregator eventAggregator,
             IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
-            IServiceScopeFactory serviceScopeFactory,
-            ILogger<HostedSHDIoDriver> logger)
+            ILogger<HostedSHDIoDriver> logger,
+            IConfiguration configuration)
         {
             logger.LogTrace("1:Method Start");
 
@@ -67,7 +70,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.vertimagConfiguration = vertimagConfiguration;
-            this.serviceScopeFactory = serviceScopeFactory;
+            this.configuration = configuration;
 
             this.ioDevices = new Dictionary<IoIndex, IIoDevice>();
 
@@ -184,34 +187,42 @@ namespace Ferretto.VW.MAS_IODriver
             var ioDevicesList = await this.vertimagConfiguration.GetInstalledIoListAsync();
             IIoDevice ioDevice = null;
 
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
+
+            foreach (var ioIndex in ioDevicesList)
             {
-                foreach (var ioIndex in ioDevicesList)
+                ISHDTransport transport;
+                if (!useMockedTransport)
                 {
-                    var transport = scope.ServiceProvider.GetRequiredService<ISHDTransport>();
-                    switch (ioIndex)
-                    {
-                        case IoIndex.IoDevice1:
-                            var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-                            var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
-                            ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
-                            break;
-
-                        case IoIndex.IoDevice2:
-                            var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
-                            var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
-                            ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
-                            break;
-
-                        case IoIndex.IoDevice3:
-                            var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
-                            var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
-                            ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
-                            break;
-                    }
-
-                    this.ioDevices.Add(ioIndex, ioDevice);
+                    transport = new SHDTransport();
                 }
+                else
+                {
+                    transport = new SHDTransportMock();
+                }
+
+                switch (ioIndex)
+                {
+                    case IoIndex.IoDevice1:
+                        var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
+                        break;
+
+                    case IoIndex.IoDevice2:
+                        var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
+                        break;
+
+                    case IoIndex.IoDevice3:
+                        var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
+                        break;
+                }
+
+                this.ioDevices.Add(ioIndex, ioDevice);
             }
         }
 

@@ -5,7 +5,6 @@ using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
-using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -110,8 +109,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.RegisterSocketTransport(services);
 
-            this.RegisterModbusTransport(services);
-
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -214,19 +211,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
-        }
-
-        private void RegisterModbusTransport(IServiceCollection services)
-        {
-            var useMockedTransport = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
-            if (useMockedTransport)
-            {
-                services.AddTransient<ISHDTransport, SHDTransportMock>();  // AddSingleton<
-            }
-            else
-            {
-                services.AddTransient<ISHDTransport, SHDTransport>();  // AddSingleton<
-            }
         }
 
         private void RegisterSocketTransport(IServiceCollection services)
