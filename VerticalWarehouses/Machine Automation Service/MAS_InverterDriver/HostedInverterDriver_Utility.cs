@@ -613,8 +613,29 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     var verticalPositioningData = new InverterPositioningFieldMessageData(positioningData);
 
-                    this.currentStateMachine = new PositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    if (inverterStatus is AngInverterStatus currentStatus)
+                    {
+                        this.logger.LogTrace($"1:CurrentPositionAxisVertical = {currentStatus.CurrentPositionAxisVertical}");
+                        this.logger.LogTrace($"2:data.TargetPosition = {verticalPositioningData.TargetPosition}");
+
+                        if (currentStatus.CurrentPositionAxisVertical == verticalPositioningData.TargetPosition)
+                        {
+                            var msgNotification = new FieldNotificationMessage(
+                                null,
+                                "Axis already in position",
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.Positioning,
+                                MessageStatus.OperationEnd);
+
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                        }
+                        else
+                        {
+                            this.currentStateMachine = new PositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
+                    }
                 }
                 else
                 {

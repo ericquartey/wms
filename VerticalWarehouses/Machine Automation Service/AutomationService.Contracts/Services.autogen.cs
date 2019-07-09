@@ -2342,21 +2342,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<decimal> GetComputedResolutionAsync(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        public System.Threading.Tasks.Task<decimal> GetComputedResolutionAsync(decimal readDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
         {
-            return GetComputedResolutionAsync(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution, System.Threading.CancellationToken.None);
+            return GetComputedResolutionAsync(readDistance, desiredInitialPosition, desiredFinalPosition, resolution, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<decimal> GetComputedResolutionAsync(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<decimal> GetComputedResolutionAsync(decimal readDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution, System.Threading.CancellationToken cancellationToken)
         {
-            if (desiredDistance == null)
-                throw new System.ArgumentNullException("desiredDistance");
+            if (readDistance == null)
+                throw new System.ArgumentNullException("readDistance");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/ResolutionCalibration/GetComputedResolution/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}");
-            urlBuilder_.Replace("{desiredDistance}", System.Uri.EscapeDataString(ConvertToString(desiredDistance, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/ResolutionCalibration/GetComputedResolution/{readDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}");
+            urlBuilder_.Replace("{readDistance}", System.Uri.EscapeDataString(ConvertToString(readDistance, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{desiredInitialPosition}", System.Uri.EscapeDataString(ConvertToString(desiredInitialPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{desiredFinalPosition}", System.Uri.EscapeDataString(ConvertToString(desiredFinalPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{resolution}", System.Uri.EscapeDataString(ConvertToString(resolution, System.Globalization.CultureInfo.InvariantCulture)));
