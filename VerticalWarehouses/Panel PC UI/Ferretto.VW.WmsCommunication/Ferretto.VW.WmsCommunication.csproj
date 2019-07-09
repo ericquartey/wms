@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <RootNamespace>Ferretto.VW.WmsCommunication</RootNamespace>
-    <AssemblyName>Ferretto.VW.WmsCommunication</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Runtime.Caching" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.9.0" />
@@ -14,7 +16,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Runtime.Caching" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

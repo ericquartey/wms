@@ -1,35 +1,41 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+{
     public class StatisticsNavigationViewModel : BindableBase, IStatisticsNavigationViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand machineStatisticsButtonCommand;
-        private ICommand drawerSpaceSaturationButtonCommand;
+        private readonly INavigationService navigationService;
+
         private ICommand cellsStatisticsButtonCommand;
-        private ICommand errorsStatisticsButtonCommand;
 
         private IUnityContainer container;
+
+        private ICommand drawerSpaceSaturationButtonCommand;
+
+        private ICommand errorsStatisticsButtonCommand;
+
+        private ICommand machineStatisticsButtonCommand;
 
         #endregion
 
         #region Constructors
 
-        public StatisticsNavigationViewModel(IEventAggregator eventAggregator)
+        public StatisticsNavigationViewModel(
+            IEventAggregator eventAggregator,
+            INavigationService navigationService)
         {
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
             this.NavigationViewModel = null;
         }
 
@@ -37,25 +43,25 @@
 
         #region Properties
 
-        public ICommand MachineStatisticsButtonCommand => this.machineStatisticsButtonCommand ?? (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
+        public ICommand CellsStatisticsButtonCommand => this.cellsStatisticsButtonCommand ?? (this.cellsStatisticsButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
+            this.navigationService.NavigateToView<CellsStatisticsViewModel, ICellsStatisticsViewModel>();
         }));
 
         public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
-        }));
-
-        public ICommand CellsStatisticsButtonCommand => this.cellsStatisticsButtonCommand ?? (this.cellsStatisticsButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<CellsStatisticsViewModel, ICellsStatisticsViewModel>();
+            this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
         }));
 
         public ICommand ErrorsStatisticsButtonCommand => this.errorsStatisticsButtonCommand ?? (this.errorsStatisticsButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<ErrorsStatisticsViewModel, IErrorsStatisticsViewModel>();
+            this.navigationService.NavigateToView<ErrorsStatisticsViewModel, IErrorsStatisticsViewModel>();
         }));
+
+        public ICommand MachineStatisticsButtonCommand => this.machineStatisticsButtonCommand ?? (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
+                                {
+                                    this.navigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
+                                }));
 
         public BindableBase NavigationViewModel { get; set; }
 

@@ -22,7 +22,7 @@ namespace Ferretto.VW.InstallationApp
         //public async void Notify(string s)
         public void Notify(string s)
         {
-            this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>().Note = s;
+            this.container.Resolve<IFooterViewModel>().Note = s;
 
             //TEMP Maybe not necessary
             //await this.CallBackMethod();

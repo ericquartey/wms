@@ -6,7 +6,6 @@
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.Interfaces;
     using Ferretto.VW.OperatorApp.Resources;
     using Ferretto.VW.OperatorApp.Resources.Enumerations;
     using Prism.Events;
@@ -27,11 +26,15 @@
 
         public MainWindow(IEventAggregator eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
             this.InitializeComponent();
+
+            this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe(
-                (message) => { this.HideAndUnsubscribe(); }, ThreadOption.PublisherThread, false,
+                (message) => { this.HideAndUnsubscribe(); },
+                ThreadOption.PublisherThread,
+                false,
                 message => message.Type == OperatorApp_EventMessageType.BackToVWApp);
+
             FinishedMachineModeChangeStateEventHandler += () => { };
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
             MainWindowViewModel.ClickedOnMachineModeEventHandler += this.SetMachineMode;

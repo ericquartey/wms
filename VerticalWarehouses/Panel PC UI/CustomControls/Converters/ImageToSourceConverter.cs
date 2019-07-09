@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Ferretto.VW.CustomControls.Converters
+namespace Ferretto.VW.App.Controls.Converters
 {
     public class ImageToSourceConverter : IValueConverter
     {

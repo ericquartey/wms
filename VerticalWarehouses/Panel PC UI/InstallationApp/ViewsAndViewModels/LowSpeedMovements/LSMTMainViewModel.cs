@@ -11,7 +11,7 @@
 
         private IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         private BindableBase lSMTContentRegionCurrentViewModel;
 

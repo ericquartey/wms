@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using System.Collections.ObjectModel;
-using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
@@ -19,29 +17,38 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private ObservableCollection<DataGridCell> cells;
+        private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
 
-        private IUnityContainer container;
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly INavigationService navigationService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
+
+        private ObservableCollection<DataGridCell> cells;
 
         private BindableBase dataGridViewModel;
 
-        private CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
-
         private ICommand drawerCompactingButtonCommand;
 
-        private IEventAggregator eventAggregator;
-
         private DataGridCell selectedCell;
-
-        private IWmsDataProvider wmsDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public CellsStatisticsViewModel(IEventAggregator eventAggregator)
+        public CellsStatisticsViewModel(
+            IEventAggregator eventAggregator,
+            INavigationService navigationService,
+            IWmsDataProvider wmsDataProvider,
+            ICustomControlCellStatisticsDataGridViewModel cellStatisticsDataGridViewModel)
         {
             this.eventAggregator = eventAggregator;
+            this.wmsDataProvider = wmsDataProvider;
+            this.navigationService = navigationService;
+
+            this.dataGridViewModelRef = cellStatisticsDataGridViewModel as CustomControlCellStatisticsDataGridViewModel;
+
             this.NavigationViewModel = null;
         }
 
@@ -53,10 +60,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ICommand DrawerCompactingButtonCommand => this.drawerCompactingButtonCommand ?? (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
-                {
-                    NavigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>();
-                }));
+        public ICommand DrawerCompactingButtonCommand =>
+            this.drawerCompactingButtonCommand
+            ??
+            (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+                this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -71,19 +79,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlCellStatisticsDataGridViewModel>() as CustomControlCellStatisticsDataGridViewModel;
-
-            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             this.Cells = new ObservableCollection<DataGridCell>();
             var random = new Random();
-            for (int i = 0; i < random.Next(5, 20); i++)
+            for (var i = 0; i < random.Next(5, 20); i++)
             {
                 var cell = new DataGridCell
                 {

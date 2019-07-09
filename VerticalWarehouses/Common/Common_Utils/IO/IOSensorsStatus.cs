@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.CommonUtils.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.IO
+namespace Ferretto.VW.CommonUtils.IO
 {
     public class IOSensorsStatus
     {

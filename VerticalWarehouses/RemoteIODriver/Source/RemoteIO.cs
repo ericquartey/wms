@@ -152,7 +152,7 @@ namespace Ferretto.VW.RemoteIODriver
                 if (this.client.Connected)
                 {
                     // Power up the machine
-                    this.powerUp();  // uncomment these code lines
+                    this.PowerUp();  // uncomment these code lines
 
                     // Set the digital signal to high level related to the encoder of vertical motor enabling (as default).
                     this.outputs.Clear();
@@ -162,10 +162,10 @@ namespace Ferretto.VW.RemoteIODriver
                     this.outputs.Add(false);
                     this.outputs.Add(false);
                     this.outputs.Add(false);
-                    this.writeData();
+                    this.WriteData();
 
                     // Create and start internal thread to read/write digital lines
-                    this.createThread();
+                    this.CreateThread();
                     this.bConnected = true;
                 }
             }
@@ -177,7 +177,7 @@ namespace Ferretto.VW.RemoteIODriver
         public void Disconnect()
         {
             this.evTerminate?.Set();
-            this.destroyThread();
+            this.DestroyThread();
 
             // Just wait before to close the TCPClient object
             Thread.Sleep(DELAY_TO_CLOSE);
@@ -190,7 +190,7 @@ namespace Ferretto.VW.RemoteIODriver
         /// <summary>
         /// Create and start the internal thread.
         /// </summary>
-        private void createThread()
+        private void CreateThread()
         {
             this.evTerminate = new AutoResetEvent(false);
             this.regMainThreadWaitHandle = ThreadPool.RegisterWaitForSingleObject(this.evTerminate, this.onMainThread, null, TIME_OUT, false);
@@ -199,7 +199,7 @@ namespace Ferretto.VW.RemoteIODriver
         /// <summary>
         /// Destroy the internal thread.
         /// </summary>
-        private void destroyThread()
+        private void DestroyThread()
         {
             this.regMainThreadWaitHandle?.Unregister(this.evTerminate);
         }
@@ -216,9 +216,9 @@ namespace Ferretto.VW.RemoteIODriver
                 lock (locker)
                 {
                     // read data from remote device
-                    this.readData();
+                    this.ReadData();
                     // write data to remote device
-                    this.writeData();
+                    this.WriteData();
                 }
             }
         }
@@ -227,7 +227,7 @@ namespace Ferretto.VW.RemoteIODriver
         /// Power up the engines.
         /// Manage the output line DO3 with a pulse signal (time >= 350 ms) in order to power up the machine.
         /// </summary>
-        private void powerUp()
+        private void PowerUp()
         {
             var digitalOuts = new bool[OUTPUT_QUANTITY];
             for (var i = 0; i < OUTPUT_QUANTITY; i++)
@@ -248,7 +248,7 @@ namespace Ferretto.VW.RemoteIODriver
         /// <summary>
         /// Read the inputs from remote device.
         /// </summary>
-        private void readData()
+        private void ReadData()
         {
             if (this.client.Connected)
             {
@@ -265,7 +265,7 @@ namespace Ferretto.VW.RemoteIODriver
         /// <summary>
         /// Write the outputs to remote device.
         /// </summary>
-        private void writeData()
+        private void WriteData()
         {
             if (this.client.Connected)
             {

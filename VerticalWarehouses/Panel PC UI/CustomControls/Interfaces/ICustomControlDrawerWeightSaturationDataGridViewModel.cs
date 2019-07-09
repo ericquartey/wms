@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.Utils.Interfaces;
 
-namespace Ferretto.VW.CustomControls.Interfaces
+namespace Ferretto.VW.App.Controls.Interfaces
 {
     public interface ICustomControlDrawerWeightSaturationDataGridViewModel : IViewModel
     {

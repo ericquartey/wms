@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
 
 namespace Ferretto.VW.OperatorApp
 {
@@ -8,27 +7,31 @@ namespace Ferretto.VW.OperatorApp
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IFooterViewModel footerViewModel;
+
+        #endregion
+
+        #region Constructors
+
+        public FeedbackNotifier(IFooterViewModel footerViewModel)
+        {
+            this.footerViewModel = footerViewModel;
+        }
 
         #endregion
 
         #region Methods
 
-        public void Initialize(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
         public async void Notify(string s)
         {
-            this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().Note = s;
+            this.footerViewModel.Note = s;
             await this.CallBackMethod();
         }
 
         private async Task CallBackMethod()
         {
             await Task.Delay(2000);
-            this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().Note = string.Empty;
+            this.footerViewModel.Note = string.Empty;
         }
 
         #endregion
