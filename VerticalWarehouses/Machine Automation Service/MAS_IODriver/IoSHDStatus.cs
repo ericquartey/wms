@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const short COMTOUT_DEFAULT = 20000;
 
-        private const byte DEBOUNCE_INPUT_DEFAULT = 0x32;
+        private const byte DEBOUNCE_INPUT_DEFAULT = 0x23; // 35 ms
 
         private const byte RELEASE_FW_10 = 0x10;
 
@@ -99,11 +99,11 @@ namespace Ferretto.VW.MAS_IODriver
 
         public bool MushroomEmergency => this.inputs?[(int)IoPorts.MushroomEmergency] ?? false;
 
+        public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
+
         public bool[] OutputData => this.outputs;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
-
-        public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
 
@@ -112,6 +112,7 @@ namespace Ferretto.VW.MAS_IODriver
         #endregion
 
         // Add other output signals names
+
         #region Methods
 
         public bool MatchOutputs(bool[] outputsState)

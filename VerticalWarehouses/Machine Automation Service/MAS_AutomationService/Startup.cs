@@ -6,7 +6,6 @@ using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
-using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -93,8 +92,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.RegisterDataLayer(services, dataLayerConfiguration);
 
             this.RegisterSocketTransport(services);
-
-            this.RegisterModbusTransport(services);
 
             services.AddCors(options =>
             {
@@ -198,19 +195,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
-        }
-
-        private void RegisterModbusTransport(IServiceCollection services)
-        {
-            var useMockedTransport = this.Configuration.UseRemoteIODriverMock();
-            if (useMockedTransport)
-            {
-                services.AddSingleton<ISHDTransport, SHDTransportMock>();
-            }
-            else
-            {
-                services.AddSingleton<ISHDTransport, SHDTransport>();
-            }
         }
 
         private void RegisterSocketTransport(IServiceCollection services)
