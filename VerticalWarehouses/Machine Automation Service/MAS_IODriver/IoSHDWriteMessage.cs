@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             Array.Copy(bytes, 0, this.configurationData, 0, sizeof(short));
-            this.configurationData[2] = this.useSetupOutputLines ? (byte)0x00 : (byte)0x01;
+            this.configurationData[2] = this.useSetupOutputLines ? (byte)0x01 : (byte)0x00;
             this.configurationData[3] = this.setupOutputLines;
             this.configurationData[4] = this.debounceInput;
         }
@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS_IODriver
                     telegram[3] = this.BoolArrayToByte(this.outputs);
 
                     // Configuration data
-                    Array.Copy(telegram, 4, this.configurationData, 0, this.configurationData.Length);
+                    Array.Copy(this.configurationData, 0, telegram, 4, this.configurationData.Length);
 
                     break;
 
@@ -199,7 +199,7 @@ namespace Ferretto.VW.MAS_IODriver
                     telegram[4] = this.BoolArrayToByte(this.outputs);
 
                     // Configuration data
-                    Array.Copy(telegram, 5, this.configurationData, 0, this.configurationData.Length);
+                    Array.Copy(this.configurationData, 0, telegram, 5, this.configurationData.Length);
 
                     break;
 
@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS_IODriver
                     telegram[3] = this.BoolArrayToByte(this.outputs);
 
                     // Configuration data
-                    Array.Copy(telegram, 4, this.configurationData, 0, this.configurationData.Length);
+                    Array.Copy(this.configurationData, 0, telegram, 4, this.configurationData.Length);
                     break;
             }
 
