@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly bool stopRequested;
+
         #endregion
 
         #region Constructors
@@ -23,10 +26,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             IInverterStateMachine parentStateMachine,
             Axis axisToCalibrate,
             IInverterStatusBase inverterStatus,
-            ILogger logger)
+            ILogger logger,
+            bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -49,6 +54,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
+            if (this.stopRequested)
+            {
+                if (this.InverterStatus is AngInverterStatus currentStatus)
+                {
+                    currentStatus.HomingControlWord.HomingOperation = false;
+                }
+            }
+
             var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
             var endNotification = new FieldNotificationMessage(
                 messageData,
@@ -56,11 +69,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.CalibrateAxis,
-                MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc />

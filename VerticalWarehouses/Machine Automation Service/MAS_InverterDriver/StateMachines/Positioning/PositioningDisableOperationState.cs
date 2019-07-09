@@ -53,6 +53,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         }
 
         /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+        }
+
+        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");

@@ -36,6 +36,11 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void Start();
 
         /// <summary>
+        /// Stop states machine.
+        /// </summary>
+        void Stop();
+
+        /// <summary>
         /// Process a given message.
         /// </summary>
         /// <param name="message">The <see cref="InverterMessage"/> message to be processed.</param>

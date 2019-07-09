@@ -23,6 +23,11 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void Start();
 
         /// <summary>
+        /// Executes stop action in the current state to stop running Inverter States Machine
+        /// </summary>
+        void Stop();
+
+        /// <summary>
         /// Process message to apply state business logic.
         /// </summary>
         /// <param name="message">Inverter driver message to be evaluated</param>
