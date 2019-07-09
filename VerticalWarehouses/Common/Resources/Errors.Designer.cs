@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.Resources {
+namespace Ferretto.VW.App.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ferretto.VW.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.Resources.Errors", typeof(Errors).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.Errors", typeof(Errors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,42 @@ namespace Ferretto.VW.Resources {
         public static string ConverterCanConvertOnlyToVisibilityType {
             get {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid credentials..
+        /// </summary>
+        public static string UserLogin_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("UserLogin_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is too short..
+        /// </summary>
+        public static string UserLogin_PasswordIsTooShort {
+            get {
+                return ResourceManager.GetString("UserLogin_PasswordIsTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be specified..
+        /// </summary>
+        public static string UserLogin_PasswordMustBeSpecified {
+            get {
+                return ResourceManager.GetString("UserLogin_PasswordMustBeSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name must be specified..
+        /// </summary>
+        public static string UserLogin_UserNameMustBeSpecified {
+            get {
+                return ResourceManager.GetString("UserLogin_UserNameMustBeSpecified", resourceCulture);
             }
         }
     }

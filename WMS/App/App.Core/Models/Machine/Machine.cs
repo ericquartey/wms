@@ -14,9 +14,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
-        public long? ActualWeight { get; set; }
-
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
 
@@ -50,8 +47,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineErrorTime), ResourceType = typeof(BusinessObjects))]
         public long? ErrorTime { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
-        public int FillRate { get; set; }
+        [Display(Name = nameof(BusinessObjects.AreaFillRate), ResourceType = typeof(BusinessObjects))]
+        public int AreaFillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Image), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }
@@ -130,6 +127,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.MachineTotalMaxWeight), ResourceType = typeof(BusinessObjects))]
         public long? TotalMaxWeight { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.WeightFillRate), ResourceType = typeof(BusinessObjects))]
+        public int WeightFillRate { get; set; }
 
         #endregion
     }

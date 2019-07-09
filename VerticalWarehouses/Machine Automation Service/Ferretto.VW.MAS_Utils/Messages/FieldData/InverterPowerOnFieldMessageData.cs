@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
@@ -9,7 +9,9 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
     {
         #region Constructors
 
-        public InverterPowerOnFieldMessageData(InverterIndex inverterToPowerOn, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterPowerOnFieldMessageData(
+            InverterIndex inverterToPowerOn,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.InverterToPowerOn = inverterToPowerOn;
             this.Verbosity = verbosity;

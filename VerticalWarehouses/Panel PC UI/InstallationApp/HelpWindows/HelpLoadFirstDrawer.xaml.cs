@@ -2,14 +2,15 @@
 
 namespace Ferretto.VW.InstallationApp.HelpWindows
 {
-    /// <summary>
-    /// Logica di interazione per HelpLoadFirstDrawer.xaml
-    /// </summary>
     public partial class HelpLoadFirstDrawer : UserControl
     {
+        #region Constructors
+
         public HelpLoadFirstDrawer()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

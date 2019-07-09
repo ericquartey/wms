@@ -1,30 +1,33 @@
-﻿namespace Ferretto.VW.InstallationApp
-{
-    using System.Windows;
-    using System.Windows.Input;
-    using Ferretto.VW.InstallationApp.Resources;
-    using Ferretto.VW.InstallationApp.Resources.Enumerables;
-    using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Windows;
+using System.Windows.Input;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.InstallationApp
+{
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void ClickedOnMachineOnMarchEvent();
 
-    public partial class MainWindowViewModel : BindableBase, IMainWindowViewModel, IViewModelRequiresContainer
+    public partial class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         #region Fields
+
+        private readonly IUnityContainer container;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly HelpMainWindow helpWindow;
 
-        private readonly IInstallationHubClient installationHubClient;
+        private readonly IdleViewModel idleViewModel;
 
-        private IUnityContainer container;
+        private readonly IInstallationHubClient installationHubClient;
 
         private BindableBase contentRegionCurrentViewModel;
 
@@ -56,14 +59,22 @@
 
         public MainWindowViewModel(
             IEventAggregator eventAggregator,
-            IInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient,
+            IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
+            IIdleViewModel idleViewModel,
+            IUnityContainer container)
         {
             this.eventAggregator = eventAggregator;
-            this.helpWindow = new HelpMainWindow(eventAggregator);
-
-            this.IsErrorViewButtonVisible = Visibility.Collapsed;
-
+            this.container = container;
             this.installationHubClient = installationHubClient;
+            this.NavigationRegionCurrentViewModel = navigationButtonsViewModel as MainWindowNavigationButtonsViewModel;
+            this.ExitViewButtonRegionCurrentViewModel = null;
+            this.idleViewModel = idleViewModel as IdleViewModel;
+            this.ContentRegionCurrentViewModel = this.idleViewModel;
+            this.InitializeEvents();
+
+            this.helpWindow = new HelpMainWindow(eventAggregator);
+            this.IsErrorViewButtonVisible = Visibility.Collapsed;
         }
 
         #endregion
@@ -78,22 +89,32 @@
 
         #region Properties
 
-        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() =>
+        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand =>
+            this.backToMainWindowNavigationButtonsViewCommand
+            ??
+            (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() =>
         {
             this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
+            this.ContentRegionCurrentViewModel = this.idleViewModel;
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.ExitView));
         }));
 
-        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
-        {
-            this.IsPopupOpen = false;
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
-            ClickedOnMachineModeEventHandler = null;
-            ClickedOnMachineOnMarchEventHandler = null;
-        }));
+        public ICommand BackToVWAPPCommand =>
+            this.backToVWAPPCommand
+            ??
+            (this.backToVWAPPCommand = new DelegateCommand(() =>
+                {
+                    this.IsPopupOpen = false;
+                    this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
+                    ClickedOnMachineModeEventHandler = null;
+                    ClickedOnMachineOnMarchEventHandler = null;
+                }));
 
-        public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
+        public BindableBase ContentRegionCurrentViewModel
+        {
+            get => this.contentRegionCurrentViewModel;
+            set => this.SetProperty(ref this.contentRegionCurrentViewModel, value);
+        }
 
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
 
@@ -131,23 +152,13 @@
 
         #region Methods
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
-            this.InitializeEvents();
-        }
-
         private void InitializeEvents()
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) =>
             {
                 this.NavigationRegionCurrentViewModel = null;
-                this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>();
-                ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).InitializeBottomButtons();
+                this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
             },
             ThreadOption.PublisherThread,
             false,
@@ -158,7 +169,6 @@
             {
                 this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
                 this.ExitViewButtonRegionCurrentViewModel = null;
-                ((MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).FinalizeBottomButtons();
             },
             ThreadOption.PublisherThread,
             false,

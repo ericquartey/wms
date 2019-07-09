@@ -1,8 +1,8 @@
-﻿<ResourceDictionary x:Class="Ferretto.VW.CustomControls.Templates.DataGridRepeatButtonControlTemplate"
+﻿<ResourceDictionary x:Class="Ferretto.VW.App.Controls.Templates.DataGridRepeatButtonControlTemplate"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Templates"
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Templates"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <ControlTemplate x:Key="VWAPP_DataGridRepeatButton_ControlTemplate"
                      TargetType="RepeatButton">

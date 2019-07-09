@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.VWApp.Interfaces
+﻿namespace Ferretto.VW.App.Interfaces
 {
     public interface IBootstrapper
     {

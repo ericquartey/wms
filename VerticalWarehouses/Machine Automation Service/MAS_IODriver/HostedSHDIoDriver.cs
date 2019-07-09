@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -18,7 +18,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedSHDIoDriver : BackgroundService
+    public class HostedSHDIoDriver : BackgroundService
     {
         #region Fields
 
@@ -181,20 +181,26 @@ namespace Ferretto.VW.MAS_IODriver
                 switch (ioIndex)
                 {
                     case IoIndex.IoDevice1:
-                        var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync(
+                            (long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                            (long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
                         break;
 
                     case IoIndex.IoDevice2:
-                        var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync(
+                            (long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                            (long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
                         break;
 
                     case IoIndex.IoDevice3:
-                        var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync(
+                            (long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                            (long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
                         break;
                 }

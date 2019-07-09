@@ -58,6 +58,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         public DrawerActivityPickingDetailViewModel(IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
         }

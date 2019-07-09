@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
-                Common_Utils.Messages.Enumerations.ShutterMovementDirection.Down,
+                CommonUtils.Messages.Enumerations.ShutterMovementDirection.Down,
                 this.shutterControlMessageData.ShutterType,
                 this.shutterControlMessageData.SpeedRate);
 

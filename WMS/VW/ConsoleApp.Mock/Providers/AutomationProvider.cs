@@ -66,6 +66,11 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.listsDataService.ExecuteAsync(listId, areaId, bayId);
         }
 
+        public Task ExecuteLoadingUnitMissionAsync(int missionId)
+        {
+            return this.missionsDataService.ExecuteLoadingUnitAsync(missionId);
+        }
+
         public async Task<MissionOperation> ExecuteOperationAsync(int operationId)
         {
             return await this.missionOperationsDataService.ExecuteAsync(operationId);

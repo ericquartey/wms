@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -40,6 +40,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         #endregion
 
         #region Methods
+
+        public override void Release()
+        {
+        }
 
         public override void Start()
         {

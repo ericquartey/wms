@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 cellTablePopulated = true;
 
-                if (cell.Side == Side.FrontEven)
+                if (cell.Side == Side.FrontOdd)
                 {
                     if (cellCounterEven != 0 && (cell.WorkingStatus == Status.Free || cell.WorkingStatus == Status.Disabled) && evenCellBeforePriority < cell.Priority)
                     {

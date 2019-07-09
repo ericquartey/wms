@@ -1,91 +1,26 @@
-namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.Drivers.Inverter
 {
     /// <summary>
-    /// Type of request for the inverter.
+    /// Represents a request for the Inverter.
     /// </summary>
-    public enum TypeOfRequest
-    {
-        /// <summary>
-        /// Request for reading a parameter
-        /// </summary>
-        SendRequest = 0x0,
-
-        /// <summary>
-        /// Request for writing a parameter value
-        /// </summary>
-        SettingRequest
-    }
-
-    /// <summary>
-    /// the Source of request
-    /// </summary>
-    public enum RequestSource
-    {
-        Internal,
-        External
-    }
-
-    /// <summary>
-    /// Data type of the payload parameter for a request.
-    /// </summary>
-    public enum ValueDataType
-    {
-        /// <summary>
-        /// byte data type (1 byte)
-        /// </summary>
-        Byte = 0x0,
-
-        /// <summary>
-        /// float data type (4 bytes)
-        /// </summary>
-        Float,
-
-        /// <summary>
-        /// double data type (8 bytes)
-        /// </summary>
-        Double,
-
-        /// <summary>
-        /// short data type (2 bytes)
-        /// </summary>
-        Int16,
-
-        UInt16,
-
-        /// <summary>
-        /// int data type (4 bytes)
-        /// </summary>
-        Int32,
-
-        /// <summary>
-        /// string data type (array of bytes)
-        /// </summary>
-        String
-    }
-
-    /// <summary>
-    /// This class contains the definition  a request for the inverter.
-    /// There are 2 type of request:
-    ///  - the send request,
-    ///  - the setting request.
-    /// See Bonfiglioli inverter documentation for details about the telegram
-    /// </summary>
+    /// <remarks>
+    /// See Bonfiglioli inverter documentation for details about the telegram.
+    /// </remarks>
     public class Request
     {
-        // The request class contains description fields:
-        //  - ParameterID
-        //  - The source of request (internal or external)
-        //  - Type of request (send request, or setting request)
-        //  - The system index
-        //  - The dataSet index
-        //  - Value of parameter (available in different types - int, short, float, byte, string)
-
         #region Constructors
 
-        public Request(TypeOfRequest t, ParameterID paramID, RequestSource source, byte systemIndex, byte dataSetIndex, ValueDataType dataType, object value)
+        public Request(
+            TypeOfRequest typeOfRequest,
+            ParameterId parameterId,
+            RequestSource source,
+            byte systemIndex,
+            byte dataSetIndex,
+            ValueDataType dataType,
+            object value)
         {
-            this.Type = t;
-            this.ParameterID = paramID;
+            this.Type = typeOfRequest;
+            this.ParameterId = parameterId;
             this.Source = source;
             this.SystemIndex = systemIndex;
             this.DataSetIndex = dataSetIndex;
@@ -93,15 +28,17 @@ namespace Ferretto.VW.InverterDriver
             this.Value = value;
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
-        public byte DataSetIndex { private set; get; }
+        public byte DataSetIndex { get; private set; }
 
-        public ValueDataType DataType { private set; get; }
+        public ValueDataType DataType { get; private set; }
 
-        public ParameterID ParameterID { get; set; }
+        public ParameterId ParameterId { get; set; }
+
+        public RequestSource Source { get; private set; }
 
         public byte SystemIndex { get; private set; }
 
@@ -109,8 +46,6 @@ namespace Ferretto.VW.InverterDriver
 
         public object Value { get; set; }
 
-        public RequestSource Source { get; private set; }
-
-        #endregion Properties
+        #endregion
     }
 }

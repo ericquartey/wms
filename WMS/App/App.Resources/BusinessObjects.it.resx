@@ -309,14 +309,8 @@
   <data name="LoadingUnitCreationDate" xml:space="preserve">
     <value>Data Creazione</value>
   </data>
-  <data name="LoadingUnitInMissionCount" xml:space="preserve">
-    <value>Numero Missioni Versamento</value>
-  </data>
-  <data name="LoadingUnitOutMissionCount" xml:space="preserve">
-    <value>Numero Missioni Prelievo</value>
-  </data>
-  <data name="LoadingUnitOtherMissionCount" xml:space="preserve">
-    <value>Numero Altre Missioni</value>
+  <data name="LoadingUnitMissionsCount" xml:space="preserve">
+    <value>Numero Missioni </value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorità</value>
@@ -341,9 +335,6 @@
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
-  </data>
-  <data name="MachineActualWeight" xml:space="preserve">
-    <value>Peso Effettivo [g]</value>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
     <value>Peso Massimo Totale [g]</value>
@@ -489,9 +480,6 @@
   </data>
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Stato Manutenzione</value>
-  </data>
-  <data name="MachineAreaFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento Area</value>
   </data>
   <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
     <value>Scaduta</value>
@@ -671,13 +659,13 @@
   <data name="MachineServiceUrl" xml:space="preserve">
     <value>Url di Servizio</value>
   </data>
-  <data name="MachineLoadingUnitCount" xml:space="preserve">
+  <data name="MachineLoadingUnitsCount" xml:space="preserve">
     <value>Numero di Unità di carico</value>
   </data>
-  <data name="MachineCellCount" xml:space="preserve">
+  <data name="MachineCellsCount" xml:space="preserve">
     <value>Numero di Celle</value>
   </data>
-  <data name="MachineItemCount" xml:space="preserve">
+  <data name="MachineItemsCount" xml:space="preserve">
     <value>Contatore Articoli</value>
   </data>
   <data name="BayIsActive" xml:space="preserve">
@@ -699,19 +687,16 @@
     <value>Posizione dell'Elevatore</value>
   </data>
   <data name="MachineGrossMaxWeight" xml:space="preserve">
-    <value>Peso Lordo Massimo</value>
+    <value>Peso Lordo Massimo [g]</value>
   </data>
   <data name="MachineGrossWeight" xml:space="preserve">
-    <value>Peso Lordo</value>
+    <value>Peso Lordo [g]</value>
   </data>
   <data name="MachineNetMaxWeight" xml:space="preserve">
-    <value>Peso Massimo Netto</value>
+    <value>Peso Massimo Netto [g]</value>
   </data>
   <data name="MachineNetWeight" xml:space="preserve">
-    <value>Peso Netto</value>
-  </data>
-  <data name="MachineWeightFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento Peso</value>
+    <value>Peso Netto [g]</value>
   </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>Pronta</value>
@@ -734,13 +719,10 @@
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Crea nuovo Tipo Scomparto</value>
   </data>
-  <data name="MachineItemListCount" xml:space="preserve">
-    <value>Contatori Liste</value>
-  </data>
-  <data name="MachineMissionCount" xml:space="preserve">
+  <data name="MachineMissionsCount" xml:space="preserve">
     <value>Contatore Missioni</value>
   </data>
-  <data name="MachineCompartmentCount" xml:space="preserve">
+  <data name="MachineCompartmentsCount" xml:space="preserve">
     <value>Totale Scomparti</value>
   </data>
   <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
@@ -766,5 +748,14 @@
   </data>
   <data name="MissionOperationStatusNew" xml:space="preserve">
     <value>Nuova</value>
+  </data>
+  <data name="CompartmentOtherMissionOperationCount" xml:space="preserve">
+    <value>Contatore Inventario Missioni Operazioni</value>
+  </data>
+  <data name="CompartmentPickMissionOperationCount" xml:space="preserve">
+    <value>Contatore Prelievo Missioni Operazioni</value>
+  </data>
+  <data name="CompartmentPutMissionOperationCount" xml:space="preserve">
+    <value>Contatore Versamento Missioni Operazioni</value>
   </data>
 </root>

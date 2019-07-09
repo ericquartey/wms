@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -17,15 +17,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
+        private readonly IUnityContainer container;
+
+        private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly INavigationService navigationService;
 
         private readonly DataGridKit selectedKit;
 
-        private IUnityContainer container;
-
         private BindableBase dataGridViewModel;
-
-        private CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
 
         private ObservableCollection<DataGridKit> kits;
 
@@ -35,9 +37,31 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Constructors
 
-        public MaintenanceMainPageViewModel(IEventAggregator eventAggregator)
+        public MaintenanceMainPageViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel,
+            INavigationService navigationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (maintenanceDataGridViewModel == null)
+            {
+                throw new ArgumentNullException(nameof(maintenanceDataGridViewModel));
+            }
+
+            if (navigationService == null)
+            {
+                throw new ArgumentNullException(nameof(navigationService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
+            this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
+            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDataGridViewModel;
+
             this.NavigationViewModel = null;
         }
 
@@ -45,12 +69,21 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Properties
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
-
-        public ICommand MaintenanceDetailButtonCommand => this.maintenanceDetailButtonCommand ?? (this.maintenanceDetailButtonCommand = new DelegateCommand(() =>
+        public BindableBase DataGridViewModel
         {
-            NavigationService.NavigateToView<MaintenanceDetailViewModel, IMaintenanceDetailViewModel>();
-        }));
+            get => this.dataGridViewModel;
+            set => this.SetProperty(ref this.dataGridViewModel, value);
+        }
+
+        public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
+
+        public ICommand MaintenanceDetailButtonCommand =>
+                    this.maintenanceDetailButtonCommand
+            ??
+            (this.maintenanceDetailButtonCommand = new DelegateCommand(() =>
+                {
+                    this.navigationService.NavigateToView<MaintenanceDetailViewModel, IMaintenanceDetailViewModel>();
+                }));
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -61,12 +94,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlMaintenanceDataGridViewModel>() as CustomControlMaintenanceDataGridViewModel;
         }
 
         public async Task OnEnterViewAsync()

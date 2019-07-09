@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.SignalRClientConsole

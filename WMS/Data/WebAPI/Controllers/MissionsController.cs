@@ -61,6 +61,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(updatedMission);
         }
 
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/execute")]
+        public async Task<ActionResult<Mission>> ExecuteLoadingUnitAsync(int id)
+        {
+            var result = await this.schedulerService.ExecuteLoadingUnitMissionAsync(id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
+        }
+
         [ProducesResponseType(typeof(IEnumerable<MissionInfo>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.IO;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
@@ -15,6 +15,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IOSensorsStatus ioSensorsStatus;
+
         private bool antiIntrusionShutterBay1;
 
         private bool antiIntrusionShutterBay2;
@@ -26,8 +28,6 @@ namespace Ferretto.VW.InstallationApp
         private bool cradleEngineSelected;
 
         private bool elevatorEngineSelected;
-
-        private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool microCarterLeftSideBay1;
 

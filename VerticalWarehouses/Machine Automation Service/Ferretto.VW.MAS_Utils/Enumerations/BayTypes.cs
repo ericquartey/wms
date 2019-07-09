@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS_Utils.Enumerations
 {
-    public enum BayTypes : int
+    public enum BayTypes
     {
         Single = 0,
 

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
@@ -32,9 +29,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Constructors
 
-        public MaintenanceDetailViewModel(IEventAggregator eventAggregator)
+        public MaintenanceDetailViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlMaintenanceDetailDataGridViewModel maintenanceDataGridViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
+            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDetailDataGridViewModel;
+
             this.NavigationViewModel = null;
         }
 
@@ -42,7 +49,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Properties
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+        public BindableBase DataGridViewModel
+        {
+            get => this.dataGridViewModel;
+            set => this.SetProperty(ref this.dataGridViewModel, value);
+        }
+
+        public ICustomControlMaintenanceDetailDataGridViewModel MaintenanceDataGridViewModel { get; }
 
         public BindableBase NavigationViewModel { get; set; }
 

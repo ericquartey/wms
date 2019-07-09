@@ -48,13 +48,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.LastModificationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
-            builder.Property(l => l.InMissionCount)
-                .HasDefaultValue(0);
-
-            builder.Property(l => l.OutMissionCount)
-                .HasDefaultValue(0);
-
-            builder.Property(l => l.OtherMissionCount)
+            builder.Property(l => l.MissionsCount)
                 .HasDefaultValue(0);
 
             builder.HasOne(l => l.AbcClass)

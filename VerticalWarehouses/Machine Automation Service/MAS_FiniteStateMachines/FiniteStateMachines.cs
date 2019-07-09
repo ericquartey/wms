@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
@@ -152,7 +152,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    if (this.commandQueue.Count == 0)
+                    {
+                        this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    }
+                    else
+                    {
+                        this.commandQueue.Dequeue(out receivedMessage);
+                    }
 
                     this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
@@ -391,7 +398,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 NotificationMessage receivedMessage;
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    if (this.notificationQueue.Count == 0)
+                    {
+                        this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    }
+                    else
+                    {
+                        this.notificationQueue.Dequeue(out receivedMessage);
+                    }
 
                     this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }

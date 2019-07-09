@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IBayConnectedMessageData : IMessageData
     {

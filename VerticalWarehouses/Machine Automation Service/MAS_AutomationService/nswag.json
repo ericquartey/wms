@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "swaggerGenerator": {
     "aspNetCoreToSwagger": {
-      "project": "MAS_AutomationService.csproj",
+      "project": "Ferretto.VW.MAS.AutomationService.csproj",
       "msBuildProjectExtensionsPath": null,
       "configuration": "debug",
       "runtime": null,
@@ -73,8 +73,8 @@
       "clientClassAccessModifier": "public", // TODO: set to internal
       "typeAccessModifier": "public",
       "generateContractsOutput": true,
-      "contractsNamespace": "Ferretto.VW.MAS_AutomationService.Contracts",
-      "contractsOutputFilePath": "../MAS_AutomationServiceContracts/ServiceContracts.autogen.cs",
+      "contractsNamespace": "Ferretto.VW.MAS.AutomationService.Contracts",
+      "contractsOutputFilePath": "../AutomationService.Contracts/ServiceContracts.autogen.cs",
       "parameterDateTimeFormat": "s",
       "generateUpdateJsonSerializerSettingsMethod": true,
       "serializeTypeInformation": false,
@@ -94,7 +94,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "Ferretto.VW.MAS_AutomationService.Contracts",
+      "namespace": "Ferretto.VW.MAS.AutomationService.Contracts",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTime",
       "jsonConverters": null,
@@ -123,7 +123,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../MAS_AutomationServiceContracts/Services.autogen.cs"
+      "output": "../AutomationService.Contracts/Services.autogen.cs"
     }
   }
 }
