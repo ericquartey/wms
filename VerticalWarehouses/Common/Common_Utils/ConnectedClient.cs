@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils
+﻿namespace Ferretto.VW.CommonUtils
 {
     public class ConnectedClient
     {

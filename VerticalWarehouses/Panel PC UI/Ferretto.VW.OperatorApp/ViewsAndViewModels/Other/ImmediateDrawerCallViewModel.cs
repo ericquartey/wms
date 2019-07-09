@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.CustomControls.Interfaces;
-using System.Collections.ObjectModel;
-using Ferretto.VW.CustomControls.Utils;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
@@ -19,26 +15,37 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly CustomControlDrawerDataGridViewModel dataGridViewModelRef;
+
+        private readonly ObservableCollection<DataGridDrawer> drawers = new ObservableCollection<DataGridDrawer>();
+
+        private readonly IEventAggregator eventAggregator;
 
         private BindableBase dataGridViewModel;
-
-        private CustomControlDrawerDataGridViewModel dataGridViewModelRef;
-
-        private ObservableCollection<DataGridDrawer> drawers = new ObservableCollection<DataGridDrawer>();
-
-        private IEventAggregator eventAggregator;
 
         #endregion
 
         #region Constructors
 
-        public ImmediateDrawerCallViewModel(IEventAggregator eventAggregator)
+        public ImmediateDrawerCallViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlDrawerDataGridViewModel drawerDataGridViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.DrawerDataGridViewModel = drawerDataGridViewModel;
+            this.dataGridViewModelRef = drawerDataGridViewModel as CustomControlDrawerDataGridViewModel;
+            this.dataGridViewModelRef.Drawers = this.drawers;
+            this.dataGridViewModelRef.SelectedDrawer = this.drawers.FirstOrDefault();
+            this.dataGridViewModel = this.dataGridViewModelRef;
+
             this.NavigationViewModel = null;
             var random = new Random();
-            for (int i = 0; i < random.Next(4, 20); i++)
+            for (var i = 0; i < random.Next(4, 20); i++)
             {
                 this.drawers.Add(new DataGridDrawer
                 {
@@ -48,8 +55,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
                     Cell = random.Next(1, 200).ToString(),
                     Side = random.Next(0, 1).ToString(),
                     State = "State",
-                }
-                );
+                });
             }
         }
 
@@ -58,6 +64,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Properties
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+
+        public ICustomControlDrawerDataGridViewModel DrawerDataGridViewModel { get; }
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -68,15 +76,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlDrawerDataGridViewModel>() as CustomControlDrawerDataGridViewModel;
-            this.dataGridViewModelRef.Drawers = this.drawers;
-            this.dataGridViewModelRef.SelectedDrawer = this.drawers[0];
-            this.dataGridViewModel = this.dataGridViewModelRef;
         }
 
         public async Task OnEnterViewAsync()

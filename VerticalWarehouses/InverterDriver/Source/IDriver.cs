@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.Drivers.Inverter
 {
     /// <summary>
     /// Interface IDriver.
@@ -45,7 +45,7 @@ namespace Ferretto.VW.InverterDriver
         bool Get_Status_Word_Enable { get; set; }
 
         /// <summary>
-        /// Get main status.
+        /// Gets the main status.
         /// </summary>
         /// <returns></returns>
         InverterDriverState GetMainState { get; }
@@ -53,10 +53,10 @@ namespace Ferretto.VW.InverterDriver
         /// <summary>
         ///  Set/Get IP address to connect.
         /// </summary>
-        string IPAddressToConnect { set; get; }
+        string IPAddressToConnect { get; set; }
 
         /// <summary>
-        /// Get last error.
+        /// Gets last error.
         /// </summary>
         InverterDriverErrors LastError { get; }
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.InverterDriver
         /// <summary>
         /// Set/Get port address to connect.
         /// </summary>
-        int PortAddressToConnect { set; get; }
+        int PortAddressToConnect { get; set; }
 
         /// <summary>
         /// Get the BitArray for StatusWord parameter value.
@@ -85,7 +85,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         bool Udc_Presence_Cradle_Operator { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -99,18 +99,18 @@ namespace Ferretto.VW.InverterDriver
         /// Send a request to inverter to read parameter value.
         /// </summary>
         /// <returns></returns>
-        InverterDriverExitStatus SendRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex);
+        InverterDriverExitStatus SendRequest(ParameterId parameterId, byte systemIndex, byte dataSetIndex);
 
         /// <summary>
         /// Send a request to inverter to read a parameter value.
         /// </summary>
-        InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value);
+        InverterDriverExitStatus SettingRequest(ParameterId parameterId, byte systemIndex, byte dataSetIndex, object value);
 
         /// <summary>
         /// Terminate and release driver' resources.
         /// </summary>
         void Terminate();
 
-        #endregion Methods
+        #endregion
     }
 }

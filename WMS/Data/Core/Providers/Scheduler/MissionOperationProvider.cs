@@ -28,6 +28,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IItemProvider itemProvider;
 
+        private readonly IItemListProvider itemListProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
         private readonly ILogger<MissionOperationProvider> logger;
@@ -52,6 +54,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             IMissionProvider missionProvider,
             ILoadingUnitProvider loadingUnitProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            IItemListProvider itemListProvider,
             ILogger<MissionOperationProvider> logger)
         : base(dataContext, notificationService)
         {
@@ -63,6 +66,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.rowExecutionProvider = rowExecutionProvider;
             this.loadingUnitProvider = loadingUnitProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
+            this.itemListProvider = itemListProvider;
         }
 
         #endregion
@@ -311,6 +315,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             await this.rowExecutionProvider.UpdateAsync(row);
+
+            var list = await this.itemListProvider.GetByIdAsync(operation.ItemListId.Value);
+            if (list.Status == ItemListStatus.Completed)
+            {
+                list.ExecutionEndDate = now;
+            }
+
+            if (hasExecutingOperations)
+            {
+                list.FirstExecutionDate = list.FirstExecutionDate ?? now;
+            }
+
+            await this.itemListProvider.UpdateAsync(list);
         }
 
         private static void RemovePairingIfEmpty(CandidateCompartment compartment)

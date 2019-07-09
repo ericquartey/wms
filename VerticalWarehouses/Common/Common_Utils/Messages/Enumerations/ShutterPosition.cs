@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Minor Code Smell",

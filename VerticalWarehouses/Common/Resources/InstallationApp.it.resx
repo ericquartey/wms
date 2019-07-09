@@ -904,4 +904,7 @@
   <data name="ValueNotValid" xml:space="preserve">
     <value>Valore inserito non valido</value>
   </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Aggiorna Risoluzione</value>
+  </data>
 </root>

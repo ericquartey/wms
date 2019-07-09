@@ -2,5 +2,6 @@
 {
     public interface IMainWindowViewModel
     {
+        string LoggedUser { get; set; }
     }
 }

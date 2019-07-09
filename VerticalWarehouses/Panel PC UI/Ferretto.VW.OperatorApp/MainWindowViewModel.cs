@@ -1,15 +1,18 @@
-﻿namespace Ferretto.VW.OperatorApp
-{
-    using System.Windows.Input;
-    using Ferretto.VW.OperatorApp.Interfaces;
-    using Ferretto.VW.OperatorApp.Resources;
-    using Ferretto.VW.OperatorApp.Resources.Enumerations;
-    using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Windows.Input;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.Resources;
+using Ferretto.VW.OperatorApp.Resources.Enumerations;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
 
+namespace Ferretto.VW.OperatorApp
+{
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void ClickedOnMachineOnMarchEvent();
@@ -23,8 +26,6 @@
         private readonly HelpMainWindow helpWindow;
 
         private ICommand backToVWAPPCommand;
-
-        private IUnityContainer container;
 
         private BindableBase contentRegionCurrentViewModel;
 
@@ -48,9 +49,28 @@
 
         #region Constructors
 
-        public MainWindowViewModel(IEventAggregator eventAggregator)
+        public MainWindowViewModel(
+            IEventAggregator eventAggregator,
+            IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
+            IIdleViewModel idleViewModel,
+            IAuthenticationService authenticationService)
         {
+            if (authenticationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(authenticationService));
+            }
+
             this.eventAggregator = eventAggregator;
+
+            this.NavigationRegionCurrentViewModel = navigationButtonsViewModel as MainWindowNavigationButtonsViewModel;
+            this.ExitViewButtonRegionCurrentViewModel = null;
+            this.ContentRegionCurrentViewModel = (IdleViewModel)idleViewModel;
+
+            authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
+            this.LoggedUser = authenticationService.UserName;
+
+            this.InitializeEvents();
+
             this.helpWindow = new HelpMainWindow(eventAggregator);
         }
 
@@ -80,7 +100,11 @@
 
         public bool IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
 
-        public string LoggedUser { get => this.loggedUser; set => this.SetProperty(ref this.loggedUser, value); }
+        public string LoggedUser
+        {
+            get => this.loggedUser;
+            set => this.SetProperty(ref this.loggedUser, value);
+        }
 
         public bool MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
 
@@ -100,18 +124,14 @@
 
         #region Methods
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
-            this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
-            this.InitializeEvents();
-        }
-
         private static void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
 
         private static void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
+
+        private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
+        {
+            this.LoggedUser = e.UserName;
+        }
 
         private void InitializeEvents()
         {
@@ -119,6 +139,17 @@
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
+
+            this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Subscribe(
+             message => this.OnCurrentMissionChanged(message.Data.Mission, message.Data.MissionsQuantity));
+        }
+
+        private void OnCurrentMissionChanged(Mission mission, int missionsQuantity)
+        {
+            if (this.ContentRegionCurrentViewModel is IDrawerActivityViewModel content)
+            {
+                content.UpdateView();
+            }
         }
 
         #endregion
