@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Interface

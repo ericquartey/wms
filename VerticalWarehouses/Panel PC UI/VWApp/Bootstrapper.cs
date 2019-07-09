@@ -1,13 +1,11 @@
 ﻿using System.Windows;
-using Ferretto.VW.InstallationApp;
-using Ferretto.VW.OperatorApp.Resources;
-using Prism.Events;
+using Ferretto.VW.App.Services;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
 using Unity;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.App
 {
     internal class Bootstrapper : UnityBootstrapper
     {
@@ -18,42 +16,38 @@ namespace Ferretto.VW.VWApp
             ViewModelLocationProvider.Register(typeof(TView).ToString(), () => this.Container.Resolve<TViewModel>());
         }
 
-        protected override void ConfigureModuleCatalog()
+        protected override void ConfigureContainer()
         {
-            var catalog = (ModuleCatalog)this.ModuleCatalog;
-            catalog.AddModule(typeof(VWAppModule));
-            catalog.AddModule(typeof(InstallationAppModule));
-            catalog.AddModule(typeof(OperatorAppModule));
+            this.Container.RegisterInstance(ServiceFactory.Get<IAuthenticationService>());
+            this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
+            this.Container.RegisterInstance(ServiceFactory.Get<ISessionService>());
+
+            this.Container.RegisterType<MainWindowViewModel>();
+
+            this.Container.RegisterSingleton<IMainWindow, MainWindow>();
+
+            base.ConfigureContainer();
         }
 
-        protected override void ConfigureViewModelLocator()
+        protected override IModuleCatalog CreateModuleCatalog()
         {
-            this.BindViewModelToView<InstallationApp.IMainWindowViewModel, InstallationApp.MainWindow>();
-
-            this.BindViewModelToView<OperatorApp.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();
+            return new ConfigurationModuleCatalog();
         }
 
         protected override DependencyObject CreateShell()
         {
-            this.InitializeMainWindow();
-
-            return (MainWindow)this.Container.Resolve<IMainWindow>();
+            return this.Container.Resolve<IMainWindow>() as DependencyObject;
         }
 
         protected override void InitializeShell()
         {
-            ((MainWindowViewModel)((App)Application.Current).MainWindow.DataContext).Container = this.Container;
-            Application.Current.MainWindow.Show();
-        }
+            var mainWindowViewModel = this.Container.Resolve<MainWindowViewModel>();
+            mainWindowViewModel.InitializeViewModel(this.Container);
 
-        private void InitializeMainWindow()
-        {
-            var MainWindowVInstance = new MainWindow();
-            var MainWindowVMInstance = new MainWindowViewModel(this.Container.Resolve<IEventAggregator>());
+            var application = Application.Current as App;
+            application.MainWindow.DataContext = mainWindowViewModel;
 
-            MainWindowVMInstance.InitializeViewModel(this.Container);
-            MainWindowVInstance.DataContext = MainWindowVMInstance;
-            this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
+            application.MainWindow.Show();
         }
 
         #endregion

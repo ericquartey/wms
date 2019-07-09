@@ -31,7 +31,7 @@
 
         private int mesuredWeight;
 
-        private string noteText = VW.Resources.InstallationApp.WeightControl;
+        private string noteText = App.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 

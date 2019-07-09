@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
 {
@@ -18,13 +14,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly CustomControlListDetailDataGridViewModel dataGridViewModelRef;
+
+        private readonly IEventAggregator eventAggregator;
 
         private BindableBase dataGridViewModel;
-
-        private CustomControlListDetailDataGridViewModel dataGridViewModelRef;
-
-        private IEventAggregator eventAggregator;
 
         private ObservableCollection<DataGridListDetail> lists;
 
@@ -32,9 +26,20 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
 
         #region Constructors
 
-        public DetailListInWaitViewModel(IEventAggregator eventAggregator)
+        public DetailListInWaitViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlListDetailDataGridViewModel listDetailDataGridViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.ListDetailDataGridViewModel = listDetailDataGridViewModel;
+            this.dataGridViewModelRef = listDetailDataGridViewModel as CustomControlListDetailDataGridViewModel;
+            this.DataGridViewModel = this.dataGridViewModelRef;
+
             this.NavigationViewModel = null;
         }
 
@@ -43,6 +48,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
         #region Properties
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+
+        public ICustomControlListDetailDataGridViewModel ListDetailDataGridViewModel { get; }
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -55,18 +62,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlListDetailDataGridViewModel>() as CustomControlListDetailDataGridViewModel;
-            this.DataGridViewModel = this.dataGridViewModelRef;
-        }
-
         public async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.lists = new ObservableCollection<DataGridListDetail>();
-            for (int i = 0; i < random.Next(1, 30); i++)
+            for (var i = 0; i < random.Next(1, 30); i++)
             {
                 this.lists.Add(new DataGridListDetail
                 {

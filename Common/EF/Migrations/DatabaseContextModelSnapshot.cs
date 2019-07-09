@@ -854,7 +854,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("LoadingUnitTypeId");
 
-                    b.Property<int>("MissionCount")
+                    b.Property<int>("MissionsCount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
@@ -1033,8 +1033,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("ActualWeight");
 
                     b.Property<int>("AisleId");
 

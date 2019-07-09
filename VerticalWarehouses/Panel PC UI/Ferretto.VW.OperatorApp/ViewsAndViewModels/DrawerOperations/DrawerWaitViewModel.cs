@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -16,9 +11,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IBayManager bayManager;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IMainWindowViewModel mainWindowViewModel;
+
+        private readonly INavigationService navigationService;
 
         private string waitingMissions;
 
@@ -26,9 +25,36 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Constructors
 
-        public DrawerWaitViewModel(IEventAggregator eventAggregator)
+        public DrawerWaitViewModel(
+            IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            INavigationService navigationService,
+            IMainWindowViewModel mainWindowViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (bayManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManager));
+            }
+
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
+            if (mainWindowViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(mainWindowViewModel));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
+            this.bayManager = bayManager;
+            this.mainWindowViewModel = mainWindowViewModel;
             this.NavigationViewModel = null;
         }
 
@@ -49,14 +75,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
         public async Task OnEnterViewAsync()
         {
-            this.WaitingMissions = this.container.Resolve<IBayManager>().QueuedMissionsQuantity.ToString();
+            this.WaitingMissions = this.bayManager.QueuedMissionsQuantity.ToString();
         }
 
         public void SubscribeMethodToEvent()
@@ -71,8 +92,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public void UpdateView()
         {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
+            var mission = this.bayManager.CurrentMission;
+            var mainWindowContentVM = this.mainWindowViewModel.ContentRegionCurrentViewModel;
             if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
                 mainWindowContentVM is DrawerActivityPickingViewModel ||
                 mainWindowContentVM is DrawerActivityRefillingViewModel ||
@@ -83,21 +104,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                     switch (mission.Type)
                     {
                         case MissionType.Inventory:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                            this.navigationService
+                                .NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                             break;
 
                         case MissionType.Pick:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                            this.navigationService
+                                .NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
                         case MissionType.Put:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                            this.navigationService
+                                .NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                             break;
                     }
                 }
                 else
                 {
-                    NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                    this.navigationService
+                        .NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
                 }
             }
         }

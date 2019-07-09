@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_AutomationService.Hubs;
+﻿using Ferretto.VW.MAS.AutomationService;
+using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
@@ -6,7 +7,6 @@ using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_MissionsManager;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -27,18 +27,6 @@ namespace Ferretto.VW.MAS_AutomationService
 {
     public class Startup
     {
-        #region Fields
-
-        private const string PrimaryConnectionStringName = "AutomationServicePrimary";
-
-        private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
-
-        private const string WMSServiceAddress = "WMSServiceAddress";
-
-        private const string WMSServiceAddressHubsEndpoint = "WMSServiceAddressHubsEndpoint";
-
-        #endregion
-
         #region Constructors
 
         public Startup(IConfiguration configuration)
@@ -59,16 +47,11 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            var version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+            if (!env.IsDevelopment())
             {
                 app.UseHsts();
             }
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<InstallationHub>("/installation-endpoint", options => { });
@@ -82,25 +65,25 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSignalR();
 
             var dataLayerConfiguration = new DataLayerConfiguration(
-                this.Configuration.GetConnectionString(SecondaryConnectionStringName),
-                this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile"));
+                this.Configuration.GetDataLayerSecondaryConnectionString(),
+                this.Configuration.GetDataLayerConfigurationFile());
 
             services.AddApiVersioning(o =>
             {
-                o.DefaultApiVersion = new ApiVersion(1, 0); // specify the default api version
-                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
+                o.DefaultApiVersion = new ApiVersion(1, 0);
+                o.AssumeDefaultVersionWhenUnspecified = true;
                 o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
             });
 
-            var wmsServiceAddress = new System.Uri(this.Configuration.GetConnectionString(WMSServiceAddress));
-            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetConnectionString(WMSServiceAddressHubsEndpoint));
+            var wmsServiceAddress = new System.Uri(this.Configuration.GetDataServiceUrl());
+            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetDataServiceHubUrl());
 
             services.AddDbContext<DataLayerContext>(
-                options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
+                options => options.UseSqlite(this.Configuration.GetDataLayerPrimaryConnectionString()),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
@@ -219,7 +202,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void RegisterModbusTransport(IServiceCollection services)
         {
-            var useMockedTransport = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
+            var useMockedTransport = this.Configuration.UseRemoteIODriverMock();
             if (useMockedTransport)
             {
                 services.AddSingleton<ISHDTransport, SHDTransportMock>();
@@ -232,7 +215,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void RegisterSocketTransport(IServiceCollection services)
         {
-            var useMockedTransport = this.Configuration.GetValue<bool>("Vertimag:InverterDriver:UseMock");
+            var useMockedTransport = this.Configuration.UseInverterDriverMock();
             if (useMockedTransport)
             {
                 services.AddSingleton<ISocketTransport, SocketTransportMock>();

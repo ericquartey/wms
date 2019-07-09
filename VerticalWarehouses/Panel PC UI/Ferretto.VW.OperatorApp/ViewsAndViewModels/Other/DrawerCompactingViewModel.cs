@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
@@ -13,7 +10,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -21,6 +18,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         public DrawerCompactingViewModel(IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
         }

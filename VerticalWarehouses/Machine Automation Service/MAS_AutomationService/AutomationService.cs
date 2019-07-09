@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;

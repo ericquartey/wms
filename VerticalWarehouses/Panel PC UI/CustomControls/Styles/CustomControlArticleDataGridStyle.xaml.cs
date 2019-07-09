@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Ferretto.VW.CustomControls.Styles
+namespace Ferretto.VW.App.Controls.Styles
 {
     /// <summary>
     /// Interaction logic for CustomControlArticleDataGridStyle.xaml
