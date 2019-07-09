@@ -207,21 +207,21 @@ namespace Ferretto.VW.MAS_IODriver
                         var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
                         var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
-                            (long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+
                         break;
 
                     case IoIndex.IoDevice2:
                         var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
                         var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
-                            (long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
+
                         break;
 
                     case IoIndex.IoDevice3:
                         var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
                         var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
-                            (long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
+
                         break;
                 }
 
