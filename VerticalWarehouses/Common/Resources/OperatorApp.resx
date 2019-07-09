@@ -1124,4 +1124,36 @@
     <value>DrawerCompactingProcedureStatus</value>
     <comment>Label text</comment>
   </data>
+  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
+    <value>DrawerActivityLocalCallHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
+    <value>DrawerActivityLocalCallDrawer</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
+    <value>DrawerActivityLocalCallHeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
+    <value>DrawerActivityLocalCallGrossWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
+    <value>DrawerActivityLocalCallActualWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
+    <value>DrawerActivityLocalCallMaxCapacity</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
+    <value>DrawerActivityLocalCallMissions</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>DrawerActivityLocalCallGoBack</value>
+    <comment>Button text</comment>
+  </data>
 </root>

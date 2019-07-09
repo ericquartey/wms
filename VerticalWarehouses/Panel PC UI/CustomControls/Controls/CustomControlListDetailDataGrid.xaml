@@ -14,7 +14,7 @@
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="14"
+                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
@@ -83,7 +83,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
-                                    Width="1*"
+                                    Width="0.5*"
                                     Binding="{Binding Path=Row}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderRow }">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +134,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn Width="3*"
                                     Binding="{Binding Path=Description}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderDescription }">
                     <DataGridTextColumn.HeaderStyle>
@@ -159,7 +159,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn Width="0.8*"
                                     Binding="{Binding Path=Quantity}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderQuantity }">
                     <DataGridTextColumn.HeaderStyle>

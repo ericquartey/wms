@@ -71,6 +71,7 @@
       <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityPickingDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityRefillingDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityInventoryView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityLocalCallView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityPickingView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityRefillingView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml" />
