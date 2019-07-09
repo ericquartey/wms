@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.App
+﻿using Ferretto.VW.Utils;
+
+namespace Ferretto.VW.App
 {
     public class UserLogin : BaseModel
     {

@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Windows;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
@@ -18,9 +21,13 @@ namespace Ferretto.VW.App
 
         protected override void ConfigureContainer()
         {
+            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+
             this.Container.RegisterInstance(ServiceFactory.Get<IAuthenticationService>());
             this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
             this.Container.RegisterInstance(ServiceFactory.Get<ISessionService>());
+            this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
+            this.Container.RegisterSingleton<IMachineProvider, MachineProvider>();
 
             this.Container.RegisterType<MainWindowViewModel>();
 
@@ -42,7 +49,7 @@ namespace Ferretto.VW.App
         protected override void InitializeShell()
         {
             var mainWindowViewModel = this.Container.Resolve<MainWindowViewModel>();
-            mainWindowViewModel.InitializeViewModel(this.Container);
+            mainWindowViewModel.InitializeViewModelAsync(this.Container);
 
             var application = Application.Current as App;
             application.MainWindow.DataContext = mainWindowViewModel;
