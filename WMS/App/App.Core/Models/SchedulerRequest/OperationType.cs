@@ -6,10 +6,10 @@ namespace Ferretto.WMS.App.Core.Models
     public enum OperationType
     {
         [Display(Name = nameof(BusinessObjects.OperationInsert), ResourceType = typeof(BusinessObjects))]
-        Insertion = 'I',
+        Put = 'U',
 
         [Display(Name = nameof(BusinessObjects.Pick), ResourceType = typeof(BusinessObjects))]
-        Withdrawal = 'W',
+        Pick = 'P',
 
         [Display(Name = nameof(BusinessObjects.OperationReplace), ResourceType = typeof(BusinessObjects))]
         Replacement = 'R',

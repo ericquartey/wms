@@ -2759,13 +2759,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         NotSpecified = 0,
     
-        Insertion = 73,
-    
         Reorder = 79,
+    
+        Pick = 80,
     
         Replacement = 82,
     
-        Withdrawal = 87,
+        Put = 85,
     
     }
     

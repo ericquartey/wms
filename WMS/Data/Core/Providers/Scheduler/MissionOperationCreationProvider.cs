@@ -83,14 +83,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     switch (request.OperationType)
                     {
-                        case OperationType.Withdrawal:
+                        case OperationType.Pick:
 
                             var pickOperations = await this.CreatePickOperationsAsync(itemRequest);
                             operations.AddRange(pickOperations);
 
                             break;
 
-                        case OperationType.Insertion:
+                        case OperationType.Put:
 
                             var putOperations = await this.CreatePutOperationsAsync(itemRequest);
                             operations.AddRange(putOperations);
@@ -136,7 +136,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (request.OperationType != OperationType.Withdrawal)
+            if (request.OperationType != OperationType.Pick)
             {
                 throw new InvalidOperationException(
                     string.Format(
@@ -240,7 +240,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (request.OperationType != OperationType.Insertion)
+            if (request.OperationType != OperationType.Put)
             {
                 throw new InvalidOperationException(
                     string.Format(
@@ -361,7 +361,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Sub2 = compartment.Sub2,
                 Priority = request.Priority.Value,
                 RequestedQuantity = requestedQuantity,
-                Type = request.OperationType == OperationType.Withdrawal
+                Type = request.OperationType == OperationType.Pick
                     ? MissionOperationType.Pick
                     : MissionOperationType.Put,
             };

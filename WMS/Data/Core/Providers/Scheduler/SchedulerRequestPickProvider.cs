@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentSets = this.GetCompartmentSetsForRequest(item, itemOptions);
             this.logger.LogTrace($"Pick request for item id={itemId} has {compartmentSets.Count()} compatible compartment sets.");
             compartmentSets = this.compartmentOperationProvider
-                .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Withdrawal);
+                .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Pick);
 
             var selectedSets = SelectMinimumCompartmentSets(compartmentSets, itemOptions.RequestedQuantity);
             if (selectedSets.Sum(s => s.Availability) < itemOptions.RequestedQuantity)
@@ -303,7 +303,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(g => new CompartmentSet
                 {
                     Availability = g.c.Availability - g.r.Sum(
-                        r => (r.OperationType == Common.DataModels.OperationType.Withdrawal ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+                        r => (r.OperationType == Common.DataModels.OperationType.Pick ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
                     Size = g.c.CompartmentsCount,
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,

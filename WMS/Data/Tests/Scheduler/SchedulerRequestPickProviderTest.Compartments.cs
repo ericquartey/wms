@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
                 ReservedQuantity = 0,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
                 Type = Common.DataModels.SchedulerRequestType.Item
             };
@@ -518,7 +518,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             using (var context = this.CreateContext())
@@ -589,7 +589,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -601,7 +601,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             using (var context = this.CreateContext())
@@ -783,7 +783,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -795,7 +795,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             using (var context = this.CreateContext())
@@ -869,7 +869,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -880,7 +880,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 RequestedQuantity = compartment2.Stock / 2,
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             using (var context = this.CreateContext())

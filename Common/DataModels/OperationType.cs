@@ -2,9 +2,9 @@
 {
     public enum OperationType
     {
-        Insertion = 'I',
+        Put = 'U',
 
-        Withdrawal = 'W',
+        Pick = 'P',
 
         Replacement = 'R',
 

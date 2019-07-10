@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Status = Common.DataModels.SchedulerRequestStatus.Completed,
                 Priority = 1,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Status = Common.DataModels.SchedulerRequestStatus.New,
                 Priority = 1,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             using (var context = this.CreateContext())
@@ -135,7 +135,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Priority = 1,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick
             };
 
             using (var context = this.CreateContext())

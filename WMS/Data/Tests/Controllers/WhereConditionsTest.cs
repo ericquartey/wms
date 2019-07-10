@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
-                "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Insertion# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
+                "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Put# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
 
             #endregion
 
@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 IsInstant = false,
                 ItemId = this.Item1.Id,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 RequestedQuantity = 1,
             };
             this.SchedulerRequest2 = new Common.DataModels.SchedulerRequest
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = 2,
                 IsInstant = false,
                 ItemId = this.Item1.Id,
-                OperationType = Common.DataModels.OperationType.Insertion,
+                OperationType = Common.DataModels.OperationType.Put,
                 RequestedQuantity = 2,
             };
 
