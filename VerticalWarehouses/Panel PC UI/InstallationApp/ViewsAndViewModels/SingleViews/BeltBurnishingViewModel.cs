@@ -224,7 +224,7 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void UpdateCompletion(MessageNotifiedEventArgs messageUI)
+        private async Task UpdateCompletion(MessageNotifiedEventArgs messageUI)
         {
             if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
             {
@@ -243,6 +243,8 @@ namespace Ferretto.VW.InstallationApp
                         this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
+
+                        await this.beltBurnishingService.SetBeltBurnishingCompletionAsync();
                         break;
 
                     case MessageStatus.OperationError:
