@@ -18,7 +18,9 @@
     <EmbeddedResource Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="VertimagConfiguration.json" />
+    <None Include="VertimagConfiguration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
