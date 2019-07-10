@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
@@ -160,22 +159,23 @@ namespace Ferretto.WMS.App.Controls
         /// <param name="notificationFlowDirection"> Direction in which new notifications will appear.</param>
         private static void SetWindowDirection(Window window, NotificationFlowDirection notificationFlowDirection)
         {
-            var left = (int)window.Owner.Left;
-            var top = (int)window.Owner.Top;
-            if (window.Owner.WindowState == WindowState.Maximized)
-            {
-                var offsetSize = FormControl.GetMainApplicationOffsetSize();
+            var matrix = PresentationSource.FromVisual(Application.Current.MainWindow)
+                .CompositionTarget
+                .TransformFromDevice;
+            var scaleFactor = matrix.M11;
+            var offsetSize = FormControl.GetMainApplicationOffsetSize();
 
-                top = (int)offsetSize.screenTop - 15;
-                left = (int)offsetSize.screenLeft - 15;
-            }
+            var isMaximized = window.Owner.WindowState == WindowState.Maximized;
+            var top = (int)((isMaximized ? offsetSize.screenTop : window.Owner.Top) / scaleFactor);
+            var left = (int)((isMaximized ? offsetSize.screenLeft : window.Owner.Left) / scaleFactor);
+            var width = (int)((isMaximized ? offsetSize.screenWidth : window.Owner.Width) / scaleFactor);
+            var height = (int)((isMaximized ? offsetSize.screenHeight : window.Owner.Height) / scaleFactor);
 
             var workingArea = new System.Drawing.Rectangle(
                 new System.Drawing.Point(left, top),
-                new System.Drawing.Size((int)window.Owner.Width, (int)window.Owner.Height));
-            Debug.WriteLine($"WA=> H={workingArea.Height} W={workingArea.Width} X={workingArea.Top} Y={workingArea.Left}");
-            var transform = PresentationSource.FromVisual(Application.Current.MainWindow).CompositionTarget.TransformFromDevice;
-            var corner = transform.Transform(new Point(workingArea.Right, workingArea.Bottom));
+                new System.Drawing.Size(width, height));
+
+            var corner = matrix.Transform(new Point(workingArea.Right, workingArea.Bottom));
 
             switch (notificationFlowDirection)
             {
