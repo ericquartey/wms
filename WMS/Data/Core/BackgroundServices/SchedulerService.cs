@@ -306,7 +306,6 @@ namespace Ferretto.WMS.Data.Core.Services
                         {
                             IsInstant = true,
                             LoadingUnitId = loadingUnitId,
-                            LoadingUnitTypeId = loadingUnitTypeId,
                             Priority = 1,
                             BayId = bayId,
                             Status = SchedulerRequestStatus.New,

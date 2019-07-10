@@ -35,8 +35,6 @@ namespace Ferretto.Common.DataModels
 
         public int LoadingUnitWeightClassId { get; set; }
 
-        public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
-
         #endregion
     }
 }
