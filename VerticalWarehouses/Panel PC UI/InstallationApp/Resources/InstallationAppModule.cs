@@ -2,6 +2,7 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -128,6 +129,11 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifierInstance);
 
             this.container.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
+            this.container.RegisterInstance<INotificationService>(
+                new NotificationService(
+                    this.container.Resolve<IEventAggregator>(),
+                    this.container.Resolve<IOperatorHubClient>(),
+                    this.container.Resolve<IInstallationHubClient>()));
 
             this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<ICellsControlViewModel, CellsControlViewModel>(cellsControlVMInstance);

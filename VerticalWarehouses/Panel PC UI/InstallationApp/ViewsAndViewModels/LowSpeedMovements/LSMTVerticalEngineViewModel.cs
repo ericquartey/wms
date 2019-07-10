@@ -38,7 +38,8 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public LSMTVerticalEngineViewModel(IEventAggregator eventAggregator)
+        public LSMTVerticalEngineViewModel(
+            IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
