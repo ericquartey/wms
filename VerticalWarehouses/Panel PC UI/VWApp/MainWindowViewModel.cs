@@ -52,27 +52,27 @@ namespace Ferretto.VW.App
             ISessionService sessionService,
             IMachineProvider machineProvider)
         {
-            if (eventAggregator == null)
+            if ( eventAggregator == null )
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (authenticationService == null)
+            if ( authenticationService == null )
             {
                 throw new ArgumentNullException(nameof(authenticationService));
             }
 
-            if (themeService == null)
+            if ( themeService == null )
             {
                 throw new ArgumentNullException(nameof(themeService));
             }
 
-            if (sessionService == null)
+            if ( sessionService == null )
             {
                 throw new ArgumentNullException(nameof(sessionService));
             }
 
-            if (machineProvider == null)
+            if ( machineProvider == null )
             {
                 throw new ArgumentNullException(nameof(machineProvider));
             }
@@ -114,19 +114,19 @@ namespace Ferretto.VW.App
         public ICommand LoginCommand =>
             this.loginCommand
             ??
-            (this.loginCommand = new DelegateCommand(async () => await this.ExecuteLoginCommandAsync()));
+            ( this.loginCommand = new DelegateCommand(async () => await this.ExecuteLoginCommandAsync()) );
 
         public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
 
         public ICommand SwitchOffCommand =>
             this.switchOffCommand
             ??
-            (this.switchOffCommand = new DelegateCommand(() => this.ExecuteSwitchOffCommand()));
+            ( this.switchOffCommand = new DelegateCommand(() => this.ExecuteSwitchOffCommand()) );
 
         public ICommand ToggleThemeCommand =>
             this.toggleThemeCommand
             ??
-            (this.toggleThemeCommand = new DelegateCommand(() => this.ToggleTheme()));
+            ( this.toggleThemeCommand = new DelegateCommand(() => this.ToggleTheme()) );
 
         public UserLogin UserLogin { get; }
 
@@ -135,7 +135,7 @@ namespace Ferretto.VW.App
             get => this.machineInfo;
             set
             {
-                if (this.SetProperty(ref this.machineInfo, value))
+                if ( this.SetProperty(ref this.machineInfo, value) )
                 {
                     this.IsMachineIdentityAvailable = value != null;
                 }
@@ -156,7 +156,13 @@ namespace Ferretto.VW.App
         {
             this.container = container;
 
-            this.Machine = await this.machineProvider.GetIdentityAsync();
+            try
+            {
+                this.Machine = await this.machineProvider.GetIdentityAsync();
+            }
+            catch
+            {
+            }
         }
 
         public void HACK_InitialiseHubOperator()
@@ -164,7 +170,7 @@ namespace Ferretto.VW.App
             this.operatorHubClient = this.container.Resolve<IOperatorHubClient>();
 
             this.operatorHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
-            if (!this.operatorHubClient.IsConnected)
+            if ( !this.operatorHubClient.IsConnected )
             {
                 this.ErrorMessage = "Machine Automation Service unavailable.";
             }
@@ -178,7 +184,7 @@ namespace Ferretto.VW.App
             this.ErrorMessage = null;
 
             this.UserLogin.IsValidationEnabled = true;
-            if (!string.IsNullOrEmpty(this.UserLogin.Error))
+            if ( !string.IsNullOrEmpty(this.UserLogin.Error) )
             {
                 this.ErrorMessage = this.UserLogin.Error;
                 return;
@@ -190,14 +196,14 @@ namespace Ferretto.VW.App
                 this.UserLogin.UserName,
                 this.UserLogin.Password);
 
-            if (!loginSuccessful)
+            if ( !loginSuccessful )
             {
                 this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
                 this.IsBusy = false;
                 return;
             }
 
-            switch (this.UserLogin.UserName.ToUpperInvariant())
+            switch ( this.UserLogin.UserName.ToUpperInvariant() )
             {
                 case "INSTALLER":
                     await this.LoadInstallerModuleAsync();
@@ -215,7 +221,7 @@ namespace Ferretto.VW.App
         {
             this.IsBusy = true;
             var requestAccepted = this.sessionService.Shutdown();
-            if (requestAccepted)
+            if ( requestAccepted )
             {
                 this.ErrorMessage = "Shutting down";
             }
@@ -232,9 +238,9 @@ namespace Ferretto.VW.App
 
                 this.IsBusy = false;
 
-                (Application.Current as App)?.InstallationAppMainWindowInstance.Show();
+                ( Application.Current as App )?.InstallationAppMainWindowInstance.Show();
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
                 this.ErrorMessage = $"Error: {ex.Message}";
             }
@@ -255,9 +261,9 @@ namespace Ferretto.VW.App
 
                 this.IsBusy = false;
 
-                (Application.Current as App)?.OperatorAppMainWindowInstance.Show();
+                ( Application.Current as App )?.OperatorAppMainWindowInstance.Show();
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
                 this.ErrorMessage = $"Error: {ex.Message}";
             }
