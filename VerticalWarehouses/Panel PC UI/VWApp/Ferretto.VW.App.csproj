@@ -79,6 +79,10 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(ProjectDir)bin\debug\net471\Ferretto.VW.App.Installation.dll $(ProjectDir)publish\Ferretto.VW.App.Installation.dll" />
+  </Target>
+
 </Project>
 
    
