@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 "ShutterControlNotify", this.OnShutterControlNotify);
 
             connection.On<NotificationMessageUI<PositioningMessageData>>(
-                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
+                "PositioningNotify", this.OnPositioningNotify);
 
             connection.On<NotificationMessageUI<HomingMessageData>>(
                 "HomingNotify", this.OnHomingNotify);
@@ -68,7 +68,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
 
         /// <summary>
-        /// Handler for VerticalPositioning event.
+        /// Handler for Positioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for Positioning event.
         /// </summary>
         /// <param name="message"></param>
         private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
@@ -108,15 +117,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// </summary>
         /// <param name="message"></param>
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        /// <summary>
-        /// Handler for VerticalPositioning event.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnVerticalPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

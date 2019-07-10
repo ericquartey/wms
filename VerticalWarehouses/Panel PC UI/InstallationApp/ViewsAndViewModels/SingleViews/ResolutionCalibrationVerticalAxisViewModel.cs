@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;
 using Prism.Events;
@@ -330,7 +329,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Unsubscribe(this.receivedActionToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivedActionToken);
         }
 
         private async Task AcceptButtonMethodAsync()
