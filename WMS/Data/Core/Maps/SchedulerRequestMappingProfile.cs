@@ -18,7 +18,8 @@ namespace Ferretto.WMS.Data.Core.Maps
             this.CreateMap<Common.DataModels.SchedulerRequestStatus, SchedulerRequestStatus>()
              .ConvertUsing(value => (SchedulerRequestStatus)value);
 
-            this.CreateMap<Common.DataModels.SchedulerRequest, SchedulerRequest>();
+            this.CreateMap<Common.DataModels.SchedulerRequest, SchedulerRequest>()
+                .ForMember(s => s.MeasureUnitDescription, c => c.MapFrom(s => s.Item.MeasureUnit.Description));
         }
 
         #endregion
