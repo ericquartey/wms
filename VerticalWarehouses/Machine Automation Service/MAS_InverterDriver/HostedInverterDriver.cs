@@ -90,6 +90,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private Timer heartBeatTimer;
 
+        private InverterIndex inverterIndexToStop;  // index of inverter to Stop
+
         private Timer sensorStatusUpdateTimer;
 
         private int shaftPositionUpdateNumberOfTimes;
@@ -112,6 +114,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
+
+            this.inverterIndexToStop = InverterIndex.MainInverter;
 
             this.readWaitStopwatch = new Stopwatch();
 
@@ -273,16 +277,25 @@ namespace Ferretto.VW.MAS_InverterDriver
                     continue;
                 }
 
-                if ( receivedMessage.Type == FieldMessageType.InverterStop )
+                //if (receivedMessage.Type == FieldMessageType.InverterStop)
+                //{
+                //    this.currentStateMachine?.Dispose();
+
+                //    this.ProcessStopMessage(receivedMessage);
+
+                //    continue;
+                //}
+
+                if (this.currentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
                 {
-                    this.currentStateMachine?.Release();
-
-                    this.currentStateMachine?.Dispose();
-
+                    if (receivedMessage.Data is InverterStopFieldMessageData stopMessageData)
+                    {
+                        this.inverterIndexToStop = stopMessageData.InverterToStop;
+                    }
                     this.logger.LogTrace("4: Stop the timer for update shaft position");
                     this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-                    this.ProcessStopMessage(receivedMessage);
+                    this.currentStateMachine?.Stop();
 
                     continue;
                 }
@@ -329,6 +342,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     case FieldMessageType.InverterSwitchOn:
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
+                        break;
+
+                    case FieldMessageType.InverterStop:
+                        this.ProcessStopMessage(receivedMessage);
                         break;
                 }
 
@@ -378,6 +395,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                         {
                             if ( receivedMessage.Status == MessageStatus.OperationEnd )
                             {
+                                this.logger.LogTrace($"4:Deallocation SM {this.currentStateMachine?.GetType()}");
+
                                 this.currentStateMachine?.Dispose();
                                 this.currentStateMachine = null;
 
@@ -385,10 +404,88 @@ namespace Ferretto.VW.MAS_InverterDriver
                                 this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                             }
 
+                            if (receivedMessage.Status == MessageStatus.OperationStop)
+                            {
+                                this.logger.LogTrace($"5:Deallocation SM {this.currentStateMachine?.GetType()}");
+
+                                this.currentStateMachine?.Dispose();
+                                this.currentStateMachine = null;
+
+                                this.logger.LogTrace("4: Stop the timer for update shaft position");
+                                this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+                                // Enqueue a message to execute the Stop states machine
+                                var stopMessageData = new InverterStopFieldMessageData(this.inverterIndexToStop);
+                                var stopMessage = new FieldCommandMessage(
+                                    stopMessageData,
+                                    "Stop inverter",
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.InverterStop);
+                                if (stopMessage != null)
+                                {
+                                    this.commandQueue.Enqueue(stopMessage);
+                                }
+                            }
+
                             break;
                         }
                     case FieldMessageType.CalibrateAxis:
+
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.currentStateMachine?.Dispose();
+                            this.currentStateMachine = null;
+                        }
+                        if (receivedMessage.Status == MessageStatus.OperationStop)
+                        {
+                            this.currentStateMachine?.Dispose();
+                            this.currentStateMachine = null;
+
+                            // Enqueue a message to execute the Stop states machine
+                            var stopMessageData = new InverterStopFieldMessageData(this.inverterIndexToStop);
+                            var stopMessage = new FieldCommandMessage(
+                                stopMessageData,
+                                "Stop inverter",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.InverterStop);
+                            if (stopMessage != null)
+                            {
+                                this.commandQueue.Enqueue(stopMessage);
+                            }
+                        }
+
+                        break;
+
                     case FieldMessageType.ShutterPositioning:
+
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.currentStateMachine?.Dispose();
+                            this.currentStateMachine = null;
+                        }
+                        if (receivedMessage.Status == MessageStatus.OperationStop)
+                        {
+                            this.currentStateMachine?.Dispose();
+                            this.currentStateMachine = null;
+
+                            // Enqueue a message to execute the Stop states machine
+                            var stopMessageData = new InverterStopFieldMessageData(this.inverterIndexToStop);
+                            var stopMessage = new FieldCommandMessage(
+                                stopMessageData,
+                                "Stop inverter",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.InverterStop);
+                            if (stopMessage != null)
+                            {
+                                this.commandQueue.Enqueue(stopMessage);
+                            }
+                        }
+
+                        break;
+
                     case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:

@@ -61,7 +61,6 @@ namespace Ferretto.VW.OperatorApp
             }
 
             this.eventAggregator = eventAggregator;
-
             this.NavigationRegionCurrentViewModel = navigationButtonsViewModel as MainWindowNavigationButtonsViewModel;
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)idleViewModel;

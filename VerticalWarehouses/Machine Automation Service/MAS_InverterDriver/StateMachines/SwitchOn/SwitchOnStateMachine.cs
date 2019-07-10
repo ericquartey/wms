@@ -55,6 +55,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
             this.CurrentState?.Start();
         }
 
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

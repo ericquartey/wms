@@ -2,7 +2,7 @@
 using System.Linq;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App
+namespace Ferretto.VW.Utils
 {
     public class BaseModel : BindableBase, IDataErrorInfo
     {

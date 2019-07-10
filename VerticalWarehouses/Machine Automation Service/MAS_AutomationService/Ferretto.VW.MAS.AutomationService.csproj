@@ -6,6 +6,7 @@
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Configurations>Debug;Release;Debug (no autogen)</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,11 +59,6 @@
     <Content Update="Properties\launchSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Installation\" />
-    <Folder Include="Controllers\Operator\" />
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">

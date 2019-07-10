@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task HomingNotify(IBaseNotificationMessageUI message);
 
+        Task PositioningNotify(IBaseNotificationMessageUI message);
+
         Task ResolutionCalibrationNotify(IBaseNotificationMessageUI message);
 
         Task SensorsChangedNotify(IBaseNotificationMessageUI message);
@@ -23,12 +25,9 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
-        Task UpDownRepetitiveNotify(IBaseNotificationMessageUI message);
-
-        Task VerticalPositioningNotify(IBaseNotificationMessageUI message);
-
         #endregion
 
+        //Task UpDownRepetitiveNotify(IBaseNotificationMessageUI message);
         // -
         // TODO: Add here methods for each notification message to be sent via SignalR related to a specific type of operation
         // -

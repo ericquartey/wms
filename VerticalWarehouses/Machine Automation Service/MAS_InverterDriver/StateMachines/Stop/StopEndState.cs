@@ -41,7 +41,30 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
-            this.InverterStatus.CommonControlWord.Value = 0x0000;
+            if (this.InverterStatus is IAngInverterStatus angInverter)
+            {
+                var horizontalAxis = (this.InverterStatus.CommonControlWord.Value & 0x8000) > 0;
+                if (horizontalAxis)
+                {
+                    this.InverterStatus.CommonControlWord.Value = 0x8000;
+                }
+                else
+                {
+                    this.InverterStatus.CommonControlWord.Value = 0x0000;
+                }
+            }
+
+            if (this.InverterStatus is IAglInverterStatus aglInverter)
+            {
+                // TODO
+            }
+
+            if (this.InverterStatus is IAcuInverterStatus acuInverter)
+            {
+                // TODO
+            }
+
+            //this.InverterStatus.CommonControlWord.Value = 0x0000;
 
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
@@ -57,6 +80,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc />

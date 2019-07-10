@@ -3,7 +3,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    
+
     <Color x:Key="VWAPP_DataGrid_CellStyle_HighlightBrushKey">#707173</Color>
     <Color x:Key="VWAPP_DataGrid_CellStyle_ControlBrushKey">#707173</Color>
     <Color x:Key="VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightBrushKey">#707173</Color>

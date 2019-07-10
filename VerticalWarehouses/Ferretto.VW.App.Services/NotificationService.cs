@@ -165,6 +165,7 @@ namespace Ferretto.VW.App.Services
                     break;
 
                 case NotificationMessageUI<PositioningMessageData> vp:
+                    this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
                     this.HandlePositioningMessageData(vp);
                     break;
 
