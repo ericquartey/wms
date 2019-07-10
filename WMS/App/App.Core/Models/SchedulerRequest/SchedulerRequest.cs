@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
 
@@ -32,7 +32,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(Scheduler.ItemListRow), ResourceType = typeof(Scheduler))]
         public string ListRowCode { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Lot), ResourceType = typeof(BusinessObjects))]
