@@ -2,14 +2,16 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.App.Models;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
+using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
+using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs;
 
 namespace Ferretto.VW.App
 {
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App
         private readonly IEventAggregator eventAggregator;
 
         private readonly ISessionService sessionService;
+
+        private readonly IMachineProvider machineProvider;
 
         private readonly IThemeService themeService;
 
@@ -45,7 +49,8 @@ namespace Ferretto.VW.App
             IEventAggregator eventAggregator,
             IAuthenticationService authenticationService,
             IThemeService themeService,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            IMachineProvider machineProvider)
         {
             if (eventAggregator == null)
             {
@@ -67,22 +72,22 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(sessionService));
             }
 
+            if (machineProvider == null)
+            {
+                throw new ArgumentNullException(nameof(machineProvider));
+            }
+
             this.eventAggregator = eventAggregator;
             this.themeService = themeService;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
+            this.machineProvider = machineProvider;
 
 #if DEBUG
             this.UserLogin = new UserLogin
             {
                 UserName = "installer",
                 Password = "password",
-            };
-
-            this.Machine = new Machine
-            {
-                Model = "VRT EF 84 L 990-BIS H 6345",
-                SerialNumber = "VW_190012"
             };
 #else
             this.UserLogin = new UserLogin();
@@ -125,17 +130,33 @@ namespace Ferretto.VW.App
 
         public UserLogin UserLogin { get; }
 
-        public Machine Machine { get; }
+        public MachineIdentity Machine
+        {
+            get => this.machineInfo;
+            set
+            {
+                if (this.SetProperty(ref this.machineInfo, value))
+                {
+                    this.IsMachineIdentityAvailable = value != null;
+                }
+            }
+        }
 
         public IOperatorHubClient operatorHubClient;
+
+        private MachineIdentity machineInfo;
+
+        private bool isMachineIdentityAvailable;
 
         #endregion
 
         #region Methods
 
-        public void InitializeViewModel(IUnityContainer container)
+        public async Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
+
+            this.Machine = await this.machineProvider.GetIdentityAsync();
         }
 
         public void HACK_InitialiseHubOperator()
@@ -148,6 +169,9 @@ namespace Ferretto.VW.App
                 this.ErrorMessage = "Machine Automation Service unavailable.";
             }
         }
+
+        public bool IsMachineIdentityAvailable
+        { get => this.isMachineIdentityAvailable; set => this.SetProperty(ref this.isMachineIdentityAvailable, value); }
 
         private async Task ExecuteLoginCommandAsync()
         {

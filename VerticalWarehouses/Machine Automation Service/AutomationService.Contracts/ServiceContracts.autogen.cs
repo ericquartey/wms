@@ -68,6 +68,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IIdentityService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineIdentity> GetAsync();
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IInstallationStatusService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -446,6 +458,81 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BaseModel 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static BaseModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BaseModel>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MachineIdentity : BaseModel
+    {
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
+        public int AreaId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
+        public int BayId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("installationDate", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime InstallationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LastServiceDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("modelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ModelName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("nextServiceDate", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime NextServiceDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("serialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SerialNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("serviceStatus", Required = Newtonsoft.Json.Required.Always)]
+        public MachineServiceStatus ServiceStatus { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("trayCount", Required = Newtonsoft.Json.Required.Always)]
+        public int TrayCount { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MachineIdentity FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineIdentity>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachineServiceStatus
+    {
+        NotSpecified = 0,
+    
+        Expiring = 71,
+    
+        Valid = 86,
+    
+        Expired = 88,
     
     }
     
