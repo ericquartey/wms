@@ -9,7 +9,6 @@ using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Editors.Flyout;
 using DevExpress.Xpf.Editors.Flyout.Native;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Controls
 {
