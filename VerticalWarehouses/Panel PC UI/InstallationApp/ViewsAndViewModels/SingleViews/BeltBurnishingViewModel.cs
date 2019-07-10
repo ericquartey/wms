@@ -165,7 +165,7 @@ namespace Ferretto.VW.InstallationApp
                 .Subscribe(
                 message =>
                 {
-                    this.UpdateUI(new MessageNotifiedEventArgs(message));
+                    this.UpdateCompletion(new MessageNotifiedEventArgs(message));
                 },
                 ThreadOption.PublisherThread,
                 false);
@@ -224,7 +224,7 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void UpdateUI(MessageNotifiedEventArgs messageUI)
+        private void UpdateCompletion(MessageNotifiedEventArgs messageUI)
         {
             if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
             {
