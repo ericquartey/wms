@@ -2212,7 +2212,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update Resolution.
+        ///   Cerca una stringa localizzata simile a Update Resolution.
         /// </summary>
         public static string UpdateResolution {
             get {
@@ -2221,7 +2221,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper bound [mm]:.
+        ///   Cerca una stringa localizzata simile a Upper bound [mm]:.
         /// </summary>
         public static string UpperBound {
             get {

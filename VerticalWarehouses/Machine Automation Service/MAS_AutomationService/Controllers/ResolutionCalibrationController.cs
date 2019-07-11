@@ -57,10 +57,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return await this.ExecuteResolution_MethodAsync(position, resolutionCalibrationSteps);
         }
 
-        [HttpGet("GetComputedResolution/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
-        public decimal GetComputedResolution(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        [HttpGet("GetComputedResolution/{readDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        public decimal GetComputedResolution(decimal readDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
         {
-            return this.GetComputedResolution_Method(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
+            return this.GetComputedResolution_Method(readDistance, desiredInitialPosition, desiredFinalPosition, resolution);
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -176,7 +176,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return this.Ok();
         }
 
-        private decimal GetComputedResolution_Method(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        private decimal GetComputedResolution_Method(decimal readDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
         {
             // TEMP: Is it better to compute the calculus inside the FSM ??
             var newResolution = 0m;
@@ -185,7 +185,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 decimal.TryParse(desiredFinalPosition, out var decDesiredFinalPosition) &&
                 decimal.TryParse(resolution, out var decResolution))
             {
-                newResolution = decResolution * desiredDistance / (decDesiredFinalPosition - decDesiredInitialPosition);
+                var desideredDistance = decDesiredFinalPosition - decDesiredInitialPosition;
+
+                if (desideredDistance != 0)
+                {
+                    newResolution = decResolution * readDistance / desideredDistance;
+                }
             }
 
             return newResolution;

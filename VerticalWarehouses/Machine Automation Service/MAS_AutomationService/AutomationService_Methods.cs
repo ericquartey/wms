@@ -166,7 +166,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
 
-                this.installationHub.Clients.All.VerticalPositioningNotify(messageToUI);
+                this.installationHub.Clients.All.PositioningNotify(messageToUI);
 
                 this.logger.LogTrace($"22:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }

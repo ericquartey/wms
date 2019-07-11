@@ -55,6 +55,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             this.CurrentState?.Start();
         }
 
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

@@ -1161,5 +1161,6 @@
   </data>
   <data name="UpdateResolution" xml:space="preserve">
     <value>Update Resolution</value>
+    <comment>Update Resolution</comment>
   </data>
 </root>

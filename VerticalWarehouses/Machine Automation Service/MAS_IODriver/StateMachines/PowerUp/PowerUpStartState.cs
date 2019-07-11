@@ -58,23 +58,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
+            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data)
             {
                 this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState(new ConfigState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 
         public override void Start()
         {
-            var message = new IoSHDWriteMessage(
-                this.status.ComunicationTimeOut,
-                this.status.UseSetupOutputLines,
-                this.status.SetupOutputLines,
-                this.status.DebounceInput);
-
-            this.Logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}, Debounce={this.status.DebounceInput}]");
+            var message = new IoSHDWriteMessage(this.status.OutputData);
 
             this.ParentStateMachine.EnqueueMessage(message);
         }

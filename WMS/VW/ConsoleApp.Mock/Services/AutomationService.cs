@@ -355,12 +355,12 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             while (!ElevatorReachedTargetPosition(position, startPosition, targetPosition))
             {
                 this.machineStatus.ElevatorStatus.Position = position;
-                await this.machineHub.Clients?.All.ElevatorPositionChanged(position);
 
                 await Task.Delay(70);
                 Console.Write($".");
 
                 position += increment;
+                await this.machineHub.Clients?.All.ElevatorPositionChanged(position);
             }
 
             Console.WriteLine(" done.");

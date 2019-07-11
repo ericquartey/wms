@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
+        private readonly bool stopRequested;
+
         #endregion
 
         #region Constructors
@@ -22,10 +24,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             IInverterShutterPositioningFieldMessageData shutterPositionData,
-            ILogger logger)
+            ILogger logger,
+            bool stopRequested = false)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.shutterPositionData = shutterPositionData;
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -53,11 +57,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
-                MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc/>

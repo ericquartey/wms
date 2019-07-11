@@ -174,56 +174,56 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     // Build message for UP
                     this.positioningUpMessageData = new PositioningMessageData(
                         this.positioningMessageData.AxisMovement,
-                                                                          this.positioningMessageData.MovementType,
-                                                                          distance,
-                                                                          this.positioningMessageData.TargetSpeed,
-                                                                          this.positioningMessageData.TargetAcceleration,
-                                                                          this.positioningMessageData.TargetDeceleration,
-                                                                          this.positioningMessageData.NumberCycles,
-                                                                          this.positioningMessageData.LowerBound,
-                                                                          this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                        this.positioningMessageData.MovementType,
+                        distance,
+                        this.positioningMessageData.TargetSpeed,
+                        this.positioningMessageData.TargetAcceleration,
+                        this.positioningMessageData.TargetDeceleration,
+                        this.positioningMessageData.NumberCycles,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.Resolution);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(
                         this.positioningMessageData.AxisMovement,
-                                                                          this.positioningMessageData.MovementType,
-                                                                          -distance,
-                                                                          this.positioningMessageData.TargetSpeed,
-                                                                          this.positioningMessageData.TargetAcceleration,
-                                                                          this.positioningMessageData.TargetDeceleration,
-                                                                          this.positioningMessageData.NumberCycles,
-                                                                          this.positioningMessageData.LowerBound,
-                                                                          this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                        this.positioningMessageData.MovementType,
+                        -distance,
+                        this.positioningMessageData.TargetSpeed,
+                        this.positioningMessageData.TargetAcceleration,
+                        this.positioningMessageData.TargetDeceleration,
+                        this.positioningMessageData.NumberCycles,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.Resolution);
                 }
                 else
                 {
                     // Build message for UP
                     this.positioningUpMessageData = new PositioningMessageData(
                         this.positioningMessageData.AxisMovement,
-                                                                          this.positioningMessageData.MovementType,
-                                                                          this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.TargetSpeed,
-                                                                          this.positioningMessageData.TargetAcceleration,
-                                                                          this.positioningMessageData.TargetDeceleration,
-                                                                          this.positioningMessageData.NumberCycles,
-                                                                          this.positioningMessageData.LowerBound,
-                                                                          this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                        this.positioningMessageData.MovementType,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.TargetSpeed,
+                        this.positioningMessageData.TargetAcceleration,
+                        this.positioningMessageData.TargetDeceleration,
+                        this.positioningMessageData.NumberCycles,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.Resolution);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(
                         this.positioningMessageData.AxisMovement,
-                                                                          this.positioningMessageData.MovementType,
-                                                                          this.positioningMessageData.LowerBound,
-                                                                          this.positioningMessageData.TargetSpeed,
-                                                                          this.positioningMessageData.TargetAcceleration,
-                                                                          this.positioningMessageData.TargetDeceleration,
-                                                                          this.positioningMessageData.NumberCycles,
-                                                                          this.positioningMessageData.LowerBound,
-                                                                          this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                        this.positioningMessageData.MovementType,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.TargetSpeed,
+                        this.positioningMessageData.TargetAcceleration,
+                        this.positioningMessageData.TargetDeceleration,
+                        this.positioningMessageData.NumberCycles,
+                        this.positioningMessageData.LowerBound,
+                        this.positioningMessageData.UpperBound,
+                        this.positioningMessageData.Resolution);
                 }
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
