@@ -132,9 +132,16 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         private void ChangeSelectedItem(bool isUp)
         {
-            this.currentSelectedItem = (isUp) ? this.currentSelectedItem++ : this.currentSelectedItem--;
-            this.dataGridViewModelRef.SelectedList = this.lists[this.currentSelectedItem];
-            this.DataGridViewModel = this.dataGridViewModelRef;
+            this.currentSelectedItem = (isUp) ? --this.currentSelectedItem : ++this.currentSelectedItem;
+            if (this.currentSelectedItem < 0)
+            {
+                this.currentSelectedItem = 0;
+            }
+            if (this.currentSelectedItem >= this.lists.Count)
+            {
+                this.currentSelectedItem = this.lists.Count - 1;
+            }
+            (this.dataGridViewModel as CustomControlListDataGridViewModel).SelectedList = this.lists[this.currentSelectedItem];
         }
 
         #endregion

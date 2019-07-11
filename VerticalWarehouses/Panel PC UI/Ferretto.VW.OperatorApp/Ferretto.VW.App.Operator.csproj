@@ -63,5 +63,14 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ViewsAndViewModels\DrawerOperations\DrawerActivityLocalCallView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\Other\DrawerCompactingDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
   
 </Project>
