@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -12,11 +15,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly INavigationService navigationService;
+
+        private ICommand drawerCompactingDetailButtonCommand;
+
         #endregion
 
         #region Constructors
 
-        public DrawerCompactingViewModel(IEventAggregator eventAggregator)
+        public DrawerCompactingViewModel(IEventAggregator eventAggregator, INavigationService navigationService)
         {
             if (eventAggregator == null)
             {
@@ -24,12 +31,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             }
 
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
             this.NavigationViewModel = null;
         }
 
         #endregion
 
         #region Properties
+
+        public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() =>
+        {
+            this.navigationService.NavigateToView<DrawerCompactingDetailViewModel, IDrawerCompactingDetailViewModel>();
+        }));
+
 
         public BindableBase NavigationViewModel { get; set; }
 

@@ -18,11 +18,11 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeader}" />
 
-        <ContentControl Width="600"
-                        Height="300"
-                        Margin="160,210,0,0"
-                        HorizontalAlignment="Left"
+        <ContentControl HorizontalAlignment="Left"
+                        Height="310"
+                        Margin="110,200,0,0"
                         VerticalAlignment="Top"
+                        Width="700"
                         Content="{Binding DataGridViewModel}" />
 
         <Button Margin="0,200,20,0"

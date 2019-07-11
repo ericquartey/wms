@@ -85,6 +85,7 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IImmediateDrawerCallViewModel, ImmediateDrawerCallViewModel>();
             containerRegistry.RegisterSingleton<IGeneralInfoViewModel, GeneralInfoViewModel>();
             containerRegistry.RegisterSingleton<IDrawerCompactingViewModel, DrawerCompactingViewModel>();
+            containerRegistry.RegisterSingleton<IDrawerCompactingDetailViewModel, DrawerCompactingDetailViewModel>();
             containerRegistry.RegisterSingleton<IOtherNavigationViewModel, OtherNavigationViewModel>();
             containerRegistry.RegisterSingleton<IStatisticsGeneralDataViewModel, StatisticsGeneralDataViewModel>();
             containerRegistry.RegisterSingleton<IDrawerSpaceSaturationViewModel, DrawerSpaceSaturationViewModel>();

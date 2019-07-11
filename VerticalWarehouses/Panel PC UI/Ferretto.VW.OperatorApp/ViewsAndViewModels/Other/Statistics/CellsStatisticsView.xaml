@@ -21,9 +21,9 @@
 
         <ContentControl HorizontalAlignment="Left"
                         Height="250"
-                        Margin="250,250,0,0"
+                        Margin="220,250,0,0"
                         VerticalAlignment="Top"
-                        Width="480"
+                        Width="500"
                         Content="{Binding DataGridViewModel}" >
         </ContentControl>
 

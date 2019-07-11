@@ -18,7 +18,7 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="14"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
@@ -109,7 +109,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn Width="4*"
                                     Binding="{Binding Path=Description}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderDescription}">
                     <DataGridTextColumn.HeaderStyle>

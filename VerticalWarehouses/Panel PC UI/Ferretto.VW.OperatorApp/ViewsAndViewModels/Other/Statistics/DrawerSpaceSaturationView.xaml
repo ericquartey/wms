@@ -21,10 +21,10 @@
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}"/>
 
         <ContentControl HorizontalAlignment="Left"
-                      Height="330"
-                      Margin="180,170,0,0"
+                      Height="340"
+                      Margin="140,150,0,0"
                       VerticalAlignment="Top"
-                      Width="600"
+                      Width="680"
                       Content="{Binding DataGridViewModel}">
         </ContentControl>
         
@@ -36,11 +36,11 @@
                                                 ProgressionValue="65"
                                                 LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"/>
         
-            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,20,0"
+            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,190,20,0"
                      Content="{x:Static Resources:OperatorApp.CommonUp}"
                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,215,20,0"
+            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,255,20,0"
                       Content="{x:Static Resources:OperatorApp.CommonDown}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
