@@ -17,10 +17,12 @@
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,90,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonUp}"
+                  Command="{Binding ButtonUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,155,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonDown}"
+                  Command="{Binding ButtonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"

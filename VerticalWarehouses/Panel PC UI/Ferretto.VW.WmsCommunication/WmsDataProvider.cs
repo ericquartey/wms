@@ -12,6 +12,8 @@ namespace Ferretto.VW.WmsCommunication
     {
         #region Fields
 
+        private readonly IItemListsDataService itemListsDataService;
+
         private readonly IItemsDataService itemsDataService;
 
         private readonly ILoadingUnitsDataService loadingUnitsDataService;
@@ -30,6 +32,7 @@ namespace Ferretto.VW.WmsCommunication
             this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
             this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
             this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
+            this.itemListsDataService = DataServiceFactory.GetService<IItemListsDataService>(wmsConnectionString);
         }
 
         #endregion
@@ -82,6 +85,18 @@ namespace Ferretto.VW.WmsCommunication
                 throw new NotImplementedException(ex.Message);
             }
             return item.Image;
+        }
+
+        public Task<ObservableCollection<ItemList>> GetItemLists()
+        {
+            try
+            {
+                return this.itemListsDataService.GetAllAsync(take: 10);
+            }
+            catch (SwaggerException ex)
+            {
+                throw new NotImplementedException(ex.Message);
+            }
         }
 
         public async Task<ObservableCollection<Item>> GetItemsAsync(string searchCode, int skip, int quantity)

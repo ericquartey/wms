@@ -25,14 +25,17 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         public static void CompactCells(CellsManager cm)
         {
+            throw new NotImplementedException();
         }
 
         public static void CompactCells(CellsManager cm, Side side)
         {
+            throw new NotImplementedException();
         }
 
         public static void CompactCells(CellsManager cm, int heightMillimiters)
         {
+            throw new NotImplementedException();
         }
 
         public static bool CreateBay(CellsManager cm, int firstCellID, int lastCellID)

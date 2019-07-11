@@ -90,8 +90,7 @@
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                  LabelText="{x:Static res:VWApp.UserLogin_UserName}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                 Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <custom:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
@@ -100,8 +99,7 @@
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                  LabelText="{x:Static res:VWApp.UserLogin_Password}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                 Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"/>
 
         <Button Grid.Row="0"
                 Margin="0,0,15,0"
@@ -117,8 +115,7 @@
                 VerticalAlignment="Top"
                 Command="{Binding LoginCommand}"
                 Content="{x:Static res:General.Login}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"/>
 
         <TextBlock Grid.Row="2"
                    Height="40"
