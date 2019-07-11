@@ -15,7 +15,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Services
 {
-    internal class SchedulerService : BackgroundService, IMissionSchedulerService, ISchedulerService, IItemSchedulerService, IItemListSchedulerService
+    internal class SchedulerService :
+        BackgroundService,
+        IMissionSchedulerService,
+        ISchedulerService,
+        IItemSchedulerService,
+        IItemListSchedulerService
     {
         #region Fields
 
@@ -110,6 +115,20 @@ namespace Ferretto.WMS.Data.Core.Services
                 var listRowProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListRowExecutionProvider>();
 
                 var result = await listRowProvider.PrepareForExecutionAsync(rowId, areaId, bayId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<Mission>> ExecuteLoadingUnitMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionLoadingUnitProvider>();
+
+                var result = await missionsProvider.ExecuteAsync(missionId);
 
                 await this.ProcessPendingRequestsAsync();
 

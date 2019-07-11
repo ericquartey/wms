@@ -60,6 +60,15 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(c => c.Compartments)
                 .HasForeignKey(c => c.CompartmentStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Property(c => c.OtherMissionOperationCount)
+               .HasDefaultValue(0);
+
+            builder.Property(c => c.PickMissionOperationCount)
+               .HasDefaultValue(0);
+
+            builder.Property(c => c.PutMissionOperationCount)
+               .HasDefaultValue(0);
         }
 
         #endregion

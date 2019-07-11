@@ -309,7 +309,7 @@ namespace Ferretto.VW.InstallationApp
 
             var desiredViewModel = this.container.Resolve<I>() as T;
             await desiredViewModel.OnEnterViewAsync();
-            this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
+
             this.ContentRegionCurrentViewModel = desiredViewModel;
         }
 

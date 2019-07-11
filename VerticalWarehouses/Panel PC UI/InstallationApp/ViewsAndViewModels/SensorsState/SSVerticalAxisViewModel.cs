@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.IO;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
@@ -13,6 +13,10 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IOSensorsStatus ioSensorsStatus;
+
         private IUnityContainer container;
 
         private bool cradleEngineSelected;
@@ -20,10 +24,6 @@ namespace Ferretto.VW.InstallationApp
         private bool elevatorEngineSelected;
 
         private bool emergencyEndRun;
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool luPresentiInMachineSide;
 

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InverterDriver
+﻿namespace Ferretto.VW.Drivers.Inverter
 {
     public interface ICalibrateAxis
     {
@@ -9,7 +9,7 @@
         /// </summary>
         InverterDriver SetInverterDriverInterface { set; }
 
-        CalibrationType ActualCalibrationAxis { set; get;  }
+        CalibrationOrientation ActualCalibrationAxis { set; get;  }
 
         #endregion Properties
 

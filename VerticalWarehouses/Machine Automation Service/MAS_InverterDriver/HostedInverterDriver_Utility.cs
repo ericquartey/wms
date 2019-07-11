@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
@@ -415,13 +415,16 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.heartbeatQueue.Dequeue(out var message);
 
-            this.logger.LogTrace($"1:message={message}");
-
             try
             {
+                this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus);
+                var newMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+
+                this.logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
+
                 this.roundTripStopwatch.Reset();
                 this.roundTripStopwatch.Start();
-                await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(message.HeartbeatValue), this.stoppingToken);
+                await this.socketTransport.WriteAsync(newMessage.GetHeartbeatMessage(newMessage.HeartbeatValue), this.stoppingToken);
             }
             catch (InverterDriverException ex)
             {
@@ -601,7 +604,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (this.IsInverterStarted(inverterStatus))
                 {
-                    this.logger.LogTrace("3: Start timer for update shaft position");
                     this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                     this.currentAxis = positioningData.AxisMovement;
 

@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IPositioningMessageData : IMessageData
     {

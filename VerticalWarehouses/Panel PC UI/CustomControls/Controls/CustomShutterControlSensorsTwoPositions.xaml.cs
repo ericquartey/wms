@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomGateControlSensorsTwoPositions.xaml

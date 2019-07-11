@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IMissionCompletedMessageData : IMessageData
     {

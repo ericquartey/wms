@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
@@ -14,7 +13,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         private ICommand drawerCompactingDetailButtonCommand;
 
@@ -26,6 +25,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         public DrawerCompactingViewModel(IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
         }

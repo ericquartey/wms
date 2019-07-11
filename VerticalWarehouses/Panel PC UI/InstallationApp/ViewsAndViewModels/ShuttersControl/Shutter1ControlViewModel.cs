@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -144,18 +144,18 @@ namespace Ferretto.VW.InstallationApp
             this.DelayBetweenCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
 
 #if !DEBUG
-                //var client = new HttpClient();
-                //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
-                //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                //{
-                //    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                //}
-                //response = null;
-                //response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
-                //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                //{
-                //    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                //}
+            /*    var client = new System.Net.HttpClient();
+                var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+                }
+                response = null;
+                response = await client.GetAsync(new System.Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+                }*/
 #endif
         }
 

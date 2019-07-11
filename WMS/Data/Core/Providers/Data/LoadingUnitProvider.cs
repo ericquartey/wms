@@ -109,7 +109,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var models = await this.GetAllBase()
                 .Where(l => this.DataContext.ItemsAreas.Where(
-                    ia => ia.ItemId == 6)
+                    ia => ia.ItemId == id)
                             .Select(ia => ia.AreaId)
                             .Contains(l.AreaId))
                 .Where(l => l.HasCompartments)
@@ -263,8 +263,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IOperationResult<LoadingUnitDetails>> UpdateMissionsCountAsync(int id)
+        {
+            var model = await this.GetByIdAsync(id);
+            model.MissionsCount++;
+
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
+                model,
+                this.DataContext.LoadingUnits,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
+                    "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",
             Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
@@ -388,9 +403,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     InventoryDate = l.InventoryDate,
                     LastPickDate = l.LastPickDate,
                     LastPutDate = l.LastPutDate,
-                    InMissionCount = l.InMissionCount,
-                    OutMissionCount = l.OutMissionCount,
-                    OtherMissionCount = l.OtherMissionCount,
+                    MissionsCount = l.MissionsCount,
                     CellId = l.CellId,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,

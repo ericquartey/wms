@@ -133,7 +133,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 Model = model,
                 Mode = CompartmentEditViewModel.AppearMode.Add,
                 IsHeaderVisible = false,
-                IsErrorsVisible = false
+                IsErrorsVisible = false,
+                IsItemLookUpEnabled = false,
             };
 
             model.ItemId = itemId;

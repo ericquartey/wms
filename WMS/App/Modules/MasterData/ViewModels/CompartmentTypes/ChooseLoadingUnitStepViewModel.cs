@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
@@ -94,7 +95,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override bool CanGoToNextView()
         {
-            return this.SelectedItem != null;
+            return this.SelectedItem != null &&
+                this.SelectedItem is LoadingUnit loadingUnit &&
+                loadingUnit.Id != -1;
         }
 
         public override(string moduleName, string viewName, object data) GetNextView()
@@ -114,8 +117,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public async Task UpdateLoadingUnitCompartmentsAsync()
         {
             if (this.SelectedItem == null ||
-                (this.SelectedItem is int notSelectedItem &&
-                    notSelectedItem == -1))
+                (this.SelectedItem is LoadingUnit loadingUnit &&
+                    loadingUnit.Id == -1))
             {
                 this.IsLoadingUnitDetailsVisible = false;
                 this.LoadingUnitDetails = null;
@@ -155,6 +158,8 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             var result =
                 await this.loadingUnitProvider.GetAllAllowedByItemIdAsync(this.itemId, skip, pageSize, sortOrder);
+            this.HasLoadingUnits = result.Success && result.Entity.Any();
+
             return !result.Success ? null : result.Entity;
         }
 

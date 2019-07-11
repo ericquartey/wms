@@ -2,18 +2,23 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
-    /// <summary>
-    /// Interaction logic for CustomLabelTextBlockControl.xaml
-    /// </summary>
     public partial class CustomLabelTextBlockControl : UserControl, INotifyPropertyChanged
     {
         #region Fields
 
-        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(CustomLabelTextBlockControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register(
+            nameof(ContentText),
+            typeof(string),
+            typeof(CustomLabelTextBlockControl),
+            new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomLabelTextBlockControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+            nameof(LabelText),
+            typeof(string),
+            typeof(CustomLabelTextBlockControl),
+            new PropertyMetadata(string.Empty));
 
         #endregion
 

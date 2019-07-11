@@ -10,6 +10,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<Mission>> CompleteLoadingUnitMissionAsync(int missionId);
 
+        Task<IOperationResult<Mission>> ExecuteLoadingUnitMissionAsync(int missionId);
+
         Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId);
 
         #endregion

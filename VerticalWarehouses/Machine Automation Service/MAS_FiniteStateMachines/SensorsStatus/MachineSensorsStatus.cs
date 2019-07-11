@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.IO;
+﻿using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.MAS_IODriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 

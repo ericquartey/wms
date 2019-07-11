@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Diagnostics;
 using Ferretto.VW.MAS_InverterDriver.Interface;
@@ -243,7 +243,12 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (receivedMessage.Type == FieldMessageType.InverterStop)
                 {
+                    this.currentStateMachine?.Release();
+
                     this.currentStateMachine?.Dispose();
+
+                    this.logger.LogTrace("4: Stop the timer for update shaft position");
+                    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
                     this.ProcessStopMessage(receivedMessage);
 

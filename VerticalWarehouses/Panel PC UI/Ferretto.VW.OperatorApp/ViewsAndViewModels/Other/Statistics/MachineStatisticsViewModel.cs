@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Controls;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Utils;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
@@ -18,13 +14,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly CustomControlItemStatisticsDataGridViewModel dataGridViewModelRef;
+
+        private readonly IEventAggregator eventAggregator;
 
         private BindableBase dataGridViewModel;
-
-        private CustomControlItemStatisticsDataGridViewModel dataGridViewModelRef;
-
-        private IEventAggregator eventAggregator;
 
         private ObservableCollection<DataGridItemStatistics> items;
 
@@ -32,9 +26,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public MachineStatisticsViewModel(IEventAggregator eventAggregator)
+        public MachineStatisticsViewModel(
+            IEventAggregator eventAggregator,
+            ICustomControlItemStatisticsDataGridViewModel itemStatisticsDataGridViewModel)
         {
             this.eventAggregator = eventAggregator;
+            this.dataGridViewModelRef = itemStatisticsDataGridViewModel as CustomControlItemStatisticsDataGridViewModel;
+            this.DataGridViewModel = this.dataGridViewModelRef;
+
             this.NavigationViewModel = null;
         }
 
@@ -55,18 +54,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.dataGridViewModelRef = this.container.Resolve<ICustomControlItemStatisticsDataGridViewModel>() as CustomControlItemStatisticsDataGridViewModel;
-            this.DataGridViewModel = this.dataGridViewModelRef;
-        }
-
         public async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.items = new ObservableCollection<DataGridItemStatistics>();
-            for (int i = 0; i < random.Next(1, 30); i++)
+            for (var i = 0; i < random.Next(1, 30); i++)
             {
                 this.items.Add(new DataGridItemStatistics
                 {

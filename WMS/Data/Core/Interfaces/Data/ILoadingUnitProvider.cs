@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Models;
@@ -28,6 +29,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         Task<LoadingUnitOperation> GetByIdForExecutionAsync(int id);
 
         Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId);
+
+        Task<IOperationResult<LoadingUnitDetails>> UpdateMissionsCountAsync(int id);
 
         #endregion
     }
