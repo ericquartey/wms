@@ -23,7 +23,7 @@
                         Margin="110,200,0,0"
                         VerticalAlignment="Top"
                         Width="700"
-                        Content="{Binding DataGridViewModel}">
+                        Content="{Binding DataGridViewModel}" />
 
         <Button Margin="0,200,20,0"
                 HorizontalAlignment="Right"

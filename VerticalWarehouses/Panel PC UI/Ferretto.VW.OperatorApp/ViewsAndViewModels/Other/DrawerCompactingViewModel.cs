@@ -15,15 +15,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand drawerCompactingDetailButtonCommand;
+        private readonly INavigationService navigationService;
 
-        private IUnityContainer container;
+        private ICommand drawerCompactingDetailButtonCommand;
 
         #endregion
 
         #region Constructors
 
-        public DrawerCompactingViewModel(IEventAggregator eventAggregator)
+        public DrawerCompactingViewModel(IEventAggregator eventAggregator, INavigationService navigationService)
         {
             if (eventAggregator == null)
             {
@@ -31,6 +31,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             }
 
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
             this.NavigationViewModel = null;
         }
 
@@ -40,7 +41,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<DrawerCompactingDetailViewModel, IDrawerCompactingDetailViewModel>();
+            this.navigationService.NavigateToView<DrawerCompactingDetailViewModel, IDrawerCompactingDetailViewModel>();
         }));
 
 
