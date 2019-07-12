@@ -128,7 +128,7 @@
                     <dxg:GridControl.DetailDescriptor>
                         <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding Operations}">
                             <dxg:DataControlDetailDescriptor.DataControl>
-                                <dxg:GridControl>
+                                <dxg:GridControl CurrentItem="{Binding SelectedItem, Mode=TwoWay}">
                                     <dxg:GridControl.Columns>
                                         <dxg:GridColumn Width="100"
                                                         FieldName="Priority" />
