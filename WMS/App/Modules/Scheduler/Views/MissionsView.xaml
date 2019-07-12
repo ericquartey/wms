@@ -294,6 +294,8 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="140*"
+                                        FieldName="AreaName" />
+                        <dxg:GridColumn Width="140*"
                                         FieldName="BayDescription" />
                         <dxg:GridColumn Width="100*"
                                         FieldName="LoadingUnitDescription" />
