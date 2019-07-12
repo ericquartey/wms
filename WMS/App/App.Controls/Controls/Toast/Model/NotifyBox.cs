@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
@@ -122,6 +121,7 @@ namespace Ferretto.WMS.App.Controls
         /// </summary>
         /// <param name="window">The window.</param>
         /// <param name="displayDuration">The display duration.</param>
+        /// <param name="notificationFlowDirection"></param>
         public void Show(Window window, TimeSpan displayDuration, NotificationFlowDirection notificationFlowDirection)
         {
             var behaviors = Interaction.GetBehaviors(window);
@@ -160,30 +160,26 @@ namespace Ferretto.WMS.App.Controls
         /// <param name="notificationFlowDirection"> Direction in which new notifications will appear.</param>
         private static void SetWindowDirection(Window window, NotificationFlowDirection notificationFlowDirection)
         {
-            var left = (int)window.Owner.Left;
-            var top = (int)window.Owner.Top;
-            if (window.Owner.WindowState == WindowState.Maximized)
-            {
-                var offsetSize = FormControl.GetMainApplicationOffsetSize();
+            var matrix = PresentationSource.FromVisual(Application.Current.MainWindow)
+                .CompositionTarget
+                .TransformFromDevice;
+            var scaleFactor = matrix.M11;
+            var offsetSize = FormControl.GetMainApplicationOffsetSize();
 
-                top = (int)offsetSize.screenTop - 15;
-                left = (int)offsetSize.screenLeft - 15;
-            }
+            var isMaximized = window.Owner.WindowState == WindowState.Maximized;
+            var top = (int)((isMaximized ? offsetSize.screenTop : window.Owner.Top) / scaleFactor);
+            var left = (int)((isMaximized ? offsetSize.screenLeft : window.Owner.Left) / scaleFactor);
+            var width = (int)((isMaximized ? offsetSize.screenWidth : window.Owner.Width) / scaleFactor);
+            var height = (int)((isMaximized ? offsetSize.screenHeight : window.Owner.Height) / scaleFactor);
 
             var workingArea = new System.Drawing.Rectangle(
                 new System.Drawing.Point(left, top),
-                new System.Drawing.Size((int)window.Owner.Width, (int)window.Owner.Height));
-            Debug.WriteLine($"WA=> H={workingArea.Height} W={workingArea.Width} X={workingArea.Top} Y={workingArea.Left}");
-            var transform = PresentationSource.FromVisual(Application.Current.MainWindow).CompositionTarget.TransformFromDevice;
-            var corner = transform.Transform(new Point(workingArea.Right, workingArea.Bottom));
+                new System.Drawing.Size(width, height));
+
+            var corner = matrix.Transform(new Point(workingArea.Right, workingArea.Bottom));
 
             switch (notificationFlowDirection)
             {
-                case NotificationFlowDirection.RightBottom:
-                    window.Left = corner.X - window.Width - window.Margin.Right - Margin;
-                    window.Top = corner.Y - window.Height - window.Margin.Top;
-                    break;
-
                 case NotificationFlowDirection.LeftBottom:
                     window.Left = 0;
                     window.Top = corner.Y - window.Height - window.Margin.Top;
@@ -199,12 +195,10 @@ namespace Ferretto.WMS.App.Controls
                     window.Top = 0;
                     break;
 
-#pragma warning disable S1871 // Two branches in a conditional structure should not have exactly the same implementation
                 default:
                     window.Left = corner.X - window.Width - window.Margin.Right - Margin;
                     window.Top = corner.Y - window.Height - window.Margin.Top;
                     break;
-#pragma warning restore S1871 // Two branches in a conditional structure should not have exactly the same implementation
             }
         }
 
@@ -222,7 +216,7 @@ namespace Ferretto.WMS.App.Controls
         /// </summary>
         private void OnTimerElapsed(WindowInfo windowInfo)
         {
-            if (this.notificationWindows.Count > 0 && !this.notificationWindows.Any(i => i.Id == windowInfo.Id))
+            if (this.notificationWindows.Count > 0 && this.notificationWindows.All(i => i.Id != windowInfo.Id))
             {
                 return;
             }
@@ -240,24 +234,26 @@ namespace Ferretto.WMS.App.Controls
                 fadeBehavior.FadeOut();
                 slideBehavior.SlideOut();
 
-                EventHandler eventHandler = null;
-                eventHandler = (sender2, e2) =>
+                void OnFadeOutCompleted(object sender2, EventArgs e2)
                 {
-                    fadeBehavior.FadeOutCompleted -= eventHandler;
+                    fadeBehavior.FadeOutCompleted -= OnFadeOutCompleted;
                     this.notificationWindows.Remove(windowInfo);
                     windowInfo.Window.Close();
 
-                    if (this.notificationsBuffer != null && this.notificationsBuffer.Count > 0)
+                    if (this.notificationsBuffer == null || this.notificationsBuffer.Count <= 0)
                     {
-                        var bufferWindowInfo = this.notificationsBuffer.First();
-                        this.StartWindowCloseTimer(bufferWindowInfo);
-
-                        this.notificationWindows.Add(bufferWindowInfo);
-                        bufferWindowInfo.Window.Show();
-                        this.notificationsBuffer.Remove(bufferWindowInfo);
+                        return;
                     }
-                };
-                fadeBehavior.FadeOutCompleted += eventHandler;
+
+                    var bufferWindowInfo = this.notificationsBuffer.First();
+                    this.StartWindowCloseTimer(bufferWindowInfo);
+
+                    this.notificationWindows.Add(bufferWindowInfo);
+                    bufferWindowInfo.Window.Show();
+                    this.notificationsBuffer.Remove(bufferWindowInfo);
+                }
+
+                fadeBehavior.FadeOutCompleted += OnFadeOutCompleted;
             }
         }
 
@@ -276,20 +272,24 @@ namespace Ferretto.WMS.App.Controls
         private void Window_Closed(object sender, EventArgs e)
         {
             var window = (Window)sender;
-            if (this.notificationWindows.Count > 0 && this.notificationWindows.First().Window == window)
+            if (this.notificationWindows.Count <= 0 || this.notificationWindows.First().Window != window)
             {
-                var windowInfo = this.notificationWindows.First();
-                this.notificationWindows.Remove(windowInfo);
-                if (this.notificationsBuffer != null && this.notificationsBuffer.Count > 0)
-                {
-                    var bufferWindowInfo = this.notificationsBuffer.First();
-                    this.StartWindowCloseTimer(bufferWindowInfo);
-
-                    this.notificationWindows.Add(bufferWindowInfo);
-                    bufferWindowInfo.Window.Show();
-                    this.notificationsBuffer.Remove(bufferWindowInfo);
-                }
+                return;
             }
+
+            var windowInfo = this.notificationWindows.First();
+            this.notificationWindows.Remove(windowInfo);
+            if (this.notificationsBuffer == null || this.notificationsBuffer.Count <= 0)
+            {
+                return;
+            }
+
+            var bufferWindowInfo = this.notificationsBuffer.First();
+            this.StartWindowCloseTimer(bufferWindowInfo);
+
+            this.notificationWindows.Add(bufferWindowInfo);
+            bufferWindowInfo.Window.Show();
+            this.notificationsBuffer.Remove(bufferWindowInfo);
         }
 
         #endregion
