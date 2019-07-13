@@ -242,6 +242,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IEnumerable<LoadingUnitDetails>> GetAllByMachineIdAsync(int machineId)
+        {
+            var models = await this.GetAllDetailsBase()
+                .Where(l => l.MachineId == machineId)
+                .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
+        }
+
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
             if (model == null || !this.IsValidRelationshipBetweenTypeAisle(model))
@@ -405,6 +419,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LastPutDate = l.LastPutDate,
                     MissionsCount = l.MissionsCount,
                     CellId = l.CellId,
+                    MachineId = l.Cell.Aisle.Machines.FirstOrDefault().Id,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
