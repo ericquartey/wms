@@ -127,9 +127,6 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlListDetailDataGridViewModel}">
         <customviewsandviewmodels:CustomControlListDetailDataGrid />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlItemStatisticsDataGridViewModel}">
-        <customviewsandviewmodels:CustomControlItemStatisticsDataGrid />
-    </DataTemplate>
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlMaintenanceDetailDataGridViewModel}">
         <customviewsandviewmodels:CustomControlMaintenanceDetailDataGrid />
     </DataTemplate>
