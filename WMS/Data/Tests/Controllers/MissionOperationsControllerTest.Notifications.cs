@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 CompartmentId = compartment.Id,
                 ItemId = item.Id,
                 Type = Common.DataModels.MissionOperationType.Pick,
-                RequestedQuantity = 7
+                RequestedQuantity = 7,
             };
 
             var mission = new Common.DataModels.Mission
@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = 1,
                 Operations = new[]
                 {
-                    missionOperation
+                    missionOperation,
                 },
             };
 
@@ -153,13 +153,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 CompartmentId = compartment.Id,
                 ItemId = item.Id,
                 Type = Common.DataModels.MissionOperationType.Pick,
-                RequestedQuantity = 7
+                RequestedQuantity = 7,
             };
 
             var mission = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
-                Operations = new[] { missionOperation }
+                Operations = new[] { missionOperation },
             };
 
             using (var context = this.CreateContext())
@@ -256,14 +256,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 ItemId = item1.Id,
                 Status = Common.DataModels.MissionOperationStatus.New,
                 Type = Common.DataModels.MissionOperationType.Pick,
-                RequestedQuantity = 7
+                RequestedQuantity = 7,
             };
 
             var mission1 = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
-                Operations = new[] { missionOperation1 }
+                Operations = new[] { missionOperation1 },
             };
 
             using (var context = this.CreateContext())

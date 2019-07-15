@@ -39,11 +39,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AreasController(
                             ILogger<AreasController> logger,
-            IAreaProvider areaProvider,
-            IBayProvider bayProvider,
-            ICellProvider cellProvider,
-            IItemProvider itemProvider,
-            IItemListProvider itemListProvider)
+                            IAreaProvider areaProvider,
+                            IBayProvider bayProvider,
+                            ICellProvider cellProvider,
+                            IItemProvider itemProvider,
+                            IItemListProvider itemListProvider)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;
@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 

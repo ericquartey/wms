@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 RequestedQuantity = model.RequestedQuantity,
                 Status = (Common.DataModels.ItemListRowStatus)model.Status,
                 Sub1 = model.Sub1,
-                Sub2 = model.Sub2
+                Sub2 = model.Sub2,
             });
 
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
@@ -266,7 +266,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Image = m1.Image,
                             Model = m1.Model,
                             Nickname = m1.Nickname,
-                        })
+                        }),
                 });
         }
 
@@ -303,7 +303,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.MissionOperations.Count(
                         m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
-                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete)
+                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete),
                 });
         }
 

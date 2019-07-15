@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(MissionPolicy.Abort),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (missionOperation.Status != MissionOperationStatus.Executing
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(MissionPolicy.Complete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (missionToComplete.Status != MissionOperationStatus.Executing)
@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(MissionPolicy.Execute),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (missionToExecute.Status != MissionOperationStatus.New)

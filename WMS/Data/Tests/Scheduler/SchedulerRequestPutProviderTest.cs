@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 FifoTimePut = 3,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO
+                ManagementType = Common.DataModels.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -47,7 +47,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var itemArea1 = new Common.DataModels.ItemArea
             {
                 AreaId = this.Area1.Id,
-                ItemId = item1.Id
+                ItemId = item1.Id,
             };
 
             using (var context = this.CreateContext())
@@ -152,7 +152,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 FifoTimePut = fifoTime,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO
+                ManagementType = Common.DataModels.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -202,7 +202,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var itemArea1 = new Common.DataModels.ItemArea
             {
                 AreaId = this.Area1.Id,
-                ItemId = item1.Id
+                ItemId = item1.Id,
             };
 
             using (var context = this.CreateContext())
@@ -252,7 +252,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 FifoTimePut = 2,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO
+                ManagementType = Common.DataModels.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -266,7 +266,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -282,7 +282,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var itemArea1 = new Common.DataModels.ItemArea
             {
                 AreaId = this.Area1.Id,
-                ItemId = item1.Id
+                ItemId = item1.Id,
             };
 
             using (var context = this.CreateContext())
@@ -327,7 +327,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var otherItem = new Common.DataModels.Item
             {
                 Id = GetNewId(),
-                ManagementType = Common.DataModels.ItemManagementType.Volume
+                ManagementType = Common.DataModels.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -351,14 +351,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             var itemCompartmentType2 = new Common.DataModels.ItemCompartmentType
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = otherItem.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             using (var context = this.CreateContext())
@@ -434,7 +434,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             using (var context = this.CreateContext())
@@ -496,7 +496,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var otherItem = new Common.DataModels.Item
             {
                 Id = GetNewId(),
-                ManagementType = Common.DataModels.ItemManagementType.Volume
+                ManagementType = Common.DataModels.ItemManagementType.Volume,
             };
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
@@ -517,13 +517,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
             var itemCompartmentType2 = new Common.DataModels.ItemCompartmentType
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = otherItem.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             using (var context = this.CreateContext())
@@ -615,7 +615,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             using (var context = this.CreateContext())
@@ -688,7 +688,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = this.ItemVolume.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             using (var context = this.CreateContext())

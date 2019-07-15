@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Priority = model.Priority,
                 ShipmentUnitAssociated = model.ShipmentUnitAssociated,
                 ShipmentUnitCode = model.ShipmentUnitCode,
-                ShipmentUnitDescription = model.ShipmentUnitDescription
+                ShipmentUnitDescription = model.ShipmentUnitDescription,
             });
 
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
@@ -232,7 +232,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         r.Status != Common.DataModels.ItemListRowStatus.New),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    CreationDate = i.CreationDate
+                    CreationDate = i.CreationDate,
                 });
         }
 
@@ -275,7 +275,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ShipmentUnitDescription = i.ShipmentUnitDescription,
                     LastModificationDate = i.LastModificationDate,
                     FirstExecutionDate = i.FirstExecutionDate,
-                    ExecutionEndDate = i.ExecutionEndDate
+                    ExecutionEndDate = i.ExecutionEndDate,
                 });
         }
 
@@ -333,7 +333,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Image = m1.Image,
                             Model = m1.Model,
                             Nickname = m1.Nickname,
-                        })
+                        }),
                 });
         }
 

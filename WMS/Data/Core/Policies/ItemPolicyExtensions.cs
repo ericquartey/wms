@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (itemToDelete.CompartmentsCount > 0)
@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (itemToDelete.TotalStock > 0)
@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(ItemPolicy.Pick),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(ItemPolicy.Put),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (!itemToPut.HasCompartmentTypes)
@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return new Policy
             {
                 Name = nameof(CrudPolicies.Update),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
         }
 

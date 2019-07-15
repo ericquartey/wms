@@ -22,9 +22,9 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
                 int loadingUnitId,
-        int skip,
-        int take,
-        IEnumerable<SortOption> orderBySortOptions = null);
+                int skip,
+                int take,
+                IEnumerable<SortOption> orderBySortOptions = null);
 
         Task<IOperationResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
 

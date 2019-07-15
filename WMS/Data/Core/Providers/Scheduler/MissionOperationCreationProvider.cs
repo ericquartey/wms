@@ -194,7 +194,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         {
                             BayId = request.BayId.Value,
                             LoadingUnitId = compartment.LoadingUnitId,
-                            Priority = request.Priority.Value
+                            Priority = request.Priority.Value,
                         });
 
                     if (creationResult.Success)
@@ -306,7 +306,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         {
                             BayId = request.BayId.Value,
                             LoadingUnitId = compartment.LoadingUnitId,
-                            Priority = request.Priority.Value
+                            Priority = request.Priority.Value,
                         });
 
                     if (creationResult.Success)

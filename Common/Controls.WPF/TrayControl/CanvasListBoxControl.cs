@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls.WPF
             typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
-                    nameof(DimensionHeight),
+            nameof(DimensionHeight),
             typeof(double),
             typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0, OnDimensionHeightChanged));
@@ -406,7 +406,7 @@ namespace Ferretto.Common.Controls.WPF
                     Top = compartment.YPosition ?? 0,
                     ColorFill = this.GetColorFilter(compartment),
                     IsReadOnly = this.IsReadOnly,
-                    IsSelectable = this.IsCompartmentSelectable
+                    IsSelectable = this.IsCompartmentSelectable,
                 };
                 newItems.Add(newCompartment);
                 this.ResizeCompartment(newCompartment);
@@ -595,7 +595,7 @@ namespace Ferretto.Common.Controls.WPF
                 DashCap = PenLineCap.Square,
                 Thickness = penSize,
                 StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
+                EndLineCap = PenLineCap.Square,
             };
 
             penLines.Brush = this.GridLinesColor;
@@ -611,7 +611,7 @@ namespace Ferretto.Common.Controls.WPF
                 Brush = color,
                 Thickness = this.GetSizeOfPen(),
                 StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
+                EndLineCap = PenLineCap.Square,
             };
             var guidelineSet = new GuidelineSet();
             guidelineSet.GuidelinesX.Add(pointStart.X);
@@ -703,7 +703,7 @@ namespace Ferretto.Common.Controls.WPF
             var compartmentOrigin = new Point
             {
                 X = compartment.CompartmentDetails.XPosition.Value,
-                Y = compartment.CompartmentDetails.YPosition.Value
+                Y = compartment.CompartmentDetails.YPosition.Value,
             };
 
             var convertedCompartmentOrigin = ConvertWithStandardOrigin(
@@ -726,14 +726,14 @@ namespace Ferretto.Common.Controls.WPF
                 this.DimensionWidth);
 
             var depth = ConvertMillimetersToPixel(
-            (double)compartment.CompartmentDetails.Depth,
-             this.TrayHeight,
-             this.DimensionHeight);
+                (double)compartment.CompartmentDetails.Depth,
+                this.TrayHeight,
+                this.DimensionHeight);
 
             var width = ConvertMillimetersToPixel(
-            (double)compartment.CompartmentDetails.Width,
-             this.TrayWidth,
-             this.DimensionWidth);
+                (double)compartment.CompartmentDetails.Width,
+                this.TrayWidth,
+                this.DimensionWidth);
 
             compartment.Depth = depth;
             compartment.Width = width;

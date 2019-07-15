@@ -280,7 +280,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         PackageTypeId = key.PackageTypeId,
                         MaterialStatusId = key.MaterialStatusId,
                         RegistrationNumber = key.RegistrationNumber,
-                        FifoStartDate = group.Min(c => c.FifoStartDate)
+                        FifoStartDate = group.Min(c => c.FifoStartDate),
                     });
 
             System.Diagnostics.Debug.WriteLine($"Pick request for item (id={item.Id}): A total of {aggregatedCompartments.Count()} compartment sets match the request.");
@@ -298,7 +298,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (c, r) => new
                     {
                         c,
-                        r = r.DefaultIfEmpty()
+                        r = r.DefaultIfEmpty(),
                     })
                 .Select(g => new CompartmentSet
                 {
@@ -311,7 +311,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = g.c.PackageTypeId,
                     MaterialStatusId = g.c.MaterialStatusId,
                     RegistrationNumber = g.c.RegistrationNumber,
-                    FifoStartDate = g.c.FifoStartDate
+                    FifoStartDate = g.c.FifoStartDate,
                 });
 
             System.Diagnostics.Debug.WriteLine($"Pick request for item (id={item.Id}): There is a total of {compartmentSets.Sum(c => c.Availability)} availability in the identified sets.");

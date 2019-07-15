@@ -6,6 +6,6 @@
 
         EditMode,
 
-        Default
+        Default,
     }
 }

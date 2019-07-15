@@ -301,7 +301,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
                 new
                 {
-                    LoadingUnitId = this.Model.Id
+                    LoadingUnitId = this.Model.Id,
                 });
 
             this.IsBusy = false;

@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     new CompartmentType
                     {
                         Width = model.Width,
-                        Depth = model.Depth
+                        Depth = model.Depth,
                     },
                     model.ItemId,
                     model.MaxCapacity);
@@ -284,7 +284,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     new CompartmentType
                     {
                         Width = model.Width,
-                        Depth = model.Depth
+                        Depth = model.Depth,
                     },
                     model.ItemId,
                     model.MaxCapacity);

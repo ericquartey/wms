@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Core.Providers
                             MaterialStatusDescription = o.MaterialStatusDescription,
                             PackageTypeDescription = o.PackageTypeDescription,
                             DispatchedQuantity = o.DispatchedQuantity,
-                        })
+                        }),
                     });
             }
             catch
@@ -132,7 +132,7 @@ namespace Ferretto.WMS.App.Core.Providers
                             MaterialStatusDescription = o.MaterialStatusDescription,
                             PackageTypeDescription = o.PackageTypeDescription,
                             DispatchedQuantity = o.DispatchedQuantity,
-                        })
+                        }),
                 };
             }
             catch

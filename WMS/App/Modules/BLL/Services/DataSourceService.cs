@@ -62,23 +62,23 @@ namespace Ferretto.WMS.App.Modules.BLL
                     Resources.MasterData.CellAll,
                     cellProvider),
 
-                 new PagedDataSource<Cell, int>(
+                new PagedDataSource<Cell, int>(
                     "CellStatusEmpty",
                     Resources.MasterData.CellStatusEmpty,
                     cellProvider,
                     "[Status] == 'Empty'"),
 
-                 new PagedDataSource<Cell, int>(
+                new PagedDataSource<Cell, int>(
                     "CellStatusFull",
                     Resources.MasterData.CellStatusFull,
                     cellProvider,
                     "[Status] == 'Full'"),
 
-                 new PagedDataSource<Cell, int>(
+                new PagedDataSource<Cell, int>(
                     "CellClassA",
                     Resources.MasterData.CellClassA,
-                   cellProvider,
-                    "[AbcClassDescription] == 'A Class'")
+                    cellProvider,
+                    "[AbcClassDescription] == 'A Class'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -243,7 +243,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemsViewFIFO",
                     Resources.MasterData.ItemFIFO,
                     itemsProvider,
-                    $"[ManagementType] == '{ItemManagementType.FIFO}'")
+                    $"[ManagementType] == '{ItemManagementType.FIFO}'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -287,7 +287,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "LoadingUnitsViewStatusUsed",
                     Resources.MasterData.LoadingUnitStatusUsed,
                     loadingUnitProvider,
-                    "[LoadingUnitStatusDescription] == 'Used'")
+                    "[LoadingUnitStatusDescription] == 'Used'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -314,7 +314,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagM",
                     Resources.Machines.MachineVertimagM,
-                    async () => await machineProvider.GetAllAsync(0, 0, null, vertimagMFilter))
+                    async () => await machineProvider.GetAllAsync(0, 0, null, vertimagMFilter)),
             }.Cast<IDataSource<TModel, TKey>>();
         }
 
@@ -338,7 +338,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                 new DataSourceCollection<Mission, int>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
-                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.New}'"))
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.New}'")),
             }.Cast<IDataSource<TModel, TKey>>();
         }
 
@@ -364,7 +364,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                             "SchedulerRequestOperationPick",
                             Resources.BusinessObjects.Pick,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Pick}'")
+                            $"[OperationType] == '{OperationType.Pick}'"),
                     }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 

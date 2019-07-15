@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPICK,
                 new
                 {
-                    Id = this.CurrentItem.Id
+                    Id = this.CurrentItem.Id,
                 });
         }
 
@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPUT,
                 new
                 {
-                    Id = this.CurrentItem.Id
+                    Id = this.CurrentItem.Id,
                 });
         }
 

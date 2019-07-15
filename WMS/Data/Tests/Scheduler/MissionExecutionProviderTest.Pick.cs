@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = this.CompartmentType.Id,
                 ItemId = this.Item1.Id,
-                MaxCapacity = 100
+                MaxCapacity = 100,
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Stock = 10,
                 ReservedForPick = 10,
                 IsItemPairingFixed = isPairingFixed,
-                CompartmentTypeId = this.CompartmentType.Id
+                CompartmentTypeId = this.CompartmentType.Id,
             };
 
             var missionOperation1 = new Common.DataModels.MissionOperation
@@ -55,13 +55,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 CompartmentId = compartment1.Id,
                 ItemId = itemCompartmentType.ItemId,
                 Type = Common.DataModels.MissionOperationType.Pick,
-                RequestedQuantity = 10
+                RequestedQuantity = 10,
             };
 
             var mission = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
-                Operations = new[] { missionOperation1 }
+                Operations = new[] { missionOperation1 },
             };
 
             using (var context = this.CreateContext())
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestCategory("Nominal Case")]
         [TestProperty(
             "Description",
-           @"GIVEN a pick mission on a compartment \
+            @"GIVEN a pick mission on a compartment \
                 AND the mission is executing \
                 AND the compartment has stock of 10 items \
                 AND the mission requires 7 items \
@@ -158,7 +158,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Stock = 10,
                 ReservedForPick = 7,
                 LastPickDate = null,
-                CompartmentTypeId = this.CompartmentType.Id
+                CompartmentTypeId = this.CompartmentType.Id,
             };
 
             var missionOperation1 = new Common.DataModels.MissionOperation
@@ -168,13 +168,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 CompartmentId = compartment1.Id,
                 ItemId = item.Id,
                 Type = Common.DataModels.MissionOperationType.Pick,
-                RequestedQuantity = 7
+                RequestedQuantity = 7,
             };
 
             var mission = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
-                Operations = new[] { missionOperation1 }
+                Operations = new[] { missionOperation1 },
             };
 
             using (var context = this.CreateContext())
@@ -221,7 +221,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
                 Assert.IsNotNull(
                     updatedCompartment.ItemId,
-                 $"The item pairing is not removed.");
+                    $"The item pairing is not removed.");
 
                 Assert.IsTrue(updatedCompartment.LastPickDate.HasValue);
 

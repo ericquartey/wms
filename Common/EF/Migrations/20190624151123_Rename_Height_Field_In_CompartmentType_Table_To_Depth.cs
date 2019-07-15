@@ -2,7 +2,8 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class Rename_Height_Field_In_CompartmentType_Table_To_Depth : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,4 +36,6 @@ namespace Ferretto.Common.EF.Migrations
                 oldClrType: typeof(double));
         }
     }
+
+    #pragma warning restore
 }

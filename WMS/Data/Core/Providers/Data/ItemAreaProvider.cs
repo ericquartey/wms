@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var entry = await this.DataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
                 {
                     AreaId = id,
-                    ItemId = itemId
+                    ItemId = itemId,
                 });
 
                 var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var model = new ItemArea
                 {
                     AreaId = id,
-                    ItemId = itemId
+                    ItemId = itemId,
                 };
 
                 this.NotificationService.PushDelete(existingModel);
@@ -136,7 +136,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Id = x.Id,
                     Name = x.Name,
                     TotalStock = x.TotalStock,
-                    IsItemInArea = areasWithItem.Any(a => a.AreaId == x.Id)
+                    IsItemInArea = areasWithItem.Any(a => a.AreaId == x.Id),
                 })
                 .ToArrayAsync();
 
