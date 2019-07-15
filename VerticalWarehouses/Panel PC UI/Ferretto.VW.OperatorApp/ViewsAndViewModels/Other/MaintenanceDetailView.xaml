@@ -25,13 +25,13 @@
                         Width="700"
                         Content="{Binding DataGridViewModel}" />
 
-        <Button Margin="0,200,20,0"
+        <Button Margin="0,240,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button Margin="0,265,20,0"
+        <Button Margin="0,305,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"

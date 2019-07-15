@@ -109,7 +109,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
                                     Binding="{Binding Path=Item}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderItem }">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +135,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="3*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="3*"
                                     Binding="{Binding Path=Description}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderDescription }">
                     <DataGridTextColumn.HeaderStyle>
@@ -159,7 +161,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="0.8*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="0.8*"
                                     Binding="{Binding Path=Quantity}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderQuantity }">
                     <DataGridTextColumn.HeaderStyle>
@@ -184,7 +187,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
                                     Binding="{Binding Path=Machine}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderMachine }">
                     <DataGridTextColumn.HeaderStyle>

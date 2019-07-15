@@ -109,7 +109,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
                                     Binding="{Binding Path=List}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderList}">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +135,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="3*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="3*"
                                     Binding="{Binding Path=Description}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderDescription}">
                     <DataGridTextColumn.HeaderStyle>
@@ -159,7 +161,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="1*"
                                     Binding="{Binding Path=Machines}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderMachines}">
                     <DataGridTextColumn.HeaderStyle>

@@ -20,10 +20,10 @@
                                                LabelText="{x:Static Resources:OperatorApp.CellsStatisticsFrontCellsTotal}"/>
 
         <ContentControl HorizontalAlignment="Left"
-                        Height="250"
-                        Margin="220,250,0,0"
+                        Height="160"
+                        Margin="220,220,0,0"
                         VerticalAlignment="Top"
-                        Width="500"
+                        Width="530"
                         Content="{Binding DataGridViewModel}" >
         </ContentControl>
 
@@ -40,7 +40,7 @@
                                                ContentText="330"
                                                LabelText="{x:Static Resources:OperatorApp.CellsStatisticsRearCellsTotal}"/>
         
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,510,0,0" MaxWidth="300"
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,410,0,0" MaxWidth="300"
                                             ProgressionValue="87"
                                             LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"/>
 
