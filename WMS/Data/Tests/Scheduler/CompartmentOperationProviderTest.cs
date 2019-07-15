@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Compartment
             {
-                Id = GetNewId()
+                Id = GetNewId(),
             };
 
             using (var context = this.CreateContext())
@@ -150,7 +150,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartments = new List<Common.DataModels.Compartment>
             {
                 this.compartmentInMachineA,
-                this.compartmentInMachineB
+                this.compartmentInMachineB,
             }.AsQueryable();
 
             int? bayId = null;
@@ -214,7 +214,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType.Id,
                 ItemId = 1,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             this.compartmentInMachineA = new Compartment
@@ -227,7 +227,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedForPick = 5,
                 ReservedToPut = 6,
                 Stock = 47,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = compartmentType.Id,
             };
 
             this.compartmentInMachineB = new Common.DataModels.Compartment
@@ -235,7 +235,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = loadingUnitB.Id,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = compartmentType.Id,
             };
 
             using (var context = this.CreateContext())
@@ -284,21 +284,21 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    Id = 1,
                    FifoStartDate = now.AddDays(-0.5),
                    Stock = 90,
-                   MaxCapacity = 200
+                   MaxCapacity = 200,
                },
                new Core.Models.CandidateCompartment
                {
                    Id = 2,
                    FifoStartDate = now.AddDays(-3),
                    Stock = 100,
-                   MaxCapacity = 400
+                   MaxCapacity = 400,
                },
                new Core.Models.CandidateCompartment
                {
                    Id = 3,
                    FifoStartDate = now.AddDays(-3),
                    Stock = 50,
-                   MaxCapacity = 400
+                   MaxCapacity = 400,
                },
                new Core.Models.CandidateCompartment
                {
@@ -306,7 +306,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    FifoStartDate = now.AddDays(-2),
                    Stock = 400,
                    MaxCapacity = 500
-               }
+               },
             }.AsQueryable();
 
             #endregion
@@ -352,21 +352,21 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    FifoStartDate = now.AddDays(-2),
                    Availability = 100,
                    RemainingCapacity = 300,
-                   Size = 1
+                   Size = 1,
                },
                new Core.Models.CompartmentSet
                {
                    FifoStartDate = now.AddDays(-3),
                    Availability = 300,
                    RemainingCapacity = 500,
-                   Size = 2
+                   Size = 2,
                },
                new Core.Models.CompartmentSet
                {
                    FifoStartDate = now.AddDays(-3),
                    Availability = 303,
                    RemainingCapacity = 500,
-                   Size = 3
+                   Size = 3,
                },
                new Core.Models.CompartmentSet
                {
@@ -374,7 +374,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    Availability = 300,
                    RemainingCapacity = 500,
                    Size = 4
-               }
+               },
             }.AsQueryable();
 
             #endregion

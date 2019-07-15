@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 ItemId = GetNewId(),
                 MaxCapacity = 100,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = compartmentType.Id,
             };
 
             var compartment1 = new DataModels.Compartment

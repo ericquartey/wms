@@ -25,9 +25,9 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
                 int loadingUnitId,
-        int skip,
-        int take,
-        IEnumerable<SortOption> orderBySortOptions = null);
+                int skip,
+                int take,
+                IEnumerable<SortOption> orderBySortOptions = null);
 
         Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
 

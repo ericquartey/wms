@@ -151,7 +151,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(x => x.LoadingUnitTypeId == loadingUnitTypeId)
                 .Select(y => new
                 {
-                    Aisle = y.AisleId
+                    Aisle = y.AisleId,
                 }).Distinct()
                 .Join(
                     this.DataContext.Cells,

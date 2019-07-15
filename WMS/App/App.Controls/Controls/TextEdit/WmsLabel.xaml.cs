@@ -67,9 +67,9 @@ namespace Ferretto.WMS.App.Controls
 
         public Typeface GetInterface => new Typeface(
                     this.FontFamily,
-            this.FontStyle,
-            this.FontWeight,
-            this.FontStretch);
+                    this.FontStyle,
+                    this.FontWeight,
+                    this.FontStretch);
 
         public string Title
         {

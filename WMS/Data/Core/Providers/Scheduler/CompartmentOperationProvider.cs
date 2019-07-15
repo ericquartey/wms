@@ -179,7 +179,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public Expression<Func<Compartment, bool>> GetCompartmentIsInBayFunction(
                             int? bayId,
-            bool isVertimag = true)
+                            bool isVertimag = true)
         {
             if (!bayId.HasValue)
             {

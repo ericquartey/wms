@@ -161,7 +161,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Model = "Model Machine #1",
                 Nickname = "Machine #1",
                 RegistrationNumber = "Registration Number Machine #1",
-                TotalMaxWeight = 70000
+                TotalMaxWeight = 70000,
             };
             this.BayType1 = new BayType { Id = "T", Description = "Bay Type #1" };
             this.Bay1 = new Bay
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
-                Priority = 1
+                Priority = 1,
             };
             this.Cell2 = new Cell
             {
@@ -200,7 +200,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
-                Priority = 2
+                Priority = 2,
             };
             this.Cell3 = new Cell
             {
@@ -209,7 +209,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
-                Priority = 3
+                Priority = 3,
             };
             this.Cell4 = new Cell
             {
@@ -218,7 +218,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
-                Priority = 4
+                Priority = 4,
             };
             this.Cell5 = new Cell
             {
@@ -227,7 +227,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
-                Priority = 5
+                Priority = 5,
             };
             this.Cell6 = new Cell
             {
@@ -236,7 +236,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 CellTypeId = this.CellType1.Id,
                 CellStatusId = this.CellStatus1.Id,
-                Priority = 6
+                Priority = 6,
             };
 
             this.LoadingUnitHeightClass1 = new LoadingUnitHeightClass
@@ -244,7 +244,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 Description = "Loading Unit Height Class #1",
                 MaxHeight = 1,
-                MinHeight = 100
+                MinHeight = 100,
             };
 
             this.LoadingUnitSizeClass1 = new LoadingUnitSizeClass
@@ -252,14 +252,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 Description = "Loading Unit Size Class #1",
                 Depth = 100,
-                Width = 100
+                Width = 100,
             };
             this.LoadingUnitWeightClass1 = new LoadingUnitWeightClass
             {
                 Id = GetNewId(),
                 Description = "Loading Unit Weight Class #1",
                 MinWeight = 1,
-                MaxWeight = 10
+                MaxWeight = 10,
             };
 
             this.LoadingUnitType1 = new LoadingUnitType
@@ -270,7 +270,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 LoadingUnitSizeClassId = this.LoadingUnitSizeClass1.Id,
                 Description = "Loading Unit Type #1",
                 HasCompartments = true,
-                EmptyWeight = 17
+                EmptyWeight = 17,
             };
 
             this.LoadingUnitType2 = new LoadingUnitType
@@ -281,7 +281,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 LoadingUnitSizeClassId = this.LoadingUnitSizeClass1.Id,
                 Description = "Loading Unit Type #2",
                 HasCompartments = true,
-                EmptyWeight = 13
+                EmptyWeight = 13,
             };
 
             this.LoadingUnitType1Aisle1 = new LoadingUnitTypeAisle
@@ -323,7 +323,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             this.LoadingUnitStatus1 = new LoadingUnitStatus
             {
                 Id = "1",
-                Description = "Loading Unit Status #1"
+                Description = "Loading Unit Status #1",
             };
 
             this.LoadingUnit1 = new LoadingUnit

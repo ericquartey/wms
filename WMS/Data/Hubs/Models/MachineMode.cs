@@ -8,6 +8,6 @@ namespace Ferretto.WMS.Data.Hubs.Models
 
         Manual = 'M',
 
-        Fault = 'E'
+        Fault = 'E',
     }
 }

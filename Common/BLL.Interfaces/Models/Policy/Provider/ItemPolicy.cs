@@ -6,6 +6,6 @@
 
         Put,
 
-        Execute
+        Execute,
     }
 }

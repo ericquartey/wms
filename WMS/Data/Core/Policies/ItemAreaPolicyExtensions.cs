@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (itemAreaToDelete.IsItemInArea)

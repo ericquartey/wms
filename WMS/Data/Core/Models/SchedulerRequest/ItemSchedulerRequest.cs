@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 request = new ItemListRowSchedulerRequest
                 {
                     ListId = row.ListId,
-                    ListRowId = row.Id
+                    ListRowId = row.Id,
                 };
             }
 
@@ -140,7 +140,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 request = new ItemListRowSchedulerRequest
                 {
                     ListId = row.ListId,
-                    ListRowId = row.Id
+                    ListRowId = row.Id,
                 };
             }
 

@@ -866,5 +866,9 @@
     <Rule Id="SA1633" Action="None" />
     <!-- EnableXmlDocumentationOutput -->
     <Rule Id="SA1652" Action="None" />
+	<!-- XML comment analysis is disabled due to project configuration  -->
+    <Rule Id="SA0001" Action="None" />
+	<!-- Elements should be documented  -->
+    <Rule Id="SA1600" Action="None" />
   </Rules>
 </RuleSet>

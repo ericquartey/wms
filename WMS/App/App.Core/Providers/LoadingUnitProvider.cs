@@ -253,7 +253,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Policies = l.GetPolicies(),
                         ReferenceType = (ReferenceType)l.ReferenceType,
                         Weight = l.Weight,
-                        Width = l.Width
+                        Width = l.Width,
                     });
 
                 return new OperationResult<IEnumerable<LoadingUnitDetails>>(true, result);
@@ -447,7 +447,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CellId = model.CellId,
                         AisleId = model.AisleId,
                         AreaId = model.AreaId,
-                        CompartmentsCount = model.CompartmentsCount
+                        CompartmentsCount = model.CompartmentsCount,
                     },
                     model.Id);
 

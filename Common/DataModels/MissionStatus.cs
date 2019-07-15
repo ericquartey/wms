@@ -10,6 +10,6 @@
 
         Error = 'E',
 
-        Incomplete = 'I'
+        Incomplete = 'I',
     }
 }

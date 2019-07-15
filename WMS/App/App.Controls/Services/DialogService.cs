@@ -120,9 +120,9 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private static DialogResult ShowMessageDialog(
                                     string message,
-            string title,
-            DialogType type,
-            DialogButtons buttons)
+                                    string title,
+                                    DialogType type,
+                                    DialogButtons buttons)
         {
             return ConvertDialogResult(WinUIMessageBox.Show(
                 message,

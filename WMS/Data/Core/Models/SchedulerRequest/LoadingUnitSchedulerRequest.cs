@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Models
             return new LoadingUnitSchedulerRequest
             {
                 IsInstant = true,
-                LoadingUnitId = loadingUnitId
+                LoadingUnitId = loadingUnitId,
             };
         }
 

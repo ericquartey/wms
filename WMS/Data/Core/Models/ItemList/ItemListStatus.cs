@@ -18,6 +18,6 @@
 
         Incomplete = 'I',
 
-        Suspended = 'S'
+        Suspended = 'S',
     }
 }

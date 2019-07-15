@@ -314,7 +314,7 @@ namespace Ferretto.Common.EF.Migrations
                     Status = table.Column<string>(type: "char(1)", nullable: false, defaultValueSql: "'N'"),
                     Sub1 = table.Column<string>(nullable: true),
                     Sub2 = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(type: "char(1)", nullable: false)
+                    Type = table.Column<string>(type: "char(1)", nullable: false),
                 },
                 constraints: table =>
                 {

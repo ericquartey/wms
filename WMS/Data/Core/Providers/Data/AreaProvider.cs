@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(a => new Area
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
                 })
                 .ToArrayAsync();
         }
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(a => new Area
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
                 })
                 .SingleOrDefaultAsync(a => a.Id == id);
         }
@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                 o.Status != Common.DataModels.MissionOperationStatus.Completed
                                 &&
                                 o.Status != Common.DataModels.MissionOperationStatus.Incomplete))
-                    })
+                    }),
                 })
                 .SingleAsync(a => a.Id == id);
         }
@@ -100,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(a => new Area
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
                 })
                 .ToArrayAsync();
         }
@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(c => new
                 {
                     Id = c.LoadingUnit.Cell.Aisle.AreaId,
-                    Name = c.LoadingUnit.Cell.Aisle.Area.Name
+                    Name = c.LoadingUnit.Cell.Aisle.Area.Name,
                 })
                 .Distinct()
                 .GroupJoin(
@@ -130,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Id = b.Id,
                         Description = b.Description
-                    })
+                    }),
                 })
                 .ToArrayAsync();
         }

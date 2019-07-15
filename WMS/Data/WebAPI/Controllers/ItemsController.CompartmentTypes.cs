@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 CompartmentTypeId = compartmentTypeId,
                 ItemId = id,
-                MaxCapacity = maxCapacity
+                MaxCapacity = maxCapacity,
             });
 
             if (!result.Success)

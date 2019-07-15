@@ -212,7 +212,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(l => new LoadingUnitOperation
                 {
                     Id = l.Id,
-                    LastPickDate = l.LastPickDate
+                    LastPickDate = l.LastPickDate,
                 })
                 .SingleOrDefaultAsync(l => l.Id == id);
         }
@@ -280,8 +280,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
                     "Major Code Smell",
-            "S4058:Overloads with a \"StringComparison\" parameter should be used",
-            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
+                    "S4058:Overloads with a \"StringComparison\" parameter should be used",
+                    Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -368,7 +368,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                                                     wl.m.TotalMaxWeight.Value > 0) ? loadingUnitsMachines.Select(lm => new
                                                                     {
                                                                         WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
-                                                                        LoadingUnitId = lm.l.Id
+                                                                        LoadingUnitId = lm.l.Id,
                                                                     }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : 0,
                 });
         }

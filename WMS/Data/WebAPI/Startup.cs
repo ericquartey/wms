@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 DefaultRequestCulture = new RequestCulture("en"),
                 SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
+                SupportedUICultures = supportedCultures,
             });
 
             var dataHubPath = this.Configuration.GetDataHubPath();

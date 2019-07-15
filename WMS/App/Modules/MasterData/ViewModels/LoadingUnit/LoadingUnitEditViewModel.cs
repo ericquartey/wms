@@ -208,7 +208,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var model = new BulkCompartment
             {
                 LoadingUnitId = this.Model.Id,
-                LoadingUnit = this.Model
+                LoadingUnit = this.Model,
             };
 
             var viewModel = new CompartmentAddBulkViewModel { Model = model };

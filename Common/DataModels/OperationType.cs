@@ -8,6 +8,6 @@
 
         Replacement = 'R',
 
-        Reorder = 'O'
+        Reorder = 'O',
     }
 }

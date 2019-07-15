@@ -22,7 +22,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MinStepCompartment = table.Column<double>(nullable: false)
+                    MinStepCompartment = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
