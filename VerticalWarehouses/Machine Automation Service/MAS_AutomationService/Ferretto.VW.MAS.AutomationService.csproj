@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\..\SQLiteTarget\Ferretto.VW.SQLiteTarget.csproj" />
+    <ProjectReference Include="..\..\Common\SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
     <ProjectReference Include="..\MAS_FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj" />
