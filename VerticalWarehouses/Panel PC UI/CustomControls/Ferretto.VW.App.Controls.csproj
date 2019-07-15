@@ -54,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Divieto_Dark.png" />
     <None Remove="Controls\BusyButton.xaml" />
     <None Remove="Controls\BusyIndicator.xaml" />
     <None Remove="Controls\CustomControlCellStatisticsDataGrid.xaml" />
@@ -61,7 +62,6 @@
     <None Remove="Controls\CustomControlDrawerSaturationDataGrid.xaml" />
     <None Remove="Controls\CustomControlDrawerWeightSaturationDataGrid.xaml" />
     <None Remove="Controls\CustomControlErrorsDataGrid.xaml" />
-    <None Remove="Controls\CustomControlItemStatisticsDataGrid.xaml" />
     <None Remove="Controls\CustomControlListDataGrid.xaml" />
     <None Remove="Controls\CustomControlListDetailDataGrid.xaml" />
     <None Remove="Controls\CustomControlMaintenanceDataGrid.xaml" />
@@ -76,6 +76,16 @@
     <None Remove="Styles\CustomControlArticleDataGridStyle.xaml" />
     <None Remove="Templates\DataGridRepeatButtonControlTemplate.xaml" />
     <None Remove="Templates\DataGridScrollButtonControlTemplate.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Remove="Assets\Divieto_Dark.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Divieto_Dark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

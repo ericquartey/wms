@@ -14,25 +14,18 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly CustomControlItemStatisticsDataGridViewModel dataGridViewModelRef;
-
         private readonly IEventAggregator eventAggregator;
 
         private BindableBase dataGridViewModel;
-
-        private ObservableCollection<DataGridItemStatistics> items;
 
         #endregion
 
         #region Constructors
 
         public MachineStatisticsViewModel(
-            IEventAggregator eventAggregator,
-            ICustomControlItemStatisticsDataGridViewModel itemStatisticsDataGridViewModel)
+            IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.dataGridViewModelRef = itemStatisticsDataGridViewModel as CustomControlItemStatisticsDataGridViewModel;
-            this.DataGridViewModel = this.dataGridViewModelRef;
 
             this.NavigationViewModel = null;
         }
@@ -56,22 +49,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public async Task OnEnterViewAsync()
         {
-            var random = new Random();
-            this.items = new ObservableCollection<DataGridItemStatistics>();
-            for (var i = 0; i < random.Next(1, 30); i++)
-            {
-                this.items.Add(new DataGridItemStatistics
-                {
-                    ItemClass = $"Item class {i}",
-                    ItemPercentage = $"{random.Next(0, 100)}",
-                    ItemQuantity = $"{random.Next(1, 100)}",
-                    MovementeQuantity = $"{random.Next(100, 1000)}",
-                    MovementPercentage = $"{random.Next(0, 100)}",
-                }
-                );
-            }
-            this.dataGridViewModelRef.Items = this.items;
-            this.dataGridViewModelRef.SelectedItem = this.items[0];
+            
         }
 
         public void SubscribeMethodToEvent()
