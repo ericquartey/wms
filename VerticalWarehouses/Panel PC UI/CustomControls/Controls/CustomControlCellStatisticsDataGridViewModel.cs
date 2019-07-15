@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
@@ -14,19 +11,19 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        private ObservableCollection<DataGridCell> cells;
+        private IEnumerable<CellStatusStatistic> cells;
 
-        private DataGridCell selectedCell;
+        private CellStatusStatistic selectedCell;
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<DataGridCell> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
+        public IEnumerable<CellStatusStatistic> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public DataGridCell SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
+        public CellStatusStatistic SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
 
         #endregion
 
