@@ -34,6 +34,9 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<LoadingUnitDetails>> UpdateMissionsCountAsync(int id);
 
+        Task<IOperationResult<LoadingUnitOperationalInfoUpdate>> UpdateOperationalInfoAsync(
+            LoadingUnitOperationalInfoUpdate model);
+
         #endregion
     }
 }

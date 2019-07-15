@@ -292,6 +292,31 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IOperationResult<LoadingUnitOperationalInfoUpdate>> UpdateOperationalInfoAsync(LoadingUnitOperationalInfoUpdate model)
+        {
+            if (model == null)
+            {
+                return new BadRequestOperationResult<LoadingUnitOperationalInfoUpdate>(model);
+            }
+
+            try
+            {
+                var existingDataModel = this.DataContext.LoadingUnits.Find(model.Id);
+
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+                await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId });
+
+                return new SuccessOperationResult<LoadingUnitOperationalInfoUpdate>(null);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<LoadingUnitOperationalInfoUpdate>(ex);
+            }
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
                     "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",

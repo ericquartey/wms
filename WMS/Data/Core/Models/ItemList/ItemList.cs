@@ -53,6 +53,10 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int ReadyRowsCount { get; set; }
 
+        public string ShipmentUnitCode { get; set; }
+
+        public string ShipmentUnitDescription { get; set; }
+
         public ItemListStatus Status => GetStatus(
             this.ItemListRowsCount,
             this.CompletedRowsCount,

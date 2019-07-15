@@ -24,12 +24,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IBayProvider bayProvider;
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         private readonly ILogger logger;
 
         private readonly IMachineProvider machineProvider;
 
         private readonly IMissionProvider missionProvider;
-        readonly ILoadingUnitProvider loadingUnitProvider;
 
         #endregion
 
@@ -120,16 +121,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(bays);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/loading-units")]
-        public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsByIdAsync(int id)
-        {
-            var loadingUnits = await this.loadingUnitProvider.GetAllByMachineIdAsync(id);
-
-            return this.Ok(loadingUnits);
-        }
-
         [ProducesResponseType(typeof(MachineDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
@@ -148,6 +139,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<LoadingUnitDetails>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/loading-units")]
+        public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsByIdAsync(int id)
+        {
+            var loadingUnits = await this.loadingUnitProvider.GetAllByMachineIdAsync(id);
+
+            return this.Ok(loadingUnits);
         }
 
         [ProducesResponseType(typeof(IEnumerable<MissionInfo>), StatusCodes.Status200OK)]
