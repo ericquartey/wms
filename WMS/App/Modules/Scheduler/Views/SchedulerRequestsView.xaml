@@ -17,8 +17,6 @@
              EnableHistoryView="True"
              mc:Ignorable="d">
     <wms:WmsView.Resources>
-        <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
-
         <wms:StringFormatConverter x:Key="SFC" />
 
         <DataTemplate x:Key="CellDisplayTemplateQuantity">
