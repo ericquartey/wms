@@ -12,6 +12,8 @@ namespace Ferretto.VW.WmsCommunication
     {
         #region Fields
 
+        private readonly IItemListRowsDataService itemListRowsDataService;
+
         private readonly IItemListsDataService itemListsDataService;
 
         private readonly IItemsDataService itemsDataService;
@@ -33,6 +35,7 @@ namespace Ferretto.VW.WmsCommunication
             this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
             this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
             this.itemListsDataService = DataServiceFactory.GetService<IItemListsDataService>(wmsConnectionString);
+            this.itemListRowsDataService = DataServiceFactory.GetService<IItemListRowsDataService>(wmsConnectionString);
         }
 
         #endregion
@@ -103,6 +106,21 @@ namespace Ferretto.VW.WmsCommunication
         {
             var items = await this.itemsDataService.GetAllAsync(search: searchCode, skip: skip, take: quantity);
             return items;
+        }
+
+        public async Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode)
+        {
+            var lists = new ObservableCollection<ItemListRow>();
+            try
+            {
+                var searchCode = listCode.Trim('-');
+                lists = await this.itemListRowsDataService.GetAllAsync(search: searchCode);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("WMS Data Provider - " + ex.Message);
+            }
+            return lists;
         }
 
         public async Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission)

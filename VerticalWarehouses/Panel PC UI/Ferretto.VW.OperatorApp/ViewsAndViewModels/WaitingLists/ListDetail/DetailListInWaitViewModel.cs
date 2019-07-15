@@ -5,6 +5,7 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -18,7 +19,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IWmsDataProvider wmsDataProvider;
+
         private BindableBase dataGridViewModel;
+
+        private DataGridList list;
 
         private ObservableCollection<DataGridListDetail> lists;
 
@@ -28,7 +33,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
 
         public DetailListInWaitViewModel(
             IEventAggregator eventAggregator,
-            ICustomControlListDetailDataGridViewModel listDetailDataGridViewModel)
+            ICustomControlListDetailDataGridViewModel listDetailDataGridViewModel,
+            IWmsDataProvider wmsDataProvider)
         {
             if (eventAggregator == null)
             {
@@ -37,6 +43,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
 
             this.eventAggregator = eventAggregator;
             this.ListDetailDataGridViewModel = listDetailDataGridViewModel;
+            this.wmsDataProvider = wmsDataProvider;
             this.dataGridViewModelRef = listDetailDataGridViewModel as CustomControlListDetailDataGridViewModel;
             this.DataGridViewModel = this.dataGridViewModelRef;
 
@@ -48,6 +55,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
         #region Properties
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+
+        public DataGridList List
+        {
+            get => this.list;
+            set
+            {
+                this.list = value;
+            }
+        }
 
         public ICustomControlListDetailDataGridViewModel ListDetailDataGridViewModel { get; }
 
@@ -66,15 +82,38 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
         {
             var random = new Random();
             this.lists = new ObservableCollection<DataGridListDetail>();
-            for (var i = 0; i < random.Next(1, 30); i++)
+
+            var tmpLists = new ObservableCollection<WMS.Data.WebAPI.Contracts.ItemListRow>();
+
+            try
             {
+                tmpLists = await this.wmsDataProvider.GetListRowsAsync(this.List.List);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DetailList - " + ex.Message);
+            }
+
+            for (var i = 0; i < tmpLists.Count; i++)
+            {
+                string machines = string.Empty;
+                for (int j = 0; j < tmpLists[i].Machines.Count; j++)
+                {
+                    machines = (j == tmpLists[i].Machines.Count - 1) ? string.Concat(machines, tmpLists[i].Machines[j].Id.ToString()) : string.Concat(machines, tmpLists[i].Machines[j].Id.ToString(), ", ");
+                }
+
+                if (machines == string.Empty)
+                {
+                    machines = "---";
+                }
+
                 this.lists.Add(new DataGridListDetail
                 {
-                    Item = $"Item {i}",
-                    Description = $"This is item {i}",
-                    Machine = $"{random.Next(0, 30)}",
-                    Quantity = $"{random.Next(10, 1000)}",
-                    Row = $"{random.Next(0, 20)}",
+                    Item = $"{tmpLists[i].ItemListId}",
+                    Description = $"{tmpLists[i].ItemDescription}",
+                    Machine = machines,
+                    Quantity = $"{tmpLists[i].RequestedQuantity}",
+                    Row = $"{tmpLists[i].Id}",
                 }
                 );
             }

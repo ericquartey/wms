@@ -83,7 +83,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand DetailListButtonCommand => this.detailListButtonCommand ?? (this.detailListButtonCommand = new DelegateCommand(
-            () => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>()));
+            () => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.lists[this.currentSelectedItem])));
 
         public ICustomControlListDataGridViewModel ListDataGridViewModel { get; }
 

@@ -23,6 +23,8 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 
         Task<ObservableCollection<Item>> GetItemsAsync(string searchCode, int skip, int quantity);
 
+        Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode);
+
         Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission);
 
         Task<TrayControlCompartment> GetTrayControlSelectedCompartment(ObservableCollection<TrayControlCompartment> viewCompartments, Mission mission);
