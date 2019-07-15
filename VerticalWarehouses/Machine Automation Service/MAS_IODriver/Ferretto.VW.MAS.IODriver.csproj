@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
-    <AssemblyName>Ferretto.VW.MAS_IODriver</AssemblyName>
-    <RootNamespace>Ferretto.VW.MAS_IODriver</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\..\RemoteIODriver\Ferretto.VW.Drivers.RemoteIO.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
   </ItemGroup>
