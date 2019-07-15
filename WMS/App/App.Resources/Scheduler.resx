@@ -132,9 +132,6 @@
   <data name="SchedulerRequestViewAll" xml:space="preserve">
     <value>All</value>
   </data>
-  <data name="SchedulerRequestOperationInsert" xml:space="preserve">
-    <value>Insert</value>
-  </data>
   <data name="IsInstant" xml:space="preserve">
     <value>Is Instant</value>
   </data>

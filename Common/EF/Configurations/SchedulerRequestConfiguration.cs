@@ -72,11 +72,6 @@ namespace Ferretto.Common.EF.Configurations
                .HasForeignKey(s => s.LoadingUnitId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(s => s.LoadingUnitType)
-               .WithMany(l => l.SchedulerRequests)
-               .HasForeignKey(s => s.LoadingUnitTypeId)
-               .OnDelete(DeleteBehavior.ClientSetNull);
-
             builder.HasOne(c => c.MaterialStatus)
                .WithMany(m => m.SchedulerRequests)
                .HasForeignKey(c => c.MaterialStatusId)

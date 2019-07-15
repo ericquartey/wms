@@ -4,9 +4,9 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         NotSpecified,
 
-        Insertion = 'I',
+        Put = 'U',
 
-        Withdrawal = 'W',
+        Pick = 'P',
 
         Replacement = 'R',
 

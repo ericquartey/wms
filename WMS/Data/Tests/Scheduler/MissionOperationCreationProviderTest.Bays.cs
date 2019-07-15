@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemFifo.Id,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Priority = 2,
@@ -135,7 +135,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Priority = this.Bay1Aisle1.Priority,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
             };
 

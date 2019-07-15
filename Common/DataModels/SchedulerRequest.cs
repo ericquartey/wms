@@ -38,10 +38,6 @@ namespace Ferretto.Common.DataModels
 
         public int? LoadingUnitId { get; set; }
 
-        public LoadingUnitType LoadingUnitType { get; set; }
-
-        public int? LoadingUnitTypeId { get; set; }
-
         public string Lot { get; set; }
 
         public MaterialStatus MaterialStatus { get; set; }

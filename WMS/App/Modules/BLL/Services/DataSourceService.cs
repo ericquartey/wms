@@ -355,16 +355,16 @@ namespace Ferretto.WMS.App.Modules.BLL
                             schedulerRequestProvider),
 
                         new PagedDataSource<SchedulerRequest, int>(
-                            "SchedulerRequestOperationInsert",
-                            Resources.Scheduler.SchedulerRequestOperationInsert,
+                            "SchedulerRequestOperationPut",
+                            Resources.BusinessObjects.Put,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Insertion}'"),
+                            $"[OperationType] == '{OperationType.Put}'"),
 
                         new PagedDataSource<SchedulerRequest, int>(
-                            "SchedulerRequestOperationWithdraw",
+                            "SchedulerRequestOperationPick",
                             Resources.BusinessObjects.Pick,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Withdrawal}'")
+                            $"[OperationType] == '{OperationType.Pick}'")
                     }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
