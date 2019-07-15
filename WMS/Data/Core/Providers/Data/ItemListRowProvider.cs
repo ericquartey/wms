@@ -238,6 +238,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = l.Code,
                     Priority = l.Priority,
                     ItemDescription = l.Item.Description,
+                    ItemCode = l.Item.Code,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,

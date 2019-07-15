@@ -197,6 +197,30 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IOperationResult<CellOperationalInfoUpdate>> UpdateOperationalInfoAsync(CellOperationalInfoUpdate model)
+        {
+            if (model == null)
+            {
+                return new BadRequestOperationResult<CellOperationalInfoUpdate>(model);
+            }
+
+            try
+            {
+                var existingDataModel = this.DataContext.Cells.Find(model.Id);
+
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+                await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
+
+                return new SuccessOperationResult<CellOperationalInfoUpdate>(null);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<CellOperationalInfoUpdate>(ex);
+            }
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",

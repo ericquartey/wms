@@ -211,6 +211,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
+                    ShipmentUnitCode = i.ShipmentUnitCode,
+                    ShipmentUnitDescription = i.ShipmentUnitDescription,
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
                     ErrorRowsCount =

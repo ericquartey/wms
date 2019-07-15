@@ -147,6 +147,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result.Entity);
         }
 
+        [ProducesResponseType(typeof(CellDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPatch("{id}/operational-info")]
+        public async Task<ActionResult<CellDetails>> UpdateOperationalInfoAsync(CellOperationalInfoUpdate model)
+        {
+            var result = await this.cellProvider.UpdateOperationalInfoAsync(model);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         #endregion
     }
 }

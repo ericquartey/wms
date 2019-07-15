@@ -99,6 +99,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 new Mock<ILogger<MachinesController>>().Object,
                 this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider,
                 this.ServiceProvider.GetService(typeof(IMissionProvider)) as IMissionProvider,
+                this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider);
         }
 

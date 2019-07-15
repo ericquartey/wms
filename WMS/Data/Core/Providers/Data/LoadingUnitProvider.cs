@@ -242,6 +242,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IEnumerable<LoadingUnitDetails>> GetAllByMachineIdAsync(int machineId)
+        {
+            var models = await this.GetAllDetailsBase()
+                .Where(l => l.MachineId == machineId)
+                .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
+        }
+
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
             if (model == null || !this.IsValidRelationshipBetweenTypeAisle(model))
@@ -276,6 +290,31 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushUpdate(model);
 
             return result;
+        }
+
+        public async Task<IOperationResult<LoadingUnitOperationalInfoUpdate>> UpdateOperationalInfoAsync(LoadingUnitOperationalInfoUpdate model)
+        {
+            if (model == null)
+            {
+                return new BadRequestOperationResult<LoadingUnitOperationalInfoUpdate>(model);
+            }
+
+            try
+            {
+                var existingDataModel = this.DataContext.LoadingUnits.Find(model.Id);
+
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+                await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId });
+
+                return new SuccessOperationResult<LoadingUnitOperationalInfoUpdate>(null);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<LoadingUnitOperationalInfoUpdate>(ex);
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -405,6 +444,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LastPutDate = l.LastPutDate,
                     MissionsCount = l.MissionsCount,
                     CellId = l.CellId,
+                    MachineId = l.Cell.Aisle.Machines.FirstOrDefault().Id,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
