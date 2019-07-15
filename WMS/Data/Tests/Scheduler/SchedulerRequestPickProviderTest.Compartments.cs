@@ -384,7 +384,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddDays(-4)
+                    FifoStartDate = System.DateTime.Now.AddDays(-4),
                 },
             };
 

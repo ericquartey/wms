@@ -2,7 +2,8 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class Remove_ActualWeight_From_Machine : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,4 +21,6 @@ namespace Ferretto.Common.EF.Migrations
                 nullable: true);
         }
     }
+
+    #pragma warning restore
 }

@@ -305,7 +305,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    Id = 4,
                    FifoStartDate = now.AddDays(-2),
                    Stock = 400,
-                   MaxCapacity = 500
+                   MaxCapacity = 500,
                },
             }.AsQueryable();
 
@@ -373,7 +373,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    FifoStartDate = now.AddDays(-2),
                    Availability = 300,
                    RemainingCapacity = 500,
-                   Size = 4
+                   Size = 4,
                },
             }.AsQueryable();
 

@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             m => m.Operations.Any(o =>
                                 o.Status != Common.DataModels.MissionOperationStatus.Completed
                                 &&
-                                o.Status != Common.DataModels.MissionOperationStatus.Incomplete))
+                                o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
                     }),
                 })
                 .SingleAsync(a => a.Id == id);
@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Bays = join.Bays.Select(b => new Bay
                     {
                         Id = b.Id,
-                        Description = b.Description
+                        Description = b.Description,
                     }),
                 })
                 .ToArrayAsync();

@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
+                    row2,
                 },
             };
 
@@ -211,7 +211,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
+                    row2,
                 },
             };
 
@@ -359,7 +359,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 {
                     rowLowPriority,
                     rowHighPriority,
-                    rowMediumPriority
+                    rowMediumPriority,
                 },
             };
 
@@ -507,7 +507,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
+                    row2,
                 },
             };
 
@@ -693,7 +693,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 {
                     row2WithoutPriority,
                     row1WithPriority,
-                    row3WithoutPriority
+                    row3WithoutPriority,
                 },
             };
 
@@ -1041,7 +1041,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
+                    row2,
                 },
             };
 

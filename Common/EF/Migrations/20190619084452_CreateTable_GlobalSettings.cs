@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class CreateTable_GlobalSettings : Migration
     {
         #region Methods
@@ -32,4 +33,6 @@ namespace Ferretto.Common.EF.Migrations
 
         #endregion
     }
+
+    #pragma warning restore
 }

@@ -283,7 +283,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         .Select(a => new
                         {
                             a.First().LoadingUnitArea,
-                            CompartmentArea = a.Sum(y => y.CompartmentArea)
+                            CompartmentArea = a.Sum(y => y.CompartmentArea),
                         }),
                 })
                 .Select(x => new MachineOccupation
