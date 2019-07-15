@@ -80,7 +80,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
 
         public async Task OnEnterViewAsync()
         {
-            var random = new Random();
             this.lists = new ObservableCollection<DataGridListDetail>();
 
             var tmpLists = new ObservableCollection<WMS.Data.WebAPI.Contracts.ItemListRow>();
@@ -99,10 +98,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
                 string machines = string.Empty;
                 for (int j = 0; j < tmpLists[i].Machines.Count; j++)
                 {
-                    machines = (j == tmpLists[i].Machines.Count - 1) ? string.Concat(machines, tmpLists[i].Machines[j].Id.ToString()) : string.Concat(machines, tmpLists[i].Machines[j].Id.ToString(), ", ");
+                    machines = (j == tmpLists[i].Machines.Count - 1) ?
+                        string.Concat(machines, tmpLists[i].Machines[j].Id.ToString()) : string.Concat(machines, tmpLists[i].Machines[j].Id.ToString(), ", ");
                 }
 
-                if (machines == string.Empty)
+                if (string.IsNullOrEmpty(machines))
                 {
                     machines = "---";
                 }
