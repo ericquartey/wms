@@ -45,7 +45,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     Id = result.Id,
                     AreaId = result.AreaId,
-                    ItemId = result.ItemId
+                    ItemId = result.ItemId,
                 };
 
                 return new OperationResult<ItemArea>(true, itemArea);
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         Id = a.Id,
                         Name = a.Name,
-                        Bays = a.Bays.Select(b => new Bay { Id = b.Id, Description = b.Description })
+                        Bays = a.Bays.Select(b => new Bay { Id = b.Id, Description = b.Description }),
                     });
 
                 return new OperationResult<IEnumerable<Area>>(true, result);
@@ -167,7 +167,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     .Select(a => new Area
                     {
                         Id = a.Id,
-                        Name = a.Name
+                        Name = a.Name,
                     });
 
                 return new OperationResult<IEnumerable<Area>>(true, result);

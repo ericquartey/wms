@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 RequestedQuantity = 2,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
@@ -148,7 +148,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 RequestedQuantity = 2,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);

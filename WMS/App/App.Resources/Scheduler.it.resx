@@ -129,9 +129,6 @@
   <data name="CompartmentType" xml:space="preserve">
     <value>Tipo di scomparto</value>
   </data>
-  <data name="SchedulerRequestOperationInsert" xml:space="preserve">
-    <value>Inserimento</value>
-  </data>
   <data name="SchedulerRequestViewAll" xml:space="preserve">
     <value>Tutte</value>
   </data>

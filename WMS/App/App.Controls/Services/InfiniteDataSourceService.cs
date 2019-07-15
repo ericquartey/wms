@@ -121,7 +121,7 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             var source = new InfiniteAsyncSource
             {
-                ElementType = typeof(TModel)
+                ElementType = typeof(TModel),
             };
             if (this.provider != null)
             {

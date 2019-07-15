@@ -21,6 +21,6 @@ namespace Ferretto.WMS.App.Core.Models
         Reorder = 'O',
 
         [Display(Name = nameof(BusinessObjects.MissionTypeReplace), ResourceType = typeof(BusinessObjects))]
-        Replace = 'R'
+        Replace = 'R',
     }
 }

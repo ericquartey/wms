@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Interactivity;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Grid;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -20,8 +21,6 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public WmsGridControl Grid { get; set; }
-
         public string Tooltip
         {
             get => (string)this.GetValue(TooltipProperty);
@@ -34,44 +33,60 @@ namespace Ferretto.WMS.App.Controls
 
         protected override void Invoke(object parameter)
         {
-            if (parameter is ItemClickEventArgs clickEventArgs
-                && clickEventArgs.Source is ActionBarItem actionBarItem)
+            if (!(parameter is ItemClickEventArgs clickEventArgs) ||
+                !(clickEventArgs.Source is ActionBarItem actionBarItem))
             {
-                this.Grid = LayoutTreeHelper.GetVisualParents(actionBarItem)
-                    .OfType<WmsGridControl>()
-                    .FirstOrDefault();
+                return;
+            }
 
-                if (this.Grid == null)
-                {
-                    var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
+            var mainGrid = LayoutTreeHelper.GetVisualParents(actionBarItem)
+                .OfType<GridControl>()
+                .FirstOrDefault();
+
+            if (mainGrid == null)
+            {
+                var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
                     .OfType<Grid>()
                     .FirstOrDefault();
 
-                    this.Grid = LayoutTreeHelper.GetVisualChildren(gridParent)
-                        .OfType<WmsGridControl>()
-                        .FirstOrDefault();
-                }
+                mainGrid = LayoutTreeHelper.GetVisualChildren(gridParent)
+                    .OfType<GridControl>()
+                    .FirstOrDefault();
             }
 
-            if (this.Grid?.GetSelectedRowHandles().Count() == 1)
+            if (mainGrid == null)
             {
-                var rowHandle = this.Grid.GetSelectedRowHandles().FirstOrDefault();
+                return;
+            }
 
-                var cell = this.Grid.View.GetCellElementByRowHandleAndColumn(rowHandle, this.Grid.Columns[this.Tooltip]);
+            var selectionGrid = mainGrid;
+            if (!mainGrid.GetSelectedRowHandles().Any())
+            {
+                selectionGrid = mainGrid.View.FocusedView.DataControl as GridControl;
+            }
 
-                if (cell != null)
-                {
-                    var toolTip = new ToolTip();
-                    if (cell.ToolTip is ToolTip cellTooltip)
-                    {
-                        toolTip.Content = cellTooltip.Content;
-                        toolTip.ContentTemplate = cellTooltip.ContentTemplate;
-                        toolTip.PlacementTarget = cell;
-                        toolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-                        toolTip.StaysOpen = false;
-                        toolTip.IsOpen = true;
-                    }
-                }
+            if (selectionGrid?.GetSelectedRowHandles().Count() != 1)
+            {
+                return;
+            }
+
+            var cell = selectionGrid.View.GetCellElementByRowHandleAndColumn(
+                selectionGrid.GetSelectedRowHandles().FirstOrDefault(),
+                selectionGrid.Columns[this.Tooltip]);
+            if (cell == null)
+            {
+                return;
+            }
+
+            var toolTip = new ToolTip();
+            if (cell.ToolTip is ToolTip cellTooltip)
+            {
+                toolTip.Content = cellTooltip.Content;
+                toolTip.ContentTemplate = cellTooltip.ContentTemplate;
+                toolTip.PlacementTarget = cell;
+                toolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                toolTip.StaysOpen = false;
+                toolTip.IsOpen = true;
             }
         }
 

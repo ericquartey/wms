@@ -252,7 +252,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 await this.Provider.GetAllCountAsync(
                     whereString,
-                    this.searchText)
+                    this.searchText),
             };
         }
 
@@ -277,7 +277,7 @@ namespace Ferretto.WMS.App.Controls
         {
             var source = new InfiniteAsyncSource
             {
-                ElementType = typeof(TModel)
+                ElementType = typeof(TModel),
             };
 
             if (this.provider != null)

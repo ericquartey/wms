@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Methods
 
-        public static(double screenTop, double screenLeft, double screenWidth, double screenHeight) GetMainApplicationOffsetSize()
+        public static (double screenTop, double screenLeft, double screenWidth, double screenHeight) GetMainApplicationOffsetSize()
         {
             var interopHelper = new WindowInteropHelper(System.Windows.Application.Current.MainWindow);
             var activeScreen = Screen.FromHandle(interopHelper.Handle);

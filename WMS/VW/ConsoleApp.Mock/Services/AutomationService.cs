@@ -171,7 +171,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             if (abortOperationId >= 0)
             {
                 await this.automationProvider.AbortOperationAsync(abortOperationId);
-                Console.WriteLine($"Mission execution request sent.");
+                Console.WriteLine($"Mission operation abortion request sent.");
             }
         }
 
@@ -180,20 +180,20 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
             Views.PrintMissionsTable(missions);
 
-            var missionId = Views.ReadInt("Insert mission id:");
-            var quantity = Views.ReadInt("Insert mission quantity:");
-            if (missionId >= 0)
+            var operationId = Views.ReadInt("Insert mission operation id:");
+            var quantity = Views.ReadInt("Insert mission operation quantity:");
+            if (operationId >= 0)
             {
                 if (quantity > 0)
                 {
-                    await this.CompleteOperationAsync(missionId, quantity);
+                    await this.CompleteOperationAsync(operationId, quantity);
                 }
                 else
                 {
-                    await this.automationProvider.CompleteLoadingUnitMissionAsync(missionId);
+                    await this.automationProvider.CompleteLoadingUnitMissionAsync(operationId);
                 }
 
-                Console.WriteLine($"Request sent.");
+                Console.WriteLine($"Mission operation completion request sent.");
             }
         }
 
@@ -206,7 +206,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             if (missionId >= 0)
             {
                 await this.automationProvider.CompleteLoadingUnitMissionAsync(missionId);
-                Console.WriteLine($"Request sent.");
+                Console.WriteLine($"Mission completion request sent.");
             }
         }
 
@@ -219,7 +219,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             if (missionId >= 0)
             {
                 await this.automationProvider.ExecuteLoadingUnitMissionAsync(missionId);
-                Console.WriteLine($"Request sent.");
+                Console.WriteLine($"Mission execution request sent.");
             }
         }
 
@@ -232,7 +232,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             if (operationId >= 0)
             {
                 await this.ExecuteOperationAsync(operationId);
-                Console.WriteLine($"Operation execution request sent.");
+                Console.WriteLine($"Mission operation completion request sent.");
             }
         }
 

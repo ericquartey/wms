@@ -421,7 +421,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentStatusChoices = compartmentStatus,
                     CompartmentTypeChoices = compartmentType,
                     MaterialStatusChoices = materialStatus,
-                    PackageTypeChoices = packageType
+                    PackageTypeChoices = packageType,
                 };
 
                 return new OperationResult<CompartmentDetails>(true, compartmentDetails);

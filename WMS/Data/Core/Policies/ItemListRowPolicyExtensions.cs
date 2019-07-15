@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (rowToDelete.ActiveSchedulerRequestsCount > 0)
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(ItemListRowPolicy.Execute),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (rowToExecute.Status != ItemListRowStatus.New &&
@@ -64,7 +64,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return new Policy
             {
                 Name = nameof(CrudPolicies.Update),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
         }
 

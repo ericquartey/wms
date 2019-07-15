@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,7 +15,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "char(1)", nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -27,7 +28,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -39,7 +40,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "char(1)", nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -52,7 +53,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -67,7 +68,7 @@ namespace Ferretto.Common.EF.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
                     MaxHeight = table.Column<double>(nullable: false),
-                    MinHeight = table.Column<double>(nullable: false)
+                    MinHeight = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -83,7 +84,7 @@ namespace Ferretto.Common.EF.Migrations
                     Description = table.Column<string>(nullable: false),
                     XOffset = table.Column<double>(nullable: true),
                     YOffset = table.Column<double>(nullable: true),
-                    ZOffset = table.Column<double>(nullable: true)
+                    ZOffset = table.Column<double>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -98,7 +99,7 @@ namespace Ferretto.Common.EF.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
                     Length = table.Column<double>(nullable: false),
-                    Width = table.Column<double>(nullable: false)
+                    Width = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -111,7 +112,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -126,7 +127,7 @@ namespace Ferretto.Common.EF.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
                     MaxWeight = table.Column<int>(nullable: false),
-                    MinWeight = table.Column<int>(nullable: false)
+                    MinWeight = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -139,7 +140,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -153,7 +154,7 @@ namespace Ferretto.Common.EF.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Height = table.Column<double>(nullable: false),
-                    Width = table.Column<double>(nullable: false)
+                    Width = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -166,7 +167,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -192,7 +193,7 @@ namespace Ferretto.Common.EF.Migrations
                     Priority = table.Column<int>(nullable: true, defaultValue: 1),
                     ShipmentUnitAssociated = table.Column<bool>(nullable: false),
                     ShipmentUnitCode = table.Column<string>(nullable: true),
-                    ShipmentUnitDescription = table.Column<string>(nullable: true)
+                    ShipmentUnitDescription = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -207,7 +208,7 @@ namespace Ferretto.Common.EF.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
                     MaxHeight = table.Column<double>(nullable: false),
-                    MinHeight = table.Column<double>(nullable: false)
+                    MinHeight = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -226,7 +227,7 @@ namespace Ferretto.Common.EF.Migrations
                     Description = table.Column<string>(nullable: false),
                     Length = table.Column<double>(nullable: false),
                     Lift = table.Column<double>(nullable: true),
-                    Width = table.Column<double>(nullable: false)
+                    Width = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -238,7 +239,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "char(1)", nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -253,7 +254,7 @@ namespace Ferretto.Common.EF.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: false),
                     MaxWeight = table.Column<int>(nullable: false),
-                    MinWeight = table.Column<int>(nullable: false)
+                    MinWeight = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -265,7 +266,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "char(1)", nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -278,7 +279,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -290,7 +291,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "char(2)", nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -303,7 +304,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -319,7 +320,7 @@ namespace Ferretto.Common.EF.Migrations
                     AreaId = table.Column<int>(nullable: false),
                     Columns = table.Column<int>(nullable: true),
                     Floors = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -341,7 +342,7 @@ namespace Ferretto.Common.EF.Migrations
                     ActualValue = table.Column<int>(nullable: true),
                     AreaId = table.Column<int>(nullable: false),
                     MaxValue = table.Column<int>(nullable: false),
-                    MinValue = table.Column<int>(nullable: false)
+                    MinValue = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -363,7 +364,7 @@ namespace Ferretto.Common.EF.Migrations
                     CellHeightClassId = table.Column<int>(nullable: false),
                     CellSizeClassId = table.Column<int>(nullable: false),
                     CellWeightClassId = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -399,7 +400,7 @@ namespace Ferretto.Common.EF.Migrations
                     HasCompartments = table.Column<bool>(nullable: false),
                     LoadingUnitHeightClassId = table.Column<int>(nullable: false),
                     LoadingUnitSizeClassId = table.Column<int>(nullable: false),
-                    LoadingUnitWeightClassId = table.Column<int>(nullable: false)
+                    LoadingUnitWeightClassId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -453,7 +454,7 @@ namespace Ferretto.Common.EF.Migrations
                     PutTolerance = table.Column<int>(nullable: true),
                     ReorderPoint = table.Column<int>(nullable: true),
                     ReorderQuantity = table.Column<int>(nullable: true),
-                    Width = table.Column<double>(nullable: true)
+                    Width = table.Column<double>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -515,7 +516,7 @@ namespace Ferretto.Common.EF.Migrations
                     RegistrationNumber = table.Column<string>(nullable: true),
                     ServiceUrl = table.Column<string>(nullable: true),
                     TestDate = table.Column<DateTime>(nullable: true),
-                    TotalMaxWeight = table.Column<long>(nullable: true)
+                    TotalMaxWeight = table.Column<long>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -540,7 +541,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     CellConfigurationId = table.Column<int>(nullable: false),
                     CellTypeId = table.Column<int>(nullable: false),
-                    Priority = table.Column<int>(nullable: false, defaultValue: 1)
+                    Priority = table.Column<int>(nullable: false, defaultValue: 1),
                 },
                 constraints: table =>
                 {
@@ -576,7 +577,7 @@ namespace Ferretto.Common.EF.Migrations
                     Side = table.Column<string>(type: "char(1)", nullable: false),
                     XCoordinate = table.Column<double>(nullable: true),
                     YCoordinate = table.Column<double>(nullable: true),
-                    ZCoordinate = table.Column<double>(nullable: true)
+                    ZCoordinate = table.Column<double>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -616,7 +617,7 @@ namespace Ferretto.Common.EF.Migrations
                     AisleId = table.Column<int>(nullable: false),
                     CellsNumber = table.Column<int>(nullable: false),
                     CellStatusId = table.Column<int>(nullable: false),
-                    CellTypeId = table.Column<int>(nullable: false)
+                    CellTypeId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -650,7 +651,7 @@ namespace Ferretto.Common.EF.Migrations
                     AisleId = table.Column<int>(nullable: false),
                     CellTypeId = table.Column<int>(nullable: false),
                     CellTypeTotal = table.Column<int>(nullable: false, defaultValue: 0),
-                    Ratio = table.Column<decimal>(type: "decimal(3, 2)", nullable: false, defaultValue: 1m)
+                    Ratio = table.Column<decimal>(type: "decimal(3, 2)", nullable: false, defaultValue: 1m),
                 },
                 constraints: table =>
                 {
@@ -676,7 +677,7 @@ namespace Ferretto.Common.EF.Migrations
                     CellConfigurationId = table.Column<int>(nullable: false),
                     CellPositionId = table.Column<int>(nullable: false),
                     LoadingUnitTypeId = table.Column<int>(nullable: false),
-                    Priority = table.Column<int>(nullable: false, defaultValue: 1)
+                    Priority = table.Column<int>(nullable: false, defaultValue: 1),
                 },
                 constraints: table =>
                 {
@@ -710,7 +711,7 @@ namespace Ferretto.Common.EF.Migrations
                     DefaultHandlingParametersCorrection = table.Column<int>(nullable: false),
                     Image = table.Column<string>(nullable: true),
                     IsCellPairingFixed = table.Column<bool>(nullable: false),
-                    LoadingUnitTypeId = table.Column<int>(nullable: false)
+                    LoadingUnitTypeId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -728,7 +729,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     AisleId = table.Column<int>(nullable: false),
-                    LoadingUnitTypeId = table.Column<int>(nullable: false)
+                    LoadingUnitTypeId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -769,7 +770,7 @@ namespace Ferretto.Common.EF.Migrations
                     RequestedQuantity = table.Column<double>(nullable: false),
                     Status = table.Column<string>(type: "char(1)", nullable: false, defaultValueSql: "'N'"),
                     Sub1 = table.Column<string>(nullable: true),
-                    Sub2 = table.Column<string>(nullable: true)
+                    Sub2 = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -805,7 +806,7 @@ namespace Ferretto.Common.EF.Migrations
                 columns: table => new
                 {
                     AreaId = table.Column<int>(nullable: false),
-                    ItemId = table.Column<int>(nullable: false)
+                    ItemId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -830,7 +831,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     CompartmentTypeId = table.Column<int>(nullable: false),
                     ItemId = table.Column<int>(nullable: false),
-                    MaxCapacity = table.Column<double>(nullable: true)
+                    MaxCapacity = table.Column<double>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -861,7 +862,7 @@ namespace Ferretto.Common.EF.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     LoadingUnitsBufferSize = table.Column<int>(nullable: true),
                     MachineId = table.Column<int>(nullable: true),
-                    Priority = table.Column<int>(nullable: false, defaultValueSql: "1")
+                    Priority = table.Column<int>(nullable: false, defaultValueSql: "1"),
                 },
                 constraints: table =>
                 {
@@ -912,7 +913,7 @@ namespace Ferretto.Common.EF.Migrations
                     OtherCycleCount = table.Column<int>(nullable: false, defaultValue: 0),
                     OutCycleCount = table.Column<int>(nullable: false, defaultValue: 0),
                     ReferenceType = table.Column<string>(type: "char(1)", nullable: false),
-                    Weight = table.Column<int>(nullable: false)
+                    Weight = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -960,7 +961,7 @@ namespace Ferretto.Common.EF.Migrations
                     Image = table.Column<string>(nullable: true),
                     Note = table.Column<string>(type: "text", nullable: true),
                     XPosition = table.Column<double>(nullable: false),
-                    YPosition = table.Column<double>(nullable: false)
+                    YPosition = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -1007,7 +1008,7 @@ namespace Ferretto.Common.EF.Migrations
                     Sub1 = table.Column<string>(nullable: true),
                     Sub2 = table.Column<string>(nullable: true),
                     XPosition = table.Column<double>(nullable: false),
-                    YPosition = table.Column<double>(nullable: false)
+                    YPosition = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -1077,7 +1078,7 @@ namespace Ferretto.Common.EF.Migrations
                     Status = table.Column<string>(type: "char(1)", nullable: false),
                     Sub1 = table.Column<string>(nullable: true),
                     Sub2 = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(type: "char(1)", nullable: false)
+                    Type = table.Column<string>(type: "char(1)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -1163,7 +1164,7 @@ namespace Ferretto.Common.EF.Migrations
                     Status = table.Column<string>(type: "char(1)", nullable: false, defaultValueSql: "'N'"),
                     Sub1 = table.Column<string>(nullable: true),
                     Sub2 = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(type: "char(1)", nullable: false)
+                    Type = table.Column<string>(type: "char(1)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -1722,4 +1723,6 @@ namespace Ferretto.Common.EF.Migrations
                 name: "CellWeightClasses");
         }
     }
+
+    #pragma warning restore
 }

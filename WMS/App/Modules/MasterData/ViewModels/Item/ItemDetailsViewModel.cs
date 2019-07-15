@@ -464,7 +464,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPICK,
                 new
                 {
-                    Id = this.Model.Id
+                    Id = this.Model.Id,
                 });
         }
 
@@ -481,7 +481,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPUT,
                 new
                 {
-                    Id = this.Model.Id
+                    Id = this.Model.Id,
                 });
         }
 

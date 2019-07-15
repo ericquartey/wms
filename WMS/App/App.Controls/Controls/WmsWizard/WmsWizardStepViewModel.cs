@@ -38,7 +38,7 @@ namespace Ferretto.WMS.App.Controls
             return null;
         }
 
-        public virtual(string moduleName, string viewName, object data) GetNextView()
+        public virtual (string moduleName, string viewName, object data) GetNextView()
         {
             return (null, null, null);
         }

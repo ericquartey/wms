@@ -179,7 +179,7 @@ namespace Ferretto.WMS.App.Core.Models
                         Depth = depthNewCompartment,
                         XPosition = this.XPosition + (c * widthNewCompartment),
                         YPosition = this.YPosition + (r * depthNewCompartment),
-                        LoadingUnitId = this.LoadingUnitId
+                        LoadingUnitId = this.LoadingUnitId,
                     };
 
                     compartments.Add(compartment);

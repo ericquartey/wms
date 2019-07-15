@@ -11,6 +11,10 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
+        public int? AreaId { get; set; }
+
+        public string AreaName { get; set; }
+
         public string BayDescription { get; set; }
 
         public int? BayId { get; set; }

@@ -151,7 +151,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(x => x.LoadingUnitTypeId == loadingUnitTypeId)
                 .Select(y => new
                 {
-                    Aisle = y.AisleId
+                    Aisle = y.AisleId,
                 }).Distinct()
                 .Join(
                     this.DataContext.Cells,
@@ -195,6 +195,30 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushUpdate(model);
 
             return result;
+        }
+
+        public async Task<IOperationResult<CellOperationalInfoUpdate>> UpdateOperationalInfoAsync(CellOperationalInfoUpdate model)
+        {
+            if (model == null)
+            {
+                return new BadRequestOperationResult<CellOperationalInfoUpdate>(model);
+            }
+
+            try
+            {
+                var existingDataModel = this.DataContext.Cells.Find(model.Id);
+
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+                await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
+
+                return new SuccessOperationResult<CellOperationalInfoUpdate>(null);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<CellOperationalInfoUpdate>(ex);
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

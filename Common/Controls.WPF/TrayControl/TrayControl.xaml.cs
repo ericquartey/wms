@@ -307,7 +307,7 @@ namespace Ferretto.Common.Controls.WPF
                 Source = source,
                 Path = new PropertyPath(path: bindingName),
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             };
             BindingOperations.SetBinding(this, depPropertyName, binding);
         }

@@ -63,7 +63,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Add(new Common.DataModels.SchedulerRequest
                 {
                     LoadingUnitId = model.LoadingUnitId,
-                    LoadingUnitTypeId = model.LoadingUnitTypeId,
                     OperationType = (Common.DataModels.OperationType)model.OperationType,
                     Type = (Common.DataModels.SchedulerRequestType)model.Type,
                     IsInstant = model.IsInstant,
@@ -258,8 +257,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     if (!r.LoadingUnitId.HasValue
                         ||
-                        !r.LoadingUnitTypeId.HasValue
-                        ||
                         !r.BayId.HasValue)
                     {
                         throw new System.Data.DataException(
@@ -274,7 +271,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Priority = r.Priority,
                         BayId = r.BayId.Value,
                         LoadingUnitId = r.LoadingUnitId.Value,
-                        LoadingUnitTypeId = r.LoadingUnitTypeId.Value,
                         Status = (SchedulerRequestStatus)r.Status,
                     };
 

@@ -335,9 +335,9 @@ namespace Ferretto.Common.Controls.WPF
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(this.FontFamily.ToString()),
-                                 fontSize,
-                                 this.ForegroundText,
-                                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                    fontSize,
+                    this.ForegroundText,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
             return pixelSize > (ft.Width + margin);
         }
 
@@ -401,7 +401,7 @@ namespace Ferretto.Common.Controls.WPF
             return position;
         }
 
-        private(Point littleMarkStart, Point littleMarkEnd) CreateLittleMark(double basePixelStart, double littlePixelStep, int j)
+        private (Point littleMarkStart, Point littleMarkEnd) CreateLittleMark(double basePixelStart, double littlePixelStep, int j)
         {
             var littleMarkStart = new Point(0, 0);
             var littleMarkEnd = new Point(0, 0);
@@ -645,9 +645,9 @@ namespace Ferretto.Common.Controls.WPF
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(this.FontFamily.ToString()),
-                                 fontSize,
-                                 this.ForegroundText,
-                                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                    fontSize,
+                    this.ForegroundText,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
             var position = this.ComputeTextPosition(ft.Width, currentStep);
             if (position != null)
@@ -742,7 +742,7 @@ namespace Ferretto.Common.Controls.WPF
                 Brush = this.Foreground,
                 Thickness = this.GetSizeOfPen(),
                 StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
+                EndLineCap = PenLineCap.Square,
             };
         }
 

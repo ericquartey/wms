@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        m => m.Operations.Any(o =>
                        o.Status != Common.DataModels.MissionOperationStatus.Completed
                        &&
-                       o.Status != Common.DataModels.MissionOperationStatus.Incomplete))
+                       o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
         };
 
         #endregion
