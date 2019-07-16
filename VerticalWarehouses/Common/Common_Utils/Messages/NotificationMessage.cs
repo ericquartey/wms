@@ -1,11 +1,19 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Microsoft.Extensions.Logging;
+using NLog;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages
 {
     public class NotificationMessage
     {
+        #region Fields
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Constructors
 
         public NotificationMessage()
@@ -34,6 +42,8 @@ namespace Ferretto.VW.CommonUtils.Messages
             this.Status = status;
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
+
+            Logger?.Trace($"{description} {source} {type} {destination} {status}");
         }
 
         #endregion
@@ -54,7 +64,7 @@ namespace Ferretto.VW.CommonUtils.Messages
 
         public MessageType Type { get; set; }
 
-        public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Info;
+        public MessageVerbosity Verbosity { get; } = MessageVerbosity.Info;
 
         #endregion
     }
