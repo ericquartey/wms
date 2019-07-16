@@ -693,8 +693,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     var errorMsg = new FieldNotificationMessage(
                         messageData,
                         "Inverter Driver Error",
-                       FieldMessageActor.InverterDriver,
                        FieldMessageActor.Any,
+                       FieldMessageActor.InverterDriver,
                        FieldMessageType.InverterError,
                        MessageStatus.OperationError,
                        ErrorLevel.Critical);
@@ -705,8 +705,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     var exceptionMsg = new FieldNotificationMessage(
                      messageData,
                      "Inverter Driver Exception",
-                    FieldMessageActor.InverterDriver,
                     FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
                     FieldMessageType.InverterException,
                     MessageStatus.OperationError,
                     ErrorLevel.Critical);
