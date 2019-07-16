@@ -195,7 +195,7 @@ namespace Ferretto.WMS.App.Controls
                 Data = this.Data,
                 DataContext = this.DataContext,
                 Token = this.Token,
-                Content = this.Content
+                Content = this.Content,
             };
             return clonedView;
         }

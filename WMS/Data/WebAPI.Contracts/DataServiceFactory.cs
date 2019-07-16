@@ -1,9 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    [SuppressMessage(
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Microsoft.Maintainability",
         "CA1502",
         Justification = "This is a service factory")]

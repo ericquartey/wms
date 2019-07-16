@@ -5,6 +5,6 @@
     {
         MonoReference = 'M',
 
-        PluriReference = 'P'
+        PluriReference = 'P',
     }
 }

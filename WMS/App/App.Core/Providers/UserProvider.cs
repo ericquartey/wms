@@ -34,7 +34,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         Id = u.Id,
                         Login = u.Login,
-                        Password = u.Password
+                        Password = u.Password,
                     });
             }
             catch
@@ -64,7 +64,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     Id = user.Id,
                     Login = user.Login,
-                    Password = user.Password
+                    Password = user.Password,
                 };
             }
             catch

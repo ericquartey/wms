@@ -696,4 +696,16 @@
   <data name="GeneralInfoWmsStatus" xml:space="preserve">
     <value>Stato del WMS:</value>
   </data>
+  <data name="Cell_Status_Free" xml:space="preserve">
+    <value>Libera</value>
+  </data>
+  <data name="Cell_Status_Disabled" xml:space="preserve">
+    <value>Disabilitata</value>
+  </data>
+  <data name="Cell_Status_Occupied" xml:space="preserve">
+    <value>Occupata</value>
+  </data>
+  <data name="Cell_Status_Unusable" xml:space="preserve">
+    <value>Inutilizzabile</value>
+  </data>
 </root>

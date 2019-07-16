@@ -189,16 +189,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Image ResizeImage(Image image)
         {
-            var resizedImage = image;
-            if (image.Height > this.MaxImageDimension || image.Width > this.MaxImageDimension)
+            if (image.Height <= this.MaxImageDimension && image.Width <= this.MaxImageDimension)
             {
-                var width = image.Width;
-                var height = image.Height;
-                this.CalculateDimensionProportioned(ref width, ref height);
-                resizedImage = ResizeImage(image, width, height);
+                return null;
             }
 
-            return resizedImage;
+            var width = image.Width;
+            var height = image.Height;
+            this.CalculateDimensionProportioned(ref width, ref height);
+            return ResizeImage(image, width, height);
         }
 
         private string SaveImage(string originalFileName, Stream memoryStream)
@@ -214,26 +213,22 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             using (var image = Image.FromStream(memoryStream))
             {
-                var resizedImage = this.ResizeImage(image);
-
-                var extension = Path.GetExtension(originalFileName);
-                var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
-
-                var imagePath = Path.Combine(absoluteFilePath, fileName);
-                if (File.Exists(imagePath))
+                using (var resizedImage = this.ResizeImage(image))
                 {
-                    fileName = Path.GetFileName($"{DateTime.Now.Ticks}{DateTime.Now.Millisecond}{extension}");
-                    imagePath = Path.Combine(absoluteFilePath, fileName);
+                    var extension = Path.GetExtension(originalFileName);
+                    var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
+
+                    var imagePath = Path.Combine(absoluteFilePath, fileName);
+                    if (File.Exists(imagePath))
+                    {
+                        fileName = Path.GetFileName($"{DateTime.Now.Ticks}{DateTime.Now.Millisecond}{extension}");
+                        imagePath = Path.Combine(absoluteFilePath, fileName);
+                    }
+
+                    resizedImage.Save(imagePath);
+
+                    return fileName;
                 }
-
-                resizedImage.Save(imagePath);
-
-                if (!image.Equals(resizedImage))
-                {
-                    resizedImage.Dispose();
-                }
-
-                return fileName;
             }
         }
 

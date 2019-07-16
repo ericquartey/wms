@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Status = (ItemListRowStatus)r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
-                    })
+                    }),
                 })
                 .SingleOrDefaultAsync(l => l.Id == id);
 

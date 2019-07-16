@@ -64,7 +64,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Id = a.Id,
                         AreaId = a.AreaId,
                         AreaName = a.AreaName,
-                        Name = a.Name
+                        Name = a.Name,
                     });
             }
             catch

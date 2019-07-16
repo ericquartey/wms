@@ -112,9 +112,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
                     int loadingUnitId,
-            int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null)
+                    int skip,
+                    int take,
+                    IEnumerable<SortOption> orderBySortOptions = null)
         {
             var models = await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
                 .ToArrayAsync<Item, Common.DataModels.Item>(
@@ -161,7 +161,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ItemId = j.Key,
                             TotalStock = j.Sum(x => x.Stock),
                             TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut),
                         }),
                     i => i.Item.Id,
                     c => c.ItemId,
@@ -169,7 +169,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Item = i.Item,
                         MaxCapacity = i.MaxCapacity,
-                        CompartmentsAggregation = c
+                        CompartmentsAggregation = c,
                     })
                 .SelectMany(
                     temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
@@ -245,7 +245,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync(
                     string whereString = null,
-            string searchString = null)
+                    string searchString = null)
         {
             return await this.GetAllBase()
                 .CountAsync<Item, Common.DataModels.Item>(
@@ -520,9 +520,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Quantity = j.Quantity,
                         })
                     .GroupBy(x => x.ItemId),
-                    i => i.Id,
-                    g => g.Key,
-                    (i, g) => new Item
+                i => i.Id,
+                g => g.Key,
+                (i, g) => new Item
                     {
                         AbcClassDescription = i.AbcClass.Description,
                         AbcClassId = i.AbcClassId,
@@ -569,7 +569,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         TotalStock = i.Compartments.Sum(cm => cm.Stock),
                         TotalReservedForPick = i.Compartments.Sum(cm => cm.ReservedForPick),
                         TotalReservedToPut = i.Compartments.Sum(cm => cm.ReservedToPut),
-                        TotalAvailable = i.Compartments.Sum(cm => cm.Stock + cm.ReservedToPut - cm.ReservedForPick)
+                        TotalAvailable = i.Compartments.Sum(cm => cm.Stock + cm.ReservedToPut - cm.ReservedForPick),
                     });
         }
 

@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Icons {
@@ -970,20 +970,20 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-withdraw-50.png.
         /// </summary>
-        public static string SchedulerRequestOperationInsert {
+        public static string SchedulerRequestOperationPick {
             get {
-                return ResourceManager.GetString("SchedulerRequestOperationInsert", resourceCulture);
+                return ResourceManager.GetString("SchedulerRequestOperationPick", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-withdraw-50.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-insert-50.png.
         /// </summary>
-        public static string SchedulerRequestOperationWithdraw {
+        public static string SchedulerRequestOperationPut {
             get {
-                return ResourceManager.GetString("SchedulerRequestOperationWithdraw", resourceCulture);
+                return ResourceManager.GetString("SchedulerRequestOperationPut", resourceCulture);
             }
         }
         

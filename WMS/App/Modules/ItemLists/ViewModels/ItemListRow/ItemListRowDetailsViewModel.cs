@@ -249,7 +249,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
-                        Id = this.Model.Id
+                        Id = this.Model.Id,
                     });
                 this.IsBusy = false;
             }

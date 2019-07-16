@@ -10,6 +10,6 @@ namespace Ferretto.Common.DataModels
 
         Error = 'E',
 
-        Incomplete = 'I'
+        Incomplete = 'I',
     }
 }

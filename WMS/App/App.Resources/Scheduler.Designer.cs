@@ -10,8 +10,8 @@
 
 namespace Ferretto.WMS.App.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.WMS.App.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Scheduler {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Scheduler() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.App.Resources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.App.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Type.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Is Instant.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("IsInstant", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Row List.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionAll", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionStatusCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reserved Quantity.
         /// </summary>
@@ -122,16 +122,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ReservedQuantity", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Insert.
-        /// </summary>
-        public static string SchedulerRequestOperationInsert {
-            get {
-                return ResourceManager.GetString("SchedulerRequestOperationInsert", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>

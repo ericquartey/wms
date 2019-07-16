@@ -13,7 +13,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         Warning,
 
-        Success
+        Success,
     }
 
     public class StatusPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent

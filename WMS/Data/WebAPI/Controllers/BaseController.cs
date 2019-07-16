@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         return this.UnprocessableEntity(new ProblemDetails
                         {
                             Status = StatusCodes.Status422UnprocessableEntity,
-                            Detail = result?.Description
+                            Detail = result?.Description,
                         });
                     }
 
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         return this.BadRequest(new ProblemDetails
                         {
                             Status = StatusCodes.Status400BadRequest,
-                            Detail = result?.Description
+                            Detail = result?.Description,
                         });
                     }
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         return this.NotFound(new ProblemDetails
                         {
                             Status = StatusCodes.Status404NotFound,
-                            Detail = result?.Description
+                            Detail = result?.Description,
                         });
                     }
 
@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         return this.UnprocessableEntity(new ProblemDetails
                         {
                             Status = StatusCodes.Status422UnprocessableEntity,
-                            Detail = result?.Description
+                            Detail = result?.Description,
                         });
                     }
 

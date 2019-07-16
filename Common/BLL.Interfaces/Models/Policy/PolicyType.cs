@@ -6,6 +6,6 @@
 
         Operation,
 
-        Property
+        Property,
     }
 }

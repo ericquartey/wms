@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.MAS_DataLayer</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_DataLayer</AssemblyName>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-      <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
-      <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
-      <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
-      <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+    <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+    <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+    <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+    <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
   </PropertyGroup>
 
   <ItemGroup>

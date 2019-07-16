@@ -133,7 +133,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 Id = this.notificationWindowsCount,
                 DisplayDuration = displayDuration,
-                Window = window
+                Window = window,
             };
             windowInfo.Window.Closed += this.Window_Closed;
             if (this.notificationWindows.Count + 1 > MAX_NOTIFICATIONS)

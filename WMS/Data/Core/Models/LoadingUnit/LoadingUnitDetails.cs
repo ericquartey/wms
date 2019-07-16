@@ -98,6 +98,8 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public double Width { get; set; }
 
+        public int? MachineId { get; internal set; }
+
         #endregion
     }
 }

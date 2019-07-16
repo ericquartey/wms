@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 ItemId = item1.Id,
-                Stock = 10
+                Stock = 10,
             };
 
             var list1Id = GetNewId();
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 ItemId = item1.Id,
-                Stock = 10
+                Stock = 10,
             };
 
             var list1Id = 1;
@@ -209,7 +209,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -250,7 +250,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
                 this.ServiceProvider.GetService(typeof(IItemListSchedulerService)) as IItemListSchedulerService)
             {
-                ControllerContext = new Mock<ControllerContext>().Object
+                ControllerContext = new Mock<ControllerContext>().Object,
             };
 
             return controller;

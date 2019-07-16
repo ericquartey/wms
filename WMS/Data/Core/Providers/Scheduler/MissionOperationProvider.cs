@@ -571,7 +571,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                      {
                          ItemId = compartment.ItemId.Value,
                          CompartmentTypeId = compartment.CompartmentTypeId,
-                         MaxCapacity = compartment.Stock
+                         MaxCapacity = compartment.Stock,
                      });
             }
         }

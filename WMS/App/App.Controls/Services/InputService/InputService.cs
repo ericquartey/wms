@@ -282,6 +282,7 @@ namespace Ferretto.WMS.App.Controls.Services
                             {
                                 mainHost = Application.Current.MainWindow;
                             }
+
                             if (mainHost != this.currentHost)
                             {
                                 if (this.currentHost != null)

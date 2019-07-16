@@ -4,7 +4,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 
-namespace Ferretto.VW.SQLiteTarget
+namespace Ferretto.VW.Common.Logging.SQLiteTarget
 {
     [Target("SQLite")]
     public sealed class SQLiteCustomTarget : TargetWithLayout

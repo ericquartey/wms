@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 request = new ItemListRowSchedulerRequest
                 {
                     ListId = row.ListId,
-                    ListRowId = row.Id
+                    ListRowId = row.Id,
                 };
             }
 
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.Core.Models
             request.RequestedQuantity = options.RequestedQuantity;
             request.Sub1 = options.Sub1;
             request.Sub2 = options.Sub2;
-            request.OperationType = OperationType.Withdrawal;
+            request.OperationType = OperationType.Pick;
 
             return request;
         }
@@ -140,7 +140,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 request = new ItemListRowSchedulerRequest
                 {
                     ListId = row.ListId,
-                    ListRowId = row.Id
+                    ListRowId = row.Id,
                 };
             }
 
@@ -155,7 +155,7 @@ namespace Ferretto.WMS.Data.Core.Models
             request.RequestedQuantity = options.RequestedQuantity;
             request.Sub1 = options.Sub1;
             request.Sub2 = options.Sub2;
-            request.OperationType = OperationType.Insertion;
+            request.OperationType = OperationType.Put;
 
             return request;
         }

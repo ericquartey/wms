@@ -7,6 +7,6 @@
 
         Put = 'U',
 
-        Inventory = 'I'
+        Inventory = 'I',
     }
 }

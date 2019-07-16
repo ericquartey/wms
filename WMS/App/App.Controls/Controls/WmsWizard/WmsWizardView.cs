@@ -92,7 +92,7 @@ namespace Ferretto.WMS.App.Controls
         internal virtual void GoToNext()
         {
             this.registeredViews.Push(this.currentView);
-            var(moduleName, viewName, data) = this.GetStepViewModel().GetNextView();
+            var (moduleName, viewName, data) = this.GetStepViewModel().GetNextView();
             this.AssociateNewView(moduleName, viewName, data);
         }
 

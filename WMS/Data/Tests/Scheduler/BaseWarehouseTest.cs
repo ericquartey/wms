@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 Depth = 1,
-                Width = 1
+                Width = 1,
             };
 
             using (var context = this.CreateContext())

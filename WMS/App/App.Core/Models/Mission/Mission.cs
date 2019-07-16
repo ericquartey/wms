@@ -9,6 +9,9 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Properties
 
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
+
         [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
         public string BayDescription { get; set; }
 

@@ -100,7 +100,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 loadingUnit.Id != -1;
         }
 
-        public override(string moduleName, string viewName, object data) GetNextView()
+        public override (string moduleName, string viewName, object data) GetNextView()
         {
             if (this.selectedItem != null)
             {

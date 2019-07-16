@@ -9,6 +9,6 @@ namespace Ferretto.WMS.App.Core.Models
         FIFO = 'F',
 
         [Display(Name = nameof(BusinessObjects.ItemManagementTypeVolume), ResourceType = typeof(BusinessObjects))]
-        Volume = 'V'
+        Volume = 'V',
     }
 }

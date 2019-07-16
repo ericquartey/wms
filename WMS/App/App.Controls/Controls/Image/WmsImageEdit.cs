@@ -112,7 +112,7 @@ namespace Ferretto.WMS.App.Controls
         {
             var dlg = new OpenFileDialog
             {
-                Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter)
+                Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter),
             };
 
             if (dlg.ShowDialog() == true)

@@ -299,7 +299,7 @@ namespace Ferretto.WMS.App.Controls
                 this.Filters = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
                 {
                     Key = filterDataSource.Key,
-                    Name = filterDataSource.Name
+                    Name = filterDataSource.Name,
                 }).ToList());
 
                 this.IsBusy = true;

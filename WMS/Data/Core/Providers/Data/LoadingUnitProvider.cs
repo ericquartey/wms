@@ -212,7 +212,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(l => new LoadingUnitOperation
                 {
                     Id = l.Id,
-                    LastPickDate = l.LastPickDate
+                    LastPickDate = l.LastPickDate,
                 })
                 .SingleOrDefaultAsync(l => l.Id == id);
         }
@@ -240,6 +240,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushUpdate(model);
 
             return result;
+        }
+
+        public async Task<IEnumerable<LoadingUnitDetails>> GetAllByMachineIdAsync(int machineId)
+        {
+            var models = await this.GetAllDetailsBase()
+                .Where(l => l.MachineId == machineId)
+                .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
@@ -278,10 +292,35 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IOperationResult<LoadingUnitOperationalInfoUpdate>> UpdateOperationalInfoAsync(LoadingUnitOperationalInfoUpdate model)
+        {
+            if (model == null)
+            {
+                return new BadRequestOperationResult<LoadingUnitOperationalInfoUpdate>(model);
+            }
+
+            try
+            {
+                var existingDataModel = this.DataContext.LoadingUnits.Find(model.Id);
+
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+                await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId });
+
+                return new SuccessOperationResult<LoadingUnitOperationalInfoUpdate>(null);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<LoadingUnitOperationalInfoUpdate>(ex);
+            }
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
                     "Major Code Smell",
-            "S4058:Overloads with a \"StringComparison\" parameter should be used",
-            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
+                    "S4058:Overloads with a \"StringComparison\" parameter should be used",
+                    Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -368,7 +407,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                                                     wl.m.TotalMaxWeight.Value > 0) ? loadingUnitsMachines.Select(lm => new
                                                                     {
                                                                         WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
-                                                                        LoadingUnitId = lm.l.Id
+                                                                        LoadingUnitId = lm.l.Id,
                                                                     }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : 0,
                 });
         }
@@ -405,6 +444,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LastPutDate = l.LastPutDate,
                     MissionsCount = l.MissionsCount,
                     CellId = l.CellId,
+                    MachineId = l.Cell.Aisle.Machines.FirstOrDefault().Id,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,

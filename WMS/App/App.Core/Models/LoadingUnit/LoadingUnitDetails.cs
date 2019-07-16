@@ -127,7 +127,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(
                     Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
-            ResourceType = typeof(BusinessObjects))]
+                    ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
             get => this.handlingParametersCorrection;

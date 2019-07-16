@@ -22,7 +22,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         #region Methods
 
-        public static(ShortKey shortKey, bool isMain) GetShortKey(Type view, ShortKey shortKey)
+        public static (ShortKey shortKey, bool isMain) GetShortKey(Type view, ShortKey shortKey)
         {
             ShortKey shortKeyFound = null;
             var isMain = false;

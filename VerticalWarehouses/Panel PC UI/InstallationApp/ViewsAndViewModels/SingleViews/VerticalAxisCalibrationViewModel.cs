@@ -40,6 +40,8 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken receiveHomingUpdateToken;
 
+        private SubscriptionToken receiveExceptionToken;
+
         private string resolution;
 
         private ICommand startButtonCommand;
@@ -188,6 +190,15 @@ namespace Ferretto.VW.InstallationApp
                 },
                 ThreadOption.PublisherThread,
                 false);
+
+            this.receiveExceptionToken = this.eventAggregator.GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -310,6 +321,19 @@ namespace Ferretto.VW.InstallationApp
                         this.NoteString = App.Resources.InstallationApp.HorizontalHomingError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
+                        break;
+                }
+            }
+
+            if (messageUI.NotificationMessage is NotificationMessageUI<InverterExceptionMessageData> f)
+            {
+                switch (f.Status)
+                {
+                    case MessageStatus.OperationError:
+                        this.NoteString = f.Description;
+                        break;
+
+                    default:
                         break;
                 }
             }

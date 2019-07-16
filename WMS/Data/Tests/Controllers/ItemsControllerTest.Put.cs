@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var itemArea1 = new DataModels.ItemArea
             {
                 AreaId = this.Area1.Id,
-                ItemId = item1.Id
+                ItemId = item1.Id,
             };
 
             using (var context = this.CreateContext())

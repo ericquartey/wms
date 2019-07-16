@@ -29,9 +29,9 @@ namespace Ferretto.WMS.App.Controls
 
         public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(
                                                         nameof(FocusedStart),
-                                        typeof(string),
-                                        typeof(ActionBarInputPanelControl),
-                                        new FrameworkPropertyMetadata(default(string), null));
+                                                        typeof(string),
+                                                        typeof(ActionBarInputPanelControl),
+                                                        new FrameworkPropertyMetadata(default(string), null));
 
         #endregion
 
