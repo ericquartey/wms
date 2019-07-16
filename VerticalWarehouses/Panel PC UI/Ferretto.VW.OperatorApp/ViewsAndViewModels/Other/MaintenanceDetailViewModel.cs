@@ -11,15 +11,11 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class MaintenanceDetailViewModel : BindableBase, IMaintenanceDetailViewModel
+    public class MaintenanceDetailViewModel : BaseViewModel, IMaintenanceDetailViewModel
     {
         #region Fields
 
-        private readonly IUnityContainer container;
-
         private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly DataGridKit selectedKit;
 
@@ -32,15 +28,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Constructors
 
         public MaintenanceDetailViewModel(
-            IEventAggregator eventAggregator,
             ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel)
         {
-            if (eventAggregator == null)
+            if (maintenanceDataGridViewModel == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(maintenanceDataGridViewModel));
             }
 
-            this.eventAggregator = eventAggregator;
             this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
             this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDataGridViewModel;
 
@@ -59,18 +53,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.kits = new ObservableCollection<DataGridKit>();
@@ -88,16 +75,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             this.dataGridViewModelRef.Kits = this.kits;
             this.dataGridViewModelRef.SelectedKit = this.kits[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

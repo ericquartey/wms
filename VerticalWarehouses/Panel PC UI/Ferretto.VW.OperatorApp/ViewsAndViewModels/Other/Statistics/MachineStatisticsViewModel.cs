@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class MachineStatisticsViewModel : BindableBase, IMachineStatisticsViewModel
+    public class MachineStatisticsViewModel : BaseViewModel, IMachineStatisticsViewModel
     {
         #region Fields
 
@@ -43,18 +43,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.items = new ObservableCollection<DataGridItemStatistics>();
@@ -72,16 +65,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
             this.dataGridViewModelRef.Items = this.items;
             this.dataGridViewModelRef.SelectedItem = this.items[0];
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
@@ -18,7 +19,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityPickingViewModel : BindableBase, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
+    public class DrawerActivityPickingViewModel : BaseViewModel, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -160,8 +161,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public string RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         public TrayControlCompartment SelectedCompartment { get => this.selectedCompartment; set => this.SetProperty(ref this.selectedCompartment, value); }
@@ -184,27 +183,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             }
         }
 
-        public void ExitFromViewMethod()
+        public override void ExitFromViewMethod()
         {
             this.Image?.Dispose();
             this.image?.Dispose();
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             this.feedbackNotifier.Notify($"Current mission ID: {this.bayManager.CurrentMission.Id}");
             await this.GetViewDataAsync(this.bayManager);
             await this.GetTrayControlDataAsync(this.bayManager);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         public void UpdateView()

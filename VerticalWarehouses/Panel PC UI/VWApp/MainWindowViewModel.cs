@@ -94,8 +94,9 @@ namespace Ferretto.VW.App
 #endif
         }
 
-        private void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
+            this.Machine = await this.machineProvider.GetIdentityAsync();
             this.ErrorMessage = "Machine Automation Service connected!!!!!!!!!!!!!!!!!!!!!!!!";
         }
 
@@ -156,7 +157,7 @@ namespace Ferretto.VW.App
         {
             this.container = container;
 
-            this.Machine = await this.machineProvider.GetIdentityAsync();
+         
         }
 
         public void HACK_InitialiseHubOperator()

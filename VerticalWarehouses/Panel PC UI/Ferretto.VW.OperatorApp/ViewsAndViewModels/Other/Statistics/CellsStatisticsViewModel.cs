@@ -15,7 +15,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class CellsStatisticsViewModel : BindableBase, ICellsStatisticsViewModel
+    public class CellsStatisticsViewModel : BaseViewModel, ICellsStatisticsViewModel
     {
         #region Fields
 
@@ -70,20 +70,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
                 this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public CellStatusStatistic SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             this.cellStatistics = await this.cellsService.GetStatisticsAsync();
 
@@ -95,16 +88,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             this.DataGridViewModel = this.dataGridViewModelRef;
 
             this.RaisePropertyChanged(nameof(this.CellStatistics));
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

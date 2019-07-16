@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
@@ -19,7 +20,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityInventoryViewModel : BindableBase, IDrawerActivityInventoryViewModel, IDrawerActivityViewModel
+    public class DrawerActivityInventoryViewModel : BaseViewModel, IDrawerActivityInventoryViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -93,7 +94,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
             get => this.filterColorFunc;
-            set => this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value);
+            set => this.SetProperty(ref this.filterColorFunc, value);
         }
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
@@ -106,8 +107,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public TrayControlCompartment SelectedCompartment { get => this.selectedCompartment; set => this.SetProperty(ref this.selectedCompartment, value); }
 
         public string StoredQuantity { get => this.storedQuantity; set => this.SetProperty(ref this.storedQuantity, value); }
@@ -118,11 +117,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
@@ -131,22 +125,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             var bayManager = this.container.Resolve<IBayManager>();
             this.container.Resolve<IFeedbackNotifier>().Notify($"Current mission ID: {this.container.Resolve<IBayManager>().CurrentMission.Id}");
             await this.GetViewDataAsync(bayManager);
             await this.GetTrayControlDataAsync(bayManager);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         public void UpdateView()
