@@ -9,6 +9,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     #pragma warning disable
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface ICellsService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CellStatistics> GetStatisticsAsync();
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<CellStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IBeltBurnishingService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -83,11 +95,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IInstallationStatusService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetStatusAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetStatusAsync();
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetStatusAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<bool>> GetStatusAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -422,6 +434,79 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CellStatistics 
+    {
+        [Newtonsoft.Json.JsonProperty("cellOccupationRatio", Required = Newtonsoft.Json.Required.Always)]
+        public double CellOccupationRatio { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("cellStatusStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<CellStatusStatistic> CellStatusStatistics { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalBackCells { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalCells", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCells { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalFrontCells", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalFrontCells { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CellStatistics FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatistics>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class CellStatusStatistic 
+    {
+        [Newtonsoft.Json.JsonProperty("ratioBackCells", Required = Newtonsoft.Json.Required.Always)]
+        public double RatioBackCells { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ratioFrontCells", Required = Newtonsoft.Json.Required.Always)]
+        public double RatioFrontCells { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        public Status Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalBackCells { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalFrontCells", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalFrontCells { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static CellStatusStatistic FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CellStatusStatistic>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum Status
+    {
+        Free = 0,
+    
+        Disabled = 1,
+    
+        Occupied = 2,
+    
+        Unusable = 3,
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ProblemDetails 
     {

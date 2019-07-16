@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -10,13 +11,31 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : IDataLayerCellManagment
     {
-        // TEMP Maybe obsolete
-        //public List<Cell> GetCellList()
-        //{
-        //    return this.inMemoryDataContext.Cells.ToList();
-        //}
-
         #region Methods
+
+        public CellStatistics GetCellStatistics()
+        {
+            var totalCells = this.primaryDataContext.Cells.Count();
+            var cellStatusStatistics = this.primaryDataContext.Cells.GroupBy(c => c.Status).Select(g => new CellStatusStatistic
+            {
+                Status = g.Key,
+                TotalFrontCells = g.Count(c => c.Side == Side.FrontOdd),
+                TotalBackCells = g.Count(c => c.Side == Side.BackEven),
+                RatioFrontCells = g.Count(c => c.Side == Side.FrontOdd) / (double)totalCells,
+                RatioBackCells = g.Count(c => c.Side == Side.BackEven) / (double)totalCells,
+            });
+
+            var cellStatistics = new CellStatistics
+            {
+                CellStatusStatistics = cellStatusStatistics,
+                TotalCells = totalCells,
+                TotalFrontCells = this.primaryDataContext.Cells.Count(c => c.Side == Side.FrontOdd),
+                TotalBackCells = this.primaryDataContext.Cells.Count(c => c.Side == Side.BackEven),
+                CellOccupationRatio = this.primaryDataContext.Cells.Count(c => (c.Status == Status.Occupied || c.Status == Status.Unusable)) / (double)totalCells,
+            };
+
+            return cellStatistics;
+        }
 
         // INFO Method used when a drawer backs in the magazine from bay (return mission).
         public async Task<LoadingUnitPosition> GetFreeBlockPositionAsync(decimal loadingUnitHeight, int loadingUnitId)

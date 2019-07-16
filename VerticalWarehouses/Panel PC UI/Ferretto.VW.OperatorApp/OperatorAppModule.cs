@@ -64,8 +64,11 @@ namespace Ferretto.VW.App.Operator
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             var operatorService = new OperatorService(this.automationServiceUrl);
-
             containerRegistry.RegisterInstance<IOperatorService>(operatorService);
+
+            var cellsService = new CellsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ICellsService>(cellsService);
+
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
