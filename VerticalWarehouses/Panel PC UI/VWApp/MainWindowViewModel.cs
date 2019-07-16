@@ -10,8 +10,8 @@ using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
-using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
 using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs;
+using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
 
 namespace Ferretto.VW.App
 {
@@ -96,7 +96,14 @@ namespace Ferretto.VW.App
 
         private void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            this.ErrorMessage = "Machine Automation Service connected!!!!!!!!!!!!!!!!!!!!!!!!";
+            if (e.IsConnected)
+            {
+                this.ErrorMessage = "Machine Automation Service connected!!!!!!!!!!!!!!!!!!!!!!!!";
+            }
+            else
+            {
+                this.ErrorMessage = "Connection to Machine Automation Service lost.";
+            }
         }
 
         #endregion
@@ -156,7 +163,13 @@ namespace Ferretto.VW.App
         {
             this.container = container;
 
-            this.Machine = await this.machineProvider.GetIdentityAsync();
+            try
+            {
+                this.Machine = await this.machineProvider.GetIdentityAsync();
+            }
+            catch
+            {
+            }
         }
 
         public void HACK_InitialiseHubOperator()
