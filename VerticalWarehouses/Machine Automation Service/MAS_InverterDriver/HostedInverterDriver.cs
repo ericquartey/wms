@@ -9,6 +9,14 @@ using Ferretto.VW.MAS_InverterDriver.Diagnostics;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -90,10 +98,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private Timer heartBeatTimer;
 
-        private InverterIndex inverterIndexToStop;  // index of inverter to Stop
+        private InverterIndex inverterIndexToStop;
 
         private Timer sensorStatusUpdateTimer;
 
+        // index of inverter to Stop
         private int shaftPositionUpdateNumberOfTimes;
 
         private CancellationToken stoppingToken;
@@ -192,6 +201,19 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public InverterDiagnosticsData WriteRoundtripTimeData { get; }
 
+        private IInverterStateMachine CurrentStateMachine
+        {
+            get => this.currentStateMachine;
+            set
+            {
+                if (this.currentStateMachine != value)
+                {
+                    this.currentStateMachine?.Dispose();
+                    this.currentStateMachine = value;
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -286,7 +308,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 //    continue;
                 //}
 
-                if (this.currentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
+                if (this.CurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
                 {
                     if (receivedMessage.Data is InverterStopFieldMessageData stopMessageData)
                     {
@@ -295,14 +317,14 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogTrace("4: Stop the timer for update shaft position");
                     this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-                    this.currentStateMachine?.Stop();
+                    this.CurrentStateMachine?.Stop();
 
                     continue;
                 }
 
-                if (this.currentStateMachine != null)
+                if (this.CurrentStateMachine != null)
                 {
-                    this.logger.LogTrace($"5:Inverter Driver already executing operation {this.currentStateMachine.GetType()}");
+                    this.logger.LogTrace($"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}");
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
@@ -395,11 +417,17 @@ namespace Ferretto.VW.MAS_InverterDriver
                         {
                             if (receivedMessage.Status == MessageStatus.OperationEnd)
                             {
-                                this.logger.LogDebug($"Positioning Deallocating {this.currentStateMachine?.GetType()} state machine");
-                                this.logger.LogTrace($"4:Deallocation SM {this.currentStateMachine?.GetType()}");
+                                this.logger.LogDebug($"Positioning Deallocating {this.CurrentStateMachine?.GetType()} state machine");
+                                this.logger.LogTrace($"4:Deallocation SM {this.CurrentStateMachine?.GetType()}");
 
-                                this.currentStateMachine?.Dispose();
-                                this.currentStateMachine = null;
+                                if (this.CurrentStateMachine is PositioningStateMachine)
+                                {
+                                    this.CurrentStateMachine = null;
+                                }
+                                else
+                                {
+                                    this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                                }
 
                                 this.logger.LogTrace("4: Stop the timer for update shaft position");
                                 this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -407,10 +435,16 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                             if (receivedMessage.Status == MessageStatus.OperationStop)
                             {
-                                this.logger.LogTrace($"5:Deallocation SM {this.currentStateMachine?.GetType()}");
+                                this.logger.LogTrace($"5:Deallocation SM {this.CurrentStateMachine?.GetType()}");
 
-                                this.currentStateMachine?.Dispose();
-                                this.currentStateMachine = null;
+                                if (this.CurrentStateMachine is PositioningStateMachine)
+                                {
+                                    this.CurrentStateMachine = null;
+                                }
+                                else
+                                {
+                                    this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                                }
 
                                 this.logger.LogTrace("4: Stop the timer for update shaft position");
                                 this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -435,14 +469,27 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.logger.LogDebug($"CalibrateAxis Deallocating {this.currentStateMachine?.GetType()} state machine");
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            this.logger.LogDebug($"CalibrateAxis Deallocating {this.CurrentStateMachine?.GetType()} state machine");
+
+                            if (this.CurrentStateMachine is CalibrateAxisStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
                         }
                         if (receivedMessage.Status == MessageStatus.OperationStop)
                         {
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            if (this.CurrentStateMachine is CalibrateAxisStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
 
                             // Enqueue a message to execute the Stop states machine
                             var stopMessageData = new InverterStopFieldMessageData(this.inverterIndexToStop);
@@ -462,16 +509,28 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     case FieldMessageType.ShutterPositioning:
 
-                        this.logger.LogDebug($"ShutterPositioning Deallocating {this.currentStateMachine?.GetType()} state machine");
+                        this.logger.LogDebug($"ShutterPositioning Deallocating {this.CurrentStateMachine?.GetType()} state machine");
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            if (this.CurrentStateMachine is ShutterPositioningStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
                         }
                         if (receivedMessage.Status == MessageStatus.OperationStop)
                         {
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            if (this.CurrentStateMachine is ShutterPositioningStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
 
                             // Enqueue a message to execute the Stop states machine
                             var stopMessageData = new InverterStopFieldMessageData(this.inverterIndexToStop);
@@ -493,11 +552,19 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:
 
-                        this.logger.LogDebug($"Deallocating {this.currentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
+                        this.logger.LogDebug($"Deallocating {this.CurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            if (this.CurrentStateMachine is PowerOffStateMachine ||
+                                this.CurrentStateMachine is SwitchOnStateMachine ||
+                                this.CurrentStateMachine is StopStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
                         }
 
                         break;
@@ -505,9 +572,16 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterSwitchOff:
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.logger.LogDebug($"InverterSwitchOff Deallocating {this.currentStateMachine?.GetType()} state machine");
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            this.logger.LogDebug($"InverterSwitchOff Deallocating {this.CurrentStateMachine?.GetType()} state machine");
+
+                            if (this.CurrentStateMachine is SwitchOffStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
 
                             var nextMessage = ((InverterSwitchOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                             if (nextMessage != null)
@@ -522,9 +596,16 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.logger.LogDebug($"InverterPowerOn Deallocating {this.currentStateMachine?.GetType()} state machine");
-                            this.currentStateMachine?.Dispose();
-                            this.currentStateMachine = null;
+                            this.logger.LogDebug($"InverterPowerOn Deallocating {this.CurrentStateMachine?.GetType()} state machine");
+
+                            if (this.CurrentStateMachine is PowerOnStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
 
                             var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
                             if (nextMessage != null)

@@ -89,7 +89,12 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.StatusWordParam)
             {
-                if (!this.currentStateMachine?.ValidateCommandResponse(currentMessage) ?? false)
+                if (this.CurrentStateMachine == null)
+                {
+                    this.logger.LogWarning($"Status word received current machine null");
+                }
+
+                if (!this.CurrentStateMachine?.ValidateCommandResponse(currentMessage) ?? false)
                 {
                     var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
 
@@ -284,7 +289,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     return;
                 }
             }
-            if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
+            if (this.CurrentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
             {
                 this.logger.LogTrace("6:Request Status word");
                 var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
@@ -397,15 +402,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogTrace("3:Starting Calibrate Axis FSM");
                     this.currentAxis = calibrateData.AxisToCalibrate;
-                    this.currentStateMachine = new CalibrateAxisStateMachine(this.currentAxis, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new CalibrateAxisStateMachine(this.currentAxis, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine?.Start();
                 }
                 else
                 {
                     this.logger.LogTrace("4:Inverter is not ready. Powering up the inverter");
 
-                    this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
+                    this.CurrentStateMachine?.Start();
                 }
             }
             else
@@ -497,8 +502,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 if (this.inverterStatuses.TryGetValue(switchOffData.SystemIndex, out var inverterStatus))
                 {
-                    this.currentStateMachine = new SwitchOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new SwitchOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine?.Start();
                 }
                 else
                 {
@@ -554,8 +559,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                                 this.logger.LogDebug("Inverter requires switching on selected axis");
 
-                                this.currentStateMachine = new SwitchOnStateMachine(switchOnData.AxisToSwitchOn, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                                this.currentStateMachine.Start();
+                                this.CurrentStateMachine = new SwitchOnStateMachine(switchOnData.AxisToSwitchOn, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                this.CurrentStateMachine.Start();
                             }
                         }
                         else
@@ -566,8 +571,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                             this.logger.LogDebug("Inverter requires Switch axis");
 
-                            this.currentStateMachine = new SwitchOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
-                            this.currentStateMachine?.Start();
+                            this.CurrentStateMachine = new SwitchOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
+                            this.CurrentStateMachine?.Start();
                         }
                     }
                     else
@@ -576,8 +581,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                         inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
-                        this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
-                        this.currentStateMachine.Start();
+                        this.CurrentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
+                        this.CurrentStateMachine.Start();
                     }
                 }
                 else
@@ -648,8 +653,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                                 else
                                 {
                                     this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                                    this.currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                                    this.currentStateMachine?.Start();
+                                    this.CurrentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                    this.CurrentStateMachine?.Start();
                                 }
                                 break;
 
@@ -669,42 +674,22 @@ namespace Ferretto.VW.MAS_InverterDriver
                                 else
                                 {
                                     this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                                    this.currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                                    this.currentStateMachine?.Start();
+                                    this.CurrentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                    this.CurrentStateMachine?.Start();
                                 }
                                 break;
 
                             default:
                                 break;
                         }
-
-                        //if (currentPosition == positioningFieldData.TargetPosition && positioningData.MovementType == MovementType.Absolute)
-                        //{
-                        //    this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-
-                        //    var msgNotification = new FieldNotificationMessage(
-                        //        null,
-                        //        "Axis already in position",
-                        //        FieldMessageActor.FiniteStateMachines,
-                        //        FieldMessageActor.InverterDriver,
-                        //        FieldMessageType.Positioning,
-                        //        MessageStatus.OperationEnd);
-
-                        //    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-                        //}
-                        //else
-                        //{
-                        //    this.currentStateMachine = new PositioningStateMachine(positioningFieldData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                        //    this.currentStateMachine?.Start();
-                        //}
                     }
                 }
                 else
                 {
                     this.logger.LogTrace("5:Inverter is not ready. Powering up the inverter");
 
-                    this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
+                    this.CurrentStateMachine?.Start();
                 }
             }
             else
@@ -734,12 +719,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("3:Starting Power Off FSM");
-                    this.currentStateMachine = new PowerOffStateMachine(
+                    this.CurrentStateMachine = new PowerOffStateMachine(
                         inverterStatus,
                         this.inverterCommandQueue,
                         this.eventAggregator,
                         this.logger);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine?.Start();
                 }
                 else
                 {
@@ -795,8 +780,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                 else
                 {
                     this.logger.LogTrace("4:Starting Power On FSM");
-                    this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine?.Start();
                 }
             }
             else
@@ -830,15 +815,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogTrace("3:Inverter start powering off");
 
-                    this.currentStateMachine = new PowerOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
+                    this.CurrentStateMachine = new PowerOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
                 }
                 else
                 {
                     this.logger.LogTrace("4:Starting ShutterPositioning FSM");
 
                     var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
-                    this.currentStateMachine = new ShutterPositioningStateMachine(convertedShutterPositioningData, this.inverterCommandQueue, inverterStatus, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new ShutterPositioningStateMachine(convertedShutterPositioningData, this.inverterCommandQueue, inverterStatus, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine?.Start();
                 }
             }
             else
@@ -858,8 +843,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 if (this.inverterStatuses.TryGetValue(stopData.InverterToStop, out var inverterStatus))
                 {
-                    this.currentStateMachine = new StopStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    this.CurrentStateMachine = new StopStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine?.Start();
                 }
                 else
                 {
