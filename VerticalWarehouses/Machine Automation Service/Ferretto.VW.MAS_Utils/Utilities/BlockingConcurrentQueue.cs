@@ -48,6 +48,11 @@ namespace Ferretto.VW.MAS_Utils.Utilities
         {
             try
             {
+                if (this.Count > 0)
+                {
+                    return this.Dequeue(out result);
+                }
+
                 if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
                 {
                     this.dataReady.Reset();

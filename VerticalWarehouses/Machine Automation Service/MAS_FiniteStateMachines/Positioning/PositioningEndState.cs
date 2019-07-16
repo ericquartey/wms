@@ -128,6 +128,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     MessageType.Positioning,
                     MessageStatus.OperationEnd);
 
+                this.Logger.LogDebug("FSM Positioning End");
+
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
         }

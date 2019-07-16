@@ -149,6 +149,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                 try
                 {
+                    this.logger.LogDebug("Starting Positioning FSM");
                     this.currentStateMachine.Start();
                 }
                 catch (Exception ex)
