@@ -708,4 +708,22 @@
   <data name="Cell_Status_Unusable" xml:space="preserve">
     <value>Inutilizzabile</value>
   </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Servizi WMS non raggiungibili</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Servizi WMS in linea</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Scaduto</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>In Scadenza</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Valido</value>
+  </data>
 </root>

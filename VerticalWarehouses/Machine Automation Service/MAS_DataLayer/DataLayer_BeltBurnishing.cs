@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 namespace Ferretto.VW.MAS_DataLayer
 {
     /// <inheritdoc/>
-    public partial class DataLayer : IBeltBurnishing
+    public partial class DataLayer : IBeltBurnishingDataLayer
     {
         #region Properties
 

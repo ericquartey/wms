@@ -18,7 +18,7 @@
 
         public string SerialNumber { get; set; }
 
-        public MachineServiceStatus ServiceStatus { get; set; }
+        public MachineServiceStatus ServiceStatus { get; set; } = MachineServiceStatus.Valid;
 
         public int TrayCount { get; set; }
 

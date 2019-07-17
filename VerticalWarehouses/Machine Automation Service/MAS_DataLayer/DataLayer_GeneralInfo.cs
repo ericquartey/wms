@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IGeneralInfo
+    public partial class DataLayer : IGeneralInfoDataLayer
     {
         #region Properties
 

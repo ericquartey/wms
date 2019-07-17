@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public ResolutionCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 

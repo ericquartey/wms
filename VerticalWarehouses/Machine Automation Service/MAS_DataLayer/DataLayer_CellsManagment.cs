@@ -8,7 +8,7 @@ using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayerCellManagment
+    public partial class DataLayer : ICellManagmentDataLayer
     {
         #region Methods
 

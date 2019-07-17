@@ -3,6 +3,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.WmsCommunication;
 using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -35,6 +36,7 @@ namespace Ferretto.VW.App
         {
             containerProvider.Resolve<IOperatorHubClient>().ConnectAsync();
             containerProvider.Resolve<IInstallationHubClient>().ConnectAsync();
+            containerProvider.Resolve<IDataHubClient>().ConnectAsync();
 
             var viewModel = (containerProvider.Resolve<IMainWindow>() as System.Windows.Window).DataContext;
 
@@ -61,8 +63,12 @@ namespace Ferretto.VW.App
             containerRegistry.RegisterInstance<IOperatorHubClient>(operatorHubClient);
 
             var installationHubPath = ConfigurationManager.AppSettings.Get("InstallationHubEndpoint");
-            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", installationHubPath);
-            containerRegistry.RegisterInstance<IInstallationHubClient>(installationHubClientInstance);
+            var installationHubClient = new InstallationHubClient(automationServiceUrl, installationHubPath);
+            containerRegistry.RegisterInstance<IInstallationHubClient>(installationHubClient);
+
+            var wmsHubPath = ConfigurationManager.AppSettings.Get("WMSServiceAddressHubsEndpoint");
+            var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new System.Uri(wmsHubPath));
+            containerRegistry.RegisterInstance(wmsHub);
         }
 
         private static void RegisterWmsProviders(IContainerRegistry containerRegistry)

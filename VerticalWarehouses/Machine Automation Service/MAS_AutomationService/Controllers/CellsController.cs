@@ -15,13 +15,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerCellManagment dataLayerCellManagment;
+        private readonly ICellManagmentDataLayer dataLayerCellManagment;
 
         #endregion
 
         #region Constructors
 
-        public CellsController(IDataLayerCellManagment dataLayerCellManagment)
+        public CellsController(ICellManagmentDataLayer dataLayerCellManagment)
         {
             if (dataLayerCellManagment == null)
             {

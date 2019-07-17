@@ -1088,4 +1088,22 @@
     <value>Unusable</value>
     <comment>Cell Status</comment>
   </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>WMS Services offline</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>WMS Services online</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>Expiring</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Valid</value>
+  </data>
 </root>

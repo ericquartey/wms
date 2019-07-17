@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
-    public interface IDataLayerRuntimeValueManagment
+    public interface IRuntimeValueManagmentDataLayer
     {
         #region Methods
 

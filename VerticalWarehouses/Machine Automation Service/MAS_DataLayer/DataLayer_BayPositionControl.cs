@@ -4,7 +4,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IBayPositionControl
+    public partial class DataLayer : IBayPositionControlDataLayer
     {
         #region Properties
 
