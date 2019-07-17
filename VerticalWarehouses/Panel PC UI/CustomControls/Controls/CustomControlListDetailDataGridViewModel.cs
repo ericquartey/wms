@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlListDetailDataGridViewModel : BindableBase, ICustomControlListDetailDataGridViewModel
+    public class CustomControlListDetailDataGridViewModel : BaseViewModel, ICustomControlListDetailDataGridViewModel
     {
         #region Fields
 
@@ -24,29 +24,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public ObservableCollection<DataGridListDetail> Lists { get => this.lists; set => this.SetProperty(ref this.lists, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public DataGridListDetail SelectedList { get => this.selectedList; set => this.SetProperty(ref this.selectedList, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
 
         #endregion
     }

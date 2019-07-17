@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -31,8 +31,18 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         public BeltBurnishingController(IEventAggregator eventAggregator, IServiceProvider services)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
@@ -60,6 +70,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
             return await this.GetIntegerConfigurationParameter_MethodAsync(category, parameter);
+        }
+
+        [HttpPut("SetBeltBurnishingCompletion")]
+        public async Task<bool> SetBeltBurnishingCompletionAsync()
+        {
+            return await this.SetBeltBurnishingCompletion_MethodAsync();
         }
 
         [ProducesResponseType(200)]
@@ -204,6 +220,22 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
+        }
+
+        private async Task<bool> SetBeltBurnishingCompletion_MethodAsync()
+        {
+            var result = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus, true);
+            }
+            catch
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         private void Stop_Method()

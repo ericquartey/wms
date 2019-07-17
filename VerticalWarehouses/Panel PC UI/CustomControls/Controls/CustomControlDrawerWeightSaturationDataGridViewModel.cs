@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlDrawerWeightSaturationDataGridViewModel : BindableBase, ICustomControlDrawerWeightSaturationDataGridViewModel
+    public class CustomControlDrawerWeightSaturationDataGridViewModel : BaseViewModel, ICustomControlDrawerWeightSaturationDataGridViewModel
     {
         #region Fields
 
@@ -24,29 +24,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public ObservableCollection<DataGridDrawerWeightSaturation> Drawers { get => this.drawers; set => this.SetProperty(ref this.drawers, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public DataGridDrawerWeightSaturation SelectedDrawer { get => this.selectedDrawer; set => this.SetProperty(ref this.selectedDrawer, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
 
         #endregion
     }

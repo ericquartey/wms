@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -8,7 +9,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class StatisticsNavigationViewModel : BindableBase, IStatisticsNavigationViewModel
+    public class StatisticsNavigationViewModel : BaseViewModel, IStatisticsNavigationViewModel
     {
         #region Fields
 
@@ -48,50 +49,37 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             this.navigationService.NavigateToView<CellsStatisticsViewModel, ICellsStatisticsViewModel>();
         }));
 
-        public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
-        {
-            this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
-        }));
+        public ICommand DrawerSpaceSaturationButtonCommand =>
+            this.drawerSpaceSaturationButtonCommand
+            ??
+            (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
+                {
+                    this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
+                }));
 
-        public ICommand ErrorsStatisticsButtonCommand => this.errorsStatisticsButtonCommand ?? (this.errorsStatisticsButtonCommand = new DelegateCommand(() =>
-        {
-            this.navigationService.NavigateToView<ErrorsStatisticsViewModel, IErrorsStatisticsViewModel>();
-        }));
+        public ICommand ErrorsStatisticsButtonCommand =>
+            this.errorsStatisticsButtonCommand
+            ??
+            (this.errorsStatisticsButtonCommand = new DelegateCommand(() =>
+                {
+                    this.navigationService.NavigateToView<ErrorsStatisticsViewModel, IErrorsStatisticsViewModel>();
+                }));
 
-        public ICommand MachineStatisticsButtonCommand => this.machineStatisticsButtonCommand ?? (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
-                                {
-                                    this.navigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
-                                }));
-
-        public BindableBase NavigationViewModel { get; set; }
+        public ICommand MachineStatisticsButtonCommand =>
+            this.machineStatisticsButtonCommand
+            ??
+            (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
+                {
+                    this.navigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
+                }));
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

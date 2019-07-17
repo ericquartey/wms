@@ -50,20 +50,20 @@
     //"MaxAcceptedBai3Height":
   },
 
-  //"SetupNetwork": {
-  //  "Inverter1": "192.168.0.100",
-  //  "Inverter1Port": 17221,
-  //  "IOExpansion1": "192.168.0.1",
-  //  "IOExpansion1Port": 19550,
-  //  "InverterIndexMaster": 0,
-  //  "InverterIndexShutter1": 2,
-  //  "InverterIndexBay1": 3,
-  //  "InverterIndexShutter2": 4,
-  //  "PPC1MasterIPAddress": "::1",
-  //  "PPC2SlaveIPAddress": "::2",
-  //  "PPC3SlaveIPAddress": "::3"
-  //},
-
+  "SetupNetwork": {
+    "Inverter1": "192.168.0.100",
+    "Inverter1Port": 17221,
+    "IOExpansion1": "192.168.0.1",
+    "IOExpansion1Port": 19550,
+    "InverterIndexMaster": 0,
+    "InverterIndexShutter1": 2,
+    "InverterIndexBay1": 3,
+    "InverterIndexShutter2": 4,
+    "PPC1MasterIPAddress": "::1",
+    "PPC2SlaveIPAddress": "::2",
+    "PPC3SlaveIPAddress": "::3"
+  },
+  /*
   "SetupNetwork": {
     "MachineNumber": 1,
     "WMS_ON": true,
@@ -83,6 +83,33 @@
     "PPC2SlaveIPAddress": "198.168.0.20",
     "PPC3SlaveIPAddress": "::3" //TEMP Temporary value for software test
   },
+  */
+  //TEMP To remove but temporary commented, until the test won't be ok
+  //"SetupStatus": {
+  //  "VerticalHomingDone": false,
+  //  "HorizontalHomingDone": false,
+  //  "BeltBurnishingDone": false,
+  //  "VerticalResolutionDone": false,
+  //  "VerticalOffsetDone": false,
+  //  "CellsControlDone": false,
+  //  "PanelsControlDone": false,
+  //  "Shape1Done": false,
+  //  "Shape2Done": false,
+  //  "Shape3Done": false,
+  //  "WeightMeasurementDone": false,
+  //  "Shutter1Done": false,
+  //  "Shutter2Done": false,
+  //  "Shutter3Done": false,
+  //  "Bay1ControlDone": false,
+  //  "Bay2ControlDone": false,
+  //  "Bay3ControlDone": false,
+  //  "FirstDrawerLoadDone": false,
+  //  "DrawersLoadedDone": false,
+  //  "Laser1Done": false,
+  //  "Laser2Done": false,
+  //  "Laser3Done": false,
+  //  "MachineDone": false
+  //},
 
   "VerticalAxis": {
     "MaxEmptySpeed": 770.0,

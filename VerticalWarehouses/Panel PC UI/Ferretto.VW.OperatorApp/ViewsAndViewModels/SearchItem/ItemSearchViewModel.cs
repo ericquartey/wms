@@ -15,7 +15,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
-    public class ItemSearchViewModel : BindableBase, IItemSearchViewModel
+    public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
     {
         #region Fields
 
@@ -142,8 +142,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     this.navigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
                 }));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         public string SearchArticleCode
@@ -238,11 +236,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
         }
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public async void ItemCallMethodAsync()
         {
             this.IsItemCallButtonActive = false;
@@ -267,11 +260,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 this.RequestedQuantity = 0;
                 this.IsItemCallButtonActive = true;
             }
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
         }
 
         public async void SearchItemAsync(object stateInfo)
@@ -341,16 +329,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.timer.Dispose();
             this.IsSearching = false;
             this.hasUserTyped = false;
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

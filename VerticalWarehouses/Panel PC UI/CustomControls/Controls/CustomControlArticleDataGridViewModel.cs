@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlArticleDataGridViewModel : BindableBase, ICustomControlArticleDataGridViewModel
+    public class CustomControlArticleDataGridViewModel : BaseViewModel, ICustomControlArticleDataGridViewModel
     {
         #region Fields
 
@@ -20,29 +20,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public ObservableCollection<DataGridItem> Articles { get => this.articles; set => this.SetProperty(ref this.articles, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public DataGridItem SelectedArticle { get => this.selectedArticle; set => this.SetProperty(ref this.selectedArticle, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
 
         #endregion
     }
