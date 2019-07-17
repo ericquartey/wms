@@ -62,6 +62,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return await this.GetIntegerConfigurationParameter_MethodAsync(category, parameter);
         }
 
+        [HttpPut("SetBeltBurnishingCompletion")]
+        public async Task<bool> SetBeltBurnishingCompletionAsync()
+        {
+            return await this.SetBeltBurnishingCompletion_MethodAsync();
+        }
+
         [ProducesResponseType(200)]
         [HttpGet("Stop")]
         public void Stop()
@@ -204,6 +210,22 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
+        }
+
+        private async Task<bool> SetBeltBurnishingCompletion_MethodAsync()
+        {
+            var result = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus, true);
+            }
+            catch
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         private void Stop_Method()
