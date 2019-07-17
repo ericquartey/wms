@@ -6,30 +6,56 @@
 
         TotalSteps = 1L,
 
-        InitialSpeed = 2L,
+        TotalMovement = 2L,
 
-        Step1Position = 3L,
+        MovementCorrection = 3L,
 
-        Step1Speed = 4L,
+        P0Quote = 4L,
 
-        Step1AccDec = 5L,
+        P0Acceleration = 5L,
 
-        Step2Position = 6L,
+        P0Deceleration = 6L,
 
-        Step2Speed = 7L,
+        P0SpeedV1 = 7L,
 
-        Step2AccDec = 8L,
+        P1Quote = 8L,
 
-        Step3Position = 9L,
+        P1Acceleration = 9L,
 
-        Step3Speed = 10L,
+        P1Deceleration = 10L,
 
-        Step3AccDec = 11L,
+        P1SpeedV2 = 11L,
 
-        Step4Position = 12L,
+        P2Quote = 12L,
 
-        Step4Speed = 13L,
+        P2Acceleration = 13L,
 
-        Step4AccDec = 14L,
+        P2Deceleration = 14L,
+
+        P2SpeedV3 = 15L,
+
+        P3Quote = 16L,
+
+        P3Acceleration = 17L,
+
+        P3Deceleration = 18L,
+
+        P3SpeedV4 = 19L,
+
+        P4Quote = 20L,
+
+        P4Acceleration = 21L,
+
+        P4Deceleration = 22L,
+
+        P4SpeedV5 = 23L,
+
+        P5Quote = 24L,
+
+        P5Acceleration = 25L,
+
+        P5Deceleration = 26L,
+
+        P5Speed = 27L,
     }
 }

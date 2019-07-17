@@ -96,6 +96,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case SetupNetwork.IOExpansion1Port:
                 case SetupNetwork.IOExpansion2Port:
                 case SetupNetwork.IOExpansion3Port:
+                case SetupNetwork.SQLServerPort:
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
@@ -149,9 +150,12 @@ namespace Ferretto.VW.MAS_DataLayer
                 case VerticalAxis.HomingSearchDeceleration:
                 case VerticalAxis.HomingSearchSpeed:
                 case VerticalAxis.LowerBound:
-                case VerticalAxis.MaxAcceleration:
-                case VerticalAxis.MaxDeceleration:
-                case VerticalAxis.MaxSpeed:
+                case VerticalAxis.MaxEmptyAcceleration:
+                case VerticalAxis.MaxEmptyDeceleration:
+                case VerticalAxis.MaxEmptySpeed:
+                case VerticalAxis.MaxFullAcceleration:
+                case VerticalAxis.MaxFullDeceleration:
+                case VerticalAxis.MinFullSpeed:
                 case VerticalAxis.Offset:
                 case VerticalAxis.Resolution:
                 case VerticalAxis.UpperBound:
@@ -178,9 +182,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 case HorizontalAxis.AntiClockWiseRun:
                 case HorizontalAxis.ClockWiseRun:
-                case HorizontalAxis.MaxAcceleration:
-                case HorizontalAxis.MaxDeceleration:
-                case HorizontalAxis.MaxSpeed:
+                case HorizontalAxis.MaxEmptyAcceleration:
+                case HorizontalAxis.MaxEmptyDeceleration:
+                case HorizontalAxis.MaxEmptySpeed:
+                case HorizontalAxis.MaxFullSpeed:
+                case HorizontalAxis.MaxFullAcceleration:
+                case HorizontalAxis.MaxFullDeceleration:
                 case HorizontalAxis.Offset:
                 case HorizontalAxis.Resolution:
                     returnValue = ConfigurationDataType.Float;
@@ -202,19 +209,32 @@ namespace Ferretto.VW.MAS_DataLayer
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
-                case HorizontalMovementForwardProfile.InitialSpeed:
-                case HorizontalMovementForwardProfile.Step1AccDec:
-                case HorizontalMovementForwardProfile.Step1Position:
-                case HorizontalMovementForwardProfile.Step1Speed:
-                case HorizontalMovementForwardProfile.Step2AccDec:
-                case HorizontalMovementForwardProfile.Step2Position:
-                case HorizontalMovementForwardProfile.Step2Speed:
-                case HorizontalMovementForwardProfile.Step3AccDec:
-                case HorizontalMovementForwardProfile.Step3Position:
-                case HorizontalMovementForwardProfile.Step3Speed:
-                case HorizontalMovementForwardProfile.Step4AccDec:
-                case HorizontalMovementForwardProfile.Step4Position:
-                case HorizontalMovementForwardProfile.Step4Speed:
+                case HorizontalMovementForwardProfile.MovementCorrection:
+                case HorizontalMovementForwardProfile.P0Acceleration:
+                case HorizontalMovementForwardProfile.P0Deceleration:
+                case HorizontalMovementForwardProfile.P0Quote:
+                case HorizontalMovementForwardProfile.P0SpeedV1:
+                case HorizontalMovementForwardProfile.P1Acceleration:
+                case HorizontalMovementForwardProfile.P1Deceleration:
+                case HorizontalMovementForwardProfile.P1Quote:
+                case HorizontalMovementForwardProfile.P1SpeedV2:
+                case HorizontalMovementForwardProfile.P2Acceleration:
+                case HorizontalMovementForwardProfile.P2Deceleration:
+                case HorizontalMovementForwardProfile.P2Quote:
+                case HorizontalMovementForwardProfile.P2SpeedV3:
+                case HorizontalMovementForwardProfile.P3Acceleration:
+                case HorizontalMovementForwardProfile.P3Deceleration:
+                case HorizontalMovementForwardProfile.P3Quote:
+                case HorizontalMovementForwardProfile.P3SpeedV4:
+                case HorizontalMovementForwardProfile.P4Acceleration:
+                case HorizontalMovementForwardProfile.P4Deceleration:
+                case HorizontalMovementForwardProfile.P4Quote:
+                case HorizontalMovementForwardProfile.P4SpeedV5:
+                case HorizontalMovementForwardProfile.P5Acceleration:
+                case HorizontalMovementForwardProfile.P5Deceleration:
+                case HorizontalMovementForwardProfile.P5Quote:
+                case HorizontalMovementForwardProfile.P5Speed:
+                case HorizontalMovementForwardProfile.TotalMovement:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
@@ -234,19 +254,32 @@ namespace Ferretto.VW.MAS_DataLayer
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
-                case HorizontalMovementBackwardProfile.InitialSpeed:
-                case HorizontalMovementBackwardProfile.Step1AccDec:
-                case HorizontalMovementBackwardProfile.Step1Position:
-                case HorizontalMovementBackwardProfile.Step1Speed:
-                case HorizontalMovementBackwardProfile.Step2AccDec:
-                case HorizontalMovementBackwardProfile.Step2Position:
-                case HorizontalMovementBackwardProfile.Step2Speed:
-                case HorizontalMovementBackwardProfile.Step3AccDec:
-                case HorizontalMovementBackwardProfile.Step3Position:
-                case HorizontalMovementBackwardProfile.Step3Speed:
-                case HorizontalMovementBackwardProfile.Step4AccDec:
-                case HorizontalMovementBackwardProfile.Step4Position:
-                case HorizontalMovementBackwardProfile.Step4Speed:
+                case HorizontalMovementBackwardProfile.MovementCorrection:
+                case HorizontalMovementBackwardProfile.P0Acceleration:
+                case HorizontalMovementBackwardProfile.P0Deceleration:
+                case HorizontalMovementBackwardProfile.P0Quote:
+                case HorizontalMovementBackwardProfile.P0SpeedV1:
+                case HorizontalMovementBackwardProfile.P1Acceleration:
+                case HorizontalMovementBackwardProfile.P1Deceleration:
+                case HorizontalMovementBackwardProfile.P1Quote:
+                case HorizontalMovementBackwardProfile.P1SpeedV2:
+                case HorizontalMovementBackwardProfile.P2Acceleration:
+                case HorizontalMovementBackwardProfile.P2Deceleration:
+                case HorizontalMovementBackwardProfile.P2Quote:
+                case HorizontalMovementBackwardProfile.P2SpeedV3:
+                case HorizontalMovementBackwardProfile.P3Acceleration:
+                case HorizontalMovementBackwardProfile.P3Deceleration:
+                case HorizontalMovementBackwardProfile.P3Quote:
+                case HorizontalMovementBackwardProfile.P3SpeedV4:
+                case HorizontalMovementBackwardProfile.P4Acceleration:
+                case HorizontalMovementBackwardProfile.P4Deceleration:
+                case HorizontalMovementBackwardProfile.P4Quote:
+                case HorizontalMovementBackwardProfile.P4SpeedV5:
+                case HorizontalMovementBackwardProfile.P5Acceleration:
+                case HorizontalMovementBackwardProfile.P5Deceleration:
+                case HorizontalMovementBackwardProfile.P5Quote:
+                case HorizontalMovementBackwardProfile.P5Speed:
+                case HorizontalMovementBackwardProfile.TotalMovement:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
@@ -363,6 +396,11 @@ namespace Ferretto.VW.MAS_DataLayer
             return ConfigurationDataType.Float;
         }
 
+        public ConfigurationDataType CheckConfigurationValueType(ShutterManualMovements configurationValueEnum)
+        {
+            return ConfigurationDataType.Float;
+        }
+
         public ConfigurationDataType CheckConfigurationValueType(BayPositionControl configurationValueEnum)
         {
             return ConfigurationDataType.Float;
@@ -376,6 +414,7 @@ namespace Ferretto.VW.MAS_DataLayer
         private bool CheckConfigurationDataType(long parameter, long category, ConfigurationDataType type)
         {
             var actualParameterType = ConfigurationDataType.Undefined;
+
             switch (category)
             {
                 case (long)ConfigurationCategory.Undefined:
@@ -470,6 +509,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 case (long)ConfigurationCategory.LoadFirstDrawer:
                     {
                         actualParameterType = this.CheckConfigurationValueType((LoadFirstDrawer)parameter);
+                        break;
+                    }
+                case (long)ConfigurationCategory.ShutterManualMovements:
+                    {
+                        actualParameterType = this.CheckConfigurationValueType((ShutterManualMovements)parameter);
                         break;
                     }
                 default:

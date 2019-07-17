@@ -63,6 +63,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<IPAddress> SQLServerIPAddress => this.GetIPAddressConfigurationValueAsync((long)SetupNetwork.SQLServerIPAddress, (long)ConfigurationCategory.SetupNetwork);
 
+        public Task<int> SQLServerPort => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.SQLServerPort, (long)ConfigurationCategory.SetupNetwork);
+
         public Task<bool> WMS_ON => this.GetBoolConfigurationValueAsync((long)SetupNetwork.WMS_ON, (long)ConfigurationCategory.SetupNetwork);
 
         #endregion

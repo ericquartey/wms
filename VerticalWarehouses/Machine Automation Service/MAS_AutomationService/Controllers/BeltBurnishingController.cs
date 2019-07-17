@@ -72,11 +72,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         private async Task ExecuteBeltBurnishing_MethodAsync(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
             var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
             var acceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 

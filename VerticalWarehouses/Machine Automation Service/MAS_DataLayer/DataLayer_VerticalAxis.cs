@@ -28,11 +28,17 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<decimal> LowerBound => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.LowerBound, (long)ConfigurationCategory.VerticalAxis);
 
-        public Task<decimal> MaxAcceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+        public Task<decimal> MaxEmptyAcceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
 
-        public Task<decimal> MaxDeceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+        public Task<decimal> MaxEmptyDeceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
 
-        public Task<decimal> MaxSpeed => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+        public Task<decimal> MaxEmptySpeed => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+
+        public Task<decimal> MaxFullAcceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxFullAcceleration, (long)ConfigurationCategory.VerticalAxis);
+
+        public Task<decimal> MaxFullDeceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxFullDeceleration, (long)ConfigurationCategory.VerticalAxis);
+
+        public Task<decimal> MinFullSpeed => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.MinFullSpeed, (long)ConfigurationCategory.VerticalAxis);
 
         public Task<decimal> Offset => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis);
 

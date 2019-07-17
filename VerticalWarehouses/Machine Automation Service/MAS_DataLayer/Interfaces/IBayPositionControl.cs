@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
     {
         #region Properties
 
+        Task<decimal> FeedRateBP { get; }
+
         Task<decimal> StepValueBP { get; }
 
         #endregion

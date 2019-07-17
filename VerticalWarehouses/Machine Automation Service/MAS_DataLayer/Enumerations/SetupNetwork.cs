@@ -10,6 +10,8 @@
 
         Inverter1 = 3L,
 
+        Inverter1Port = 25L,
+
         InverterIndexMaster = 4L,
 
         InverterIndexChain = 5L,
@@ -28,9 +30,15 @@
 
         IOExpansion1 = 12L,
 
+        IOExpansion1Port = 26L,
+
         IOExpansion2 = 13L,
 
+        IOExpansion2Port = 27L,
+
         IOExpansion3 = 14L,
+
+        IOExpansion3Port = 28L,
 
         LaserBay1 = 15L,
 
@@ -46,18 +54,12 @@
 
         SQLServerIPAddress = 21L,
 
+        SQLServerPort = 29L,
+
         PPC1MasterIPAddress = 22L,
 
         PPC2SlaveIPAddress = 23L,
 
         PPC3SlaveIPAddress = 24L,
-
-        Inverter1Port = 25L,
-
-        IOExpansion1Port = 26L,
-
-        IOExpansion2Port = 27L,
-
-        IOExpansion3Port = 28L,
     }
 }
