@@ -23,9 +23,15 @@ namespace Ferretto.VW.MAS_DataLayer
             errorStatisticsSummary.Errors = erros;
             errorStatisticsSummary.TotalErrors = totalErrors;
 
-            errorStatisticsSummary.TotalLoadingUnits = 1000;
-            errorStatisticsSummary.RatioRealiability = 99.937;
-            errorStatisticsSummary.TotalLoadingUnitsBetweenErrors = 200;
+            if (this.primaryDataContext.MachineStatistics.Any())
+            {
+                errorStatisticsSummary.TotalLoadingUnits = this.primaryDataContext.MachineStatistics.First().TotalMovedTrays;
+                if (errorStatisticsSummary.TotalLoadingUnits > 0)
+                {
+                    errorStatisticsSummary.TotalLoadingUnitsBetweenErrors = errorStatisticsSummary.TotalLoadingUnits / totalErrors;
+                }
+                errorStatisticsSummary.RatioRealiability = 99.937;
+            }
 
             return errorStatisticsSummary;
         }
