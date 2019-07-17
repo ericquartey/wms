@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Status = StatusCodes.Status404NotFound,
-                    Detail = message
+                    Detail = message,
                 });
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
@@ -140,7 +141,7 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task GetInstallationStateAsync()
         {
-            var installationStatus = await this.installationStatusService.GetStatusAsync();
+            var installationStatus = (await this.installationStatusService.GetStatusAsync()).ToArray();
 
             this.IsVerticalHomingDone = installationStatus[0];
             this.IsHorizontalHomingDone = installationStatus[1];

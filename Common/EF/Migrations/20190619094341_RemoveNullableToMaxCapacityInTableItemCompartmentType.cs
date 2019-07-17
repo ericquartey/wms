@@ -2,7 +2,8 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class RemoveNullableToMaxCapacityInTableItemCompartmentType : Migration
     {
         #region Methods
@@ -28,4 +29,6 @@ namespace Ferretto.Common.EF.Migrations
 
         #endregion
     }
+
+    #pragma warning restore
 }

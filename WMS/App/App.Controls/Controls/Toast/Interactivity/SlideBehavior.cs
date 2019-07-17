@@ -194,14 +194,14 @@ namespace Ferretto.WMS.App.Controls
                 new SplineDoubleKeyFrame
                 {
                     KeyTime = KeyTime.FromTimeSpan(beginTime),
-                    Value = offset
+                    Value = offset,
                 });
             animation.KeyFrames.Add(
                 new SplineDoubleKeyFrame
                 {
                     KeySpline = new KeySpline(0, 0.5, 0.5, 1),
                     KeyTime = KeyTime.FromTimeSpan(beginTime + duration),
-                    Value = 0.0
+                    Value = 0.0,
                 });
 
             var storyboard = new Storyboard();
@@ -228,7 +228,7 @@ namespace Ferretto.WMS.App.Controls
                 new SplineDoubleKeyFrame
                 {
                     KeyTime = KeyTime.FromTimeSpan(beginTime),
-                    Value = 0.0
+                    Value = 0.0,
                 });
             animation.KeyFrames.Add(
                 new SplineDoubleKeyFrame

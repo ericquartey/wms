@@ -101,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             IQueryable<CandidateCompartment> candidateCompartments;
             switch (request.OperationType)
             {
-                case OperationType.Withdrawal:
+                case OperationType.Pick:
                     candidateCompartments = filteredCompartments
                         .Where(c => c.ItemId == request.ItemId)
                         .Select(c => new CandidateCompartment
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     break;
 
-                case OperationType.Insertion:
+                case OperationType.Put:
 
                     var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
@@ -179,7 +179,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public Expression<Func<Compartment, bool>> GetCompartmentIsInBayFunction(
                             int? bayId,
-            bool isVertimag = true)
+                            bool isVertimag = true)
         {
             if (!bayId.HasValue)
             {
@@ -262,7 +262,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 Expression<Func<T, double>> remainingCapacitySetSelector = c => c.RemainingCapacity / ((IOrderableCompartmentSet)c).Size;
 
-                return operationType == OperationType.Withdrawal ? availabilitySetSelector : remainingCapacitySetSelector;
+                return operationType == OperationType.Pick ? availabilitySetSelector : remainingCapacitySetSelector;
             }
             else
             {
@@ -270,7 +270,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
 
-                return operationType == OperationType.Withdrawal ? availabilitySelector : remainingCapacitySelector;
+                return operationType == OperationType.Pick ? availabilitySelector : remainingCapacitySelector;
             }
         }
 

@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = this.CompartmentType.Id,
                 ItemId = this.Item1.Id,
-                MaxCapacity = 100
+                MaxCapacity = 100,
             };
 
             var compartment = new Common.DataModels.Compartment
@@ -45,13 +45,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = "S1",
                 Sub2 = "S2",
                 MaterialStatusId = 3,
-                PackageTypeId = 4
+                PackageTypeId = 4,
             };
 
             var mission = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
-                LoadingUnitId = this.LoadingUnit1Cell1.Id
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
             };
 
             var missionOperation = new Common.DataModels.MissionOperation
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = compartment.Sub1,
                 Sub2 = compartment.Sub2,
                 MaterialStatusId = compartment.MaterialStatusId,
-                PackageTypeId = compartment.PackageTypeId
+                PackageTypeId = compartment.PackageTypeId,
             };
 
             using (var context = this.CreateContext())
@@ -133,7 +133,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         [TestProperty(
                      "Description",
-             @"GIVEN an executing pick mission on a compartment \
+                     @"GIVEN an executing pick mission on a compartment \
                 AND the compartment has stock of 0 \
                 AND the mission has a quantity of 10 \
                WHEN the mission is completed \
@@ -153,7 +153,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = this.CompartmentType.Id,
                 ItemId = this.Item1.Id,
-                MaxCapacity = 100
+                MaxCapacity = 100,
             };
 
             var emptyCompartment = new Common.DataModels.Compartment
@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = "S1",
                 Sub2 = "S2",
                 MaterialStatusId = 3,
-                PackageTypeId = 4
+                PackageTypeId = 4,
             };
 
             var missionOperation = new Common.DataModels.MissionOperation
@@ -180,14 +180,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = emptyCompartment.Sub1,
                 Sub2 = emptyCompartment.Sub2,
                 MaterialStatusId = emptyCompartment.MaterialStatusId,
-                PackageTypeId = emptyCompartment.PackageTypeId
+                PackageTypeId = emptyCompartment.PackageTypeId,
             };
 
             var mission = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Operations = new[] { missionOperation }
+                Operations = new[] { missionOperation },
             };
 
             using (var context = this.CreateContext())

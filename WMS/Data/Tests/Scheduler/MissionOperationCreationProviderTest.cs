@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 ItemId = this.ItemVolume.Id,
                 CompartmentTypeId = compartmentType1.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemVolume.Id,
-                OperationType = Common.DataModels.OperationType.Insertion,
+                OperationType = Common.DataModels.OperationType.Put,
                 RequestedQuantity = 10,
                 ReservedQuantity = 0,
                 Priority = 2,
@@ -147,7 +147,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 ItemId = this.ItemVolume.Id,
                 CompartmentTypeId = compartmentType1.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemVolume.Id,
-                OperationType = Common.DataModels.OperationType.Insertion,
+                OperationType = Common.DataModels.OperationType.Put,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Priority = 2,
@@ -251,7 +251,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 ItemId = this.ItemVolume.Id,
                 CompartmentTypeId = compartmentType.Id,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             var compartment = new Common.DataModels.Compartment
@@ -270,7 +270,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemVolume.Id,
-                OperationType = Common.DataModels.OperationType.Insertion,
+                OperationType = Common.DataModels.OperationType.Put,
                 RequestedQuantity = 10,
                 ReservedQuantity = 0,
                 Priority = 2,

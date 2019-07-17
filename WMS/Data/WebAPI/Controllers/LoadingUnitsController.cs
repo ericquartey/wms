@@ -199,7 +199,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NotFound(new ProblemDetails
                 {
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -234,6 +234,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             var result = await this.loadingUnitProvider.UpdateAsync(model);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            return this.Ok(result.Entity);
+        }
+
+        [ProducesResponseType(typeof(LoadingUnitDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPatch("{id}/operational-info")]
+        public async Task<ActionResult<LoadingUnitDetails>> UpdateOperationalInfoAsync(LoadingUnitOperationalInfoUpdate model)
+        {
+            var result = await this.loadingUnitProvider.UpdateOperationalInfoAsync(model);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);

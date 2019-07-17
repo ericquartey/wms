@@ -18,6 +18,6 @@ namespace Ferretto.WMS.App.Core.Models
         Error = 'E',
 
         [Display(Name = nameof(BusinessObjects.MissionStatusIncomplete), ResourceType = typeof(BusinessObjects))]
-        Incomplete = 'I'
+        Incomplete = 'I',
     }
 }

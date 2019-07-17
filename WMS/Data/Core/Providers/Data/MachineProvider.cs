@@ -80,7 +80,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = m.Id,
                     ServiceUrl = m.ServiceUrl,
-                    Bays = m.Bays.Select(b => new Bay { Id = b.Id })
+                    Bays = m.Bays.Select(b => new Bay { Id = b.Id }),
                 })
                 .ToArrayAsync();
 
@@ -217,7 +217,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (m, c) => new
                     {
                         m.Id,
-                        ItemsCount = c.Select(x => x.ItemsCount).DefaultIfEmpty()
+                        ItemsCount = c.Select(x => x.ItemsCount).DefaultIfEmpty(),
                     })
                 .SelectMany(
                     mc => mc.ItemsCount.DefaultIfEmpty(),
@@ -243,7 +243,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (m, l) => new
                     {
                         MachineId = m.Id,
-                        LoadingUnit = l
+                        LoadingUnit = l,
                     })
                 .SelectMany(
                     ml => ml.LoadingUnit.DefaultIfEmpty(),
@@ -260,7 +260,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         m.MachineId,
                         m.LoadingUnit,
-                        Compartment = c
+                        Compartment = c,
                     })
                 .SelectMany(
                     mc => mc.Compartment.DefaultIfEmpty(),
@@ -283,15 +283,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                         .Select(a => new
                         {
                             a.First().LoadingUnitArea,
-                            CompartmentArea = a.Sum(y => y.CompartmentArea)
-                        })
+                            CompartmentArea = a.Sum(y => y.CompartmentArea),
+                        }),
                 })
                 .Select(x => new MachineOccupation
                 {
                     Id = x.MachineId,
                     Occupation = x.g.Sum(y => y.LoadingUnitArea) > 0
                         ? x.g.Sum(y => y.CompartmentArea) / x.g.Sum(y => y.LoadingUnitArea) * 100
-                        : 0
+                        : 0,
                 });
         }
 

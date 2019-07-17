@@ -80,7 +80,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         Depth = model.Depth,
                         Id = model.Id,
-                        Width = model.Width
+                        Width = model.Width,
                     }, itemId,
                     maxCapacity);
 

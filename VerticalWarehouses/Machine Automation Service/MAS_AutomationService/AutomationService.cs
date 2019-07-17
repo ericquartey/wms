@@ -186,14 +186,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 NotificationMessage receivedMessage;
                 try
                 {
-                    if (this.notificationQueue.Count == 0)
-                    {
-                        this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    }
-                    else
-                    {
-                        this.notificationQueue.Dequeue(out receivedMessage);
-                    }
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
                     this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }

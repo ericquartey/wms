@@ -100,7 +100,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
-                        Id = this.CurrentItem.Id
+                        Id = this.CurrentItem.Id,
                     });
             }
             else

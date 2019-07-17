@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class CreateTable_MissionOperations : Migration
     {
         #region Methods
@@ -314,7 +315,7 @@ namespace Ferretto.Common.EF.Migrations
                     Status = table.Column<string>(type: "char(1)", nullable: false, defaultValueSql: "'N'"),
                     Sub1 = table.Column<string>(nullable: true),
                     Sub2 = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(type: "char(1)", nullable: false)
+                    Type = table.Column<string>(type: "char(1)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -401,4 +402,6 @@ namespace Ferretto.Common.EF.Migrations
 
         #endregion
     }
+
+    #pragma warning restore
 }

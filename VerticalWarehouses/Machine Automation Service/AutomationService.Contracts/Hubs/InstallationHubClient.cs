@@ -47,6 +47,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             connection.On<NotificationMessageUI<HomingMessageData>>(
                 "HomingNotify", this.OnHomingNotify);
 
+            connection.On<NotificationMessageUI<InverterExceptionMessageData>>(
+                "ExceptionNotify", this.OnExceptionNotify);
+
             connection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
                 "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
         }
@@ -61,6 +64,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
 
         private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

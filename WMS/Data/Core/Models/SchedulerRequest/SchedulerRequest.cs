@@ -32,8 +32,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string LoadingUnitCode { get; set; }
 
-        public string LoadingUnitTypeDescription { get; set; }
-
         public string Lot { get; set; }
 
         public string MaterialStatusDescription { get; set; }

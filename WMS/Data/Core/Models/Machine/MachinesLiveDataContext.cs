@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.Core.Models
                     {
                         MachineId = machineId,
                         ElevatorStatus = new ElevatorStatus(),
-                        BaysStatus = new List<BayStatus>()
+                        BaysStatus = new List<BayStatus>(),
                     };
 
                     this.machineStatuses.Add(machineId, newMachineStatus);

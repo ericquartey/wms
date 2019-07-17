@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Data.Core
                         .Where(b => b.MachineId == machine.Id)
                         .Select(b => new BayStatus
                         {
-                            BayId = b.Id
+                            BayId = b.Id,
                         }).ToArray();
 
                     if (System.Uri.TryCreate(machine.ServiceUrl, System.UriKind.Absolute, out var machineServiceUrl))

@@ -16,13 +16,25 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public double DispatchedQuantity { get; set; }
 
+        public string ItemCode { get; set; }
+
         public string ItemDescription { get; set; }
+
+        public string ItemListCode { get; set; }
 
         public string ItemListDescription { get; set; }
 
+        public int? ItemListId { get; set; }
+
         public string ItemListRowCode { get; set; }
 
+        public string ItemListShipmentUnitCode { get; set; }
+
+        public string ItemListShipmentUnitDescription { get; set; }
+
         public string ItemMeasureUnitDescription { get; set; }
+
+        public string ItemNotes { get; set; }
 
         public DateTime LastModificationDate { get; set; }
 

@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (loadingUnitToDelete.CompartmentsCount > 0)
@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return new Policy
             {
                 Name = nameof(CrudPolicies.Update),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
         }
 
@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(LoadingUnitPolicy.Withdraw),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (loadingUnitToWithdraw.CellId == null)

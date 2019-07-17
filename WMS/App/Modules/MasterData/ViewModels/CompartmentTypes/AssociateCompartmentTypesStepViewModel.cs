@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
-        public override(string moduleName, string viewName, object data) GetNextView()
+        public override (string moduleName, string viewName, object data) GetNextView()
         {
             if (this.selectedOption == null)
             {

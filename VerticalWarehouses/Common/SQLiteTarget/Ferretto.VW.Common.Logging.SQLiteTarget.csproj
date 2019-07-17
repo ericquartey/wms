@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Ferretto.VW.SQLiteTarget</AssemblyName>
-    <RootNamespace>Ferretto.VW.SQLiteTarget</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

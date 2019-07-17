@@ -2,7 +2,8 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class Rename_Cycle_Count_Fields_To_Mission_Count : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,4 +56,6 @@ namespace Ferretto.Common.EF.Migrations
                 oldClrType: typeof(double));
         }
     }
+
+    #pragma warning restore
 }

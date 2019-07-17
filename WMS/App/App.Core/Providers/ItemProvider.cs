@@ -121,7 +121,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentTypeId = result.CompartmentTypeId,
                     ItemId = result.ItemId,
                     MaxCapacity = result.MaxCapacity,
-                    Policies = result.GetPolicies()
+                    Policies = result.GetPolicies(),
                 };
 
                 return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
@@ -160,7 +160,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Id = result.Id,
                     CompartmentTypeId = result.CompartmentTypeId,
                     ItemId = result.ItemId,
-                    MaxCapacity = result.MaxCapacity
+                    MaxCapacity = result.MaxCapacity,
                 };
 
                 return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
@@ -188,9 +188,9 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
                                                 int loadingUnitId,
-                                        int skip,
-                                        int take,
-                                        IEnumerable<SortOption> orderBySortOptions = null)
+                                                int skip,
+                                                int take,
+                                                IEnumerable<SortOption> orderBySortOptions = null)
         {
             try
             {
@@ -347,7 +347,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentTypeId = ict.CompartmentTypeId,
                     ItemId = ict.ItemId,
                     MaxCapacity = ict.MaxCapacity,
-                    Policies = ict.GetPolicies()
+                    Policies = ict.GetPolicies(),
                 });
 
                 return new OperationResult<IEnumerable<ItemCompartmentType>>(true, itemCompartmentTypes);
@@ -459,7 +459,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IOperationResult<double>> GetPickAvailabilityAsync(
                     ItemPick itemPick,
-            CancellationToken cancellationToken = default(CancellationToken))
+                    CancellationToken cancellationToken = default(CancellationToken))
         {
             if (itemPick == null)
             {
@@ -631,7 +631,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Id = result.Id,
                     ItemId = result.ItemId,
                     MaxCapacity = result.MaxCapacity,
-                    Policies = result.GetPolicies()
+                    Policies = result.GetPolicies(),
                 };
 
                 return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
@@ -655,7 +655,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 MaterialStatusId = itemPick.MaterialStatusId,
                 PackageTypeId = itemPick.PackageTypeId,
                 Sub1 = itemPick.Sub1,
-                Sub2 = itemPick.Sub2
+                Sub2 = itemPick.Sub2,
             };
         }
 
@@ -684,7 +684,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 RegistrationNumber = itemPut.RegistrationNumber,
                 RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
                 Sub1 = itemPut.Sub1,
-                Sub2 = itemPut.Sub2
+                Sub2 = itemPut.Sub2,
             };
         }
 

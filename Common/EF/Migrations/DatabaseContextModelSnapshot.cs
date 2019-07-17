@@ -1308,8 +1308,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("LoadingUnitId");
 
-                    b.Property<int?>("LoadingUnitTypeId");
-
                     b.Property<string>("Lot");
 
                     b.Property<int?>("MaterialStatusId");
@@ -1356,8 +1354,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasIndex("ListRowId");
 
                     b.HasIndex("LoadingUnitId");
-
-                    b.HasIndex("LoadingUnitTypeId");
 
                     b.HasIndex("MaterialStatusId");
 
@@ -1713,10 +1709,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany("SchedulerRequests")
                         .HasForeignKey("LoadingUnitId");
-
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("LoadingUnitTypeId");
 
                     b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
                         .WithMany("SchedulerRequests")

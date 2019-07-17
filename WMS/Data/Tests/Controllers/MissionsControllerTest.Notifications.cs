@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
-                Status = Common.DataModels.MissionStatus.Executing
+                Status = Common.DataModels.MissionStatus.Executing,
             };
 
             using (var context = this.CreateContext())

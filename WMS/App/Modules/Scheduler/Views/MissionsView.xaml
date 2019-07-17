@@ -2,8 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -18,8 +16,6 @@
              EnableHistoryView="True"
              mc:Ignorable="d">
     <wms:WmsView.Resources>
-        <dxg:RowPropertyValueConverter x:Key="rowPropertyConverter" />
-
         <wms:StringFormatConverter x:Key="SFC" />
 
         <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
@@ -83,9 +79,7 @@
             </Grid>
         </wms:Expander>
 
-        <Grid Name="GridParent"
-              Grid.Column="1">
-
+        <Grid Grid.Column="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -123,58 +117,16 @@
                                     Grid.ColumnSpan="3"
                                     MaxWidth="2000"
                                     MaxHeight="5000"
-                                    CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
                                     ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                     ShowBorder="False">
                     <wms:WmsGridControl.Resources>
-                        <Style TargetType="{x:Type ToolTip}">
-                            <Setter Property="Background" Value="White" />
-                            <Setter Property="BorderThickness" Value="1" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
-                            <Setter Property="FontFamily" Value="{DynamicResource FontSmall}" />
-                            <Setter Property="FontStyle" Value="Normal" />
-                            <Setter Property="FontWeight" Value="Normal" />
-                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                            <Setter Property="HasDropShadow" Value="False" />
-                            <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
-                            <Setter Property="SnapsToDevicePixels" Value="True" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ToolTip}">
-                                        <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                            <Border Padding="{TemplateBinding Padding}"
-                                                    Background="{TemplateBinding Background}"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}">
-                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                                  TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                                                  TextElement.FontSize="{TemplateBinding FontSize}"
-                                                                  TextElement.FontStyle="{TemplateBinding FontStyle}"
-                                                                  TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                                                  TextElement.Foreground="{TemplateBinding Foreground}" />
-                                            </Border>
-                                        </Grid>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="HasDropShadow" Value="True" />
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="dx:ThemeManager.IsTouchEnabled" Value="True">
-                                    <Setter Property="Padding" Value="12" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
+                        <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DetailToolTip}" />
                     </wms:WmsGridControl.Resources>
 
                     <dxg:GridControl.DetailDescriptor>
                         <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding Operations}">
                             <dxg:DataControlDetailDescriptor.DataControl>
-                                <dxg:GridControl>
+                                <dxg:GridControl CurrentItem="{Binding SelectedItem, Mode=TwoWay}">
                                     <dxg:GridControl.Columns>
                                         <dxg:GridColumn Width="100"
                                                         FieldName="Priority" />
@@ -191,7 +143,6 @@
                                                                               HideIcon="True"
                                                                               IconSize="8"
                                                                               ShowText="True" />
-
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
@@ -228,50 +179,72 @@
                                                             <RowDefinition Height="Auto" />
                                                             <RowDefinition Height="Auto" />
                                                             <RowDefinition Height="Auto" />
+                                                            <RowDefinition Height="Auto" />
                                                         </Grid.RowDefinitions>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.RowSpan="2"
-                                                                   Margin="0,8,0,0"
+                                                        <TextBlock Margin="0,8,0,0"
                                                                    FontSize="14.66"
                                                                    FontWeight="SemiBold"
                                                                    Text="{x:Static res:General.Details}" />
+
+                                                        <wms:InfoText Grid.Row="1"
+                                                                      Grid.Column="0"
+                                                                      wms:ShowTitle.Show="True"
+                                                                      Content="{Binding Path=Type, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <wms:InfoText Grid.Row="1"
+                                                                      Grid.Column="1"
+                                                                      wms:ShowTitle.Show="True"
+                                                                      Content="{Binding Path=Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <wms:InfoText Grid.Row="2"
+                                                                      Grid.Column="0"
+                                                                      wms:ShowTitle.Show="True"
+                                                                      Content="{Binding Path=RequestedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                                         <wms:InfoText Grid.Row="2"
                                                                       Grid.Column="1"
                                                                       wms:ShowTitle.Show="True"
-                                                                      Content="{Binding Path=CompartmentType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
+                                                                      Content="{Binding Path=DispatchedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                                         <wms:InfoText Grid.Row="3"
                                                                       Grid.Column="0"
+                                                                      Margin="0,8,0,0"
+                                                                      wms:ShowTitle.Show="True"
+                                                                      Content="{Binding Path=CompartmentType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                        <wms:InfoText Grid.Row="4"
+                                                                      Grid.Column="0"
+                                                                      Margin="0,8,0,0"
                                                                       wms:ShowTitle.Show="True"
                                                                       Content="{Binding Path=Sub1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <wms:InfoText Grid.Row="3"
+                                                        <wms:InfoText Grid.Row="4"
                                                                       Grid.Column="1"
+                                                                      Margin="0,8,0,0"
                                                                       wms:ShowTitle.Show="True"
                                                                       Content="{Binding Path=Sub2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <wms:InfoText Grid.Row="4"
+                                                        <wms:InfoText Grid.Row="5"
                                                                       Grid.Column="0"
                                                                       wms:ShowTitle.Show="True"
                                                                       Content="{Binding Path=MaterialStatusDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <wms:InfoText Grid.Row="4"
+                                                        <wms:InfoText Grid.Row="5"
                                                                       Grid.Column="1"
                                                                       wms:ShowTitle.Show="True"
                                                                       Content="{Binding Path=PackageTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <wms:InfoText Grid.Row="5"
+                                                        <wms:InfoText Grid.Row="6"
                                                                       Grid.Column="0"
                                                                       Margin="0,0,0,8"
                                                                       wms:ShowTitle.Show="True"
                                                                       Content="{Binding Path=RegistrationNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <wms:InfoText Grid.Row="5"
+                                                        <wms:InfoText Grid.Row="6"
                                                                       Grid.Column="1"
                                                                       Margin="0,0,0,8"
                                                                       wms:ShowTitle.Show="True"
                                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                                        <Border Grid.RowSpan="6"
-                                                                Grid.Column="3"
+                                                        <Border Grid.RowSpan="7"
+                                                                Grid.Column="2"
                                                                 Margin="0"
                                                                 Style="{StaticResource InfoBoxBorderStyle}">
                                                             <GroupBox Margin="3,0,5,5"
@@ -283,6 +256,9 @@
                                                                     <wms:InfoText HorizontalAlignment="Left"
                                                                                   wms:ShowTitle.Show="True"
                                                                                   Content="{Binding Path=LastModificationDate}" />
+                                                                    <wms:InfoText HorizontalAlignment="Left"
+                                                                                  wms:ShowTitle.Show="True"
+                                                                                  Content="{Binding Path=Priority}" />
                                                                 </StackPanel>
                                                             </GroupBox>
                                                         </Border>
@@ -339,6 +315,8 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
+                        <dxg:GridColumn Width="140*"
+                                        FieldName="AreaName" />
                         <dxg:GridColumn Width="140*"
                                         FieldName="BayDescription" />
                         <dxg:GridColumn Width="100*"

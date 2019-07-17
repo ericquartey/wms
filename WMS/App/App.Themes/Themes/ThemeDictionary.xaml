@@ -36,6 +36,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TextBlock.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ListBoxEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Toast.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ToolTip.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

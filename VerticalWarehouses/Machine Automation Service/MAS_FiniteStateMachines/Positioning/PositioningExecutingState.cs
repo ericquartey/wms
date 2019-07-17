@@ -76,6 +76,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         this.numberExecutedSteps++;
                         if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
                         {
+                            this.Logger.LogDebug("FSM Finished Executing State");
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
                         }
                         else
@@ -153,6 +154,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Started Positioning Executing state with {this.positioningMessageData.NumberCycles} cycles");
             // INFO Hypothesis: The positioning has NumberCycles == 0
             if (this.positioningMessageData.NumberCycles == 0)
             {

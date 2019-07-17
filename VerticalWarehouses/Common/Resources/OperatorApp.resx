@@ -1072,4 +1072,20 @@
     <value>GeneralInfoWmsStatus</value>
     <comment>Label text</comment>
   </data>
+  <data name="Cell_Status_Free" xml:space="preserve">
+    <value>Free</value>
+    <comment>Cell Status</comment>
+  </data>
+  <data name="Cell_Status_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+    <comment>Cell Status</comment>
+  </data>
+  <data name="Cell_Status_Occupied" xml:space="preserve">
+    <value>Occupied</value>
+    <comment>Cell Status</comment>
+  </data>
+  <data name="Cell_Status_Unusable" xml:space="preserve">
+    <value>Unusable</value>
+    <comment>Cell Status</comment>
+  </data>
 </root>

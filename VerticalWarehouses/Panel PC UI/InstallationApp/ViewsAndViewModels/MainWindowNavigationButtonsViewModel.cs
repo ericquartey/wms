@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -181,7 +182,7 @@ namespace Ferretto.VW.InstallationApp
         private async Task UpdateButtonsEnableStateAsync()
         {
             var installationStatus = await this.installationStatusService.GetStatusAsync();
-            var checkHomingDone = installationStatus[0];
+            var checkHomingDone = installationStatus.FirstOrDefault();
 
             this.IsInstallationStateButtonActive = true;
             this.IsUpScrollButtonActive = true;

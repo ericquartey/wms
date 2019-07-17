@@ -6,6 +6,6 @@
 
         FIFO = 'F',
 
-        Volume = 'V'
+        Volume = 'V',
     }
 }

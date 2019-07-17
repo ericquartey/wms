@@ -42,7 +42,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Id = a.Id,
                         AreaId = a.AreaId,
                         AreaName = a.AreaName,
-                        Name = a.Name
+                        Name = a.Name,
                     });
 
                 return new OperationResult<IEnumerable<Aisle>>(true, result);
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Id = a.Id,
                         AreaId = a.AreaId,
                         AreaName = a.AreaName,
-                        Name = a.Name
+                        Name = a.Name,
                     });
             }
             catch
@@ -94,7 +94,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AreaId = aisle.AreaId,
                     AreaName = aisle.AreaName,
                     Id = aisle.Id,
-                    Name = aisle.Name
+                    Name = aisle.Name,
                 };
             }
             catch

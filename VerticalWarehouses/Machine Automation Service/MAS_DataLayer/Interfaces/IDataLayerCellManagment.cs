@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer;
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IDataLayerCellManagment
     {
         #region Methods
+
+        CellStatistics GetCellStatistics();
 
         /// <summary>
         ///     Get an object with the vertical position and side to place a drawer

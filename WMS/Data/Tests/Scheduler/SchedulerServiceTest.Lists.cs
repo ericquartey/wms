@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
            "Description",
-          @"GIVEN a list with one row in the executing state and the other one in the waiting state \
+           @"GIVEN a list with one row in the executing state and the other one in the waiting state \
             WHEN  the the mission corresponding to the executing row is completed \
             THEN  the list is in the Executing state \
             AND   the corresponding list row is in the Completed state \
@@ -58,8 +58,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
-                }
+                    row2,
+                },
             };
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
             "Description",
-           @"GIVEN  a new pick list with 2 rows \
+            @"GIVEN  a new pick list with 2 rows \
                 AND a compartment that can satisfy the list \
                 AND a bay that can accept two new missions \
                WHEN the new list is requested for execution \
@@ -211,8 +211,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
-                }
+                    row2,
+                },
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -220,7 +220,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = this.CompartmentType.Id,
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())
@@ -299,7 +299,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
           "Description",
-         @"GIVEN a new list with prioritized rows \
+          @"GIVEN a new list with prioritized rows \
              AND   a compartment that can satisfy the list \
              WHEN  the new list is requested for execution \
              THEN  a new set of requests is generated
@@ -338,7 +338,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
                 Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = 3
+                Priority = 3,
             };
 
             var rowLowPriority = new Common.DataModels.ItemListRow
@@ -348,7 +348,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
                 Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = 4
+                Priority = 4,
             };
 
             var list = new Common.DataModels.ItemList
@@ -359,8 +359,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 {
                     rowLowPriority,
                     rowHighPriority,
-                    rowMediumPriority
-                }
+                    rowMediumPriority,
+                },
             };
 
             var compartment = new Common.DataModels.Compartment
@@ -368,7 +368,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())
@@ -460,7 +460,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
             "Description",
-           @"GIVEN  a new put list with 2 rows \
+            @"GIVEN  a new put list with 2 rows \
                 AND a compartment that can satisfy the list \
                 AND a bay that can accept two new missions \
                WHEN the new list is requested for execution \
@@ -507,15 +507,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
-                }
+                    row2,
+                },
             };
 
             var compartmentType = new Common.DataModels.CompartmentType
             {
                 Id = GetNewId(),
                 Depth = 1,
-                Width = 1
+                Width = 1,
             };
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
@@ -532,7 +532,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType.Id,
                 FifoStartDate = System.DateTime.Now.AddDays(-0.5),
-                Stock = 50
+                Stock = 50,
             };
 
             using (var context = this.CreateContext())
@@ -624,7 +624,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
                  "Description",
-                @"GIVEN a new [pick/put] list with prioritized rows \
+                 @"GIVEN a new [pick/put] list with prioritized rows \
              AND   a compartment that can satisfy the list \
              WHEN  the new list is requested for execution \
              THEN  a new set of requests is generated
@@ -672,7 +672,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
                 Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = null
+                Priority = null,
             };
 
             var row3WithoutPriority = new Common.DataModels.ItemListRow
@@ -682,7 +682,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
                 Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = null
+                Priority = null,
             };
 
             var list = new Common.DataModels.ItemList
@@ -693,8 +693,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 {
                     row2WithoutPriority,
                     row1WithPriority,
-                    row3WithoutPriority
-                }
+                    row3WithoutPriority,
+                },
             };
 
             var compartment = new Common.DataModels.Compartment
@@ -703,7 +703,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = this.CompartmentType.Id,
                 FifoStartDate = System.DateTime.Now.AddDays(-0.5),
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())
@@ -768,7 +768,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.AreEqual(
                 expectedPriority,
                 operationRow3?.Priority,
-                 "The generated mission related to the row 3 without priority should be equal to the priority of the last row with priority + 1.");
+                "The generated mission related to the row 3 without priority should be equal to the priority of the last row with priority + 1.");
 
             #endregion
         }
@@ -776,7 +776,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
            "Description",
-          @"GIVEN a list with 1 row in the Suspended state \
+           @"GIVEN a list with 1 row in the Suspended state \
                WHEN the list is executed on the bay \
                 THEN the execute operation should be permitted")]
         public async Task ExecuteListAsync_SuspendedState()
@@ -803,14 +803,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                }
+                },
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())
@@ -840,7 +840,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
            "Description",
-          @"GIVEN a list with 1 row in the Waiting state \
+           @"GIVEN a list with 1 row in the Waiting state \
                WHEN the list is executed but no bay is indicated \
                 THEN the execute operation should not be permitted")]
         public async Task ExecuteListAsync_WaitingListWithoutBay()
@@ -867,14 +867,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                }
+                },
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())
@@ -908,7 +908,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
           "Description",
-         @"GIVEN a new pick list with one row \
+          @"GIVEN a new pick list with one row \
              AND a compartment that can satisfy the list \
             WHEN the single row is executed \
             THEN the row is put the Waiting state  \
@@ -937,7 +937,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var list = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListType = Common.DataModels.ItemListType.Pick
+                ItemListType = Common.DataModels.ItemListType.Pick,
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -945,7 +945,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 ItemId = itemId,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())
@@ -986,7 +986,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Assert.AreEqual(
                    this.Bay1Aisle1.Priority + row.Priority,
                    operation.Priority,
-               "The generated mission related to the row should have as priority the sum of the row's priority and of the bay.");
+                   "The generated mission related to the row should have as priority the sum of the row's priority and of the bay.");
             }
 
             #endregion
@@ -995,7 +995,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestMethod]
         [TestProperty(
            "Description",
-          @"GIVEN   a pick list with 2 rows in the waiting state \
+           @"GIVEN   a pick list with 2 rows in the waiting state \
                WHEN the one of the missions corresponding to one of the rows is executed on the bay \
                 THEN the list is in the Executing state \
                 AND the corresponding list rows are in the Executing state \
@@ -1041,8 +1041,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemListRows = new[]
                 {
                     row1,
-                    row2
-                }
+                    row2,
+                },
             };
 
             var compartment = new Common.DataModels.Compartment
@@ -1050,7 +1050,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = this.CompartmentType.Id,
-                Stock = 100
+                Stock = 100,
             };
 
             using (var context = this.CreateContext())

@@ -6,6 +6,6 @@ namespace Ferretto.Common.BLL.Interfaces
 
         Abort,
 
-        Complete
+        Complete,
     }
 }
