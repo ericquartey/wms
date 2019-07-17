@@ -72,11 +72,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     // INFO Vertical LSM
                     case Axis.Vertical:
                         maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                            (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
                         maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                            (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
                         maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                            (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                             (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
 
@@ -101,11 +101,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     // INFO Horizontal LSM
                     case Axis.Horizontal:
                         maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.MaxSpeed, (long)ConfigurationCategory.HorizontalAxis);
+                            (long)HorizontalAxis.MaxEmptySpeed, (long)ConfigurationCategory.HorizontalAxis);
                         maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.MaxAcceleration, (long)ConfigurationCategory.HorizontalAxis);
+                            (long)HorizontalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.HorizontalAxis);
                         maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.MaxDeceleration, (long)ConfigurationCategory.HorizontalAxis);
+                            (long)HorizontalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.HorizontalAxis);
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                             (long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
 

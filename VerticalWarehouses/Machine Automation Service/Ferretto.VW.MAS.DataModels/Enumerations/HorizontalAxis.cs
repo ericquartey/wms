@@ -4,20 +4,26 @@
     {
         Undefined = 0L,
 
-        MaxSpeed = 1L,
+        MaxEmptySpeed = 1L,
 
-        MaxAcceleration = 2L,
+        MaxEmptyAcceleration = 2L,
 
-        MaxDeceleration = 3L,
+        MaxEmptyDeceleration = 3L,
+
+        MaxFullSpeed = 9L,
+
+        MaxFullAcceleration = 10L,
+
+        MaxFullDeceleration = 11L,
 
         HomingExecuted = 4L,
+
+        Resolution = 8L,
 
         Offset = 5L,
 
         ClockWiseRun = 6L,
 
         AntiClockWiseRun = 7L,
-
-        Resolution = 8L,
     }
 }

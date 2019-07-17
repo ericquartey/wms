@@ -38,6 +38,8 @@
 
         BayPositionControl = 17L,
 
-        LoadFirstDrawer = 18L
+        LoadFirstDrawer = 18L,
+
+        ShutterManualMovements = 19L
     }
 }

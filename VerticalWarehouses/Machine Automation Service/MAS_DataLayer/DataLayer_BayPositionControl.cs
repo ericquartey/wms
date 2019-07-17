@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
+        public Task<decimal> FeedRateBP => this.GetDecimalConfigurationValueAsync((long)BayPositionControl.FeedRate, (long)ConfigurationCategory.BayPositionControl);
+
         public Task<decimal> StepValueBP => this.GetDecimalConfigurationValueAsync((long)BayPositionControl.StepValue, (long)ConfigurationCategory.BayPositionControl);
 
         #endregion
