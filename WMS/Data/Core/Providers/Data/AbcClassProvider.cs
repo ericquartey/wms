@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                .Select(a => new AbcClass
                {
                    Id = a.Id,
-                   Description = a.Description
+                   Description = a.Description,
                })
                .ToArrayAsync();
         }
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                  .Select(a => new AbcClass
                  {
                      Id = a.Id,
-                     Description = a.Description
+                     Description = a.Description,
                  })
                  .SingleOrDefaultAsync(a => a.Id == id);
         }

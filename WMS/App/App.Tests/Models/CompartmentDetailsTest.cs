@@ -18,7 +18,7 @@ namespace Ferretto.WMS.App.Tests
             var compartmentDetails = new CompartmentDetails
             {
                 IsValidationEnabled = true,
-                LoadingUnitId = loadingUnitId
+                LoadingUnitId = loadingUnitId,
             };
 
             Assert.AreEqual(
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.App.Tests
             {
                 IsValidationEnabled = true,
                 XPosition = xPosition,
-                YPosition = yPosition
+                YPosition = yPosition,
             };
 
             Assert.AreEqual(
@@ -70,7 +70,7 @@ namespace Ferretto.WMS.App.Tests
             {
                 IsValidationEnabled = true,
                 ReservedForPick = reservedForPick,
-                ReservedToPut = reservedToPut
+                ReservedToPut = reservedToPut,
             };
 
             Assert.AreEqual(
@@ -99,7 +99,7 @@ namespace Ferretto.WMS.App.Tests
             {
                 IsValidationEnabled = true,
                 Width = width,
-                Depth = depth
+                Depth = depth,
             };
 
             Assert.AreEqual(
@@ -139,7 +139,7 @@ namespace Ferretto.WMS.App.Tests
                 LoadingUnitId = 1,
                 Stock = stock,
                 IsItemPairingFixed = isPairingFixed,
-                MaxCapacity = maxCapacity
+                MaxCapacity = maxCapacity,
             };
 
             Assert.AreEqual(

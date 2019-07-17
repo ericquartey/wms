@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                .Select(c => new LoadingUnitType
                {
                    Id = c.Id,
-                   Description = c.Description
+                   Description = c.Description,
                })
                .ToArrayAsync();
         }
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                  .Select(c => new LoadingUnitType
                  {
                      Id = c.Id,
-                     Description = c.Description
+                     Description = c.Description,
                  })
                  .SingleOrDefaultAsync(l => l.Id == id);
         }

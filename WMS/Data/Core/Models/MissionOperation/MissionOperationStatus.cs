@@ -10,6 +10,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         Error = 'E',
 
-        Incomplete = 'I'
+        Incomplete = 'I',
     }
 }

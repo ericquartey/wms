@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemFifo.Id,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Priority = 2,
@@ -135,7 +135,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Priority = this.Bay1Aisle1.Priority,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
             };
 
@@ -144,7 +144,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 RequestedQuantity = 1,
                 Status = Common.DataModels.MissionOperationStatus.New,
-                Type = Common.DataModels.MissionOperationType.Pick
+                Type = Common.DataModels.MissionOperationType.Pick,
             };
 
             var mission1 = new Common.DataModels.Mission
@@ -152,7 +152,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 BayId = bayId,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Operations = new[] { missionOperation1 }
+                Operations = new[] { missionOperation1 },
             };
 
             var missionOperation2 = new Common.DataModels.MissionOperation
@@ -160,14 +160,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 RequestedQuantity = 1,
                 Status = Common.DataModels.MissionOperationStatus.New,
-                Type = Common.DataModels.MissionOperationType.Pick
+                Type = Common.DataModels.MissionOperationType.Pick,
             };
 
             var mission2 = new Common.DataModels.Mission
             {
                 Id = GetNewId(),
                 BayId = bayId,
-                Operations = new[] { missionOperation2 }
+                Operations = new[] { missionOperation2 },
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -178,7 +178,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Stock = 100,
                 ReservedForPick =
                     missionOperation1.RequestedQuantity +
-                    missionOperation2.RequestedQuantity
+                    missionOperation2.RequestedQuantity,
             };
 
             using (var context = this.CreateContext())

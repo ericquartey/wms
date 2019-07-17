@@ -4,6 +4,6 @@
     {
         AddRow,
 
-        Execute
+        Execute,
     }
 }

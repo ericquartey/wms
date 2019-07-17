@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
-    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
+    #pragma warning disable
+
     public partial class CreateTable_GlobalSettings : Migration
     {
         #region Methods
@@ -22,7 +23,7 @@ namespace Ferretto.Common.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MinStepCompartment = table.Column<double>(nullable: false)
+                    MinStepCompartment = table.Column<double>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -32,4 +33,6 @@ namespace Ferretto.Common.EF.Migrations
 
         #endregion
     }
+
+    #pragma warning restore
 }

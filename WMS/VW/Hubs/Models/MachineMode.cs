@@ -8,6 +8,6 @@
 
         Manual = 'M',
 
-        Fault = 'E'
+        Fault = 'E',
     }
 }

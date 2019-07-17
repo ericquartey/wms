@@ -4,9 +4,16 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <OutputType>Exe</OutputType>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configurations>Debug;Release;Debug (no autogen)</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants />
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="nlog.config">
+    <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </None>
     <None Include="VertimagConfiguration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -40,7 +47,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\..\SQLiteTarget\SQLiteTarget.csproj" />
+    <ProjectReference Include="..\..\Common\SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
     <ProjectReference Include="..\MAS_FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj" />

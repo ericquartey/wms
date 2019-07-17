@@ -226,8 +226,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
                     "Major Code Smell",
-            "S4058:Overloads with a \"StringComparison\" parameter should be used",
-            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
+                    "S4058:Overloads with a \"StringComparison\" parameter should be used",
+                    Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<MissionWithLoadingUnitDetails, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))

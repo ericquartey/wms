@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         protected OperationResult(
                     bool success,
-            TModel entity = default(TModel))
+                    TModel entity = default(TModel))
         {
             this.Success = success;
             this.Entity = entity;

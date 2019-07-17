@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 currentStatus.PositionControlWord.EnableOperation = false;
                 currentStatus.PositionControlWord.NewSetPoint = false;
             }
+            this.Logger.LogDebug("Disable Operation");
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 

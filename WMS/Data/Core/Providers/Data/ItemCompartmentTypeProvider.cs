@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     CompartmentTypeId = model.CompartmentTypeId,
                     ItemId = model.ItemId,
-                    MaxCapacity = model.MaxCapacity
+                    MaxCapacity = model.MaxCapacity,
                 });
 
             if (await this.DataContext.SaveChangesAsync() <= 0)
@@ -138,7 +138,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Depth = ic.Depth,
                         Width = ic.Width,
                         CompartmentsCount = ic.Compartments.Count(),
-                        EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))
+                        EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0)),
                     })
                     .ToArrayAsync();
 
@@ -197,7 +197,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     CompartmentTypeId = ct.CompartmentTypeId,
                     ItemId = ct.ItemId,
-                    MaxCapacity = ct.MaxCapacity
+                    MaxCapacity = ct.MaxCapacity,
                 });
         }
 

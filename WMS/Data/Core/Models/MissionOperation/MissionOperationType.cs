@@ -14,6 +14,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         Reorder = 'O',
 
-        Replace = 'R'
+        Replace = 'R',
     }
 }

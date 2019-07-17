@@ -852,8 +852,8 @@ SET IDENTITY_INSERT Bays OFF;
 
 -- Operation Types
 DECLARE
-  @OperationType_Insertion char(1) = 'I',
-  @OperationType_Withdrawal char(1) = 'W',
+  @OperationType_Put char(1) = 'U',
+  @OperationType_Pick char(1) = 'P',
   @OperationType_Replacement char(1) = 'R',
   @OperationType_Reorder char(1) = 'O',
   @SchedulerType_Item char(1) = 'I',

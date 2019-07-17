@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 2 },
                     new Common.DataModels.CompartmentType { Id = 2, Depth = 1, Width = 2 },
                     new Common.DataModels.CompartmentType { Id = 3, Depth = 1, Width = 2 },
-                };
+            };
 
             Common.DataModels.Compartment[] compartments =
             {
@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     new Common.DataModels.Compartment { Id = 13, CompartmentTypeId = 3, Stock = 0 },
                     new Common.DataModels.Compartment { Id = 14, CompartmentTypeId = 3, Stock = 10 },
                     new Common.DataModels.Compartment { Id = 15, CompartmentTypeId = 3, Stock = 0 },
-                };
+            };
             using (var context = this.CreateContext())
             {
                 foreach (var compartmentType in compartmentTypes)
@@ -307,7 +307,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 10 },
                     new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 0 },
                     new Common.DataModels.Compartment { Id = GetNewId(), CompartmentTypeId = compartmentType1.Id, Stock = 0 },
-                };
+            };
             using (var context = this.CreateContext())
             {
                 context.CompartmentTypes.Add(compartmentType1);

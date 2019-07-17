@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.logger.LogTrace("1:Method Start");
 
+            this.logger.LogTrace($"TargetPosition = {positioningMessageData.TargetPosition} - CurrentPosition = {positioningMessageData.CurrentPosition} - MovementType = {positioningMessageData.MovementType}");
+
             this.CurrentState = new EmptyState(logger);
 
             this.positioningMessageData = positioningMessageData;

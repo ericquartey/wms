@@ -24,6 +24,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IBayProvider bayProvider;
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         private readonly ILogger logger;
 
         private readonly IMachineProvider machineProvider;
@@ -38,11 +40,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<MachinesController> logger,
             IMachineProvider machineProvider,
             IMissionProvider missionProvider,
+            ILoadingUnitProvider loadingUnitProvider,
             IBayProvider bayProvider)
         {
             this.logger = logger;
             this.machineProvider = machineProvider;
             this.missionProvider = missionProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
             this.bayProvider = bayProvider;
         }
 
@@ -110,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -125,16 +129,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.machineProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                var message = string.Format(Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<LoadingUnitDetails>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/loading-units")]
+        public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsByIdAsync(int id)
+        {
+            var loadingUnits = await this.loadingUnitProvider.GetAllByMachineIdAsync(id);
+
+            return this.Ok(loadingUnits);
         }
 
         [ProducesResponseType(typeof(IEnumerable<MissionInfo>), StatusCodes.Status200OK)]

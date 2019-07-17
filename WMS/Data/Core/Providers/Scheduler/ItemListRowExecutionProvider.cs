@@ -73,7 +73,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OperationType = (ItemListType)r.ItemList.ItemListType,
                     Status = (ItemListRowStatus)r.Status,
                     DispatchedQuantity = r.DispatchedQuantity,
-                    Priority = r.Priority
+                    Priority = r.Priority,
                 })
                 .SingleAsync(i => i.Id == id);
 

@@ -52,6 +52,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Status = (MissionStatus)m.Status,
                         CreationDate = m.CreationDate,
                         LastModificationDate = m.LastModificationDate,
+                        AreaName = m.AreaName,
                         BayDescription = m.BayDescription,
                         LoadingUnitDescription = m.LoadingUnitCode,
                         Priority = m.Priority,
@@ -76,7 +77,7 @@ namespace Ferretto.WMS.App.Core.Providers
                             MaterialStatusDescription = o.MaterialStatusDescription,
                             PackageTypeDescription = o.PackageTypeDescription,
                             DispatchedQuantity = o.DispatchedQuantity,
-                        })
+                        }),
                     });
             }
             catch
@@ -109,6 +110,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     Status = (MissionStatus)mission.Status,
                     CreationDate = mission.CreationDate,
                     LastModificationDate = mission.LastModificationDate,
+                    AreaName = mission.AreaName,
                     BayDescription = mission.BayDescription,
                     LoadingUnitDescription = mission.LoadingUnitCode,
                     Priority = mission.Priority,
@@ -130,7 +132,7 @@ namespace Ferretto.WMS.App.Core.Providers
                             MaterialStatusDescription = o.MaterialStatusDescription,
                             PackageTypeDescription = o.PackageTypeDescription,
                             DispatchedQuantity = o.DispatchedQuantity,
-                        })
+                        }),
                 };
             }
             catch

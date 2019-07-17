@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(ItemListPolicy.AddRow),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (statusItemListModel.Status != ItemListStatus.New)
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (listToDelete.Status != ItemListStatus.New)
@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(ItemListPolicy.Execute),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (listToExecute.Status != ItemListStatus.New &&
@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return new Policy
             {
                 Name = nameof(CrudPolicies.Update),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
         }
 

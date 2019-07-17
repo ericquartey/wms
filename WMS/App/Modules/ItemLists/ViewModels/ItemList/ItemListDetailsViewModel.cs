@@ -346,7 +346,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
-                        Id = this.Model.Id
+                        Id = this.Model.Id,
                     });
 
                 this.IsBusy = false;
@@ -368,7 +368,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
-                        Id = this.SelectedItemListRow.Id
+                        Id = this.SelectedItemListRow.Id,
                     });
 
                 this.IsBusy = false;

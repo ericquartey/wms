@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             var policy = new Policy
             {
                 Name = nameof(CrudPolicies.Delete),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
 
             if (compartmentToDelete.Stock > 0)
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             return new Policy
             {
                 Name = nameof(CrudPolicies.Update),
-                Type = PolicyType.Operation
+                Type = PolicyType.Operation,
             };
         }
 

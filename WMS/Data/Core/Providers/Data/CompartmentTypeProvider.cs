@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                     new Common.DataModels.CompartmentType
                                     {
                                         Depth = model.Depth.Value,
-                                        Width = model.Width.Value
+                                        Width = model.Width.Value,
                                     });
 
                     if (await this.DataContext.SaveChangesAsync() <= 0)
@@ -167,10 +167,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<CompartmentType>> GetAllAsync(
                     int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null,
-            string whereString = null,
-            string searchString = null)
+                    int take,
+                    IEnumerable<SortOption> orderBySortOptions = null,
+                    string whereString = null,
+                    string searchString = null)
         {
             var models = await this.GetAllBase()
                 .ToArrayAsync<CompartmentType, Common.DataModels.CompartmentType>(
@@ -246,8 +246,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
                     int itemId,
-            double maxCapacity,
-            int compartmentTypeId)
+                    double maxCapacity,
+                    int compartmentTypeId)
         {
             var existingIcTModel =
                 await this.DataContext.ItemsCompartmentTypes
@@ -264,7 +264,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         ItemId = existingIcTModel.ItemId,
                         MaxCapacity = maxCapacity,
-                        CompartmentTypeId = existingIcTModel.CompartmentTypeId
+                        CompartmentTypeId = existingIcTModel.CompartmentTypeId,
                     });
 
                 return updateResult;
@@ -275,7 +275,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     ItemId = itemId,
                     MaxCapacity = maxCapacity,
-                    CompartmentTypeId = compartmentTypeId
+                    CompartmentTypeId = compartmentTypeId,
                 });
 
             this.NotificationService.PushCreate(typeof(ItemCompartmentType));

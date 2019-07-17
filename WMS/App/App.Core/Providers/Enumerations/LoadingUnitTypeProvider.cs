@@ -52,15 +52,15 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<Enumeration> GetByIdAsync(int id)
         {
-           try
-           {
-               var type = await this.loadingUnitTypesDataService.GetByIdAsync(id);
-               return new Enumeration(type.Id, type.Description);
-           }
-           catch
-           {
-               return null;
-           }
+            try
+            {
+                var type = await this.loadingUnitTypesDataService.GetByIdAsync(id);
+                return new Enumeration(type.Id, type.Description);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion

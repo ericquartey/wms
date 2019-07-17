@@ -60,7 +60,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         public void Appear<TViewModel>()
         {
-            var(moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
+            var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
             this.Appear(moduleName, viewModelName);
         }
 
