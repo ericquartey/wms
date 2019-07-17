@@ -12,24 +12,21 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             var totalErrors = this.primaryDataContext.ErrorStatistics.Sum(s => s.TotalErrors);
             var errorStatisticsSummary = new ErrorStatisticsSummary();
-            var errors = new List<ErrorStatisticsDetail>();
-            foreach (var errorStat in this.primaryDataContext.ErrorStatistics)
+            var erros = this.primaryDataContext.ErrorStatistics.Select(errorStat => new ErrorStatisticsDetail
             {
-                errors.Add(new ErrorStatisticsDetail
-                {
-                    Code = errorStat.Code,
-                    Description = errorStat.Error.Description,
-                    Total = errorStat.TotalErrors,
-                    RatioTotal = errorStat.TotalErrors / totalErrors
-                });
-            }
-            errorStatisticsSummary.Errors = errors;
-            errorStatisticsSummary.Totalerrors = totalErrors;
+                Code = errorStat.Code,
+                Description = errorStat.Error.Description,
+                Total = errorStat.TotalErrors,
+                RatioTotal = ((double)errorStat.TotalErrors * 100) / (double)totalErrors
+            });
+            errorStatisticsSummary.Errors = erros;
+            errorStatisticsSummary.TotalErrors = totalErrors;
+
             errorStatisticsSummary.TotalLoadingUnits = 1000;
             errorStatisticsSummary.RatioRealiability = 99.937;
             errorStatisticsSummary.TotalLoadingUnitsBetweenErrors = 200;
 
-            return new ErrorStatisticsSummary { RatioRealiability = 1, TotalLoadingUnitsBetweenErrors = 99, Totalerrors = 1000, TotalLoadingUnits = 999 };
+            return errorStatisticsSummary;
         }
 
         #endregion

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public string Description { get; set; }
 
-        public int RatioTotal { get; set; }
+        public double RatioTotal { get; set; }
 
         public int Total { get; set; }
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public double RatioRealiability { get; set; }
 
-        public int Totalerrors { get; set; }
+        public int TotalErrors { get; set; }
 
         public int TotalLoadingUnits { get; set; }
 

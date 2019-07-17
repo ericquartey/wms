@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Ferretto.VW.MAS_DataLayer.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -34,6 +35,10 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
+        public DbSet<Error> Errors { get; set; }
+
+        public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
+
         public DbSet<FreeBlock> FreeBlocks { get; set; }
 
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
@@ -57,7 +62,6 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 return;
             }
-
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
@@ -77,6 +81,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             modelBuilder.Entity<ConfigurationValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
             modelBuilder.Entity<RuntimeValue>().HasKey(cv => new { cv.CategoryName, cv.VarName });
+
+            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
         }
 
         #endregion
