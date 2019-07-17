@@ -7,7 +7,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -52,7 +53,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private DataLayerContext secondaryDataContext;
 
-        private SetupStatusVolatile setupStatusVolatile;
+        private readonly SetupStatusVolatile setupStatusVolatile;
 
         private CancellationToken stoppingToken;
 

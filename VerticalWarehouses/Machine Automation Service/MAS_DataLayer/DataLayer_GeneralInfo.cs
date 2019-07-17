@@ -1,7 +1,6 @@
-﻿//DataLayer_GeneralInfo.cs
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
