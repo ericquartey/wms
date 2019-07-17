@@ -78,16 +78,23 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public override async Task OnEnterViewAsync()
         {
-            this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+            try
+            {
+                this.cellStatistics = await this.cellsService.GetStatisticsAsync();
 
-            this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
+                this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
 
-            this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
-            this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
+                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
+                this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
-            this.DataGridViewModel = this.dataGridViewModelRef;
+                this.DataGridViewModel = this.dataGridViewModelRef;
 
-            this.RaisePropertyChanged(nameof(this.CellStatistics));
+                this.RaisePropertyChanged(nameof(this.CellStatistics));
+            }
+            catch
+            {
+                //TODO call toolbar notification service
+            }
         }
 
         #endregion

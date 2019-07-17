@@ -156,8 +156,6 @@ namespace Ferretto.VW.App
         public async Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
-
-         
         }
 
         public void HACK_InitialiseHubOperator()

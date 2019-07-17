@@ -1281,8 +1281,8 @@
     <value>HelpMachineStatisticsShutter3</value>
     <comment>Note text</comment>
   </data>
-  <data name="HelpMachineStatisticsHorizzontalCycles" xml:space="preserve">
-    <value>HelpMachineStatisticsHorizzontalCycles</value>
+  <data name="HelpMachineStatisticsHHorizontalCycles" xml:space="preserve">
+    <value>HelpMachineStatisticsHHorizontalCycles</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsBay1" xml:space="preserve">

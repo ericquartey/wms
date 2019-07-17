@@ -985,7 +985,7 @@
   <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
     <value>Riporta il numero totale di cicli effettuati dalla serranda che equipaggia la baia n. 3. Un ciclo e' una operazione di apertura o chiusura sia totale che intermedia.</value>
   </data>
-  <data name="HelpMachineStatisticsHorizzontalCycles" xml:space="preserve">
+  <data name="HelpMachineStatisticsHHorizontalCycles" xml:space="preserve">
     <value>Il campo riporta il numero totale di cicli effettuati dalla catena presente sull'elevatore della macchina dal momento dell'installazione. Un ciclo e' una operazione di imbarco o sbarco.</value>
   </data>
   <data name="HelpMachineStatisticsBay1" xml:space="preserve">

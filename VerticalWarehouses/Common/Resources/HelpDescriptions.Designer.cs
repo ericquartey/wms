@@ -2302,11 +2302,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsHorizzontalCycles.
+        ///   Looks up a localized string similar to HelpMachineStatisticsHHorizontalCycles.
         /// </summary>
-        public static string HelpMachineStatisticsHorizzontalCycles {
+        public static string HelpMachineStatisticsHHorizontalCycles {
             get {
-                return ResourceManager.GetString("HelpMachineStatisticsHorizzontalCycles", resourceCulture);
+                return ResourceManager.GetString("HelpMachineStatisticsHHorizontalCycles", resourceCulture);
             }
         }
         

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 
 namespace Ferretto.VW.App
 {
@@ -37,9 +38,18 @@ namespace Ferretto.VW.App
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            this.ForceItalianLanguage();
+
             var bootstrapper = new Bootstrapper();
 
             bootstrapper.Run();
+        }
+
+        private void ForceItalianLanguage()
+        {
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
         }
 
         private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)

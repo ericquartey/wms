@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -64,6 +64,28 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MachineStatistics",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TotalVerticalAxisCycles = table.Column<int>(nullable: false),
+                    TotalVerticalAxisKilometers = table.Column<double>(nullable: false),
+                    TotalBeltCycles = table.Column<int>(nullable: false),
+                    TotalShutter1Cycles = table.Column<int>(nullable: false),
+                    TotalShutter2Cycles = table.Column<int>(nullable: false),
+                    TotalShutter3Cycles = table.Column<int>(nullable: false),
+                    TotalMovedTraysInBay1 = table.Column<int>(nullable: false),
+                    TotalMovedTraysInBay2 = table.Column<int>(nullable: false),
+                    TotalMovedTraysInBay3 = table.Column<int>(nullable: false),
+                    TotalMovedTrays = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MachineStatistics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RuntimeValues",
                 columns: table => new
                 {
@@ -86,9 +108,9 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     Coord = table.Column<decimal>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
-                    Side = table.Column<long>(nullable: false),
-                    Status = table.Column<long>(nullable: false),
-                    WorkingStatus = table.Column<long>(nullable: false)
+                    Side = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    WorkingStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,7 +134,7 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     LoadingUnitId = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
-                    Side = table.Column<long>(nullable: false),
+                    Side = table.Column<int>(nullable: false),
                     StartCell = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -125,6 +147,11 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                         principalColumn: "LoadingUnitId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "MachineStatistics",
+                columns: new[] { "Id", "TotalBeltCycles", "TotalMovedTrays", "TotalMovedTraysInBay1", "TotalMovedTraysInBay2", "TotalMovedTraysInBay3", "TotalShutter1Cycles", "TotalShutter2Cycles", "TotalShutter3Cycles", "TotalVerticalAxisCycles", "TotalVerticalAxisKilometers" },
+                values: new object[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cells_LoadingUnitId",
@@ -150,6 +177,9 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "LogEntries");
+
+            migrationBuilder.DropTable(
+                name: "MachineStatistics");
 
             migrationBuilder.DropTable(
                 name: "RuntimeValues");

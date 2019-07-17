@@ -996,36 +996,36 @@
     <value>MachineStatisticsSectionVertical</value>
     <comment>Section header</comment>
   </data>
-  <data name="MachineStatisticsSectionVerticalTotalKm" xml:space="preserve">
-    <value>MachineStatisticsSectionVerticalTotalKm</value>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>MachineStatistics_TotalVerticalAxisKilometers</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionVerticalTotalCycles" xml:space="preserve">
-    <value>MachineStatisticsSectionVerticalTotalCycles</value>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>MachineStatistics_TotalVerticalAxisCycles</value>
     <comment>Label text</comment>
   </data>
   <data name="MachineStatisticsSectionShutters" xml:space="preserve">
     <value>MachineStatisticsSectionShutters</value>
     <comment>Section header</comment>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter1" xml:space="preserve">
-    <value>MachineStatisticsSectionShutterShutter1</value>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>MachineStatistics_TotalShutter1Cycles</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter2" xml:space="preserve">
-    <value>MachineStatisticsSectionShutterShutter2</value>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>MachineStatistics_TotalShutter2Cycles</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter3" xml:space="preserve">
-    <value>MachineStatisticsSectionShutterShutter3</value>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>MachineStatistics_TotalShutter3Cycles</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionOrizzontal" xml:space="preserve">
-    <value>MachineStatisticsSectionOrizzontal</value>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>MachineStatisticsSectionHorizontal</value>
     <comment>Section header</comment>
   </data>
-  <data name="MachineStatisticsSectionOrizzontalTotalCycles" xml:space="preserve">
-    <value>MachineStatisticsSectionOrizzontalTotalCycles</value>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>MachineStatisticsSectionHorizontalTotalCycles</value>
     <comment>Label text</comment>
   </data>
   <data name="MachineStatisticsSectionBays" xml:space="preserve">

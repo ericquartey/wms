@@ -69,6 +69,9 @@ namespace Ferretto.VW.App.Operator
             var cellsService = new CellsService(this.automationServiceUrl);
             containerRegistry.RegisterInstance<ICellsService>(cellsService);
 
+            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
+
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
