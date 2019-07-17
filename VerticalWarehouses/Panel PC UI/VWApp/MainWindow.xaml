@@ -39,70 +39,6 @@
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Fill" />
 
-        <Image Grid.Row="1"
-               Width="300"
-               Height="520"
-               Margin="540,70,0,0"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
-               Stretch="Fill" />
-
-        <TextBlock Grid.Row="1"
-                   Width="420"
-                   Margin="80,70,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="Initializing ..."
-                   Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVIC}}" />
-
-        <TextBlock Grid.Row="1"
-                   Width="420"
-                   Margin="80,70,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding Machine.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        <StackPanel Grid.Row="1"
-                    Margin="80,150,0,0"
-                    Orientation="Horizontal"
-                    Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}">
-
-            <TextBlock VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                       Text="Serial Number: " />
-
-            <TextBlock Grid.Row="1"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                       Text="{Binding Machine.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        </StackPanel>
-
-
-
-        <custom:CustomInputFieldControlFocusable Grid.Row="1"
-                                                 Width="200"
-                                                 Margin="80,370,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                 LabelText="{x:Static res:VWApp.UserLogin_UserName}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                 Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
-
-        <custom:CustomInputFieldControlFocusable Grid.Row="1"
-                                                 Width="200"
-                                                 Margin="80,430,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                 LabelText="{x:Static res:VWApp.UserLogin_Password}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                 Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
-
         <Button Grid.Row="0"
                 Margin="0,0,15,0"
                 HorizontalAlignment="Right"
@@ -110,24 +46,6 @@
                 Command="{Binding SwitchOffCommand}"
                 Content="{x:Static res:VWApp.SwitchOff}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button Grid.Row="1"
-                Margin="80,510,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Command="{Binding LoginCommand}"
-                Content="{x:Static res:General.Login}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
-
-        <TextBlock Grid.Row="2"
-                   Height="40"
-                   Margin="80,2,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   TextWrapping="WrapWithOverflow" />
 
         <Button Grid.Row="0"
                 Margin="700,0,0,0"
@@ -183,6 +101,86 @@
 
             </Button.Style>
         </Button>
+
+        <Image Grid.Row="1"
+               Width="300"
+               Height="520"
+               Margin="540,70,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
+               Stretch="Fill" />
+
+        <TextBlock Grid.Row="1"
+                   Width="420"
+                   Margin="80,70,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                   Text="Initializing ..."
+                   Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVIC}}" />
+
+        <TextBlock Grid.Row="1"
+                   Width="420"
+                   Margin="80,70,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                   Text="{Binding Machine.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <StackPanel Grid.Row="1"
+                    Margin="80,150,0,0"
+                    Orientation="Horizontal"
+                    Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}">
+
+            <TextBlock VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Text="Serial Number: " />
+
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Text="{Binding Machine.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </StackPanel>
+
+        <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                 Width="200"
+                                                 Margin="80,370,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                 LabelText="{x:Static res:VWApp.UserLogin_UserName}"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                 Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
+
+        <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                 Width="200"
+                                                 Margin="80,430,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                 LabelText="{x:Static res:VWApp.UserLogin_Password}"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                 Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
+
+        <Button Grid.Row="1"
+                Margin="80,510,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding LoginCommand}"
+                Content="{x:Static res:General.Login}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+                Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}" />
+
+        <TextBlock Grid.Row="2"
+                   Height="40"
+                   Margin="80,2,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
+                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   TextWrapping="WrapWithOverflow" />
 
     </Grid>
 </Window>
