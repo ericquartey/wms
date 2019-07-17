@@ -94,15 +94,15 @@ namespace Ferretto.VW.App
 #endif
         }
 
-        private void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            if (e.IsConnected)
+            if (!e.IsConnected)
             {
-                this.ErrorMessage = "Machine Automation Service connected!!!!!!!!!!!!!!!!!!!!!!!!";
+                this.ErrorMessage = "Connection to Machine Automation Service lost.";
             }
             else
             {
-                this.ErrorMessage = "Connection to Machine Automation Service lost.";
+                this.Machine = await this.machineProvider.GetIdentityAsync();
             }
         }
 
@@ -162,14 +162,6 @@ namespace Ferretto.VW.App
         public async Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
-
-            try
-            {
-                this.Machine = await this.machineProvider.GetIdentityAsync();
-            }
-            catch
-            {
-            }
         }
 
         public void HACK_InitialiseHubOperator()

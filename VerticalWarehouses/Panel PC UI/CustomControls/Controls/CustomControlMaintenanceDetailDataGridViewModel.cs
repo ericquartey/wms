@@ -8,31 +8,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlMaintenanceDetailDataGridViewModel : BindableBase, ICustomControlMaintenanceDetailDataGridViewModel
+    public class CustomControlMaintenanceDetailDataGridViewModel : BaseViewModel, ICustomControlMaintenanceDetailDataGridViewModel
     {
-        #region Properties
-
-        public BindableBase NavigationViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

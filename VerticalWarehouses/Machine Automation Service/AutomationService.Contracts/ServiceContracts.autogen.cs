@@ -21,6 +21,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineStatisticsService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetAsync();
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<MachineStatistics> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IBeltBurnishingService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -481,7 +493,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public double RatioFrontCells { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
-        public Status Status { get; set; }
+        public CellStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("totalBackCells", Required = Newtonsoft.Json.Required.Always)]
         public int TotalBackCells { get; set; }
@@ -502,7 +514,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum Status
+    public enum CellStatus
     {
         Free = 0,
     
@@ -511,6 +523,54 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Occupied = 2,
     
         Unusable = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MachineStatistics 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalVerticalAxisCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalVerticalAxisCycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalVerticalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalVerticalAxisKilometers { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalBeltCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalBeltCycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalShutter1Cycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalShutter1Cycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalShutter2Cycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalShutter2Cycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalShutter3Cycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalShutter3Cycles { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalMovedTraysInBay1", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalMovedTraysInBay1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalMovedTraysInBay2", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalMovedTraysInBay2 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalMovedTraysInBay3", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalMovedTraysInBay3 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalMovedTrays", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalMovedTrays { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MachineStatistics FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineStatistics>(data);
+        }
     
     }
     

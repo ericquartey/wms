@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlErrorsDataGridViewModel : BindableBase, ICustomControlErrorsDataGridViewModel
+    public class CustomControlErrorsDataGridViewModel : BaseViewModel, ICustomControlErrorsDataGridViewModel
     {
         #region Fields
 
@@ -24,29 +24,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public ObservableCollection<DataGridError> Errors { get => this.errors; set => this.SetProperty(ref this.errors, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public DataGridError SelectedError { get => this.selectedError; set => this.SetProperty(ref this.selectedError, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
 
         #endregion
     }

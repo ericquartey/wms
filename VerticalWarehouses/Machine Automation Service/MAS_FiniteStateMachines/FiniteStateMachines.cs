@@ -6,7 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
-        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private bool disposed;
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private List<IoIndex> ioIndexDeviceList;
 
-        private MachineSensorsStatus machineSensorsStatus;
+        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private CancellationToken stoppingToken;
 
