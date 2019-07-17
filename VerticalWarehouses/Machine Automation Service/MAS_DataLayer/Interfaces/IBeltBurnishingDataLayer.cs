@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
-    public interface IBayPositionControl
+    public interface IBeltBurnishingDataLayer
     {
         #region Properties
 
-        Task<decimal> StepValueBP { get; }
+        Task<int> CycleQuantity { get; }
 
         #endregion
     }

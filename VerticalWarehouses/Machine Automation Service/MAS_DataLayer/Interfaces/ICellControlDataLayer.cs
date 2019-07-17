@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
-    public interface ICellControl
+    public interface ICellControlDataLayer
     {
         #region Properties
 

@@ -4,7 +4,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : ICellControl
+    public partial class DataLayer : ICellControlDataLayer
     {
         #region Properties
 

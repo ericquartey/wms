@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayerRuntimeValueManagment
+    public partial class DataLayer : IRuntimeValueManagmentDataLayer
     {
         #region Methods
 

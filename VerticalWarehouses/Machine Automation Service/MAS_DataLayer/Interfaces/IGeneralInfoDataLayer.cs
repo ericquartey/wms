@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
-    public interface IGeneralInfo
+    public interface IGeneralInfoDataLayer
     {
         #region Properties
 
