@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190716144243_Initial")]
-    partial class Initial
+    [Migration("20190717103806_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,73 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasKey("CategoryName", "VarName");
 
                     b.ToTable("ConfigurationValues");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
+                {
+                    b.Property<int>("Code")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<int>("Issue");
+
+                    b.Property<string>("Reason");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("Errors");
+
+                    b.HasData(
+                        new { Code = 1001, Description = "Errore database", Issue = 5 },
+                        new { Code = 1002, Description = "Errore caricamento configurazione", Issue = 5 },
+                        new { Code = 1003, Description = "Errore inizializzazione dati", Issue = 5 },
+                        new { Code = 1004, Description = "Errore salvataggio dati", Issue = 5 },
+                        new { Code = 1005, Description = "Errore rientro cassetto", Issue = 5 },
+                        new { Code = 1006, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1007, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1008, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1009, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1010, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1011, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1012, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1013, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1014, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1015, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1016, Description = "Errore rientro baia", Issue = 5 },
+                        new { Code = 1017, Description = "Errore posizionamento", Issue = 5 }
+                    );
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
+                {
+                    b.Property<int>("Code");
+
+                    b.Property<int>("TotalErrors");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("ErrorStatistics");
+
+                    b.HasData(
+                        new { Code = 1001, TotalErrors = 11 },
+                        new { Code = 1002, TotalErrors = 7 },
+                        new { Code = 1003, TotalErrors = 5 },
+                        new { Code = 1004, TotalErrors = 3 },
+                        new { Code = 1005, TotalErrors = 2 },
+                        new { Code = 1006, TotalErrors = 1 },
+                        new { Code = 1007, TotalErrors = 1 },
+                        new { Code = 1008, TotalErrors = 1 },
+                        new { Code = 1009, TotalErrors = 1 },
+                        new { Code = 1010, TotalErrors = 1 },
+                        new { Code = 1011, TotalErrors = 1 },
+                        new { Code = 1012, TotalErrors = 1 },
+                        new { Code = 1013, TotalErrors = 1 },
+                        new { Code = 1014, TotalErrors = 1 },
+                        new { Code = 1015, TotalErrors = 1 },
+                        new { Code = 1016, TotalErrors = 0 }
+                    );
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>
@@ -194,6 +261,13 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                         .WithMany("Cells")
                         .HasForeignKey("LoadingUnitId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Error", "Error")
+                        .WithMany("CodeErrorStatistics")
+                        .HasForeignKey("Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>

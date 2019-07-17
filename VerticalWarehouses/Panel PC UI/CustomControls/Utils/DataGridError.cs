@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Utils
 {
-    public class DataGridError : BindableBase
+    public class ErrorStatistics : BindableBase
     {
         #region Fields
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS_DataLayer.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -12,9 +13,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const string ConnectionStringName = "AutomationService";
 
-        private const string DefaultApplicationSettingsFile = "appsettings.json"; // TODO: use IConfiguration injection instead
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
 
         #endregion
+
+        // TODO: use IConfiguration injection instead
 
         #region Constructors
 
@@ -34,6 +37,10 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
+
+        public DbSet<Error> Errors { get; set; }
+
+        public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
 
         public DbSet<FreeBlock> FreeBlocks { get; set; }
 
@@ -60,7 +67,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return;
             }
-
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
@@ -86,6 +92,8 @@ namespace Ferretto.VW.MAS.DataLayer
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
             modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
         }
 
         #endregion
