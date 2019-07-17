@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>net471;netcoreapp2.2</TargetFrameworks>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

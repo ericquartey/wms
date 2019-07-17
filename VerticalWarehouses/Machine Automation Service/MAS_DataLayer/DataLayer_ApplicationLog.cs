@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 this.logger.LogTrace($"1:handleIndex={handleIndex}");
 
-                switch (handleIndex)
+                switch ( handleIndex )
                 {
                     case 0:
                         await this.LogCommandMessageAsync();
@@ -40,14 +40,14 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested);
+            while ( !this.stoppingToken.IsCancellationRequested );
         }
 
         private async Task LogCommandMessageAsync()
         {
             this.logger.LogTrace("1:Method Start");
 
-            while (this.commandLogQueue.Dequeue(out var message))
+            while ( this.commandLogQueue.Dequeue(out var message) )
             {
                 this.logger.LogTrace($"2:message={message}");
 
@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     primaryPartitionError = true;
                 }
 
-                if (!this.suppressSecondary)
+                if ( !this.suppressSecondary )
                 {
                     try
                     {
@@ -88,21 +88,21 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
                 }
 
-                if (primaryPartitionError && secondaryPartitionError)
+                if ( primaryPartitionError && secondaryPartitionError )
                 {
                     this.logger.LogCritical($"3:Exception: failed to write application log entry in the primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
 
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
                 }
 
-                if (primaryPartitionError)
+                if ( primaryPartitionError )
                 {
                     this.logger.LogCritical($"4:Exception: failed to write application log entry in the primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
 
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
                 }
 
-                if (secondaryPartitionError)
+                if ( secondaryPartitionError )
                 {
                     this.logger.LogCritical($"5:Exception: failed to write application log entry in the secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
 
@@ -115,15 +115,22 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             this.logger.LogTrace("1:Method Start");
 
-            while (this.notificationLogQueue.Dequeue(out var message))
+            while ( this.notificationLogQueue.Dequeue(out var message) )
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                var serializedData = JsonConvert.SerializeObject(message.Data);
-
                 var logEntry = new LogEntry();
 
-                logEntry.Data = serializedData;
+                try
+                {
+                    var serializedData = JsonConvert.SerializeObject(message.Data);
+                    logEntry.Data = serializedData;
+                }
+                catch
+                {
+                    logEntry.Data = "Data Not Serializable";
+                }
+
                 logEntry.Description = message.Description;
                 logEntry.Destination = message.Destination.ToString();
                 logEntry.ErrorLevel = message.ErrorLevel.ToString();
@@ -145,7 +152,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     primaryPartitionError = true;
                 }
 
-                if (!this.suppressSecondary)
+                if ( !this.suppressSecondary )
                 {
                     try
                     {
@@ -158,21 +165,21 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
                 }
 
-                if (primaryPartitionError && secondaryPartitionError)
+                if ( primaryPartitionError && secondaryPartitionError )
                 {
                     this.logger.LogCritical($"3:Exception: failed to write application log entry in the primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
 
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
                 }
 
-                if (primaryPartitionError)
+                if ( primaryPartitionError )
                 {
                     this.logger.LogCritical($"4:Exception: failed to write application log entry in the primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
 
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
                 }
 
-                if (secondaryPartitionError)
+                if ( secondaryPartitionError )
                 {
                     this.logger.LogCritical($"5:Exception: failed to write application log entry in the secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
 

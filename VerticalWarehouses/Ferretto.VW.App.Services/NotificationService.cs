@@ -164,6 +164,10 @@ namespace Ferretto.VW.App.Services
                     this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Publish(cp);
                     break;
 
+                case NotificationMessageUI<InverterExceptionMessageData> ie:
+                    this.eventAggregator.GetEvent<NotificationEventUI<InverterExceptionMessageData>>().Publish(ie);
+                    break;
+
                 case NotificationMessageUI<PositioningMessageData> vp:
                     this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
                     this.HandlePositioningMessageData(vp);

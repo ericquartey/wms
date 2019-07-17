@@ -29,11 +29,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Constructors
 
-        public PositioningController(IEventAggregator eventAggregator, IServiceProvider services)
+        public PositioningController(IEventAggregator eventAggregator, IServiceProvider services, ILogger<PositioningController> logger)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
+            this.logger = logger;
         }
 
         #endregion
@@ -151,10 +151,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         MessageActor.FiniteStateMachines,
                         MessageActor.WebApi,
                         MessageType.Positioning));
+
+                this.logger.LogDebug($"Starting positioning on Axis {data.Axis}, type {data.MovementType}, target position {initialTargetPosition}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO
+                throw ex;
             }
         }
 

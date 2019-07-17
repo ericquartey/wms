@@ -104,17 +104,17 @@ namespace Ferretto.VW.MAS_DataLayer
             this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
             this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
 
-            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandLogEvent.Subscribe(
-                commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
-                ThreadOption.PublisherThread,
-                false);
+            //var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandLogEvent.Subscribe(
+            //    commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
-            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationLogEvent.Subscribe(
-                notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false);
+            //var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //notificationLogEvent.Subscribe(
+            //    notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
             this.logger?.LogInformation("DataLayer Constructor");
         }
