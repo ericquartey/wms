@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
+                        this.Logger.LogDebug("I/O switch completed");
                         this.ioSwitched = true;
                         break;
 
@@ -76,6 +77,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 {
                     case MessageStatus.OperationEnd:
                         this.inverterSwitched = true;
+                        this.Logger.LogDebug("Inverter switch ON completed");
                         break;
 
                     case MessageStatus.OperationError:
@@ -105,7 +107,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.SwitchAxis);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+            //            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
@@ -118,7 +121,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn);
 
-            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            //            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 

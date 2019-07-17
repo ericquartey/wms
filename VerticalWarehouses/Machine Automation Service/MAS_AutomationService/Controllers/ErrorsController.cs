@@ -1,3 +1,4 @@
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;

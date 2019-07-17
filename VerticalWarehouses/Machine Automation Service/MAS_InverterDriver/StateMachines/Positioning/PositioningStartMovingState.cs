@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         private const int STATUS_WORD_REQUEST_INTERVAL = 100;
 
-        private bool positioningReachedReset;
-
         private Timer requestStatusWordMessageTimer;
 
         #endregion
@@ -57,6 +55,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 currentStatus.PositionControlWord.NewSetPoint = true;
             }
             //TODO complete type failure check
+            this.Logger.LogDebug("Set New Setpoint");
 
             //TEMP Create the timer
             this.requestStatusWordMessageTimer?.Dispose();
@@ -101,8 +100,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            var returnValue = true;
-
             if (message.IsError)
             {
                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
@@ -112,24 +109,22 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
             if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                if (!currentStatus.PositionStatusWord.PositioningAttained)
-                {
-                    this.positioningReachedReset = true;
-                }
-
-                if (this.positioningReachedReset && currentStatus.PositionStatusWord.PositioningAttained)
+                if (currentStatus.PositionStatusWord.PositioningAttained)
                 {
                     //TEMP Stop the timer
                     this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
 
                     this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+                    this.Logger.LogDebug("Position Reached !");
+                }
+                else
+                {
+                    this.Logger.LogDebug("Position Not Reached");
                 }
             }
 
-            this.Logger.LogDebug($"2:Method End with return value {returnValue}");
-
-            return returnValue;
+            //INFO Next status word request handled by timer
+            return true;
         }
 
         protected override void OnDisposing()

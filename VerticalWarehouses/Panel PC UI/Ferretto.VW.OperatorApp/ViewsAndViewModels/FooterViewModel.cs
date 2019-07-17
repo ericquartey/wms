@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -8,7 +9,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
-    public class FooterViewModel : BindableBase, IFooterViewModel
+    public class FooterViewModel : BaseViewModel, IFooterViewModel
     {
         #region Fields
 
@@ -53,32 +54,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             (this.navigateBackCommand = new DelegateCommand(
                 () => this.container.Resolve<INavigationService>().NavigateFromView()));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public void FinalizeBottomButtons()
         {
             this.navigateBackCommand = null;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

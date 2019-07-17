@@ -13,16 +13,16 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             switch (value)
             {
-                case Status.Free:
+                case CellStatus.Free:
                     return Resources.OperatorApp.Cell_Status_Free;
 
-                case Status.Disabled:
+                case CellStatus.Disabled:
                     return Resources.OperatorApp.Cell_Status_Disabled;
 
-                case Status.Occupied:
+                case CellStatus.Occupied:
                     return Resources.OperatorApp.Cell_Status_Occupied;
 
-                case Status.Unusable:
+                case CellStatus.Unusable:
                     return Resources.OperatorApp.Cell_Status_Unusable;
             }
 

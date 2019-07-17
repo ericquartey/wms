@@ -6,6 +6,16 @@
     <OutputType>WinExe</OutputType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <StartupObject>Ferretto.VW.App.App</StartupObject>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,10 +58,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="publish\**" />
     <Content Remove="Images\*.*" />
     <Content Remove="Icons\*.*" />
     <Resource Include="Images\*.*" />
     <Resource Include="Icons\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="publish\**" />
+    <None Remove="publish\**" />
+    <Page Remove="publish\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +80,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir  &quot;$(ProjectDir)publish\$(ConfigurationName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Installation.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Installation.dll&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Operator.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Operator.dll&quot;" />
+  </Target>
 
 </Project>
 

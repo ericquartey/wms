@@ -12,7 +12,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class ErrorsStatisticsViewModel : BindableBase, IErrorsStatisticsViewModel
+    public class ErrorsStatisticsViewModel : BaseViewModel, IErrorsStatisticsViewModel
     {
         #region Fields
 
@@ -112,16 +112,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             {
                 this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
             }
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

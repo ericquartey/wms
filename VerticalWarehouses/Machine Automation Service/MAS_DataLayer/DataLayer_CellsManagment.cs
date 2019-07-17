@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -19,19 +18,19 @@ namespace Ferretto.VW.MAS_DataLayer
             var cellStatusStatistics = this.primaryDataContext.Cells.GroupBy(c => c.Status).Select(g => new CellStatusStatistic
             {
                 Status = g.Key,
-                TotalFrontCells = g.Count(c => c.Side == Side.FrontOdd),
-                TotalBackCells = g.Count(c => c.Side == Side.BackEven),
-                RatioFrontCells = g.Count(c => c.Side == Side.FrontOdd) / (double)totalCells,
-                RatioBackCells = g.Count(c => c.Side == Side.BackEven) / (double)totalCells,
+                TotalFrontCells = g.Count(c => c.Side == CellSide.Front),
+                TotalBackCells = g.Count(c => c.Side == CellSide.Back),
+                RatioFrontCells = g.Count(c => c.Side == CellSide.Front) / (double)totalCells,
+                RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
             });
 
             var cellStatistics = new CellStatistics
             {
                 CellStatusStatistics = cellStatusStatistics,
                 TotalCells = totalCells,
-                TotalFrontCells = this.primaryDataContext.Cells.Count(c => c.Side == Side.FrontOdd),
-                TotalBackCells = this.primaryDataContext.Cells.Count(c => c.Side == Side.BackEven),
-                CellOccupationRatio = this.primaryDataContext.Cells.Count(c => (c.Status == Status.Occupied || c.Status == Status.Unusable)) / (double)totalCells,
+                TotalFrontCells = this.primaryDataContext.Cells.Count(c => c.Side == CellSide.Front),
+                TotalBackCells = this.primaryDataContext.Cells.Count(c => c.Side == CellSide.Back),
+                CellOccupationRatio = this.primaryDataContext.Cells.Count(c => (c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable)) / (double)totalCells,
             };
 
             return cellStatistics;
@@ -125,7 +124,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
                 }
 
-                inMemoryCellsSearchFilledCell.WorkingStatus = Status.Occupied;
+                inMemoryCellsSearchFilledCell.WorkingStatus = CellStatus.Occupied;
                 inMemoryCellsSearchFilledCell.LoadingUnitId = loadingUnitId;
             }
 
@@ -220,14 +219,14 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 cellTablePopulated = true;
 
-                if (cell.Side == Side.FrontOdd)
+                if (cell.Side == CellSide.Front)
                 {
-                    if (cellCounterEven != 0 && (cell.WorkingStatus == Status.Free || cell.WorkingStatus == Status.Disabled) && evenCellBeforePriority < cell.Priority)
+                    if (cellCounterEven != 0 && (cell.WorkingStatus == CellStatus.Free || cell.WorkingStatus == CellStatus.Disabled) && evenCellBeforePriority < cell.Priority)
                     {
                         cellCounterEven++;
                     }
 
-                    if (cell.WorkingStatus == Status.Free && cellCounterEven == 0)
+                    if (cell.WorkingStatus == CellStatus.Free && cellCounterEven == 0)
                     {
                         evenFreeBlock.StartCell = cell.CellId;
                         evenFreeBlock.FreeBlockId = freeBlockCounter;
@@ -239,7 +238,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven++;
                     }
 
-                    if (cellCounterEven != 0 && (cell.WorkingStatus == Status.Occupied || cell.WorkingStatus == Status.Unusable || evenCellBeforePriority > cell.Priority))
+                    if (cellCounterEven != 0 && (cell.WorkingStatus == CellStatus.Occupied || cell.WorkingStatus == CellStatus.Unusable || evenCellBeforePriority > cell.Priority))
                     {
                         evenFreeBlock.BlockSize = cellCounterEven;
                         evenFreeBlock.BookedCellsNumber = 0;
@@ -253,12 +252,12 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
                 else
                 {
-                    if (cellCounterOdd != 0 && (cell.WorkingStatus == Status.Free || cell.WorkingStatus == Status.Disabled) && oddCellBeforePriority < cell.Priority)
+                    if (cellCounterOdd != 0 && (cell.WorkingStatus == CellStatus.Free || cell.WorkingStatus == CellStatus.Disabled) && oddCellBeforePriority < cell.Priority)
                     {
                         cellCounterOdd++;
                     }
 
-                    if (cell.WorkingStatus == Status.Free && cellCounterOdd == 0)
+                    if (cell.WorkingStatus == CellStatus.Free && cellCounterOdd == 0)
                     {
                         oddFreeBlock.StartCell = cell.CellId;
                         oddFreeBlock.FreeBlockId = freeBlockCounter;
@@ -270,7 +269,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterOdd++;
                     }
 
-                    if (cellCounterOdd != 0 && (cell.WorkingStatus == Status.Occupied || cell.WorkingStatus == Status.Unusable || oddCellBeforePriority > cell.Priority))
+                    if (cellCounterOdd != 0 && (cell.WorkingStatus == CellStatus.Occupied || cell.WorkingStatus == CellStatus.Unusable || oddCellBeforePriority > cell.Priority))
                     {
                         oddFreeBlock.BlockSize = cellCounterOdd;
                         oddFreeBlock.BookedCellsNumber = 0;

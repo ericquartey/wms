@@ -1366,20 +1366,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionOrizzontal.
+        ///   Looks up a localized string similar to MachineStatisticsSectionHorizontal.
         /// </summary>
-        public static string MachineStatisticsSectionOrizzontal {
+        public static string MachineStatisticsSectionHorizontal {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionOrizzontal", resourceCulture);
+                return ResourceManager.GetString("MachineStatisticsSectionHorizontal", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionOrizzontalTotalCycles.
+        ///   Looks up a localized string similar to MachineStatisticsSectionHorizontalTotalCycles.
         /// </summary>
-        public static string MachineStatisticsSectionOrizzontalTotalCycles {
+        public static string MachineStatisticsSectionHorizontalTotalCycles {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionOrizzontalTotalCycles", resourceCulture);
+                return ResourceManager.GetString("MachineStatisticsSectionHorizontalTotalCycles", resourceCulture);
             }
         }
         
@@ -1393,29 +1393,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionShutterShutter1.
+        ///   Looks up a localized string similar to MachineStatistics_TotalShutter1Cycles.
         /// </summary>
-        public static string MachineStatisticsSectionShutterShutter1 {
+        public static string MachineStatistics_TotalShutter1Cycles {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionShutterShutter1", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalShutter1Cycles", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionShutterShutter2.
+        ///   Looks up a localized string similar to MachineStatistics_TotalShutter2Cycles.
         /// </summary>
-        public static string MachineStatisticsSectionShutterShutter2 {
+        public static string MachineStatistics_TotalShutter2Cycles {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionShutterShutter2", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalShutter2Cycles", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionShutterShutter3.
+        ///   Looks up a localized string similar to MachineStatistics_TotalShutter3Cycles.
         /// </summary>
-        public static string MachineStatisticsSectionShutterShutter3 {
+        public static string MachineStatistics_TotalShutter3Cycles {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionShutterShutter3", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalShutter3Cycles", resourceCulture);
             }
         }
         
@@ -1429,20 +1429,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionVerticalTotalCycles.
+        ///   Looks up a localized string similar to MachineStatistics_TotalVerticalAxisCycles.
         /// </summary>
-        public static string MachineStatisticsSectionVerticalTotalCycles {
+        public static string MachineStatistics_TotalVerticalAxisCycles {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionVerticalTotalCycles", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalVerticalAxisCycles", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionVerticalTotalKm.
+        ///   Looks up a localized string similar to MachineStatistics_TotalVerticalAxisKilometers.
         /// </summary>
-        public static string MachineStatisticsSectionVerticalTotalKm {
+        public static string MachineStatistics_TotalVerticalAxisKilometers {
             get {
-                return ResourceManager.GetString("MachineStatisticsSectionVerticalTotalKm", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalVerticalAxisKilometers", resourceCulture);
             }
         }
         

@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlCellStatisticsDataGridViewModel : BindableBase, ICustomControlCellStatisticsDataGridViewModel
+    public class CustomControlCellStatisticsDataGridViewModel : BaseViewModel, ICustomControlCellStatisticsDataGridViewModel
     {
         #region Fields
 
@@ -21,29 +21,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public IEnumerable<CellStatusStatistic> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public CellStatusStatistic SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
 
         #endregion
     }

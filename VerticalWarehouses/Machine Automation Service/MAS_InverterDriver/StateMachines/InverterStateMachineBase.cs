@@ -128,6 +128,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         protected virtual void Dispose(bool disposing)
         {
+            this.Logger.LogDebug($"Disposing {this.GetType()}");
+
             if (this.disposed)
             {
                 return;

@@ -52,8 +52,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             connection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
                 "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
-
-            base.RegisterEvents(connection);
         }
 
         /// <summary>

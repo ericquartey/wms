@@ -71,6 +71,9 @@ namespace Ferretto.VW.App.Operator
             var errorsService = new ErrorsService(this.automationServiceUrl);
             containerRegistry.RegisterInstance<IErrorsService>(errorsService);
 
+            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
+
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();

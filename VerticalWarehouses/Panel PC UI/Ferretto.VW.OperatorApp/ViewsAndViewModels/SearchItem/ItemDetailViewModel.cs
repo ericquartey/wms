@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
@@ -8,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
-    public class ItemDetailViewModel : BindableBase, IItemDetailViewModel
+    public class ItemDetailViewModel : BaseViewModel, IItemDetailViewModel
     {
         #region Fields
 
@@ -69,19 +70,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override void ExitFromViewMethod()
         {
             this.image?.Dispose();
             this.Image?.Dispose();
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             this.image?.Dispose();
             this.Image?.Dispose();
@@ -89,16 +88,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.Image = null;
             var stream = await this.wmsImagesProvider.GetImageAsync(this.Article.ImageCode);
             this.Image = Image.FromStream(stream);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion
