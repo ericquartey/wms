@@ -10,7 +10,6 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -46,18 +45,12 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (!env.IsDevelopment())
-            {
-                app.UseHsts();
-            }
-
             app.UseSignalR(routes =>
             {
                 routes.MapHub<InstallationHub>("/installation-endpoint", options => { });
                 routes.MapHub<OperatorHub>("/operator-endpoint", options => { });
             });
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
 

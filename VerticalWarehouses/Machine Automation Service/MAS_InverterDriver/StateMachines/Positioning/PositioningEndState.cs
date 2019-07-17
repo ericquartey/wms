@@ -56,6 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     currentStatus.PositionControlWord.NewSetPoint = false;
                 }
             }
+            this.Logger.LogDebug("Notify Positioning End");
 
             var notificationMessage = new FieldNotificationMessage(
                 null,

@@ -62,6 +62,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 currentStatus.PositionControlWord.EnableOperation = true;
             }
 
+            this.Logger.LogDebug("Inverter Enable Operation");
+
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
             this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
 

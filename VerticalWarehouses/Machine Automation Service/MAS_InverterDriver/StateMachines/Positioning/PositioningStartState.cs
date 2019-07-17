@@ -66,7 +66,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 FieldMessageType.Positioning,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            //this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogDebug("Inverter Positioning Start State Start");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }

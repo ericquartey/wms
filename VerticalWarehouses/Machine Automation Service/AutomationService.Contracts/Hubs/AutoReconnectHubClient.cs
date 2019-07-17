@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
-    public class AutoReconnectHubClient : IAutoReconnectHubClient
+    public abstract class AutoReconnectHubClient : IAutoReconnectHubClient
     {
         #region Fields
 
@@ -79,10 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
         }
 
-        protected virtual void RegisterEvents(HubConnection connection)
-        {
-            // do nothing
-        }
+        protected abstract void RegisterEvents(HubConnection connection);
 
         private void Initialize()
         {
