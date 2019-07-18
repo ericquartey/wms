@@ -1,9 +1,8 @@
-﻿
-using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
     public class MachineStatisticsConfiguration : IEntityTypeConfiguration<MachineStatistics>
     {

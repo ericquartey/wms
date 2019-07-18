@@ -39,41 +39,52 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Controls\BusyButton.xaml" />
-    <None Remove="Controls\BusyIndicator.xaml" />
-    <None Remove="Controls\CustomControlCellStatisticsDataGrid.xaml" />
-    <None Remove="Controls\CustomControlDrawerDataGrid.xaml" />
-    <None Remove="Controls\CustomControlDrawerSaturationDataGrid.xaml" />
-    <None Remove="Controls\CustomControlDrawerWeightSaturationDataGrid.xaml" />
-    <None Remove="Controls\CustomControlErrorsDataGrid.xaml" />
-    <None Remove="Controls\CustomControlItemStatisticsDataGrid.xaml" />
-    <None Remove="Controls\CustomControlListDataGrid.xaml" />
-    <None Remove="Controls\CustomControlListDetailDataGrid.xaml" />
-    <None Remove="Controls\CustomControlMaintenanceDataGrid.xaml" />
-    <None Remove="Controls\CustomControlMaintenanceDetailDataGrid.xaml" />
-    <None Remove="Controls\CustomProgressBarControl.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
-    <None Remove="Skins\DarkCustomControlDataGrid.xaml" />
-    <None Remove="Skins\LightCustomControlDataGrid.xaml" />
-    <None Remove="Styles\CustomControlArticleDataGridStyle.xaml" />
-    <None Remove="Templates\DataGridRepeatButtonControlTemplate.xaml" />
-    <None Remove="Templates\DataGridScrollButtonControlTemplate.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Controls\Icon\WmsIcon.xaml">
+    <None Update="Controls\BusyButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Controls\VWIcon\VWIcon.xaml">
+    <None Update="Controls\BusyIndicator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlArticleDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlCellStatisticsDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlDrawerDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlDrawerSaturationDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlDrawerWeightSaturationDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlErrorsDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlItemStatisticsDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlListDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlListDetailDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlMaintenanceDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomControlMaintenanceDetailDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\CustomProgressBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Fonts\Microsoft-sans-serif.ttf">
@@ -82,9 +93,22 @@
     <None Update="Fonts\RobotoCondensed-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Skins\DarkCustomControlDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Skins\LightCustomControlDataGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Styles\CustomControlArticleDataGridStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Templates\DataGridRepeatButtonControlTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Templates\DataGridScrollButtonControlTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
-
- 
 
 </Project>
 

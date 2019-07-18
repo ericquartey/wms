@@ -18,6 +18,4 @@ namespace Ferretto.VW.MAS.DataModels
 
         #endregion
     }
-
-
 }

@@ -63,7 +63,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, ILogger<DataLayer> logger)
+        public DataLayer(
+            DataLayerConfiguration dataLayerConfiguration,
+            DataLayerContext primaryDataContext,
+            IEventAggregator eventAggregator,
+            ILogger<DataLayer> logger)
         {
             if (primaryDataContext == null)
             {
@@ -116,14 +120,14 @@ namespace Ferretto.VW.MAS_DataLayer
             //    ThreadOption.PublisherThread,
             //    false);
 
-            this.logger?.LogInformation("DataLayer Constructor");
+            this.logger.LogInformation("DataLayer Constructor");
         }
 
         #endregion
 
         #region Methods
 
-        public void switchDBContext()
+        public void SwitchDBContext()
         {
             DataLayerContext switchDataContext;
 
@@ -180,11 +184,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
             var errorNotification = new NotificationMessage(
                 null,
-                                                            "DataLayer initialization complete",
-                                                            MessageActor.Any,
-                                                            MessageActor.DataLayer,
-                                                            MessageType.DataLayerReady,
-                                                            MessageStatus.NoStatus);
+                "DataLayer initialization complete",
+                MessageActor.Any,
+                MessageActor.DataLayer,
+                MessageType.DataLayerReady,
+                MessageStatus.NoStatus);
+
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
         }
 

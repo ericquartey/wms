@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <CodeAnalysisRuleSet>..\analysis.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

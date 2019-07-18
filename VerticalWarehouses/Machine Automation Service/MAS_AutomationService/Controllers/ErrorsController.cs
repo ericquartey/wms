@@ -11,13 +11,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IErrorStatistics errorStatistics;
+        private readonly IErrorStatisticsDataLayer errorStatistics;
 
         #endregion
 
         #region Constructors
 
-        public ErrorsController(IErrorStatistics errorStatistics)
+        public ErrorsController(IErrorStatisticsDataLayer errorStatistics)
         {
             this.errorStatistics = errorStatistics;
         }

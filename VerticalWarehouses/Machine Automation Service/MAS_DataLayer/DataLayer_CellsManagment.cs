@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -15,14 +16,17 @@ namespace Ferretto.VW.MAS_DataLayer
         public CellStatistics GetCellStatistics()
         {
             var totalCells = this.primaryDataContext.Cells.Count();
-            var cellStatusStatistics = this.primaryDataContext.Cells.GroupBy(c => c.Status).Select(g => new CellStatusStatistic
-            {
-                Status = g.Key,
-                TotalFrontCells = g.Count(c => c.Side == CellSide.Front),
-                TotalBackCells = g.Count(c => c.Side == CellSide.Back),
-                RatioFrontCells = g.Count(c => c.Side == CellSide.Front) / (double)totalCells,
-                RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
-            });
+            var cellStatusStatistics = this.primaryDataContext.Cells
+                .GroupBy(c => c.Status)
+                .Select(g =>
+                    new CellStatusStatistic
+                    {
+                        Status = g.Key,
+                        TotalFrontCells = g.Count(c => c.Side == CellSide.Front),
+                        TotalBackCells = g.Count(c => c.Side == CellSide.Back),
+                        RatioFrontCells = g.Count(c => c.Side == CellSide.Front) / (double)totalCells,
+                        RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
+                    });
 
             var cellStatistics = new CellStatistics
             {
@@ -86,52 +90,61 @@ namespace Ferretto.VW.MAS_DataLayer
         // INFO The method returns to the machine manager the position to take a drawer for mission from the WMS
         public LoadingUnitPosition GetLoadingUnitPosition(int cellId)
         {
-            var loadingUnitPosition = new LoadingUnitPosition();
-
-            var inMemoryCellPosition = this.primaryDataContext.Cells.FirstOrDefault(s => s.CellId == cellId);
-
-            if (inMemoryCellPosition == null)
+            var cell = this.primaryDataContext.Cells.FirstOrDefault(s => s.Id == cellId);
+            if (cell == null)
             {
                 throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
             }
 
-            loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
-            loadingUnitPosition.LoadingUnitSide = inMemoryCellPosition.Side;
-
-            return loadingUnitPosition;
+            return new LoadingUnitPosition
+            {
+                LoadingUnitCoord = cell.Coord,
+                LoadingUnitSide = cell.Side
+            };
         }
 
         // INFO Method called when a drawer backs in the magazine and it occupies some cells
         public async void SetReturnLoadingUnitInLocation(int loadingUnitId)
         {
             // INFO Search in the FreeBlock table the booked cells for the drawer
-            var inMemoryFreeBlockSearchBookedCells = this.primaryDataContext.FreeBlocks.FirstOrDefault(s => s.BookedCellsNumber > 0 && s.LoadingUnitId == loadingUnitId);
+            var firstFreeBlock = this.primaryDataContext
+                .FreeBlocks
+                .FirstOrDefault(s =>
+                    s.BookedCellsNumber > 0
+                    &&
+                    s.LoadingUnitId == loadingUnitId);
 
-            if (inMemoryFreeBlockSearchBookedCells == null)
+            if (firstFreeBlock == null)
             {
                 throw new DataLayerException(DataLayerExceptionCode.NoFreeBlockBookedException);
             }
 
-            var filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
-            var filledLastCell = filledStartCell + (inMemoryFreeBlockSearchBookedCells.BookedCellsNumber * 2);
+            var loadintUnit = this.primaryDataContext
+                .LoadingUnits
+                .SingleOrDefault(l => l.Id == loadingUnitId);
 
-            for (var currentCell = filledStartCell; currentCell <= filledLastCell; currentCell += 2)
+            if (loadintUnit == null)
             {
-                var inMemoryCellsSearchFilledCell = this.primaryDataContext.Cells.FirstOrDefault(s => s.CellId == currentCell);
+                throw new DataLayerException(DataLayerExceptionCode.LoadingUnitNotFoundException);
+            }
 
-                if (inMemoryCellsSearchFilledCell == null)
+            var filledStartCell = firstFreeBlock.StartCell;
+            var filledLastCell = filledStartCell + (firstFreeBlock.BookedCellsNumber * 2);
+
+            for (var currentCellIndex = filledStartCell; currentCellIndex <= filledLastCell; currentCellIndex += 2)
+            {
+                var currentCell = this.primaryDataContext.Cells.FirstOrDefault(c => c.Id == currentCellIndex);
+                if (currentCell == null)
                 {
                     throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
                 }
 
-                inMemoryCellsSearchFilledCell.WorkingStatus = CellStatus.Occupied;
-                inMemoryCellsSearchFilledCell.LoadingUnitId = loadingUnitId;
+                currentCell.WorkingStatus = CellStatus.Occupied;
             }
 
             // INFO Update the LoadingUnit table when the LoadingUnit is in location
-            var loadingUnitOnMovement = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
-            loadingUnitOnMovement.CellPosition = filledStartCell;
-            loadingUnitOnMovement.Status = LoadingUnitStatus.InLocation;
+            loadintUnit.CellId = filledStartCell;
+            loadintUnit.Status = LoadingUnitStatus.InLocation;
 
             await this.primaryDataContext.SaveChangesAsync();
 
@@ -139,56 +152,24 @@ namespace Ferretto.VW.MAS_DataLayer
             this.CreateFreeBlockTable();
         }
 
-        // TEMP Maybe obsolete
-        //public bool SetCellList(List<Cell> listCells)
-        //{
-        //    var setCellList = false;
-
-        //    if (listCells != null)
-        //    {
-        //        setCellList = true;
-
-        //        foreach (var cell in listCells)
-        //        {
-        //            var inMemoryCellCurrentValue = this.inMemoryDataContext.Cells.FirstOrDefault(s => s.CellId == cell.CellId);
-
-        //            if (inMemoryCellCurrentValue != null)
-        //            {
-        //                inMemoryCellCurrentValue.Coord = cell.Coord;
-        //                inMemoryCellCurrentValue.Priority = cell.Priority;
-        //                inMemoryCellCurrentValue.Side = cell.Side;
-        //                inMemoryCellCurrentValue.Status = cell.Status;
-
-        //                await this.inMemoryDataContext.SaveChangesAsync();
-        //            }
-        //            else
-        //            {
-        //                throw new ArgumentNullException();
-        //            }
-        //        }
-        //    }
-
-        //    return setCellList;
-        //}
-
         // INFO Procedure called when a drawer frees some cells in a first type mission from cells to bay.
         public async void SetWithdrawalLoadingUnitFromLocation(int loadingUnitId)
         {
-            var freeCells = this.primaryDataContext.Cells.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var loadingUnit = this.primaryDataContext.LoadingUnits
+                .Include(l => l.Cell)
+                .SingleOrDefault(l => l.LoadingUnitId == loadingUnitId);
 
-            if (freeCells == null)
+            if (loadingUnit == null)
             {
-                throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
+                throw new DataLayerException(DataLayerExceptionCode.LoadingUnitNotFoundException);
             }
 
             // INFO Copies a coloumn in another coloumn
-            freeCells.WorkingStatus = freeCells.Status;
-            freeCells.LoadingUnitId = 0;
+            loadingUnit.Cell.WorkingStatus = loadingUnit.Cell.Status;
+            loadingUnit.CellId = null;
 
             // INFO Update the LoadingUnit table
-            var loadingUnitOnMovement = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
-            loadingUnitOnMovement.CellPosition = 0;
-            loadingUnitOnMovement.Status = LoadingUnitStatus.OnMovementToBay;
+            loadingUnit.Status = LoadingUnitStatus.OnMovementToBay;
 
             await this.primaryDataContext.SaveChangesAsync();
 
@@ -215,20 +196,24 @@ namespace Ferretto.VW.MAS_DataLayer
             this.primaryDataContext.FreeBlocks.RemoveRange(this.primaryDataContext.FreeBlocks);
             await this.primaryDataContext.SaveChangesAsync();
 
-            foreach (var cell in this.primaryDataContext.Cells.OrderBy(cell => cell.CellId))
+            foreach (var cell in this.primaryDataContext.Cells.OrderBy(cell => cell.Id))
             {
                 cellTablePopulated = true;
 
                 if (cell.Side == CellSide.Front)
                 {
-                    if (cellCounterEven != 0 && (cell.WorkingStatus == CellStatus.Free || cell.WorkingStatus == CellStatus.Disabled) && evenCellBeforePriority < cell.Priority)
+                    if (cellCounterEven != 0
+                        &&
+                        (cell.WorkingStatus == CellStatus.Free || cell.WorkingStatus == CellStatus.Disabled)
+                        &&
+                        evenCellBeforePriority < cell.Priority)
                     {
                         cellCounterEven++;
                     }
 
                     if (cell.WorkingStatus == CellStatus.Free && cellCounterEven == 0)
                     {
-                        evenFreeBlock.StartCell = cell.CellId;
+                        evenFreeBlock.StartCell = cell.Id;
                         evenFreeBlock.FreeBlockId = freeBlockCounter;
                         evenFreeBlock.Priority = cell.Priority;
                         evenFreeBlock.Coord = cell.Coord;
@@ -238,7 +223,9 @@ namespace Ferretto.VW.MAS_DataLayer
                         cellCounterEven++;
                     }
 
-                    if (cellCounterEven != 0 && (cell.WorkingStatus == CellStatus.Occupied || cell.WorkingStatus == CellStatus.Unusable || evenCellBeforePriority > cell.Priority))
+                    if (cellCounterEven != 0
+                        &&
+                        (cell.WorkingStatus == CellStatus.Occupied || cell.WorkingStatus == CellStatus.Unusable || evenCellBeforePriority > cell.Priority))
                     {
                         evenFreeBlock.BlockSize = cellCounterEven;
                         evenFreeBlock.BookedCellsNumber = 0;
@@ -259,7 +246,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                     if (cell.WorkingStatus == CellStatus.Free && cellCounterOdd == 0)
                     {
-                        oddFreeBlock.StartCell = cell.CellId;
+                        oddFreeBlock.StartCell = cell.Id;
                         oddFreeBlock.FreeBlockId = freeBlockCounter;
                         oddFreeBlock.Priority = cell.Priority;
                         oddFreeBlock.Coord = cell.Coord;

@@ -5,23 +5,26 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IErrorStatistics
+    public partial class DataLayer : IErrorStatisticsDataLayer
     {
         #region Methods
 
         public ErrorStatisticsSummary GetErrorStatistics()
         {
             var totalErrors = this.primaryDataContext.ErrorStatistics.Sum(s => s.TotalErrors);
-            var errorStatisticsSummary = new ErrorStatisticsSummary();
-            var erros = this.primaryDataContext.ErrorStatistics.Select(errorStat => new ErrorStatisticsDetail
+            var errorStatisticsSummary = new ErrorStatisticsSummary
             {
-                Code = errorStat.Code,
-                Description = errorStat.Error.Description,
-                Total = errorStat.TotalErrors,
-                RatioTotal = ((double)errorStat.TotalErrors * 100) / (double)totalErrors
-            });
-            errorStatisticsSummary.Errors = erros;
-            errorStatisticsSummary.TotalErrors = totalErrors;
+                TotalErrors = totalErrors,
+                Errors = this.primaryDataContext.ErrorStatistics
+                    .Select(s =>
+                        new ErrorStatisticsDetail
+                        {
+                            Code = s.Code,
+                            Description = s.Error.Description,
+                            Total = s.TotalErrors,
+                            RatioTotal = s.TotalErrors * 100.0 / totalErrors
+                        })
+            };
 
             if (this.primaryDataContext.MachineStatistics.Any())
             {
@@ -30,6 +33,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     errorStatisticsSummary.TotalLoadingUnitsBetweenErrors = errorStatisticsSummary.TotalLoadingUnits / totalErrors;
                 }
+
                 errorStatisticsSummary.RatioRealiability = 99.937;
             }
 

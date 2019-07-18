@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="HostedSHDIoDriver - Copia.cs" />
-    <Compile Remove="IoMessageRead.cs" />
-    <Compile Remove="IoMessageWrite.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NModbus4" Version="3.0.0-alpha2" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />

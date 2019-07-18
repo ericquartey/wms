@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int Code { get; set; }
 
-        public IEnumerable<ErrorStatistic> CodeErrorStatistics { get; set; }
+        public ErrorStatistic Statistics { get; set; }
 
         public string Description { get; set; }
 
