@@ -71,7 +71,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             this.Drawers = new ObservableCollection<DataGridDrawerSaturation>();
             var random = new Random();
@@ -93,6 +93,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             this.dataGridViewModelRef.SelectedDrawer = this.SelectedDrawer;
 
             this.DataGridViewModel = this.dataGridViewModelRef;
+
+            return Task.CompletedTask;
         }
 
         #endregion

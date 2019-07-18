@@ -138,12 +138,21 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
 
-        public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
+        public ICommand ConfirmCommand =>
+            this.confirmCommand
+            ??
+            (this.confirmCommand = new DelegateCommand(async () => await this.ConfirmMethod()));
 
-        public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
-            async () => await this.DrawerDetailsButtonMethod()));
+        public ICommand DrawerDetailsButtonCommand =>
+            this.drawerDetailsButtonCommand
+            ??
+            (this.drawerDetailsButtonCommand = new DelegateCommand(async () => await this.DrawerDetailsButtonMethod()));
 
-        public string EvadedQuantity { get => this.evadedQuantity; set => this.SetProperty(ref this.evadedQuantity, value); }
+        public string EvadedQuantity
+        {
+            get => this.evadedQuantity;
+            set => this.SetProperty(ref this.evadedQuantity, value);
+        }
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {

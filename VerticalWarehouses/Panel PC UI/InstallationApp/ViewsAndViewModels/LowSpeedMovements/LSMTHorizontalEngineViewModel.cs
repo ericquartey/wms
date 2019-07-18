@@ -79,7 +79,7 @@ namespace Ferretto.VW.InstallationApp
             this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.IsButtonBackEnabled = true;
             this.IsButtonForwardEnabled = true;
@@ -89,6 +89,8 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

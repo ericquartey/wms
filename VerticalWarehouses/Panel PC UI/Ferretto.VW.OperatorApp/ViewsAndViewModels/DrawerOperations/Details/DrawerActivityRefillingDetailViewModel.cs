@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 {
@@ -12,9 +19,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private string batch;
 
-        private readonly IEventAggregator eventAggregator;
+        private IUnityContainer container;
+
+        private Image image;
 
         private string itemCode;
 
@@ -36,6 +47,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         private string requestedQuantity;
 
+        private IWmsImagesProvider wmsImagesProvider;
+
         #endregion
 
         #region Constructors
@@ -56,6 +69,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
         #region Properties
 
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
+
+        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -96,6 +111,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
+            var imageStream = await this.wmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
+            this.Image = Image.FromStream(imageStream);
         }
 
         #endregion
