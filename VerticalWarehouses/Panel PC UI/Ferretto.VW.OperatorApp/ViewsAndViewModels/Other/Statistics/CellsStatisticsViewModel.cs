@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -85,18 +87,28 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         {
             try
             {
-                this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+                //this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+
+                //Temporary datagrid population for development purposes
+                this.cellStatistics = new CellStatisticsSummary();
+                this.cellStatistics.CellStatusStatistics = new ObservableCollection<CellStatusStatistics>();
+
+                var random = new Random();
+                for (int i = 0; i < random.Next(1, 30); i++)
+                {
+                    (this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistics>).Add(new CellStatusStatistics { RatioBackCells = random.Next(1, 100), RatioFrontCells = random.Next(1, 100), Status = CellStatus.Free });
+                }
 
                 this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
 
-                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
+                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistics>;
                 this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
                 this.DataGridViewModel = this.dataGridViewModelRef;
 
                 this.RaisePropertyChanged(nameof(this.CellStatistics));
             }
-            catch
+            catch (Exception ex)
             {
                 //TODO call toolbar notification service
             }

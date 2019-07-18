@@ -68,7 +68,7 @@ namespace Ferretto.VW.WmsCommunication
                         {
                             var policy = new CacheItemPolicy();
                             policy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(MAX_CACHING_TIME_IN_MINUTES);
-                            var stream = new FileStream("./Images/Ingranaggio_quadrato.png", FileMode.Open);
+                            var stream = new FileStream("./Images/Divieto_Dark.png", FileMode.Open);
                             cachedObject = new MemoryStream(this.ReadFully(stream));
                             this.cache.Set("rollback", cachedObject, policy);
                         }

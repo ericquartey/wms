@@ -7,6 +7,7 @@ using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -23,7 +24,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         private readonly INavigationService navigationService;
 
-        private readonly DataGridList selectedList;
+        private readonly IWmsDataProvider wmsDataProvider;
+
+        private ICommand buttonDown;
+
+        private ICommand buttonUp;
+
+        private int currentSelectedItem;
 
         private BindableBase dataGridViewModel;
 
@@ -38,7 +45,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
         public ListsInWaitViewModel(
             IEventAggregator eventAggregator,
             INavigationService navigationService,
-            ICustomControlListDataGridViewModel listDataGridViewModel)
+            ICustomControlListDataGridViewModel listDataGridViewModel,
+            IWmsDataProvider wmsDataProvider)
         {
             if (eventAggregator == null)
             {
@@ -50,8 +58,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
+            if (wmsDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(wmsDataProvider));
+            }
+
             this.eventAggregator = eventAggregator;
             this.navigationService = navigationService;
+            this.wmsDataProvider = wmsDataProvider;
             this.ListDataGridViewModel = listDataGridViewModel;
             this.dataGridViewModelRef = listDataGridViewModel as CustomControlListDataGridViewModel;
 
@@ -62,10 +76,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         #region Properties
 
+        public ICommand ButtonDown => this.buttonDown ?? (this.buttonDown = new DelegateCommand(() => this.ChangeSelectedItem(false)));
+
+        public ICommand ButtonUp => this.buttonUp ?? (this.buttonUp = new DelegateCommand(() => this.ChangeSelectedItem(true)));
+
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand DetailListButtonCommand => this.detailListButtonCommand ?? (this.detailListButtonCommand = new DelegateCommand(
-            () => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>()));
+            () => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.lists[this.currentSelectedItem])));
 
         public ICustomControlListDataGridViewModel ListDataGridViewModel { get; }
 
@@ -73,26 +91,50 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         #region Methods
 
-        public override Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
-            var random = new Random();
+            var listsFromWms = await this.wmsDataProvider.GetItemLists();
+
             this.lists = new ObservableCollection<DataGridList>();
-            for (var i = 0; i < random.Next(1, 30); i++)
+            for (var i = 0; i < listsFromWms.Count; i++)
             {
                 this.lists.Add(new DataGridList
                 {
-                    Type = "Type",
-                    List = $"List {i}",
-                    Description = $"List {i} description",
-                    Machines = $"{random.Next(1, 10)}, {random.Next(1, 10)}, {random.Next(1, 10)}"
+                    Type = listsFromWms[i].ItemListType.ToString(),
+                    List = listsFromWms[i].Id.ToString(),
+                    Description = listsFromWms[i].Description,
+                    Machines = (listsFromWms[i].Machines == null) ? "---" : listsFromWms[i].Machines.ToString()
                 }
                 );
             }
-            this.dataGridViewModelRef.Lists = this.lists;
-            this.dataGridViewModelRef.SelectedList = this.lists[0];
-            this.DataGridViewModel = this.dataGridViewModelRef;
 
-            return Task.CompletedTask;
+            this.dataGridViewModelRef.Lists = this.lists;
+            this.dataGridViewModelRef.SelectedList = this.lists[this.currentSelectedItem];
+            this.DataGridViewModel = this.dataGridViewModelRef;
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            // TODO
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
+        }
+
+        private void ChangeSelectedItem(bool isUp)
+        {
+            this.currentSelectedItem = (isUp) ? --this.currentSelectedItem : ++this.currentSelectedItem;
+            if (this.currentSelectedItem < 0)
+            {
+                this.currentSelectedItem = 0;
+            }
+            if (this.currentSelectedItem >= this.lists.Count)
+            {
+                this.currentSelectedItem = this.lists.Count - 1;
+            }
+            (this.dataGridViewModel as CustomControlListDataGridViewModel).SelectedList = this.lists[this.currentSelectedItem];
         }
 
         #endregion
