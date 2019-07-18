@@ -12,10 +12,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants />
-  </PropertyGroup>
-
   <ItemGroup>
     <Content Remove="nlog.config" />
     <Content Remove="VertimagConfiguration.json" />

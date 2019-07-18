@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Configurations;
+using Ferretto.VW.MAS.DataLayer.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -90,10 +90,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
+
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
             modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
+
             modelBuilder.ApplyConfiguration(new ErrorConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CellsConfiguration());
+
+            modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
         }
 
         #endregion

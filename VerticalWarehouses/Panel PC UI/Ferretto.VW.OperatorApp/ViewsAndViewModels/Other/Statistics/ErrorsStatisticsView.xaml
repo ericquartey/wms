@@ -72,7 +72,7 @@
                                               Margin="510,180,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding Statistics.RatioRealiability, StringFormat={}{0:N1}}"
+                                              ContentText="{Binding Statistics.ReliabilityPercentage, StringFormat={}{0:N3} %}"
                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}" />
 
     </Grid>

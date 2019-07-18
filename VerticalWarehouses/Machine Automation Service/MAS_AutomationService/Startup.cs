@@ -122,16 +122,16 @@ namespace Ferretto.VW.MAS_AutomationService
                 provider.GetService<IEventAggregator>(),
                 provider.GetService<ILogger<DataLayer>>()));
 
-            services.AddSingleton<IBayPositionControl, DataLayer>(provider =>
+            services.AddSingleton<IBayPositionControlDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IBeltBurnishing, DataLayer>(provider =>
+            services.AddSingleton<IBeltBurnishingDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<ICellControl, DataLayer>(provider =>
+            services.AddSingleton<ICellControlDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IGeneralInfo, DataLayer>(provider =>
+            services.AddSingleton<IGeneralInfoDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IHorizontalAxis, DataLayer>(provider =>
@@ -179,19 +179,19 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
+            services.AddSingleton<ICellManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerConfigurationValueManagment, DataLayer>(provider =>
+            services.AddSingleton<IConfigurationValueManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerRuntimeValueManagment, DataLayer>(provider =>
+            services.AddSingleton<IRuntimeValueManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IErrorStatistics, DataLayer>(provider =>
+            services.AddSingleton<IErrorStatisticsDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IMachineStatisticsDataLayer, DataLayer>(provider =>

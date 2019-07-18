@@ -16,15 +16,13 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
     {
         #region Fields
 
-        private static int baysCounter = 0;
-
         private readonly IBaysManager baysManager;
 
         private readonly ILogger<AutomationService> logger;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 

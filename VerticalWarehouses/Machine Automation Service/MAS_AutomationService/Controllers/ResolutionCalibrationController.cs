@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public ResolutionCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
@@ -133,11 +133,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 try
                 {
                     var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                        (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
                     var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                        (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
                     var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                        (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
                     var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                         (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
                     var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(

@@ -41,23 +41,19 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly Task notificationReceiveTask;
 
-        private AutoResetEvent bayNowServiceableResetEvent;
+        private readonly AutoResetEvent bayNowServiceableResetEvent;
 
-        private bool disposed;
-
-        private IGeneralInfo generalInfo;
-
-        private int lastServedBay;
+        private readonly IGeneralInfoDataLayer generalInfo;
 
         private int logCounterMissionManagement;
 
-        private List<Mission> machineMissions;
+        private readonly List<Mission> machineMissions;
 
-        private IMissionsDataService missionsDataService;
+        private readonly IMissionsDataService missionsDataService;
 
-        private AutoResetEvent newMissionArrivedResetEvent;
+        private readonly AutoResetEvent newMissionArrivedResetEvent;
 
-        private ISetupNetwork setupNetwork;
+        private readonly ISetupNetwork setupNetwork;
 
         private CancellationToken stoppingToken;
 
@@ -68,7 +64,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         public MissionsManager(
             IEventAggregator eventAggregator,
             ILogger<MissionsManager> logger,
-            IGeneralInfo generalInfo,
+            IGeneralInfoDataLayer generalInfo,
             IBaysManager baysManager,
             ISetupNetwork setupNetwork,
             IMachinesDataService machinesDataService,
@@ -103,7 +99,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         #region Methods
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
@@ -116,6 +112,8 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 throw new MissionsManagerException($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
@@ -134,10 +132,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                     return;
                 }
 
-                switch (receivedMessage.Type)
-                {
-                    // TODO
-                }
+                // TODO add here a switch block on receivedMessage.Type
+                
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

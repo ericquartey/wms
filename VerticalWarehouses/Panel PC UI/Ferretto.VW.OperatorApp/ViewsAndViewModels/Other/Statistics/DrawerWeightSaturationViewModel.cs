@@ -136,6 +136,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             {
                 this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
             }
+            this.dataGridViewModelRef.Drawers = this.drawers;
+            this.dataGridViewModelRef.SelectedDrawer = this.drawers[0];
         }
 
         #endregion

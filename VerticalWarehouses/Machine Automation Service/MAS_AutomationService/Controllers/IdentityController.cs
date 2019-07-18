@@ -45,7 +45,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 InstallationDate = await this.generalInfo.InstallationDate,
                 NextServiceDate = System.DateTime.Now.AddMonths(7),
                 LastServiceDate = System.DateTime.Now.AddMonths(-9),
-                ServiceStatus = MachineServiceStatus.Valid
             };
 
             return this.Ok(machineInfo);

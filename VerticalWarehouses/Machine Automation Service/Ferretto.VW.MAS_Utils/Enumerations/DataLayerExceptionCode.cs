@@ -22,6 +22,8 @@
 
         UnknownInfoFileException = 106,
 
+        LoadingUnitNotFoundException = 107,
+
         SaveData = 1001
     }
 }

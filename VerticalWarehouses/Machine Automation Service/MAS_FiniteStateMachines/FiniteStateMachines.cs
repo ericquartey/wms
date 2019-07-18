@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private bool disposed;
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public FiniteStateMachines(
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;

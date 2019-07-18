@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IConfiguration configuration;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -42,8 +42,6 @@ namespace Ferretto.VW.MAS_IODriver
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
-
-        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private readonly ISHDTransport shdTransport;
 
@@ -59,7 +57,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         public HostedSHDIoDriver(
             IEventAggregator eventAggregator,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger,
             IConfiguration configuration)

@@ -49,10 +49,4 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="ViewsAndViewModels\FooterView.xaml.cs">
-      <DependentUpon>FooterView.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 </Project>

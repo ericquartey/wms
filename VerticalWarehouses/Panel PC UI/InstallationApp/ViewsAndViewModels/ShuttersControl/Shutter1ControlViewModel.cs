@@ -18,8 +18,6 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly int bayType;
-
         private readonly IEventAggregator eventAggregator;
 
         private string completedCycles;
@@ -165,11 +163,11 @@ namespace Ferretto.VW.InstallationApp
             this.testService = this.container.Resolve<ITestService>();
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            if (this.bayType == 1)
+            if (false /* Bay with three positions */) // TODO
             {
-                this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
+                // this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
             }
             else
             {
@@ -193,6 +191,8 @@ namespace Ferretto.VW.InstallationApp
                 message.NotificationType == NotificationType.Error &&
                 message.ActionType == ActionType.ShutterControl &&
                 message.ActionStatus == ActionStatus.Error);
+
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

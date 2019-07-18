@@ -161,14 +161,15 @@ namespace Ferretto.VW.InstallationApp
         {
             await this.GetParameterValuesAsync();
 
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                message =>
-                {
-                    this.UpdateCompletion(new MessageNotifiedEventArgs(message));
-                },
-                ThreadOption.PublisherThread,
-                false);
+            this.receivedActionUpdateToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(async 
+                    message =>
+                    {
+                        await this.UpdateCompletion(new MessageNotifiedEventArgs(message));
+                    },
+                    ThreadOption.PublisherThread,
+                    false);
         }
 
         public void UnSubscribeMethodFromEvent()

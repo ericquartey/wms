@@ -24,6 +24,23 @@
 
         public int TotalMovedTrays { get; set; }
 
+        public System.TimeSpan TotalPowerOnTime { get; set; }
 
+        public System.TimeSpan TotalAutomaticTime { get; set; }
+
+        public System.TimeSpan TotalMissionTime { get; set; }
+
+        public double AutomaticTimePercentage =>
+            this.TotalPowerOnTime.TotalHours > 0
+            ? this.TotalAutomaticTime.TotalHours * 100 / this.TotalPowerOnTime.TotalHours
+            : 0;
+
+        public double? AreaFillPercentage { get; set; }
+
+        public double WeightCapacityPercentage { get; set; }
+
+        public double UsageTimePercentage => this.TotalAutomaticTime.TotalHours > 0
+            ? this.TotalMissionTime.TotalHours * 100 / this.TotalAutomaticTime.TotalHours
+            : 0;
     }
 }
