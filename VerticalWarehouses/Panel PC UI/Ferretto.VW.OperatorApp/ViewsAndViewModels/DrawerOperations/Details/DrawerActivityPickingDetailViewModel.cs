@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.WmsCommunication.Interfaces;
@@ -14,7 +15,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 {
-    public class DrawerActivityPickingDetailViewModel : BindableBase, IDrawerActivityPickingDetailViewModel
+    public class DrawerActivityPickingDetailViewModel : BaseViewModel, IDrawerActivityPickingDetailViewModel
     {
         #region Fields
 
@@ -89,8 +90,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         public string MaterialStatus { get => this.materialStatus; set => this.SetProperty(ref this.materialStatus, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public string PackagingType { get => this.packagingType; set => this.SetProperty(ref this.packagingType, value); }
 
         public string PackingListCode { get => this.packingListCode; set => this.SetProperty(ref this.packingListCode, value); }
@@ -107,18 +106,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
@@ -135,16 +123,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
             var imageStream = await this.wmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
             this.Image = Image.FromStream(imageStream);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

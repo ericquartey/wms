@@ -53,7 +53,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         {
             if (this.CurrentState is PowerOnEndState)
             {
-                ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+                if (this.nextCommandMessage.Type != MAS_Utils.Enumerations.FieldMessageType.InverterPowerOn)
+                {
+                    ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+                }
             }
             base.PublishNotificationEvent(notificationMessage);
         }

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
@@ -62,6 +62,8 @@ namespace Ferretto.VW.MAS_DataLayer
         public Task<IPAddress> PPC3SlaveIPAddress => this.GetIPAddressConfigurationValueAsync((long)SetupNetwork.PPC3SlaveIPAddress, (long)ConfigurationCategory.SetupNetwork);
 
         public Task<IPAddress> SQLServerIPAddress => this.GetIPAddressConfigurationValueAsync((long)SetupNetwork.SQLServerIPAddress, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> SQLServerPort => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.SQLServerPort, (long)ConfigurationCategory.SetupNetwork);
 
         public Task<bool> WMS_ON => this.GetBoolConfigurationValueAsync((long)SetupNetwork.WMS_ON, (long)ConfigurationCategory.SetupNetwork);
 

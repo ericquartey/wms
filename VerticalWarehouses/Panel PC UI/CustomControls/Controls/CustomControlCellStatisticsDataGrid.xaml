@@ -1,12 +1,17 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.CustomControlCellStatisticsDataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls">
+             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <UserControl.Resources>
+        <conv:EnumCellStatusConverter x:Key="ECSC" />
+    </UserControl.Resources>
     <Grid>
         <DataGrid Name="DataGrid"
                   Width="auto"
@@ -84,7 +89,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1.5*"
-                                    Binding="{Binding Path=State}"
+                                    Binding="{Binding Path=Status, Converter={StaticResource ECSC}}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderState }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -111,7 +116,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn  x:Name="Column2"
                                     Width="1*"
-                                    Binding="{Binding Path=TotalFront}"
+                                    Binding="{Binding Path=TotalFrontCells}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFront }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -137,7 +142,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
-                                    Binding="{Binding Path=TotalFrontPercentage}"
+                                    Binding="{Binding Path=RatioFrontCells}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -163,7 +168,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
-                                    Binding="{Binding Path=TotalBack}"
+                                    Binding="{Binding Path=TotalBackCells}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBack }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -189,7 +194,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
-                                    Binding="{Binding Path=TotalBackPercentage}"
+                                    Binding="{Binding Path=RatioBackCells}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage }">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

@@ -7,7 +7,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -52,7 +53,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private DataLayerContext secondaryDataContext;
 
-        private SetupStatusVolatile setupStatusVolatile;
+        private readonly SetupStatusVolatile setupStatusVolatile;
 
         private CancellationToken stoppingToken;
 
@@ -103,17 +104,17 @@ namespace Ferretto.VW.MAS_DataLayer
             this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
             this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
 
-            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandLogEvent.Subscribe(
-                commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
-                ThreadOption.PublisherThread,
-                false);
+            //var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandLogEvent.Subscribe(
+            //    commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
-            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationLogEvent.Subscribe(
-                notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false);
+            //var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //notificationLogEvent.Subscribe(
+            //    notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
             this.logger?.LogInformation("DataLayer Constructor");
         }

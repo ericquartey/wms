@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class DrawerWeightSaturationViewModel : BindableBase, IDrawerWeightSaturationViewModel
+    public class DrawerWeightSaturationViewModel : BaseViewModel, IDrawerWeightSaturationViewModel
     {
         #region Fields
 
@@ -43,18 +43,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             var random = new Random();
             this.drawers = new ObservableCollection<DataGridDrawerWeightSaturation>();
@@ -74,16 +67,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
             this.dataGridViewModelRef.Drawers = this.drawers;
             this.dataGridViewModelRef.SelectedDrawer = this.drawers[0];
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

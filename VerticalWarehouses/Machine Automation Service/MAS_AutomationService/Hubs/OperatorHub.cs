@@ -16,15 +16,13 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
     {
         #region Fields
 
-        private static int baysCounter = 0;
-
         private readonly IBaysManager baysManager;
 
         private readonly ILogger<AutomationService> logger;
 
-        private IEventAggregator eventAggregator;
+        private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
-        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -51,11 +49,11 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
 
-            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
+            if ( this.baysManager.Bays != null && this.baysManager.Bays.Count > 0 )
             {
-                for (var i = 0; i < this.baysManager.Bays.Count; i++)
+                for ( var i = 0; i < this.baysManager.Bays.Count; i++ )
                 {
-                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
+                    if ( this.baysManager.Bays[i].IpAddress == localIP.ToString() )
                     {
                         this.baysManager.Bays[i].ConnectionId = this.Context.ConnectionId;
                         this.baysManager.Bays[i].IsConnected = true;
@@ -83,11 +81,11 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
 
-            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
+            if ( this.baysManager.Bays != null && this.baysManager.Bays.Count > 0 )
             {
-                for (var i = 0; i < this.baysManager.Bays.Count; i++)
+                for ( var i = 0; i < this.baysManager.Bays.Count; i++ )
                 {
-                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
+                    if ( this.baysManager.Bays[i].IpAddress == localIP.ToString() )
                     {
                         this.baysManager.Bays[i].ConnectionId = string.Empty;
                         this.baysManager.Bays[i].IsConnected = false;

@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             connection.On<NotificationMessageUI<BayConnectedMessageData>>(
                 "OnConnectionEstablished", this.OnConnectionEstablished);
-
-            base.RegisterEvents(connection);
         }
 
         private void OnConnectionEstablished(NotificationMessageUI<BayConnectedMessageData> message)

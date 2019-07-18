@@ -27,7 +27,7 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 
         Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission);
 
-        Task<TrayControlCompartment> GetTrayControlSelectedCompartment(ObservableCollection<TrayControlCompartment> viewCompartments, Mission mission);
+        TrayControlCompartment GetTrayControlSelectedCompartment(IEnumerable<TrayControlCompartment> viewCompartments, Mission mission);
 
         Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity);
 

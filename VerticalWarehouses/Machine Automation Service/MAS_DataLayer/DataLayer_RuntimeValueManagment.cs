@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IDataLayerRuntimeValueManagment
+    public partial class DataLayer : IRuntimeValueManagmentDataLayer
     {
         #region Methods
 

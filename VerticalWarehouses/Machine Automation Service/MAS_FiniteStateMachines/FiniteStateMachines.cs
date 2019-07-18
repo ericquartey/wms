@@ -6,7 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
-        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private bool disposed;
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private List<IoIndex> ioIndexDeviceList;
 
-        private MachineSensorsStatus machineSensorsStatus;
+        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private CancellationToken stoppingToken;
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public FiniteStateMachines(
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
@@ -152,14 +152,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 CommandMessage receivedMessage;
                 try
                 {
-                    if (this.commandQueue.Count == 0)
-                    {
-                        this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    }
-                    else
-                    {
-                        this.commandQueue.Dequeue(out receivedMessage);
-                    }
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
                     this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
@@ -235,14 +228,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 FieldNotificationMessage receivedMessage;
                 try
                 {
-                    if (this.fieldNotificationQueue.Count == 0)
-                    {
-                        this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    }
-                    else
-                    {
-                        this.fieldNotificationQueue.Dequeue(out receivedMessage);
-                    }
+                    this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
                     this.logger.LogTrace($"1:Queue Length({this.fieldNotificationQueue.Count}), Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
@@ -320,6 +306,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     // INFO Catch Exception from Inverter, to forward to the AS
                     case FieldMessageType.InverterException:
+                    case FieldMessageType.InverterError:
                         var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
@@ -332,7 +319,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             ErrorLevel.Critical);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
-                        break;
+                        break;  
 
                     // INFO Catch Exception from IoDriver, to forward to the AS
                     case FieldMessageType.IoDriverException:
@@ -398,14 +385,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 NotificationMessage receivedMessage;
                 try
                 {
-                    if (this.notificationQueue.Count == 0)
-                    {
-                        this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    }
-                    else
-                    {
-                        this.notificationQueue.Dequeue(out receivedMessage);
-                    }
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
                     this.logger.LogTrace($"1:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }

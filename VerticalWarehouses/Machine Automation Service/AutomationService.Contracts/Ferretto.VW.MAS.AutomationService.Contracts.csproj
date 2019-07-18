@@ -12,9 +12,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
   </ItemGroup>

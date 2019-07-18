@@ -52,7 +52,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
                 FieldMessageType.InverterPowerOn,
                 MessageStatus.OperationEnd);
 
-            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            //this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.Logger.LogDebug($"PowerOnEndState Start");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }

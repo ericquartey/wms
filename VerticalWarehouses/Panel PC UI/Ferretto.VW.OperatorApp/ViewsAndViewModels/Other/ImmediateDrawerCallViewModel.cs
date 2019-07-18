@@ -11,15 +11,13 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class ImmediateDrawerCallViewModel : BindableBase, IImmediateDrawerCallViewModel
+    public class ImmediateDrawerCallViewModel : BaseViewModel, IImmediateDrawerCallViewModel
     {
         #region Fields
 
         private readonly CustomControlDrawerDataGridViewModel dataGridViewModelRef;
 
         private readonly ObservableCollection<DataGridDrawer> drawers = new ObservableCollection<DataGridDrawer>();
-
-        private readonly IEventAggregator eventAggregator;
 
         private BindableBase dataGridViewModel;
 
@@ -28,15 +26,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Constructors
 
         public ImmediateDrawerCallViewModel(
-            IEventAggregator eventAggregator,
             ICustomControlDrawerDataGridViewModel drawerDataGridViewModel)
         {
-            if (eventAggregator == null)
+            if (drawerDataGridViewModel == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(drawerDataGridViewModel));
             }
 
-            this.eventAggregator = eventAggregator;
             this.DrawerDataGridViewModel = drawerDataGridViewModel;
             this.dataGridViewModelRef = drawerDataGridViewModel as CustomControlDrawerDataGridViewModel;
             this.dataGridViewModelRef.Drawers = this.drawers;
@@ -66,32 +62,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICustomControlDrawerDataGridViewModel DrawerDataGridViewModel { get; }
-
-        public BindableBase NavigationViewModel { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
 
         #endregion
     }

@@ -1,65 +1,55 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class MachineStatisticsViewModel : BindableBase, IMachineStatisticsViewModel
+    public class MachineStatisticsViewModel : BaseViewModel, IMachineStatisticsViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private MachineStatistics model;
 
-        private BindableBase dataGridViewModel;
+        readonly IMachineStatisticsService machineStatisticsService;
+
+        public MachineStatistics Model
+        {
+            get => this.model;
+            set => this.SetProperty(ref this.model, value);
+        }
 
         #endregion
 
         #region Constructors
 
-        public MachineStatisticsViewModel(
-            IEventAggregator eventAggregator)
+        public MachineStatisticsViewModel(IMachineStatisticsService machineStatisticsService)
         {
-            this.eventAggregator = eventAggregator;
+            if (machineStatisticsService == null)
+            {
+                throw new ArgumentNullException(nameof(machineStatisticsService));
+            }
 
-            this.NavigationViewModel = null;
+            this.machineStatisticsService = machineStatisticsService;
         }
-
-        #endregion
-
-        #region Properties
-
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
-
-        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override async Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            try
+            {
+                this.Model = await this.machineStatisticsService.GetAsync();
 
-        public async Task OnEnterViewAsync()
-        {
-            
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+                await base.OnEnterViewAsync();
+            }
+            catch
+            {
+                //TODO call toolbar notification service
+            }
         }
 
         #endregion

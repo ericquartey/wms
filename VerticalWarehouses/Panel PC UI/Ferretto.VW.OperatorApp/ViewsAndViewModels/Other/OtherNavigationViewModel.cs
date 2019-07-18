@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
 using Prism.Commands;
@@ -8,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class OtherNavigationViewModel : BindableBase, IOtherNavigationViewModel
+    public class OtherNavigationViewModel : BaseViewModel, IOtherNavigationViewModel
     {
         #region Fields
 
@@ -70,37 +71,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             (this.maintenanceMainPageButtonCommand = new DelegateCommand(() =>
                 this.navigationService.NavigateToView<MaintenanceMainPageViewModel, IMaintenanceMainPageViewModel>()));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public ICommand StatisticsButtonCommand =>
             this.statisticsButtonCommand
             ??
             (this.statisticsButtonCommand = new DelegateCommand(() =>
                 this.navigationService.NavigateToView<StatisticsGeneralDataViewModel, IStatisticsGeneralDataViewModel>()));
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
 
         #endregion
     }

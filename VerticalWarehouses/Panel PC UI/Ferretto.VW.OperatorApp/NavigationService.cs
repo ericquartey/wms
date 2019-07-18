@@ -92,9 +92,17 @@ namespace Ferretto.VW.OperatorApp
             where T : BindableBase, I
             where I : IViewModel
         {
-            this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
+            this.mainWindowViewModel =
+                this.mainWindowViewModel
+                ??
+                this.container.Resolve<IMainWindowViewModel>();
 
-            if (this.container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
+
+            var viewModel = this.container.Resolve<I>();
+
+            if (viewModel is T desiredViewModelWithNavView
+                &&
+                desiredViewModelWithNavView.NavigationViewModel != null)
             {
                 if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                 {
@@ -116,6 +124,7 @@ namespace Ferretto.VW.OperatorApp
                 this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
+
         }
 
         public async void NavigateToView<T, I>(object parameterObject)

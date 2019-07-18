@@ -14,7 +14,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 {
-    public class ListsInWaitViewModel : BindableBase, IListsInWaitViewModel
+    public class ListsInWaitViewModel : BaseViewModel, IListsInWaitViewModel
     {
         #region Fields
 
@@ -87,18 +87,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         public ICustomControlListDataGridViewModel ListDataGridViewModel { get; }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             var listsFromWms = await this.wmsDataProvider.GetItemLists();
 

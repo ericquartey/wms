@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -143,8 +144,8 @@ namespace Ferretto.VW.WmsCommunication
             return returnValue;
         }
 
-        public async Task<TrayControlCompartment> GetTrayControlSelectedCompartment(
-            ObservableCollection<TrayControlCompartment> viewCompartments,
+        public TrayControlCompartment GetTrayControlSelectedCompartment(
+            IEnumerable<TrayControlCompartment> viewCompartments,
             Mission mission)
         {
             var compartmentId = (int)mission.CompartmentId;
