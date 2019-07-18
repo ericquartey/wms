@@ -15,7 +15,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
     public class CellsStatisticsViewModel : BaseViewModel, ICellsStatisticsViewModel
     {
-        #region Private Fields
+        #region Fields
 
         private readonly ICellsService cellsService;
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #endregion
 
-        #region Public Constructors
+        #region Constructors
 
         public CellsStatisticsViewModel(
             INavigationService navigationService,
@@ -51,7 +51,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         public ObservableCollection<CellStatusStatistics> Cells
         {
@@ -81,7 +81,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         public override async Task OnEnterViewAsync()
         {
@@ -90,18 +90,18 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 //this.cellStatistics = await this.cellsService.GetStatisticsAsync();
 
                 //Temporary datagrid population for development purposes
-                this.cellStatistics = new CellStatistics();
-                this.cellStatistics.CellStatusStatistics = new ObservableCollection<CellStatusStatistic>();
+                this.cellStatistics = new CellStatisticsSummary();
+                this.cellStatistics.CellStatusStatistics = new ObservableCollection<CellStatusStatistics>();
 
                 var random = new Random();
                 for (int i = 0; i < random.Next(1, 30); i++)
                 {
-                    (this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistic>).Add(new CellStatusStatistic { RatioBackCells = random.Next(1, 100), RatioFrontCells = random.Next(1, 100), Status = CellStatus.Free });
+                    (this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistics>).Add(new CellStatusStatistics { RatioBackCells = random.Next(1, 100), RatioFrontCells = random.Next(1, 100), Status = CellStatus.Free });
                 }
 
                 this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
 
-                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistic>;
+                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistics>;
                 this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
                 this.DataGridViewModel = this.dataGridViewModelRef;

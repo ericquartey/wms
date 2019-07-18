@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : BackgroundService, IDataLayer
     {
-        #region Private Fields
+        #region Fields
 
         private readonly Task applicationLogWriteTask;
 

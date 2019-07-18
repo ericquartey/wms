@@ -1,5 +1,4 @@
-﻿//Header test C#
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Interfaces;
@@ -10,17 +9,17 @@ namespace Ferretto.VW.App.Controls.Controls
 {
     public class CustomControlCellStatisticsDataGridViewModel : BaseViewModel, ICustomControlCellStatisticsDataGridViewModel
     {
-        #region Private Fields
+        #region Fields
 
-        private ObservableCollection<CellStatusStatistic> cells;
+        private ObservableCollection<CellStatusStatistics> cells;
 
         private CellStatusStatistics selectedCell;
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
-        public ObservableCollection<CellStatusStatistic> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
+        public ObservableCollection<CellStatusStatistics> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
         public CellStatusStatistics SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
 
