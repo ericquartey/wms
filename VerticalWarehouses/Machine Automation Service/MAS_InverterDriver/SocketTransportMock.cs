@@ -289,6 +289,17 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.DigitalInputsOutputs:
                     returnValue = this.BuildDigitalInputsMessage(currentMessage);
                     break;
+
+                case InverterParameterId.StatusWordParam:
+                    returnValue = this.BuildRawStatusMessage();
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
 
             return returnValue;
@@ -371,6 +382,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 case InverterParameterId.DigitalInputsOutputs:
                     return await this.ProcessDigitalInputs(inverterMessage, stoppingToken);
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
             return inverterMessage.GetReadMessage().Length;
         }
@@ -401,6 +419,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 case InverterParameterId.SetOperatingModeParam:
                     return await this.ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
 
             return inverterMessage.GetWriteMessage().Length;
@@ -425,6 +450,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.lastWriteMessage = inverterMessage;
             }
+
+            this.readCompleteEventSlim.Set();
 
             return inverterMessage.GetReadMessage().Length;
         }
@@ -456,6 +483,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 case InverterOperationMode.Velocity:
                     this.BuildVelocityStatusWord();
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
                     break;
             }
             this.readCompleteEventSlim.Set();

@@ -642,11 +642,14 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.readSpeedStopwatch.Start();
                     this.ReadWaitTimeData.AddValue(this.readWaitStopwatch.ElapsedTicks);
                     this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
+
+                    this.writeEnableEvent.Set();
                 }
                 catch (OperationCanceledException)
                 {
                     this.logger.LogDebug("2:Method End operation cancelled");
 
+                    this.writeEnableEvent.Set();
                     return;
                 }
                 catch (InverterDriverException ex)
@@ -655,6 +658,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
 
+                    this.writeEnableEvent.Set();
                     return;
                 }
                 catch (Exception ex)
@@ -663,6 +667,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
+                    this.writeEnableEvent.Set();
                     return;
                 }
 
@@ -684,8 +689,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                     currentMessage = new InverterMessage(inverterData);
 
                     this.logger.LogTrace($"6:currentMessage={currentMessage}");
-
-                    this.writeEnableEvent.Set();
                 }
                 catch (InverterDriverException)
                 {
@@ -751,23 +754,23 @@ namespace Ferretto.VW.MAS_InverterDriver
                     handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
                 }
 
-                this.logger.LogTrace($"2:handleIndex={handleIndex}");
+                this.logger.LogTrace($"2:handleIndex={handleIndex} {Thread.CurrentThread.ManagedThreadId}");
 
-                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                //if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                //{
+                this.writeEnableEvent.Reset();
+
+                switch (handleIndex)
                 {
-                    this.writeEnableEvent.Reset();
+                    case 0:
+                        await this.ProcessHeartbeat();
+                        break;
 
-                    switch (handleIndex)
-                    {
-                        case 0:
-                            await this.ProcessHeartbeat();
-                            break;
-
-                        case 1:
-                            await this.ProcessInverterCommand();
-                            break;
-                    }
+                    case 1:
+                        await this.ProcessInverterCommand();
+                        break;
                 }
+                //}
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
