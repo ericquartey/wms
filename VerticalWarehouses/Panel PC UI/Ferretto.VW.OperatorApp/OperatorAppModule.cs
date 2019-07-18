@@ -93,6 +93,7 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IImmediateDrawerCallViewModel, ImmediateDrawerCallViewModel>();
             containerRegistry.RegisterSingleton<IGeneralInfoViewModel, GeneralInfoViewModel>();
             containerRegistry.RegisterSingleton<IDrawerCompactingViewModel, DrawerCompactingViewModel>();
+            containerRegistry.RegisterSingleton<IDrawerCompactingDetailViewModel, DrawerCompactingDetailViewModel>();
             containerRegistry.RegisterSingleton<IOtherNavigationViewModel, OtherNavigationViewModel>();
             containerRegistry.RegisterSingleton<IStatisticsGeneralDataViewModel, StatisticsGeneralDataViewModel>();
             containerRegistry.RegisterSingleton<IDrawerSpaceSaturationViewModel, DrawerSpaceSaturationViewModel>();
@@ -119,7 +120,7 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
-            containerRegistry.Register<ICustomControlItemStatisticsDataGridViewModel, CustomControlItemStatisticsDataGridViewModel>();
+            containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
         }
 
         #endregion

@@ -18,7 +18,7 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="14"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
@@ -109,7 +109,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
                                     Binding="{Binding Path=Height}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +135,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
                                     Binding="{Binding Path=MaxWeight}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}">
                     <DataGridTextColumn.HeaderStyle>
@@ -159,7 +161,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="1*"
                                     Binding="{Binding Path=Tare}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}">
                     <DataGridTextColumn.HeaderStyle>
@@ -184,7 +187,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
                                     Binding="{Binding Path=ActualGrossWeight}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}">
                     <DataGridTextColumn.HeaderStyle>
@@ -209,7 +213,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column6"
+                                    Width="2*"
                                     Binding="{Binding Path=WeightPercentage}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}">
                     <DataGridTextColumn.HeaderStyle>

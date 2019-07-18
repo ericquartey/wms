@@ -83,7 +83,8 @@
             </DataGrid.RowStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column1"
+                                    Width="1*"
                                     Binding="{Binding Path=Article}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridItem}">
                     <DataGridTextColumn.HeaderStyle>
@@ -109,7 +110,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="4*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="4*"
                                     Binding="{Binding Path=Description}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridDescription}">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +136,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="*"
                                     Binding="{Binding Path=Machine}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridMachine}">
                     <DataGridTextColumn.HeaderStyle>
