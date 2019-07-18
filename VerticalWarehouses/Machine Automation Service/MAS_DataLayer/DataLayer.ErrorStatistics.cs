@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_DataLayer
         public ErrorStatisticsSummary GetErrorStatistics()
         {
             var totalErrors = this.primaryDataContext.ErrorStatistics.Sum(s => s.TotalErrors);
-            var errorStatisticsSummary = new ErrorStatisticsSummary
+            var summary = new ErrorStatisticsSummary
             {
                 TotalErrors = totalErrors,
                 Errors = this.primaryDataContext.ErrorStatistics
@@ -23,21 +23,21 @@ namespace Ferretto.VW.MAS_DataLayer
                             Description = s.Error.Description,
                             Total = s.TotalErrors,
                             RatioTotal = s.TotalErrors * 100.0 / totalErrors
-                        })
+                        }),
             };
 
             if (this.primaryDataContext.MachineStatistics.Any())
             {
-                errorStatisticsSummary.TotalLoadingUnits = this.primaryDataContext.MachineStatistics.First().TotalMovedTrays;
-                if (errorStatisticsSummary.TotalLoadingUnits > 0)
+                summary.TotalLoadingUnits = this.primaryDataContext.MachineStatistics.First().TotalMovedTrays;
+                if (summary.TotalLoadingUnits > 0)
                 {
-                    errorStatisticsSummary.TotalLoadingUnitsBetweenErrors = errorStatisticsSummary.TotalLoadingUnits / totalErrors;
+                    summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;
                 }
 
-                errorStatisticsSummary.RatioRealiability = 99.937;
+                summary.ReliabilityPercentage = totalErrors * 100.0 / summary.TotalLoadingUnits;
             }
 
-            return errorStatisticsSummary;
+            return summary;
         }
 
         #endregion

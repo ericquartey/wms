@@ -23,15 +23,30 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasForeignKey<LoadingUnit>(l => l.CellId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            for (var i = 1; i < 40; i++)
+            for (var i = 1; i <= 378; i++)
             {
+                var status = CellStatus.Free;
+                if (i < 20)
+                {
+                    status = CellStatus.Occupied;
+                }
+                else if (i < 40)
+                {
+                    status = CellStatus.Unusable;
+                }
+                else if (i < 60)
+                {
+                    status = CellStatus.Disabled;
+                }
+
                 builder.HasData(
                   new Cell
                   {
                       Id = i,
                       Priority = i,
                       Side = i % 2 == 0? CellSide.Back : CellSide.Front,
-                      Status = i < 20 ? CellStatus.Occupied : CellStatus.Free
+                      Status = status,
+                      Coord = 268 + (i - i % 2) * 25
                   });
             }
         }

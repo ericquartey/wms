@@ -28,13 +28,16 @@ namespace Ferretto.VW.MAS_DataLayer
                         RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
                     });
 
+            var totalOccupiedOrUnusableCells =
+                this.primaryDataContext.Cells.Count(c => c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable);
+
             var cellStatistics = new CellStatisticsSummary
             {
                 CellStatusStatistics = cellStatusStatistics,
                 TotalCells = totalCells,
                 TotalFrontCells = this.primaryDataContext.Cells.Count(c => c.Side == CellSide.Front),
                 TotalBackCells = this.primaryDataContext.Cells.Count(c => c.Side == CellSide.Back),
-                CellOccupationRatio = this.primaryDataContext.Cells.Count(c => (c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable)) / (double)totalCells,
+                CellOccupationPercentage = totalOccupiedOrUnusableCells * 100.0 / totalCells,
             };
 
             return cellStatistics;
