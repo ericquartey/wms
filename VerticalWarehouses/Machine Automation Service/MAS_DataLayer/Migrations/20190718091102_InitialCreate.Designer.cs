@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS_DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20190718063132_InitialCreate")]
+    [Migration("20190718091102_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,29 +241,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     );
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnitStatistics", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<double>("AreaFillRate");
-
-                    b.Property<int>("CompartmentsCount");
-
-                    b.Property<int>("LoadingUnitid");
-
-                    b.Property<int>("TotalMovements");
-
-                    b.Property<double>("WeightPercentage");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LoadingUnitid")
-                        .IsUnique();
-
-                    b.ToTable("LoadingUnitStatistics");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogEntry", b =>
                 {
                     b.Property<int>("LogEntryID")
@@ -367,14 +344,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
                         .WithOne("LoadingUnit")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnit", "CellId");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnitStatistics", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithOne("Statistics")
-                        .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnitStatistics", "LoadingUnitid")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

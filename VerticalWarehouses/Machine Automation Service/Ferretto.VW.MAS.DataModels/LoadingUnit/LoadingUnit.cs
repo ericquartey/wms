@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public decimal GrossWeight { get; set; }
 
-        public LoadingUnitStatistics Statistics { get; set; }
-
         #endregion
     }
 }

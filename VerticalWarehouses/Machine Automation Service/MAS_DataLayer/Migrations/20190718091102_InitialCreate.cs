@@ -183,29 +183,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "LoadingUnitStatistics",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    LoadingUnitid = table.Column<int>(nullable: false),
-                    WeightPercentage = table.Column<double>(nullable: false),
-                    CompartmentsCount = table.Column<int>(nullable: false),
-                    TotalMovements = table.Column<int>(nullable: false),
-                    AreaFillRate = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoadingUnitStatistics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LoadingUnitStatistics_LoadingUnits_LoadingUnitid",
-                        column: x => x.LoadingUnitid,
-                        principalTable: "LoadingUnits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Cells",
                 columns: new[] { "Id", "Coord", "Priority", "Side", "Status", "WorkingStatus" },
@@ -676,12 +653,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                 table: "LoadingUnits",
                 column: "CellId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LoadingUnitStatistics_LoadingUnitid",
-                table: "LoadingUnitStatistics",
-                column: "LoadingUnitid",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -694,9 +665,6 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "FreeBlocks");
-
-            migrationBuilder.DropTable(
-                name: "LoadingUnitStatistics");
 
             migrationBuilder.DropTable(
                 name: "LogEntries");
