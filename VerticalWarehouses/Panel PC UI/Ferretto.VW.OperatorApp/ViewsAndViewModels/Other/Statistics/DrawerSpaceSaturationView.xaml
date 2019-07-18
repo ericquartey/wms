@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d">
 
 
@@ -24,7 +23,7 @@
                                               Margin="520,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="3.050 x 840"
+                                              ContentText="{Binding Dimension}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}" />
 
         <ContentControl Width="600"
@@ -38,7 +37,7 @@
                                               Margin="140,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="55"
+                                              ContentText="{Binding TotalLoadingUnits}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
 
         <Controls:CustomProgressBarControl MaxWidth="300"
@@ -51,20 +50,15 @@
         <Button Margin="0,150,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
+                Command="{Binding UpDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button Margin="0,215,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
+                Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button Margin="0,0,20,20"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Command="{Binding DrawerWeightSaturationButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionWeightAnalisys}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
 

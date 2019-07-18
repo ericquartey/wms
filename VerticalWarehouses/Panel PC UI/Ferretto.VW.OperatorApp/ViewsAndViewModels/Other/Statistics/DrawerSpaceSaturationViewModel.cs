@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
@@ -17,82 +16,112 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly CustomControlDrawerSaturationDataGridViewModel dataGridViewModelRef;
+        private readonly IFeedbackNotifier feedbackNotifier;
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IIdentityService identityService;
+
+        private readonly ILoadingUnitsService loadingUnitService;
 
         private readonly INavigationService navigationService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
-        private BindableBase dataGridViewModel;
+        private int currentItemIndex;
 
-        private ObservableCollection<DataGridDrawerSaturation> drawers;
+        private ICustomControlDrawerSaturationDataGridViewModel dataGridViewModel;
 
-        private ICommand drawerWeightSaturationButtonCommand;
+        private string dimension;
 
-        private DataGridDrawerSaturation selectedDrawer;
+        private ICommand downDataGridButtonCommand;
+
+        //private IEnumerable<LoadingUnitSpaceStatistics> drawers
+
+        private DataGridDrawerSaturation selectedLoadingUnit;
+
+        private int totalLoadingUnits;
+
+        private ICommand upDataGridButtonCommand;
 
         #endregion
 
         #region Constructors
 
         public DrawerSpaceSaturationViewModel(
-            IEventAggregator eventAggregator,
-            IWmsDataProvider wmsDataProvider,
+            ILoadingUnitsService loadingUnitService,
+            IIdentityService identityService,
             INavigationService navigationService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
-            this.eventAggregator = eventAggregator;
-            this.wmsDataProvider = wmsDataProvider;
+            this.loadingUnitService = loadingUnitService;
+            this.identityService = identityService;
             this.navigationService = navigationService;
-            this.dataGridViewModelRef = drawerSaturationDataGridViewModel as CustomControlDrawerSaturationDataGridViewModel;
-            this.dataGridViewModel = this.dataGridViewModelRef;
-
-            this.NavigationViewModel = null;
+            this.dataGridViewModel = drawerSaturationDataGridViewModel;
         }
 
         #endregion
 
         #region Properties
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+        public ICustomControlDrawerSaturationDataGridViewModel DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ObservableCollection<DataGridDrawerSaturation> Drawers { get => this.drawers; set => this.SetProperty(ref this.drawers, value); }
+        public string Dimension { get => this.dimension; set => this.SetProperty(ref this.dimension, value); }
 
-        public ICommand DrawerWeightSaturationButtonCommand => this.drawerWeightSaturationButtonCommand ?? (this.drawerWeightSaturationButtonCommand = new DelegateCommand(() =>
-                        {
-                            this.navigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
-                        }));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
 
-        public DataGridDrawerSaturation SelectedDrawer { get => this.selectedDrawer; set => this.SetProperty(ref this.selectedDrawer, value); }
+        public DataGridDrawerSaturation SelectedDrawer { get => this.selectedLoadingUnit; set => this.SetProperty(ref this.selectedLoadingUnit, value); }
+
+        public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
+
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
 
         #region Methods
 
+        public async void ChangeSelectedItemAsync(bool isUp)
+        {
+            if (!(this.dataGridViewModel is CustomControlDrawerSaturationDataGridViewModel gridData))
+            {
+                return;
+            }
+
+            var count = gridData.LoadingUnits.Count();
+            if (gridData.LoadingUnits != null && count != 0)
+            {
+                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= count)
+                {
+                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : count - 1;
+                }
+
+                gridData.SelectedLoadingUnit = gridData.LoadingUnits.ToList()[this.currentItemIndex];
+            }
+        }
+
         public override async Task OnEnterViewAsync()
         {
-            this.Drawers = new ObservableCollection<DataGridDrawerSaturation>();
-            var random = new Random();
-            for (var i = 0; i < random.Next(5, 20); i++)
+            if (!(this.dataGridViewModel is CustomControlDrawerSaturationDataGridViewModel gridData))
             {
-                var cell = new DataGridDrawerSaturation
-                {
-                    DrawerId = random.Next(0, 50).ToString(),
-                    Missions = string.Concat(random.Next(0, 4).ToString(), ", ", random.Next(0, 4).ToString()),
-                    Compartments = random.Next(0, 100).ToString(),
-                    Filling = random.Next(0, 30).ToString(),
-                    FillingPercentage = random.Next(0, 100).ToString()
-                };
-                this.Drawers.Add(cell);
+                return;
             }
-            this.SelectedDrawer = this.Drawers[0];
 
-            this.dataGridViewModelRef.Drawers = this.Drawers;
-            this.dataGridViewModelRef.SelectedDrawer = this.SelectedDrawer;
+            try
+            {
+                var loadingUnits = await this.loadingUnitService.GetSpaceStatisticsAsync();
+                var selectedLoadingUnit = loadingUnits.FirstOrDefault();
 
-            this.DataGridViewModel = this.dataGridViewModelRef;
+                gridData.LoadingUnits = loadingUnits;
+                gridData.SelectedLoadingUnit = selectedLoadingUnit;
+                this.TotalLoadingUnits = loadingUnits.Sum(l => l.TotalCompartments);
+                this.currentItemIndex = 0;
+                var machine = await this.identityService.GetAsync();
+                this.Dimension = $"{machine.Width}x{machine.Depth}";
+                this.RaisePropertyChanged(nameof(this.DataGridViewModel));
+            }
+            catch (Exception ex)
+            {
+                this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
+            }
         }
 
         #endregion

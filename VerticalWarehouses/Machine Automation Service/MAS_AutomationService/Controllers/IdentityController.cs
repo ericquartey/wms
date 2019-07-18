@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS.AutomationService.Models;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,19 +12,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        internal static readonly MachineIdentity machineInfo = new MachineIdentity
+        private readonly IGeneralInfo generalInfo;
+
+        #endregion
+
+        #region Constructors
+
+        public IdentityController(IGeneralInfo generalInfo)
         {
-            Id = 5,
-            AreaId = 2,
-            BayId = 3,
-            ModelName = "VRT EF 84 L 990-BIS H 6345",
-            SerialNumber = "VW_190012",
-            TrayCount = 42,
-            InstallationDate = System.DateTime.Now.AddMonths(-29),
-            NextServiceDate = System.DateTime.Now.AddMonths(7),
-            LastServiceDate = System.DateTime.Now.AddMonths(-9),
-            ServiceStatus = MachineServiceStatus.Valid
-        };
+            this.generalInfo = generalInfo;
+        }
 
         #endregion
 
@@ -30,8 +29,25 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MachineIdentity))]
         [HttpGet]
-        public ActionResult<MachineIdentity> Get()
+        public async Task<ActionResult<MachineIdentity>> Get()
         {
+            var machineInfo = new MachineIdentity
+            {
+                Id = 5,
+                AreaId = 2,
+                BayId = 3,
+                Width = 3080,
+                Depth = 500,
+                ModelName = await this.generalInfo.Model,
+                SerialNumber = await this.generalInfo.Serial,
+                TrayCount = 42,
+                MaxGrossWeight = await this.generalInfo.MaxGrossWeight,
+                InstallationDate = await this.generalInfo.InstallationDate,
+                NextServiceDate = System.DateTime.Now.AddMonths(7),
+                LastServiceDate = System.DateTime.Now.AddMonths(-9),
+                ServiceStatus = MachineServiceStatus.Valid
+            };
+
             return this.Ok(machineInfo);
         }
 

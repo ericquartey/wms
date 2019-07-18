@@ -22,9 +22,10 @@
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
-                  ItemsSource="{Binding Drawers}"
+                  IsHitTestVisible="False"
+                  ItemsSource="{Binding LoadingUnits}"
                   RowHeight="30"
-                  SelectedItem="{Binding SelectedDrawer}"
+                  SelectedItem="{Binding SelectedLoadingUnit}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   VerticalScrollBarVisibility="Hidden">
@@ -84,7 +85,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
-                                    Binding="{Binding Path=DrawerId}"
+                                    Binding="{Binding Path=LoadingUnitId}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderDrawerId}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -110,7 +111,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=Missions}"
+                                    Binding="{Binding Path=TotalMissions}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderMissions}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -135,7 +136,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=Compartments}"
+                                    Binding="{Binding Path=TotalCompartments}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderCompartments}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -160,7 +161,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=Filling}"
+                                    Binding="{Binding Path=CompartmentsFilled}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFilling}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -185,7 +186,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=FillingPercentage}"
+                                    Binding="{Binding Path=RatioFillingCompartments, StringFormat={}{0:N1}}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

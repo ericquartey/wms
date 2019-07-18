@@ -136,7 +136,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=RatioTotal, StringFormat={}{0:N2}}"
+                                    Binding="{Binding Path=RatioTotal, StringFormat={}{0:N1}}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsErrorDataGridHeaderTotalPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

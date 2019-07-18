@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int LoadingUnitId { get; set; }
 
-        public decimal MaxWeight { get; set; }
+        public decimal MaxGrossWeight { get; set; }
 
         public LoadingUnitStatus Status { get; set; }
 

@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<int> MaxAcceptedBai3Height => this.GetIntegerConfigurationValueAsync((long)GeneralInfo.MaxAcceptedBai3Height, (long)ConfigurationCategory.GeneralInfo);
 
-        public Task<decimal> MaxWeight => this.GetDecimalConfigurationValueAsync((long)GeneralInfo.MaxWeight, (long)ConfigurationCategory.GeneralInfo);
+        public Task<decimal> MaxGrossWeight => this.GetDecimalConfigurationValueAsync((long)GeneralInfo.MaxGrossWeight, (long)ConfigurationCategory.GeneralInfo);
 
         public Task<string> Model => this.GetStringConfigurationValueAsync((long)GeneralInfo.Model, (long)ConfigurationCategory.GeneralInfo);
 

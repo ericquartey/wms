@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<int> MaxAcceptedBai3Height { get; }
 
-        Task<decimal> MaxWeight { get; }
+        Task<decimal> MaxGrossWeight { get; }
 
         Task<string> Model { get; }
 
