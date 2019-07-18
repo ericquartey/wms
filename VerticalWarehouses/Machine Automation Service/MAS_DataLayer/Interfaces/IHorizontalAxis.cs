@@ -12,11 +12,17 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<bool> HomingExecutedHA { get; }
 
-        Task<decimal> MaxAccelerationHA { get; }
+        Task<decimal> MaxEmptyAccelerationHA { get; }
 
-        Task<decimal> MaxDecelerationHA { get; }
+        Task<decimal> MaxEmptyDecelerationHA { get; }
 
-        Task<decimal> MaxSpeedHA { get; }
+        Task<decimal> MaxEmptySpeedHA { get; }
+
+        Task<decimal> MaxFullAcceleration { get; }
+
+        Task<decimal> MaxFullDeceleration { get; }
+
+        Task<decimal> MaxFullSpeed { get; }
 
         Task<decimal> OffsetHA { get; }
 

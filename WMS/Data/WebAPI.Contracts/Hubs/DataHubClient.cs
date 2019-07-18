@@ -48,6 +48,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         public int MaxReconnectTimeoutMilliseconds { get; set; } = DefaultMaxReconnectTimeout;
 
+        public bool IsConnected => this.connection?.State == HubConnectionState.Connected;
+
         #endregion
 
         #region Methods

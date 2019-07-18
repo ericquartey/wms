@@ -639,28 +639,28 @@
   <data name="MachineStatisticsSectionVertical" xml:space="preserve">
     <value>Dati asse verticale.</value>
   </data>
-  <data name="MachineStatisticsSectionVerticalTotalKm" xml:space="preserve">
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
     <value>Totale Km. percorsi:</value>
   </data>
-  <data name="MachineStatisticsSectionVerticalTotalCycles" xml:space="preserve">
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
     <value>Totale cicli effettuati:</value>
   </data>
   <data name="MachineStatisticsSectionShutters" xml:space="preserve">
     <value>Dati serrande.</value>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter1" xml:space="preserve">
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
     <value>Cicli serranda 1:</value>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter2" xml:space="preserve">
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
     <value>Cicli serranda 2:</value>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter3" xml:space="preserve">
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
     <value>Cicli serranda 3:</value>
   </data>
-  <data name="MachineStatisticsSectionOrizzontal" xml:space="preserve">
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
     <value>Dati asse catena.</value>
   </data>
-  <data name="MachineStatisticsSectionOrizzontalTotalCycles" xml:space="preserve">
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
     <value>Totale cicli effettuati:</value>
   </data>
   <data name="MachineStatisticsSectionBays" xml:space="preserve">
@@ -707,5 +707,23 @@
   </data>
   <data name="Cell_Status_Unusable" xml:space="preserve">
     <value>Inutilizzabile</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Servizi WMS non raggiungibili</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Servizi WMS in linea</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Scaduto</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>In Scadenza</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Valido</value>
   </data>
 </root>

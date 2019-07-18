@@ -26,11 +26,17 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<decimal> LowerBound { get; }
 
-        Task<decimal> MaxAcceleration { get; }
+        Task<decimal> MaxEmptyAcceleration { get; }
 
-        Task<decimal> MaxDeceleration { get; }
+        Task<decimal> MaxEmptyDeceleration { get; }
 
-        Task<decimal> MaxSpeed { get; }
+        Task<decimal> MaxEmptySpeed { get; }
+
+        Task<decimal> MaxFullAcceleration { get; }
+
+        Task<decimal> MaxFullDeceleration { get; }
+
+        Task<decimal> MinFullSpeed { get; }
 
         Task<decimal> Offset { get; }
 

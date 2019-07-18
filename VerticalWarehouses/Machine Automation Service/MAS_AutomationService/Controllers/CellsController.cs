@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +15,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerCellManagment dataLayerCellManagment;
+        private readonly ICellManagmentDataLayer dataLayerCellManagment;
 
         #endregion
 
         #region Constructors
 
-        public CellsController(IDataLayerCellManagment dataLayerCellManagment)
+        public CellsController(ICellManagmentDataLayer dataLayerCellManagment)
         {
+            if (dataLayerCellManagment == null)
+            {
+                throw new ArgumentNullException(nameof(dataLayerCellManagment));
+            }
+
             this.dataLayerCellManagment = dataLayerCellManagment;
         }
 

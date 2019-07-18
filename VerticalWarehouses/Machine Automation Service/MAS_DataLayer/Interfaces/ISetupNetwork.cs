@@ -61,6 +61,8 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<IPAddress> SQLServerIPAddress { get; }
 
+        Task<int> SQLServerPort { get; }
+
         Task<bool> WMS_ON { get; }
 
         #endregion
