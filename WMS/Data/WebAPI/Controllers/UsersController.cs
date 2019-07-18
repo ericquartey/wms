@@ -79,6 +79,33 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(await this.userProvider.IsValidAsync(user));
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpPost("authenticate")]
+        public ActionResult<UserClaims> AuthenticateWithResourceOwnerPassword(
+           string userName,
+           string password)
+        {
+            if (userName == null)
+            {
+                return this.BadRequest(new ProblemDetails { Title = "User name was not provided." });
+            }
+
+            if (password == null)
+            {
+                return this.BadRequest(new ProblemDetails { Title = "Password was not provided." });
+            }
+
+            var userClaims = this.userProvider.Authenticate(userName, password);
+            if (userClaims != null)
+            {
+                return this.Ok(userClaims);
+            }
+
+            return this.BadRequest(new ProblemDetails { Title = "Invalid credentials." });
+        }
+
         #endregion
     }
 }
