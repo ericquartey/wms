@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using Ferretto.VW.MAS.DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public class DataLayerContext : DbContext
     {

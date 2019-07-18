@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Models;
 
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IDataLayerCellManagment
     {

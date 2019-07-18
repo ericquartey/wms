@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.DTOs;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;

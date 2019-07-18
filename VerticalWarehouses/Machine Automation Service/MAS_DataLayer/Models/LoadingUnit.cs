@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Enumerations;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Models
 {
     public class LoadingUnit
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Ferretto.VW.MAS_DataLayer.Migrations
+namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     public partial class InitialCreate : Migration
     {

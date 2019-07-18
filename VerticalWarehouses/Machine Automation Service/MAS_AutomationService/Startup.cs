@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.MAS.AutomationService;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;

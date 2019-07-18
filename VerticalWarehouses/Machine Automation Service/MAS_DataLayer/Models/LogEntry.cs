@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Models
 {
     public class LogEntry
     {

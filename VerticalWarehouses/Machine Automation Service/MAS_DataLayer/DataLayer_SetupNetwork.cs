@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayer : ISetupNetwork
     {

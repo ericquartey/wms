@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.MAS_DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public class SetupStatusVolatile : ISetupStatusVolatile
     {

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Enumerations
+﻿namespace Ferretto.VW.MAS.DataLayer.Enumerations
 {
     public enum OffsetCalibration : long
     {

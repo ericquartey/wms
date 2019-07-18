@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using RuntimeValue = Ferretto.VW.MAS.DataLayer.Models.RuntimeValue;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayer : IDataLayerRuntimeValueManagment
     {
