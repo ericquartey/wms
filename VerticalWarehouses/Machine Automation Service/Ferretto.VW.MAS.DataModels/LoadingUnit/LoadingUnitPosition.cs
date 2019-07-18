@@ -6,9 +6,9 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Fields
 
-        public decimal LoadingUnitCoord;
+        public decimal LoadingUnitCoord { get; set; }
 
-        public CellSide LoadingUnitSide;
+        public CellSide LoadingUnitSide { get; set; }
 
         #endregion
     }

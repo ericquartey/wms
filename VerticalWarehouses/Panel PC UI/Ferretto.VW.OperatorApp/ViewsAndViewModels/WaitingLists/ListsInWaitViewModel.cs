@@ -91,7 +91,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             var listsFromWms = await this.wmsDataProvider.GetItemLists();
 
@@ -111,6 +111,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
             this.dataGridViewModelRef.Lists = this.lists;
             this.dataGridViewModelRef.SelectedList = this.lists[this.currentSelectedItem];
             this.DataGridViewModel = this.dataGridViewModelRef;
+
+            return Task.CompletedTask;
         }
 
         public void SubscribeMethodToEvent()

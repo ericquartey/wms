@@ -156,13 +156,13 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) =>
-            {
-                this.NavigationRegionCurrentViewModel = null;
-                this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
-            },
-            ThreadOption.PublisherThread,
-            false,
-            message => message.Type == InstallationApp_EventMessageType.EnterView);
+                {
+                    this.NavigationRegionCurrentViewModel = null;
+                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.EnterView);
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) =>

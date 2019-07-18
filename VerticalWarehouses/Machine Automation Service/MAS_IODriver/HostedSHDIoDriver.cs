@@ -43,8 +43,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly IServiceScopeFactory serviceScopeFactory;
-
         private readonly ISHDTransport shdTransport;
 
         private readonly IVertimagConfiguration vertimagConfiguration;

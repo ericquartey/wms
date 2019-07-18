@@ -98,7 +98,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
@@ -113,6 +113,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
             var imageStram = await this.wmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
             this.Image = Image.FromStream(imageStram);
+
+            return Task.CompletedTask;
         }
 
         #endregion

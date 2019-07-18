@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IErrorStatistics, DataLayer>(provider =>
+            services.AddSingleton<IErrorStatisticsDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IMachineStatisticsDataLayer, DataLayer>(provider =>

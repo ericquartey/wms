@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
     {
         #region Methods
 
-        CellStatistics GetCellStatistics();
+        CellStatisticsSummary GetCellStatistics();
 
         /// <summary>
         ///     Get an object with the vertical position and side to place a drawer

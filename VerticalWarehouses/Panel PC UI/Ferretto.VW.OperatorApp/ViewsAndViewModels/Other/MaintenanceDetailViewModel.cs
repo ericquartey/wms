@@ -57,7 +57,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             var random = new Random();
             this.maintenanceDetails = new ObservableCollection<DataGridMaintenanceDetail>();
@@ -74,6 +74,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             this.dataGridViewModelRef.MaintenanceDetails = this.maintenanceDetails;
             this.dataGridViewModelRef.SelectedMaintenanceDetail = this.maintenanceDetails[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
+
+            return Task.CompletedTask;
         }
 
         #endregion

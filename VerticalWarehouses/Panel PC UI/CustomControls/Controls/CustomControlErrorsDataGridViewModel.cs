@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public IEnumerable<ErrorStatisticsDetail> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public ErrorStatisticsDetail SelectedCell { get => this.selectedError; set => this.SetProperty(ref this.selectedError, value); }
 
         #endregion
