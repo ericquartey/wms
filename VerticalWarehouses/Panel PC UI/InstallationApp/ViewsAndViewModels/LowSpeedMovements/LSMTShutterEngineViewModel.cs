@@ -83,13 +83,15 @@ namespace Ferretto.VW.InstallationApp
             this.shutterService = this.container.Resolve<IShutterService>();
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.updateShutterPositioningToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.ShutterPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            return Task.CompletedTask;
         }
 
         public async Task StopShutterAsync()

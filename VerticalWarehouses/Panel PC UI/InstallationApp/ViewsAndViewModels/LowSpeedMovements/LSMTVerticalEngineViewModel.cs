@@ -92,7 +92,7 @@ namespace Ferretto.VW.InstallationApp
             await this.positioningService.ExecuteAsync(messageData);
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
@@ -102,6 +102,8 @@ namespace Ferretto.VW.InstallationApp
 
             this.IsButtonUpEnabled = true;
             this.IsButtonDownEnabled = true;
+
+            return Task.CompletedTask;
         }
 
         public async Task StopVerticalAxisAsync()

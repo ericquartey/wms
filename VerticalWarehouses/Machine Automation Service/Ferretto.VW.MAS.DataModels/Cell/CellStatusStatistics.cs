@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class CellStatusStatistic
+    public sealed class CellStatusStatistics
     {
         #region Properties
 

@@ -13,13 +13,13 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
-        public CellStatistics GetCellStatistics()
+        public CellStatisticsSummary GetCellStatistics()
         {
             var totalCells = this.primaryDataContext.Cells.Count();
             var cellStatusStatistics = this.primaryDataContext.Cells
                 .GroupBy(c => c.Status)
                 .Select(g =>
-                    new CellStatusStatistic
+                    new CellStatusStatistics
                     {
                         Status = g.Key,
                         TotalFrontCells = g.Count(c => c.Side == CellSide.Front),
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
                     });
 
-            var cellStatistics = new CellStatistics
+            var cellStatistics = new CellStatisticsSummary
             {
                 CellStatusStatistics = cellStatusStatistics,
                 TotalCells = totalCells,
