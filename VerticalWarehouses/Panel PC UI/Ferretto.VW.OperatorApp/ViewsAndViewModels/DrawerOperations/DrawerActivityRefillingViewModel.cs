@@ -138,7 +138,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
 
-        public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
+        public ICommand ConfirmCommand =>
+            this.confirmCommand
+            ??
+            (this.confirmCommand = new DelegateCommand(async () => await this.ConfirmMethod()));
 
         public ICommand DrawerActivityRefillingDetailsButtonCommand => this.drawerActivityRefillingDetailsButtonCommand ?? (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
             async () => await this.DrawerDetailsButtonMethod()));

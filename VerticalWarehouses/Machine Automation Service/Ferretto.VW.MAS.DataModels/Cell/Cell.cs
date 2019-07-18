@@ -4,13 +4,11 @@
     {
         #region Properties
 
-        public int CellId { get; set; }
+        public int Id { get; set; }
 
         public decimal Coord { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
-
-        public int LoadingUnitId { get; set; }
 
         public int Priority { get; set; }
 

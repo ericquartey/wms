@@ -83,7 +83,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
@@ -96,6 +96,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
+
+            return Task.CompletedTask;
         }
 
         #endregion

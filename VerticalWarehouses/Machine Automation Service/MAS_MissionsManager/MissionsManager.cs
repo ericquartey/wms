@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         #region Methods
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
@@ -112,6 +112,8 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 throw new MissionsManagerException($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
@@ -130,10 +132,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                     return;
                 }
 
-                switch (receivedMessage.Type)
-                {
-                    // TODO
-                }
+                // TODO add here a switch block on receivedMessage.Type
+                
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

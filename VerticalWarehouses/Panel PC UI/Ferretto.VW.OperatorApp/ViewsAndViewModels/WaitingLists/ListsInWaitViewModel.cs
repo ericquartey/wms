@@ -73,7 +73,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             var random = new Random();
             this.lists = new ObservableCollection<DataGridList>();
@@ -91,6 +91,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
             this.dataGridViewModelRef.Lists = this.lists;
             this.dataGridViewModelRef.SelectedList = this.lists[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
+
+            return Task.CompletedTask;
         }
 
         #endregion

@@ -89,9 +89,9 @@
             this.container = container;
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

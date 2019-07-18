@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("Statistics")]
-        public ActionResult<CellStatistics> GetStatistics()
+        public ActionResult<CellStatisticsSummary> GetStatistics()
         {
             var statics = this.dataLayerCellManagment.GetCellStatistics();
             return this.Ok(statics);

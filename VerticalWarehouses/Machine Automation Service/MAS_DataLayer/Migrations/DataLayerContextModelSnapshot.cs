@@ -18,12 +18,10 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
                 {
-                    b.Property<int>("CellId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<decimal>("Coord");
-
-                    b.Property<int>("LoadingUnitId");
 
                     b.Property<int>("Priority");
 
@@ -33,11 +31,51 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
                     b.Property<int>("WorkingStatus");
 
-                    b.HasKey("CellId");
-
-                    b.HasIndex("LoadingUnitId");
+                    b.HasKey("Id");
 
                     b.ToTable("Cells");
+
+                    b.HasData(
+                        new { Id = 1, Coord = 0m, Priority = 1, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 2, Coord = 0m, Priority = 2, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 3, Coord = 0m, Priority = 3, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 4, Coord = 0m, Priority = 4, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 5, Coord = 0m, Priority = 5, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 6, Coord = 0m, Priority = 6, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 7, Coord = 0m, Priority = 7, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 8, Coord = 0m, Priority = 8, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 9, Coord = 0m, Priority = 9, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 10, Coord = 0m, Priority = 10, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 11, Coord = 0m, Priority = 11, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 12, Coord = 0m, Priority = 12, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 13, Coord = 0m, Priority = 13, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 14, Coord = 0m, Priority = 14, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 15, Coord = 0m, Priority = 15, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 16, Coord = 0m, Priority = 16, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 17, Coord = 0m, Priority = 17, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 18, Coord = 0m, Priority = 18, Side = 1, Status = 2, WorkingStatus = 0 },
+                        new { Id = 19, Coord = 0m, Priority = 19, Side = 0, Status = 2, WorkingStatus = 0 },
+                        new { Id = 20, Coord = 0m, Priority = 20, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 21, Coord = 0m, Priority = 21, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 22, Coord = 0m, Priority = 22, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 23, Coord = 0m, Priority = 23, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 24, Coord = 0m, Priority = 24, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 25, Coord = 0m, Priority = 25, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 26, Coord = 0m, Priority = 26, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 27, Coord = 0m, Priority = 27, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 28, Coord = 0m, Priority = 28, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 29, Coord = 0m, Priority = 29, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 30, Coord = 0m, Priority = 30, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 31, Coord = 0m, Priority = 31, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 32, Coord = 0m, Priority = 32, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 33, Coord = 0m, Priority = 33, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 34, Coord = 0m, Priority = 34, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 35, Coord = 0m, Priority = 35, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 36, Coord = 0m, Priority = 36, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 37, Coord = 0m, Priority = 37, Side = 0, Status = 0, WorkingStatus = 0 },
+                        new { Id = 38, Coord = 0m, Priority = 38, Side = 1, Status = 0, WorkingStatus = 0 },
+                        new { Id = 39, Coord = 0m, Priority = 39, Side = 0, Status = 0, WorkingStatus = 0 }
+                    );
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ConfigurationValue", b =>
@@ -150,24 +188,55 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
-                    b.Property<int>("LoadingUnitId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("CellPosition");
+                    b.Property<int?>("CellId");
+
+                    b.Property<string>("Code");
 
                     b.Property<string>("Description");
 
+                    b.Property<decimal>("GrossWeight");
+
                     b.Property<decimal>("Height");
 
-                    b.Property<decimal>("MaxWeight");
+                    b.Property<int>("LoadingUnitId");
+
+                    b.Property<decimal>("MaxNetWeight");
 
                     b.Property<long>("Status");
 
-                    b.Property<decimal>("Weight");
+                    b.Property<decimal>("Tare");
 
-                    b.HasKey("LoadingUnitId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CellId")
+                        .IsUnique();
 
                     b.ToTable("LoadingUnits");
+
+                    b.HasData(
+                        new { Id = 1, CellId = 1, Code = "LU#1.01", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 2, CellId = 2, Code = "LU#1.02", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 3, CellId = 3, Code = "LU#1.03", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 4, CellId = 4, Code = "LU#1.04", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 5, CellId = 5, Code = "LU#1.05", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 6, CellId = 6, Code = "LU#1.06", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 7, CellId = 7, Code = "LU#1.07", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 8, CellId = 8, Code = "LU#1.08", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 9, CellId = 9, Code = "LU#1.09", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 10, CellId = 10, Code = "LU#1.10", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 11, CellId = 11, Code = "LU#1.11", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 12, CellId = 12, Code = "LU#1.12", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 13, CellId = 13, Code = "LU#1.13", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 14, CellId = 14, Code = "LU#1.14", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 15, CellId = 15, Code = "LU#1.15", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 16, CellId = 16, Code = "LU#1.16", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 17, CellId = 17, Code = "LU#1.17", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 18, CellId = 18, Code = "LU#1.18", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m },
+                        new { Id = 19, CellId = 19, Code = "LU#1.19", GrossWeight = 0m, Height = 100m, LoadingUnitId = 0, MaxNetWeight = 0m, Status = 3L, Tare = 0m }
+                    );
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogEntry", b =>
@@ -253,27 +322,26 @@ namespace Ferretto.VW.MAS_DataLayer.Migrations
                     b.ToTable("RuntimeValues");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany("Cells")
-                        .HasForeignKey("LoadingUnitId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Error", "Error")
-                        .WithMany("CodeErrorStatistics")
-                        .HasForeignKey("Code");
+                        .WithOne("Statistics")
+                        .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.FreeBlock", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany("FreeBlocks")
+                        .WithMany()
                         .HasForeignKey("LoadingUnitId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
+                        .WithOne("LoadingUnit")
+                        .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnit", "CellId");
                 });
 #pragma warning restore 612, 618
         }

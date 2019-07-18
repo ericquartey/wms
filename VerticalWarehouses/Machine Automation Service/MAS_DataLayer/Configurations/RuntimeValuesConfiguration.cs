@@ -1,15 +1,14 @@
-﻿
-using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class ConfigurationValuesConfiguration : IEntityTypeConfiguration<ConfigurationValue>
+    public class RuntimeValuesConfiguration : IEntityTypeConfiguration<RuntimeValue>
     {
         #region Methods
 
-        public void Configure(EntityTypeBuilder<ConfigurationValue> builder)
+        public void Configure(EntityTypeBuilder<RuntimeValue> builder)
         {
             if (builder == null)
             {
