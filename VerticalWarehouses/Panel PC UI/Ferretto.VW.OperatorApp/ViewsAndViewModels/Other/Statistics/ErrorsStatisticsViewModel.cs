@@ -94,7 +94,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 this.statistics = await this.errorsService.GetStatisticsAsync();
                 var selectedError = this.statistics.Errors.FirstOrDefault();
 
-                gridData.Cells = this.statistics.Errors;
+                gridData.Cells = this.statistics.Errors.OrderByDescending(e => e.Total);
                 gridData.SelectedCell = selectedError;
                 this.currentItemIndex = 0;
 

@@ -59,7 +59,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"
-                                           ProgressionValue="{Binding CellStatistics.CellOccupationRatio}" />
+                                           ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
 
     </Grid>
 </UserControl>

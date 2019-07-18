@@ -378,22 +378,22 @@
   <data name="Back" xml:space="preserve">
     <value>Indietro</value>
   </data>
-  <data name="StatisticsGeneralDataTotDrawerMoved" xml:space="preserve">
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
     <value>Cassetti movimentati:</value>
   </data>
-  <data name="StatisticsGeneralDataTotPowerOnTime" xml:space="preserve">
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
     <value>Tempo accensione ore:</value>
   </data>
-  <data name="StatisticsGeneralDataAreaFilling" xml:space="preserve">
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
     <value>Area occupata:</value>
   </data>
-  <data name="StatisticsGeneralDataWeightFilling" xml:space="preserve">
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
     <value>Peso caricato:</value>
   </data>
-  <data name="StatisticsGeneralDataTotAutoTime" xml:space="preserve">
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
     <value>Tempo in automatico:</value>
   </data>
-  <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
     <value>Coefficiente di utilizzo:</value>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">

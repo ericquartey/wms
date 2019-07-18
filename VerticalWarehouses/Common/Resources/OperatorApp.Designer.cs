@@ -1987,11 +1987,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsGeneralDataAreaFilling.
+        ///   Looks up a localized string similar to MachineStatistics_AreaFillPercentage.
         /// </summary>
-        public static string StatisticsGeneralDataAreaFilling {
+        public static string MachineStatistics_AreaFillPercentage {
             get {
-                return ResourceManager.GetString("StatisticsGeneralDataAreaFilling", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_AreaFillPercentage", resourceCulture);
             }
         }
         
@@ -2005,47 +2005,47 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsGeneralDataTotAutoTime.
+        ///   Looks up a localized string similar to MachineStatistics_AutomaticTimePercentage.
         /// </summary>
-        public static string StatisticsGeneralDataTotAutoTime {
+        public static string MachineStatistics_AutomaticTimePercentage {
             get {
-                return ResourceManager.GetString("StatisticsGeneralDataTotAutoTime", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_AutomaticTimePercentage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsGeneralDataTotDrawerMoved.
+        ///   Looks up a localized string similar to MachineStatistics_TotalMovedTrays.
         /// </summary>
-        public static string StatisticsGeneralDataTotDrawerMoved {
+        public static string MachineStatistics_TotalMovedTrays {
             get {
-                return ResourceManager.GetString("StatisticsGeneralDataTotDrawerMoved", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalMovedTrays", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsGeneralDataTotPowerOnTime.
+        ///   Looks up a localized string similar to MachineStatistics_TotalPowerOnTime.
         /// </summary>
-        public static string StatisticsGeneralDataTotPowerOnTime {
+        public static string MachineStatistics_TotalPowerOnTime {
             get {
-                return ResourceManager.GetString("StatisticsGeneralDataTotPowerOnTime", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_TotalPowerOnTime", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsGeneralDataUtilization.
+        ///   Looks up a localized string similar to MachineStatistics_UsageTimePercentage.
         /// </summary>
-        public static string StatisticsGeneralDataUtilization {
+        public static string MachineStatistics_UsageTimePercentage {
             get {
-                return ResourceManager.GetString("StatisticsGeneralDataUtilization", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_UsageTimePercentage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsGeneralDataWeightFilling.
+        ///   Looks up a localized string similar to MachineStatistics_WeightCapacityPercentage.
         /// </summary>
-        public static string StatisticsGeneralDataWeightFilling {
+        public static string MachineStatistics_WeightCapacityPercentage {
             get {
-                return ResourceManager.GetString("StatisticsGeneralDataWeightFilling", resourceCulture);
+                return ResourceManager.GetString("MachineStatistics_WeightCapacityPercentage", resourceCulture);
             }
         }
         
