@@ -600,7 +600,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
         }
 
-        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage)
+        private async Task ProcessPositioningMessage(FieldCommandMessage receivedMessage)
         {
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {
@@ -626,7 +626,35 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
-                    var positioningFieldData = new InverterPositioningFieldMessageData(positioningData);
+                    //TEMP Begin changes to move the resolution from Controller to the Inverter
+                    ConfigurationCategory configurationCategory;
+                    switch (positioningData.AxisMovement)
+                    {
+                        case Axis.Horizontal:
+                            configurationCategory = ConfigurationCategory.HorizontalAxis;
+                            break;
+
+                        case Axis.Vertical:
+                            configurationCategory = ConfigurationCategory.VerticalAxis;
+                            break;
+
+                        default:
+                            configurationCategory = ConfigurationCategory.Undefined;
+                            break;
+                    }
+
+                    var targetAcceleration = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
+                    var targetDeceleration = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
+                    var targetPosition = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                    var targetSpeed = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
+
+                    var positioningFieldData = new InverterPositioningFieldMessageData(
+                        positioningData,
+                        targetAcceleration,
+                        targetDeceleration,
+                        targetPosition,
+                        targetSpeed);
+                    //TEMP End changes to move the resolution from Controller to the Inverter
 
                     if (inverterStatus is AngInverterStatus currentStatus)
                     {

@@ -142,8 +142,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     maxDeceleration,
                     0,
                     0,
-                    0,
-                    resolution);
+                    0);
+                //resolution);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(
                     new CommandMessage(
                         messageData,

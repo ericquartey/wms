@@ -22,6 +22,10 @@
 
         UnknownInfoFileException = 106,
 
+        DivideByZeroException = 107,
+
+        WrongAxisException = 108,
+
         SaveData = 1001
     }
 }

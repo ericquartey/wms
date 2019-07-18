@@ -105,8 +105,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 deceleration,
                 requiredCycles,
                 lowerBound,
-                upperBound,
-                resolution);
+                upperBound);
+            //resolution);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(

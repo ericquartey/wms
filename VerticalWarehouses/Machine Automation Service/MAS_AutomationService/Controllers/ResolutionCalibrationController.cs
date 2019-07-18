@@ -140,11 +140,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
                     var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                         (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
-                    var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                        (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+                    //var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    //    (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
                     var speed = maxSpeed * feedRate;
-                    var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
+                    var messageData = new PositioningMessageData(
+                        Axis.Vertical,
+                        MovementType.Absolute,
+                        position,
+                        speed,
+                        maxAcceleration,
+                        maxDeceleration,
+                        0,
+                        0,
+                        0);
+                    //resolution);
                     var commandMessage = new CommandMessage(
                         messageData,
                         message,

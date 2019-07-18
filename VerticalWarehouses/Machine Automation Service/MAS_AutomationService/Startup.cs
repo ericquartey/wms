@@ -185,6 +185,9 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IConfigurationValueManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
+            services.AddSingleton<IResolutionConversion, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
             services.AddSingleton<IRuntimeValueManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 

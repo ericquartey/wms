@@ -20,7 +20,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int NumberCycles { get; }
 
-        decimal Resolution { get; }
+        //decimal Resolution { get; }
 
         decimal TargetAcceleration { get; }
 

@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 0,
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
-                this.positioningMessageData.Resolution,
+                //this.positioningMessageData.Resolution,
                 MessageVerbosity.Error);
 
                 var notificationMessage = new NotificationMessage(
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 0,
                 this.positioningMessageData.LowerBound,
                 this.positioningMessageData.UpperBound,
-                this.positioningMessageData.Resolution,
+                //this.positioningMessageData.Resolution,
                 MessageVerbosity.Info);
 
             var notificationMessage = new NotificationMessage(
