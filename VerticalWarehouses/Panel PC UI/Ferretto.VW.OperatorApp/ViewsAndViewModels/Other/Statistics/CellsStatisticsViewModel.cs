@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Header test C#
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
     public class CellsStatisticsViewModel : BaseViewModel, ICellsStatisticsViewModel
     {
-        #region Fields
+        #region Private Fields
 
         private readonly ICellsService cellsService;
 
@@ -37,7 +39,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #endregion
 
-        #region Constructors
+        #region Public Constructors
 
         public CellsStatisticsViewModel(
             INavigationService navigationService,
@@ -53,7 +55,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         public ObservableCollection<CellStatusStatistic> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
@@ -74,24 +76,34 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
         public override async Task OnEnterViewAsync()
         {
             try
             {
-                this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+                //this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+
+                //Temporary datagrid population for development purposes
+                this.cellStatistics = new CellStatistics();
+                this.cellStatistics.CellStatusStatistics = new ObservableCollection<CellStatusStatistic>();
+
+                var random = new Random();
+                for (int i = 0; i < random.Next(1, 30); i++)
+                {
+                    (this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistic>).Add(new CellStatusStatistic { RatioBackCells = random.Next(1, 100), RatioFrontCells = random.Next(1, 100), Status = CellStatus.Free });
+                }
 
                 this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
 
-                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
+                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics as ObservableCollection<CellStatusStatistic>;
                 this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
                 this.DataGridViewModel = this.dataGridViewModelRef;
 
                 this.RaisePropertyChanged(nameof(this.CellStatistics));
             }
-            catch
+            catch (Exception ex)
             {
                 //TODO call toolbar notification service
             }

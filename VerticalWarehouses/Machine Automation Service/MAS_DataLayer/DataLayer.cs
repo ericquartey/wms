@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Header test C#
+using System;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer : BackgroundService, IDataLayer
     {
-        #region Fields
+        #region Private Fields
 
         private readonly Task applicationLogWriteTask;
 
@@ -49,11 +50,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly Task notificationReceiveTask;
 
+        private readonly SetupStatusVolatile setupStatusVolatile;
+
         private DataLayerContext primaryDataContext;
 
         private DataLayerContext secondaryDataContext;
-
-        private readonly SetupStatusVolatile setupStatusVolatile;
 
         private CancellationToken stoppingToken;
 
@@ -61,97 +62,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #endregion
 
-        #region Constructors
-
-        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, ILogger<DataLayer> logger)
-        {
-            if (primaryDataContext == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
-            }
-
-            if (eventAggregator == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
-            }
-
-            if (logger == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
-            }
-
-            this.dataLayerConfiguration = dataLayerConfiguration;
-
-            this.primaryDataContext = primaryDataContext;
-
-            this.eventAggregator = eventAggregator;
-
-            this.logger = logger;
-
-            this.suppressSecondary = false;
-
-            this.setupStatusVolatile = new SetupStatusVolatile();
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
-            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
-            this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
-
-            //var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            //commandLogEvent.Subscribe(
-            //    commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
-            //    ThreadOption.PublisherThread,
-            //    false);
-
-            //var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            //notificationLogEvent.Subscribe(
-            //    notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
-            //    ThreadOption.PublisherThread,
-            //    false);
-
-            this.logger?.LogInformation("DataLayer Constructor");
-        }
-
-        #endregion
-
-        #region Methods
-
-        public void switchDBContext()
-        {
-            DataLayerContext switchDataContext;
-
-            switchDataContext = this.primaryDataContext;
-            this.primaryDataContext = this.secondaryDataContext;
-            this.secondaryDataContext = switchDataContext;
-
-            this.suppressSecondary = true;
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            this.stoppingToken = stoppingToken;
-
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-                this.applicationLogWriteTask.Start();
-            }
-            catch (Exception ex)
-            {
-                //TEMP throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
-            }
-
-            return Task.CompletedTask;
-        }
+        #region Private Methods
 
         private async Task DataLayerInitializeAsync()
         {
@@ -619,6 +530,104 @@ namespace Ferretto.VW.MAS_DataLayer
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            this.stoppingToken = stoppingToken;
+
+            try
+            {
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+                this.applicationLogWriteTask.Start();
+            }
+            catch (Exception ex)
+            {
+                //TEMP throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+            }
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Public Constructors
+
+        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, ILogger<DataLayer> logger)
+        {
+            if (primaryDataContext == null)
+            {
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
+            }
+
+            if (eventAggregator == null)
+            {
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
+            }
+
+            if (logger == null)
+            {
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
+            }
+
+            this.dataLayerConfiguration = dataLayerConfiguration;
+
+            this.primaryDataContext = primaryDataContext;
+
+            this.eventAggregator = eventAggregator;
+
+            this.logger = logger;
+
+            this.suppressSecondary = false;
+
+            this.setupStatusVolatile = new SetupStatusVolatile();
+
+            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+            this.commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+            this.commandReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
+            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
+            this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
+
+            //var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            //commandLogEvent.Subscribe(
+            //    commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
+            //    ThreadOption.PublisherThread,
+            //    false);
+
+            //var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            //notificationLogEvent.Subscribe(
+            //    notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
+            //    ThreadOption.PublisherThread,
+            //    false);
+
+            this.logger?.LogInformation("DataLayer Constructor");
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void switchDBContext()
+        {
+            DataLayerContext switchDataContext;
+
+            switchDataContext = this.primaryDataContext;
+            this.primaryDataContext = this.secondaryDataContext;
+            this.secondaryDataContext = switchDataContext;
+
+            this.suppressSecondary = true;
         }
 
         #endregion

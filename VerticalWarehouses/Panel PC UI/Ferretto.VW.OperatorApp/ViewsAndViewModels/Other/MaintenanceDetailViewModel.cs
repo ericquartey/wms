@@ -15,13 +15,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
+        private readonly CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
 
         private readonly DataGridKit selectedKit;
 
         private BindableBase dataGridViewModel;
-
-        private CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
 
         private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;
 
@@ -30,7 +28,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Constructors
 
         public MaintenanceDetailViewModel(
-            ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel)
+            ICustomControlMaintenanceDetailDataGridViewModel maintenanceDataGridViewModel)
         {
             if (maintenanceDataGridViewModel == null)
             {

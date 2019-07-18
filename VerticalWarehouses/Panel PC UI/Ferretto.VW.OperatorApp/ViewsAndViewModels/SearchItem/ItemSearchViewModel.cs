@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Header test C#
+using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
     public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
     {
-        #region Fields
+        #region Private Fields
 
         private const int DEFAULT_DELAY = 300;
 
@@ -65,7 +66,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #endregion
 
-        #region Constructors
+        #region Public Constructors
 
         public ItemSearchViewModel(
             IEventAggregator eventAggregator,
@@ -116,7 +117,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         public ICustomControlArticleDataGridViewModel ArticleDataGridViewModel { get; }
 
@@ -165,7 +166,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
         public async void ChangeSelectedItemAsync(bool isUp)
         {
@@ -324,7 +325,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             {
                 items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
                 this.currentItemIndex = 0;
                 this.IsSearching = false;
