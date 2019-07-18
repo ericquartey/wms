@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public double CellOccupationRatio { get; set; }
+        public double CellOccupationPercentage { get; set; }
 
         public IEnumerable<CellStatusStatistics> CellStatusStatistics { get; set; }
 
