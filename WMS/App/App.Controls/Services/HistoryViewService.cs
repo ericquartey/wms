@@ -86,7 +86,7 @@ namespace Ferretto.WMS.App.Controls.Services
             this.currentHistoryView = LayoutTreeHelper.GetVisualParents(mouseDownInfo.OriginalSource as DependencyObject)
                                 .OfType<IWmsHistoryView>()
                                 .FirstOrDefault();
-            this.isControlPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control;
+            this.isControlPressed = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
         }
 
         private void Reset()
