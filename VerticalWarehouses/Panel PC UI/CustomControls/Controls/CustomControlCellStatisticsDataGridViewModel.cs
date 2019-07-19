@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 

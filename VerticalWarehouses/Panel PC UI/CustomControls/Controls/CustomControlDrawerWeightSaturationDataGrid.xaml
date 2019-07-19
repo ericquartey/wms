@@ -138,7 +138,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="1*"
-                                    Binding="{Binding Path=MaxGrossWeight}"
+                                    Binding="{Binding Path=MaxNetWeight}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -190,7 +190,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column5"
                                     Width="1*"
-                                    Binding="{Binding Path=Weight}"
+                                    Binding="{Binding Path=GrossWeight}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -216,7 +216,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column6"
                                     Width="2*"
-                                    Binding="{Binding Path=MaxRatio}"
+                                    Binding="{Binding Path=MaxWeightPercentage}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
