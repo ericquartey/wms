@@ -12,69 +12,7 @@ namespace Ferretto.VW.MAS_DataLayer
 {
     public partial class DataLayer
     {
-        private async Task SaveConfigurationDataAsync(
-            ConfigurationCategory elementCategory,
-            long configurationData,
-            JToken jsonDataValue)
-        {
-            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
-            {
-                throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
-            }
-
-            try
-            {
-                switch (generalInfoConfigurationDataType)
-                {
-                    case ConfigurationDataType.Boolean:
-                        await this.SetBoolConfigurationValueAsync(
-                            configurationData,
-                            (long)elementCategory,
-                            jsonDataValue.Value<bool>());
-                        break;
-
-                    case ConfigurationDataType.Date:
-                        await this.SetDateTimeConfigurationValueAsync(
-                            configurationData,
-                            (long)elementCategory,
-                            jsonDataValue.Value<DateTime>());
-                        break;
-
-                    case ConfigurationDataType.Integer:
-                        await this.SetIntegerConfigurationValueAsync(
-                            configurationData,
-                            (long)elementCategory,
-                            jsonDataValue.Value<int>());
-                        break;
-
-                    case ConfigurationDataType.Float:
-                        await this.SetDecimalConfigurationValueAsync(
-                            configurationData,
-                            (long)elementCategory,
-                            jsonDataValue.Value<decimal>());
-                        break;
-
-                    case ConfigurationDataType.String:
-                        var stringValue = jsonDataValue.Value<string>();
-                        if (IPAddress.TryParse(stringValue, out var configurationValue))
-                        {
-                            await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);
-                        }
-                        else
-                        {
-                            await this.SetStringConfigurationValueAsync(configurationData, (long)elementCategory, stringValue);
-                        }
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
-
-                //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
-            }
-        }
+        #region Methods
 
         /// <summary>
         /// This method is been invoked during the installation, to load the general_info.json file
@@ -284,5 +222,86 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
             }
         }
+
+        private async Task SaveConfigurationDataAsync(
+                    ConfigurationCategory elementCategory,
+            long configurationData,
+            JToken jsonDataValue)
+        {
+            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
+            {
+                throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
+            }
+
+            try
+            {
+                switch (generalInfoConfigurationDataType)
+                {
+                    case ConfigurationDataType.Boolean:
+                        await this.SetBoolConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
+                            jsonDataValue.Value<bool>());
+                        break;
+
+                    case ConfigurationDataType.Date:
+                        await this.SetDateTimeConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
+                            jsonDataValue.Value<DateTime>());
+                        break;
+
+                    case ConfigurationDataType.Integer:
+                        await this.SetIntegerConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
+                            jsonDataValue.Value<int>());
+                        break;
+
+                    case ConfigurationDataType.Float:
+                        await this.SetDecimalConfigurationValueAsync(
+                            configurationData,
+                            (long)elementCategory,
+                            jsonDataValue.Value<decimal>());
+                        break;
+
+                    case ConfigurationDataType.String:
+                        var stringValue = jsonDataValue.Value<string>();
+                        var splitDot = stringValue.Split('.');
+                        var ipAddress = false;
+                        if (splitDot.Length == 4)
+                        {
+                            ipAddress = true;
+                        }
+                        else
+                        {
+                            var splitColon = stringValue.Split(':');
+                            if (splitColon.Length == 3)
+                            {
+                                ipAddress = true;
+                            }
+                        }
+
+                        if (IPAddress.TryParse(stringValue, out var configurationValue) && ipAddress)
+                        {
+                            await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);
+                        }
+                        else
+                        {
+                            await this.SetStringConfigurationValueAsync(configurationData, (long)elementCategory, stringValue);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+
+                //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+            }
+        }
+
+        #endregion
     }
 }
