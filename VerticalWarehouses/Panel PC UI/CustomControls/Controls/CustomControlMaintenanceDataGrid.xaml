@@ -14,7 +14,7 @@
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="14"
+                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
@@ -83,7 +83,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
-                                    Width="1*"
+                                    Width="1.5*"
                                     Binding="{Binding Path=Kit}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderKit }">
                     <DataGridTextColumn.HeaderStyle>
@@ -109,7 +109,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="4*"
                                     Binding="{Binding Path=Description}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderDescription}">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +135,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
                                     Binding="{Binding Path=State}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderState}">
                     <DataGridTextColumn.HeaderStyle>
@@ -159,7 +161,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="1*"
                                     Binding="{Binding Path=Request}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsMaintenanceDataGridHeaderRequest}">
                     <DataGridTextColumn.HeaderStyle>

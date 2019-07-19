@@ -18,20 +18,20 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeader}" />
 
-        <ContentControl Width="600"
-                        Height="300"
-                        Margin="160,210,0,0"
-                        HorizontalAlignment="Left"
+        <ContentControl HorizontalAlignment="Left"
+                        Height="310"
+                        Margin="110,200,0,0"
                         VerticalAlignment="Top"
+                        Width="700"
                         Content="{Binding DataGridViewModel}" />
 
-        <Button Margin="0,200,20,0"
+        <Button Margin="0,240,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button Margin="0,265,20,0"
+        <Button Margin="0,305,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Header test C#
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -43,11 +44,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly Task notificationReceiveTask;
 
+        private readonly SetupStatusVolatile setupStatusVolatile;
+
         private DataLayerContext primaryDataContext;
 
         private DataLayerContext secondaryDataContext;
-
-        private readonly SetupStatusVolatile setupStatusVolatile;
 
         private CancellationToken stoppingToken;
 

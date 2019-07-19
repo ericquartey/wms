@@ -18,7 +18,7 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="14"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsHitTestVisible="False"
@@ -110,7 +110,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
                                     Binding="{Binding Path=MissionsCount}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderMissions}">
                     <DataGridTextColumn.HeaderStyle>
@@ -135,7 +136,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
                                     Binding="{Binding Path=CompartmentsCount}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderCompartments}">
                     <DataGridTextColumn.HeaderStyle>
@@ -160,7 +162,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="2.0*"
                                     Binding="{Binding Path=AreaFillPercentage}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFilling}">
                     <DataGridTextColumn.HeaderStyle>
@@ -185,7 +188,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
                                     Binding="{Binding Path=AreaFillPercentage, StringFormat={}{0:N1}}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}">
                     <DataGridTextColumn.HeaderStyle>

@@ -15,20 +15,20 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
     {
         #region Fields
 
-        private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
+        private readonly CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
 
         private readonly DataGridKit selectedKit;
 
         private BindableBase dataGridViewModel;
 
-        private ObservableCollection<DataGridKit> kits;
+        private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;
 
         #endregion
 
         #region Constructors
 
         public MaintenanceDetailViewModel(
-            ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel)
+            ICustomControlMaintenanceDetailDataGridViewModel maintenanceDataGridViewModel)
         {
             if (maintenanceDataGridViewModel == null)
             {
@@ -36,7 +36,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             }
 
             this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
-            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDataGridViewModel;
+            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDetailDataGridViewModel;
 
             this.NavigationViewModel = null;
         }
@@ -51,7 +51,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             set => this.SetProperty(ref this.dataGridViewModel, value);
         }
 
-        public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
+        public ICustomControlMaintenanceDetailDataGridViewModel MaintenanceDataGridViewModel { get; }
 
         #endregion
 
@@ -60,20 +60,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public override Task OnEnterViewAsync()
         {
             var random = new Random();
-            this.kits = new ObservableCollection<DataGridKit>();
-            for (var i = 0; i < random.Next(3, 30); i++)
+            this.maintenanceDetails = new ObservableCollection<DataGridMaintenanceDetail>();
+            for (int i = 0; i < random.Next(3, 30); i++)
             {
-                this.kits.Add(new DataGridKit
+                this.maintenanceDetails.Add(new DataGridMaintenanceDetail
                 {
-                    Kit = $"Kit {i}",
-                    Description = $"Kit number {i}",
-                    State = $"State",
-                    Request = "Request"
-                });
+                    Element = $"Element {i}",
+                    Description = $"This is element {i}",
+                    Quantity = random.Next(2, 40).ToString(),
+                }
+                );
             }
-
-            this.dataGridViewModelRef.Kits = this.kits;
-            this.dataGridViewModelRef.SelectedKit = this.kits[0];
+            this.dataGridViewModelRef.MaintenanceDetails = this.maintenanceDetails;
+            this.dataGridViewModelRef.SelectedMaintenanceDetail = this.maintenanceDetails[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
 
             return Task.CompletedTask;

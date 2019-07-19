@@ -8,7 +8,7 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        private IEnumerable<CellStatusStatistics> cells;
+        private ObservableCollection<CellStatusStatistics> cells;
 
         private CellStatusStatistics selectedCell;
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Properties
 
-        public IEnumerable<CellStatusStatistics> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
+        public ObservableCollection<CellStatusStatistics> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
         public CellStatusStatistics SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
 

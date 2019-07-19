@@ -10,68 +10,41 @@
     <Grid Width="1024"
           Height="608">
 
-        <TextBlock MaxWidth="500"
-                   Margin="180,40,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.DrawerWeightSaturationHeader}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="590,100,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding GrossWeight}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}" />
-        <ContentControl Width="600"
-                        Height="300"
-                        Margin="180,220,0,0"
-                        HorizontalAlignment="Left"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0" MaxWidth="500"
+            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+            Text="{x:Static Resources:OperatorApp.DrawerWeightSaturationHeader}" />
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,90,0,0" MaxWidth="300"
+             ContentText="{Binding GrossWeight}"
+             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}"/>
+        <ContentControl HorizontalAlignment="Left"
+                        Height="310"
+                        Margin="140,200,0,0"
                         VerticalAlignment="Top"
-                        Content="{Binding DataGridViewModel}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="180,100,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding TotalLoadingUnits}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationTotalDrawers}" />
-        <Controls:CustomProgressBarControl MaxWidth="300"
-                                           Margin="580,540,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"                                           
-                                           ProgressionValue="{Binding NetWeightPercent, StringFormat={}{0:N1}}"/>
-        <Button Margin="0,220,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Command="{Binding UpDataGridButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-        <Button Margin="0,285,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Command="{Binding DownDataGridButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="350,100,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding MaxGrossWeight}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxGrossRange}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="590,155,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"                                              
-                                              ContentText="{Binding NetWeight}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightNetLoaded}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="350,155,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding MaxNetWeight}"
-                                              LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxNetRange}" />
+                        Width="680"
+                        Content="{Binding DataGridViewModel}">
+        </ContentControl>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" MaxWidth="300"
+             ContentText="{Binding TotalLoadingUnits}"
+            LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationTotalDrawers}"/>
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,540,0,0" MaxWidth="300"
+            ProgressionValue="{Binding NetWeightPercent, StringFormat={}{0:N1}}"
+            LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"/>
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,240,20,0"
+            Content="{x:Static Resources:OperatorApp.CommonUp}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,305,20,0"
+            Command="{Binding DownDataGridButtonCommand}"
+            Content="{x:Static Resources:OperatorApp.CommonDown}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,90,0,0" MaxWidth="300"
+            ContentText="{Binding MaxGrossWeight}"
+            LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxGrossRange}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,140,0,0" MaxWidth="300"
+            ContentText="{Binding NetWeight}"
+            LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightNetLoaded}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,140,0,0" MaxWidth="300"
+            ContentText="{Binding MaxNetWeight}"
+            LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxNetRange}"/>
 
         <Button Margin="0,0,20,20"
                 HorizontalAlignment="Right"

@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
@@ -37,6 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         //INFO ANG Inputs
+
         #region Properties
 
         public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
