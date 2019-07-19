@@ -435,7 +435,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/LoadingUnits/Space-Statistics");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/LoadingUnits/SpaceStatistics");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -502,7 +502,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/LoadingUnits/Weight-Statistics");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/LoadingUnits/WeightStatistics");
     
             var client_ = new System.Net.Http.HttpClient();
             try

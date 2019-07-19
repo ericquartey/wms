@@ -21,11 +21,11 @@
                   FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
-                  IsReadOnly="True"
                   IsHitTestVisible="False"
-                  ItemsSource="{Binding Drawers}"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding LoadingUnits}"
                   RowHeight="30"
-                  SelectedItem="{Binding SelectedDrawer}"
+                  SelectedItem="{Binding SelectedLoadingUnit}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   VerticalScrollBarVisibility="Hidden">
@@ -216,7 +216,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column6"
                                     Width="2*"
-                                    Binding="{Binding Path=MaxWeightPercentage}"
+                                    Binding="{Binding Path=MaxWeightPercentage, StringFormat={}{0:N1}}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

@@ -21,6 +21,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly ILoadingUnitsService loadingUnitService;
 
+        private readonly IMachineStatisticsService machineStatisticsService;
+
         private readonly INavigationService navigationService;
 
         private readonly IStatusMessageService statusMessageService;
@@ -35,7 +37,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private ICommand downDataGridButtonCommand;
 
-        private decimal fillPercentage;
+        private double fillPercentage;
 
         private DataGridDrawerSaturation selectedLoadingUnit;
 
@@ -51,6 +53,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             ILoadingUnitsService loadingUnitService,
             IIdentityService identityService,
             INavigationService navigationService,
+            IMachineStatisticsService machineStatisticsService,
             IStatusMessageService statusMessageService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
@@ -58,6 +61,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             this.identityService = identityService;
             this.navigationService = navigationService;
             this.statusMessageService = statusMessageService;
+            this.machineStatisticsService = machineStatisticsService;
             this.dataGridViewModel = drawerSaturationDataGridViewModel;
         }
 
@@ -71,7 +75,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
 
-        public decimal FillPercentage { get => this.fillPercentage; set => this.SetProperty(ref this.fillPercentage, value); }
+        public double FillPercentage { get => this.fillPercentage; set => this.SetProperty(ref this.fillPercentage, value); }
 
         public DataGridDrawerSaturation SelectedDrawer { get => this.selectedLoadingUnit; set => this.SetProperty(ref this.selectedLoadingUnit, value); }
 
@@ -118,11 +122,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 gridData.LoadingUnits = loadingUnits;
                 gridData.SelectedLoadingUnit = selectedLoadingUnit;
                 this.TotalLoadingUnits = loadingUnits.Count();
+
                 this.currentItemIndex = 0;
+
                 var machine = await this.identityService.GetAsync();
-                this.Dimension = $"{machine.Width}x{machine.Depth}";
+                this.Dimension = $"{(int)machine.Width}x{(int)machine.Depth}";
+
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
-                this.FillPercentage = 0;
+
+                var machineStat = await this.machineStatisticsService.GetAsync();
+                if (machineStat.AreaFillPercentage.HasValue)
+                {
+                    this.FillPercentage = machineStat.AreaFillPercentage.Value;
+                }
             }
             catch (Exception ex)
             {

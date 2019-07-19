@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("Space-Statistics")]
+        [HttpGet("SpaceStatistics")]
         public ActionResult<IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatistics()
         {
             var statistics = this.loadingUnitStatistics.GetSpaceStatistics();
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
-        [HttpGet("Weight-Statistics")]
+        [HttpGet("WeightStatistics")]
         public ActionResult<IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatistics()
         {
             var statistics = this.loadingUnitStatistics.GetWeightStatistics();

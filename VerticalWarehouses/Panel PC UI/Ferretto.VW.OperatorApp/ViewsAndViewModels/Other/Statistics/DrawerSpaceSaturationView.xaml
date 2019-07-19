@@ -45,7 +45,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"
-                                           ProgressionValue="{Binding FillPercentage}" />
+                                           ProgressionValue="{Binding AreaFillPercentage}" />
 
         <Button Margin="0,190,20,0"
                 HorizontalAlignment="Right"
@@ -59,13 +59,6 @@
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button Margin="0,0,20,20"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Command="{Binding DrawerWeightSaturationButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionWeightAnalisys}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
 

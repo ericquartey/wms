@@ -20,8 +20,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int Id { get; set; }
 
-        public int LoadingUnitId { get; set; }
-
         public decimal MaxNetWeight { get; set; }
 
         public int MissionsCount { get; set; }

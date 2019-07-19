@@ -29,6 +29,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private ICustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModel;
 
+        private ICommand downDataGridButtonCommand;
+
         private ICommand drawerSpaceSaturationButtonCommand;
 
         private decimal grossWeight;
@@ -42,6 +44,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         private decimal netWeightPercent;
 
         private int totalLoadingUnits;
+
+        private ICommand upDataGridButtonCommand;
 
         #endregion
 
@@ -67,22 +71,26 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public ICustomControlDrawerWeightSaturationDataGridViewModel DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
         public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
                     this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
                 }));
 
+        public decimal GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
+
+        public decimal MaxGrossWeight { get => this.maxGrossWeight; set => this.SetProperty(ref this.maxGrossWeight, value); }
+
+        public decimal MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
+
+        public decimal NetWeight { get => this.netWeight; set => this.SetProperty(ref this.netWeight, value); }
+
+        public decimal NetWeightPercent { get => this.netWeightPercent; set => this.SetProperty(ref this.netWeightPercent, value); }
+
         public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
 
-        private decimal GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
-
-        private decimal MaxGrossWeight { get => this.maxGrossWeight; set => this.SetProperty(ref this.maxGrossWeight, value); }
-
-        private decimal MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
-
-        private decimal NetWeight { get => this.netWeight; set => this.SetProperty(ref this.netWeight, value); }
-
-        private decimal NetWeightPercent { get => this.netWeightPercent; set => this.SetProperty(ref this.netWeightPercent, value); }
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
 

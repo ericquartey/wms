@@ -540,8 +540,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<decimal>("Height");
 
-                    b.Property<int>("LoadingUnitId");
-
                     b.Property<decimal>("MaxNetWeight");
 
                     b.Property<int>("MissionsCount");
@@ -558,21 +556,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("LoadingUnits");
 
                     b.HasData(
-                        new { Id = 1, CellId = 1, Code = "LU#1.01", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 2, CellId = 2, Code = "LU#1.02", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 3, CellId = 3, Code = "LU#1.03", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 750m, MissionsCount = 0, Status = 3L, Tare = 65m },
-                        new { Id = 4, CellId = 4, Code = "LU#1.04", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 5, CellId = 5, Code = "LU#1.05", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 6, CellId = 6, Code = "LU#1.06", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 7, CellId = 7, Code = "LU#1.07", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 8, CellId = 8, Code = "LU#1.08", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 9, CellId = 9, Code = "LU#1.09", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 10, CellId = 10, Code = "LU#1.10", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 11, CellId = 11, Code = "LU#1.11", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 12, CellId = 12, Code = "LU#1.12", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 750m, MissionsCount = 0, Status = 3L, Tare = 65m },
-                        new { Id = 13, CellId = 13, Code = "LU#1.13", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 750m, MissionsCount = 0, Status = 3L, Tare = 65m },
-                        new { Id = 14, CellId = 14, Code = "LU#1.14", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m },
-                        new { Id = 15, CellId = 15, Code = "LU#1.15", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, MissionsCount = 0, Status = 3L, Tare = 50m }
+                        new { Id = 1, CellId = 1, Code = "LU#1.01", GrossWeight = 330m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 47, Status = 3L, Tare = 50m },
+                        new { Id = 2, CellId = 2, Code = "LU#1.02", GrossWeight = 278m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 45, Status = 3L, Tare = 50m },
+                        new { Id = 3, CellId = 3, Code = "LU#1.03", GrossWeight = 379m, Height = 0m, MaxNetWeight = 750m, MissionsCount = 3, Status = 3L, Tare = 65m },
+                        new { Id = 4, CellId = 4, Code = "LU#1.04", GrossWeight = 339m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 27, Status = 3L, Tare = 50m },
+                        new { Id = 5, CellId = 5, Code = "LU#1.05", GrossWeight = 297m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 32, Status = 3L, Tare = 50m },
+                        new { Id = 6, CellId = 6, Code = "LU#1.06", GrossWeight = 314m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 11, Status = 3L, Tare = 50m },
+                        new { Id = 7, CellId = 7, Code = "LU#1.07", GrossWeight = 267m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 47, Status = 3L, Tare = 50m },
+                        new { Id = 8, CellId = 8, Code = "LU#1.08", GrossWeight = 317m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 43, Status = 3L, Tare = 50m },
+                        new { Id = 9, CellId = 9, Code = "LU#1.09", GrossWeight = 341m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 9, Status = 3L, Tare = 50m },
+                        new { Id = 10, CellId = 10, Code = "LU#1.10", GrossWeight = 246m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 20, Status = 3L, Tare = 50m },
+                        new { Id = 11, CellId = 11, Code = "LU#1.11", GrossWeight = 341m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 10, Status = 3L, Tare = 50m },
+                        new { Id = 12, CellId = 12, Code = "LU#1.12", GrossWeight = 369m, Height = 0m, MaxNetWeight = 750m, MissionsCount = 33, Status = 3L, Tare = 65m },
+                        new { Id = 13, CellId = 13, Code = "LU#1.13", GrossWeight = 289m, Height = 0m, MaxNetWeight = 750m, MissionsCount = 27, Status = 3L, Tare = 65m },
+                        new { Id = 14, CellId = 14, Code = "LU#1.14", GrossWeight = 262m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 49, Status = 3L, Tare = 50m },
+                        new { Id = 15, CellId = 15, Code = "LU#1.15", GrossWeight = 375m, Height = 0m, MaxNetWeight = 500m, MissionsCount = 26, Status = 3L, Tare = 50m }
                     );
                 });
 
