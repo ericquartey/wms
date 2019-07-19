@@ -42,8 +42,8 @@
     "AlfaNumBay1": false,
     "AlfaNumBay2": false,
     "AlfaNumBay3": false,
-    "Barrier1Height": 30,
-    "Barrier2Height": 30
+    "Barrier1Height": 30.0,
+    "Barrier2Height": 30.0
     //"Barrier3Height":
     //"MaxAcceptedBai1Height": ,
     //"MaxAcceptedBai2Height": ,
@@ -63,6 +63,7 @@
     "PPC2SlaveIPAddress": "::2",
     "PPC3SlaveIPAddress": "::3"
   },
+
   /*
   "SetupNetwork": {
     "MachineNumber": 1,

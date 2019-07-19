@@ -52,6 +52,9 @@ namespace Ferretto.VW.MAS_DataLayer
                 case GeneralInfo.Bay3Position2:
                 case GeneralInfo.Height:
                 case GeneralInfo.MaxWeight:
+                case GeneralInfo.Barrier1Height:
+                case GeneralInfo.Barrier2Height:
+                case GeneralInfo.Barrier3Height:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
