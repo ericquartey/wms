@@ -6,17 +6,17 @@
 
         public string Code { get; set; }
 
+        public int? CompartmentsCount { get; set; }
+
+        public decimal GrossWeight { get; set; }
+
         public decimal Height { get; set; }
 
-        public decimal MaxGrossWeight { get; set; }
+        public decimal MaxNetWeight { get; set; }
 
-        public double MaxRatio { get; set; }
+        public decimal MaxWeightPercentage { get; set; }
 
         public decimal Tare { get; set; }
-
-        public int TotalCompartments { get; set; }
-
-        public decimal Weight { get; set; }
 
         #endregion
     }

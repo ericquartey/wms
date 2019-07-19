@@ -4,17 +4,13 @@
     {
         #region Properties
 
-        public int CompartmentsFilled { get; set; }
+        public decimal? AreaFillPercentage { get; set; }
 
-        public decimal Depth { get; set; }
+        public string Code { get; set; }
 
-        public double RatioFillingCompartments { get; set; }
+        public int? CompartmentsCount { get; set; }
 
-        public int TotalCompartments { get; set; }
-
-        public int TotalMissions { get; set; }
-
-        public decimal Width { get; set; }
+        public int MissionsCount { get; set; }
 
         #endregion
     }

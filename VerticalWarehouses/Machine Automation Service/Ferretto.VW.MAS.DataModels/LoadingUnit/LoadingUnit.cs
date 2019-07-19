@@ -6,28 +6,29 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public int Id { get; set; }
-
-        public string Code { get; set; }
-
         public Cell Cell { get; set; }
 
         public int? CellId { get; set; }
 
+        public string Code { get; set; }
+
         public string Description { get; set; }
+
+        public decimal GrossWeight { get; set; }
 
         public decimal Height { get; set; }
 
+        public int Id { get; set; }
+
         public int LoadingUnitId { get; set; }
 
-        public decimal MaxGrossWeight { get; set; }
         public decimal MaxNetWeight { get; set; }
 
-        public decimal Tare { get; set; }
+        public int MissionsCount { get; set; }
 
         public LoadingUnitStatus Status { get; set; }
 
-        public decimal GrossWeight { get; set; }
+        public decimal Tare { get; set; }
 
         #endregion
     }

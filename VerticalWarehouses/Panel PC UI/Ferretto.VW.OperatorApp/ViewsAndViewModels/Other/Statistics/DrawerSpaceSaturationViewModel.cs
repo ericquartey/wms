@@ -112,7 +112,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
                 gridData.LoadingUnits = loadingUnits;
                 gridData.SelectedLoadingUnit = selectedLoadingUnit;
-                this.TotalLoadingUnits = loadingUnits.Sum(l => l.TotalCompartments);
+                this.TotalLoadingUnits = loadingUnits.Count();
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.Dimension = $"{machine.Width}x{machine.Depth}";

@@ -36,13 +36,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface ILoadingUnitsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetDimensionAsync();
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetDimensionAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync();
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -624,23 +617,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnitSpaceStatistics 
     {
-        [Newtonsoft.Json.JsonProperty("compartmentsFilled", Required = Newtonsoft.Json.Required.Always)]
-        public int CompartmentsFilled { get; set; }
+        [Newtonsoft.Json.JsonProperty("areaFillPercentage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public decimal? AreaFillPercentage { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("depth", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Depth { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ratioFillingCompartments", Required = Newtonsoft.Json.Required.Always)]
-        public double RatioFillingCompartments { get; set; }
+        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CompartmentsCount { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalCompartments", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalCompartments { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalMissions", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalMissions { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Width { get; set; }
+        [Newtonsoft.Json.JsonProperty("missionsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCount { get; set; }
     
         public string ToJson() 
         {
@@ -660,23 +647,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Code { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CompartmentsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("grossWeight", Required = Newtonsoft.Json.Required.Always)]
+        public decimal GrossWeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
         public decimal Height { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
-        public decimal MaxGrossWeight { get; set; }
+        [Newtonsoft.Json.JsonProperty("maxNetWeight", Required = Newtonsoft.Json.Required.Always)]
+        public decimal MaxNetWeight { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("maxRatio", Required = Newtonsoft.Json.Required.Always)]
-        public double MaxRatio { get; set; }
+        [Newtonsoft.Json.JsonProperty("maxWeightPercentage", Required = Newtonsoft.Json.Required.Always)]
+        public decimal MaxWeightPercentage { get; set; }
     
         [Newtonsoft.Json.JsonProperty("tare", Required = Newtonsoft.Json.Required.Always)]
         public decimal Tare { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalCompartments", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalCompartments { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("weight", Required = Newtonsoft.Json.Required.Always)]
-        public decimal Weight { get; set; }
     
         public string ToJson() 
         {

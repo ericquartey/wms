@@ -121,14 +121,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
                 gridData.LoadingUnits = loadingUnits;
                 gridData.SelectedLoadingUnit = selectedLoadingUnit;
-                this.TotalLoadingUnits = loadingUnits.Sum(l => l.TotalCompartments);
+                this.TotalLoadingUnits = loadingUnits.Count();
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.MaxGrossWeight = machine.MaxGrossWeight;
                 this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
-                this.GrossWeight = loadingUnits.Sum(l => l.Weight);
-                this.NetWeight = loadingUnits.Sum(l => l.Weight) - loadingUnits.Sum(l => l.Tare);
-                this.NetWeightPercent = loadingUnits.Sum(l => l.Weight) / loadingUnits.Sum(l => l.MaxGrossWeight);
+                this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
+                this.NetWeight = loadingUnits.Sum(l => l.GrossWeight) - loadingUnits.Sum(l => l.Tare);
+                this.NetWeightPercent = this.NetWeight / this.MaxNetWeight;
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }
@@ -136,8 +136,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             {
                 this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
             }
-            this.dataGridViewModelRef.Drawers = this.drawers;
-            this.dataGridViewModelRef.SelectedDrawer = this.drawers[0];
         }
 
         #endregion

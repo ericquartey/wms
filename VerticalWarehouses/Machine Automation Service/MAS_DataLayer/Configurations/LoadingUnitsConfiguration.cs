@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(l => l.Id);
 
-            for(var i = 1; i <= 15; i++)
+            for (var i = 1; i <= 15; i++)
             {
                 builder.HasData(
                   new LoadingUnit
@@ -27,8 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                       CellId = i,
                       Status = LoadingUnitStatus.InLocation,
                       Height = 0,
-                      Tare = i == 3 || i == 12 || i == 13? 65 : 50,
-                      MaxNetWeight = i == 3 || i == 12 || i == 13? 750 : 500,
+                      Tare = i == 3 || i == 12 || i == 13 ? 65 : 50,
+                      MaxNetWeight = i == 3 || i == 12 || i == 13 ? 750 : 500,
                   });
             }
         }
