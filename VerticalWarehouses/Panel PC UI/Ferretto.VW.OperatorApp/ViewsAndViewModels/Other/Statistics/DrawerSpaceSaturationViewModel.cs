@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
@@ -16,13 +17,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IFeedbackNotifier feedbackNotifier;
-
         private readonly IIdentityService identityService;
 
         private readonly ILoadingUnitsService loadingUnitService;
 
         private readonly INavigationService navigationService;
+
+        private readonly IStatusMessageService statusMessageService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -34,7 +35,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private ICommand downDataGridButtonCommand;
 
-        //private IEnumerable<LoadingUnitSpaceStatistics> drawers
+        private decimal fillPercentage;
 
         private DataGridDrawerSaturation selectedLoadingUnit;
 
@@ -50,11 +51,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             ILoadingUnitsService loadingUnitService,
             IIdentityService identityService,
             INavigationService navigationService,
+            IStatusMessageService statusMessageService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
             this.loadingUnitService = loadingUnitService;
             this.identityService = identityService;
             this.navigationService = navigationService;
+            this.statusMessageService = statusMessageService;
             this.dataGridViewModel = drawerSaturationDataGridViewModel;
         }
 
@@ -67,6 +70,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         public string Dimension { get => this.dimension; set => this.SetProperty(ref this.dimension, value); }
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
+        public decimal FillPercentage { get => this.fillPercentage; set => this.SetProperty(ref this.fillPercentage, value); }
 
         public DataGridDrawerSaturation SelectedDrawer { get => this.selectedLoadingUnit; set => this.SetProperty(ref this.selectedLoadingUnit, value); }
 
@@ -117,10 +122,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 var machine = await this.identityService.GetAsync();
                 this.Dimension = $"{machine.Width}x{machine.Depth}";
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
+                this.FillPercentage = 0;
             }
             catch (Exception ex)
             {
-                this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
+                this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }
         }
 

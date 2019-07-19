@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
@@ -16,13 +17,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly CustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModelRef;
 
-        private readonly IFeedbackNotifier feedbackNotifier;
-
         private readonly IIdentityService identityService;
 
         private readonly ILoadingUnitsService loadingUnitService;
 
         private readonly INavigationService navigationService;
+
+        private readonly IStatusMessageService statusMessageService;
 
         private int currentItemIndex;
 
@@ -49,12 +50,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         public DrawerWeightSaturationViewModel(
             ILoadingUnitsService loadingUnitService,
             IIdentityService identityService,
-            IFeedbackNotifier feedbackNotifier,
+            IStatusMessageService statusMessageService,
             INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;
-            this.feedbackNotifier = feedbackNotifier;
+            this.statusMessageService = statusMessageService;
             this.loadingUnitService = loadingUnitService;
             this.navigationService = navigationService;
             this.identityService = identityService;
@@ -134,7 +135,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
             catch (Exception ex)
             {
-                this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
+                this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }
         }
 
