@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -17,9 +19,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IStatusMessageService statusMessageService;
+
         private ICommand navigateBackCommand;
 
         private string note;
+
+        private Brush noteBrush;
 
         #endregion
 
@@ -27,11 +33,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public FooterViewModel(
             IEventAggregator eventAggregator,
+            IStatusMessageService statusMessageService,
             IUnityContainer container)
         {
             if (eventAggregator == null)
             {
                 throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
             }
 
             if (container == null)
@@ -42,6 +54,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.eventAggregator = eventAggregator;
             this.container = container;
             this.NavigationViewModel = null;
+
+            this.statusMessageService = statusMessageService;
+            this.statusMessageService.StatusMessageNotified += this.StatusMessageService_StatusMessageNotified;
         }
 
         #endregion
@@ -56,6 +71,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 
+        public Brush NoteBrush
+        {
+            get => this.noteBrush;
+            set => this.SetProperty(ref this.noteBrush, value);
+        }
+
         #endregion
 
         #region Methods
@@ -63,6 +84,30 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public void FinalizeBottomButtons()
         {
             this.navigateBackCommand = null;
+        }
+
+        private void StatusMessageService_StatusMessageNotified(object sender, StatusMessageEventArgs e)
+        {
+            this.Note = e.Message;
+
+            switch (e.Level)
+            {
+                case StatusMessageLevel.Error:
+                    this.NoteBrush = Brushes.DarkRed;
+                    break;
+
+                case StatusMessageLevel.Success:
+                    this.NoteBrush = Brushes.Green;
+                    break;
+
+                case StatusMessageLevel.Warning:
+                    this.NoteBrush = Brushes.Gold;
+                    break;
+
+                default:
+                    this.NoteBrush = Brushes.White;
+                    break;
+            }
         }
 
         #endregion

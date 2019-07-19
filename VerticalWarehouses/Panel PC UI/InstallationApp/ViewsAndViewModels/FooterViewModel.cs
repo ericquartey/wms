@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Ferretto.VW.Utils.Interfaces;
@@ -19,6 +20,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IStatusMessageService statusMessageService;
+
         private Visibility cancelButtonVisibility = Visibility.Hidden;
 
         private bool isBackButtonActive = true;
@@ -35,10 +38,28 @@ namespace Ferretto.VW.InstallationApp
 
         public FooterViewModel(
             IEventAggregator eventAggregator,
+            IStatusMessageService statusMessageService,
             IUnityContainer container)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
+            if (container == null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
             this.eventAggregator = eventAggregator;
             this.container = container;
+            this.statusMessageService = statusMessageService;
+            this.statusMessageService.StatusMessageNotified += this.StatusMessageService_StatusMessageNotified;
         }
 
         #endregion
@@ -92,6 +113,11 @@ namespace Ferretto.VW.InstallationApp
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(
                 new InstallationApp_EventMessage(InstallationApp_EventMessageType.ExitView));
+        }
+
+        private void StatusMessageService_StatusMessageNotified(object sender, StatusMessageEventArgs e)
+        {
+            this.Note = e.Message;
         }
 
         #endregion

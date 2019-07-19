@@ -53,6 +53,9 @@ namespace Ferretto.VW.MAS_AutomationService
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
 
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseMvc();
         }
 
@@ -62,6 +65,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
+
+            services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
 
             services.AddApiVersioning(o =>
             {
@@ -96,7 +101,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<FiniteStateMachines>();
 
             // HACK commented out module initialization for development purpose
-            //services.AddHostedService<MissionsManager>();
+            // services.AddHostedService<MissionsManager>();
 
             services.AddHostedService<AutomationService>();
 

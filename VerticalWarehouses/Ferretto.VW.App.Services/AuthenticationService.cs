@@ -1,14 +1,29 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
+        private readonly IUsersDataService usersDataService;
+
+
         #region Events
 
         public event System.EventHandler<UserAuthenticatedEventArgs> UserAuthenticated;
 
         #endregion
+
+
+        public AuthenticationService(IUsersDataService usersDataService)
+        {
+            if (usersDataService == null)
+            {
+                throw new System.ArgumentNullException(nameof(usersDataService));
+            }
+
+            this.usersDataService = usersDataService;
+        }
 
         #region Properties
 
@@ -21,6 +36,17 @@ namespace Ferretto.VW.App.Services
         public async Task<bool> LogInAsync(string userName, string password)
         {
             var isLoginSuccessful = false;
+            // TODO: uncomment when data service is released
+            /*
+            var loginSuccessful = await this.usersDataService.IsValidAsync(
+                new User
+                {
+                    Login = this.UserLogin.UserName,
+                    Password = this.UserLogin.Password
+                });
+              */
+
+
             switch (userName.ToUpperInvariant())
             {
                 case "OPERATOR":

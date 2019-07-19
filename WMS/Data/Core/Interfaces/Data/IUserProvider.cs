@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<bool> IsValidAsync(User user);
 
+        UserClaims Authenticate(string userName, string password);
+
         #endregion
     }
 }
