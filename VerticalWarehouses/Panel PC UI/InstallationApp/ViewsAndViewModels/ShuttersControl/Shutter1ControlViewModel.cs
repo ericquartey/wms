@@ -1,25 +1,22 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class Shutter1ControlViewModel : BindableBase, IShutter1ControlViewModel
     {
         #region Fields
-
-        private readonly int bayType;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -166,11 +163,11 @@ namespace Ferretto.VW.InstallationApp
             this.testService = this.container.Resolve<ITestService>();
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            if (this.bayType == 1)
+            if (false /* Bay with three positions */) // TODO
             {
-                this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
+                // this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
             }
             else
             {
@@ -194,6 +191,8 @@ namespace Ferretto.VW.InstallationApp
                 message.NotificationType == NotificationType.Error &&
                 message.ActionType == ActionType.ShutterControl &&
                 message.ActionStatus == ActionStatus.Error);
+
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

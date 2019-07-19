@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
     using System.Windows.Input;
-    using Ferretto.VW.Utils.Interfaces;
     using Prism.Commands;
     using Prism.Events;
     using Prism.Mvvm;
@@ -86,9 +85,9 @@
             this.container = container;
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

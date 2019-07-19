@@ -12,6 +12,8 @@ namespace Ferretto.VW.WmsCommunication.Source
 
         public string Batch { get; set; }
 
+        public string Image { get; set; }
+
         public string ItemCode { get; set; }
 
         public string ItemDescription { get; set; }

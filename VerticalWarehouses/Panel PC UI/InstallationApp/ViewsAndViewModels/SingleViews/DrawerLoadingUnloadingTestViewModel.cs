@@ -28,9 +28,9 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

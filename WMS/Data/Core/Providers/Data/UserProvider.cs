@@ -9,6 +9,33 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class UserProvider : IUserProvider
     {
+        public UserClaims Authenticate(string userName, string password)
+        {
+            if (userName.ToUpper() == "OPERATOR"
+                ||
+                password == "password")
+            {
+                return new UserClaims
+                {
+                    Name = userName,
+                    AccessLevel = UserAccessLevel.User,
+                };
+            }
+
+            if (userName.ToUpper() == "INSTALLER"
+               ||
+               password == "password")
+            {
+                return new UserClaims
+                {
+                    Name = userName,
+                    AccessLevel = UserAccessLevel.SuperUser,
+                };
+            }
+
+            return null;
+        }
+
         #region Methods
 
         public Task<IEnumerable<User>> GetAllAsync()

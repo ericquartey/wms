@@ -15,13 +15,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerCellManagment dataLayerCellManagment;
+        private readonly ICellManagmentDataLayer dataLayerCellManagment;
 
         #endregion
 
         #region Constructors
 
-        public CellsController(IDataLayerCellManagment dataLayerCellManagment)
+        public CellsController(ICellManagmentDataLayer dataLayerCellManagment)
         {
             if (dataLayerCellManagment == null)
             {
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("Statistics")]
-        public ActionResult<CellStatistics> GetStatistics()
+        public ActionResult<CellStatisticsSummary> GetStatistics()
         {
             var statics = this.dataLayerCellManagment.GetCellStatistics();
             return this.Ok(statics);

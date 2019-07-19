@@ -37,27 +37,27 @@
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="12.235"
-                                               LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataTotDrawerMoved}"/>
+                                               LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalMovedTrays}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="9.684"
-                                               LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataTotPowerOnTime}"/>
+                                               LabelText="{x:Static res:OperatorApp.MachineStatistics_TotalPowerOnTime}"/>
 
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="200"
                                             ProgressionValue="65"
-                                            LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataAreaFilling}"/>
+                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_AreaFillPercentage}"/>
 
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0" Width="200"
                                             ProgressionValue="72"
-                                            LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataWeightFilling}"/>
+                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_WeightCapacityPercentage}"/>
 
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="200"
                                             ProgressionValue="87"
-                                            LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataTotAutoTime}"/>
+                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_AutomaticTimePercentage}"/>
 
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="200"
                                             ProgressionValue="61"
-                                            LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataUtilization}"/>
+                                            LabelText="{x:Static res:OperatorApp.MachineStatistics_UsageTimePercentage}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,500,0,0"
                     Width="260" Height="70"

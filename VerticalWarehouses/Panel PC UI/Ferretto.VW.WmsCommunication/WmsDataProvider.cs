@@ -13,6 +13,10 @@ namespace Ferretto.VW.WmsCommunication
     {
         #region Fields
 
+        private readonly IItemListRowsDataService itemListRowsDataService;
+
+        private readonly IItemListsDataService itemListsDataService;
+
         private readonly IItemsDataService itemsDataService;
 
         private readonly ILoadingUnitsDataService loadingUnitsDataService;
@@ -31,6 +35,8 @@ namespace Ferretto.VW.WmsCommunication
             this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
             this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
             this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
+            this.itemListsDataService = DataServiceFactory.GetService<IItemListsDataService>(wmsConnectionString);
+            this.itemListRowsDataService = DataServiceFactory.GetService<IItemListRowsDataService>(wmsConnectionString);
         }
 
         #endregion
@@ -65,7 +71,8 @@ namespace Ferretto.VW.WmsCommunication
                 PackageType = packageType.Description,
                 Position = $"{compartment.XPosition}, {compartment.YPosition}",
                 ProductionDate = item.CreationDate.ToShortDateString(),
-                RequestedQuantity = mission.RequestedQuantity.ToString()
+                RequestedQuantity = mission.RequestedQuantity.ToString(),
+                Image = item.Image
             };
             return returnValue;
         }
@@ -84,10 +91,37 @@ namespace Ferretto.VW.WmsCommunication
             return item.Image;
         }
 
+        public Task<ObservableCollection<ItemList>> GetItemLists()
+        {
+            try
+            {
+                return this.itemListsDataService.GetAllAsync(take: 10);
+            }
+            catch (SwaggerException ex)
+            {
+                throw new NotImplementedException(ex.Message);
+            }
+        }
+
         public async Task<ObservableCollection<Item>> GetItemsAsync(string searchCode, int skip, int quantity)
         {
             var items = await this.itemsDataService.GetAllAsync(search: searchCode, skip: skip, take: quantity);
             return items;
+        }
+
+        public async Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode)
+        {
+            var lists = new ObservableCollection<ItemListRow>();
+            try
+            {
+                var searchCode = listCode.Trim('-');
+                lists = await this.itemListRowsDataService.GetAllAsync(search: searchCode);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("WMS Data Provider - " + ex.Message);
+            }
+            return lists;
         }
 
         public async Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission)
@@ -120,6 +154,13 @@ namespace Ferretto.VW.WmsCommunication
 
         public async Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity)
         {
+            // HACK BUG 3381 WORKAROUND - DEVELOPMENT ONLY
+            if (bayId == 0 || areaId == 0)
+            {
+                areaId = 2;
+                bayId = 2;
+            }
+            // END HACK
             try
             {
                 await this.itemsDataService.PickAsync(itemId, new ItemOptions

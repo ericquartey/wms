@@ -147,9 +147,8 @@ namespace Ferretto.VW.MAS_AutomationService
                     this.logger.LogTrace("3:Method End - Operation Canceled");
                     return;
                 }
-                switch (receivedMessage.Type)
-                {
-                }
+
+                // TODO add here a switch block on receivedMessage.Type
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

@@ -74,8 +74,6 @@ namespace Ferretto.VW.App.Installation
             var testService = new TestService(this.automationServiceUrl);
             var helpMainWindowInstance = new HelpMainWindow(this.container.Resolve<IEventAggregator>());
 
-            var feedbackNotifierInstance = new FeedbackNotifier();
-
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(this.container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(this.container.Resolve<IEventAggregator>());
             var cellsPanelsControlVMInstance = new CellsPanelsControlViewModel(this.container.Resolve<IEventAggregator>());
@@ -126,7 +124,8 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
 
             this.container.RegisterInstance<ITestService>(testService);
-            this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifierInstance);
+
+            this.container.RegisterInstance<IStatusMessageService>(new StatusMessageService());
 
             this.container.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             this.container.RegisterInstance<INotificationService>(
@@ -181,7 +180,6 @@ namespace Ferretto.VW.App.Installation
             lSMTCarouselVMInstance.InitializeViewModel(this.container);
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);
-            feedbackNotifierInstance.Initialize(this.container);
 
             resolutionCalibrationVerticalAxisVMInstance.InitializeViewModel(this.container);
             mainWindowNavigationButtonsVMInstance.InitializeViewModelAsync(this.container);

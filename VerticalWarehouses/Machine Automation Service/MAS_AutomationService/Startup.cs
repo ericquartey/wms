@@ -8,6 +8,7 @@ using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
+using Ferretto.VW.MAS_MissionsManager;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -53,6 +54,9 @@ namespace Ferretto.VW.MAS_AutomationService
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
 
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseMvc();
         }
 
@@ -62,6 +66,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
+
+            services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
 
             services.AddApiVersioning(o =>
             {
@@ -89,14 +95,15 @@ namespace Ferretto.VW.MAS_AutomationService
                 });
             });
 
-            services.AddHostedService<HostedSHDIoDriver>();
+            //services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
 
             services.AddHostedService<FiniteStateMachines>();
 
             // HACK commented out module initialization for development purpose
-            //services.AddHostedService<MissionsManager>();
+            // services.AddHostedService<MissionsManager>();
+
             services.AddHostedService<AutomationService>();
 
             var wmsServiceAddress = new System.Uri(this.Configuration.GetDataServiceUrl());
@@ -122,16 +129,16 @@ namespace Ferretto.VW.MAS_AutomationService
                 provider.GetService<IEventAggregator>(),
                 provider.GetService<ILogger<DataLayer>>()));
 
-            services.AddSingleton<IBayPositionControl, DataLayer>(provider =>
+            services.AddSingleton<IBayPositionControlDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IBeltBurnishing, DataLayer>(provider =>
+            services.AddSingleton<IBeltBurnishingDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<ICellControl, DataLayer>(provider =>
+            services.AddSingleton<ICellControlDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IGeneralInfo, DataLayer>(provider =>
+            services.AddSingleton<IGeneralInfoDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IHorizontalAxis, DataLayer>(provider =>
@@ -179,16 +186,19 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IHostedService, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
+            services.AddSingleton<ICellManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerConfigurationValueManagment, DataLayer>(provider =>
+            services.AddSingleton<IConfigurationValueManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerRuntimeValueManagment, DataLayer>(provider =>
+            services.AddSingleton<IRuntimeValueManagmentDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IErrorStatisticsDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IMachineStatisticsDataLayer, DataLayer>(provider =>

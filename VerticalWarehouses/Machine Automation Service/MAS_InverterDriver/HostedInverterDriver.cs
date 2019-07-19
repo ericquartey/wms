@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         public HostedInverterDriver(
             IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedInverterDriver> logger)
         {

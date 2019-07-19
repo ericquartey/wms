@@ -4,6 +4,7 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.Utils.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
@@ -183,6 +184,22 @@ namespace Ferretto.VW.OperatorApp
                     await refillingViewModel.OnEnterViewAsync();
                     this.mainWindowViewModel.ContentRegionCurrentViewModel = refillingViewModel;
                     this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
+                }
+            }
+
+            if (parameterObject is DataGridList list)
+            {
+                if (this.container.Resolve<I>() is DetailListInWaitViewModel detailListViewModel)
+                {
+                    if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    {
+                        this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
+                    }
+                    detailListViewModel.List = list;
+                    await detailListViewModel.OnEnterViewAsync();
+                    this.mainWindowViewModel.ContentRegionCurrentViewModel = detailListViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = detailListViewModel.NavigationViewModel;
                     this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
                 }
             }

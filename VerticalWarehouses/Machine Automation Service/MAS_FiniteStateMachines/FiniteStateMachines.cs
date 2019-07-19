@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly Task commandReceiveTask;
 
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
@@ -38,6 +40,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private readonly Task fieldNotificationReceiveTask;
 
         private readonly ILogger<FiniteStateMachines> logger;
+
+        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
@@ -47,8 +51,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
-
         private bool disposed;
 
         private bool forceInverterIoStatusPublish;
@@ -56,8 +58,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private bool forceRemoteIoStatusPublish;
 
         private List<IoIndex> ioIndexDeviceList;
-
-        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private CancellationToken stoppingToken;
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public FiniteStateMachines(
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
@@ -319,7 +319,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             ErrorLevel.Critical);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
-                        break;  
+                        break;
 
                     // INFO Catch Exception from IoDriver, to forward to the AS
                     case FieldMessageType.IoDriverException:

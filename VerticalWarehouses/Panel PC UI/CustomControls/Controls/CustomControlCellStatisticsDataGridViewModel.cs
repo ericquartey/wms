@@ -11,17 +11,25 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        private IEnumerable<CellStatusStatistic> cells;
+        private IEnumerable<CellStatusStatistics> cells;
 
-        private CellStatusStatistic selectedCell;
+        private CellStatusStatistics selectedCell;
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<CellStatusStatistic> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
+        public IEnumerable<CellStatusStatistics> Cells
+        {
+            get => this.cells;
+            set => this.SetProperty(ref this.cells, value);
+        }
 
-        public CellStatusStatistic SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
+        public CellStatusStatistics SelectedCell
+        {
+            get => this.selectedCell;
+            set => this.SetProperty(ref this.selectedCell, value);
+        }
 
         #endregion
     }

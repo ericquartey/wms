@@ -4,9 +4,7 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d">
 
     <Grid Width="774"
@@ -23,43 +21,43 @@
                                               Margin="153,145,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="12.235"
-                                              LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotDrawerMoved}" />
+                                              ContentText="{Binding Model.TotalMovedTrays}"
+                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalMovedTrays}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
                                               Margin="473,145,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="9.684"
-                                              LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotPowerOnTime}" />
+                                              ContentText="{Binding Model.TotalPowerOnTime.TotalHours}"
+                                              LabelText="{x:Static Resources:OperatorApp.MachineStatistics_TotalPowerOnTime}" />
 
         <Controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="153,255,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataAreaFilling}"
-                                           ProgressionValue="65" />
+                                           LabelText="{x:Static Resources:OperatorApp.MachineStatistics_AreaFillPercentage}"
+                                           ProgressionValue="{Binding Model.AreaFillPercentage}" />
 
         <Controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="153,335,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataWeightFilling}"
-                                           ProgressionValue="72" />
+                                           LabelText="{x:Static Resources:OperatorApp.MachineStatistics_WeightCapacityPercentage}"
+                                           ProgressionValue="{Binding Model.WeightCapacityPercentage}" />
 
         <Controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="473,255,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotAutoTime}"
-                                           ProgressionValue="87" />
+                                           LabelText="{x:Static Resources:OperatorApp.MachineStatistics_AutomaticTimePercentage}"
+                                           ProgressionValue="{Binding Model.AutomaticTimePercentage}" />
 
         <Controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="473,335,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataUtilization}"
-                                           ProgressionValue="61" />
+                                           LabelText="{x:Static Resources:OperatorApp.MachineStatistics_UsageTimePercentage}"
+                                           ProgressionValue="{Binding Model.UsageTimePercentage}" />
 
     </Grid>
 </UserControl>

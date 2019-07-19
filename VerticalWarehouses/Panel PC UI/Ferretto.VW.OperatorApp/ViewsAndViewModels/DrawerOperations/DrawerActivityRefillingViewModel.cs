@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
@@ -27,13 +28,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IFeedbackNotifier feedbackNotifier;
-
         private readonly IMainWindowViewModel mainWindowViewModel;
 
         private readonly INavigationService navigationService;
 
         private readonly IOperatorService operatorService;
+
+        private readonly IStatusMessageService statusMessageService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -72,7 +73,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public DrawerActivityRefillingViewModel(
             IEventAggregator eventAggregator,
             INavigationService navigationService,
-            IFeedbackNotifier feedbackNotifier,
+            IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
@@ -89,9 +90,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            if (feedbackNotifier == null)
+            if (statusMessageService == null)
             {
-                throw new ArgumentNullException(nameof(feedbackNotifier));
+                throw new ArgumentNullException(nameof(statusMessageService));
             }
 
             if (mainWindowViewModel == null)
@@ -121,7 +122,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
             this.eventAggregator = eventAggregator;
             this.navigationService = navigationService;
-            this.feedbackNotifier = feedbackNotifier;
+            this.statusMessageService = statusMessageService;
             this.mainWindowViewModel = mainWindowViewModel;
             this.wmsDataProvider = wmsDataProvider;
             this.wmsImagesProvider = wmsImagesProvider;
@@ -138,7 +139,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
 
-        public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
+        public ICommand ConfirmCommand =>
+            this.confirmCommand
+            ??
+            (this.confirmCommand = new DelegateCommand(async () => await this.ConfirmMethod()));
 
         public ICommand DrawerActivityRefillingDetailsButtonCommand => this.drawerActivityRefillingDetailsButtonCommand ?? (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
             async () => await this.DrawerDetailsButtonMethod()));
@@ -185,7 +189,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public override async Task OnEnterViewAsync()
         {
-            this.feedbackNotifier.Notify($"Current mission ID: {this.bayManager.CurrentMission.Id}");
+            this.statusMessageService.Notify($"Current mission ID: {this.bayManager.CurrentMission.Id}");
             await this.GetViewDataAsync(this.bayManager);
             await this.GetTrayControlDataAsync(this.bayManager);
         }
