@@ -269,6 +269,7 @@ namespace Ferretto.VW.MAS_DataLayer
                         var stringValue = jsonDataValue.Value<string>();
                         var splitDot = stringValue.Split('.');
                         var ipAddress = false;
+
                         if (splitDot.Length == 4)
                         {
                             ipAddress = true;
@@ -281,6 +282,11 @@ namespace Ferretto.VW.MAS_DataLayer
                                 ipAddress = true;
                             }
                         }
+
+                        //if (configurationData == (long)SetupNetwork.Inverter1)
+                        //{
+                        //    ipAddress = true;
+                        //}
 
                         if (IPAddress.TryParse(stringValue, out var configurationValue) && ipAddress)
                         {
