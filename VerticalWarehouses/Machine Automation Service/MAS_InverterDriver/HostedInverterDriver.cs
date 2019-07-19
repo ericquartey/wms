@@ -406,6 +406,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 switch (receivedMessage.Type)
                 {
+                    //case FieldMessageType.InverterError:
                     case FieldMessageType.DataLayerReady:
 
                         await this.StartHardwareCommunications();
@@ -756,21 +757,21 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 this.logger.LogTrace($"2:handleIndex={handleIndex} {Thread.CurrentThread.ManagedThreadId}");
 
-                //if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
-                //{
-                this.writeEnableEvent.Reset();
-
-                switch (handleIndex)
+                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
-                    case 0:
-                        await this.ProcessHeartbeat();
-                        break;
+                    this.writeEnableEvent.Reset();
 
-                    case 1:
-                        await this.ProcessInverterCommand();
-                        break;
+                    switch (handleIndex)
+                    {
+                        case 0:
+                            await this.ProcessHeartbeat();
+                            break;
+
+                        case 1:
+                            await this.ProcessInverterCommand();
+                            break;
+                    }
                 }
-                //}
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

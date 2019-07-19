@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 500);
+                    this.homingTimer.Change(0, 1000);
                     this.homingTimerActive = true;
                 }
             }
@@ -420,6 +420,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.SetOperatingModeParam:
                     return await this.ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
 
+                case InverterParameterId.ShutterTargetPosition:
+                    return await this.ProcessTargetPositionPayload(inverterMessage, stoppingToken);
+
+                case InverterParameterId.ShutterTargetVelocityParam:
+                    return await this.ProcessTargetPositionPayload(inverterMessage, stoppingToken);
+
                 default:
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
@@ -467,6 +473,17 @@ namespace Ferretto.VW.MAS_InverterDriver
             return inverterMessage.GetWriteMessage().Length;
         }
 
+        private async Task<int> ProcessTargetPositionPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        {
+            //this.operatingMode = Enum.Parse<InverterOperationMode>(inverterMessage.UShortPayload.ToString());
+
+            await Task.Delay(5, stoppingToken);
+
+            this.readCompleteEventSlim.Set();
+
+            return inverterMessage.GetWriteMessage().Length;
+        }
+
         private async Task<int> ProcessStatusWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
             await Task.Delay(5, stoppingToken);
@@ -480,7 +497,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterOperationMode.Position:
                     this.BuildPositionStatusWord();
                     break;
-
+                     
                 case InverterOperationMode.Velocity:
                     this.BuildVelocityStatusWord();
                     break;

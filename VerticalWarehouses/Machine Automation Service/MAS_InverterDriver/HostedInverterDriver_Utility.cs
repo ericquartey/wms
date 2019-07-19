@@ -447,7 +447,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.inverterCommandQueue.Dequeue(out var message);
 
-            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:inverterMessage={message}");
 
             var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
             if (message.SendDelay > 0)
