@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
@@ -18,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
     public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
     {
-        #region Private Fields
+        #region Fields
 
         private const int DEFAULT_DELAY = 300;
 
@@ -66,11 +67,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #endregion
 
-        #region Public Constructors
+        #region Constructors
 
         public ItemSearchViewModel(
             IEventAggregator eventAggregator,
-            IFeedbackNotifier feedbackNotifier,
+            IStatusMessageService statusMessageService,
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
             INavigationService navigationService,
@@ -81,9 +82,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (feedbackNotifier == null)
+            if (statusMessageService == null)
             {
-                throw new ArgumentNullException(nameof(feedbackNotifier));
+                throw new ArgumentNullException(nameof(statusMessageService));
             }
 
             if (wmsDataProvider == null)
@@ -102,7 +103,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
 
             this.eventAggregator = eventAggregator;
-            this.FeedbackNotifier = feedbackNotifier;
+            this.StatusMessageService = statusMessageService;
             this.wmsDataProvider = wmsDataProvider;
             this.bayManager = bayManager;
             this.navigationService = navigationService;
@@ -117,7 +118,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         public ICustomControlArticleDataGridViewModel ArticleDataGridViewModel { get; }
 
@@ -126,8 +127,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
-
-        public IFeedbackNotifier FeedbackNotifier { get; }
 
         public bool IsItemCallButtonActive { get => this.isItemCallButtonActive; set => this.SetProperty(ref this.isItemCallButtonActive, value); }
 
@@ -162,11 +161,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
         }
 
+        public IStatusMessageService StatusMessageService { get; }
+
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         public async void ChangeSelectedItemAsync(bool isUp)
         {
@@ -177,6 +178,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 {
                     this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : dataGrid.Articles.Count - 1;
                 }
+
                 if (this.currentItemIndex >= dataGrid.Articles.Count - 2)
                 {
                     this.IsSearching = true;
@@ -251,16 +253,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
             if (success)
             {
-                this.FeedbackNotifier.Notify($"Successfully called {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
-                this.RequestedQuantity = 0;
-                this.IsItemCallButtonActive = true;
+                this.StatusMessageService.Notify(
+                    $"Successfully called {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.",
+                    StatusMessageLevel.Success);
             }
             else
             {
-                this.FeedbackNotifier.Notify($"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
-                this.RequestedQuantity = 0;
-                this.IsItemCallButtonActive = true;
+                this.StatusMessageService.Notify(
+                    $"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.",
+                    StatusMessageLevel.Error);
             }
+
+            this.RequestedQuantity = 0;
+            this.IsItemCallButtonActive = true;
         }
 
         public async Task OnEnterViewAsync()
@@ -279,6 +284,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 this.loadedItems = items;
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
+
             if (items != null && items.Count > 0)
             {
                 var viewItems = new ObservableCollection<DataGridItem>();
@@ -300,6 +306,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
                     }
+
                     var item = new DataGridItem
                     {
                         Article = items[i].Code,
@@ -310,6 +317,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     };
                     viewItems.Add(item);
                 }
+
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
                 this.currentItemIndex = 0;
@@ -375,11 +383,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     };
                     viewItems.Add(item);
                 }
+
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
                 this.currentItemIndex = 0;
                 this.AvailableQuantity = viewItems[0].AvailableQuantity.ToString();
             }
+
             autoEvent.Set();
             this.timer.Dispose();
             this.IsSearching = false;
