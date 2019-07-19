@@ -40,12 +40,12 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             Console.WriteLine($"{(int)UserSelection.ToggleMachineMode} - Auto/Manual Toggle (current: {machineStatus.Mode})");
             Console.WriteLine($"{(int)UserSelection.SetMachineFault} - Set Fault");
             Console.WriteLine();
-            Console.WriteLine("Missions");
+            Console.WriteLine("Missions and operations");
             Console.WriteLine("--------");
-            Console.WriteLine($"{(int)UserSelection.DisplayOperation} - Display missions");
-            Console.WriteLine($"{(int)UserSelection.ExecuteOperation} - Execute mission");
-            Console.WriteLine($"{(int)UserSelection.CompleteOperation} - Complete mission");
-            Console.WriteLine($"{(int)UserSelection.AbortOperation} - Abort mission");
+            Console.WriteLine($"{(int)UserSelection.DisplayOperation} - Display missions and operations");
+            Console.WriteLine($"{(int)UserSelection.ExecuteOperation} - Execute mission operation");
+            Console.WriteLine($"{(int)UserSelection.CompleteOperation} - Complete mission operation");
+            Console.WriteLine($"{(int)UserSelection.AbortOperation} - Abort mission operation");
             Console.WriteLine();
             Console.WriteLine("Lists");
             Console.WriteLine("-----");
@@ -131,8 +131,9 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 return;
             }
 
-            Console.WriteLine("Available missions (by priority):");
+            Console.WriteLine("Available missions and operations (by priority):");
 
+            Console.WriteLine("____________________________________________________________________________________________");
             Console.WriteLine(
                 "|    " +
                 $"| {nameof(Mission.Priority),8} " +
@@ -147,17 +148,22 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                    .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
                    .OrderBy(m => m.Priority);
 
-            foreach (var mission in missions
+            var notCompletedMissions = missions
                 .Except(completedMissions)
-                .OrderBy(m => m.Priority))
+                .OrderBy(m => m.Priority);
+
+            foreach (var mission in notCompletedMissions)
             {
                 PrintMissionTableRow(mission);
             }
 
-            if (completedMissions.Any())
+            if (completedMissions.Any() && notCompletedMissions.Any())
             {
                 Console.WriteLine(separatorLine);
+            }
 
+            if (completedMissions.Any())
+            {
                 foreach (var mission in completedMissions)
                 {
                     PrintMissionTableRow(mission);

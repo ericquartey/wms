@@ -68,8 +68,8 @@ namespace Ferretto.WMS.App.Controls.Services
 
             #region ******* LOGINVIEW
 
-            var logiView = new List<ShortKey>();
-            logiView.Add(new ShortKey(Key.Enter, false, (v) =>
+            var loginViewShortKeys = new List<ShortKey>();
+            loginViewShortKeys.Add(new ShortKey(Key.Enter, false, (v) =>
             {
                 if (v.ShortKey.Key == Key.Enter &&
                     LayoutTreeHelper.GetVisualParents(v.Element as UIElement).OfType<INavigableView>().FirstOrDefault() is WmsDialogView view &&
@@ -78,16 +78,16 @@ namespace Ferretto.WMS.App.Controls.Services
                     actionBar.Focus();
                 }
             }));
-            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW), logiView);
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW), loginViewShortKeys);
 
             #endregion
 
             #region ******* ITEMDETAILS
 
-            var itemDetails = new List<ShortKey>();
-            itemDetails.Add(new ShortKey(Key.S, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).SaveCommand.Execute(null); }));
-            itemDetails.Add(new ShortKey(Key.R, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).RevertCommand.Execute(null); }));
-            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS), itemDetails);
+            var itemDetailsShortKeys = new List<ShortKey>();
+            itemDetailsShortKeys.Add(new ShortKey(Key.S, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).SaveCommand.Execute(null); }));
+            itemDetailsShortKeys.Add(new ShortKey(Key.R, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).RevertCommand.Execute(null); }));
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS), itemDetailsShortKeys);
 
             #endregion
         }
