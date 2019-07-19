@@ -15,8 +15,8 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             this.IsHandled = isHandled;
             this.Key = key;
-            this.ModifierKeyFirst = ModifierKeys.None;
-            this.ModifierKeySecond = ModifierKeys.None;
+            this.ModifierKeyFirst = modifierKeyFirst;
+            this.ModifierKeySecond = modifierKeySecond;
         }
 
         public ShortKey(Key keySt, bool isHandled, string description)
