@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d">
 
 
@@ -24,37 +23,43 @@
                                               Margin="520,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="3.050 x 840"
+                                              ContentText="{Binding Dimension}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}" />
 
-        <ContentControl HorizontalAlignment="Left"
-                      Height="340"
-                      Margin="140,150,0,0"
-                      VerticalAlignment="Top"
-                      Width="680"
-                      Content="{Binding DataGridViewModel}">
-        </ContentControl>
-        
-            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" MaxWidth="300"
-                                                   ContentText="55"
-                                                   LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}"/>
-        
-            <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,510,0,0" MaxWidth="300"
-                                                ProgressionValue="65"
-                                                LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"/>
-        
-            <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,190,20,0"
-                     Content="{x:Static Resources:OperatorApp.CommonUp}"
-                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,255,20,0"
-                      Content="{x:Static Resources:OperatorApp.CommonDown}"
-                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-                      Command="{Binding DrawerWeightSaturationButtonCommand}"
-                      Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionWeightAnalisys}"
-                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <ContentControl Width="680"
+                        Height="340"
+                        Margin="140,150,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="{Binding DataGridViewModel}" />
+
+        <Controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="140,90,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding TotalLoadingUnits}"
+                                              LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
+
+        <Controls:CustomProgressBarControl MaxWidth="300"
+                                           Margin="590,510,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"
+                                           ProgressionValue="{Binding AreaFillPercentage}" />
+
+        <Button Margin="0,190,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding UpDataGridButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonUp}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button Margin="0,255,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding DownDataGridButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
 
     </Grid>

@@ -54,7 +54,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             ??
             (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
-                    this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
+                    this.navigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
                 }));
 
         public ICommand ErrorsStatisticsButtonCommand =>
