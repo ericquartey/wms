@@ -42,8 +42,8 @@
     "AlfaNumBay1": false,
     "AlfaNumBay2": false,
     "AlfaNumBay3": false,
-    "Barrier1Height": 30.0,
-    "Barrier2Height": 30.0
+    "Barrier1Height": 30,
+    "Barrier2Height": 30
     //"Barrier3Height":
     //"MaxAcceptedBai1Height": ,
     //"MaxAcceptedBai2Height": ,
