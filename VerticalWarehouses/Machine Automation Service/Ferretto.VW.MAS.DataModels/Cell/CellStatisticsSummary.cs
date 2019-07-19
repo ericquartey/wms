@@ -2,13 +2,13 @@
 
 namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class CellStatistics
+    public sealed class CellStatisticsSummary
     {
         #region Properties
 
-        public double CellOccupationRatio { get; set; }
+        public double CellOccupationPercentage { get; set; }
 
-        public IEnumerable<CellStatusStatistic> CellStatusStatistics { get; set; }
+        public IEnumerable<CellStatusStatistics> CellStatusStatistics { get; set; }
 
         public int TotalBackCells { get; set; }
 
@@ -18,6 +18,4 @@ namespace Ferretto.VW.MAS.DataModels
 
         #endregion
     }
-
-
 }

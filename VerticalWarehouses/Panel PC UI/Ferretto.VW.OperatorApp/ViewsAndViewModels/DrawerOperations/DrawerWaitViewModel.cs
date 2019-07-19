@@ -63,16 +63,22 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Properties
 
-        public string WaitingMissions { get => this.waitingMissions; set => this.SetProperty(ref this.waitingMissions, value); }
+        public string WaitingMissions
+        {
+            get => this.waitingMissions;
+            set => this.SetProperty(ref this.waitingMissions, value);
+        }
 
         #endregion
 
         #region Methods
 
        
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             this.WaitingMissions = this.bayManager.QueuedMissionsQuantity.ToString();
+
+            return Task.CompletedTask;
         }
 
         public void UpdateView()

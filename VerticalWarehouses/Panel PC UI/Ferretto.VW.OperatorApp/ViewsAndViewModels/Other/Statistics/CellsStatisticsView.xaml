@@ -26,12 +26,13 @@
                                               ContentText="{Binding CellStatistics.TotalFrontCells}"
                                               LabelText="{x:Static Resources:OperatorApp.CellsStatisticsFrontCellsTotal}" />
 
-        <ContentControl Width="480"
-                        Height="250"
-                        Margin="250,250,0,0"
-                        HorizontalAlignment="Left"
+        <ContentControl HorizontalAlignment="Left"
+                        Height="160"
+                        Margin="220,220,0,0"
                         VerticalAlignment="Top"
-                        Content="{Binding DataGridViewModel}" />
+                        Width="530"
+                        Content="{Binding DataGridViewModel}" >
+        </ContentControl>
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
                                               Margin="220,90,0,0"
@@ -55,11 +56,11 @@
                                               LabelText="{x:Static Resources:OperatorApp.CellsStatisticsRearCellsTotal}" />
 
         <Controls:CustomProgressBarControl MaxWidth="300"
-                                           Margin="560,510,0,0"
+                                           Margin="560,410,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"
-                                           ProgressionValue="{Binding CellStatistics.CellOccupationRatio}" />
+                                           ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
 
     </Grid>
 </UserControl>

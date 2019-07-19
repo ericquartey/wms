@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
@@ -18,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly IErrorsService errorsService;
 
-        private readonly IFeedbackNotifier feedbackNotifier;
+        private readonly IStatusMessageService statusMessageService;
 
         private int currentItemIndex;
 
@@ -35,11 +36,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public ErrorsStatisticsViewModel(
-            IFeedbackNotifier feedbackNotifier,
+            IStatusMessageService statusMessageService,
             IErrorsService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
-            this.feedbackNotifier = feedbackNotifier;
+            this.statusMessageService = statusMessageService;
             this.errorsService = errorsService;
             this.dataGridViewModelRef = errorsDataGridViewModel;
             this.DataGridViewModel = this.dataGridViewModelRef;
@@ -54,8 +55,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public ErrorStatisticsSummary Statistics { get => this.statistics; }
 
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
@@ -64,7 +63,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Methods
 
-        public async void ChangeSelectedItemAsync(bool isUp)
+        public void ChangeSelectedItemAsync(bool isUp)
         {
             if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
             {
@@ -84,12 +83,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
         }
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
             {
@@ -101,7 +95,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 this.statistics = await this.errorsService.GetStatisticsAsync();
                 var selectedError = this.statistics.Errors.FirstOrDefault();
 
-                gridData.Cells = this.statistics.Errors;
+                gridData.Cells = this.statistics.Errors.OrderByDescending(e => e.Total);
                 gridData.SelectedCell = selectedError;
                 this.currentItemIndex = 0;
 
@@ -110,7 +104,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
             catch (Exception ex)
             {
-                this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
+                this.statusMessageService.Notify(ex, $"Cannot load data.");
             }
         }
 

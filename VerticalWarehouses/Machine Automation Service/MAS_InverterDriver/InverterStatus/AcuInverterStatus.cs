@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
@@ -27,6 +26,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         //INFO ACU Inputs
+
         #region Properties
 
         public bool ACU_EncoderCanalA => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderCanalA] ?? false;

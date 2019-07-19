@@ -91,7 +91,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         #region Methods
 
-        public async void DrawerActivityButtonMethod()
+        public void DrawerActivityButtonMethod()
         {
             var mission = this.bayManager.CurrentMission;
             if (mission != null)

@@ -79,7 +79,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Methods
 
 
-        public override async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             var random = new Random();
             this.kits = new ObservableCollection<DataGridKit>();
@@ -97,6 +97,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             this.dataGridViewModelRef.Kits = this.kits;
             this.dataGridViewModelRef.SelectedKit = this.kits[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
+
+            return Task.CompletedTask;
         }
 
         #endregion

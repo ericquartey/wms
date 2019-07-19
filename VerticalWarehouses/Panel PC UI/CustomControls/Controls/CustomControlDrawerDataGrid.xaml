@@ -14,7 +14,7 @@
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="14"
+                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
@@ -109,7 +109,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
                                     Binding="{Binding Path=Height}"
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderHeight}">
                     <DataGridTextColumn.HeaderStyle>
@@ -134,7 +135,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
                                     Binding="{Binding Path=Weight}"
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderWeight }">
                     <DataGridTextColumn.HeaderStyle>
@@ -159,7 +161,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="1*"
                                     Binding="{Binding Path=Cell}"
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderCell }">
                     <DataGridTextColumn.HeaderStyle>
@@ -184,7 +187,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
                                     Binding="{Binding Path=Side}"
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderSide}">
                     <DataGridTextColumn.HeaderStyle>
@@ -209,7 +213,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column6"
+                                    Width="1*"
                                     Binding="{Binding Path=State}"
                                     Header="{x:Static Resources:OperatorApp.OtherDrawerDataGridHeaderState}">
                     <DataGridTextColumn.HeaderStyle>

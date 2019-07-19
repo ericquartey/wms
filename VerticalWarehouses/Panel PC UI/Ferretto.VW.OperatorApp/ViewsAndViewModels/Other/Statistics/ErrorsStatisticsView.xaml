@@ -20,27 +20,27 @@
                    Text="{x:Static Resources:OperatorApp.ErrorsStatisticsHeader}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="510,120,0,0"
+                                              Margin="510,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.TotalLoadingUnitsBetweenErrors}"
                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
 
         <ContentControl Width="450"
-                        Height="250"
-                        Margin="280,250,0,0"
+                        Height="310"
+                        Margin="280,200,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="{Binding DataGridViewModel}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="280,120,0,0"
+                                              Margin="280,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.TotalLoadingUnits}"
                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
 
-        <Button Margin="0,250,20,0"
+        <Button Margin="0,240,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
@@ -48,7 +48,7 @@
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="280,180,0,0"
+                                              Margin="280,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Statistics.TotalErrors}"
@@ -61,7 +61,7 @@
                                               ContentText="{Binding DataGridViewModel.SelectedCell.Description}"
                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}" />
 
-        <Button Margin="0,315,20,0"
+        <Button Margin="0,305,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
@@ -69,10 +69,10 @@
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
-                                              Margin="510,180,0,0"
+                                              Margin="510,140,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding Statistics.RatioRealiability, StringFormat={}{0:N2}}"
+                                              ContentText="{Binding Statistics.ReliabilityPercentage, StringFormat={}{0:N3} %}"
                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}" />
 
     </Grid>

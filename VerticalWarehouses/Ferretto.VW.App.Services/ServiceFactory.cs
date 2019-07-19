@@ -9,9 +9,6 @@
         {
             switch (typeof(T))
             {
-                case var service when service == typeof(IAuthenticationService):
-                    return new AuthenticationService() as T;
-
                 case var service when service == typeof(ISessionService):
                     return new SessionService() as T;
 

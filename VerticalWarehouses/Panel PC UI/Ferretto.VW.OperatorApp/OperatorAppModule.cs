@@ -2,6 +2,7 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp;
 using Ferretto.VW.OperatorApp.Interfaces;
@@ -78,7 +79,7 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
-            containerRegistry.RegisterSingleton<IFeedbackNotifier, FeedbackNotifier>();
+            containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<INavigationService, NavigationService>();
 
             containerRegistry.RegisterSingleton<IIdleViewModel, IdleViewModel>();
@@ -93,6 +94,7 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IImmediateDrawerCallViewModel, ImmediateDrawerCallViewModel>();
             containerRegistry.RegisterSingleton<IGeneralInfoViewModel, GeneralInfoViewModel>();
             containerRegistry.RegisterSingleton<IDrawerCompactingViewModel, DrawerCompactingViewModel>();
+            containerRegistry.RegisterSingleton<IDrawerCompactingDetailViewModel, DrawerCompactingDetailViewModel>();
             containerRegistry.RegisterSingleton<IOtherNavigationViewModel, OtherNavigationViewModel>();
             containerRegistry.RegisterSingleton<IStatisticsGeneralDataViewModel, StatisticsGeneralDataViewModel>();
             containerRegistry.RegisterSingleton<IDrawerSpaceSaturationViewModel, DrawerSpaceSaturationViewModel>();
@@ -119,7 +121,7 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
-            containerRegistry.Register<ICustomControlItemStatisticsDataGridViewModel, CustomControlItemStatisticsDataGridViewModel>();
+            containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
         }
 
         #endregion

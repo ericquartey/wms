@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<ErrorStatisticsDetail> Errors { get; set; }
 
-        public double RatioRealiability { get; set; }
+        public double ReliabilityPercentage { get; set; }
 
         public int TotalErrors { get; set; }
 
