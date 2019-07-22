@@ -43,7 +43,7 @@ namespace Ferretto.VW.CommonUtils.Messages
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
 
-            Logger?.Trace($"{description} {source} {type} {destination} {status}");
+            Logger?.Trace($"{source}.{type}.{destination} {description} {status}");
         }
 
         #endregion
