@@ -274,16 +274,8 @@ namespace Ferretto.VW.MAS_DataLayer
                         {
                             ipAddress = true;
                         }
-                        else
-                        {
-                            var splitColon = stringValue.Split(':');
-                            if (splitColon.Length == 3)
-                            {
-                                ipAddress = true;
-                            }
-                        }
 
-                        if (IPAddress.TryParse(stringValue, out var configurationValue) && ipAddress)
+                        if (ipAddress && IPAddress.TryParse(stringValue, out var configurationValue))
                         {
                             await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);
                         }
