@@ -6,7 +6,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.WMS.Modules.Scheduler
+namespace Ferretto.WMS.App.Modules.Scheduler
 {
     [Module(ModuleName = nameof(Common.Utils.Modules.Scheduler), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]

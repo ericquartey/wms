@@ -12,7 +12,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]

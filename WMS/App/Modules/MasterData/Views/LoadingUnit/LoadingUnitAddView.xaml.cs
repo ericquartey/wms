@@ -1,6 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     /// <summary>
     /// Interaction logic for ItemAddView.xaml
