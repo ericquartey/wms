@@ -185,19 +185,6 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void OnMessageNotified(object sender, MessageNotifiedEventArgs e)
-        {
-            if (e.NotificationMessage is NotificationMessageUI<ExecuteMissionMessageData> dop)
-            {
-                this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Publish(dop);
-            }
-
-            if (e.NotificationMessage is NotificationMessageUI<BayConnectedMessageData> bayMessage)
-            {
-                this.eventAggregator.GetEvent<NotificationEventUI<BayConnectedMessageData>>().Publish(bayMessage);
-            }
-        }
-
         #endregion
     }
 }

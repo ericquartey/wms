@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface IBayManager
     {
@@ -15,7 +10,9 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces
 
         Mission CurrentMission { get; set; }
 
-        int QueuedMissionsQuantity { get; set; }
+        MissionOperation CurrentMissionOperation { get; }
+
+        int PendingMissionsCount { get; set; }
 
         #endregion
 
