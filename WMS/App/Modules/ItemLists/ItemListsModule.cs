@@ -6,7 +6,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.WMS.Modules.ItemLists
+namespace Ferretto.WMS.App.Modules.ItemLists
 {
     [Module(ModuleName = nameof(Common.Utils.Modules.ItemLists), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]

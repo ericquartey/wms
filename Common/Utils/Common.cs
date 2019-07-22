@@ -4,7 +4,7 @@
     {
         #region Fields
 
-        public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.WMS.Modules";
+        public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.WMS.App.Modules";
 
         public const string ASSEMBLY_THEMENAME = "Ferretto.WMS.App.Themes";
 

@@ -63,6 +63,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 case GeneralInfo.Shutter3Type:
                 case GeneralInfo.DrawersQuantity:
                 case GeneralInfo.BaysQuantity:
+                case GeneralInfo.Barrier1Height:
+                case GeneralInfo.Barrier2Height:
+                case GeneralInfo.Barrier3Height:
                     returnValue = ConfigurationDataType.Integer;
                     break;
 

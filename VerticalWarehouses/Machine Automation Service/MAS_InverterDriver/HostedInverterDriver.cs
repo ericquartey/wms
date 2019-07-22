@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
+        private readonly IResolutionConversion dataLayerResolutionConversion;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue;
@@ -116,11 +118,13 @@ namespace Ferretto.VW.MAS_InverterDriver
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
+            IResolutionConversion dataLayerResolutionConversion,
             ILogger<HostedInverterDriver> logger)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.dataLayerResolutionConversion = dataLayerResolutionConversion;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
 

@@ -909,7 +909,7 @@
     <comment>Stato</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
-    <value>Current gross weight</value>
+    <value>Current weight</value>
     <comment>Peso lordo corrente</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
@@ -1172,6 +1172,10 @@
   </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
     <value>DrawerActivityLocalCallGoBack</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>DrawerSpaceSaturazionWeightAnalisys</value>
     <comment>Button text</comment>
   </data>
 </root>

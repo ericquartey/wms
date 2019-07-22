@@ -93,8 +93,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -105,8 +103,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 deceleration,
                 requiredCycles,
                 lowerBound,
-                upperBound,
-                resolution);
+                upperBound);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(

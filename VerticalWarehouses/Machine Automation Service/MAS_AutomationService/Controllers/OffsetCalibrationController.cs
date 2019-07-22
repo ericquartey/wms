@@ -153,8 +153,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
@@ -167,8 +165,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 maxDeceleration,
                 0,
                 0,
-                0,
-                resolution);
+                0);
 
             var commandMessage = new CommandMessage(
                 messageData,
@@ -189,8 +186,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
@@ -203,8 +198,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 maxDeceleration,
                 0,
                 0,
-                0,
-                resolution);
+                0);
 
             var commandMessage = new CommandMessage(
                 messageData,

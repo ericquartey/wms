@@ -10,8 +10,8 @@
     "Country": "Italia",
     "Latitude": "45.528305393050246",
     "Longitude": "11.498999179729909",
-    "ProductionDate": "2019-04-01",
-    "InstallationDate": "2019-05-01",
+    "ProductionDate": "2011-04-01T19:43:37+0100",
+    "InstallationDate": "2011-05-01T19:43:37+0100",
     "Model": "VRT EF 84 L 990-BID H4563",
     "Serial": "VM_190001",
     "Height": 4.563,
@@ -81,7 +81,7 @@
     "SQLServerPort": 6000,
     "PPC1MasterIPAddress": "198.168.0.10",
     "PPC2SlaveIPAddress": "198.168.0.20",
-    "PPC3SlaveIPAddress": "::3" //TEMP Temporary value for software test
+    //"PPC3SlaveIPAddress": "::3"
   },
 
   //TEMP To remove but temporary commented, until the test won't be ok
@@ -132,7 +132,6 @@
     "TakingOffset": 0.0,
     "DepositOffset": 0.0
   },
-
   "HorizontalAxis": {
     "MaxEmptySpeed": 730.0,
     "MaxEmptyAcceleration": 1500.0,
@@ -142,11 +141,10 @@
     "MaxFullDeceleration": 350.00,
     //"HomingExecuted":false,
     "Resolution": 77.6722,
-    "Offset": 0,
+    "Offset": 0.0,
     "ClockWiseRun": 1235.0,
     "AntiClockWiseRun": 1241.0
   },
-
   "HorizontalMovementForwardProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1235.9,
@@ -176,7 +174,6 @@
     //"P5Deceleration":
     //"P5Speed":
   },
-
   "HorizontalMovementBackwardProfile": {
     "TotalSteps": 4,
     "TotalMovement": 1241.0,
@@ -206,64 +203,52 @@
     //"P5Deceleration":
     //"P5Speed":
   },
-
   "VerticalManualMovements": {
     "FeedRate": 0.10,
     "InitialTargetPosition": 30.0,
     "RecoveryTargetPosition": 300.0
   },
-
   "HorizontalManualMovements": {
     "FeedRate": 0.10,
     "InitialTargetPosition": 30.0,
     "RecoveryTargetPosition": 200.0
   },
-
   "ShutterManualMovements": {
     "FeedRate": 0.20,
     "MaxSpeed": 500.0,
     "Acceleration": 500.0,
     "Deceleration": 500.0
   },
-
   "BeltBurnishing": {
     "CycleQuantity": 200
   },
-
   "ResolutionCalibration": {
     "InitialPosition": 1000.0, //TEMP Temporary value for software test
     "FinalPosition": 5500.0, //TEMP Temporary value for software test
     "FeedRate": 0.20
   },
-
   "OffsetCalibration": {
     "ReferenceCell": 50, //TEMP Temporary value for software test
     "StepValue": 0.5,
     "FeedRate": 0.20
   },
-
   "CellControl": {
     "StepValue": 0.5,
     "FeedRate": 0.20
   },
-
   "PanelControl": {
     "FeedRate": 0.20
   },
-
   "ShutterHeightControl": {
     "FeedRate": 0.10
   },
-
   "WeightControl": {
     "FeedRate": 0.10
   },
-
   "BayPositionControl": {
     "StepValue": 0.5,
     "FeedRate": 0.20
   },
-
   "LoadFirstDrawer": {
     "FeedRate": 0.20
   }
