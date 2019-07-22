@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 
         int NumberCycles { get; }
 
-        decimal Resolution { get; }
-
         decimal TargetAcceleration { get; set; }
 
         decimal TargetDeceleration { get; set; }
