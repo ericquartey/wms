@@ -401,6 +401,9 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("3:Starting Calibrate Axis FSM");
+
+                    this.logger.LogDebug($"Starting Calibrate Axis {calibrateData.AxisToCalibrate}");
+
                     this.currentAxis = calibrateData.AxisToCalibrate;
                     this.CurrentStateMachine = new CalibrateAxisStateMachine(this.currentAxis, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                     this.CurrentStateMachine?.Start();
@@ -542,12 +545,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                                 var notificationMessage = new FieldNotificationMessage(
                                     notificationMessageData,
                                     $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
-                                    FieldMessageActor.Any,
+                                    FieldMessageActor.InverterDriver,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.InverterSwitchOn,
                                     MessageStatus.OperationEnd);
 
-                                this.logger.LogDebug("Inverter Alerady active on selected axis");
+                                this.logger.LogDebug($"Inverter Already active on selected axis {switchOnData.AxisToSwitchOn}");
 
                                 this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
@@ -556,8 +559,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                             else
                             {
                                 this.logger.LogDebug("3: Switch On the inverter state machine");
-
-                                this.logger.LogDebug("Inverter requires switching on selected axis");
+                                this.logger.LogDebug($"Inverter requires switching on selected axis {switchOnData.AxisToSwitchOn}");
 
                                 this.CurrentStateMachine = new SwitchOnStateMachine(switchOnData.AxisToSwitchOn, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                                 this.CurrentStateMachine.Start();
@@ -569,7 +571,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                             inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
-                            this.logger.LogDebug("Inverter requires Switch axis");
+                            this.logger.LogDebug($"Inverter requires Switch axis {switchOnData.AxisToSwitchOn}");
 
                             this.CurrentStateMachine = new SwitchOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
                             this.CurrentStateMachine?.Start();
@@ -577,9 +579,9 @@ namespace Ferretto.VW.MAS_InverterDriver
                     }
                     else
                     {
-                        this.logger.LogDebug("5: Power On the inverter state machine");
-
                         inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
+
+                        this.logger.LogDebug("5: Power On the inverter state machine");
 
                         this.CurrentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
                         this.CurrentStateMachine.Start();
@@ -600,7 +602,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
         }
 
-        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage)
+        private async Task ProcessPositioningMessage(FieldCommandMessage receivedMessage)
         {
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {
@@ -626,14 +628,42 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
-                    var positioningFieldData = new InverterPositioningFieldMessageData(positioningData);
+                    ConfigurationCategory configurationCategory;
+                    switch (positioningData.AxisMovement)
+                    {
+                        case Axis.Horizontal:
+                            configurationCategory = ConfigurationCategory.HorizontalAxis;
+                            break;
+
+                        case Axis.Vertical:
+                            configurationCategory = ConfigurationCategory.VerticalAxis;
+                            break;
+
+                        default:
+                            configurationCategory = ConfigurationCategory.Undefined;
+                            break;
+                    }
+
+                    var targetAcceleration = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
+                    var targetDeceleration = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
+                    var targetPosition = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                    var targetSpeed = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
+
+                    var positioningFieldData = new InverterPositioningFieldMessageData(
+                        positioningData,
+                        targetAcceleration,
+                        targetDeceleration,
+                        targetPosition,
+                        targetSpeed);
 
                     if (inverterStatus is AngInverterStatus currentStatus)
                     {
                         var currentPosition = (this.currentAxis == Axis.Vertical) ? currentStatus.CurrentPositionAxisVertical : currentStatus.CurrentPositionAxisHorizontal;
 
-                        this.logger.LogTrace($"1:CurrentPositionAxisVertical = {currentPosition}");
+                        this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
                         this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
+
+                        this.logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition}; movement type: {positioningData.MovementType}");
 
                         switch (positioningData.MovementType)
                         {

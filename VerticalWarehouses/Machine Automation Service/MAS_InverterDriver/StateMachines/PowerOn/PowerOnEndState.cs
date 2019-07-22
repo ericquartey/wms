@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
@@ -47,13 +48,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter Start completed",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterPowerOn,
                 MessageStatus.OperationEnd);
 
-            //this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
-            this.Logger.LogDebug($"PowerOnEndState Start");
+            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
+            //TEMP Workaround: Give time to inverter to perform the powerON operation
+            Thread.Sleep(250);
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }

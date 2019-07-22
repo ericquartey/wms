@@ -540,9 +540,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<decimal>("Height");
 
-                    b.Property<int>("LoadingUnitId");
-
                     b.Property<decimal>("MaxNetWeight");
+
+                    b.Property<int>("MissionsCount");
 
                     b.Property<long>("Status");
 
@@ -556,21 +556,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("LoadingUnits");
 
                     b.HasData(
-                        new { Id = 1, CellId = 1, Code = "LU#1.01", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 2, CellId = 2, Code = "LU#1.02", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 3, CellId = 3, Code = "LU#1.03", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 750m, Status = 3L, Tare = 65m },
-                        new { Id = 4, CellId = 4, Code = "LU#1.04", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 5, CellId = 5, Code = "LU#1.05", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 6, CellId = 6, Code = "LU#1.06", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 7, CellId = 7, Code = "LU#1.07", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 8, CellId = 8, Code = "LU#1.08", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 9, CellId = 9, Code = "LU#1.09", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 10, CellId = 10, Code = "LU#1.10", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 11, CellId = 11, Code = "LU#1.11", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 12, CellId = 12, Code = "LU#1.12", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 750m, Status = 3L, Tare = 65m },
-                        new { Id = 13, CellId = 13, Code = "LU#1.13", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 750m, Status = 3L, Tare = 65m },
-                        new { Id = 14, CellId = 14, Code = "LU#1.14", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m },
-                        new { Id = 15, CellId = 15, Code = "LU#1.15", GrossWeight = 0m, Height = 0m, LoadingUnitId = 0, MaxNetWeight = 500m, Status = 3L, Tare = 50m }
+                        new { Id = 1, CellId = 1, Code = "01001", GrossWeight = 299m, Height = 298m, MaxNetWeight = 500m, MissionsCount = 41, Status = 3L, Tare = 50m },
+                        new { Id = 2, CellId = 2, Code = "01002", GrossWeight = 372m, Height = 339m, MaxNetWeight = 500m, MissionsCount = 36, Status = 3L, Tare = 50m },
+                        new { Id = 3, CellId = 3, Code = "01003", GrossWeight = 231m, Height = 273m, MaxNetWeight = 750m, MissionsCount = 48, Status = 3L, Tare = 65m },
+                        new { Id = 4, CellId = 4, Code = "01004", GrossWeight = 315m, Height = 184m, MaxNetWeight = 500m, MissionsCount = 45, Status = 3L, Tare = 50m },
+                        new { Id = 5, CellId = 5, Code = "01005", GrossWeight = 388m, Height = 63m, MaxNetWeight = 500m, MissionsCount = 29, Status = 3L, Tare = 50m },
+                        new { Id = 6, CellId = 6, Code = "01006", GrossWeight = 273m, Height = 249m, MaxNetWeight = 500m, MissionsCount = 43, Status = 3L, Tare = 50m },
+                        new { Id = 7, CellId = 7, Code = "01007", GrossWeight = 241m, Height = 114m, MaxNetWeight = 500m, MissionsCount = 2, Status = 3L, Tare = 50m },
+                        new { Id = 8, CellId = 8, Code = "01008", GrossWeight = 241m, Height = 321m, MaxNetWeight = 500m, MissionsCount = 26, Status = 3L, Tare = 50m },
+                        new { Id = 9, CellId = 9, Code = "01009", GrossWeight = 366m, Height = 250m, MaxNetWeight = 500m, MissionsCount = 13, Status = 3L, Tare = 50m },
+                        new { Id = 10, CellId = 10, Code = "01010", GrossWeight = 219m, Height = 150m, MaxNetWeight = 500m, MissionsCount = 42, Status = 3L, Tare = 50m },
+                        new { Id = 11, CellId = 11, Code = "01011", GrossWeight = 325m, Height = 317m, MaxNetWeight = 500m, MissionsCount = 35, Status = 3L, Tare = 50m },
+                        new { Id = 12, CellId = 12, Code = "01012", GrossWeight = 249m, Height = 211m, MaxNetWeight = 750m, MissionsCount = 29, Status = 3L, Tare = 65m },
+                        new { Id = 13, CellId = 13, Code = "01013", GrossWeight = 281m, Height = 346m, MaxNetWeight = 750m, MissionsCount = 17, Status = 3L, Tare = 65m },
+                        new { Id = 14, CellId = 14, Code = "01014", GrossWeight = 296m, Height = 216m, MaxNetWeight = 500m, MissionsCount = 36, Status = 3L, Tare = 50m },
+                        new { Id = 15, CellId = 15, Code = "01015", GrossWeight = 362m, Height = 115m, MaxNetWeight = 500m, MissionsCount = 22, Status = 3L, Tare = 50m }
                     );
                 });
 
@@ -663,6 +663,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("CategoryName", "VarName");
 
                     b.ToTable("RuntimeValues");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("InstallationDate");
+
+                    b.Property<DateTime?>("LastServiceDate");
+
+                    b.Property<DateTime>("NextServiceDate");
+
+                    b.Property<int>("ServiceStatus");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServicingInfo");
+
+                    b.HasData(
+                        new { Id = 1, InstallationDate = new DateTime(2016, 9, 22, 9, 59, 49, 290, DateTimeKind.Local), LastServiceDate = new DateTime(2019, 4, 22, 9, 59, 49, 297, DateTimeKind.Local), NextServiceDate = new DateTime(2020, 7, 22, 9, 59, 49, 297, DateTimeKind.Local), ServiceStatus = 86 }
+                    );
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>

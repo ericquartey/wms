@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]

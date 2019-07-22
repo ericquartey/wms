@@ -13,9 +13,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IMachineStatisticsDataLayer machineStatisticsDataLayer;
-
         private readonly IMachinesDataService machinesDataService;
+
+        private readonly IMachineStatisticsDataLayer machineStatisticsDataLayer;
 
         #endregion
 
@@ -52,11 +52,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 // TODO get machine id
                 var machineId = 1;
-                var machine = await this.machinesDataService.GetByIdAsync(machineId); 
+                var machine = await this.machinesDataService.GetByIdAsync(machineId);
 
                 statics.AreaFillPercentage = machine.AreaFillRate;
             }
-            catch(SwaggerException)
+            catch (System.Exception)
             {
                 // do nothing:
                 // if the call fails, some data will not be populated

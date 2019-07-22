@@ -3,6 +3,7 @@ using System.Windows;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
@@ -23,11 +24,14 @@ namespace Ferretto.VW.App
         {
             var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
-            this.Container.RegisterInstance(ServiceFactory.Get<IAuthenticationService>());
+            this.Container.RegisterSingleton<IAuthenticationService, AuthenticationService>();
             this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
             this.Container.RegisterInstance(ServiceFactory.Get<ISessionService>());
             this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
             this.Container.RegisterSingleton<IMachineProvider, MachineProvider>();
+
+            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMSServiceAddress"));
+            this.Container.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(wmsServiceUrl));
 
             this.Container.RegisterType<MainWindowViewModel>();
 

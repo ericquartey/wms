@@ -24,6 +24,10 @@
 
         LoadingUnitNotFoundException = 107,
 
+        DivideByZeroException = 108,
+
+        WrongAxisException = 109,
+
         SaveData = 1001
     }
 }

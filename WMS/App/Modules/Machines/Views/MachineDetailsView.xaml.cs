@@ -1,6 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     /// <summary>
     /// Interaction logic for MachineDetailsView.xaml

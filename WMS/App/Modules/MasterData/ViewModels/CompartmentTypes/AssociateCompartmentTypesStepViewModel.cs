@@ -5,7 +5,7 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class AssociateCompartmentTypesStepViewModel : WmsWizardStepViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.Scheduler
+namespace Ferretto.WMS.App.Modules.Scheduler
 {
     /// <summary>
     /// Interaction logic for SchedulerRequest.xaml

@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS_MissionsManager
     {
         #region Fields
 
+        private readonly AutoResetEvent bayNowServiceableResetEvent;
+
         private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
@@ -31,29 +33,27 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IGeneralInfoDataLayer generalInfo;
+
         private readonly ILogger logger;
+
+        private readonly List<Mission> machineMissions;
 
         private readonly IMachinesDataService machinesDataService;
 
         private readonly Task missionManagementTask;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
-
-        private readonly Task notificationReceiveTask;
-
-        private readonly AutoResetEvent bayNowServiceableResetEvent;
-
-        private readonly IGeneralInfoDataLayer generalInfo;
-
-        private int logCounterMissionManagement;
-
-        private readonly List<Mission> machineMissions;
-
         private readonly IMissionsDataService missionsDataService;
 
         private readonly AutoResetEvent newMissionArrivedResetEvent;
 
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
+
+        private readonly Task notificationReceiveTask;
+
         private readonly ISetupNetwork setupNetwork;
+
+        private int logCounterMissionManagement;
 
         private CancellationToken stoppingToken;
 
@@ -120,10 +120,9 @@ namespace Ferretto.VW.MAS_MissionsManager
         {
             do
             {
-                CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                 }
                 catch (OperationCanceledException)
@@ -133,7 +132,6 @@ namespace Ferretto.VW.MAS_MissionsManager
                 }
 
                 // TODO add here a switch block on receivedMessage.Type
-                
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

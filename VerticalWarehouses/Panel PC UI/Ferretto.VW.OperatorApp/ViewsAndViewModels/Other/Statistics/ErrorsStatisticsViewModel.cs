@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
@@ -18,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly IErrorsService errorsService;
 
-        private readonly IFeedbackNotifier feedbackNotifier;
+        private readonly IStatusMessageService statusMessageService;
 
         private int currentItemIndex;
 
@@ -35,11 +36,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public ErrorsStatisticsViewModel(
-            IFeedbackNotifier feedbackNotifier,
+            IStatusMessageService statusMessageService,
             IErrorsService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
-            this.feedbackNotifier = feedbackNotifier;
+            this.statusMessageService = statusMessageService;
             this.errorsService = errorsService;
             this.dataGridViewModelRef = errorsDataGridViewModel;
             this.DataGridViewModel = this.dataGridViewModelRef;
@@ -103,7 +104,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
             catch (Exception ex)
             {
-                this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
+                this.statusMessageService.Notify(ex, $"Cannot load data.");
             }
         }
 

@@ -26,7 +26,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int numberCycles,
             decimal lowerBound,
             decimal upperBound,
-            decimal resolution,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -39,7 +38,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
-            this.Resolution = resolution;
         }
 
         #endregion
@@ -59,8 +57,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; set; }
-
-        public decimal Resolution { get; set; }
 
         public decimal TargetAcceleration { get; set; }
 

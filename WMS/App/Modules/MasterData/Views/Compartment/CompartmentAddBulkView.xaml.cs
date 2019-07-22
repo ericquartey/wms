@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public partial class CompartmentAddBulkView : UserControl
     {
