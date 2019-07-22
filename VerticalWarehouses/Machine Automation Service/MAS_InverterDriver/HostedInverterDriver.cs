@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
-        private readonly IResolutionConversion dataLayerResolutionConversion;
+        private readonly IResolutionConversionDataLayer dataLayerResolutionConversion;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
-            IResolutionConversion dataLayerResolutionConversion,
+            IResolutionConversionDataLayer dataLayerResolutionConversion,
             ILogger<HostedInverterDriver> logger)
         {
             this.socketTransport = socketTransport;

@@ -273,7 +273,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             {
                 items = await this.wmsDataProvider.GetItemsAsync(" ", 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             finally
@@ -331,7 +331,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             {
                 items = await this.wmsDataProvider.GetItemsAsync(this.searchArticleCode, 0, DEFAULT_QUANTITY_ITEM);
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
             {
                 this.currentItemIndex = 0;
                 this.IsSearching = false;

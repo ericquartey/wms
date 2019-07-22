@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IMachineStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ILoadingUnitStatisticsDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversion);
+            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversionDataLayer);
 
             services.AddScoped<IServicingProvider, ServicingProvider>();
 
