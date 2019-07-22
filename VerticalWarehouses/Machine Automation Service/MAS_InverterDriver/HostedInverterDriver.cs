@@ -559,6 +559,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.logger.LogDebug($"Deallocating {this.CurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
+                            if (this.CurrentStateMachine is null)
+                            {
+                                this.logger.LogDebug($"State machine {this.CurrentStateMachine?.GetType()} is null !!");
+                            }
+
                             if (this.CurrentStateMachine is PowerOffStateMachine ||
                                 this.CurrentStateMachine is SwitchOnStateMachine ||
                                 this.CurrentStateMachine is StopStateMachine)
@@ -619,6 +624,19 @@ namespace Ferretto.VW.MAS_InverterDriver
                         }
 
                         break;
+                }
+
+                if (receivedMessage.Source == FieldMessageActor.InverterDriver)
+                {
+                    if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                        receivedMessage.Status == MessageStatus.OperationStop)
+                    {
+                        var notificationMessageToFSM = receivedMessage;
+                        //TEMP Set the destination of message to FSM
+                        notificationMessageToFSM.Destination = FieldMessageActor.FiniteStateMachines;
+
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessageToFSM);
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);

@@ -283,11 +283,6 @@ namespace Ferretto.VW.MAS_DataLayer
                             }
                         }
 
-                        //if (configurationData == (long)SetupNetwork.Inverter1)
-                        //{
-                        //    ipAddress = true;
-                        //}
-
                         if (IPAddress.TryParse(stringValue, out var configurationValue) && ipAddress)
                         {
                             await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);

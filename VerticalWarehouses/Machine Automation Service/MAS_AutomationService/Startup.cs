@@ -205,6 +205,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IMachineStatisticsDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<ILoadingUnitStatistics, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
         }
 
         private void RegisterSocketTransport(IServiceCollection services)
