@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
@@ -11,11 +12,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
     {
         #region Properties
 
-        int BayType { get; set; }
+        int BayId { get; set; }
 
-        int Id { get; set; }
+        BayType BayType { get; set; }
 
-        int MissionQuantity { get; set; }
+        int PendingMissionsCount { get; set; }
 
         #endregion
     }
