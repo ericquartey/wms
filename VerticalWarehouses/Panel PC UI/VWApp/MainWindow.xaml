@@ -36,6 +36,7 @@
                Margin="15,0,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Fill" />
 
@@ -126,7 +127,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding Machine.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding Machine.ModelName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel Grid.Row="1"
                     Margin="80,150,0,0"
@@ -160,7 +161,7 @@
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                  LabelText="{x:Static res:VWApp.UserLogin_Password}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"/>
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <Button Grid.Row="1"
                 Margin="80,510,0,0"
@@ -168,8 +169,8 @@
                 VerticalAlignment="Top"
                 Command="{Binding LoginCommand}"
                 Content="{x:Static res:General.Login}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                IsEnabled="{Binding IsMachineIdentityAvailable}" />
+                IsEnabled="{Binding IsMachineIdentityAvailable}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <TextBlock Grid.Row="2"
                    Height="40"

@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Services
 #if DEBUG
                 Application.Current.Shutdown();
 #else
-                var processStartInfo = new ProcessStartInfo("shutdown", "/s /t 1");
+                var processStartInfo = new ProcessStartInfo("shutdown", "/s /t 5");
                 processStartInfo.CreateNoWindow = true;
                 processStartInfo.UseShellExecute = false;
                 Process.Start(processStartInfo);

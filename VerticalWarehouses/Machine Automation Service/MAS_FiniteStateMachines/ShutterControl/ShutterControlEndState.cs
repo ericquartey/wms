@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                                "Shutter Control Test Stopped",
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
-                               MessageType.ShutterPositioning,
+                               MessageType.ShutterControl,
                                MessageStatus.OperationStop);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                     "Shutter Control Test Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
-                    MessageType.ShutterPositioning,
+                    MessageType.ShutterControl,
                     MessageStatus.OperationEnd);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

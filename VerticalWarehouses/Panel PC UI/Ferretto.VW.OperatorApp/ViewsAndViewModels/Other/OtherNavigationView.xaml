@@ -29,8 +29,8 @@
 
             <Button Command="{Binding MaintenanceMainPageButtonCommand}"
                     Content="{x:Static res:OperatorApp.OtherNavigationMaintenance}"
-                    IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"
+                    IsEnabled="False"/>
 
         </StackPanel>
     </Grid>

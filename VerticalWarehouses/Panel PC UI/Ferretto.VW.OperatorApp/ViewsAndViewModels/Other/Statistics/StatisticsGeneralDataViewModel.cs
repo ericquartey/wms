@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Mvvm;
@@ -10,15 +11,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
+        private readonly IMachineStatisticsService machineStatisticsService;
+
+        private readonly IStatusMessageService statusMessageService;
+
         private MachineStatistics model;
-
-        readonly IMachineStatisticsService machineStatisticsService;
-
-        public MachineStatistics Model
-        {
-            get => this.model;
-            set => this.SetProperty(ref this.model, value);
-        }
 
         #endregion
 
@@ -26,11 +23,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public StatisticsGeneralDataViewModel(
             IStatisticsNavigationViewModel statisticsNavigationViewModel,
-            IMachineStatisticsService machineStatisticsService)
+            IMachineStatisticsService machineStatisticsService,
+            IStatusMessageService statusMessageService)
         {
             if (machineStatisticsService == null)
             {
                 throw new System.ArgumentNullException(nameof(machineStatisticsService));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
             }
 
             if (statisticsNavigationViewModel == null)
@@ -40,6 +43,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
             this.NavigationViewModel = statisticsNavigationViewModel as BindableBase;
             this.machineStatisticsService = machineStatisticsService;
+            this.statusMessageService = statusMessageService;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public MachineStatistics Model
+        {
+            get => this.model;
+            set => this.SetProperty(ref this.model, value);
         }
 
         #endregion
@@ -54,9 +68,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
                 await base.OnEnterViewAsync();
             }
-            catch
+            catch (System.Exception ex)
             {
-                //TODO call toolbar notification service
+                this.statusMessageService.Notify(ex);
             }
         }
 

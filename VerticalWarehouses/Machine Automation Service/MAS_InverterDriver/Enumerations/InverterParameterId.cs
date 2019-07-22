@@ -30,6 +30,6 @@
 
         DigitalInputsOutputs = 1411,
 
-        ShutterTargetPosition = 414
+        ShutterTargetPosition = 414 // 19E
     }
 }

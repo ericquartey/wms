@@ -74,6 +74,7 @@ namespace Ferretto.VW.App
         private static void RegisterWmsProviders(IContainerRegistry containerRegistry)
         {
             var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get(WmsServiceAddress));
+
             containerRegistry.RegisterInstance<IWmsDataProvider>(new WmsDataProvider(wmsServiceUrl));
             containerRegistry.RegisterInstance<IWmsImagesProvider>(new WmsImagesProvider(wmsServiceUrl));
         }
