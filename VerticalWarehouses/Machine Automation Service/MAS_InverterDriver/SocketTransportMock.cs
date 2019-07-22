@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         #region Fields
 
         private readonly Timer homingTimer;
+        private readonly Timer targetTimer;
 
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
@@ -24,6 +25,9 @@ namespace Ferretto.VW.MAS_InverterDriver
         private int homingTickCount;
 
         private bool homingTimerActive;
+        private int targetTickCount;
+
+        private bool targetTimerActive;
 
         private InverterMessage lastWriteMessage;
 
@@ -46,6 +50,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
 
             this.homingTimerActive = false;
+            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
+
+            this.targetTimerActive = false;
         }
 
         #endregion
@@ -343,6 +350,11 @@ namespace Ferretto.VW.MAS_InverterDriver
             if ((this.controlWord & 0x0008) > 0)
             {
                 this.statusWord |= 0x0004;
+                if (!this.targetTimerActive)
+                {
+                    this.targetTimer.Change(0, 1000);
+                    this.targetTimerActive = true;
+                }
             }
             else
             {
@@ -370,6 +382,18 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.statusWord |= 0x1000;
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
+            }
+        }
+
+        private void TargetTick(object state)
+        {
+            this.targetTickCount++;
+
+            if (this.targetTickCount > 10)
+            {
+                this.statusWord |= 0x0400;
+                this.targetTimerActive = false;
+                this.targetTimer.Change(-1, Timeout.Infinite);
             }
         }
 

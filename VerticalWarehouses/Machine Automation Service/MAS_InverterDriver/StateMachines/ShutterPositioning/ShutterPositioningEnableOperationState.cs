@@ -68,6 +68,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
+            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+            {
+                // repeat setting of enable
+                this.InverterStatus.CommonControlWord.EnableOperation = true;
+
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.InverterStatus).ProfileVelocityControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            }
             return true;
         }
 

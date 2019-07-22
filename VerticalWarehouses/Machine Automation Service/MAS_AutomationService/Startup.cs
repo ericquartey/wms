@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 });
             });
 
-            //services.AddHostedService<HostedSHDIoDriver>();
+            services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
 

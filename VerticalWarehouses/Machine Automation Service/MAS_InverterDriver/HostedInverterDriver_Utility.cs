@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -282,12 +283,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                     return;
                 }
 
-                if (mainInverterStatus.WaitingHeartbeatAck)
-                {
-                    mainInverterStatus.WaitingHeartbeatAck = false;
-                    this.logger.LogTrace("5:Reset Heartbeat flag");
-                    return;
-                }
+                //if (mainInverterStatus.WaitingHeartbeatAck)
+                //{
+                //    mainInverterStatus.WaitingHeartbeatAck = false;
+                //    this.logger.LogTrace("5:Reset Heartbeat flag");
+                //    return;
+                //}
             }
             if (this.CurrentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
             {
@@ -447,6 +448,13 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.inverterCommandQueue.Dequeue(out var message);
 
+            if(message.ParameterId == InverterParameterId.ControlWordParam)
+            {
+                if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                {
+                    inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
+                }
+            }
             this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:inverterMessage={message}");
 
             var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
@@ -892,7 +900,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.sensorStopwatch.Reset();
             this.sensorStopwatch.Start();
-            this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs))
+            {
+                this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
+            }
         }
 
         private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, InverterIndex inverterIndex)
@@ -939,12 +950,20 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
 
             inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
-            if (inverterStatus is AngInverterStatus mainInverterStatus)
+            //if (inverterStatus is AngInverterStatus mainInverterStatus)
+            //{
+            //    mainInverterStatus.WaitingHeartbeatAck = true;
+            //}
+            //if (this.heartbeatQueue.Count == 0)
+            //{
+            //    var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+            //    this.heartbeatQueue.Enqueue(message);
+            //}
+            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.ControlWordParam))
             {
-                mainInverterStatus.WaitingHeartbeatAck = true;
+                var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+                this.inverterCommandQueue.Enqueue(message);
             }
-            var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-            this.heartbeatQueue.Enqueue(message);
         }
 
         private async Task StartHardwareCommunications()
