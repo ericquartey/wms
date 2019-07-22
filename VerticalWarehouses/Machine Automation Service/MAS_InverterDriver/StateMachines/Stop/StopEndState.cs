@@ -41,6 +41,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
+            //TODO: Check this snippet code about the setting of control word value: there is a mismatch about the actually controlWord set to the Inverter
             if (this.InverterStatus is IAngInverterStatus angInverter)
             {
                 var horizontalAxis = (this.InverterStatus.CommonControlWord.Value & 0x8000) > 0;
@@ -72,7 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter Stop End",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
                 MessageStatus.OperationEnd);

@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             var endNotification = new FieldNotificationMessage(
                 this.shutterPositionData,
                 "Shutter Positioning complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver, // Any
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
                 (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);

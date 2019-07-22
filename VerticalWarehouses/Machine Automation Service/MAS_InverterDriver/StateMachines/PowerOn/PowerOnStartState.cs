@@ -48,9 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 
-            //this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.Logger.LogDebug($"PowerOnStartState Start");
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
@@ -97,8 +95,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
             this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled
-                & this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
+            if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
+                this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
                 this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
                 )
             {
