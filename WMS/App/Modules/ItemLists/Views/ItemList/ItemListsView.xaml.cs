@@ -1,6 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.ItemLists
+namespace Ferretto.WMS.App.Modules.ItemLists
 {
     /// <summary>
     /// Interaction logic for ListsView.xaml

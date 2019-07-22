@@ -3,7 +3,7 @@ using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.Modules.Scheduler
+namespace Ferretto.WMS.App.Modules.Scheduler
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.SchedulerRequest), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]

@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class ItemPutViewModel : BaseDialogViewModel<ItemPut>
     {

@@ -7,7 +7,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Module(ModuleName = nameof(Common.Utils.Modules.MasterData), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
