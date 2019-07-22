@@ -628,7 +628,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
-                    //TEMP Begin changes to move the resolution from Controller to the Inverter
                     ConfigurationCategory configurationCategory;
                     switch (positioningData.AxisMovement)
                     {
@@ -656,7 +655,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                         targetDeceleration,
                         targetPosition,
                         targetSpeed);
-                    //TEMP End changes to move the resolution from Controller to the Inverter
 
                     if (inverterStatus is AngInverterStatus currentStatus)
                     {
