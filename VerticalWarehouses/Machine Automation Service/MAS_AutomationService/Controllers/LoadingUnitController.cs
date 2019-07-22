@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        public ILoadingUnitStatistics loadingUnitStatistics;
+        private readonly ILoadingUnitStatistics loadingUnitStatistics;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -20,9 +20,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public LoadingUnitsController(ILoadingUnitStatistics loadingUnitStatistics,
+        public LoadingUnitsController(
+            ILoadingUnitStatistics loadingUnitStatistics,
             IMachinesDataService machinesDataService)
         {
+            if (loadingUnitStatistics == null)
+            {
+                throw new System.ArgumentNullException(nameof(loadingUnitStatistics));
+            }
+
+            if (machinesDataService == null)
+            {
+                throw new System.ArgumentNullException(nameof(machinesDataService));
+            }
+
             this.loadingUnitStatistics = loadingUnitStatistics;
             this.machinesDataService = machinesDataService;
         }

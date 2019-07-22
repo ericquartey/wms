@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : IResolutionConversion
+    public partial class DataLayerService : IResolutionConversion
     {
         #region Methods
 
