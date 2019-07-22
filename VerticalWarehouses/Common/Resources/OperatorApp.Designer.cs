@@ -1654,24 +1654,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_UsageTimePercentage.
-        /// </summary>
-        public static string MachineStatistics_UsageTimePercentage {
-            get {
-                return ResourceManager.GetString("MachineStatistics_UsageTimePercentage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_WeightCapacityPercentage.
-        /// </summary>
-        public static string MachineStatistics_WeightCapacityPercentage {
-            get {
-                return ResourceManager.GetString("MachineStatistics_WeightCapacityPercentage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to MachineStatisticsHeader.
         /// </summary>
         public static string MachineStatisticsHeader {
