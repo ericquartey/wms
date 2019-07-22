@@ -34,7 +34,7 @@
 
         Height = 15L,
 
-        MaxWeight = 16L,
+        MaxGrossWeight = 16L,
 
         DrawersQuantity = 17L,
 

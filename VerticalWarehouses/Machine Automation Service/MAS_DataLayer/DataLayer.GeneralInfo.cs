@@ -67,8 +67,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<decimal> Height => this.GetDecimalConfigurationValueAsync((long)GeneralInfo.Height, (long)ConfigurationCategory.GeneralInfo);
 
-        public Task<DateTime> InstallationDate => this.GetDateTimeConfigurationValueAsync((long)GeneralInfo.InstallationDate, (long)ConfigurationCategory.GeneralInfo);
-
         public Task<bool> LaserBay1 => this.GetBoolConfigurationValueAsync((long)GeneralInfo.LaserBay1, (long)ConfigurationCategory.GeneralInfo);
 
         public Task<bool> LaserBay2 => this.GetBoolConfigurationValueAsync((long)GeneralInfo.LaserBay2, (long)ConfigurationCategory.GeneralInfo);
@@ -85,17 +83,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<int> MaxAcceptedBai3Height => this.GetIntegerConfigurationValueAsync((long)GeneralInfo.MaxAcceptedBai3Height, (long)ConfigurationCategory.GeneralInfo);
 
-        public Task<decimal> MaxWeight => this.GetDecimalConfigurationValueAsync((long)GeneralInfo.MaxWeight, (long)ConfigurationCategory.GeneralInfo);
-
-        public Task<string> Model => this.GetStringConfigurationValueAsync((long)GeneralInfo.Model, (long)ConfigurationCategory.GeneralInfo);
-
         public Task<string> Order => this.GetStringConfigurationValueAsync((long)GeneralInfo.Order, (long)ConfigurationCategory.GeneralInfo);
 
         public Task<DateTime> ProductionDate => this.GetDateTimeConfigurationValueAsync((long)GeneralInfo.ProductionDate, (long)ConfigurationCategory.GeneralInfo);
 
         public Task<string> Province => this.GetStringConfigurationValueAsync((long)GeneralInfo.Province, (long)ConfigurationCategory.GeneralInfo);
-
-        public Task<string> Serial => this.GetStringConfigurationValueAsync((long)GeneralInfo.Serial, (long)ConfigurationCategory.GeneralInfo);
 
         public Task<int> Shutter1Type => this.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
 
@@ -104,6 +96,18 @@ namespace Ferretto.VW.MAS_DataLayer
         public Task<int> Shutter3Type => this.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
 
         public Task<string> Zip => this.GetStringConfigurationValueAsync((long)GeneralInfo.Zip, (long)ConfigurationCategory.GeneralInfo);
+
+        #endregion
+
+        #region Methods
+
+        public async Task<DateTime> GetInstallationDate() => await this.GetDateTimeConfigurationValueAsync((long)GeneralInfo.InstallationDate, (long)ConfigurationCategory.GeneralInfo);
+
+        public async Task<decimal> GetMaxGrossWeight() => await this.GetDecimalConfigurationValueAsync((long)GeneralInfo.MaxGrossWeight, (long)ConfigurationCategory.GeneralInfo);
+
+        public async Task<string> GetModel() => await this.GetStringConfigurationValueAsync((long)GeneralInfo.Model, (long)ConfigurationCategory.GeneralInfo);
+
+        public async Task<string> GetSerial() => await this.GetStringConfigurationValueAsync((long)GeneralInfo.Serial, (long)ConfigurationCategory.GeneralInfo);
 
         #endregion
     }
