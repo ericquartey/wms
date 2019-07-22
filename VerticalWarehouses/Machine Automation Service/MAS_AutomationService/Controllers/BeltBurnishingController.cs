@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]

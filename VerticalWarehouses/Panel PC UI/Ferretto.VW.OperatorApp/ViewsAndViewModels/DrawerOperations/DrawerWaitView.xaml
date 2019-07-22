@@ -29,7 +29,7 @@
                                               Margin="320,350,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding WaitingMissions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ContentText="{Binding PendingMissionsCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}" />
 
     </Grid>

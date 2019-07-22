@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-
-namespace Ferretto.VW.CommonUtils.Messages.Interfaces
+﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IBayConnectedMessageData : IMessageData
     {
@@ -14,7 +6,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int BayId { get; set; }
 
-        BayType BayType { get; set; }
+        // TODO change type from int to BayType
+        int BayType { get; set; }
 
         int PendingMissionsCount { get; set; }
 

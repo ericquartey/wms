@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ISetupStatus dataLayerSetupStatus;
+        private readonly ISetupStatusDataLayer dataLayerSetupStatus;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
 
             this.eventAggregator = eventAggregator;
-            this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatus)) as ISetupStatus;
+            this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 

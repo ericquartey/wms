@@ -17,10 +17,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
-        // TODO: use IConfiguration injection instead
-
         #region Constructors
 
+        // TODO: use IConfiguration injection instead
         public DataLayerContext()
         {
         }

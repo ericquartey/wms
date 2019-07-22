@@ -9,7 +9,7 @@ using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService
     {
@@ -49,19 +49,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 await this.installationHub.Clients.All.SensorsChangedNotify(messageToUI);
 
                 await Task.Delay(1000);
-            }
-        }
-
-        private void BayConnectedMethod(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.Data is BayConnectedMessageData bayData)
-            {
-                var bay = this.baysManager.Bays.Where(x => x.Id == bayData.Id).First();
-
-                var data = new BayConnectedMessageData { Id = bay.Id, BayType = (int)bay.Type, MissionQuantity = bay.PendingMissions == null ? 0 : bay.PendingMissions.Count };
-                var message = new NotificationMessage(data, "Client Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(message);
-                this.operatorHub.Clients.Client(bay.ConnectionId).OnConnectionEstablished(messageToUI);
             }
         }
 
@@ -155,6 +142,22 @@ namespace Ferretto.VW.MAS_AutomationService
             {
                 this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
+        private void OnBayConnected(BayConnectedMessageData messageData)
+        {
+            if (messageData == null)
+            {
+                throw new ArgumentNullException(nameof(messageData));
+            }
+
+            var bay = this.baysManager.Bays.SingleOrDefault(x => x.Id == messageData.BayId);
+            if (bay != null)
+            {
+                this.operatorHub.Clients
+                    .Client(bay.ConnectionId)
+                    .BayStatusChanged(messageData);
             }
         }
 

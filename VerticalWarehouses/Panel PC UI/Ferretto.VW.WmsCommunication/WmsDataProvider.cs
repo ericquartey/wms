@@ -117,7 +117,7 @@ namespace Ferretto.VW.WmsCommunication
             return lists;
         }
 
-        public async Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission)
+        public async Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(MissionInfo mission)
         {
             var returnValue = new ObservableCollection<TrayControlCompartment>();
             var loadingUnitId = (int)mission.LoadingUnitId;

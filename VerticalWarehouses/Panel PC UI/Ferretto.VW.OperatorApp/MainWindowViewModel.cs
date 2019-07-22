@@ -140,10 +140,10 @@ namespace Ferretto.VW.OperatorApp
             ClickedOnMachineOnMarchEventHandler += () => { };
 
             this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Subscribe(
-             message => this.OnCurrentMissionChanged(message.Data.Mission, message.Data.MissionsQuantity));
+                message => this.OnCurrentMissionChanged(message.Data.Mission, message.Data.PendingMissionsCount));
         }
 
-        private void OnCurrentMissionChanged(Mission mission, int missionsQuantity)
+        private void OnCurrentMissionChanged(MissionInfo mission, int missionsQuantity)
         {
             if (this.ContentRegionCurrentViewModel is IDrawerActivityViewModel content)
             {

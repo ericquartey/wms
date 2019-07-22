@@ -7,22 +7,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         #region Constructors
 
         public MissionOperationStartedEventArgs(
-            Mission mission,
-            MissionOperation missionOperation,
+            MissionInfo mission,
+            MissionOperationInfo missionOperation,
             int pendingMissionsCount)
         {
-            this.mission = mission;
-            this.missionOperation = missionOperation;
-            this.pendingMissionsCount = pendingMissionsCount;
+            this.Mission = mission;
+            this.MissionOperation = missionOperation;
+            this.PendingMissionsCount = pendingMissionsCount;
         }
 
         #endregion
 
         #region Properties
 
-        public Mission Mission { get; }
+        public MissionInfo Mission { get; }
 
-        public MissionOperation MissionOperation { get; }
+        public MissionOperationInfo MissionOperation { get; }
 
         public int PendingMissionsCount { get; }
 

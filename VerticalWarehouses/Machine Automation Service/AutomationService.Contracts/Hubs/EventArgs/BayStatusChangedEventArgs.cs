@@ -4,7 +4,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         #region Constructors
 
-        public BayStatusChangedEventArgs(int bayId, BayType bayType, int pendingMissionsCount)
+        // TODO change type from int to BayType
+        public BayStatusChangedEventArgs(int bayId, int bayType, int pendingMissionsCount)
         {
             this.BayId = bayId;
             this.BayType = bayType;
@@ -17,7 +18,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         public int BayId { get; set; }
 
-        public BayType BayType { get; set; }
+        // TODO change type from int to BayType
+        public int BayType { get; set; }
 
         public int PendingMissionsCount { get; set; }
 

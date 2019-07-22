@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Diagnostics;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly ISocketTransport socketTransport;
 
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private readonly ManualResetEventSlim writeEnableEvent;
 
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedInverterDriver> logger)
         {
             this.socketTransport = socketTransport;

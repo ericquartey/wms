@@ -58,7 +58,7 @@
                Margin="60,0,0,20"
                HorizontalAlignment="Left"
                VerticalAlignment="Bottom"
-               Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
+               Source="{Binding ItemImage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
                Stretch="Uniform" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="200"
@@ -93,7 +93,7 @@
                                                    Margin="844,410,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
-                                                   InputText="{Binding EvadedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   InputText="{Binding ActualQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingQtyRefilled}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 

@@ -2,11 +2,11 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
-using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_AutomationService.Hubs
+namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
     public class InstallationHub : Hub<IInstallationHub>
     {

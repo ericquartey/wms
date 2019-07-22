@@ -19,32 +19,21 @@ namespace Ferretto.VW.App.Services
 
         private readonly IInstallationHubClient installationHubClient;
 
-        private readonly IOperatorHubClient operatorHubClient;
-
         #endregion
 
         #region Constructors
 
         public NotificationService(
             IEventAggregator eventAggregator,
-            IOperatorHubClient operatorHubClient,
             IInstallationHubClient installationHubClient)
         {
-            if (operatorHubClient == null)
-            {
-                throw new System.ArgumentNullException(nameof(operatorHubClient));
-            }
-
             if (installationHubClient == null)
             {
                 throw new System.ArgumentNullException(nameof(installationHubClient));
             }
 
             this.eventAggregator = eventAggregator;
-            this.operatorHubClient = operatorHubClient;
             this.installationHubClient = installationHubClient;
-
-            this.operatorHubClient.MessageNotified += this.OnMessageNotified;
             this.installationHubClient.MessageNotified += this.InstallationMessageNotifiedEventHandler;
         }
 

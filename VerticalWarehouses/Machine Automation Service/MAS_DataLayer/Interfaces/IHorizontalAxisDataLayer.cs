@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
-    public interface IHorizontalAxis
+    public interface IHorizontalAxisDataLayer
     {
         #region Properties
 

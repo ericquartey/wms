@@ -9,15 +9,12 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -245,7 +242,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.image?.Dispose();
             this.Image = null;
             this.image = null;
-            var imageCode = await this.wmsDataProvider.GetItemImageCodeAsync(bayManager.CurrentMissionOperation.ItemId);
+            var imageCode = await this.wmsDataProvider.GetItemImageCodeAsync(bayManager.CurrentMissionOperation.ItemImage);
             var imageStram = await this.wmsImagesProvider.GetImageAsync(imageCode);
             this.Image = Image.FromStream(imageStram);
         }

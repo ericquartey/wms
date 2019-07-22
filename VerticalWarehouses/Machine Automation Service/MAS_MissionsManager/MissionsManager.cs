@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             switch (message.Type)
             {
                 case MessageType.MissionCompleted:
-                    await this.OnMissionCompleted(message.Data as IMissionCompletedMessageData);
+                    await this.OnMissionOperationCompleted(message.Data as IMissionOperationCompletedMessageData);
                     break;
 
                 case MessageType.BayConnected:
@@ -146,8 +146,6 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 var hasActiveBaysAndPendingMissions =
                     this.baysManager.Bays.Any(bay =>
-                        bay.IsConnected
-                        &&
                         bay.Status == BayStatus.Idle
                         &&
                         bay.PendingMissions.Any());
@@ -178,30 +176,42 @@ namespace Ferretto.VW.MAS.MissionsManager
             this.Logger.LogDebug($"MM NotificationCycle: DataLayerReady received.");
 
             await this.SetupBays();
-            await this.GetAllPendingMissions();
+            await this.RefreshPendingMissionsQueue();
 
             this.missionManagementTask.Start();
         }
 
-        private async Task OnMissionCompleted(IMissionCompletedMessageData missionCompletedData)
+        private async Task OnMissionOperationCompleted(IMissionOperationCompletedMessageData e)
         {
-            if (missionCompletedData == null)
+            if (e == null)
             {
-                throw new ArgumentNullException(nameof(missionCompletedData));
+                throw new ArgumentNullException(nameof(e));
             }
 
             this.Logger.LogDebug($"MM NotificationCycle: MissionCompleted received");
 
-            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Idle;
-            this.Logger.LogDebug($"MM NotificationCycle: Bay {missionCompletedData.BayId} status set to Available");
-            await this.GetAllPendingMissions();
+            var bay = this.baysManager.Bays
+                .Where(b => b.CurrentMissionOperation != null)
+                .SingleOrDefault(b => b.CurrentMissionOperation.Id == e.MissionOperationId);
+
+            if (bay != null)
+            {
+                bay.Status = BayStatus.Idle;
+                bay.CurrentMissionOperation.Status = MissionOperationStatus.Completed;
+                bay.CurrentMissionOperation = null;
+            }
+
+            this.Logger.LogDebug($"MM NotificationCycle: Bay {bay.Id} status set to Available");
+
+            await this.RefreshPendingMissionsQueue();
+
             this.bayNowServiceableResetEvent.Set();
         }
 
         private async Task OnNewMissionAvailable()
         {
             this.Logger.LogDebug($"MM NotificationCycle: MissionAdded received");
-            await this.GetAllPendingMissions();
+            await this.RefreshPendingMissionsQueue();
             this.newMissionArrivedResetEvent.Set();
             this.Logger.LogDebug($"MM NotificationCycle: MissionAdded completed");
         }

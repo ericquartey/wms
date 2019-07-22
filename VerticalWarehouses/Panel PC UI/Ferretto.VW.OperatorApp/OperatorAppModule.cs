@@ -6,8 +6,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;

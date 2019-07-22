@@ -9,7 +9,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int BayId { get; set; }
 
-        public BayType BayType { get; set; }
+        // TODO change type from int to BayType
+        public int BayType { get; set; }
 
         public int PendingMissionsCount { get; set; }
 

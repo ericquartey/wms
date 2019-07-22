@@ -2,10 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService : BackgroundService
     {
@@ -116,7 +117,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.disposed = true;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
@@ -127,8 +128,10 @@ namespace Ferretto.VW.MAS_AutomationService
             }
             catch (Exception ex)
             {
-                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads", ex);
+                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
             }
+
+            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
@@ -244,13 +247,13 @@ namespace Ferretto.VW.MAS_AutomationService
                         if (receivedMessage.Data is IExecuteMissionMessageData data)
                         {
                             await this.ExecuteMissionMethod(receivedMessage);
-                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.MissionsQuantity}");
+                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.PendingMissionsCount}");
                         }
                         break;
 
                     case MessageType.BayConnected:
                         this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
-                        this.BayConnectedMethod(receivedMessage);
+                        this.OnBayConnected(receivedMessage.Data as BayConnectedMessageData);
                         break;
 
                     // Adds other Notification Message and send it via SignalR controller

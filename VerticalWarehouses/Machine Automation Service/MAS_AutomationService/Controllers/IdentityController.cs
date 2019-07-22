@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IGeneralInfoConfigurationDataLayer generalInfo;
 
-        private readonly ILoadingUnitStatistics loadingUnitStatistics;
+        private readonly ILoadingUnitStatisticsDataLayer loadingUnitStatistics;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         public IdentityController(
             IGeneralInfoConfigurationDataLayer generalInfo,
-            ILoadingUnitStatistics loadingUnitStatistics,
+            ILoadingUnitStatisticsDataLayer loadingUnitStatistics,
             IServicingProvider servicingProvider)
         {
             if (generalInfo == null)

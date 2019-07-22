@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -20,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private readonly INavigationService navigationService;
 
-        private string waitingMissions;
+        private int pendingMissionsCount;
 
         #endregion
 
@@ -56,55 +55,53 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.navigationService = navigationService;
             this.bayManager = bayManager;
             this.mainWindowViewModel = mainWindowViewModel;
-            this.NavigationViewModel = null;
         }
 
         #endregion
 
         #region Properties
 
-        public string WaitingMissions
+        public int PendingMissionsCount
         {
-            get => this.waitingMissions;
-            set => this.SetProperty(ref this.waitingMissions, value);
+            get => this.pendingMissionsCount;
+            set => this.SetProperty(ref this.pendingMissionsCount, value);
         }
 
         #endregion
 
         #region Methods
 
-       
         public override Task OnEnterViewAsync()
         {
-            this.WaitingMissions = this.bayManager.QueuedMissionsQuantity.ToString();
+            this.PendingMissionsCount = this.bayManager.PendingMissionsCount;
 
             return Task.CompletedTask;
         }
 
         public void UpdateView()
         {
-            var mission = this.bayManager.CurrentMission;
+            var missionOperation = this.bayManager.CurrentMissionOperation;
             var mainWindowContentVM = this.mainWindowViewModel.ContentRegionCurrentViewModel;
             if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
                 mainWindowContentVM is DrawerActivityPickingViewModel ||
                 mainWindowContentVM is DrawerActivityRefillingViewModel ||
                 mainWindowContentVM is DrawerWaitViewModel)
             {
-                if (mission != null)
+                if (missionOperation != null)
                 {
-                    switch (mission.Type)
+                    switch (missionOperation.Type)
                     {
-                        case MissionType.Inventory:
+                        case MissionOperationType.Inventory:
                             this.navigationService
                                 .NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                             break;
 
-                        case MissionType.Pick:
+                        case MissionOperationType.Pick:
                             this.navigationService
                                 .NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
-                        case MissionType.Put:
+                        case MissionOperationType.Put:
                             this.navigationService
                                 .NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                             break;

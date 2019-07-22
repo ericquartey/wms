@@ -8,7 +8,7 @@ using Ferretto.VW.MAS_Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {

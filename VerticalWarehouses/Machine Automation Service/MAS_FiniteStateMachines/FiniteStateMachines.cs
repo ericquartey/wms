@@ -7,7 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly Task notificationReceiveTask;
 
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private IStateMachine currentStateMachine;
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration)
+            IVertimagConfigurationDataLayer vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
 

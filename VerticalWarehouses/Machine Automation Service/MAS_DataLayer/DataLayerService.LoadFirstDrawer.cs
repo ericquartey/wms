@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : ILoadFirstDrawer
+    public partial class DataLayerService : ILoadFirstDrawerDataLayer
     {
         #region Properties
 

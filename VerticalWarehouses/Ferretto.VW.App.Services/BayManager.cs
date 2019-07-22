@@ -35,9 +35,9 @@ namespace Ferretto.VW.App.Services
 
         public int BayId { get; set; }
 
-        public Mission CurrentMission { get; set; }
+        public MissionInfo CurrentMission { get; set; }
 
-        public MissionOperation CurrentMissionOperation { get; set; }
+        public MissionOperationInfo CurrentMissionOperation { get; set; }
 
         public int PendingMissionsCount { get; set; }
 

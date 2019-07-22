@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
@@ -8,7 +9,6 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.VW.WmsCommunication.Interfaces;
@@ -16,7 +16,6 @@ using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -40,27 +39,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private readonly IWmsImagesProvider wmsImagesProvider;
 
-        private string compartmentPosition;
+        private int actualQuantity;
 
         private ICommand confirmCommand;
 
         private ICommand drawerActivityRefillingDetailsButtonCommand;
 
-        private string evadedQuantity;
-
         private Func<IDrawableCompartment, IDrawableCompartment, string> filterColorFunc;
 
-        private Image image;
+        private Image itemImage;
 
-        private string itemCode;
-
-        private string itemDescription;
-
-        private string listCode;
-
-        private string listDescription;
-
-        private string requestedQuantity;
+        private MissionOperationInfo missionOperation;
 
         private TrayControlCompartment selectedCompartment;
 
@@ -137,17 +126,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Properties
 
-        public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
+        public int ActualQuantity { get => this.actualQuantity; set => this.SetProperty(ref this.actualQuantity, value); }
+
+        public string CompartmentPosition => null;
 
         public ICommand ConfirmCommand =>
             this.confirmCommand
             ??
-            (this.confirmCommand = new DelegateCommand(async () => await this.ConfirmMethod()));
+            (this.confirmCommand = new DelegateCommand(async () => await this.ExecuteConfirmCommand()));
 
         public ICommand DrawerActivityRefillingDetailsButtonCommand => this.drawerActivityRefillingDetailsButtonCommand ?? (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
             async () => await this.DrawerDetailsButtonMethod()));
-
-        public string EvadedQuantity { get => this.evadedQuantity; set => this.SetProperty(ref this.evadedQuantity, value); }
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
@@ -155,17 +144,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             set => this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value);
         }
 
-        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
+        public Image ItemImage { get => this.itemImage; set => this.SetProperty(ref this.itemImage, value); }
 
-        public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
-
-        public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
-
-        public string ListCode { get => this.listCode; set => this.SetProperty(ref this.listCode, value); }
-
-        public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
-
-        public string RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
+        public MissionOperationInfo MissionOperation { get => this.missionOperation; set => this.SetProperty(ref this.missionOperation, value); }
 
         public TrayControlCompartment SelectedCompartment { get => this.selectedCompartment; set => this.SetProperty(ref this.selectedCompartment, value); }
 
@@ -175,11 +156,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Methods
 
-        public async Task ConfirmMethod()
+        public async Task ExecuteConfirmCommand()
         {
-            if (int.TryParse(this.EvadedQuantity, out var quantity) && quantity >= 0)
+            // TODO add validation
+            if (this.ActualQuantity >= 0)
             {
-                await this.operatorService.RefillAsync(this.bayManager.BayId, this.bayManager.CurrentMission.Id, quantity);
+                await this.operatorService.CompleteAsync(this.bayManager.BayId, this.bayManager.CurrentMission.Id, this.ActualQuantity, this.MissionOperation.Id);
                 this.bayManager.CurrentMission = null;
 
                 this.UpdateView();
@@ -196,26 +178,26 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public void UpdateView()
         {
-            var mission = this.bayManager.CurrentMission;
+            var missionOperation = this.bayManager.CurrentMissionOperation;
             var mainWindowContentVM = this.mainWindowViewModel.ContentRegionCurrentViewModel;
             if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
                 mainWindowContentVM is DrawerActivityPickingViewModel ||
                 mainWindowContentVM is DrawerActivityRefillingViewModel ||
                 mainWindowContentVM is DrawerWaitViewModel)
             {
-                if (mission != null)
+                if (missionOperation != null)
                 {
-                    switch (mission.Type)
+                    switch (missionOperation.Type)
                     {
-                        case MissionType.Inventory:
+                        case MissionOperationType.Inventory:
                             this.navigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                             break;
 
-                        case MissionType.Pick:
+                        case MissionOperationType.Pick:
                             this.navigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
-                        case MissionType.Put:
+                        case MissionOperationType.Put:
                             this.navigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                             break;
                     }
@@ -229,9 +211,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private async Task DrawerDetailsButtonMethod()
         {
-            var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(this.bayManager.CurrentMission);
-
-            this.navigationService.NavigateToView<DrawerActivityRefillingDetailViewModel, IDrawerActivityRefillingDetailViewModel>(itemDetailObject);
+            this.navigationService.NavigateToView<DrawerActivityRefillingDetailViewModel, IDrawerActivityRefillingDetailViewModel>();
         }
 
         private async Task GetTrayControlDataAsync(IBayManager bayManager)
@@ -239,32 +219,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             try
             {
                 this.ViewCompartments = await this.wmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-                this.SelectedCompartment = this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
+                this.SelectedCompartment = this.ViewCompartments.SingleOrDefault(c => c.Id == bayManager.CurrentMissionOperation.CompartmentId);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException(ex.Message);
+                this.statusMessageService.Notify(ex);
             }
         }
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            this.Image?.Dispose();
-            this.image?.Dispose();
-            this.Image = null;
-            this.image = null;
-            this.ListCode = bayManager.CurrentMission.ItemListId.ToString(); // TODO Check if it's the desired value (which is list's Id)
-            this.ItemCode = bayManager.CurrentMission.ItemId.ToString();
-            this.CompartmentPosition = await this.wmsDataProvider.GetCompartmentPosition(bayManager.CurrentMission);
-            this.ListDescription = bayManager.CurrentMission.ItemListDescription;
-            this.ItemDescription = bayManager.CurrentMission.ItemDescription;
-            this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
+            this.ItemImage?.Dispose();
+            this.itemImage?.Dispose();
+            this.ItemImage = null;
+            this.itemImage = null;
 
-            if (this.bayManager.CurrentMission.ItemId.HasValue)
+            if (this.bayManager.CurrentMissionOperation != null)
             {
-                var imageCode = await this.wmsDataProvider.GetItemImageCodeAsync(this.bayManager.CurrentMission.ItemId.Value);
-                var imageStram = await this.wmsImagesProvider.GetImageAsync(imageCode);
-                this.Image = Image.FromStream(imageStram);
+                var imageStram = await this.wmsImagesProvider.GetImageAsync(this.bayManager.CurrentMissionOperation.ItemImage);
+                this.ItemImage = Image.FromStream(imageStram);
             }
         }
 

@@ -8,9 +8,9 @@ namespace Ferretto.VW.App.Services
 
         int BayId { get; set; }
 
-        Mission CurrentMission { get; set; }
+        MissionInfo CurrentMission { get; set; }
 
-        MissionOperation CurrentMissionOperation { get; }
+        MissionOperationInfo CurrentMissionOperation { get; }
 
         int PendingMissionsCount { get; set; }
 

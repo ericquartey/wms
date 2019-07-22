@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly ISHDTransport shdTransport;
 
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private bool disposed;
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS_IODriver
         public HostedSHDIoDriver(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger,
             IConfiguration configuration)
         {

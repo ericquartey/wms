@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
-    public interface ISetupStatusVolatile
+    public interface ISetupStatusVolatileDataLayer
     {
         #region Properties
 

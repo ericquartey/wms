@@ -6,7 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
@@ -17,7 +17,7 @@ using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : BackgroundService, IDataLayer
     {

@@ -8,9 +8,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         string BayConnectionId { get; set; }
 
-        Mission Mission { get; set; }
+        MissionInfo Mission { get; set; }
 
-        MissionOperation MissionOperation { get; set; }
+        MissionOperationInfo MissionOperation { get; set; }
 
         int PendingMissionsCount { get; set; }
 

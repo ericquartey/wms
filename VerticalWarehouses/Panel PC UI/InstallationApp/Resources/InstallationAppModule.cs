@@ -131,7 +131,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterInstance<INotificationService>(
                 new NotificationService(
                     this.container.Resolve<IEventAggregator>(),
-                    this.container.Resolve<IOperatorHubClient>(),
                     this.container.Resolve<IInstallationHubClient>()));
 
             this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);

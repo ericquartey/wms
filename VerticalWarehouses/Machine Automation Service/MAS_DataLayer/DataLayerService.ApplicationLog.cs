@@ -2,14 +2,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {

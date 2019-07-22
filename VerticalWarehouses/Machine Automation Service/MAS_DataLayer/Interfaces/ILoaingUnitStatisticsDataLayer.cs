@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
-    public interface ILoadingUnitStatistics
+    public interface ILoadingUnitStatisticsDataLayer
     {
         #region Methods
 

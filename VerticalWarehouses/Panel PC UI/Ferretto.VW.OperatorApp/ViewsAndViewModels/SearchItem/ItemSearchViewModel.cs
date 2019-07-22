@@ -1,5 +1,4 @@
-﻿//Header test C#
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;

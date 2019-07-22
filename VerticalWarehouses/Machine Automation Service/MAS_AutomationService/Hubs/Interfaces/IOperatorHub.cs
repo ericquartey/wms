@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS_AutomationService.Interfaces
+namespace Ferretto.VW.MAS.AutomationService.Interfaces
 {
     public interface IOperatorHub
     {
         #region Methods
 
-        Task OnConnectionEstablished(IBaseNotificationMessageUI message);
+        Task BayStatusChanged(BayConnectedMessageData message);
 
         Task ProvideMissionsToBay(IBaseNotificationMessageUI message);
 

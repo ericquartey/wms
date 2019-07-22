@@ -12,13 +12,11 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 
         public MissionInfo CurrentMission { get; set; }
 
-        public MissionOperation CurrentMissionOperation { get; set; }
+        public MissionOperationInfo CurrentMissionOperation { get; set; }
 
         public int Id { get; set; }
 
         public string IpAddress { get; set; }
-
-        public bool IsConnected { get; set; }
 
         public IEnumerable<MissionInfo> PendingMissions { get; set; } = new List<MissionInfo>();
 

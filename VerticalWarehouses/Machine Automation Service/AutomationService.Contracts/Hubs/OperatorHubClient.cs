@@ -1,7 +1,5 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.MissionsManager;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
@@ -29,31 +27,31 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<NotificationMessageUI<ExecuteMissionMessageData>>(
+            connection.On<ExecuteMissionMessageData>(
                 "MissionOperationStarted", this.OnMissionOperationStarted);
 
-            connection.On<NotificationMessageUI<BayConnectedMessageData>>(
+            connection.On<BayConnectedMessageData>(
                 "BayStatusChanged", this.OnBayStatusChanged);
         }
 
-        private void OnBayStatusChanged(NotificationMessageUI<BayConnectedMessageData> message)
+        private void OnBayStatusChanged(BayConnectedMessageData message)
         {
             this.BayStatusChanged?.Invoke(
                 this,
                 new BayStatusChangedEventArgs(
-                    message.Data.BayId,
-                    message.Data.BayType,
-                    message.Data.PendingMissionsCount));
+                    message.BayId,
+                    message.BayType,
+                    message.PendingMissionsCount));
         }
 
-        private void OnMissionOperationStarted(NotificationMessageUI<ExecuteMissionMessageData> message)
+        private void OnMissionOperationStarted(ExecuteMissionMessageData message)
         {
             this.MissionOperationStarted?.Invoke(
                 this,
                 new MissionOperationStartedEventArgs(
-                    message.Data.Mission,
-                    message.Data.MissionOperation,
-                    message.Data.PendingMissionsCount));
+                    message.Mission,
+                    message.MissionOperation,
+                    message.PendingMissionsCount));
         }
 
         #endregion

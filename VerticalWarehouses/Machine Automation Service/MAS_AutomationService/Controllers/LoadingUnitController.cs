@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitStatistics loadingUnitStatistics;
+        private readonly ILoadingUnitStatisticsDataLayer loadingUnitStatistics;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            ILoadingUnitStatistics loadingUnitStatistics,
+            ILoadingUnitStatisticsDataLayer loadingUnitStatistics,
             IMachinesDataService machinesDataService)
         {
             if (loadingUnitStatistics == null)

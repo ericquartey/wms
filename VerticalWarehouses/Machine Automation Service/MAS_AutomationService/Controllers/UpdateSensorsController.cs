@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]

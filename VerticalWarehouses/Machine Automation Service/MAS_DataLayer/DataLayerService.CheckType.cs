@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {

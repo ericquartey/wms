@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public class Program
     {

@@ -34,14 +34,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="DataLayer_*.cs">
-      <DependentUpon>DataLayer.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="DataLayer.*.cs">
-      <DependentUpon>DataLayer.cs</DependentUpon>
+    <Compile Update="DataLayerService.*.cs">
+      <DependentUpon>DataLayerService.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -55,93 +49,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="DataLayerService.WeightControl.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.VertimagConfiguration.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.VerticalManualMovements.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.VerticalAxis.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.ShutterManualMovements.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.ShutterHeightControl.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.SetupStatus.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.SetupNetwork.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.RuntimeValueManagment.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.ResolutionCalibration.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.PanelControl.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.OffsetCalibration.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.MachineStatistics.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.LoadFirstDrawer.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.LoadConfiguration.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.HorizontalMovementForwardProfile.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.HorizontalMovementBackwardProfile.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.HorizontalManualMovements.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.HorizontalAxis.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.GeneralInfo.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.ErrorStatistics.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.ConfigurationValueManagment.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.CheckType.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.CellsManagment.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.CellControl.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.BeltBurnishing.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.BayPositionControl.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayerService.ApplicationLog.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DataLayer_LoadingUnit.cs">
-      <DependentUpon>DataLayerService.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
 </Project>

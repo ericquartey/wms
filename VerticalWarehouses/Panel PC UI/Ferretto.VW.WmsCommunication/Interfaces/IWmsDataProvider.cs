@@ -11,10 +11,6 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 {
     public interface IWmsDataProvider
     {
-        /*
-        Task<DrawerActivityItemDetail> GetDrawerActivityItemDetailAsync(Mission mission);
-        */
-
         #region Methods
 
         Task<string> GetItemImageCodeAsync(int itemId);
@@ -25,11 +21,7 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 
         Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode);
 
-        Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission);
-
-        /*
-        TrayControlCompartment GetTrayControlSelectedCompartment(IEnumerable<TrayControlCompartment> viewCompartments, Mission mission);
-        */
+        Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(MissionInfo mission);
 
         Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity);
 

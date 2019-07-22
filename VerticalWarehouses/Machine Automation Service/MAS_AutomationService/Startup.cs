@@ -1,6 +1,5 @@
-﻿using Ferretto.VW.MAS.AutomationService;
+﻿using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
@@ -13,12 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ferretto.VW.MAS.DataLayer.Extensions;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {

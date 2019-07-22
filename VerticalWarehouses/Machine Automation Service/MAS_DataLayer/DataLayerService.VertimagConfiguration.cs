@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IVertimagConfiguration
+    public partial class DataLayerService : IVertimagConfigurationDataLayer
     {
         #region Methods
 

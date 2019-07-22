@@ -18,10 +18,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private void ChooseAndExecuteMission()
         {
-            var connectedIdleBays = this.baysManager.Bays.Where(b =>
-                b.IsConnected
-                &&
-                b.Status == BayStatus.Idle);
+            var connectedIdleBays = this.baysManager.Bays.Where(b => b.Status == BayStatus.Idle);
 
             foreach (var bay in connectedIdleBays)
             {
@@ -65,31 +62,6 @@ namespace Ferretto.VW.MAS.MissionsManager
             }
         }
 
-        private async Task GetAllPendingMissions()
-        {
-            try
-            {
-                // TODO get machine Id from DataLayer
-                var machineId = 1;
-                var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
-
-                foreach (var bay in this.baysManager.Bays)
-                {
-                    bay.PendingMissions = missions
-                        .Where(m =>
-                            m.BayId == bay.Id
-                            &&
-                            m.Status != MissionStatus.Completed)
-                        .ToArray();
-                }
-            }
-            catch (Exception ex)
-            {
-                // do nothing
-                this.Logger.LogWarning(ex, "Unable to load missions from WMS service.");
-            }
-        }
-
         private void NotifyMissionExecution(MAS_Utils.Utilities.Bay bay)
         {
             var data = new ExecuteMissionMessageData
@@ -111,28 +83,66 @@ namespace Ferretto.VW.MAS.MissionsManager
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
+        private async Task RefreshPendingMissionsQueue()
+        {
+            try
+            {
+                // TODO get machine Id from DataLayer
+                var machineId = 1;
+                var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+
+                foreach (var bay in this.baysManager.Bays)
+                {
+                    bay.PendingMissions = missions
+                        .Where(m =>
+                            m.BayId == bay.Id
+                            &&
+                            m.Status != MissionStatus.Completed
+                            &&
+                            bay.CurrentMission == null || bay.CurrentMission.Id != m.Id)
+                        .ToArray();
+
+                    // refresh current mission
+                    bay.CurrentMission = bay.CurrentMission == null
+                        ? null
+                        : missions.SingleOrDefault(b => b.Id == bay.CurrentMission.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                // do nothing
+                this.Logger.LogWarning(ex, "Unable to load missions from WMS service.");
+            }
+        }
+
         private async Task SetupBays()
         {
-            this.baysManager.Bays = new List<MAS_Utils.Utilities.Bay>();
-
             var ip1 = await this.networkConfiguration.PPC1MasterIPAddress;
             var ip2 = await this.networkConfiguration.PPC2SlaveIPAddress;
             var ip3 = await this.networkConfiguration.PPC3SlaveIPAddress;
             var ipAddresses = new string[] { ip1.ToString(), ip2.ToString(), ip3.ToString() };
-            var bayTypes = new int[] { await this.generalInfoConfiguration.Bay1Type, await this.generalInfoConfiguration.Bay2Type, await this.generalInfoConfiguration.Bay3Type };
-            var baysQuantity = await this.generalInfoConfiguration.BaysQuantity;
-
-            for (var i = 0; i < baysQuantity; i++)
+            var bayTypes = new int[]
             {
-                this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
+                await this.generalInfoConfiguration.Bay1Type,
+                await this.generalInfoConfiguration.Bay2Type,
+                await this.generalInfoConfiguration.Bay3Type
+            };
+
+            var baysCount = await this.generalInfoConfiguration.BaysQuantity;
+
+            var bays = new List<MAS_Utils.Utilities.Bay>();
+            for (var i = 0; i < baysCount; i++)
+            {
+                bays.Add(new MAS_Utils.Utilities.Bay
                 {
                     Id = i == 0 ? 2 : 3,
-                    IsConnected = false,
                     Status = BayStatus.Unavailable,
                     IpAddress = ipAddresses[i],
                     Type = (BayType)bayTypes[i]
                 });
             }
+
+            this.baysManager.SetupBays(bays);
         }
 
         #endregion
