@@ -1,5 +1,4 @@
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,8 +28,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("Statistics")]
         public ActionResult<ErrorStatisticsSummary> GetStatistics()
         {
-            var statics = this.errorStatistics.GetErrorStatistics();
-            return this.Ok(statics);
+            var statistics = this.errorStatistics.GetErrorStatistics();
+            return this.Ok(statistics);
         }
 
         #endregion

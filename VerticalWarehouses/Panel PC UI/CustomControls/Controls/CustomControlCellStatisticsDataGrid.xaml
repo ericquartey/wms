@@ -27,6 +27,7 @@
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
+                  IsHitTestVisible="False"
                   ItemsSource="{Binding Cells}"
                   RowHeight="30"
                   SelectedItem="{Binding SelectedCell}"

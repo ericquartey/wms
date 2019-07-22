@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS_DataLayer
             inMemoryFreeBlockFirstByPriority.LoadingUnitId = loadingUnitId;
 
             // INFO Change the LoadingUnit height with the new value, in the LoadingUnit table
-            var inMemoryLoadingUnit = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.LoadingUnitId == loadingUnitId);
+            var inMemoryLoadingUnit = this.primaryDataContext.LoadingUnits.FirstOrDefault(s => s.Id == loadingUnitId);
             inMemoryLoadingUnit.Height = loadingUnitHeight;
 
             await this.primaryDataContext.SaveChangesAsync();
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             var loadingUnit = this.primaryDataContext.LoadingUnits
                 .Include(l => l.Cell)
-                .SingleOrDefault(l => l.LoadingUnitId == loadingUnitId);
+                .SingleOrDefault(l => l.Id == loadingUnitId);
 
             if (loadingUnit == null)
             {
