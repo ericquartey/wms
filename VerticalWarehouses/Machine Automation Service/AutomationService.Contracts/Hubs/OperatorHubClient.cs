@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.MissionsManager;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
@@ -18,7 +19,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         #region Events
 
-        public event EventHandler<MessageNotifiedEventArgs> MessageNotified;
+        public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
+
+        public event EventHandler<MissionOperationStartedEventArgs> MissionOperationStarted;
 
         #endregion
 
@@ -27,20 +30,30 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On<NotificationMessageUI<ExecuteMissionMessageData>>(
-               "ProvideMissionsToBay", this.OnProvidedMissionsToBay);
+                "MissionOperationStarted", this.OnMissionOperationStarted);
 
             connection.On<NotificationMessageUI<BayConnectedMessageData>>(
-                "OnConnectionEstablished", this.OnConnectionEstablished);
+                "BayStatusChanged", this.OnBayStatusChanged);
         }
 
-        private void OnConnectionEstablished(NotificationMessageUI<BayConnectedMessageData> message)
+        private void OnBayStatusChanged(NotificationMessageUI<BayConnectedMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.BayStatusChanged?.Invoke(
+                this,
+                new BayStatusChangedEventArgs(
+                    message.Data.BayId,
+                    message.Data.BayType,
+                    message.Data.PendingMissionsCount));
         }
 
-        private void OnProvidedMissionsToBay(NotificationMessageUI<ExecuteMissionMessageData> message)
+        private void OnMissionOperationStarted(NotificationMessageUI<ExecuteMissionMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MissionOperationStarted?.Invoke(
+                this,
+                new MissionOperationStartedEventArgs(
+                    message.Data.Mission,
+                    message.Data.MissionOperation,
+                    message.Data.PendingMissionsCount));
         }
 
         #endregion

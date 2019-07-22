@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.MAS.AutomationService;
-using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
@@ -14,7 +14,6 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -137,7 +136,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<ICellControlDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IGeneralInfoDataLayer, DataLayer>(provider =>
+            services.AddSingleton<IGeneralInfoConfigurationDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IHorizontalAxis, DataLayer>(provider =>
@@ -164,7 +163,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IResolutionCalibration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<ISetupNetwork, DataLayer>(provider =>
+            services.AddSingleton<ISetupNetworkDataLayer, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<ISetupStatus, DataLayer>(provider =>

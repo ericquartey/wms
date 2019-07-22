@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
-    public interface IGeneralInfoDataLayer
+    public interface IGeneralInfoConfigurationDataLayer
     {
         #region Properties
 
@@ -65,6 +65,8 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<decimal> Height { get; }
 
+        Task<DateTime> InstallationDate { get; }
+
         Task<bool> LaserBay1 { get; }
 
         Task<bool> LaserBay2 { get; }
@@ -81,11 +83,17 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<int> MaxAcceptedBai3Height { get; }
 
+        Task<decimal> MaxWeight { get; }
+
+        Task<string> Model { get; }
+
         Task<string> Order { get; }
 
         Task<DateTime> ProductionDate { get; }
 
         Task<string> Province { get; }
+
+        Task<string> Serial { get; }
 
         Task<int> Shutter1Type { get; }
 
@@ -94,18 +102,6 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         Task<int> Shutter3Type { get; }
 
         Task<string> Zip { get; }
-
-        #endregion
-
-        #region Methods
-
-        Task<DateTime> GetInstallationDate();
-
-        Task<decimal> GetMaxGrossWeight();
-
-        Task<string> GetModel();
-
-        Task<string> GetSerial();
 
         #endregion
     }

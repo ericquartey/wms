@@ -12,13 +12,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IGeneralInfoDataLayer generalInfo;
+        private readonly IGeneralInfoConfigurationDataLayer generalInfo;
 
         #endregion
 
         #region Constructors
 
-        public IdentityController(IGeneralInfoDataLayer generalInfo)
+        public IdentityController(IGeneralInfoConfigurationDataLayer generalInfo)
         {
             this.generalInfo = generalInfo;
         }

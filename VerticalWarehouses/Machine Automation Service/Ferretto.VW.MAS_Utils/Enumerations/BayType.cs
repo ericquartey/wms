@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.MAS_Utils.Enumerations
+namespace Ferretto.VW.MAS_Utils.Enumerations
 {
-    public enum BayTypes
+    public enum BayType
     {
         Single = 0,
 

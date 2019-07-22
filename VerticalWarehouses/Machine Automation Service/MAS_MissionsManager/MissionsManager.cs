@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -17,45 +18,31 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager
 {
-    public partial class MissionsManager : BackgroundService
+    public partial class MissionsManager : AutomationBackgroundService
     {
         #region Fields
 
+        private readonly AutoResetEvent bayNowServiceableResetEvent = new AutoResetEvent(false);
+
         private readonly IBaysManager baysManager;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoConfiguration;
 
-        private readonly Task commandReceiveTask;
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly ILogger logger;
+        private readonly List<Mission> machineMissions = new List<Mission>();
 
         private readonly IMachinesDataService machinesDataService;
 
         private readonly Task missionManagementTask;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
-
-        private readonly Task notificationReceiveTask;
-
-        private readonly AutoResetEvent bayNowServiceableResetEvent;
-
-        private readonly IGeneralInfoDataLayer generalInfo;
-
-        private int logCounterMissionManagement;
-
-        private readonly List<Mission> machineMissions;
-
         private readonly IMissionsDataService missionsDataService;
 
-        private readonly AutoResetEvent newMissionArrivedResetEvent;
+        private readonly ISetupNetworkDataLayer networkConfiguration;
 
-        private readonly ISetupNetwork setupNetwork;
+        private readonly AutoResetEvent newMissionArrivedResetEvent = new AutoResetEvent(false);
 
-        private CancellationToken stoppingToken;
+        private int logCounterMissionManagement;
 
         #endregion
 
@@ -64,196 +51,159 @@ namespace Ferretto.VW.MAS_MissionsManager
         public MissionsManager(
             IEventAggregator eventAggregator,
             ILogger<MissionsManager> logger,
-            IGeneralInfoDataLayer generalInfo,
+            IGeneralInfoConfigurationDataLayer generalInfoConfiguration,
             IBaysManager baysManager,
-            ISetupNetwork setupNetwork,
+            ISetupNetworkDataLayer networkConfiguration,
             IMachinesDataService machinesDataService,
             IMissionsDataService missionsDataService)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
+            if (generalInfoConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(generalInfoConfiguration));
+            }
 
-            this.eventAggregator = eventAggregator;
+            if (baysManager == null)
+            {
+                throw new ArgumentNullException(nameof(baysManager));
+            }
+
+            if (networkConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(networkConfiguration));
+            }
+
+            if (machinesDataService == null)
+            {
+                throw new ArgumentNullException(nameof(machinesDataService));
+            }
+
+            if (missionsDataService == null)
+            {
+                throw new ArgumentNullException(nameof(missionsDataService));
+            }
+
+            this.Logger.LogTrace("1:Method Start");
+
             this.baysManager = baysManager;
-            this.logger = logger;
-            this.generalInfo = generalInfo;
-            this.setupNetwork = setupNetwork;
+            this.generalInfoConfiguration = generalInfoConfiguration;
+            this.networkConfiguration = networkConfiguration;
             this.machinesDataService = machinesDataService;
             this.missionsDataService = missionsDataService;
 
-            this.machineMissions = new List<Mission>();
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
-            this.missionManagementTask = new Task(() => this.MissionManagementTaskFunction());
-
-            this.bayNowServiceableResetEvent = new AutoResetEvent(false);
-            this.newMissionArrivedResetEvent = new AutoResetEvent(false);
-
-            this.InitializeMethodSubscriptions();
+            this.missionManagementTask = new Task(() => this.HandleIncomingMissions());
         }
 
         #endregion
 
         #region Methods
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override bool FilterCommand(CommandMessage command)
         {
-            this.stoppingToken = stoppingToken;
+            return command.Destination == MessageActor.MissionsManager ||
+                command.Destination == MessageActor.Any;
+        }
 
-            try
-            {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-            }
-            catch (Exception ex)
-            {
-                throw new MissionsManagerException($"Exception: {ex.Message} while starting service threads", ex);
-            }
+        protected override bool FilterNotification(NotificationMessage notification)
+        {
+            return notification.Destination == MessageActor.MissionsManager ||
+                  notification.Destination == MessageActor.Any;
+        }
 
+        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        {
+            // do nothing
             return Task.CompletedTask;
         }
 
-        private void CommandReceiveTaskFunction()
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage message)
         {
-            do
+            switch (message.Type)
             {
-                CommandMessage receivedMessage;
-                try
-                {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogTrace("2:Method End - Operation Canceled");
-                    return;
-                }
+                case MessageType.MissionCompleted:
+                    await this.OnMissionCompleted(message.Data as IMissionCompletedMessageData);
+                    break;
 
-                // TODO add here a switch block on receivedMessage.Type
-                
+                case MessageType.BayConnected:
+                    this.OnBayConnected();
+                    break;
+
+                case MessageType.MissionAdded:
+                    await this.OnNewMissionAvailable();
+                    break;
+
+                case MessageType.DataLayerReady:
+                    await this.OnDataLayerReady();
+                    break;
             }
-            while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void InitializeMethodSubscriptions()
+        private void HandleIncomingMissions()
         {
-            this.logger.LogTrace("1:Commands Subscription");
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(
-                commandMessage =>
-                {
-                    this.commandQueue.Enqueue(commandMessage);
-                },
-                ThreadOption.PublisherThread,
-                false,
-                commandMessage =>
-                commandMessage.Destination == MessageActor.MissionsManager ||
-                commandMessage.Destination == MessageActor.Any);
-
-            this.logger.LogTrace("2:Notifications Subscription");
-            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(
-                notificationMessage =>
-                {
-                    this.notificationQueue.Enqueue(notificationMessage);
-                },
-                ThreadOption.PublisherThread,
-                false,
-                notificationMessage =>
-                notificationMessage.Destination == MessageActor.MissionsManager ||
-                notificationMessage.Destination == MessageActor.Any);
-        }
-
-        private async void MissionManagementTaskFunction()
-        {
-            this.logger.LogTrace("1:Method Start");
-
             do
             {
-                this.logger.LogDebug($"MM MissionManagementCycle: Start iteration #{this.logCounterMissionManagement}");
-                if (this.IsAnyBayServiceable())
+                this.Logger.LogDebug($"MM MissionManagementCycle: Start iteration #{this.logCounterMissionManagement}");
+
+                var hasActiveBaysAndPendingMissions =
+                    this.baysManager.Bays.Any(bay =>
+                        bay.IsConnected
+                        &&
+                        bay.Status == BayStatus.Idle
+                        &&
+                        bay.PendingMissions.Any());
+
+                if (hasActiveBaysAndPendingMissions)
                 {
-                    this.logger.LogDebug($"MM MissionManagementCycle: Iteration #{this.logCounterMissionManagement}: serviceable bay present");
-                    if (this.IsAnyMissionExecutable())
-                    {
-                        this.logger.LogDebug($"MM MissionManagementCycle: Iteration #{this.logCounterMissionManagement}: executable mission present");
-                        await this.ChooseAndExecuteMission();
-                    }
-                    else
-                    {
-                        this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: NO executable mission present");
-                        WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
-                    }
+                    this.Logger.LogDebug($"MM MissionManagementCycle: Iteration #{this.logCounterMissionManagement}: serviceable bay present & executable mission present");
+                    this.ChooseAndExecuteMission();
                 }
                 else
                 {
-                    this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: NO serviceable bay present");
-                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
+                    this.Logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: NO serviceable bay present");
+                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.StoppingToken.WaitHandle });
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested);
+            while (!this.StoppingToken.IsCancellationRequested);
         }
 
-        private async void NotificationReceiveTaskFunction()
+        private void OnBayConnected()
         {
-            do
+            this.Logger.LogDebug($"MM NotificationCycle: BayConnected received.");
+
+            this.bayNowServiceableResetEvent.Set();
+        }
+
+        private async Task OnDataLayerReady()
+        {
+            this.Logger.LogDebug($"MM NotificationCycle: DataLayerReady received.");
+
+            await this.SetupBays();
+            await this.GetAllPendingMissions();
+
+            this.missionManagementTask.Start();
+        }
+
+        private async Task OnMissionCompleted(IMissionCompletedMessageData missionCompletedData)
+        {
+            if (missionCompletedData == null)
             {
-                NotificationMessage receivedMessage;
-                try
-                {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-
-                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogDebug("2:Method End - Operation Canceled");
-
-                    return;
-                }
-
-                switch (receivedMessage.Type)
-                {
-                    case MessageType.MissionCompleted:
-                        this.logger.LogDebug($"MM NotificationCycle: MissionCompleted received");
-                        if (receivedMessage.Data is IMissionCompletedMessageData missionCompletedData)
-                        {
-                            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Available;
-                            this.logger.LogDebug($"MM NotificationCycle: Bay {missionCompletedData.BayId} status set to Available");
-                            await this.DistributeMissions();
-                            this.bayNowServiceableResetEvent.Set();
-                        }
-                        break;
-
-                    case MessageType.BayConnected:
-                        this.logger.LogDebug($"MM NotificationCycle: BayConnected received");
-                        if (receivedMessage.Data is IBayConnectedMessageData bayConnectedData)
-                        {
-                            this.bayNowServiceableResetEvent.Set();
-                        }
-                        break;
-
-                    case MessageType.MissionAdded:
-                        this.logger.LogDebug($"MM NotificationCycle: MissionAdded received");
-                        await this.DistributeMissions();
-                        this.newMissionArrivedResetEvent.Set();
-                        this.logger.LogDebug($"MM NotificationCycle: MissionAdded completed");
-                        break;
-
-                    case MessageType.DataLayerReady:
-                        this.logger.LogDebug($"MM NotificationCycle: DataLayerReady received");
-                        await this.InitializeBays();
-                        await this.DistributeMissions();
-                        this.missionManagementTask.Start();
-                        break;
-                }
+                throw new ArgumentNullException(nameof(missionCompletedData));
             }
-            while (!this.stoppingToken.IsCancellationRequested);
 
-            return;
+            this.Logger.LogDebug($"MM NotificationCycle: MissionCompleted received");
+
+            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Idle;
+            this.Logger.LogDebug($"MM NotificationCycle: Bay {missionCompletedData.BayId} status set to Available");
+            await this.GetAllPendingMissions();
+            this.bayNowServiceableResetEvent.Set();
+        }
+
+        private async Task OnNewMissionAvailable()
+        {
+            this.Logger.LogDebug($"MM NotificationCycle: MissionAdded received");
+            await this.GetAllPendingMissions();
+            this.newMissionArrivedResetEvent.Set();
+            this.Logger.LogDebug($"MM NotificationCycle: MissionAdded completed");
         }
 
         #endregion

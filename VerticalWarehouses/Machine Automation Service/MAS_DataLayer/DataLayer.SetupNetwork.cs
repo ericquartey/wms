@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : ISetupNetwork
+    public partial class DataLayer : ISetupNetworkDataLayer
     {
         #region Properties
 

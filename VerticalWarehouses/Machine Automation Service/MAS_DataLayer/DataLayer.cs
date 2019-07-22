@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS_DataLayer
             DataLayerConfiguration dataLayerConfiguration,
             DataLayerContext primaryDataContext,
             IEventAggregator eventAggregator,
+            IApplicationLifetime applicationLifetime,
             ILogger<DataLayer> logger)
         {
             if (primaryDataContext == null)
@@ -74,6 +75,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
             }
 
+            if (applicationLifetime == null)
+            {
+                throw new ArgumentNullException(nameof(applicationLifetime));
+            }
+
             if (logger == null)
             {
                 this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
@@ -84,7 +90,7 @@ namespace Ferretto.VW.MAS_DataLayer
             this.primaryDataContext = primaryDataContext;
 
             this.eventAggregator = eventAggregator;
-
+            this.ApplicationLifetime = applicationLifetime;
             this.logger = logger;
 
             this.suppressSecondary = false;
@@ -117,6 +123,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.logger.LogInformation("DataLayer Constructor");
         }
+
+        #endregion
+
+        #region Properties
+
+        public IApplicationLifetime ApplicationLifetime { get; }
 
         #endregion
 
@@ -154,10 +166,18 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private async Task DataLayerInitializeAsync()
         {
-            this.primaryDataContext.Database.Migrate();
+            try
+            {
+                this.primaryDataContext.Database.Migrate();
 
-            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
-            this.secondaryDataContext.Database.Migrate();
+                this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
+                this.secondaryDataContext.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical(ex, "Error while migrating databases.");
+                this.ApplicationLifetime.StopApplication();
+            }
 
             this.suppressSecondary = true;
 
@@ -165,12 +185,11 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
             }
-
-            // TEMP catch (DataLayerException ex)
             catch (Exception ex)
             {
-                this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                this.logger.LogCritical(ex, $"Exception: Error while loading configuration values from file '{this.dataLayerConfiguration.ConfigurationFilePath}'.");
+                this.SendMessage(new DLExceptionMessageData(ex, "Error while loading configuration values.", 0));
+                this.ApplicationLifetime.StopApplication();
             }
 
             await this.SecondaryDataLayerInitializeAsync();

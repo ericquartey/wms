@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_Utils.Utilities.Interfaces
 {
@@ -8,7 +6,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities.Interfaces
     {
         #region Properties
 
-        List<Bay> Bays { get; set; }
+        IEnumerable<Bay> Bays { get; }
 
         #endregion
     }
