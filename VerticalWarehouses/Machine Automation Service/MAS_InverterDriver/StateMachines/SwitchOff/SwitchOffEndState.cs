@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
@@ -47,12 +48,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 $"Inverter {inverterIndex} Switch Off End",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOff,
                 MessageStatus.OperationEnd);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
+            //TEMP Workaround: Give time to inverter to perform the switchOff operation
+            Thread.Sleep(300);
+
+            this.Logger.LogDebug($"Axis: {this.InverterStatus.CommonControlWord.HorizontalAxis} - ControlWord={this.InverterStatus.CommonControlWord.Value}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }
