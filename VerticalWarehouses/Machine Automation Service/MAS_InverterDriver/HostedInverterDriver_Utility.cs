@@ -643,10 +643,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                             break;
                     }
 
-                    var targetAcceleration = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
-                    var targetDeceleration = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
-                    var targetPosition = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetPosition, configurationCategory);
-                    var targetSpeed = await this.dataLayerResolutionConversion.MilliMetersToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
+                    var targetAcceleration = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
+                    var targetDeceleration = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
+                    var targetPosition = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                    var targetSpeed = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
 
                     var positioningFieldData = new InverterPositioningFieldMessageData(
                         positioningData,

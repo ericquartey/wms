@@ -7,9 +7,9 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
     {
         #region Methods
 
-        Task<int> MilliMetersToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory);
+        Task<int> MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory);
 
-        Task<decimal> PulsesToMilliMetersConversion(int pulses, ConfigurationCategory configurationCategory);
+        Task<decimal> PulsesToMeterSUConversion(int pulses, ConfigurationCategory configurationCategory);
 
         #endregion
     }

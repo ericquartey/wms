@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Methods
 
-        public async Task<int> MilliMetersToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory)
+        public async Task<int> MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory)
         {
             if (milliMeters == 0)
             {
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS_DataLayer
             return pulses;
         }
 
-        public async Task<decimal> PulsesToMilliMetersConversion(int pulses, ConfigurationCategory configurationCategory)
+        public async Task<decimal> PulsesToMeterSUConversion(int pulses, ConfigurationCategory configurationCategory)
         {
             if (pulses == 0)
             {
