@@ -62,8 +62,8 @@ namespace Ferretto.VW.App.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var operatorService = new OperatorService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IOperatorService>(operatorService);
+            var missionOperationsService = new MissionOperationsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMissionOperationsService>(missionOperationsService);
 
             var loadingUnitsService = new LoadingUnitsService(this.automationServiceUrl);
             containerRegistry.RegisterInstance<ILoadingUnitsService>(loadingUnitsService);

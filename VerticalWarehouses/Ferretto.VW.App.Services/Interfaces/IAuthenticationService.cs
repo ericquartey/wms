@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -27,7 +28,7 @@ namespace Ferretto.VW.App.Services
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns>True if the user was successfully logged in, False otherwise.</returns>
-        Task<bool> LogInAsync(string userName, string password);
+        Task<UserClaims> LogInAsync(string userName, string password);
 
         /// <summary>
         /// Logs out the user.

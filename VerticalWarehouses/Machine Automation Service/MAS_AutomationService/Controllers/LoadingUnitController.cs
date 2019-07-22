@@ -3,6 +3,8 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -43,45 +45,54 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("SpaceStatistics")]
-        public ActionResult<IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatistics()
+        public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync()
         {
             var statistics = this.loadingUnitStatistics.GetSpaceStatistics();
+
             try
             {
                 var machineId = 1; // TODO this is the WMS machine ID
-                // TODO need to update WMS service data contracts
-                //var wmsLoadingUnits = this.machinesDataService.GetAllLoadingUnitsById(machineId);
+                var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
                 foreach (var stat in statistics)
                 {
-                    //stat.CompartmentsCount = wmsLoadingUnits.SingleOrDefault(l => l.Code == stat.Code)?.CompartmentsCount;
-                    //stat.AreaFillPercentage = wmsLoadingUnits.SingleOrDefault(l => l.Code == stat.Code)?.areaFillRate * 100;
+                    var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
+                    if (loadingUnit != null)
+                    {
+                        stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                        stat.AreaFillPercentage = (decimal?)loadingUnit.AreaFillRate.Value * 100;
+                    }
                 }
             }
             catch (System.Exception)
             {
-                // DO nothing
+                // do nothing: data from WMS will remain to its default values
             }
+
             return this.Ok(statistics);
         }
 
         [HttpGet("WeightStatistics")]
-        public ActionResult<IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatistics()
+        public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync()
         {
             var statistics = this.loadingUnitStatistics.GetWeightStatistics();
             try
             {
                 var machineId = 1; // TODO this is the WMS machine ID
-                // TODO need to update WMS service data contracts
-                //var wmsLoadingUnits = this.machinesDataService.GetAllLoadingUnitsById(machineId);
+                var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
                 foreach (var stat in statistics)
                 {
-                    //stat.CompartmentsCount = wmsLoadingUnits.SingleOrDefault(l => l.Code == stat.Code)?.CompartmentsCount;
+                    var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
+                    if (loadingUnit != null)
+                    {
+                        stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                    }
                 }
             }
             catch (System.Exception)
             {
-                // DO nothing
+                // do nothing: data from WMS will remain to its default values
             }
+
             return this.Ok(statistics);
         }
 

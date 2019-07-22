@@ -3,8 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -28,7 +27,7 @@ namespace Ferretto.VW.App
 
         private readonly ISessionService sessionService;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IIdentityService identityService;
 
         private readonly IThemeService themeService;
 
@@ -51,7 +50,7 @@ namespace Ferretto.VW.App
             IAuthenticationService authenticationService,
             IThemeService themeService,
             ISessionService sessionService,
-            IMachineProvider machineProvider)
+            IIdentityService identityService)
         {
             if (eventAggregator == null)
             {
@@ -73,16 +72,16 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(sessionService));
             }
 
-            if (machineProvider == null)
+            if (identityService == null)
             {
-                throw new ArgumentNullException(nameof(machineProvider));
+                throw new ArgumentNullException(nameof(identityService));
             }
 
             this.eventAggregator = eventAggregator;
             this.themeService = themeService;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
-            this.machineProvider = machineProvider;
+            this.identityService = identityService;
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -104,8 +103,8 @@ namespace Ferretto.VW.App
             else
             {
                 try
-                { 
-                    this.Machine = await this.machineProvider.GetIdentityAsync();
+                {
+                    this.Machine = await this.identityService.GetAsync();
                     this.ErrorMessage = null;
                 }
                 catch
@@ -202,24 +201,24 @@ namespace Ferretto.VW.App
 
             this.IsBusy = true;
 
-            var loginSuccessful = await this.authenticationService.LogInAsync(
+            var claims = await this.authenticationService.LogInAsync(
                this.UserLogin.UserName,
                this.UserLogin.Password);
 
-            if (!loginSuccessful)
+            if (claims == null)
             {
                 this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
                 this.IsBusy = false;
                 return;
             }
 
-            switch (this.UserLogin.UserName.ToUpperInvariant())
+            switch (claims.AccessLevel)
             {
-                case "INSTALLER":
+                case UserAccessLevel.SuperUser:
                     this.LoadInstallerModule();
                     break;
 
-                case "OPERATOR":
+                case UserAccessLevel.User:
                     this.LoadOperatorModule();
                     break;
             }

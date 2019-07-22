@@ -40,7 +40,7 @@
                                  Margin="60,60,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 Compartments="{Binding ViewCompartments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Compartments="{Binding Compartments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  DefaultCompartmentColor="#0a0a0a"
                                  DimensionHeight="650"
                                  DimensionWidth="4250"
@@ -48,7 +48,7 @@
                                  IsReadOnly="True"
                                  OriginHorizontal="Left"
                                  OriginVertical="Bottom"
-                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
+                                 SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
                                  SelectedItem="{Binding SelectedCompartment, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  ShowBackground="True"
                                  ShowRuler="False" />
@@ -58,7 +58,7 @@
                Margin="60,0,0,20"
                HorizontalAlignment="Left"
                VerticalAlignment="Bottom"
-               Source="{Binding Image, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
+               Source="{Binding ItemImage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
                Stretch="Uniform" />
         <Controls:CustomLabelTextBlockControl MaxWidth="200"
                                               Margin="60,335,0,0"
