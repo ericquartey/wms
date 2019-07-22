@@ -5,7 +5,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : ILoadingUnitStatistics
+    public partial class DataLayerService : ILoadingUnitStatistics
     {
         #region Methods
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_DataLayer
                      Tare = l.Tare,
                      Code = l.Code,
                      MaxNetWeight = l.MaxNetWeight,
-                     MaxWeightPercentage = (l.GrossWeight - l.Tare) / l.MaxNetWeight,
+                     MaxWeightPercentage = (l.GrossWeight - l.Tare) * 100 / l.MaxNetWeight,
                  }
             );
 

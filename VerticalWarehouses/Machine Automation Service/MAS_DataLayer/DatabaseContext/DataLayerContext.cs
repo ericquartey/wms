@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<RuntimeValue> RuntimeValues { get; set; }
 
+        public DbSet<ServicingInfo> ServicingInfo { get; set; }
+
         #endregion
 
         #region Methods
@@ -100,6 +102,7 @@ namespace Ferretto.VW.MAS.DataLayer
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
 
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
+            modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
         }
 
         #endregion
