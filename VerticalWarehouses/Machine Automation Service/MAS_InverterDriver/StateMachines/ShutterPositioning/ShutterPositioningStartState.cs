@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
                 if (aglStatus.CurrentShutterPosition == this.shutterPositionData.ShutterPosition)
                 {
-                    this.Logger.LogTrace($"3:Warning position already reached for shutter {this.InverterStatus.SystemIndex}");
+                    this.Logger.LogTrace($"3:Warning position {this.shutterPositionData.ShutterPosition} already reached for shutter {this.InverterStatus.SystemIndex}");
 
                     // TEMP If the shutter is already in the shutter position target, don't notify an error condition
                     var messageShutterPosition = new FieldNotificationMessage(

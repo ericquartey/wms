@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -236,17 +237,17 @@ namespace Ferretto.VW.InstallationApp
 
         private void UpdateCompletedCycles(MessageNotifiedEventArgs data)
         {
-            if (data.NotificationMessage is ShutterControlMessageData parsedData)
+            if (data.NotificationMessage is NotificationMessageUI<ShutterControlMessageData> parsedData)
             {
                 if (int.TryParse(this.RequiredCycles, out var value)
                     &&
-                    value == parsedData.CurrentShutterPosition)
+                    value == parsedData.Data.CurrentShutterPosition)
                 {
                     this.IsStartButtonActive = true;
                     this.IsStopButtonActive = false;
                 }
 
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
+                this.CompletedCycles = parsedData.Data.CurrentShutterPosition.ToString();
             }
         }
 
