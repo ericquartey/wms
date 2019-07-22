@@ -41,41 +41,34 @@ namespace Ferretto.VW.WmsCommunication
 
         #endregion
 
+        /*
+                public async Task<DrawerActivityItemDetail> GetDrawerActivityItemDetailAsync(Mission mission)
+                {
+                    var item = await this.itemsDataService.GetByIdAsync((int)mission.ItemId);
+                    var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)mission.LoadingUnitId);
+                    var compartment = compartments.First(x => x.Id == mission.CompartmentId);
+                    var materialStatus = await this.materialStatusesDataService.GetByIdAsync((int)compartment.MaterialStatusId);
+                    var packageType = await this.packageTypesDataService.GetByIdAsync((int)compartment.PackageTypeId);
+                    var returnValue = new DrawerActivityItemDetail
+                    {
+                        Batch = compartment.Lot,
+                        ItemCode = item.Code,
+                        ItemDescription = item.Description,
+                        ListCode = mission.ItemListRowCode,
+                        ListDescription = mission.ItemListDescription,
+                        ListRow = mission.ItemListRowId.ToString(),
+                        MaterialStatus = materialStatus.Description,
+                        PackageType = packageType.Description,
+                        Position = $"{compartment.XPosition}, {compartment.YPosition}",
+                        ProductionDate = item.CreationDate.ToShortDateString(),
+                        RequestedQuantity = mission.RequestedQuantity.ToString(),
+                        Image = item.Image
+                    };
+                    return returnValue;
+                }
+                */
+
         #region Methods
-
-        public async Task<string> GetCompartmentPosition(Mission mission)
-        {
-            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)mission.LoadingUnitId);
-            var compartment = compartments.First(x => x.Id == mission.CompartmentId);
-            var compartmentXpos = compartment.XPosition;
-            var compartmentYpos = compartment.YPosition;
-            return $"{compartmentXpos}, {compartmentYpos}";
-        }
-
-        public async Task<DrawerActivityItemDetail> GetDrawerActivityItemDetailAsync(Mission mission)
-        {
-            var item = await this.itemsDataService.GetByIdAsync((int)mission.ItemId);
-            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)mission.LoadingUnitId);
-            var compartment = compartments.First(x => x.Id == mission.CompartmentId);
-            var materialStatus = await this.materialStatusesDataService.GetByIdAsync((int)compartment.MaterialStatusId);
-            var packageType = await this.packageTypesDataService.GetByIdAsync((int)compartment.PackageTypeId);
-            var returnValue = new DrawerActivityItemDetail
-            {
-                Batch = compartment.Lot,
-                ItemCode = item.Code,
-                ItemDescription = item.Description,
-                ListCode = mission.ItemListRowCode,
-                ListDescription = mission.ItemListDescription,
-                ListRow = mission.ItemListRowId.ToString(),
-                MaterialStatus = materialStatus.Description,
-                PackageType = packageType.Description,
-                Position = $"{compartment.XPosition}, {compartment.YPosition}",
-                ProductionDate = item.CreationDate.ToShortDateString(),
-                RequestedQuantity = mission.RequestedQuantity.ToString(),
-                Image = item.Image
-            };
-            return returnValue;
-        }
 
         public async Task<string> GetItemImageCodeAsync(int itemId)
         {
@@ -142,14 +135,6 @@ namespace Ferretto.VW.WmsCommunication
                 }));
             }
             return returnValue;
-        }
-
-        public TrayControlCompartment GetTrayControlSelectedCompartment(
-            IEnumerable<TrayControlCompartment> viewCompartments,
-            Mission mission)
-        {
-            var compartmentId = (int)mission.CompartmentId;
-            return viewCompartments.First(x => x.Id == compartmentId);
         }
 
         public async Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity)

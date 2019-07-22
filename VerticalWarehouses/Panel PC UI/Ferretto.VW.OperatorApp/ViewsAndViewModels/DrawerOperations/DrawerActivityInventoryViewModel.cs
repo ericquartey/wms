@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
@@ -215,7 +216,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             try
             {
                 this.ViewCompartments = await this.wmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-                this.SelectedCompartment = this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
+                this.SelectedCompartment = this.ViewCompartments
+                    .FirstOrDefault(c => c.Id == bayManager.CurrentOperation.CompartmentId);
             }
             catch (Exception ex)
             {
