@@ -75,13 +75,15 @@ namespace Ferretto.VW.InstallationApp
             this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            return Task.CompletedTask;
         }
 
         public async Task OpenCarouselAsync()

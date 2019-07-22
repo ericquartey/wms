@@ -63,6 +63,9 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsother:DrawerCompactingViewModel}">
         <viewsandviewmodelsother:DrawerCompactingView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsother:DrawerCompactingDetailViewModel}">
+        <viewsandviewmodelsother:DrawerCompactingDetailView />
+    </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsother:OtherNavigationViewModel}">
         <viewsandviewmodelsother:OtherNavigationView />
     </DataTemplate>
@@ -124,7 +127,7 @@
     <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlListDetailDataGridViewModel}">
         <customviewsandviewmodels:CustomControlListDetailDataGrid />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlItemStatisticsDataGridViewModel}">
-        <customviewsandviewmodels:CustomControlItemStatisticsDataGrid />
+    <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlMaintenanceDetailDataGridViewModel}">
+        <customviewsandviewmodels:CustomControlMaintenanceDetailDataGrid />
     </DataTemplate>
 </ResourceDictionary>

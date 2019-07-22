@@ -43,7 +43,7 @@ namespace Ferretto.VW.SignalRClientConsole
                     case 'I':
                         if (!bInitialized)
                         {
-                            var initializeTask = new Task(() => Initialize());
+                            var initializeTask = new Task(async () => await Initialize());
                             initializeTask.Start();
                             Console.WriteLine();
                             Console.WriteLine("> Hub initialized");

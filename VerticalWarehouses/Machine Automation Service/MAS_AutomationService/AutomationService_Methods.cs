@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private async void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
+        private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
         {
             if (e.EntityType == "SchedulerRequest")
             {

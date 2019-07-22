@@ -2,7 +2,7 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ferretto.VW.MAS_DataLayer.Configurations
+namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
     public class ErrorConfiguration : IEntityTypeConfiguration<Error>
     {
@@ -19,6 +19,12 @@ namespace Ferretto.VW.MAS_DataLayer.Configurations
 
             builder.Property(m => m.Description)
                 .IsRequired();
+
+            builder
+                .HasOne(e => e.Statistics)
+                .WithOne(s => s.Error)
+                .HasForeignKey<ErrorStatistic>(s => s.Code)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasData(new Error { Code = 1001, Description = "Errore database", Issue = 5 },
                             new Error { Code = 1002, Description = "Errore caricamento configurazione", Issue = 5 },

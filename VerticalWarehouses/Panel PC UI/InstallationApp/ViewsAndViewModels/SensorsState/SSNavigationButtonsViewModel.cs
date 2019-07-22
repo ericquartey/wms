@@ -39,16 +39,22 @@
 
         public ICommand BaysButtonCommand => this.baysButtonCommand ?? (this.baysButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).OnEnterViewAsync(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.EnterView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).UnSubscribeMethodFromEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.ExitView);
+            this.eventAggregator
+                .GetEvent<InstallationApp_Event>()
+                .Subscribe(
+                    async (message) => { await ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).OnEnterViewAsync(); },
+                    ThreadOption.PublisherThread,
+                    false,
+                    message => message.Type == InstallationApp_EventMessageType.EnterView);
+
+            this.eventAggregator
+                .GetEvent<InstallationApp_Event>()
+                .Subscribe(
+                    (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).UnSubscribeMethodFromEvent(); },
+                    ThreadOption.PublisherThread,
+                    false,
+                    message => message.Type == InstallationApp_EventMessageType.ExitView);
+
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>());
         }));
@@ -101,9 +107,9 @@
             this.container = container;
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

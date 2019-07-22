@@ -54,8 +54,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public ErrorStatisticsSummary Statistics { get => this.statistics; }
 
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
@@ -64,7 +62,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Methods
 
-        public async void ChangeSelectedItemAsync(bool isUp)
+        public void ChangeSelectedItemAsync(bool isUp)
         {
             if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
             {
@@ -84,12 +82,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             }
         }
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
             {
@@ -101,7 +94,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
                 this.statistics = await this.errorsService.GetStatisticsAsync();
                 var selectedError = this.statistics.Errors.FirstOrDefault();
 
-                gridData.Cells = this.statistics.Errors;
+                gridData.Cells = this.statistics.Errors.OrderByDescending(e => e.Total);
                 gridData.SelectedCell = selectedError;
                 this.currentItemIndex = 0;
 
