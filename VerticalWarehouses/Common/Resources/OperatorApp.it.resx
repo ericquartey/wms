@@ -409,7 +409,7 @@
     <value>Riempimento macchina:</value>
   </data>
   <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
-    <value>Analisi peso</value>
+    <value>Analisi spazio</value>
   </data>
   <data name="DrawerWeightSaturationHeader" xml:space="preserve">
     <value>Statistiche : analisi peso cassetti.</value>
@@ -769,7 +769,7 @@
     <value>Riempimento</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
-    <value>%Riempimento</value>
+    <value>%Riemp.</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
     <value>Missioni</value>
