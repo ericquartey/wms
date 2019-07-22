@@ -25,7 +25,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStartButtonActive = true;
 
-        private bool isStopButtonActive = true;
+        private bool isStopButtonActive = false;
 
         private string lowerBound;
 
@@ -37,9 +37,9 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken receivedSwitchAxisUpdateToken;
 
-        private SubscriptionToken receiveHomingUpdateToken;
-
         private SubscriptionToken receiveExceptionToken;
+
+        private SubscriptionToken receiveHomingUpdateToken;
 
         private string resolution;
 
@@ -279,11 +279,12 @@ namespace Ferretto.VW.InstallationApp
 
             if (messageUI.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> c)
             {
+                CalibrateAxisMessageData calibrateAxisMessageData = c.Data as CalibrateAxisMessageData;
                 var type = c.Type;
                 switch (c.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = App.Resources.InstallationApp.HomingStarted;
+                        this.NoteString = App.Resources.InstallationApp.HomingStarted + " (" + calibrateAxisMessageData?.AxisToCalibrate + ")";
                         break;
 
                     case MessageStatus.OperationEnd:
