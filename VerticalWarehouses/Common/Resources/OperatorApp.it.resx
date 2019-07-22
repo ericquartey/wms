@@ -808,7 +808,7 @@
     <value>Stato</value>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
-    <value>Peso tot.</value>
+    <value>Peso attuale</value>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
     <value>Cassetto</value>
@@ -817,7 +817,7 @@
     <value>Altezza</value>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
-    <value>% Peso max.</value>
+    <value>% max.</value>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
     <value>Netto max.</value>
@@ -914,5 +914,8 @@
   </data>
   <data name="MachineServiceStatus_Valid" xml:space="preserve">
     <value>Valido</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Analisi spazio</value>
   </data>
 </root>
