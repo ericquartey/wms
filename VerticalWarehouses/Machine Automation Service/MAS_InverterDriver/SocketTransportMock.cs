@@ -526,6 +526,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.BuildVelocityStatusWord();
                     break;
 
+                case InverterOperationMode.ProfileVelocity:
+                    this.BuildVelocityStatusWord();
+                    break;
+
                 default:
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
