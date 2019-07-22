@@ -37,7 +37,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
             this.AxisMovement = messageData.AxisMovement;
             this.MovementType = messageData.MovementType;
-            this.Resolution = messageData.Resolution;
             this.TargetPosition = messageData.TargetPosition;
             this.TargetSpeed = messageData.TargetSpeed;
             this.TargetAcceleration = messageData.TargetAcceleration;
@@ -54,8 +53,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
-
-        public decimal Resolution { get; }
 
         public decimal TargetAcceleration { get; set; }
 
