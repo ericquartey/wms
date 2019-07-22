@@ -65,6 +65,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             base.ChangeState(newState, message);
         }
 
+        public int GetMaxSteps()
+        {
+            return this.nMaxSteps;
+        }
+
+        public int GetNumberOfExecutedSteps()
+        {
+            return this.numberOfExecutedSteps;
+        }
+
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {

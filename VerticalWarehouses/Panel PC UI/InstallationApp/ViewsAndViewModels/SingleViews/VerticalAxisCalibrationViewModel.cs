@@ -279,12 +279,11 @@ namespace Ferretto.VW.InstallationApp
 
             if (messageUI.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> c)
             {
-                CalibrateAxisMessageData calibrateAxisMessageData = c.Data as CalibrateAxisMessageData;
                 var type = c.Type;
                 switch (c.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = App.Resources.InstallationApp.HomingStarted + " (" + calibrateAxisMessageData?.AxisToCalibrate + ")";
+                        this.NoteString = $"{App.Resources.InstallationApp.HomingStarted} ({c.Description})";
                         break;
 
                     case MessageStatus.OperationEnd:
