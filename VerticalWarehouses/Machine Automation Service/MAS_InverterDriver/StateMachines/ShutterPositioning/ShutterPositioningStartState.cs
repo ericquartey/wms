@@ -92,13 +92,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             var message = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition);
             var byteMessage = message.GetWriteMessage();
+            this.Logger.LogTrace($"4:inverterMessage={message}");
             this.ParentStateMachine.EnqueueMessage(message);
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Stop");
 
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger, true));
         }
@@ -108,8 +109,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         {
             var returnValue = false;
 
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-            this.Logger.LogTrace($"2:message={message}:Parameter ID={message.ParameterId}");
+            //this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            //this.Logger.LogTrace($"2:message={message}:Parameter ID={message.ParameterId}");
 
             switch (message.ParameterId)
             {
@@ -117,6 +118,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                     var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate);
                     var byteData = data.GetWriteMessage();
 
+                    this.Logger.LogTrace($"5:inverterMessage={data}");
                     this.ParentStateMachine.EnqueueMessage(data);
                     break;
 

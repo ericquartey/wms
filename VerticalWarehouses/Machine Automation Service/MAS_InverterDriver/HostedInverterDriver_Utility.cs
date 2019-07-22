@@ -610,7 +610,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
         }
 
-        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage)
+        private async Task ProcessPositioningMessage(FieldCommandMessage receivedMessage)
         {
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {
@@ -636,7 +636,33 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
-                    var positioningFieldData = new InverterPositioningFieldMessageData(positioningData);
+                    ConfigurationCategory configurationCategory;
+                    switch (positioningData.AxisMovement)
+                    {
+                        case Axis.Horizontal:
+                            configurationCategory = ConfigurationCategory.HorizontalAxis;
+                            break;
+
+                        case Axis.Vertical:
+                            configurationCategory = ConfigurationCategory.VerticalAxis;
+                            break;
+
+                        default:
+                            configurationCategory = ConfigurationCategory.Undefined;
+                            break;
+                    }
+
+                    var targetAcceleration = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetAcceleration, configurationCategory);
+                    var targetDeceleration = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetDeceleration, configurationCategory);
+                    var targetPosition = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetPosition, configurationCategory);
+                    var targetSpeed = await this.dataLayerResolutionConversion.MeterSUToPulsesConversion(positioningData.TargetSpeed, configurationCategory);
+
+                    var positioningFieldData = new InverterPositioningFieldMessageData(
+                        positioningData,
+                        targetAcceleration,
+                        targetDeceleration,
+                        targetPosition,
+                        targetSpeed);
 
                     if (inverterStatus is AngInverterStatus currentStatus)
                     {

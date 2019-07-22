@@ -183,8 +183,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         this.positioningMessageData.TargetDeceleration,
                         this.positioningMessageData.NumberCycles,
                         this.positioningMessageData.LowerBound,
-                        this.positioningMessageData.UpperBound,
-                        this.positioningMessageData.Resolution);
+                        this.positioningMessageData.UpperBound);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(
@@ -196,8 +195,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         this.positioningMessageData.TargetDeceleration,
                         this.positioningMessageData.NumberCycles,
                         this.positioningMessageData.LowerBound,
-                        this.positioningMessageData.UpperBound,
-                        this.positioningMessageData.Resolution);
+                        this.positioningMessageData.UpperBound);
                 }
                 else
                 {
@@ -211,8 +209,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         this.positioningMessageData.TargetDeceleration,
                         this.positioningMessageData.NumberCycles,
                         this.positioningMessageData.LowerBound,
-                        this.positioningMessageData.UpperBound,
-                        this.positioningMessageData.Resolution);
+                        this.positioningMessageData.UpperBound);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(
@@ -224,8 +221,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         this.positioningMessageData.TargetDeceleration,
                         this.positioningMessageData.NumberCycles,
                         this.positioningMessageData.LowerBound,
-                        this.positioningMessageData.UpperBound,
-                        this.positioningMessageData.Resolution);
+                        this.positioningMessageData.UpperBound);
                 }
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
