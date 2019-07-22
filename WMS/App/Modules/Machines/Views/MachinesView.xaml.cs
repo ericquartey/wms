@@ -1,7 +1,7 @@
 ﻿using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     public partial class MachinesView : WmsView
     {

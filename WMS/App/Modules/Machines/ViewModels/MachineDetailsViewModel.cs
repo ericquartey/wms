@@ -13,7 +13,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]

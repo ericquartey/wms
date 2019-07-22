@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.Layout
+namespace Ferretto.WMS.App.Modules.Layout
 {
     public class MenuViewModel : BaseNavigationViewModel
     {

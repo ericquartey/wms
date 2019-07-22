@@ -9,7 +9,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Layout
+namespace Ferretto.WMS.App.Modules.Layout
 {
     public class LoginViewModel : BaseServiceNavigationViewModel
     {

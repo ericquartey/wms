@@ -1,6 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.Scheduler
+namespace Ferretto.WMS.App.Modules.Scheduler
 {
     public partial class MissionsView : WmsView
     {

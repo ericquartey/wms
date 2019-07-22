@@ -13,7 +13,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.ItemLists
+namespace Ferretto.WMS.App.Modules.ItemLists
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemList))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow), false)]

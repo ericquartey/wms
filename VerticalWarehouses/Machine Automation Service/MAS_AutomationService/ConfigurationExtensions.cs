@@ -6,10 +6,6 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
-        private const string PrimaryConnectionStringName = "AutomationServicePrimary";
-
-        private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
-
         private const string WMSServiceAddress = "WMSServiceAddress";
 
         private const string WMSServiceAddressHubsEndpoint = "WMSServiceAddressHubsEndpoint";
@@ -17,21 +13,6 @@ namespace Ferretto.VW.MAS.AutomationService
         #endregion
 
         #region Methods
-
-        public static string GetDataLayerConfigurationFile(this IConfiguration configuration)
-        {
-            return configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile");
-        }
-
-        public static string GetDataLayerPrimaryConnectionString(this IConfiguration configuration)
-        {
-            return configuration.GetConnectionString(PrimaryConnectionStringName);
-        }
-
-        public static string GetDataLayerSecondaryConnectionString(this IConfiguration configuration)
-        {
-            return configuration.GetConnectionString(SecondaryConnectionStringName);
-        }
 
         public static string GetDataServiceHubUrl(this IConfiguration configuration)
         {
