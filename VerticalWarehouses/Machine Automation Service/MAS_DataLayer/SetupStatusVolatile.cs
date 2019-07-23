@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {

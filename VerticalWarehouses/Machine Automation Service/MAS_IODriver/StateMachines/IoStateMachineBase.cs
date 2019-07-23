@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines
+namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     public abstract class IoStateMachineBase : IIoStateMachine
     {

@@ -9,7 +9,7 @@ using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService
     {

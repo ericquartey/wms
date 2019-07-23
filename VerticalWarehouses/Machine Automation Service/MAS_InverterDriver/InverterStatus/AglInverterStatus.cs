@@ -1,12 +1,12 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Exceptions;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AglInverterStatus : InverterStatusBase, IAglInverterStatus
     {
@@ -16,9 +16,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 9;
 
-        private ShutterPosition currentShutterPosition;
+        private readonly ShutterType shutterType;
 
-        private ShutterType shutterType;
+        private ShutterPosition currentShutterPosition;
 
         #endregion
 
@@ -37,6 +37,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         //INFO AGL Inputs
+
         #region Properties
 
         public bool AGL_FreeSensor1 => this.aglInverterInputs?[(int)InverterSensors.AGL_FreeSensor1] ?? false;

@@ -2,7 +2,7 @@
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public class EmptyState : StateBase
     {

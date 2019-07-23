@@ -1,13 +1,13 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord;
+﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
 using Ferretto.VW.MAS_Utils.Enumerations;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public abstract class InverterStatusBase : IInverterStatusBase
     {

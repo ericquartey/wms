@@ -1,18 +1,15 @@
-﻿using Ferretto.VW.MAS.AutomationService;
-using Ferretto.VW.MAS.DataLayer;
+﻿using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_FiniteStateMachines;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_IODriver;
+using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +18,7 @@ using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
@@ -61,6 +58,7 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSignalR();
 
             var dataLayerConfiguration = new DataLayerConfiguration(
+                this.Configuration.GetDataLayerPrimaryConnectionString(),
                 this.Configuration.GetDataLayerSecondaryConnectionString(),
                 this.Configuration.GetDataLayerConfigurationFile());
 
@@ -73,10 +71,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var wmsServiceAddress = new System.Uri(this.Configuration.GetDataServiceUrl());
             var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetDataServiceHubUrl());
-
-            services.AddDbContext<DataLayerContext>(
-                options => options.UseSqlite(this.Configuration.GetDataLayerPrimaryConnectionString()),
-                ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
@@ -101,7 +95,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddHostedService<HostedInverterDriver>();
 
-            services.AddHostedService<FiniteStateMachines>();
+            services.AddHostedService<FiniteStateMachines.FiniteStateMachines>();
 
             // HACK commented out module initialization for development purpose
             //services.AddHostedService<MissionsManager>();
@@ -114,80 +108,76 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void RegisterDataLayer(IServiceCollection services, DataLayerConfiguration dataLayerConfiguration)
         {
-            services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
+            services.AddSingleton<IDataLayer, DataLayer.DataLayer>(provider => new DataLayer.DataLayer(
                             dataLayerConfiguration,
-                            provider.GetService<DataLayerContext>(),
                             provider.GetService<IEventAggregator>(),
-                            provider.GetService<ILogger<DataLayer>>()));
+                            provider.GetService<ILogger<DataLayer.DataLayer>>()));
 
-            services.AddSingleton<IBayPositionControl, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IBayPositionControl, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IBeltBurnishing, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IBeltBurnishing, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<ICellControl, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<ICellControl, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IGeneralInfo, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IGeneralInfo, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IHorizontalAxis, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IHorizontalAxis, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IHorizontalManualMovements, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IHorizontalManualMovements, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IHorizontalMovementBackwardProfile, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IHorizontalMovementBackwardProfile, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IHorizontalMovementForwardProfile, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IHorizontalMovementForwardProfile, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<ILoadFirstDrawer, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<ILoadFirstDrawer, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IOffsetCalibration, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IOffsetCalibration, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IPanelControl, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IPanelControl, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IResolutionCalibration, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IResolutionCalibration, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<ISetupNetwork, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<ISetupNetwork, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<ISetupStatus, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<ISetupStatus, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IShutterHeightControl, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IShutterHeightControl, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IVerticalAxis, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IVerticalAxis, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IVerticalManualMovements, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IVerticalManualMovements, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IWeightControl, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IWeightControl, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IHostedService, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IHostedService, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IDataLayerCellManagement, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IDataLayerConfigurationValueManagment, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IDataLayerConfigurationValueManagment, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
 
-            services.AddSingleton<IDataLayerRuntimeValueManagment, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
-
-            services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
-                provider.GetService<IDataLayer>() as DataLayer);
+            services.AddSingleton<IVertimagConfiguration, DataLayer.DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer.DataLayer);
         }
 
         private void RegisterSocketTransport(IServiceCollection services)

@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Models;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -17,9 +18,9 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public async Task<bool> GetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        public bool GetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
-            var returnBoolValue = false;
+            bool returnBoolValue;
             ConfigurationValue primaryConfigurationValue;
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
@@ -35,8 +36,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                primaryConfigurationValue =
-                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+                lock (this.primaryContextOptions)
+                {
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
+                    }
+                }
             }
             catch
             {
@@ -71,7 +77,7 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public async Task<DateTime> GetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        public DateTime GetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
             DateTime returnDateTimeValue;
             ConfigurationValue primaryConfigurationValue;
@@ -84,8 +90,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                primaryConfigurationValue =
-                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+                lock (this.primaryContextOptions)
+                {
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
+                    }
+                }
             }
             catch
             {
@@ -113,9 +124,9 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public async Task<decimal> GetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        public decimal GetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
-            decimal returnDecimalValue = 0;
+            decimal returnDecimalValue;
             ConfigurationValue primaryConfigurationValue;
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
@@ -126,8 +137,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                primaryConfigurationValue =
-                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+                lock (this.primaryContextOptions)
+                {
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
+                    }
+                }
             }
             catch
             {
@@ -155,9 +171,9 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public async Task<int> GetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        public int GetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
-            var returnIntegerValue = 0;
+            int returnIntegerValue;
             ConfigurationValue primaryConfigurationValue;
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
@@ -168,8 +184,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                primaryConfigurationValue =
-                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+                lock (this.primaryContextOptions)
+                {
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
+                    }
+                }
             }
             catch
             {
@@ -197,9 +218,9 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public async Task<IPAddress> GetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        public IPAddress GetIpAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
-            IPAddress returnIPAddressValue = null;
+            IPAddress returnIpAddressValue;
             ConfigurationValue primaryConfigurationValue;
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
@@ -210,8 +231,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                primaryConfigurationValue =
-                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+                lock (this.primaryContextOptions)
+                {
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
+                    }
+                }
             }
             catch
             {
@@ -222,7 +248,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (primaryConfigurationValue != null)
             {
-                returnIPAddressValue = IPAddress.Parse(primaryConfigurationValue.VarValue);
+                returnIpAddressValue = IPAddress.Parse(primaryConfigurationValue.VarValue);
             }
             else
             {
@@ -231,13 +257,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
-            return returnIPAddressValue;
+            return returnIpAddressValue;
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum)
+        public string GetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum)
         {
-            var returnStringValue = string.Empty;
+            string returnStringValue;
             ConfigurationValue primaryConfigurationValue;
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
@@ -247,8 +273,13 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             try
             {
-                primaryConfigurationValue =
-                    await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum, cancellationToken: this.stoppingToken);
+                lock (this.primaryContextOptions)
+                {
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
+                    }
+                }
             }
             catch
             {
@@ -272,7 +303,7 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public async Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value)
+        public void SetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum, bool value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
             {
@@ -295,13 +326,13 @@ namespace Ferretto.VW.MAS.DataLayer
             newConfigurationValue.CategoryName = categoryValueEnum;
             newConfigurationValue.VarName = configurationValueEnum;
             newConfigurationValue.VarType = ConfigurationDataType.Boolean;
-            newConfigurationValue.VarValue = value.ToString();
+            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
 
-            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Boolean);
+            this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public async Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value)
+        public void SetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum, DateTime value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
             {
@@ -314,13 +345,14 @@ namespace Ferretto.VW.MAS.DataLayer
             newConfigurationValue.CategoryName = categoryValueEnum;
             newConfigurationValue.VarName = configurationValueEnum;
             newConfigurationValue.VarType = ConfigurationDataType.Date;
-            newConfigurationValue.VarValue = value.ToString();
+            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
 
-            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Date);
+            this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public async Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value)
+        public void SetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum,
+            decimal value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
             {
@@ -333,13 +365,13 @@ namespace Ferretto.VW.MAS.DataLayer
             newConfigurationValue.CategoryName = categoryValueEnum;
             newConfigurationValue.VarName = configurationValueEnum;
             newConfigurationValue.VarType = ConfigurationDataType.Float;
-            newConfigurationValue.VarValue = value.ToString();
+            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
 
-            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Float);
+            this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public async Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value)
+        public void SetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum, int value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
             {
@@ -352,13 +384,12 @@ namespace Ferretto.VW.MAS.DataLayer
             newConfigurationValue.CategoryName = categoryValueEnum;
             newConfigurationValue.VarName = configurationValueEnum;
             newConfigurationValue.VarType = ConfigurationDataType.Integer;
-            newConfigurationValue.VarValue = value.ToString();
+            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
 
-            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.Integer);
+            this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
-        /// <inheritdoc/>
-        public async Task SetIPAddressConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, IPAddress value)
+        public void SetIpAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum, IPAddress value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
             {
@@ -373,11 +404,11 @@ namespace Ferretto.VW.MAS.DataLayer
             newConfigurationValue.VarType = ConfigurationDataType.IPAddress;
             newConfigurationValue.VarValue = value.ToString();
 
-            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.IPAddress);
+            this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public async Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value)
+        public void SetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum, string value)
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
             {
@@ -392,56 +423,79 @@ namespace Ferretto.VW.MAS.DataLayer
             newConfigurationValue.VarType = ConfigurationDataType.String;
             newConfigurationValue.VarValue = value;
 
-            await this.SetConfigurationValueCommonAsync(newConfigurationValue, ConfigurationDataType.String);
+            this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
-        private async Task SetConfigurationValueCommonAsync(ConfigurationValue newConfigurationValue, ConfigurationDataType configurationDataType)
+        private void SetUpdateConfigurationValueCommon(ConfigurationValue newConfigurationValue)
         {
             var primaryPartitionError = false;
             var secondaryPartitionError = false;
 
             Expression<Func<ConfigurationValue, bool>> queryString = s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName;
-            var primaryConfigurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
 
-            try
+            ConfigurationValue primaryConfigurationValue;
+            lock (this.primaryContextOptions)
             {
-                if (primaryConfigurationValue == null)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
+
+                    try
+                    {
+                        if (primaryConfigurationValue == null)
+                        {
+                            primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                        }
+                        else
+                        {
+                            primaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
+                        }
+
+                        primaryDataContext.SaveChanges();
+                    }
+                    catch
+                    {
+                        primaryPartitionError = true;
+                    }
                 }
-                else
-                {
-                    primaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
-                }
-                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
-            }
-            catch
-            {
-                primaryPartitionError = true;
             }
 
-            // INFO It is true if the secondary DB is not suppressed
             if (!this.suppressSecondary)
             {
-                try
+                lock (this.secondaryContextOptions)
                 {
-                    // INFO the secondaryPartition must be aligned at the primary
-                    if (primaryConfigurationValue == null)
+                    using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
                     {
-                        this.secondaryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                    }
-                    else
-                    {
-                        var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+                        try
+                        {
+                            if (primaryConfigurationValue == null)
+                            {
+                                secondaryDataContext.ConfigurationValues.Add(newConfigurationValue);
+                            }
+                            else
+                            {
+                                var secondaryConfigurationValue =
+                                    secondaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
 
-                        secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
-                    }
+                                if (secondaryConfigurationValue == null)
+                                {
+                                    this.logger.LogCritical(
+                                        $"Configuration value {newConfigurationValue.VarName} present in Primary Database but Missing in Backup Database");
 
-                    await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
-                }
-                catch
-                {
-                    secondaryPartitionError = true;
+                                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode
+                                        .ValueNotFound);
+                                }
+
+                                secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
+                            }
+
+                            secondaryDataContext.SaveChanges();
+                        }
+                        catch
+                        {
+                            secondaryPartitionError = true;
+                        }
+                    }
                 }
             }
 

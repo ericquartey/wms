@@ -1,13 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_FiniteStateMachines.Template
+namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 {
     public class TemplateEndState : StateBase
     {

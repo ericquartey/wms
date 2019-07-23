@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
     public partial class IoDevice
     {

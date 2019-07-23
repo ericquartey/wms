@@ -9,8 +9,9 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManager
     {
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         {
             for (var i = 0; i < this.baysManager.Bays.Count; i++)
             {
-                if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
+                if (this.baysManager.Bays[i].IsConnected && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
                 {
                     try
                     {
@@ -90,15 +91,15 @@ namespace Ferretto.VW.MAS_MissionsManager
             }
         }
 
-        private async Task InitializeBays()
+        private void InitializeBays()
         {
             this.baysManager.Bays = new List<MAS_Utils.Utilities.Bay>();
-            var ip1 = await this.setupNetwork.PPC1MasterIPAddress;
-            var ip2 = await this.setupNetwork.PPC2SlaveIPAddress;
-            var ip3 = await this.setupNetwork.PPC3SlaveIPAddress;
+            var ip1 = this.setupNetwork.PPC1MasterIPAddress;
+            var ip2 = this.setupNetwork.PPC2SlaveIPAddress;
+            var ip3 = this.setupNetwork.PPC3SlaveIPAddress;
             var ipAddresses = new string[] { ip1.ToString(), ip2.ToString(), ip3.ToString() };
-            var bayTypes = new int[] { await this.generalInfo.Bay1Type, await this.generalInfo.Bay2Type, await this.generalInfo.Bay3Type };
-            var baysQuantity = await this.generalInfo.BaysQuantity;
+            var bayTypes = new int[] { this.generalInfo.Bay1Type, this.generalInfo.Bay2Type, this.generalInfo.Bay3Type };
+            var baysQuantity = this.generalInfo.BaysQuantity;
             for (var i = 0; i < baysQuantity; i++)
             {
                 this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay

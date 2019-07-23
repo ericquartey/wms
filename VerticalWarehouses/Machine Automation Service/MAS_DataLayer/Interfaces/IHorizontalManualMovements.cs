@@ -6,11 +6,11 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
-        Task<decimal> FeedRateHM { get; }
+        decimal FeedRateHM { get; }
 
-        Task<decimal> InitialTargetPositionHM { get; }
+        decimal InitialTargetPositionHM { get; }
 
-        Task<decimal> RecoveryTargetPositionHM { get; }
+        decimal RecoveryTargetPositionHM { get; }
 
         #endregion
     }

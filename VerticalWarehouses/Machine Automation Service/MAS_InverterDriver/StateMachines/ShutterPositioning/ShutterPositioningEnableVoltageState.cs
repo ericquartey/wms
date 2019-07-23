@@ -1,16 +1,16 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningEnableVoltageState : InverterStateBase
     {

@@ -1,9 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.IO;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
+namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
     public class MachineSensorsStatus
     {

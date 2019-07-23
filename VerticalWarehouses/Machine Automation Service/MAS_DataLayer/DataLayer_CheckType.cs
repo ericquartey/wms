@@ -2,6 +2,7 @@
 using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -375,7 +376,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private bool CheckConfigurationDataType(long parameter, long category, ConfigurationDataType type)
         {
-            var actualParameterType = ConfigurationDataType.Undefined;
+            ConfigurationDataType actualParameterType;
             switch (category)
             {
                 case (long)ConfigurationCategory.Undefined:

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver.IoDevice.Interfaces
 {
     public interface IIoDevice
     {

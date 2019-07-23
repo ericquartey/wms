@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
+﻿using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,51 +8,51 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public Task<bool> Bay1ControlDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.Bay1ControlDone, (long)ConfigurationCategory.SetupStatus);
+        public bool Bay1ControlDone => this.GetBoolConfigurationValue((long)SetupStatus.Bay1ControlDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Bay2ControlDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.Bay2ControlDone, (long)ConfigurationCategory.SetupStatus);
+        public bool Bay2ControlDone => this.GetBoolConfigurationValue((long)SetupStatus.Bay2ControlDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Bay3ControlDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.Bay3ControlDone, (long)ConfigurationCategory.SetupStatus);
+        public bool Bay3ControlDone => this.GetBoolConfigurationValue((long)SetupStatus.Bay3ControlDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> BeltBurnishingDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus);
+        public bool BeltBurnishingDone => this.GetBoolConfigurationValue((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> CellsControlDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.CellsControlDone, (long)ConfigurationCategory.SetupStatus);
+        public bool CellsControlDone => this.GetBoolConfigurationValue((long)SetupStatus.CellsControlDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> DrawersLoadedDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.DrawersLoadedDone, (long)ConfigurationCategory.SetupStatus);
+        public bool DrawersLoadedDone => this.GetBoolConfigurationValue((long)SetupStatus.DrawersLoadedDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> FirstDrawerLoadDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.FirstDrawerLoadDone, (long)ConfigurationCategory.SetupStatus);
+        public bool FirstDrawerLoadDone => this.GetBoolConfigurationValue((long)SetupStatus.FirstDrawerLoadDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> HorizontalHomingDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.HorizontalHomingDone, (long)ConfigurationCategory.SetupStatus);
+        public bool HorizontalHomingDone => this.GetBoolConfigurationValue((long)SetupStatus.HorizontalHomingDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Laser1Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Laser1Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Laser1Done => this.GetBoolConfigurationValue((long)SetupStatus.Laser1Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Laser2Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Laser2Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Laser2Done => this.GetBoolConfigurationValue((long)SetupStatus.Laser2Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Laser3Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Laser3Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Laser3Done => this.GetBoolConfigurationValue((long)SetupStatus.Laser3Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> MachineDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+        public bool MachineDone => this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> PanelsControlDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.PanelsControlDone, (long)ConfigurationCategory.SetupStatus);
+        public bool PanelsControlDone => this.GetBoolConfigurationValue((long)SetupStatus.PanelsControlDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Shape1Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Shape1Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Shape1Done => this.GetBoolConfigurationValue((long)SetupStatus.Shape1Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Shape2Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Shape2Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Shape2Done => this.GetBoolConfigurationValue((long)SetupStatus.Shape2Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Shape3Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Shape3Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Shape3Done => this.GetBoolConfigurationValue((long)SetupStatus.Shape3Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Shutter1Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Shutter1Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Shutter1Done => this.GetBoolConfigurationValue((long)SetupStatus.Shutter1Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Shutter2Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Shutter2Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Shutter2Done => this.GetBoolConfigurationValue((long)SetupStatus.Shutter2Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> Shutter3Done => this.GetBoolConfigurationValueAsync((long)SetupStatus.Shutter3Done, (long)ConfigurationCategory.SetupStatus);
+        public bool Shutter3Done => this.GetBoolConfigurationValue((long)SetupStatus.Shutter3Done, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> VerticalHomingDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
+        public bool VerticalHomingDone => this.GetBoolConfigurationValue((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> VerticalOffsetDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus);
+        public bool VerticalOffsetDone => this.GetBoolConfigurationValue((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> VerticalResolutionDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus);
+        public bool VerticalResolutionDone => this.GetBoolConfigurationValue((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus);
 
-        public Task<bool> WeightMeasurementDone => this.GetBoolConfigurationValueAsync((long)SetupStatus.WeightMeasurementDone, (long)ConfigurationCategory.SetupStatus);
+        public bool WeightMeasurementDone => this.GetBoolConfigurationValue((long)SetupStatus.WeightMeasurementDone, (long)ConfigurationCategory.SetupStatus);
 
         #endregion
     }

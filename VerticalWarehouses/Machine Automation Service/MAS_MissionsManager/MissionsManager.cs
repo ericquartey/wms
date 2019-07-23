@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -16,8 +16,9 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManager : BackgroundService
     {
@@ -249,7 +250,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                     case MessageType.DataLayerReady:
                         this.logger.LogDebug($"MM NotificationCycle: DataLayerReady received");
-                        await this.InitializeBays();
+                        this.InitializeBays();
                         await this.DistributeMissions();
                         this.missionManagementTask.Start();
                         break;

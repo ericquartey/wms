@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace Ferretto.VW.MAS.DataLayer.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IBeltBurnishing
     {
         #region Properties
 
-        Task<int> CycleQuantity { get; }
+        int CycleQuantity { get; }
 
         #endregion
     }

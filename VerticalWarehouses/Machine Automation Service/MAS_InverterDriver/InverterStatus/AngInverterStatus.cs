@@ -1,13 +1,12 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
     {
@@ -37,6 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         //INFO ANG Inputs
+
         #region Properties
 
         public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;

@@ -1,10 +1,10 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningStateMachine : InverterStateMachineBase
     {

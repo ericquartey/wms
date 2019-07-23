@@ -1,12 +1,12 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 {
     public class ShutterPositioningStateMachine : StateMachineBase
     {

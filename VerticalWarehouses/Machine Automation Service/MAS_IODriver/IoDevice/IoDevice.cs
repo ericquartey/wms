@@ -4,8 +4,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -16,7 +17,7 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
     public partial class IoDevice : IIoDevice
     {

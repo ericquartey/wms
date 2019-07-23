@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
+namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     public class ResetStateMachine : IoStateMachineBase
     {

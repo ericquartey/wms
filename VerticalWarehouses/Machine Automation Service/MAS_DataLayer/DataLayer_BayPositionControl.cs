@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
+﻿using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public Task<decimal> StepValueBP => this.GetDecimalConfigurationValueAsync((long)BayPositionControl.StepValue, (long)ConfigurationCategory.BayPositionControl);
+        public decimal StepValueBP => this.GetDecimalConfigurationValue((long)BayPositionControl.StepValue, (long)ConfigurationCategory.BayPositionControl);
 
         #endregion
     }

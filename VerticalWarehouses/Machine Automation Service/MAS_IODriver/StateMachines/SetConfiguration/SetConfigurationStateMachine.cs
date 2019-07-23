@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationStateMachine : IoStateMachineBase
     {

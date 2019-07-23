@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
+﻿using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,33 +8,33 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public Task<decimal> InitialSpeedBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.InitialSpeed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal InitialSpeedBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.InitialSpeed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step1AccDecBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step1AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step1AccDecBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step1AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step1PositionBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step1Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step1PositionBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step1Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step1SpeedBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step1Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step1SpeedBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step1Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step2AccDecBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step2AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step2AccDecBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step2AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step2PositionBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step2Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step2PositionBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step2Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step2SpeedBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step2Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step2SpeedBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step2Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step3AccDecBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step3AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step3AccDecBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step3AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step3PositionBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step3Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step3PositionBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step3Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step3SpeedBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step3Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step3SpeedBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step3Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step4AccDecBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step4AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step4AccDecBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step4AccDec, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step4PositionBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step4Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step4PositionBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step4Position, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<decimal> Step4SpeedBP => this.GetDecimalConfigurationValueAsync((long)HorizontalMovementBackwardProfile.Step4Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public decimal Step4SpeedBP => this.GetDecimalConfigurationValue((long)HorizontalMovementBackwardProfile.Step4Speed, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
-        public Task<int> TotalStepsBP => this.GetIntegerConfigurationValueAsync((long)HorizontalMovementBackwardProfile.TotalSteps, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
+        public int TotalStepsBP => this.GetIntegerConfigurationValue((long)HorizontalMovementBackwardProfile.TotalSteps, (long)ConfigurationCategory.HorizontalMovementBackwardProfile);
 
         #endregion
     }

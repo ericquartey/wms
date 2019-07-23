@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Models;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -14,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        private async Task ApplicationLogWriterTaskFunction()
+        private void ApplicationLogWriterTaskFunction()
         {
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
@@ -32,18 +31,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 switch (handleIndex)
                 {
                     case 0:
-                        await this.LogCommandMessageAsync();
+                        this.LogCommandMessage();
                         break;
 
                     case 1:
-                        await this.LogNotificationMessageAsync();
+                        this.LogNotificationMessage();
                         break;
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task LogCommandMessageAsync()
+        private void LogCommandMessage()
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -51,7 +50,16 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                var serializedData = JsonConvert.SerializeObject(message.Data);
+                string serializedData = "Data Not Serializable";
+
+                try
+                {
+                    serializedData = JsonConvert.SerializeObject(message.Data);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError($"Exception {ex.Message} while serializing {message.Type} data");
+                }
 
                 var logEntry = new LogEntry();
 
@@ -67,8 +75,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    await this.primaryDataContext.LogEntries.AddAsync(logEntry, this.stoppingToken);
-                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                    lock (this.primaryContextOptions)
+                    {
+                        using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                        {
+                            primaryDataContext.LogEntries.Add(logEntry);
+                            primaryDataContext.SaveChanges();
+                        }
+                    }
                 }
                 catch
                 {
@@ -79,8 +93,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     try
                     {
-                        await this.secondaryDataContext.LogEntries.AddAsync(logEntry, this.stoppingToken);
-                        await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                        lock (this.secondaryContextOptions)
+                        {
+                            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                            {
+                                secondaryDataContext.LogEntries.Add(logEntry);
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
                     }
                     catch
                     {
@@ -111,7 +131,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private async Task LogNotificationMessageAsync()
+        private void LogNotificationMessage()
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -119,18 +139,20 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                var logEntry = new LogEntry();
+                string serializedData = "Data Not Serializable";
 
                 try
                 {
-                    var serializedData = JsonConvert.SerializeObject(message.Data);
-                    logEntry.Data = serializedData;
+                    serializedData = JsonConvert.SerializeObject(message.Data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    logEntry.Data = "Data Not Serializable";
+                    this.logger.LogError($"Exception {ex.Message} while serializing {message.Type} data");
                 }
 
+                var logEntry = new LogEntry();
+
+                logEntry.Data = serializedData;
                 logEntry.Description = message.Description;
                 logEntry.Destination = message.Destination.ToString();
                 logEntry.ErrorLevel = message.ErrorLevel.ToString();
@@ -144,8 +166,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    this.primaryDataContext.LogEntries.Add(logEntry);
-                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                    lock (this.primaryContextOptions)
+                    {
+                        using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                        {
+                            primaryDataContext.LogEntries.Add(logEntry);
+                            primaryDataContext.SaveChanges();
+                        }
+                    }
                 }
                 catch
                 {
@@ -156,8 +184,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     try
                     {
-                        this.secondaryDataContext.LogEntries.Add(logEntry);
-                        await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                        lock (this.secondaryContextOptions)
+                        {
+                            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                            {
+                                secondaryDataContext.LogEntries.Add(logEntry);
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
                     }
                     catch
                     {

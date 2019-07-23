@@ -6,33 +6,33 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
-        Task<decimal> InitialSpeedBP { get; }
+        decimal InitialSpeedBP { get; }
 
-        Task<decimal> Step1AccDecBP { get; }
+        decimal Step1AccDecBP { get; }
 
-        Task<decimal> Step1PositionBP { get; }
+        decimal Step1PositionBP { get; }
 
-        Task<decimal> Step1SpeedBP { get; }
+        decimal Step1SpeedBP { get; }
 
-        Task<decimal> Step2AccDecBP { get; }
+        decimal Step2AccDecBP { get; }
 
-        Task<decimal> Step2PositionBP { get; }
+        decimal Step2PositionBP { get; }
 
-        Task<decimal> Step2SpeedBP { get; }
+        decimal Step2SpeedBP { get; }
 
-        Task<decimal> Step3AccDecBP { get; }
+        decimal Step3AccDecBP { get; }
 
-        Task<decimal> Step3PositionBP { get; }
+        decimal Step3PositionBP { get; }
 
-        Task<decimal> Step3SpeedBP { get; }
+        decimal Step3SpeedBP { get; }
 
-        Task<decimal> Step4AccDecBP { get; }
+        decimal Step4AccDecBP { get; }
 
-        Task<decimal> Step4PositionBP { get; }
+        decimal Step4PositionBP { get; }
 
-        Task<decimal> Step4SpeedBP { get; }
+        decimal Step4SpeedBP { get; }
 
-        Task<int> TotalSteps { get; }
+        int TotalStepsBP { get; }
 
         #endregion
     }

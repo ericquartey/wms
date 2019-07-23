@@ -11,8 +11,9 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
@@ -52,9 +53,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
+        public ActionResult<decimal> GetDecimalConfigurationParameter(string category, string parameter)
         {
-            return await this.GetDecimalConfigurationParameter_MethodAsync(category, parameter);
+            return this.GetDecimalConfigurationParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200)]
@@ -76,7 +77,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     MessageType.Homing));
         }
 
-        private async Task<ActionResult<decimal>> GetDecimalConfigurationParameter_MethodAsync(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
@@ -92,7 +93,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                         try
                         {
-                            value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -114,7 +115,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)horizontalAxisParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -134,7 +135,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         decimal value3 = 0;
                         try
                         {
-                            value3 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId);
+                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {

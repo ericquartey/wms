@@ -1,11 +1,11 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public abstract class StateBase : IState
     {

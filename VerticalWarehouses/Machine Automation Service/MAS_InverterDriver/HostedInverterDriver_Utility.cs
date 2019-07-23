@@ -3,18 +3,18 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
+using Ferretto.VW.MAS.DataLayer.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -26,7 +26,7 @@ using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver
     {
@@ -297,9 +297,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
         }
 
-        private async Task InitializeInverterStatus()
+        private void InitializeInverterStatus()
         {
-            var inverterList = await this.vertimagConfiguration.GetInstalledInverterListAsync();
+            var inverterList = this.vertimagConfiguration.GetInstalledInverterList();
             IInverterStatusBase inverterStatus = null;
             foreach (var inverterType in inverterList)
             {
@@ -951,8 +951,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.logger.LogTrace("1:Method Start");
 
-            var inverterAddress = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+            var inverterAddress = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

@@ -1,12 +1,12 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis;
+using Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
     public partial class IoDevice
     {

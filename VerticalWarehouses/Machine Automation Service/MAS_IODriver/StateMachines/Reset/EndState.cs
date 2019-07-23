@@ -1,11 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
+namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     public class EndState : IoStateBase
     {

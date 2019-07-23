@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
     public class PowerUpStateMachine : IoStateMachineBase
     {

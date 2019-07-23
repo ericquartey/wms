@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +10,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerCellManagment dataLayerCellManagment;
+        private readonly IDataLayerCellManagement dataLayerCellManagment;
 
         #endregion
 
         #region Constructors
 
-        public CellsController(IDataLayerCellManagment dataLayerCellManagment)
+        public CellsController(IDataLayerCellManagement dataLayerCellManagment)
         {
             this.dataLayerCellManagment = dataLayerCellManagment;
         }

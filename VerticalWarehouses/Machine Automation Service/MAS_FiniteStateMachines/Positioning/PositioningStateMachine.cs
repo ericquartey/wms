@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStateMachine : StateMachineBase
     {

@@ -1,10 +1,10 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationEndState : IoStateBase
     {

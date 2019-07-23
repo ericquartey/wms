@@ -6,9 +6,9 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
-        Task<decimal> FeedRateSH { get; }
+        decimal FeedRateSH { get; }
 
-        Task<decimal> RequiredTolerance { get; }
+        decimal RequiredTolerance { get; }
 
         #endregion
     }

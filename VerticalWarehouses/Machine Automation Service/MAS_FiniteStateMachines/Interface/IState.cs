@@ -2,7 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS_Utils.Messages;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
+namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 {
     public interface IState : IDisposable
     {

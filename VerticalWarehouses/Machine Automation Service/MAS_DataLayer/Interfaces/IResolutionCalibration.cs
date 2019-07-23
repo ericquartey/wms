@@ -1,16 +1,14 @@
-﻿using System.Threading.Tasks;
-
-namespace Ferretto.VW.MAS.DataLayer.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IResolutionCalibration
     {
         #region Properties
 
-        Task<decimal> FeedRate { get; }
+        decimal FeedRate { get; }
 
-        Task<decimal> FinalPosition { get; }
+        decimal FinalPosition { get; }
 
-        Task<decimal> InitialPosition { get; }
+        decimal InitialPosition { get; }
 
         #endregion
     }
