@@ -13,9 +13,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         private readonly IOSensorsStatus ioSensorsStatus;
 
-        readonly private bool[] rawInvertersInputs;
+        private readonly bool[] rawInvertersInputs;
 
-        readonly private bool[] rawRemoteIOsInputs;
+        private readonly bool[] rawRemoteIOsInputs;
 
         #endregion
 
@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         #region Methods
 
+        //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor)
         {
             var requiredUpdateIoInverters = false;
@@ -109,6 +110,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
             }
         }
 
+        //INFO Inputs from the IO Devices
         private void updateIoSensorsStatus()
         {
             const int N_TOT_CHANNELS = 32;
@@ -120,21 +122,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
             // Bay1
             newInputs[(int)IOMachineSensors.NormalState] = this.rawRemoteIOsInputs[(int)IoPorts.NormalState];
+            //TEMP Begin only for Bay1
             newInputs[(int)IOMachineSensors.MushroomHeadButtonBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MushroomEmergency];
             newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay];
             newInputs[(int)IOMachineSensors.MicroCarterRightSideBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay];
             newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay1] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay];
             newInputs[(int)IOMachineSensors.LUPresentInBay1] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay];
             newInputs[(int)IOMachineSensors.HeightControlCheckBay1] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay];
+            //TEMP End only for Bay1
+
             newInputs[(int)IOMachineSensors.ElevatorMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.ElevatorMotorFeedback];
             newInputs[(int)IOMachineSensors.CradleMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.CradleMotorFeedback];
 
             newInputs[(int)IOMachineSensors.EmergencyEndRun] = this.rawInvertersInputs[0];
 
             newInputs[(int)IOMachineSensors.ZeroVertical] = this.rawInvertersInputs[2];
-
-            newInputs[(int)IOMachineSensors.ElevatorMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.ElevatorMotorFeedback];
-            newInputs[(int)IOMachineSensors.CradleMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.CradleMotorFeedback];
 
             newInputs[(int)IOMachineSensors.LuPresentiInMachineSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInMachineSide];
             newInputs[(int)IOMachineSensors.LuPresentInOperatorSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInOperatorSide];
