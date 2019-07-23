@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.HelpWindows"            
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     
@@ -36,7 +37,7 @@
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Cassetto" />
+                     Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderDrawer}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
@@ -57,19 +58,19 @@
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Altezza" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderHeight}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Peso max" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Tara" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderTare}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Peso attuale lordo" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
@@ -128,7 +129,7 @@
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="% Max." />
+                    Text="{x:Static Resources:OperatorApp.StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,500,0,0"
                     Width="260" Height="70"
