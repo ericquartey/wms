@@ -11,7 +11,6 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
@@ -23,8 +22,6 @@ namespace Ferretto.VW.MAS.AutomationService
     public partial class AutomationService : BackgroundService
     {
         #region Fields
-
-        private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
@@ -63,8 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IDataHubClient dataHubClient,
             IMachinesDataService machinesDataService,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
-            IMissionsDataService missionDataService,
-            IBaysManager baysManager)
+            IMissionsDataService missionDataService)
         {
             logger.LogTrace("1:Method Start");
             this.eventAggregator = eventAggregator;
@@ -73,7 +69,6 @@ namespace Ferretto.VW.MAS.AutomationService
             this.machinesDataService = machinesDataService;
             this.operatorHub = operatorHub;
             this.missionDataService = missionDataService;
-            this.baysManager = baysManager;
 
             this.logger = logger;
 

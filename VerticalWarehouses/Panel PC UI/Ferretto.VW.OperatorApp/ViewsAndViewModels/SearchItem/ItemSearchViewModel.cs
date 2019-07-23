@@ -266,7 +266,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.IsItemCallButtonActive = true;
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
             try

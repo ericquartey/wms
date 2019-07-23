@@ -2,7 +2,7 @@
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.MAS_Utils.Utilities
+namespace Ferretto.VW.MAS.MissionsManager
 {
     public class Bay
     {
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 
         public int Id { get; set; }
 
-        public string IpAddress { get; set; }
+        public System.Net.IPAddress IpAddress { get; set; }
 
         public IEnumerable<MissionInfo> PendingMissions { get; set; } = new List<MissionInfo>();
 

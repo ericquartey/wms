@@ -21,8 +21,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         private readonly INavigationService navigationService;
 
-        private readonly DataGridKit selectedKit;
-
         private BindableBase dataGridViewModel;
 
         private ObservableCollection<DataGridKit> kits;
@@ -77,7 +75,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #endregion
 
         #region Methods
-
 
         public override Task OnEnterViewAsync()
         {

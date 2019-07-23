@@ -81,21 +81,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             await this.GetTrayControlDataAsync(this.BayManager);
         }
 
-        private async Task GetTrayControlDataAsync(IBayManager bayManager)
-        {
-            try
-            {
-                this.Compartments = await this.WmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-
-                this.SelectedCompartment = this.Compartments
-                    .SingleOrDefault(c => c.Id == bayManager.CurrentMissionOperation.CompartmentId);
-            }
-            catch (Exception ex)
-            {
-                this.StatusMessageService.Notify(ex, $"Cannot load data.");
-            }
-        }
-
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
             var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);

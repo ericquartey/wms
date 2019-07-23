@@ -12,13 +12,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
-    public partial class MissionsManager
+    public partial class MissionsManagerService
     {
         #region Methods
 
         private void ChooseAndExecuteMission()
         {
             var connectedIdleBays = this.baysManager.Bays.Where(b => b.Status == BayStatus.Idle);
+
+            System.Diagnostics.Debug.Assert(
+                connectedIdleBays.Any(b => b.CurrentMissionOperation != null) == false,
+                "Current mission operation on all bays should be null because the bays are idle.");
 
             foreach (var bay in connectedIdleBays)
             {
@@ -40,10 +44,6 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                 if (bay.CurrentMission != null)
                 {
-                    System.Diagnostics.Debug.Assert(
-                        bay.CurrentMissionOperation == null,
-                        "Current mission operation should be null because the bay is idle.");
-
                     bay.CurrentMissionOperation = bay.CurrentMission.Operations
                         .OrderBy(o => o.Priority)
                         .FirstOrDefault(o => o.Status == MissionOperationStatus.New);
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             }
         }
 
-        private void NotifyMissionExecution(MAS_Utils.Utilities.Bay bay)
+        private void NotifyMissionExecution(Bay bay)
         {
             var data = new ExecuteMissionMessageData
             {
@@ -113,36 +113,6 @@ namespace Ferretto.VW.MAS.MissionsManager
                 // do nothing
                 this.Logger.LogWarning(ex, "Unable to load missions from WMS service.");
             }
-        }
-
-        private async Task SetupBays()
-        {
-            var ip1 = await this.networkConfiguration.PPC1MasterIPAddress;
-            var ip2 = await this.networkConfiguration.PPC2SlaveIPAddress;
-            var ip3 = await this.networkConfiguration.PPC3SlaveIPAddress;
-            var ipAddresses = new string[] { ip1.ToString(), ip2.ToString(), ip3.ToString() };
-            var bayTypes = new int[]
-            {
-                await this.generalInfoConfiguration.Bay1Type,
-                await this.generalInfoConfiguration.Bay2Type,
-                await this.generalInfoConfiguration.Bay3Type
-            };
-
-            var baysCount = await this.generalInfoConfiguration.BaysQuantity;
-
-            var bays = new List<MAS_Utils.Utilities.Bay>();
-            for (var i = 0; i < baysCount; i++)
-            {
-                bays.Add(new MAS_Utils.Utilities.Bay
-                {
-                    Id = i == 0 ? 2 : 3,
-                    Status = BayStatus.Unavailable,
-                    IpAddress = ipAddresses[i],
-                    Type = (BayType)bayTypes[i]
-                });
-            }
-
-            this.baysManager.SetupBays(bays);
         }
 
         #endregion

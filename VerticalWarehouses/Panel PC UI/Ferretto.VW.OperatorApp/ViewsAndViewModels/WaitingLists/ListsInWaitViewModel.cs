@@ -113,16 +113,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
             this.DataGridViewModel = this.dataGridViewModelRef;
         }
 
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
-
         private void ChangeSelectedItem(bool isUp)
         {
             this.currentSelectedItem = (isUp) ? --this.currentSelectedItem : ++this.currentSelectedItem;

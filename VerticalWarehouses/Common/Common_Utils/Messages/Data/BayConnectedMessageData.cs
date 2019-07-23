@@ -12,6 +12,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         // TODO change type from int to BayType
         public int BayType { get; set; }
 
+        public string ConnectionId { get; set; }
+
         public int PendingMissionsCount { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }

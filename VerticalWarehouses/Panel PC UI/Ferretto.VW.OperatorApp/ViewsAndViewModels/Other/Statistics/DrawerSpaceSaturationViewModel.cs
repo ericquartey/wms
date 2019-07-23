@@ -23,11 +23,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly IMachineStatisticsService machineStatisticsService;
 
-        private readonly INavigationService navigationService;
-
         private readonly IStatusMessageService statusMessageService;
-
-        private readonly IWmsDataProvider wmsDataProvider;
 
         private int currentItemIndex;
 
@@ -52,14 +48,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         public DrawerSpaceSaturationViewModel(
             ILoadingUnitsService loadingUnitService,
             IIdentityService identityService,
-            INavigationService navigationService,
             IMachineStatisticsService machineStatisticsService,
             IStatusMessageService statusMessageService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
             this.loadingUnitService = loadingUnitService;
             this.identityService = identityService;
-            this.navigationService = navigationService;
             this.statusMessageService = statusMessageService;
             this.machineStatisticsService = machineStatisticsService;
             this.dataGridViewModel = drawerSaturationDataGridViewModel;
@@ -73,7 +67,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public string Dimension { get => this.dimension; set => this.SetProperty(ref this.dimension, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
 
         public double FillPercentage { get => this.fillPercentage; set => this.SetProperty(ref this.fillPercentage, value); }
 
@@ -81,13 +75,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(true)));
 
         #endregion
 
         #region Methods
 
-        public async void ChangeSelectedItemAsync(bool isUp)
+        public void ChangeSelectedItem(bool isUp)
         {
             if (!(this.dataGridViewModel is CustomControlDrawerSaturationDataGridViewModel gridData))
             {

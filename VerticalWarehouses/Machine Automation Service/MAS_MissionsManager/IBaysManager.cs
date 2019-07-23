@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS_Utils.Utilities.Interfaces
+namespace Ferretto.VW.MAS.MissionsManager
 {
     public interface IBaysManager
     {
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities.Interfaces
 
         #region Methods
 
-        void SetupBays(IEnumerable<Bay> bays);
+        Task SetupBaysAsync();
 
         #endregion
     }

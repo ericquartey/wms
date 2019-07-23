@@ -1,11 +1,11 @@
 ﻿using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer.Extensions;
+using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_Utils.Utilities;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -93,8 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddHostedService<FiniteStateMachines>();
 
-            // HACK commented out module initialization for development purpose
-            // services.AddHostedService<MissionsManager>();
+            services.AddHostedService<MissionsManagerService>();
 
             services.AddHostedService<AutomationService>();
 

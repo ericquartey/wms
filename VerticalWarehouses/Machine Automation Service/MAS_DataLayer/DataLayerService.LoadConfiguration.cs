@@ -224,7 +224,7 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         private async Task SaveConfigurationDataAsync(
-                    ConfigurationCategory elementCategory,
+            ConfigurationCategory elementCategory,
             long configurationData,
             JToken jsonDataValue)
         {
@@ -267,15 +267,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     case ConfigurationDataType.String:
                         var stringValue = jsonDataValue.Value<string>();
-                        var splitDot = stringValue.Split('.');
-                        var ipAddress = false;
 
-                        if (splitDot.Length == 4)
-                        {
-                            ipAddress = true;
-                        }
-
-                        if (ipAddress && IPAddress.TryParse(stringValue, out var configurationValue))
+                        if (IPAddress.TryParse(stringValue, out var configurationValue))
                         {
                             await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);
                         }

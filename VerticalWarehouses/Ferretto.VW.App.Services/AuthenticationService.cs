@@ -7,20 +7,30 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private readonly IStatusMessageService statusMessageService;
+
         private readonly IUsersDataService usersDataService;
 
         #endregion
 
         #region Constructors
 
-        public AuthenticationService(IUsersDataService usersDataService)
+        public AuthenticationService(
+            IUsersDataService usersDataService,
+            IStatusMessageService statusMessageService)
         {
             if (usersDataService == null)
             {
                 throw new System.ArgumentNullException(nameof(usersDataService));
             }
 
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
             this.usersDataService = usersDataService;
+            this.statusMessageService = statusMessageService;
         }
 
         #endregion
@@ -56,8 +66,10 @@ namespace Ferretto.VW.App.Services
 
                 return userClaims;
             }
-            catch
+            catch (SwaggerException ex)
             {
+                this.statusMessageService.Notify(ex, "Unable to login.");
+
                 return null;
             }
         }

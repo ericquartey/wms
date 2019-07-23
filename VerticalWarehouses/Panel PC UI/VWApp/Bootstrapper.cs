@@ -24,6 +24,7 @@ namespace Ferretto.VW.App
             var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
             this.Container.RegisterSingleton<IAuthenticationService, AuthenticationService>();
+            this.Container.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
             this.Container.RegisterInstance(ServiceFactory.Get<ISessionService>());
             this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));

@@ -24,8 +24,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
     {
         #region Fields
 
-        private int? actualQuantity;
-
         private ICommand confirmCommand;
 
         private ICommand drawerActivityRefillingDetailsButtonCommand;
@@ -77,27 +75,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             await this.GetTrayControlDataAsync(this.BayManager);
         }
 
-        private async Task DrawerDetailsButtonMethod()
+        private Task DrawerDetailsButtonMethod()
         {
             this.NavigationService.NavigateToView<DrawerActivityRefillingDetailViewModel, IDrawerActivityRefillingDetailViewModel>();
-        }
 
-        private async Task GetTrayControlDataAsync(IBayManager bayManager)
-        {
-            try
-            {
-                this.Compartments = await this.WmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-                this.SelectedCompartment = this.Compartments.SingleOrDefault(c => c.Id == bayManager.CurrentMissionOperation.CompartmentId);
-            }
-            catch (Exception ex)
-            {
-                this.StatusMessageService.Notify(ex);
-            }
+            return Task.CompletedTask;
         }
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            this.ItemImage?.Dispose();
             this.ItemImage = null;
 
             if (this.BayManager.CurrentMissionOperation != null)

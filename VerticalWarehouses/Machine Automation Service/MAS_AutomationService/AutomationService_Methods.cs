@@ -152,13 +152,9 @@ namespace Ferretto.VW.MAS.AutomationService
                 throw new ArgumentNullException(nameof(messageData));
             }
 
-            var bay = this.baysManager.Bays.SingleOrDefault(x => x.Id == messageData.BayId);
-            if (bay != null)
-            {
-                this.operatorHub.Clients
-                    .Client(bay.ConnectionId)
-                    .BayStatusChanged(messageData);
-            }
+            this.operatorHub.Clients
+                .Client(messageData.ConnectionId)
+                .BayStatusChanged(messageData);
         }
 
         private void PositioningMethod(NotificationMessage receivedMessage)

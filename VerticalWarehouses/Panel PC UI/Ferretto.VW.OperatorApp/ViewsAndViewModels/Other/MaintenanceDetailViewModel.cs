@@ -17,8 +17,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         private readonly CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
 
-        private readonly DataGridKit selectedKit;
-
         private BindableBase dataGridViewModel;
 
         private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;

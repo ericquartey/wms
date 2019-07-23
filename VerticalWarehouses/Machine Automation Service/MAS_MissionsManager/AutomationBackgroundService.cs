@@ -147,6 +147,8 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                     this.Logger.LogTrace(
                         $"1:Notification received: {notification.Type}, destination: {notification.Destination}, source: {notification.Source}, status: {notification.Status}");
+
+                    await this.OnNotificationReceivedAsync(notification);
                 }
                 catch (OperationCanceledException)
                 {
@@ -154,8 +156,10 @@ namespace Ferretto.VW.MAS.MissionsManager
 
                     return;
                 }
-
-                await this.OnNotificationReceivedAsync(notification);
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while processing the notification.");
+                }
             }
             while (!this.StoppingToken.IsCancellationRequested);
         }

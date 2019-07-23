@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 return this.StatusCode(
                     problemDetailsException.StatusCode,
-                    problemDetailsException.Result.Title);
+                    problemDetailsException.Result);
             }
 
             return this.StatusCode(exception.StatusCode, exception.Message);

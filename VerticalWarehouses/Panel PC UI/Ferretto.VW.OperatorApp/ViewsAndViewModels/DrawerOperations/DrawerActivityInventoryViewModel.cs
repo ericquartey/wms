@@ -70,9 +70,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             await this.GetTrayControlDataAsync(this.BayManager);
         }
 
-        private async Task DrawerDetailsButtonMethod()
+        private Task DrawerDetailsButtonMethod()
         {
             this.NavigationService.NavigateToView<DrawerActivityInventoryDetailViewModel, IDrawerActivityInventoryDetailViewModel>();
+
+            return Task.CompletedTask;
         }
 
         private async Task GetViewDataAsync(IBayManager bayManager)

@@ -8,17 +8,21 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
     public class GeneralInfoViewModel : BaseViewModel, IGeneralInfoViewModel
     {
+        #region Fields
+
+        private readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
+
         private readonly IIdentityService identityService;
 
-        readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
+        private Brush machineServiceStatusBrush;
 
         private MachineIdentity model;
 
-        private string wmsServicesStatusDescription;
-
         private Brush wmsServicesStatusBrush;
 
-        private Brush machineServiceStatusBrush;
+        private string wmsServicesStatusDescription;
+
+        #endregion
 
         #region Constructors
 
@@ -47,28 +51,41 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             this.NavigationViewModel = otherNavigationViewModel as OtherNavigationViewModel;
         }
 
-        private void UpdateWmsServicesStatus()
+        #endregion
+
+        #region Properties
+
+        public Brush MachineServiceStatusBrush
         {
-            if (true/*this.dataHubClient.IsConnected*/)
-            {
-                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOnline;
-                this.WmsServicesStatusBrush = Brushes.Green;
-            }
-            else
-            {
-                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOffline;
-                this.WmsServicesStatusBrush = Brushes.Red;
-            }
+            get => this.machineServiceStatusBrush;
+            set => this.SetProperty(ref this.machineServiceStatusBrush, value);
         }
 
-        private void OperatorHubClient_ConnectionStatusChanged(
-            object sender,
-            WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
+        public MachineIdentity Model
         {
-            this.UpdateWmsServicesStatus();
+            get => this.model;
+            set => this.SetProperty(ref this.model, value);
+        }
+
+        public IOtherNavigationViewModel OtherNavigationViewModel { get; }
+
+        public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
+
+        public Brush WmsServicesStatusBrush
+        {
+            get => this.wmsServicesStatusBrush;
+            set => this.SetProperty(ref this.wmsServicesStatusBrush, value);
+        }
+
+        public string WmsServicesStatusDescription
+        {
+            get => this.wmsServicesStatusDescription;
+            set => this.SetProperty(ref this.wmsServicesStatusDescription, value);
         }
 
         #endregion
+
+        #region Methods
 
         public override async Task OnEnterViewAsync()
         {
@@ -96,34 +113,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             }
         }
 
-        #region Properties
-
-        public IOtherNavigationViewModel OtherNavigationViewModel { get; }
-
-        public MachineIdentity Model
+        private void OperatorHubClient_ConnectionStatusChanged(
+            object sender,
+            WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
         {
-            get => this.model;
-            set => this.SetProperty(ref this.model, value);
+            this.UpdateWmsServicesStatus();
         }
 
-        public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
-
-        public string WmsServicesStatusDescription
+        private void UpdateWmsServicesStatus()
         {
-            get => this.wmsServicesStatusDescription;
-            set => this.SetProperty(ref this.wmsServicesStatusDescription, value);
-        }
-
-        public Brush WmsServicesStatusBrush
-        {
-            get => this.wmsServicesStatusBrush;
-            set => this.SetProperty(ref this.wmsServicesStatusBrush, value);
-        }
-
-        public Brush MachineServiceStatusBrush
-        {
-            get => this.machineServiceStatusBrush;
-            set => this.SetProperty(ref this.machineServiceStatusBrush, value);
+            if (this.dataHubClient.IsConnected)
+            {
+                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusBrush = Brushes.Green;
+            }
+            else
+            {
+                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusBrush = Brushes.Red;
+            }
         }
 
         #endregion

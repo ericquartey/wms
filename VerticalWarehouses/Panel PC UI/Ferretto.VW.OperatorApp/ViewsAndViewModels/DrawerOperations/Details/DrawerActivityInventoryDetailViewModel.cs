@@ -14,10 +14,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
     {
         #region Fields
 
-        private readonly IUnityContainer container;
-
-        private readonly IEventAggregator eventAggregator;
-
         private readonly IWmsImagesProvider wmsImagesProvider;
 
         private string batch;
@@ -48,15 +44,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Constructors
 
-        public DrawerActivityInventoryDetailViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityInventoryDetailViewModel(IWmsImagesProvider wmsImagesProvider)
         {
-            if (eventAggregator == null)
+            if (wmsImagesProvider == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(wmsImagesProvider));
             }
 
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
+            this.wmsImagesProvider = wmsImagesProvider;
         }
 
         #endregion

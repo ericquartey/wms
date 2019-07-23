@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -18,32 +17,20 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Fields
 
-        private readonly IBaysManager baysManager;
-
         private readonly IEventAggregator eventAggregator;
-
-        private readonly ILogger<AutomationService> logger;
-
-        private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OperatorHub"/> class.
-        /// </summary>
-        public OperatorHub(
-            ILogger<AutomationService> logger,
-            IEventAggregator eventAggregator,
-            IBaysManager baysManager,
-            IHubContext<OperatorHub,
-                IOperatorHub> operatorHub)
+        public OperatorHub(IEventAggregator eventAggregator)
         {
-            this.logger = logger;
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.baysManager = baysManager;
-            this.operatorHub = operatorHub;
         }
 
         #endregion
@@ -52,42 +39,24 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var localIpAddress = this.Context.GetHttpContext().Connection.LocalIpAddress;
-
-            var bay = this.baysManager.Bays.SingleOrDefault(b => b.IpAddress == localIpAddress.ToString());
-            if (bay == null)
-            {
-                return;
-            }
-
-            bay.ConnectionId = this.Context.ConnectionId;
-            bay.Status = BayStatus.Idle;
-            bay.Id = 2; // TODO get actual bay ID from WMS
-
-            var messageData = new BayConnectedMessageData
-            {
-                BayId = bay.Id,
-                BayType = (int)bay.Type,
-                PendingMissionsCount = bay.PendingMissions.Count()
-            };
-
-            var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            this.logger.LogDebug($"AS-OH Bay connected id: {bay.Id}");
+            this.eventAggregator
+                .GetEvent<ClientConnectionChangedPubSubEvent>()
+                .Publish(new ClientConnectionChangedPayload(
+                    this.Context.ConnectionId,
+                    this.Context.GetHttpContext().Connection.LocalIpAddress,
+                    true));
 
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var localIpAddress = this.Context.GetHttpContext().Connection.LocalIpAddress;
-
-            var bay = this.baysManager.Bays.SingleOrDefault(b => b.IpAddress == localIpAddress.ToString());
-            if (bay != null)
-            {
-                bay.ConnectionId = null;
-                bay.Status = BayStatus.Unavailable;
-            }
+            this.eventAggregator
+               .GetEvent<ClientConnectionChangedPubSubEvent>()
+               .Publish(new ClientConnectionChangedPayload(
+                    this.Context.ConnectionId,
+                    this.Context.GetHttpContext().Connection.LocalIpAddress,
+                    false));
 
             await base.OnDisconnectedAsync(exception);
         }

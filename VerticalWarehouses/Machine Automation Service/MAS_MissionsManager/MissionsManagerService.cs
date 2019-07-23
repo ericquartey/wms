@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,19 +7,14 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Utilities;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionsManager
 {
-    public partial class MissionsManager : AutomationBackgroundService
+    public partial class MissionsManagerService : AutomationBackgroundService
     {
         #region Fields
 
@@ -29,8 +23,6 @@ namespace Ferretto.VW.MAS.MissionsManager
         private readonly IBaysManager baysManager;
 
         private readonly IGeneralInfoConfigurationDataLayer generalInfoConfiguration;
-
-        private readonly List<Mission> machineMissions = new List<Mission>();
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -48,9 +40,9 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         #region Constructors
 
-        public MissionsManager(
+        public MissionsManagerService(
             IEventAggregator eventAggregator,
-            ILogger<MissionsManager> logger,
+            ILogger<MissionsManagerService> logger,
             IGeneralInfoConfigurationDataLayer generalInfoConfiguration,
             IBaysManager baysManager,
             ISetupNetworkDataLayer networkConfiguration,
@@ -83,8 +75,6 @@ namespace Ferretto.VW.MAS.MissionsManager
                 throw new ArgumentNullException(nameof(missionsDataService));
             }
 
-            this.Logger.LogTrace("1:Method Start");
-
             this.baysManager = baysManager;
             this.generalInfoConfiguration = generalInfoConfiguration;
             this.networkConfiguration = networkConfiguration;
@@ -92,6 +82,8 @@ namespace Ferretto.VW.MAS.MissionsManager
             this.missionsDataService = missionsDataService;
 
             this.missionManagementTask = new Task(() => this.HandleIncomingMissions());
+
+            this.Logger.LogTrace("1:Mission manager initialised.");
         }
 
         #endregion
@@ -175,7 +167,7 @@ namespace Ferretto.VW.MAS.MissionsManager
         {
             this.Logger.LogDebug($"MM NotificationCycle: DataLayerReady received.");
 
-            await this.SetupBays();
+            await this.baysManager.SetupBaysAsync();
             await this.RefreshPendingMissionsQueue();
 
             this.missionManagementTask.Start();
@@ -211,8 +203,10 @@ namespace Ferretto.VW.MAS.MissionsManager
         private async Task OnNewMissionAvailable()
         {
             this.Logger.LogDebug($"MM NotificationCycle: MissionAdded received");
+
             await this.RefreshPendingMissionsQueue();
             this.newMissionArrivedResetEvent.Set();
+
             this.Logger.LogDebug($"MM NotificationCycle: MissionAdded completed");
         }
 

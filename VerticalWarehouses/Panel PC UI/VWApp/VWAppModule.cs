@@ -15,8 +15,6 @@ namespace Ferretto.VW.App
     {
         #region Fields
 
-        private const string WmsServiceAddress = "WMSServiceAddress";
-
         private readonly IUnityContainer container;
 
         #endregion
@@ -73,7 +71,7 @@ namespace Ferretto.VW.App
 
         private static void RegisterWmsProviders(IContainerRegistry containerRegistry)
         {
-            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get(WmsServiceAddress));
+            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMSServiceAddress"));
 
             containerRegistry.RegisterInstance<IWmsDataProvider>(new WmsDataProvider(wmsServiceUrl));
             containerRegistry.RegisterInstance<IWmsImagesProvider>(new WmsImagesProvider(wmsServiceUrl));
