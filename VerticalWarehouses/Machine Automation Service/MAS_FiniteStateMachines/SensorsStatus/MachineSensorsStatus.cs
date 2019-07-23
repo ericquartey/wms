@@ -1,11 +1,12 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.MAS.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS_IODriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 {
-    public class MachineSensorsStatus
+    public class MachineSensorsStatus : IMachineSensorsStatus
     {
         #region Fields
 
@@ -13,9 +14,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         private readonly IOSensorsStatus ioSensorsStatus;
 
-        readonly private bool[] rawInvertersInputs;
+        private readonly bool[] rawInvertersInputs;
 
-        readonly private bool[] rawRemoteIOsInputs;
+        private readonly bool[] rawRemoteIOsInputs;
 
         #endregion
 
@@ -35,20 +36,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         public bool[] DisplayedInputs => this.ioSensorsStatus?.Inputs;
 
-        public bool DrawerIsCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerCompletelyOffCradle => !this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && !this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-        public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+
+        public bool IsDrawerInBay1Up => this.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
+        public bool IsMachineInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
+
+        public bool IsSensorZeroOnCradle => this.DisplayedInputs[(int)IOMachineSensors.ZeroPawl];
+
+        public bool IsSensorZeroOnElevator => this.DisplayedInputs[(int)IOMachineSensors.ZeroVertical];
 
         public bool[] RawInvertersInputs => this.rawInvertersInputs;
 
         public bool[] RawRemoteIOsInputs => this.rawRemoteIOsInputs;
-
-        public bool SensorInZeroOnCradle => this.DisplayedInputs[(int)IOMachineSensors.ZeroPawl];
-
-        public bool SensorInZeroOnElevator => this.DisplayedInputs[(int)IOMachineSensors.ZeroVertical];
 
         #endregion
 

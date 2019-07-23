@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
+using Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
@@ -12,6 +13,8 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -25,15 +28,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             switch (condition)
             {
                 case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineSensorsStatus.MachineIsInEmergencyState;
+                    result = this.machineSensorsStatus.IsMachineInEmergencyState;
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.DrawerIsCompletelyOnCradle;
+                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineSensorsStatus.DrawerIsPartiallyOnCradle;
+                    result = this.machineSensorsStatus.IsDrawerPartiallyOnCradle;
                     break;
 
                 //TEMP Add here other condition getters
@@ -92,6 +95,46 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            }
+        }
+
+        private void ProcessDrawerOperation(CommandMessage receivedMessage)
+        {
+            if (receivedMessage.Data is IDrawerOperationMessageData data)
+            {
+                switch (data.Operation)
+                {
+                    case DrawerOperation.AutomaticStore:
+                    case DrawerOperation.ManualStore:
+                        this.logger.LogTrace("Starting Drawer Store FSM");
+
+                        this.currentStateMachine = new MoveDrawerStateMachine(this.eventAggregator, this.setupStatus, this.machineSensorsStatus, data, this.logger);
+                        break;
+
+                    case DrawerOperation.AutomaticRecall:
+                    case DrawerOperation.ManualRecall:
+                        this.logger.LogTrace("Starting Drawer Recall FSM");
+
+                        //this.currentStateMachine = new RecallDrawerStateMachine(this.eventAggregator, this.setupStatus, data, this.logger);
+                        break;
+                }
+
+                try
+                {
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError($"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine");
+
+                    this.SendMessage(new FsmExceptionMessageData(ex, $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine", 1, MessageVerbosity.Error));
+                }
+            }
+            else
+            {
+                this.logger.LogError($"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
+
+                this.SendMessage(new FsmExceptionMessageData(null, $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type", 2, MessageVerbosity.Error));
             }
         }
 
