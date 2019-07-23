@@ -1281,8 +1281,8 @@
     <value>HelpMachineStatisticsShutter3</value>
     <comment>Note text</comment>
   </data>
-  <data name="HelpMachineStatisticsHorizzontalCycles" xml:space="preserve">
-    <value>HelpMachineStatisticsHorizzontalCycles</value>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>HelpMachineStatisticsHorizontalCycles</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsBay1" xml:space="preserve">
@@ -1599,6 +1599,46 @@
   </data>
   <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
     <value>HelpGeneralInfoWmsStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailSourceCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailDestinationCell</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailCurrentStep</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailVerticalPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailOrizzontalPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailFragmentRemaining</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailRecoveredSpace</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>HelpDrawerCompactingDetailSpaceToRecover</value>
     <comment>Note text</comment>
   </data>
 </root>

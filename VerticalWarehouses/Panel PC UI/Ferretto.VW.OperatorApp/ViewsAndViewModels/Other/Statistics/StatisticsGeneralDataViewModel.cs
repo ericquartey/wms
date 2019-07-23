@@ -1,56 +1,77 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class StatisticsGeneralDataViewModel : BindableBase, IStatisticsGeneralDataViewModel
+    public class StatisticsGeneralDataViewModel : BaseViewModel, IStatisticsGeneralDataViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IMachineStatisticsService machineStatisticsService;
+
+        private readonly IStatusMessageService statusMessageService;
+
+        private MachineStatistics model;
 
         #endregion
 
         #region Constructors
 
         public StatisticsGeneralDataViewModel(
-            IEventAggregator eventAggregator,
-            IStatisticsNavigationViewModel statisticsNavigationViewModel)
+            IStatisticsNavigationViewModel statisticsNavigationViewModel,
+            IMachineStatisticsService machineStatisticsService,
+            IStatusMessageService statusMessageService)
         {
-            this.eventAggregator = eventAggregator;
+            if (machineStatisticsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(machineStatisticsService));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
+            if (statisticsNavigationViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(statisticsNavigationViewModel));
+            }
+
             this.NavigationViewModel = statisticsNavigationViewModel as BindableBase;
+            this.machineStatisticsService = machineStatisticsService;
+            this.statusMessageService = statusMessageService;
         }
 
         #endregion
 
         #region Properties
 
-        public BindableBase NavigationViewModel { get; set; }
+        public MachineStatistics Model
+        {
+            get => this.model;
+            set => this.SetProperty(ref this.model, value);
+        }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override async Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            try
+            {
+                this.Model = await this.machineStatisticsService.GetAsync();
 
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+                await base.OnEnterViewAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.statusMessageService.Notify(ex);
+            }
         }
 
         #endregion

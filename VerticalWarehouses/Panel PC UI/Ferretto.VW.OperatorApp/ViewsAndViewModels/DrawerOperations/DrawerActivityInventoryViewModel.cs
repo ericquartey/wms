@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
@@ -19,17 +21,17 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityInventoryViewModel : BindableBase, IDrawerActivityInventoryViewModel, IDrawerActivityViewModel
+    public class DrawerActivityInventoryViewModel : BaseViewModel, IDrawerActivityInventoryViewModel, IDrawerActivityViewModel
     {
         #region Fields
+
+        private readonly IBayManager bayManager;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly INavigationService navigationService;
 
         private string compartmentPosition;
-
-        private IUnityContainer container;
 
         private ICommand drawerActivityInventoryDetailsButtonCommand;
 
@@ -45,9 +47,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private string listDescription;
 
+        private IMainWindowViewModel mainWindowViewModel;
+
         private IOperatorService operatorService;
 
         private TrayControlCompartment selectedCompartment;
+
+        private IStatusMessageService statusMessageService;
 
         private string storedQuantity;
 
@@ -93,7 +99,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
             get => this.filterColorFunc;
-            set => this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value);
+            set => this.SetProperty(ref this.filterColorFunc, value);
         }
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
@@ -106,8 +112,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public TrayControlCompartment SelectedCompartment { get => this.selectedCompartment; set => this.SetProperty(ref this.selectedCompartment, value); }
 
         public string StoredQuantity { get => this.storedQuantity; set => this.SetProperty(ref this.storedQuantity, value); }
@@ -118,41 +122,58 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public void InitializeViewModel(
+            IBayManager bayManager,
+            IStatusMessageService statusMessageService,
+            IOperatorService operatorService,
+            IWmsDataProvider wmsDataProvider,
+            IWmsImagesProvider wmsImagesProvider,
+            IMainWindowViewModel mainWindowViewModel)
         {
-            // TODO
+            if (bayManager == null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new ArgumentNullException(nameof(statusMessageService));
+            }
+
+            if (operatorService == null)
+            {
+                throw new ArgumentNullException(nameof(operatorService));
+            }
+
+            if (wmsDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(wmsDataProvider));
+            }
+
+            if (mainWindowViewModel == null)
+            {
+                throw new ArgumentNullException(nameof(mainWindowViewModel));
+            }
+
+            this.operatorService = operatorService;
+            this.wmsDataProvider = wmsDataProvider;
+            this.wmsImagesProvider = wmsImagesProvider;
+            this.statusMessageService = statusMessageService;
+            this.mainWindowViewModel = mainWindowViewModel;
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public override async Task OnEnterViewAsync()
         {
-            this.container = container;
-            this.operatorService = this.container.Resolve<IOperatorService>();
-            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
-            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            var bayManager = this.container.Resolve<IBayManager>();
-            this.container.Resolve<IFeedbackNotifier>().Notify($"Current mission ID: {this.container.Resolve<IBayManager>().CurrentMission.Id}");
-            await this.GetViewDataAsync(bayManager);
-            await this.GetTrayControlDataAsync(bayManager);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            this.statusMessageService.Notify($"Current mission ID: {this.bayManager.CurrentMission.Id}");
+            await this.GetViewDataAsync(this.bayManager);
+            await this.GetTrayControlDataAsync(this.bayManager);
         }
 
         public void UpdateView()
         {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
+            var mission = this.bayManager.CurrentMission;
+            var mainWindowContentVM = this.mainWindowViewModel.ContentRegionCurrentViewModel;
+
             if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
                 mainWindowContentVM is DrawerActivityPickingViewModel ||
                 mainWindowContentVM is DrawerActivityRefillingViewModel ||
@@ -184,8 +205,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private async Task DrawerDetailsButtonMethod()
         {
-            var bayManager = this.container.Resolve<IBayManager>();
-            var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(bayManager.CurrentMission);
+            var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(this.bayManager.CurrentMission);
 
             this.navigationService.NavigateToView<DrawerActivityInventoryDetailViewModel, IDrawerActivityInventoryDetailViewModel>(itemDetailObject);
         }
@@ -195,7 +215,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             try
             {
                 this.ViewCompartments = await this.wmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-                this.SelectedCompartment = await this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
+                this.SelectedCompartment = this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
             }
             catch (Exception ex)
             {

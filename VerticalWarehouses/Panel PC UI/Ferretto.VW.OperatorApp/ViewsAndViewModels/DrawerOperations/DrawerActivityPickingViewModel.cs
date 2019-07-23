@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
@@ -18,7 +20,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityPickingViewModel : BindableBase, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
+    public class DrawerActivityPickingViewModel : BaseViewModel, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -26,13 +28,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IFeedbackNotifier feedbackNotifier;
-
         private readonly IMainWindowViewModel mainWindowViewModel;
 
         private readonly INavigationService navigationService;
 
         private readonly IOperatorService operatorService;
+
+        private readonly IStatusMessageService statusMessageService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -70,7 +72,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public DrawerActivityPickingViewModel(
             IEventAggregator eventAggregator,
-            IFeedbackNotifier feedbackNotifier,
+            IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
@@ -83,9 +85,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (feedbackNotifier == null)
+            if (statusMessageService == null)
             {
-                throw new ArgumentNullException(nameof(feedbackNotifier));
+                throw new ArgumentNullException(nameof(statusMessageService));
             }
 
             if (mainWindowViewModel == null)
@@ -119,7 +121,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             }
 
             this.eventAggregator = eventAggregator;
-            this.feedbackNotifier = feedbackNotifier;
+            this.statusMessageService = statusMessageService;
             this.mainWindowViewModel = mainWindowViewModel;
             this.wmsDataProvider = wmsDataProvider;
             this.wmsImagesProvider = wmsImagesProvider;
@@ -137,12 +139,21 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
 
-        public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
+        public ICommand ConfirmCommand =>
+            this.confirmCommand
+            ??
+            (this.confirmCommand = new DelegateCommand(async () => await this.ConfirmMethod()));
 
-        public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
-            async () => await this.DrawerDetailsButtonMethod()));
+        public ICommand DrawerDetailsButtonCommand =>
+            this.drawerDetailsButtonCommand
+            ??
+            (this.drawerDetailsButtonCommand = new DelegateCommand(async () => await this.DrawerDetailsButtonMethod()));
 
-        public string EvadedQuantity { get => this.evadedQuantity; set => this.SetProperty(ref this.evadedQuantity, value); }
+        public string EvadedQuantity
+        {
+            get => this.evadedQuantity;
+            set => this.SetProperty(ref this.evadedQuantity, value);
+        }
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
@@ -159,8 +170,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public string ListCode { get => this.listCode; set => this.SetProperty(ref this.listCode, value); }
 
         public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
-
-        public BindableBase NavigationViewModel { get; set; }
 
         public string RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
@@ -184,27 +193,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             }
         }
 
-        public void ExitFromViewMethod()
+        public override void ExitFromViewMethod()
         {
             this.Image?.Dispose();
             this.image?.Dispose();
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
-            this.feedbackNotifier.Notify($"Current mission ID: {this.bayManager.CurrentMission.Id}");
+            this.statusMessageService.Notify($"Current mission ID: {this.bayManager.CurrentMission.Id}");
             await this.GetViewDataAsync(this.bayManager);
             await this.GetTrayControlDataAsync(this.bayManager);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         public void UpdateView()
@@ -252,11 +251,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             try
             {
                 this.ViewCompartments = await this.wmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-                this.SelectedCompartment = await this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
+                this.SelectedCompartment = this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
             }
             catch (Exception ex)
             {
-                this.feedbackNotifier.Notify($"Cannot load data. {ex.Message}");
+                this.statusMessageService.Notify(ex, $"Cannot load data.");
             }
         }
 

@@ -161,14 +161,15 @@ namespace Ferretto.VW.InstallationApp
         {
             await this.GetParameterValuesAsync();
 
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                message =>
-                {
-                    this.UpdateUI(new MessageNotifiedEventArgs(message));
-                },
-                ThreadOption.PublisherThread,
-                false);
+            this.receivedActionUpdateToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(async 
+                    message =>
+                    {
+                        await this.UpdateCompletion(new MessageNotifiedEventArgs(message));
+                    },
+                    ThreadOption.PublisherThread,
+                    false);
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -224,7 +225,7 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void UpdateUI(MessageNotifiedEventArgs messageUI)
+        private async Task UpdateCompletion(MessageNotifiedEventArgs messageUI)
         {
             if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
             {
@@ -243,6 +244,8 @@ namespace Ferretto.VW.InstallationApp
                         this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
+
+                        await this.beltBurnishingService.SetBeltBurnishingCompletionAsync();
                         break;
 
                     case MessageStatus.OperationError:

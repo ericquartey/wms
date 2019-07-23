@@ -11,38 +11,32 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class MaintenanceDetailViewModel : BindableBase, IMaintenanceDetailViewModel
+    public class MaintenanceDetailViewModel : BaseViewModel, IMaintenanceDetailViewModel
     {
         #region Fields
 
-        private readonly IUnityContainer container;
-
-        private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
-
-        private readonly IEventAggregator eventAggregator;
+        private readonly CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
 
         private readonly DataGridKit selectedKit;
 
         private BindableBase dataGridViewModel;
 
-        private ObservableCollection<DataGridKit> kits;
+        private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;
 
         #endregion
 
         #region Constructors
 
         public MaintenanceDetailViewModel(
-            IEventAggregator eventAggregator,
-            ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel)
+            ICustomControlMaintenanceDetailDataGridViewModel maintenanceDataGridViewModel)
         {
-            if (eventAggregator == null)
+            if (maintenanceDataGridViewModel == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(maintenanceDataGridViewModel));
             }
 
-            this.eventAggregator = eventAggregator;
             this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
-            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDataGridViewModel;
+            this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDetailDataGridViewModel;
 
             this.NavigationViewModel = null;
         }
@@ -57,47 +51,31 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             set => this.SetProperty(ref this.dataGridViewModel, value);
         }
 
-        public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
-
-        public BindableBase NavigationViewModel { get; set; }
+        public ICustomControlMaintenanceDetailDataGridViewModel MaintenanceDataGridViewModel { get; }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             var random = new Random();
-            this.kits = new ObservableCollection<DataGridKit>();
-            for (var i = 0; i < random.Next(3, 30); i++)
+            this.maintenanceDetails = new ObservableCollection<DataGridMaintenanceDetail>();
+            for (int i = 0; i < random.Next(3, 30); i++)
             {
-                this.kits.Add(new DataGridKit
+                this.maintenanceDetails.Add(new DataGridMaintenanceDetail
                 {
-                    Kit = $"Kit {i}",
-                    Description = $"Kit number {i}",
-                    State = $"State",
-                    Request = "Request"
+                    Element = $"Element {i}",
+                    Description = $"This is element {i}",
+                    Quantity = random.Next(2, 40).ToString(),
                 }
                 );
             }
-            this.dataGridViewModelRef.Kits = this.kits;
-            this.dataGridViewModelRef.SelectedKit = this.kits[0];
+            this.dataGridViewModelRef.MaintenanceDetails = this.maintenanceDetails;
+            this.dataGridViewModelRef.SelectedMaintenanceDetail = this.maintenanceDetails[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
-        }
 
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         #endregion

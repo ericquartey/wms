@@ -65,6 +65,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 {
                     case MessageStatus.OperationEnd:
                         this.ioSwitched = true;
+
+                        // add
+                        //var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitch, InverterIndex.MainInverter);
+                        //var inverterCommandMessage = new FieldCommandMessage(
+                        //    inverterCommandMessageData,
+                        //    $"Switch Axis {this.axisToSwitch}",
+                        //    FieldMessageActor.InverterDriver,
+                        //    FieldMessageActor.FiniteStateMachines,
+                        //    FieldMessageType.InverterSwitchOn);
+
+                        //this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+                        //this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+                        //
+
                         break;
 
                     case MessageStatus.OperationError:
@@ -126,6 +142,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
             var notificationMessageData = new CalibrateAxisMessageData(this.axisToSwitch, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,

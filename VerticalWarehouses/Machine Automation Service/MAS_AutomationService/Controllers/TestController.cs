@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagment = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.installationHub = hub;
             this.dataHubClient = dataHubClient;
             this.operatorHub = operatorHub;

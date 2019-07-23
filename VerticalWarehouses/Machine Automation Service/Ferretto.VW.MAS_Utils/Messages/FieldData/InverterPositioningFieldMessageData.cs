@@ -7,15 +7,21 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
     {
         #region Constructors
 
-        public InverterPositioningFieldMessageData(IPositioningFieldMessageData positioningFieldMessageData, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterPositioningFieldMessageData(
+            IPositioningFieldMessageData positioningFieldMessageData,
+            int targetAcceleration,
+            int targetDeceleration,
+            int targetPosition,
+            int targetSpeed,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = positioningFieldMessageData.AxisMovement;
             this.MovementType = positioningFieldMessageData.MovementType;
             this.NumberCycles = positioningFieldMessageData.NumberCycles;
-            this.TargetAcceleration = decimal.ToInt32(positioningFieldMessageData.TargetAcceleration * positioningFieldMessageData.Resolution);
-            this.TargetDeceleration = decimal.ToInt32(positioningFieldMessageData.TargetDeceleration * positioningFieldMessageData.Resolution);
-            this.TargetPosition = decimal.ToInt32(positioningFieldMessageData.TargetPosition * positioningFieldMessageData.Resolution);
-            this.TargetSpeed = decimal.ToInt32(positioningFieldMessageData.TargetSpeed * positioningFieldMessageData.Resolution);
+            this.TargetAcceleration = targetAcceleration;
+            this.TargetDeceleration = targetDeceleration;
+            this.TargetPosition = targetPosition;
+            this.TargetSpeed = targetSpeed;
         }
 
         #endregion

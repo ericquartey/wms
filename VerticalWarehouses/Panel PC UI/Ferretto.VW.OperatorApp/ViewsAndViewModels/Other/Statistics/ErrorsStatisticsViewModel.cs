@@ -1,41 +1,49 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class ErrorsStatisticsViewModel : BindableBase, IErrorsStatisticsViewModel
+    public class ErrorsStatisticsViewModel : BaseViewModel, IErrorsStatisticsViewModel
     {
         #region Fields
 
-        private readonly CustomControlErrorsDataGridViewModel dataGridViewModelRef;
+        private readonly IErrorsService errorsService;
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IStatusMessageService statusMessageService;
 
-        private BindableBase dataGridViewModel;
+        private int currentItemIndex;
 
-        private ObservableCollection<DataGridError> errors;
+        private ICustomControlErrorsDataGridViewModel dataGridViewModelRef;
 
-        private DataGridError selectedError;
+        private ICommand downDataGridButtonCommand;
+
+        private ErrorStatisticsSummary statistics;
+
+        private ICommand upDataGridButtonCommand;
 
         #endregion
 
         #region Constructors
 
         public ErrorsStatisticsViewModel(
-            IEventAggregator eventAggregator,
+            IStatusMessageService statusMessageService,
+            IErrorsService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
-            this.eventAggregator = eventAggregator;
-            this.dataGridViewModelRef = errorsDataGridViewModel as CustomControlErrorsDataGridViewModel;
+            this.statusMessageService = statusMessageService;
+            this.errorsService = errorsService;
+            this.dataGridViewModelRef = errorsDataGridViewModel;
             this.DataGridViewModel = this.dataGridViewModelRef;
-
             this.NavigationViewModel = null;
         }
 
@@ -43,47 +51,61 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Properties
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+        public ICustomControlErrorsDataGridViewModel DataGridViewModel { get => this.dataGridViewModelRef; set => this.SetProperty(ref this.dataGridViewModelRef, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
+        public ErrorStatisticsSummary Statistics { get => this.statistics; }
+
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public void ChangeSelectedItemAsync(bool isUp)
         {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            var random = new Random();
-            this.errors = new ObservableCollection<DataGridError>();
-            for (var i = 0; i < random.Next(3, 30); i++)
+            if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
             {
-                this.errors.Add(new DataGridError
-                {
-                    Error = $"Error {i + 1}",
-                    Total = random.Next(0, 500).ToString(),
-                    TotalPercentage = random.Next(0, 100).ToString()
-                }
-                );
+                return;
             }
-            this.selectedError = this.errors[0];
-            this.dataGridViewModelRef.Errors = this.errors;
-            this.dataGridViewModelRef.SelectedError = this.selectedError;
-            this.dataGridViewModel = this.dataGridViewModelRef;
+
+            var count = gridData.Cells.Count();
+            if (gridData.Cells != null && count != 0)
+            {
+                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= count)
+                {
+                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : count - 1;
+                }
+
+                gridData.SelectedCell = gridData.Cells.ToList()[this.currentItemIndex];
+            }
         }
 
-        public void SubscribeMethodToEvent()
+        public override async Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
+            {
+                return;
+            }
 
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            try
+            {
+                this.statistics = await this.errorsService.GetStatisticsAsync();
+                var selectedError = this.statistics.Errors.FirstOrDefault();
+
+                gridData.Cells = this.statistics.Errors.OrderByDescending(e => e.Total);
+                gridData.SelectedCell = selectedError;
+                this.currentItemIndex = 0;
+
+                this.RaisePropertyChanged(nameof(this.DataGridViewModel));
+                this.RaisePropertyChanged(nameof(this.Statistics));
+            }
+            catch (Exception ex)
+            {
+                this.statusMessageService.Notify(ex, $"Cannot load data.");
+            }
         }
 
         #endregion

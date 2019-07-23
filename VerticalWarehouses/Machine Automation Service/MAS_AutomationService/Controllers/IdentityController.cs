@@ -1,4 +1,8 @@
-﻿using Ferretto.VW.MAS.AutomationService.Models;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Models;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,19 +14,40 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        internal static readonly MachineIdentity machineInfo = new MachineIdentity
+        private readonly IGeneralInfoDataLayer generalInfo;
+
+        private readonly ILoadingUnitStatistics loadingUnitStatistics;
+
+        private readonly IServicingProvider servicingProvider;
+
+        #endregion
+
+        #region Constructors
+
+        public IdentityController(
+            IGeneralInfoDataLayer generalInfo,
+            ILoadingUnitStatistics loadingUnitStatistics,
+            IServicingProvider servicingProvider)
         {
-            Id = 5,
-            AreaId = 2,
-            BayId = 3,
-            ModelName = "VRT EF 84 L 990-BIS H 6345",
-            SerialNumber = "VW_190012",
-            TrayCount = 42,
-            InstallationDate = System.DateTime.Now.AddMonths(-29),
-            NextServiceDate = System.DateTime.Now.AddMonths(7),
-            LastServiceDate = System.DateTime.Now.AddMonths(-9),
-            ServiceStatus = MachineServiceStatus.Valid
-        };
+            if (generalInfo == null)
+            {
+                throw new System.ArgumentNullException(nameof(generalInfo));
+            }
+
+            if (loadingUnitStatistics == null)
+            {
+                throw new System.ArgumentNullException(nameof(loadingUnitStatistics));
+            }
+
+            if (servicingProvider == null)
+            {
+                throw new System.ArgumentNullException(nameof(servicingProvider));
+            }
+
+            this.generalInfo = generalInfo;
+            this.loadingUnitStatistics = loadingUnitStatistics;
+            this.servicingProvider = servicingProvider;
+        }
 
         #endregion
 
@@ -32,6 +57,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<MachineIdentity> Get()
         {
+            var servicingInfo = this.servicingProvider.GetInfo();
+
+            var loadingUnits = this.loadingUnitStatistics.GetWeightStatistics();
+
+            // TO DO implement genral info
+            var machineInfo = new MachineIdentity
+            {
+                Id = 1,
+                AreaId = 2, // TODO
+                BayId = 3, // TODO
+                Width = 3080, // TODO
+                Depth = 500, // TODO
+                ModelName = "VRT EF 84 L 990-BIS H 6345", // TODO await this.generalInfo.GetModel(),
+                SerialNumber = "VW_190012", // TODO await this.generalInfo.GetSerial(),
+                TrayCount = loadingUnits.Count(),
+                MaxGrossWeight = 1000, // TODO await this.generalInfo.GetMaxGrossWeight(),
+                InstallationDate = servicingInfo.InstallationDate,
+                NextServiceDate = servicingInfo.NextServiceDate,
+                LastServiceDate = servicingInfo.LastServiceDate,
+            };
+
             return this.Ok(machineInfo);
         }
 

@@ -1,64 +1,129 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Media;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class GeneralInfoViewModel : BindableBase, IGeneralInfoViewModel
+    public class GeneralInfoViewModel : BaseViewModel, IGeneralInfoViewModel
     {
-        #region Fields
+        private readonly IIdentityService identityService;
 
-        private readonly IEventAggregator eventAggregator;
+        readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
 
-        #endregion
+        private MachineIdentity model;
+
+        private string wmsServicesStatusDescription;
+
+        private Brush wmsServicesStatusBrush;
+
+        private Brush machineServiceStatusBrush;
 
         #region Constructors
 
         public GeneralInfoViewModel(
-            IEventAggregator eventAggregator,
+            IIdentityService identityService,
+            Ferretto.WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient,
             IOtherNavigationViewModel otherNavigationViewModel)
         {
-            if (eventAggregator == null)
+            if (identityService == null)
             {
-                throw new System.ArgumentNullException(nameof(eventAggregator));
+                throw new System.ArgumentNullException(nameof(identityService));
             }
 
-            this.eventAggregator = eventAggregator;
+            if (otherNavigationViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(otherNavigationViewModel));
+            }
+
+            this.identityService = identityService;
+            this.dataHubClient = dataHubClient;
             this.OtherNavigationViewModel = otherNavigationViewModel;
+
+            this.dataHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
+            this.UpdateWmsServicesStatus();
+
             this.NavigationViewModel = otherNavigationViewModel as OtherNavigationViewModel;
         }
 
+        private void UpdateWmsServicesStatus()
+        {
+            if (true/*this.dataHubClient.IsConnected*/)
+            {
+                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusBrush = Brushes.Green;
+            }
+            else
+            {
+                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusBrush = Brushes.Red;
+            }
+        }
+
+        private void OperatorHubClient_ConnectionStatusChanged(
+            object sender,
+            WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
+        {
+            this.UpdateWmsServicesStatus();
+        }
+
         #endregion
+
+        public override async Task OnEnterViewAsync()
+        {
+            this.Model = await this.identityService.GetAsync();
+            this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
+
+            await base.OnEnterViewAsync();
+        }
+
+        private Brush GetBrushForServiceStatus(MachineServiceStatus serviceStatus)
+        {
+            switch (serviceStatus)
+            {
+                case MachineServiceStatus.Expired:
+                    return Brushes.Red;
+
+                case MachineServiceStatus.Expiring:
+                    return Brushes.Gold;
+
+                case MachineServiceStatus.Valid:
+                    return Brushes.Green;
+
+                default:
+                    return Brushes.Gray;
+            }
+        }
 
         #region Properties
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public IOtherNavigationViewModel OtherNavigationViewModel { get; }
 
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
+        public MachineIdentity Model
         {
-            // TODO
+            get => this.model;
+            set => this.SetProperty(ref this.model, value);
         }
 
-        public async Task OnEnterViewAsync()
+        public string SoftwareVersion => this.GetType().Assembly.GetName().Version.ToString();
+
+        public string WmsServicesStatusDescription
         {
-            // TODO
+            get => this.wmsServicesStatusDescription;
+            set => this.SetProperty(ref this.wmsServicesStatusDescription, value);
         }
 
-        public void SubscribeMethodToEvent()
+        public Brush WmsServicesStatusBrush
         {
-            // TODO
+            get => this.wmsServicesStatusBrush;
+            set => this.SetProperty(ref this.wmsServicesStatusBrush, value);
         }
 
-        public void UnSubscribeMethodFromEvent()
+        public Brush MachineServiceStatusBrush
         {
-            // TODO
+            get => this.machineServiceStatusBrush;
+            set => this.SetProperty(ref this.machineServiceStatusBrush, value);
         }
 
         #endregion

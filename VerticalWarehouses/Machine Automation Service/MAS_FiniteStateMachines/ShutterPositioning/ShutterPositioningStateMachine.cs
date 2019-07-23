@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
-
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
         private bool disposed;

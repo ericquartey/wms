@@ -4,6 +4,7 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.Utils.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
@@ -91,9 +92,17 @@ namespace Ferretto.VW.OperatorApp
             where T : BindableBase, I
             where I : IViewModel
         {
-            this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
+            this.mainWindowViewModel =
+                this.mainWindowViewModel
+                ??
+                this.container.Resolve<IMainWindowViewModel>();
 
-            if (this.container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
+
+            var viewModel = this.container.Resolve<I>();
+
+            if (viewModel is T desiredViewModelWithNavView
+                &&
+                desiredViewModelWithNavView.NavigationViewModel != null)
             {
                 if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
                 {
@@ -115,6 +124,7 @@ namespace Ferretto.VW.OperatorApp
                 this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
+
         }
 
         public async void NavigateToView<T, I>(object parameterObject)
@@ -174,6 +184,22 @@ namespace Ferretto.VW.OperatorApp
                     await refillingViewModel.OnEnterViewAsync();
                     this.mainWindowViewModel.ContentRegionCurrentViewModel = refillingViewModel;
                     this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
+                }
+            }
+
+            if (parameterObject is DataGridList list)
+            {
+                if (this.container.Resolve<I>() is DetailListInWaitViewModel detailListViewModel)
+                {
+                    if (!(this.mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel))
+                    {
+                        this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
+                    }
+                    detailListViewModel.List = list;
+                    await detailListViewModel.OnEnterViewAsync();
+                    this.mainWindowViewModel.ContentRegionCurrentViewModel = detailListViewModel;
+                    this.mainWindowViewModel.NavigationRegionCurrentViewModel = detailListViewModel.NavigationViewModel;
                     this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
                 }
             }

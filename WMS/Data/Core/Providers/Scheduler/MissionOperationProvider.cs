@@ -262,13 +262,21 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var mission = await this.missionProvider.GetByIdAsync(operation.MissionId);
 
-            mission.Status = Mission.GetStatus(
+            var oldMissionStatus = mission.Status;
+            var newMissionStatus = Mission.GetStatus(
                 mission.OperationsCount,
                 mission.NewOperationsCount,
                 mission.ExecutingOperationsCount,
                 mission.CompletedOperationsCount,
                 mission.IncompleteOperationsCount,
                 mission.ErrorOperationsCount);
+
+            mission.Status = newMissionStatus;
+
+            if (oldMissionStatus == MissionStatus.New && newMissionStatus == MissionStatus.Executing)
+            {
+                await this.loadingUnitProvider.UpdateMissionsCountAsync(mission.LoadingUnitId);
+            }
 
             await this.missionProvider.UpdateAsync(mission);
         }
@@ -467,7 +475,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 UpdateCompartmentAfterPick(compartment, quantity, now);
 
                 loadingUnit.LastPickDate = now;
-
                 item.LastPickDate = now;
 
                 operation.DispatchedQuantity += quantity;
@@ -477,7 +484,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var result = await this.UpdateAsync(operation);
 
                 await this.UpdateMissionStatusAsync(operation);
-
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
                 await this.itemProvider.UpdateAsync(item);
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
@@ -526,24 +532,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.UpdateCompartmentAfterPutAsync(compartment, quantity, now);
 
                 loadingUnit.LastPutDate = now;
-
                 item.LastPutDate = now;
 
                 operation.DispatchedQuantity += quantity;
                 operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
                     ? MissionOperationStatus.Completed
                     : MissionOperationStatus.Incomplete;
-
                 var result = await this.UpdateAsync(operation);
 
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
-
                 await this.itemProvider.UpdateAsync(item);
-
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
-
                 await this.UpdateMissionStatusAsync(operation);
-
                 await this.UpdateRowStatusAsync(operation, now);
 
                 scope.Complete();

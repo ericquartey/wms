@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlMaintenanceDataGridViewModel : BindableBase, ICustomControlMaintenanceDataGridViewModel
+    public class CustomControlMaintenanceDataGridViewModel : BaseViewModel, ICustomControlMaintenanceDataGridViewModel
     {
         #region Fields
 
@@ -21,29 +21,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public ObservableCollection<DataGridKit> Kits { get => this.kits; set => this.SetProperty(ref this.kits, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public DataGridKit SelectedKit { get => this.selectedKit; set => this.SetProperty(ref this.selectedKit, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
 
         #endregion
     }

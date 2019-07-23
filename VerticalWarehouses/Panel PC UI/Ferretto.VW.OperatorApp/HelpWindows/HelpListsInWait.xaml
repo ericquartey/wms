@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.HelpWindows"            
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     
@@ -63,17 +64,17 @@
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Tipo" />
+                     Text="{x:Static res:OperatorApp.WaitingListDataGridHeaderType }" />
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Descrizione" />
+                     Text="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderDescription}" />
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Macchine" />
+                     Text="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderMachines}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
@@ -113,7 +114,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
                     Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Lista" />
+                    Text="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderList}" />
 
     </Grid>
 </UserControl>

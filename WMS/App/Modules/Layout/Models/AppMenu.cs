@@ -1,7 +1,7 @@
 ﻿using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.Layout
+namespace Ferretto.WMS.App.Modules.Layout
 {
     public class AppMenu
     {

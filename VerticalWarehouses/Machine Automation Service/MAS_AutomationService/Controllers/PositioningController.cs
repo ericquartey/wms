@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -33,7 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public PositioningController(IEventAggregator eventAggregator, IServiceProvider services, ILogger<PositioningController> logger)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.logger = logger;
         }
 
@@ -61,7 +62,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             decimal maxDeceleration = 0;
             decimal feedRate = 0;
             decimal initialTargetPosition = 0;
-            decimal resolution = 0;
 
             try
             {
@@ -94,8 +94,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                         // INFO +1 for Up, -1 for Down
                         initialTargetPosition *= data.Displacement;
-                        resolution = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
                         break;
 
@@ -126,8 +124,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                         // INFO +1 for Forward, -1 for Back
                         initialTargetPosition *= data.Displacement;
-                        resolution = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
 
                         break;
                 }
@@ -143,8 +139,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     maxDeceleration,
                     0,
                     0,
-                    0,
-                    resolution);
+                    0);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(
                     new CommandMessage(
                         messageData,

@@ -1,5 +1,8 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -8,7 +11,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
-    public class FooterViewModel : BindableBase, IFooterViewModel
+    public class FooterViewModel : BaseViewModel, IFooterViewModel
     {
         #region Fields
 
@@ -16,9 +19,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IStatusMessageService statusMessageService;
+
         private ICommand navigateBackCommand;
 
         private string note;
+
+        private Brush noteBrush;
 
         #endregion
 
@@ -26,11 +33,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public FooterViewModel(
             IEventAggregator eventAggregator,
+            IStatusMessageService statusMessageService,
             IUnityContainer container)
         {
             if (eventAggregator == null)
             {
                 throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
             }
 
             if (container == null)
@@ -41,6 +54,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.eventAggregator = eventAggregator;
             this.container = container;
             this.NavigationViewModel = null;
+
+            this.statusMessageService = statusMessageService;
+            this.statusMessageService.StatusMessageNotified += this.StatusMessageService_StatusMessageNotified;
         }
 
         #endregion
@@ -53,32 +69,45 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             (this.navigateBackCommand = new DelegateCommand(
                 () => this.container.Resolve<INavigationService>().NavigateFromView()));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
+
+        public Brush NoteBrush
+        {
+            get => this.noteBrush;
+            set => this.SetProperty(ref this.noteBrush, value);
+        }
 
         #endregion
 
         #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
 
         public void FinalizeBottomButtons()
         {
             this.navigateBackCommand = null;
         }
 
-        public async Task OnEnterViewAsync()
+        private void StatusMessageService_StatusMessageNotified(object sender, StatusMessageEventArgs e)
         {
-            // TODO
-        }
+            this.Note = e.Message;
 
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            switch (e.Level)
+            {
+                case StatusMessageLevel.Error:
+                    this.NoteBrush = Brushes.DarkRed;
+                    break;
+
+                case StatusMessageLevel.Success:
+                    this.NoteBrush = Brushes.Green;
+                    break;
+
+                case StatusMessageLevel.Warning:
+                    this.NoteBrush = Brushes.Gold;
+                    break;
+
+                default:
+                    this.NoteBrush = Brushes.White;
+                    break;
+            }
         }
 
         #endregion

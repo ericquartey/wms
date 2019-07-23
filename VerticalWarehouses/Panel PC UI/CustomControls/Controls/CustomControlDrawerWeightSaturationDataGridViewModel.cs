@@ -1,52 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
-using Prism.Mvvm;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlDrawerWeightSaturationDataGridViewModel : BindableBase, ICustomControlDrawerWeightSaturationDataGridViewModel
+    public class CustomControlDrawerWeightSaturationDataGridViewModel : BaseViewModel, ICustomControlDrawerWeightSaturationDataGridViewModel
     {
         #region Fields
 
-        private ObservableCollection<DataGridDrawerWeightSaturation> drawers;
+        private IEnumerable<LoadingUnitWeightStatistics> loadingUnits;
 
-        private DataGridDrawerWeightSaturation selectedDrawer;
+        private LoadingUnitWeightStatistics selectedLoadingUnit;
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<DataGridDrawerWeightSaturation> Drawers { get => this.drawers; set => this.SetProperty(ref this.drawers, value); }
+        public IEnumerable<LoadingUnitWeightStatistics> LoadingUnits { get => this.loadingUnits; set => this.SetProperty(ref this.loadingUnits, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public DataGridDrawerWeightSaturation SelectedDrawer { get => this.selectedDrawer; set => this.SetProperty(ref this.selectedDrawer, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
+        public LoadingUnitWeightStatistics SelectedLoadingUnit { get => this.selectedLoadingUnit; set => this.SetProperty(ref this.selectedLoadingUnit, value); }
 
         #endregion
     }

@@ -50,7 +50,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+
+        private readonly IResolutionConversion dataLayerResolutionConversion;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -114,13 +116,15 @@ namespace Ferretto.VW.MAS.InverterDriver
         public HostedInverterDriver(
             IEventAggregator eventAggregator,
             ISocketTransport socketTransport,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IResolutionConversion dataLayerResolutionConversion,
             IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedInverterDriver> logger)
         {
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.dataLayerResolutionConversion = dataLayerResolutionConversion;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
 
@@ -555,6 +559,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.logger.LogDebug($"Deallocating {this.CurrentStateMachine?.GetType()} state machine ({receivedMessage.Type})");
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
+                            if (this.CurrentStateMachine is null)
+                            {
+                                this.logger.LogDebug($"State machine {this.CurrentStateMachine?.GetType()} is null !!");
+                            }
+
                             if (this.CurrentStateMachine is PowerOffStateMachine ||
                                 this.CurrentStateMachine is SwitchOnStateMachine ||
                                 this.CurrentStateMachine is StopStateMachine)
@@ -615,6 +624,19 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         break;
+                }
+
+                if (receivedMessage.Source == FieldMessageActor.InverterDriver)
+                {
+                    if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                        receivedMessage.Status == MessageStatus.OperationStop)
+                    {
+                        var notificationMessageToFSM = receivedMessage;
+                        //TEMP Set the destination of message to FSM
+                        notificationMessageToFSM.Destination = FieldMessageActor.FiniteStateMachines;
+
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessageToFSM);
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);

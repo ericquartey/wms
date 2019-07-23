@@ -13,15 +13,11 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-    public class MaintenanceMainPageViewModel : BindableBase, IMaintenanceMainPageViewModel
+    public class MaintenanceMainPageViewModel : BaseViewModel, IMaintenanceMainPageViewModel
     {
         #region Fields
 
-        private readonly IUnityContainer container;
-
         private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly INavigationService navigationService;
 
@@ -38,15 +34,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Constructors
 
         public MaintenanceMainPageViewModel(
-            IEventAggregator eventAggregator,
             ICustomControlMaintenanceDataGridViewModel maintenanceDataGridViewModel,
             INavigationService navigationService)
         {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
             if (maintenanceDataGridViewModel == null)
             {
                 throw new ArgumentNullException(nameof(maintenanceDataGridViewModel));
@@ -57,7 +47,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            this.eventAggregator = eventAggregator;
             this.navigationService = navigationService;
             this.MaintenanceDataGridViewModel = maintenanceDataGridViewModel;
             this.dataGridViewModelRef = maintenanceDataGridViewModel as CustomControlMaintenanceDataGridViewModel;
@@ -85,18 +74,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
                     this.navigationService.NavigateToView<MaintenanceDetailViewModel, IMaintenanceDetailViewModel>();
                 }));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
 
-        public async Task OnEnterViewAsync()
+        public override Task OnEnterViewAsync()
         {
             var random = new Random();
             this.kits = new ObservableCollection<DataGridKit>();
@@ -114,16 +97,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
             this.dataGridViewModelRef.Kits = this.kits;
             this.dataGridViewModelRef.SelectedKit = this.kits[0];
             this.DataGridViewModel = this.dataGridViewModelRef;
-        }
 
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         #endregion

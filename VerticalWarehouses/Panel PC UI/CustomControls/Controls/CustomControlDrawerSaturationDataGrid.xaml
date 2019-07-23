@@ -3,10 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
+    <UserControl.Resources>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <DataGrid Name="DataGrid"
                   Width="auto"
@@ -18,13 +32,13 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="14"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
-                  ItemsSource="{Binding Drawers}"
+                  ItemsSource="{Binding LoadingUnits}"
                   RowHeight="30"
-                  SelectedItem="{Binding SelectedDrawer}"
+                  SelectedItem="{Binding SelectedLoadingUnit}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   VerticalScrollBarVisibility="Hidden">
@@ -84,7 +98,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
-                                    Binding="{Binding Path=DrawerId}"
+                                    Binding="{Binding Path=Code}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderDrawerId}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -109,8 +123,10 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=Missions}"
+                <DataGridTextColumn x:Name="Column2"
+                                    TextBlock.TextAlignment="Center"
+                                    Width="1*"
+                                    Binding="{Binding Path=MissionsCount}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderMissions}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -134,8 +150,9 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=Compartments}"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
+                                    Binding="{Binding Path=CompartmentsCount}"
                                     Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderCompartments}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -159,43 +176,28 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=Filling}"
-                                    Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFilling}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.CellStyle>
+                <DataGridTemplateColumn Width="1.5*"
+                                        Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFilling}">
+                    <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
                             <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
                         </Style>
-                    </DataGridTextColumn.CellStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=FillingPercentage}"
-                                    Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
+                    </DataGridTemplateColumn.CellStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ProgressBar Height="10"
+                                         Margin="5,0,5,0"
+                                         Maximum="100"
+                                         Minimum="0"
+                                         Value="{Binding AreaFillPercentage}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
+                                    Binding="{Binding Path=AreaFillPercentage}"
+                                    Header="{x:Static Resources:OperatorApp.DrawerSaturationDataGridHeaderFillingPercentage}" >
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />

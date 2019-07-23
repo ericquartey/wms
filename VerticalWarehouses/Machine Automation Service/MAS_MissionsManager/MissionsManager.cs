@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.MissionsManager
     {
         #region Fields
 
+        private readonly AutoResetEvent bayNowServiceableResetEvent;
+
         private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
@@ -32,33 +34,27 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IGeneralInfoDataLayer generalInfo;
+
         private readonly ILogger logger;
+
+        private readonly List<Mission> machineMissions;
 
         private readonly IMachinesDataService machinesDataService;
 
         private readonly Task missionManagementTask;
 
+        private readonly IMissionsDataService missionsDataService;
+
+        private readonly AutoResetEvent newMissionArrivedResetEvent;
+
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
 
-        private AutoResetEvent bayNowServiceableResetEvent;
-
-        private bool disposed;
-
-        private IGeneralInfo generalInfo;
-
-        private int lastServedBay;
+        private readonly ISetupNetwork setupNetwork;
 
         private int logCounterMissionManagement;
-
-        private List<Mission> machineMissions;
-
-        private IMissionsDataService missionsDataService;
-
-        private AutoResetEvent newMissionArrivedResetEvent;
-
-        private ISetupNetwork setupNetwork;
 
         private CancellationToken stoppingToken;
 
@@ -69,7 +65,7 @@ namespace Ferretto.VW.MAS.MissionsManager
         public MissionsManager(
             IEventAggregator eventAggregator,
             ILogger<MissionsManager> logger,
-            IGeneralInfo generalInfo,
+            IGeneralInfoDataLayer generalInfo,
             IBaysManager baysManager,
             ISetupNetwork setupNetwork,
             IMachinesDataService machinesDataService,
@@ -104,7 +100,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         #region Methods
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
@@ -117,16 +113,17 @@ namespace Ferretto.VW.MAS.MissionsManager
             {
                 throw new MissionsManagerException($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
         {
             do
             {
-                CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                 }
                 catch (OperationCanceledException)
@@ -135,10 +132,7 @@ namespace Ferretto.VW.MAS.MissionsManager
                     return;
                 }
 
-                switch (receivedMessage.Type)
-                {
-                    // TODO
-                }
+                // TODO add here a switch block on receivedMessage.Type
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

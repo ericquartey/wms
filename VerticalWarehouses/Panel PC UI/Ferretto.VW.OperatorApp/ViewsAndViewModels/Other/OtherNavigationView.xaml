@@ -16,7 +16,7 @@
                     Content="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCall}"
                     IsEnabled="{Binding IsErrorSimulationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            
+
             <Button Command="{Binding DrawerCompactingButtonCommand}"
                     Content="{x:Static res:OperatorApp.OtherNavigationCompaction}"
                     IsEnabled="{Binding IsCompactionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -29,8 +29,8 @@
 
             <Button Command="{Binding MaintenanceMainPageButtonCommand}"
                     Content="{x:Static res:OperatorApp.OtherNavigationMaintenance}"
-                    IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"
+                    IsEnabled="False"/>
 
         </StackPanel>
     </Grid>

@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             var notificationMessage = new FieldNotificationMessage(
                 null,
                 "Message",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.Positioning,
                 (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);

@@ -3,15 +3,16 @@ using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -32,8 +33,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BeltBurnishingController(IEventAggregator eventAggregator, IServiceProvider services)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
@@ -63,6 +74,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.GetIntegerConfigurationParameter_Method(category, parameter);
         }
 
+        [HttpPut("SetBeltBurnishingCompletion")]
+        public async Task<bool> SetBeltBurnishingCompletionAsync()
+        {
+            return await this.SetBeltBurnishingCompletion_MethodAsync();
+        }
+
         [ProducesResponseType(200)]
         [HttpGet("Stop")]
         public void Stop()
@@ -78,8 +95,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var deceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var resolution = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -90,8 +105,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 deceleration,
                 requiredCycles,
                 lowerBound,
-                upperBound,
-                resolution);
+                upperBound);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(
@@ -205,6 +219,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
+        }
+
+        private async Task<bool> SetBeltBurnishingCompletion_MethodAsync()
+        {
+            var result = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus, true);
+            }
+            catch
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         private void Stop_Method()

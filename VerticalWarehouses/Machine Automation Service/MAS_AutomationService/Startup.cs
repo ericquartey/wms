@@ -12,8 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Ferretto.VW.MAS.DataLayer.Extensions;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -44,9 +43,12 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             app.UseSignalR(routes =>
             {
-                routes.MapHub<InstallationHub>("/installation-endpoint", options => { });
-                routes.MapHub<OperatorHub>("/operator-endpoint", options => { });
+                routes.MapHub<InstallationHub>("/installation-endpoint");
+                routes.MapHub<OperatorHub>("/operator-endpoint");
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseMvc();
         }
@@ -55,8 +57,12 @@ namespace Ferretto.VW.MAS.AutomationService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddSignalR();
 
+            services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
+
+						**** move this in servicecollectionextensions
             var dataLayerConfiguration = new DataLayerConfiguration(
                 this.Configuration.GetDataLayerPrimaryConnectionString(),
                 this.Configuration.GetDataLayerSecondaryConnectionString(),
@@ -69,14 +75,11 @@ namespace Ferretto.VW.MAS.AutomationService
                 o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
             });
 
-            var wmsServiceAddress = new System.Uri(this.Configuration.GetDataServiceUrl());
-            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetDataServiceHubUrl());
-
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
             services.AddSingleton<IBaysManager, BaysManager>();
 
-            this.RegisterDataLayer(services, dataLayerConfiguration);
+            services.AddDataLayer(this.Configuration);
 
             this.RegisterSocketTransport(services);
 
@@ -99,13 +102,16 @@ namespace Ferretto.VW.MAS.AutomationService
 
             // HACK commented out module initialization for development purpose
             //services.AddHostedService<MissionsManager>();
+
             services.AddHostedService<AutomationService>();
 
+            var wmsServiceAddress = new System.Uri(this.Configuration.GetDataServiceUrl());
             services.AddWebApiServices(wmsServiceAddress);
 
+            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetDataServiceHubUrl());
             services.AddDataHub(wmsServiceAddressHubsEndpoint);
         }
-
+		************** remove this
         private void RegisterDataLayer(IServiceCollection services, DataLayerConfiguration dataLayerConfiguration)
         {
             services.AddSingleton<IDataLayer, DataLayer.DataLayer>(provider => new DataLayer.DataLayer(

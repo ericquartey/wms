@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -7,7 +8,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerWaitViewModel : BindableBase, IDrawerWaitViewModel, IDrawerActivityViewModel
+    public class DrawerWaitViewModel : BaseViewModel, IDrawerWaitViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -62,32 +63,22 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Properties
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public string WaitingMissions { get => this.waitingMissions; set => this.SetProperty(ref this.waitingMissions, value); }
+        public string WaitingMissions
+        {
+            get => this.waitingMissions;
+            set => this.SetProperty(ref this.waitingMissions, value);
+        }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+       
+        public override Task OnEnterViewAsync()
         {
             this.WaitingMissions = this.bayManager.QueuedMissionsQuantity.ToString();
-        }
 
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UpdateView()

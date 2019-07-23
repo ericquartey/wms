@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;
@@ -86,7 +87,7 @@ namespace Ferretto.VW.App
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "installer",
+                UserName = "operator",
                 Password = "password",
             };
 #else
@@ -94,15 +95,23 @@ namespace Ferretto.VW.App
 #endif
         }
 
-        private void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            if (e.IsConnected)
+            if (!e.IsConnected)
             {
-                this.ErrorMessage = "Machine Automation Service connected!!!!!!!!!!!!!!!!!!!!!!!!";
+                this.ErrorMessage = "Connection to Machine Automation Service lost.";
             }
             else
             {
-                this.ErrorMessage = "Connection to Machine Automation Service lost.";
+                try
+                {
+                    this.Machine = await this.machineProvider.GetIdentityAsync();
+                    this.ErrorMessage = null;
+                }
+                catch
+                {
+                    this.ErrorMessage = "Unable to retrieve machine info.";
+                }
             }
         }
 
@@ -159,17 +168,11 @@ namespace Ferretto.VW.App
 
         #region Methods
 
-        public async Task InitializeViewModelAsync(IUnityContainer container)
+        public Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
 
-            try
-            {
-                this.Machine = await this.machineProvider.GetIdentityAsync();
-            }
-            catch
-            {
-            }
+            return Task.CompletedTask;
         }
 
         public void HACK_InitialiseHubOperator()
@@ -200,8 +203,8 @@ namespace Ferretto.VW.App
             this.IsBusy = true;
 
             var loginSuccessful = await this.authenticationService.LogInAsync(
-                this.UserLogin.UserName,
-                this.UserLogin.Password);
+               this.UserLogin.UserName,
+               this.UserLogin.Password);
 
             if (!loginSuccessful)
             {
@@ -213,11 +216,11 @@ namespace Ferretto.VW.App
             switch (this.UserLogin.UserName.ToUpperInvariant())
             {
                 case "INSTALLER":
-                    await this.LoadInstallerModuleAsync();
+                    this.LoadInstallerModule();
                     break;
 
                 case "OPERATOR":
-                    await this.LoadOperatorModuleAsync();
+                    this.LoadOperatorModule();
                     break;
             }
 
@@ -230,11 +233,11 @@ namespace Ferretto.VW.App
             var requestAccepted = this.sessionService.Shutdown();
             if (requestAccepted)
             {
-                this.ErrorMessage = "Shutting down";
+                this.ErrorMessage = "Shutting down ...";
             }
         }
 
-        private async Task LoadInstallerModuleAsync()
+        private void LoadInstallerModule()
         {
             this.IsBusy = true;
 
@@ -257,7 +260,7 @@ namespace Ferretto.VW.App
             }
         }
 
-        private async Task LoadOperatorModuleAsync()
+        private void LoadOperatorModule()
         {
             this.IsBusy = true;
 

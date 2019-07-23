@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Fields
 
-        private readonly int baysCounter = 0;
-
         private readonly IBaysManager baysManager;
 
         private readonly IEventAggregator eventAggregator;

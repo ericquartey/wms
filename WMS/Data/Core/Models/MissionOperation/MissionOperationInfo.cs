@@ -9,6 +9,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public double CompartmentDepth { get; set; }
 
+        public int CompartmentId { get; set; }
+
         public double CompartmentWidth { get; set; }
 
         public DateTime CreationDate { get; set; }
@@ -19,6 +21,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string ItemCode { get; set; }
 
         public string ItemDescription { get; set; }
+
+        public string ItemImage { get; set; }
 
         public string ItemListCode { get; set; }
 

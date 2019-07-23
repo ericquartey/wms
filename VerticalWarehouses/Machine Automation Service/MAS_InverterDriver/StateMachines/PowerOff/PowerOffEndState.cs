@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 "Inverter Power Off End",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver, // Any
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterPowerOff,
                 MessageStatus.OperationEnd);

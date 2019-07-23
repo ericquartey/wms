@@ -6,31 +6,57 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
-        decimal InitialSpeed { get; }
+        Task<decimal> MovementCorrection { get; }
 
-        decimal Step1AccDec { get; }
+        Task<decimal> P0Acceleration { get; }
 
-        decimal Step1Position { get; }
+        Task<decimal> P0Deceleration { get; }
 
-        decimal Step1Speed { get; }
+        Task<decimal> P0Quote { get; }
 
-        decimal Step2AccDec { get; }
+        Task<decimal> P0SpeedV1 { get; }
 
-        decimal Step2Position { get; }
+        Task<decimal> P1Acceleration { get; }
 
-        decimal Step2Speed { get; }
+        Task<decimal> P1Deceleration { get; }
 
-        decimal Step3AccDec { get; }
+        Task<decimal> P1Quote { get; }
 
-        decimal Step3Position { get; }
+        Task<decimal> P1SpeedV2 { get; }
 
-        decimal Step3Speed { get; }
+        Task<decimal> P2Acceleration { get; }
 
-        decimal Step4AccDec { get; }
+        Task<decimal> P2Deceleration { get; }
 
-        decimal Step4Position { get; }
+        Task<decimal> P2Quote { get; }
 
-        decimal Step4Speed { get; }
+        Task<decimal> P2SpeedV3 { get; }
+
+        Task<decimal> P3Acceleration { get; }
+
+        Task<decimal> P3Deceleration { get; }
+
+        Task<decimal> P3Quote { get; }
+
+        Task<decimal> P3SpeedV4 { get; }
+
+        Task<decimal> P4Acceleration { get; }
+
+        Task<decimal> P4Deceleration { get; }
+
+        Task<decimal> P4Quote { get; }
+
+        Task<decimal> P4SpeedV5 { get; }
+
+        Task<decimal> P5Acceleration { get; }
+
+        Task<decimal> P5Deceleration { get; }
+
+        Task<decimal> P5Quote { get; }
+
+        Task<decimal> P5Speed { get; }
+
+        Task<decimal> TotalMovement { get; }
 
         int TotalSteps { get; }
 

@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 $"Inverter Switch On on axis {this.axisToSwitchOn} End",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOn,
                 MessageStatus.OperationEnd);

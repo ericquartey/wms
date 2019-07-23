@@ -26,6 +26,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public InstallationStatusController(IEventAggregator eventAggregator, IServiceProvider services)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             this.eventAggregator = eventAggregator;
             this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatus)) as ISetupStatus;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;

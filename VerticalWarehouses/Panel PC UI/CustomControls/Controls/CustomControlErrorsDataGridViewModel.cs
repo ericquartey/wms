@@ -1,52 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlErrorsDataGridViewModel : BindableBase, ICustomControlErrorsDataGridViewModel
+    public class CustomControlErrorsDataGridViewModel : BaseViewModel, ICustomControlErrorsDataGridViewModel
     {
         #region Fields
 
-        private ObservableCollection<DataGridError> errors;
+        private IEnumerable<ErrorStatisticsDetail> cells;
 
-        private DataGridError selectedError;
+        private ErrorStatisticsDetail selectedError;
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<DataGridError> Errors { get => this.errors; set => this.SetProperty(ref this.errors, value); }
+        public IEnumerable<ErrorStatisticsDetail> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public DataGridError SelectedError { get => this.selectedError; set => this.SetProperty(ref this.selectedError, value); }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // HACK
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            // HACK
-            return Task.CompletedTask;
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // HACK
-        }
+        public ErrorStatisticsDetail SelectedCell { get => this.selectedError; set => this.SetProperty(ref this.selectedError, value); }
 
         #endregion
     }

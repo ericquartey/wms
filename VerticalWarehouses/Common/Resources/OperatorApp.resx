@@ -464,28 +464,28 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
-  <data name="StatisticsGeneralDataTotDrawerMoved" xml:space="preserve">
-    <value>StatisticsGeneralDataTotDrawerMoved</value>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>MachineStatistics_TotalMovedTrays</value>
     <comment>Label text</comment>
   </data>
-  <data name="StatisticsGeneralDataTotPowerOnTime" xml:space="preserve">
-    <value>StatisticsGeneralDataTotPowerOnTime</value>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>MachineStatistics_TotalPowerOnTime</value>
     <comment>Label text</comment>
   </data>
-  <data name="StatisticsGeneralDataAreaFilling" xml:space="preserve">
-    <value>StatisticsGeneralDataAreaFilling</value>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>MachineStatistics_AreaFillPercentage</value>
     <comment>Progress bar label text</comment>
   </data>
-  <data name="StatisticsGeneralDataWeightFilling" xml:space="preserve">
-    <value>StatisticsGeneralDataWeightFilling</value>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>MachineStatistics_WeightCapacityPercentage</value>
     <comment>Progress bar labet text</comment>
   </data>
-  <data name="StatisticsGeneralDataTotAutoTime" xml:space="preserve">
-    <value>StatisticsGeneralDataTotAutoTime</value>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>MachineStatistics_AutomaticTimePercentage</value>
     <comment>Progress bar label text</comment>
   </data>
-  <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
-    <value>StatisticsGeneralDataUtilization</value>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>MachineStatistics_UsageTimePercentage</value>
     <comment>Progress bar label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
@@ -909,7 +909,7 @@
     <comment>Stato</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
-    <value>Current gross weight</value>
+    <value>Current weight</value>
     <comment>Peso lordo corrente</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
@@ -968,22 +968,6 @@
     <value>Class</value>
     <comment>Classe</comment>
   </data>
-  <data name="StatisticsItemDataGridHeaderItemPercentage" xml:space="preserve">
-    <value>Item %</value>
-    <comment>Articolo %</comment>
-  </data>
-  <data name="StatisticsItemDataGridHeaderItemQuantity" xml:space="preserve">
-    <value>Item quantity</value>
-    <comment>Quantità articolo</comment>
-  </data>
-  <data name="StatisticsItemDataGridHeaderMovementsPercentage" xml:space="preserve">
-    <value>Movements %</value>
-    <comment>Movimenti %</comment>
-  </data>
-  <data name="StatisticsItemDataGridHeaderMovementsQuantity" xml:space="preserve">
-    <value>Movementes quantity</value>
-    <comment>Numero movimenti</comment>
-  </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>StatisticsNavigationMachine</value>
     <comment>Button text</comment>
@@ -996,36 +980,36 @@
     <value>MachineStatisticsSectionVertical</value>
     <comment>Section header</comment>
   </data>
-  <data name="MachineStatisticsSectionVerticalTotalKm" xml:space="preserve">
-    <value>MachineStatisticsSectionVerticalTotalKm</value>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>MachineStatistics_TotalVerticalAxisKilometers</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionVerticalTotalCycles" xml:space="preserve">
-    <value>MachineStatisticsSectionVerticalTotalCycles</value>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>MachineStatistics_TotalVerticalAxisCycles</value>
     <comment>Label text</comment>
   </data>
   <data name="MachineStatisticsSectionShutters" xml:space="preserve">
     <value>MachineStatisticsSectionShutters</value>
     <comment>Section header</comment>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter1" xml:space="preserve">
-    <value>MachineStatisticsSectionShutterShutter1</value>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>MachineStatistics_TotalShutter1Cycles</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter2" xml:space="preserve">
-    <value>MachineStatisticsSectionShutterShutter2</value>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>MachineStatistics_TotalShutter2Cycles</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionShutterShutter3" xml:space="preserve">
-    <value>MachineStatisticsSectionShutterShutter3</value>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>MachineStatistics_TotalShutter3Cycles</value>
     <comment>Label text</comment>
   </data>
-  <data name="MachineStatisticsSectionOrizzontal" xml:space="preserve">
-    <value>MachineStatisticsSectionOrizzontal</value>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>MachineStatisticsSectionHorizontal</value>
     <comment>Section header</comment>
   </data>
-  <data name="MachineStatisticsSectionOrizzontalTotalCycles" xml:space="preserve">
-    <value>MachineStatisticsSectionOrizzontalTotalCycles</value>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>MachineStatisticsSectionHorizontalTotalCycles</value>
     <comment>Label text</comment>
   </data>
   <data name="MachineStatisticsSectionBays" xml:space="preserve">
@@ -1072,6 +1056,78 @@
     <value>GeneralInfoWmsStatus</value>
     <comment>Label text</comment>
   </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>DrawerCompactingDetailHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>DrawerCompactingDetailDrawer</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>DrawerCompactingDetailSourceCell</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>DrawerCompactingDetailDestinationCell</value>
+    <comment>label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>DrawerCompactingDetailActualStep</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>DrawerCompactingDetailVerticalPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>DrawerCompactingDetailOrizzontalPosition</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>DrawerCompactingDetailRemainingFragment</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>DrawerCompactingDetailRecoveredSpace</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>DrawerCompactingDetailSpaceToRecover</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
+    <value>DrawerCompactingDetailAbort</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>DrawerCompactingAntStop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>DrawerCompactingProcedureStatus</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
+    <value>DrawerActivityLocalCallHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
+    <value>DrawerActivityLocalCallDrawer</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
+    <value>DrawerActivityLocalCallHeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
+    <value>DrawerActivityLocalCallGrossWeight</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
+    <value>DrawerActivityLocalCallActualWeight</value>
+    <comment>Label text</comment>
+  </data>
   <data name="Cell_Status_Free" xml:space="preserve">
     <value>Free</value>
     <comment>Cell Status</comment>
@@ -1087,5 +1143,39 @@
   <data name="Cell_Status_Unusable" xml:space="preserve">
     <value>Unusable</value>
     <comment>Cell Status</comment>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>WMS Services offline</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>WMS Services online</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>Expiring</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
+    <value>DrawerActivityLocalCallMaxCapacity</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
+    <value>DrawerActivityLocalCallMissions</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>DrawerActivityLocalCallGoBack</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>DrawerSpaceSaturazionWeightAnalisys</value>
+    <comment>Button text</comment>
   </data>
 </root>

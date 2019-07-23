@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement
 {
@@ -22,7 +23,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             this.FinalIDCell = lastCellID;
             this.Priority = this.InitialIDCell;
             this.BlockHeightMillimiters = ((lastCellID - firstCellID) / 2) * CellManagementMethods.CELL_HEIGHT_MILLIMETERS;
-            this.Side = (firstCellID % 2 == 0) ? Side.FrontEven : Side.BackOdd;
+            this.Side = (firstCellID % 2 == 0) ? CellSide.Front : CellSide.Back;
             this.IdGroup = blockID;
         }
 
@@ -58,7 +59,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         public int Priority { get; set; }
 
-        public Side Side { get; set; }
+        public CellSide Side { get; set; }
 
         #endregion
     }

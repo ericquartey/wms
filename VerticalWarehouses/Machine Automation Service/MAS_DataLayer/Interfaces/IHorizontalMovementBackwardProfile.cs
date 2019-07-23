@@ -1,38 +1,64 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS.DataLayer.Interfaces
+namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IHorizontalMovementBackwardProfile
     {
         #region Properties
 
-        decimal InitialSpeedBP { get; }
+        Task<decimal> MovementCorrection { get; }
 
-        decimal Step1AccDecBP { get; }
+        Task<decimal> P0Acceleration { get; }
 
-        decimal Step1PositionBP { get; }
+        Task<decimal> P0Deceleration { get; }
 
-        decimal Step1SpeedBP { get; }
+        Task<decimal> P0Quote { get; }
 
-        decimal Step2AccDecBP { get; }
+        Task<decimal> P0SpeedV1 { get; }
 
-        decimal Step2PositionBP { get; }
+        Task<decimal> P1Acceleration { get; }
 
-        decimal Step2SpeedBP { get; }
+        Task<decimal> P1Deceleration { get; }
 
-        decimal Step3AccDecBP { get; }
+        Task<decimal> P1Quote { get; }
 
-        decimal Step3PositionBP { get; }
+        Task<decimal> P1SpeedV2 { get; }
 
-        decimal Step3SpeedBP { get; }
+        Task<decimal> P2Acceleration { get; }
 
-        decimal Step4AccDecBP { get; }
+        Task<decimal> P2Deceleration { get; }
 
-        decimal Step4PositionBP { get; }
+        Task<decimal> P2Quote { get; }
 
-        decimal Step4SpeedBP { get; }
+        Task<decimal> P2SpeedV3 { get; }
 
-        int TotalStepsBP { get; }
+        Task<decimal> P3Acceleration { get; }
+
+        Task<decimal> P3Deceleration { get; }
+
+        Task<decimal> P3Quote { get; }
+
+        Task<decimal> P3SpeedV4 { get; }
+
+        Task<decimal> P4Acceleration { get; }
+
+        Task<decimal> P4Deceleration { get; }
+
+        Task<decimal> P4Quote { get; }
+
+        Task<decimal> P4SpeedV5 { get; }
+
+        Task<decimal> P5Acceleration { get; }
+
+        Task<decimal> P5Deceleration { get; }
+
+        Task<decimal> P5Quote { get; }
+
+        Task<decimal> P5Speed { get; }
+
+        Task<decimal> TotalMovement { get; }
+
+        Task<int> TotalSteps { get; }
 
         #endregion
     }

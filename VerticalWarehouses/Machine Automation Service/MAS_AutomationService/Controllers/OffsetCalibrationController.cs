@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -21,9 +22,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerCellManagement dataLayerCellsManagement;
+        private readonly ICellManagmentDataLayer dataLayerCellsManagement;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -36,8 +37,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public OffsetCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.dataLayerCellsManagement = services.GetService(typeof(IDataLayerCellManagement)) as IDataLayerCellManagement;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
+            this.dataLayerCellsManagement = services.GetService(typeof(ICellManagmentDataLayer)) as ICellManagmentDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
@@ -154,8 +155,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
-            var resolution = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
@@ -168,8 +167,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 maxDeceleration,
                 0,
                 0,
-                0,
-                resolution);
+                0);
 
             var commandMessage = new CommandMessage(
                 messageData,
@@ -190,8 +188,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
-            var resolution = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
@@ -204,8 +200,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 maxDeceleration,
                 0,
                 0,
-                0,
-                resolution);
+                0);
 
             var commandMessage = new CommandMessage(
                 messageData,

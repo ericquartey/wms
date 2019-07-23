@@ -1,37 +1,31 @@
-﻿using System;
+﻿//Header test C#
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Utils;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public class CustomControlMaintenanceDetailDataGridViewModel : BindableBase, ICustomControlMaintenanceDetailDataGridViewModel
+    public class CustomControlMaintenanceDetailDataGridViewModel : BaseViewModel, ICustomControlMaintenanceDetailDataGridViewModel
     {
-        #region Properties
+        #region Private Fields
 
-        public BindableBase NavigationViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private ObservableCollection<DataGridMaintenanceDetail> maintenanceDetails;
+
+        private DataGridMaintenanceDetail selectedMaintenanceDetail;
 
         #endregion
 
-        #region Methods
+        #region Public Properties
 
-        public void ExitFromViewMethod()
-        {
-            throw new NotImplementedException();
-        }
+        public ObservableCollection<DataGridMaintenanceDetail> MaintenanceDetails { get => this.maintenanceDetails; set => this.SetProperty(ref this.maintenanceDetails, value); }
 
-        public Task OnEnterViewAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            throw new NotImplementedException();
-        }
+        public DataGridMaintenanceDetail SelectedMaintenanceDetail { get => this.selectedMaintenanceDetail; set => this.SetProperty(ref this.selectedMaintenanceDetail, value); }
 
         #endregion
     }

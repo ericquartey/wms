@@ -48,5 +48,26 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Remove="HelpWindows\HelpDrawerCompactingDetail.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="HelpWindows\HelpDrawerCompactingDetail.xaml.cs">
+      <DependentUpon>HelpDrawerCompactingDetail.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\DrawerOperations\DrawerActivityLocalCallView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\Other\DrawerCompactingDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
 </Project>

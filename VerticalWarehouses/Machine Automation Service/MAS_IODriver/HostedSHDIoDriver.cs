@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -32,7 +33,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IConfiguration configuration;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -43,8 +44,6 @@ namespace Ferretto.VW.MAS.IODriver
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
-
-        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private readonly ISHDTransport shdTransport;
 
@@ -60,7 +59,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public HostedSHDIoDriver(
             IEventAggregator eventAggregator,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger,
             IConfiguration configuration)

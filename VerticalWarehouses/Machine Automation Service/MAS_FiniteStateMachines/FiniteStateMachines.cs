@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task commandReceiveTask;
 
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
@@ -38,6 +41,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private readonly Task fieldNotificationReceiveTask;
 
         private readonly ILogger<FiniteStateMachines> logger;
+
+        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
@@ -47,8 +52,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
-        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
-
         private bool disposed;
 
         private bool forceInverterIoStatusPublish;
@@ -56,8 +59,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private bool forceRemoteIoStatusPublish;
 
         private List<IoIndex> ioIndexDeviceList;
-
-        private MachineSensorsStatus machineSensorsStatus;
 
         private CancellationToken stoppingToken;
 
@@ -68,7 +69,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         public FiniteStateMachines(
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfiguration vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;

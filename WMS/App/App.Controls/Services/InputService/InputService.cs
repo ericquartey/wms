@@ -118,9 +118,9 @@ namespace Ferretto.WMS.App.Controls.Services
                             (KeyboardFocusChangedEventHandler)this.OnPreviewGotKeyboardFocus);
         }
 
-        private static ShortKey GetNewShortKey(Key key, bool isControl, bool isShift, bool isTab)
+        private static ShortKey GetNewShortKey(Key key, bool isControl, bool isShift, bool isAlt)
         {
-            ShortKey shortKey = null;
+            ShortKey shortKey;
             if (isControl && isShift)
             {
                 shortKey = new ShortKey(key, false, ModifierKeys.Control, ModifierKeys.Shift);
@@ -133,7 +133,7 @@ namespace Ferretto.WMS.App.Controls.Services
             {
                 shortKey = new ShortKey(key, false, ModifierKeys.Shift);
             }
-            else if (isTab)
+            else if (isAlt)
             {
                 shortKey = new ShortKey(key, false, ModifierKeys.Alt);
             }
@@ -172,7 +172,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
             var isControl = false;
             var isShift = false;
-            var isTab = false;
+            var isAlt = false;
 
             var origKey = (e.SystemKey != Key.None) ? e.SystemKey : e.Key;
 
@@ -196,10 +196,10 @@ namespace Ferretto.WMS.App.Controls.Services
 
             if (Keyboard.Modifiers == ModifierKeys.Alt)
             {
-                isTab = true;
+                isAlt = true;
             }
 
-            var shortKey = GetNewShortKey(keySt, isControl, isShift, isTab);
+            var shortKey = GetNewShortKey(keySt, isControl, isShift, isAlt);
             if (shortKey == null)
             {
                 return;

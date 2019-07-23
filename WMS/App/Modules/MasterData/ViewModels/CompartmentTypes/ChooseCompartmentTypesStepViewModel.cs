@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.Data.Hubs.Models;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class ChooseCompartmentTypesStepViewModel : WmsWizardStepViewModel
     {

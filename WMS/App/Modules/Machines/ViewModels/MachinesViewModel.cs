@@ -8,7 +8,7 @@ using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]

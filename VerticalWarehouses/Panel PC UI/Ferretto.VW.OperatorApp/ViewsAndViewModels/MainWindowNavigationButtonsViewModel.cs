@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
@@ -13,7 +14,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
-    public class MainWindowNavigationButtonsViewModel : BindableBase, IMainWindowNavigationButtonsViewModel
+    public class MainWindowNavigationButtonsViewModel : BaseViewModel, IMainWindowNavigationButtonsViewModel
     {
         #region Fields
 
@@ -81,8 +82,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.navigationService.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
         }));
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() =>
                 {
                     this.navigationService.NavigateToView<GeneralInfoViewModel, IGeneralInfoViewModel>();
@@ -92,7 +91,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         #region Methods
 
-        public async void DrawerActivityButtonMethod()
+        public void DrawerActivityButtonMethod()
         {
             var mission = this.bayManager.CurrentMission;
             if (mission != null)
@@ -116,21 +115,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             {
                 this.navigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
             }
-        }
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

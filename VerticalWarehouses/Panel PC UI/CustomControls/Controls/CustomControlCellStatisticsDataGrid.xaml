@@ -23,9 +23,10 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="14"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
+                  IsHitTestVisible="False"
                   IsReadOnly="True"
                   ItemsSource="{Binding Cells}"
                   RowHeight="30"
@@ -88,7 +89,7 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
-                                    Width="1*"
+                                    Width="1.5*"
                                     Binding="{Binding Path=Status, Converter={StaticResource ECSC}}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderState}">
                     <DataGridTextColumn.HeaderStyle>
@@ -114,7 +115,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
                                     Binding="{Binding Path=TotalFrontCells}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFront}">
                     <DataGridTextColumn.HeaderStyle>
@@ -139,8 +141,9 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=RatioFrontCells}"
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
+                                    Binding="{Binding Path=RatioFrontCells, StringFormat={}{0:N1}}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderFrontPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -164,7 +167,8 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="1*"
                                     Binding="{Binding Path=TotalBackCells}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBack}">
                     <DataGridTextColumn.HeaderStyle>
@@ -189,8 +193,9 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="1*"
-                                    Binding="{Binding Path=RatioBackCells}"
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
+                                    Binding="{Binding Path=RatioBackCells, StringFormat={}{0:N1}}"
                                     Header="{x:Static Resources:OperatorApp.StatisticsCellsDataGridHeaderBackPercentage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

@@ -1,21 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class CellsStatisticsViewModel : BindableBase, ICellsStatisticsViewModel
+    public class CellsStatisticsViewModel : BaseViewModel, ICellsStatisticsViewModel
     {
         #region Fields
 
@@ -25,15 +23,15 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly INavigationService navigationService;
 
-        private ObservableCollection<CellStatusStatistic> cells;
+        private ObservableCollection<CellStatusStatistics> cells;
 
-        private CellStatistics cellStatistics;
+        private CellStatisticsSummary cellStatistics;
 
         private BindableBase dataGridViewModel;
 
         private ICommand drawerCompactingButtonCommand;
 
-        private CellStatusStatistic selectedCell;
+        private CellStatusStatistics selectedCell;
 
         #endregion
 
@@ -55,14 +53,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Properties
 
-        public ObservableCollection<CellStatusStatistic> Cells { get => this.cells; set => this.SetProperty(ref this.cells, value); }
-
-        public CellStatistics CellStatistics
+        public ObservableCollection<CellStatusStatistics> Cells
         {
-            get { return this.cellStatistics; }
+            get => this.cells;
+            set => this.SetProperty(ref this.cells, value);
         }
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+        public CellStatisticsSummary CellStatistics => this.cellStatistics;
+
+        public BindableBase DataGridViewModel
+        {
+            get => this.dataGridViewModel;
+            set => this.SetProperty(ref this.dataGridViewModel, value);
+        }
 
         public ICommand DrawerCompactingButtonCommand =>
             this.drawerCompactingButtonCommand
@@ -70,41 +73,35 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
             (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
                 this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public CellStatusStatistic SelectedCell { get => this.selectedCell; set => this.SetProperty(ref this.selectedCell, value); }
+        public CellStatusStatistics SelectedCell
+        {
+            get => this.selectedCell;
+            set => this.SetProperty(ref this.selectedCell, value);
+        }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override async Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            try
+            {
+                this.cellStatistics = await this.cellsService.GetStatisticsAsync();
 
-        public async Task OnEnterViewAsync()
-        {
-            this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+                this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
 
-            this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
+                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
+                this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
-            this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
-            this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
+                this.DataGridViewModel = this.dataGridViewModelRef;
 
-            this.DataGridViewModel = this.dataGridViewModelRef;
-
-            this.RaisePropertyChanged(nameof(this.CellStatistics));
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+                this.RaisePropertyChanged(nameof(this.CellStatistics));
+            }
+            catch
+            {
+                //TODO call toolbar notification service
+            }
         }
 
         #endregion
