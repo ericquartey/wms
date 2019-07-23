@@ -2,6 +2,8 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -15,9 +17,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+
         private readonly IDrawerOperationMessageData drawerOperationData;
 
+        private readonly IMachineSensorsStatus machineSensorsStatus;
+
         private bool disposed;
+
+        private bool inverterSwitched;
+
+        private bool ioSwitched;
 
         #endregion
 
@@ -26,10 +36,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
         public MoveDrawerStartState(
             IStateMachine parentMachine,
             IDrawerOperationMessageData drawerOperationData,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IMachineSensorsStatus machineSensorsStatus,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.drawerOperationData = drawerOperationData;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -51,19 +65,40 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
             //TODO When IODriver and Inverter Driver report Axis Switch move to next state
-            if (message.Type == FieldMessageType.NoType)
+            if (message.Type == FieldMessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(this.ParentStateMachine, this.Logger));
+                        this.ioSwitched = true;
                         break;
 
                     case MessageStatus.OperationError:
                         this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
                         break;
                 }
+            }
+
+            if (message.Type == FieldMessageType.InverterSwitchOn)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.inverterSwitched = true;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
+                        break;
+                }
+            }
+
+            if (this.ioSwitched && this.inverterSwitched)
+            {
+                this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(this.ParentStateMachine, this.drawerOperationData, this.dataLayerConfigurationValueManagement, this.machineSensorsStatus, this.Logger));
             }
         }
 
@@ -74,27 +109,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
         public override void Start()
         {
             //TODO Send Switch Axis commands to IODriver and Inverter Driver
-            /*
-            var commandMessage = new FieldCommandMessage(
-                null,
-                $"Message Description",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.NoType);
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Message Description",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.NoType,
-                MessageStatus.NoStatus);
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            */
-
             var ioCommandMessageData = new SwitchAxisFieldMessageData(Axis.Vertical);
             var ioCommandMessage = new FieldCommandMessage(
                 ioCommandMessageData,
@@ -120,6 +134,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
+            // Send a notification message about the start operation for MessageType.DrawerOperation
             var notificationMessageData = new DrawerOperationMessageData(
                 this.drawerOperationData.Operation,
                 this.drawerOperationData.Step,
@@ -139,7 +154,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void Stop()
         {
-            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.ParentStateMachine, this.Logger, true));
+            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.ParentStateMachine, this.drawerOperationData, this.dataLayerConfigurationValueManagement, this.machineSensorsStatus, this.Logger, true));
         }
 
         protected override void Dispose(bool disposing)

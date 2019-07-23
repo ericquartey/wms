@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case DrawerOperation.ManualStore:
                         this.logger.LogTrace("Starting Drawer Store FSM");
 
-                        this.currentStateMachine = new MoveDrawerStateMachine(this.eventAggregator, this.setupStatus, this.machineSensorsStatus, data, this.logger);
+                        this.currentStateMachine = new MoveDrawerStateMachine(this.eventAggregator, this.setupStatus, this.machineSensorsStatus, this.dataLayerConfigurationValueManagement, data, this.logger);
                         break;
 
                     case DrawerOperation.AutomaticRecall:

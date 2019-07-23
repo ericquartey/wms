@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
+
         private readonly IDrawerOperationMessageData drawerOperationData;
 
         private readonly ILogger logger;
@@ -33,14 +35,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             IEventAggregator eventAggregator,
             ISetupStatus setupStatus,
             IMachineSensorsStatus machineSensorsStatus,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IDrawerOperationMessageData drawerOperationData,
             ILogger logger)
             : base(eventAggregator, logger)
         {
             this.setupStatus = setupStatus;
             this.logger = logger;
-
             this.machineSensorsStatus = machineSensorsStatus;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
             this.drawerOperationData = drawerOperationData;
 
@@ -182,7 +185,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new MoveDrawerStartState(this, this.drawerOperationData, this.Logger);
+                this.CurrentState = new MoveDrawerStartState(this, this.drawerOperationData, this.dataLayerConfigurationValueManagement, this.machineSensorsStatus, this.Logger);
                 this.CurrentState?.Start();
             }
         }
