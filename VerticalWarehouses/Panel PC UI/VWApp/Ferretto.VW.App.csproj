@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.6.6" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
     <PackageReference Include="Unity.NLog" Version="1.0.2" />
   </ItemGroup>
@@ -36,7 +37,6 @@
     <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.App.Controls.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.WmsCommunication\Ferretto.VW.WmsCommunication.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 

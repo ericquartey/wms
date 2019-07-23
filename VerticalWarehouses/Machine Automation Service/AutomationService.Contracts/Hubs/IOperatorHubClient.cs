@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
@@ -9,6 +11,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
         event EventHandler<MissionOperationStartedEventArgs> MissionOperationStarted;
+
+        #endregion
+
+        #region Methods
+
+        Task RetrieveCurrentMissionOperationAsync();
 
         #endregion
     }

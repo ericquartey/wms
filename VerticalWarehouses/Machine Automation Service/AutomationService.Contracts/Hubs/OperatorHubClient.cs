@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts
@@ -24,6 +26,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         #endregion
 
         #region Methods
+
+        public async Task RetrieveCurrentMissionOperationAsync()
+        {
+            await this.SendAsync("RetrieveCurrentMissionOperation");
+        }
 
         protected override void RegisterEvents(HubConnection connection)
         {

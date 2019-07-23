@@ -1,6 +1,6 @@
 ﻿using Ferretto.Common.Controls.WPF;
 
-namespace Ferretto.VW.WmsCommunication.Source
+namespace Ferretto.VW.App.Services
 {
     public class TrayControlCompartment : IDrawableCompartment
     {

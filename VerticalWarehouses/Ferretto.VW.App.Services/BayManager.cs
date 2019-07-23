@@ -1,7 +1,7 @@
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using System;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
@@ -9,23 +9,33 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private readonly IMissionOperationsDataService missionOperationsDataService;
+
         private readonly IOperatorHubClient operatorHubClient;
 
         #endregion
 
         #region Constructors
 
-        public BayManager(IOperatorHubClient operatorHubClient)
+        public BayManager(
+            IOperatorHubClient operatorHubClient,
+            IMissionOperationsDataService missionOperationsDataService)
         {
             if (operatorHubClient == null)
             {
-                throw new System.ArgumentNullException(nameof(operatorHubClient));
+                throw new ArgumentNullException(nameof(operatorHubClient));
+            }
+
+            if (missionOperationsDataService == null)
+            {
+                throw new ArgumentNullException(nameof(missionOperationsDataService));
             }
 
             this.operatorHubClient = operatorHubClient;
+            this.missionOperationsDataService = missionOperationsDataService;
 
-            this.operatorHubClient.ConnectionStatusChanged += this.OnConnectionStatusChanged;
-            this.operatorHubClient.BayStatusChanged += this.OnBayStatusChanged;
+            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnConnectionStatusChangedAsync(sender, e);
+            this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
             this.operatorHubClient.MissionOperationStarted += this.OnMissionOperationStarted;
         }
 
@@ -33,13 +43,13 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public int BayId { get; set; }
+        public int BayId { get; private set; }
 
         public MissionInfo CurrentMission { get; set; }
 
         public MissionOperationInfo CurrentMissionOperation { get; set; }
 
-        public int PendingMissionsCount { get; set; }
+        public int PendingMissionsCount { get; private set; }
 
         #endregion
 
@@ -50,17 +60,21 @@ namespace Ferretto.VW.App.Services
             // TODO Implement mission completion logic
         }
 
-        private void OnBayStatusChanged(object sender, BayStatusChangedEventArgs e)
+        private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            this.BayId = e.BayId;
-            this.PendingMissionsCount = e.PendingMissionsCount;
+            if (this.operatorHubClient.IsConnected == true)
+            {
+                this.BayId = e.BayId;// TODO the bay ID should come from configuration.
+                await this.operatorHubClient.RetrieveCurrentMissionOperationAsync();
+                this.PendingMissionsCount = e.PendingMissionsCount;
+            }
         }
 
-        private void OnConnectionStatusChanged(object sender, MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs e)
+        private async Task OnConnectionStatusChangedAsync(object sender, MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs e)
         {
             if (e.IsConnected == true)
             {
-                // TODO ask for the next mission
+                await this.operatorHubClient.RetrieveCurrentMissionOperationAsync();
             }
         }
 

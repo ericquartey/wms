@@ -1,8 +1,6 @@
 ﻿using System.Configuration;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.WmsCommunication;
-using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Ioc;
@@ -73,8 +71,13 @@ namespace Ferretto.VW.App
         {
             var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMSServiceAddress"));
 
-            containerRegistry.RegisterInstance<IWmsDataProvider>(new WmsDataProvider(wmsServiceUrl));
-            containerRegistry.RegisterInstance<IWmsImagesProvider>(new WmsImagesProvider(wmsServiceUrl));
+            containerRegistry.Register<IWmsDataProvider, WmsDataProvider>();
+            containerRegistry.Register<IWmsImagesProvider, WmsImagesProvider>();
+
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsDataService>(wmsServiceUrl));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
         }
 
         #endregion

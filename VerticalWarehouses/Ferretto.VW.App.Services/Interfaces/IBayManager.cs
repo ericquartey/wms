@@ -6,13 +6,13 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
-        int BayId { get; set; }
+        int BayId { get; }
 
         MissionInfo CurrentMission { get; set; }
 
         MissionOperationInfo CurrentMissionOperation { get; }
 
-        int PendingMissionsCount { get; set; }
+        int PendingMissionsCount { get; }
 
         #endregion
 

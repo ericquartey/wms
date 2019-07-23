@@ -79,6 +79,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
         }
 
+        public async Task SendAsync(string methodName)
+        {
+            await this.connection.SendAsync(methodName);
+        }
+
         protected abstract void RegisterEvents(HubConnection connection);
 
         private void Initialize()

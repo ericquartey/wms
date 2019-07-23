@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.Controls.WPF;
@@ -9,8 +9,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.Utils.Source.Filters;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 
@@ -20,7 +18,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
     {
         #region Fields
 
-        private ObservableCollection<TrayControlCompartment> compartments;
+        private IEnumerable<TrayControlCompartment> compartments;
 
         private int? inputQuantity;
 
@@ -101,7 +99,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
-        public ObservableCollection<TrayControlCompartment> Compartments
+        public IEnumerable<TrayControlCompartment> Compartments
         {
             get => this.compartments;
             set => this.SetProperty(ref this.compartments, value);

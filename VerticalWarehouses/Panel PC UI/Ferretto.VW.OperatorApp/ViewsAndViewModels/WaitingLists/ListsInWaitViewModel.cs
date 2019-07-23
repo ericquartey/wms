@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
-using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -36,7 +37,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         private ICommand detailListButtonCommand;
 
-        private ObservableCollection<DataGridList> lists;
+        private IEnumerable<DataGridList> lists;
 
         #endregion
 
@@ -82,8 +83,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ICommand DetailListButtonCommand => this.detailListButtonCommand ?? (this.detailListButtonCommand = new DelegateCommand(
-            () => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.lists[this.currentSelectedItem])));
+        public ICommand DetailListButtonCommand =>
+            this.detailListButtonCommand
+            ??
+            (this.detailListButtonCommand = new DelegateCommand(() => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.lists.ElementAt(this.currentSelectedItem))));
 
         public ICustomControlListDataGridViewModel ListDataGridViewModel { get; }
 
@@ -93,23 +96,20 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
 
         public override async Task OnEnterViewAsync()
         {
-            var listsFromWms = await this.wmsDataProvider.GetItemLists();
+            var listsFromWms = await this.wmsDataProvider.GetItemListsAsync();
 
-            this.lists = new ObservableCollection<DataGridList>();
-            for (var i = 0; i < listsFromWms.Count; i++)
-            {
-                this.lists.Add(new DataGridList
+            this.lists = listsFromWms.Select(l =>
+                new DataGridList
                 {
-                    Type = listsFromWms[i].ItemListType.ToString(),
-                    List = listsFromWms[i].Id.ToString(),
-                    Description = listsFromWms[i].Description,
-                    Machines = (listsFromWms[i].Machines == null) ? "---" : listsFromWms[i].Machines.ToString()
-                }
-                );
-            }
+                    Type = l.ItemListType.ToString(),
+                    List = l.Code,
+                    Description = l.Description,
+                    Machines = (l.Machines == null) ? "---" : l.Machines.ToString()
+                })
+                .ToArray();
 
             this.dataGridViewModelRef.Lists = this.lists;
-            this.dataGridViewModelRef.SelectedList = this.lists[this.currentSelectedItem];
+            this.dataGridViewModelRef.SelectedList = this.lists.ElementAt(this.currentSelectedItem);
             this.DataGridViewModel = this.dataGridViewModelRef;
         }
 
@@ -120,11 +120,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
             {
                 this.currentSelectedItem = 0;
             }
-            if (this.currentSelectedItem >= this.lists.Count)
+
+            if (this.currentSelectedItem >= this.lists.Count())
             {
-                this.currentSelectedItem = this.lists.Count - 1;
+                this.currentSelectedItem = this.lists.Count() - 1;
             }
-            (this.dataGridViewModel as CustomControlListDataGridViewModel).SelectedList = this.lists[this.currentSelectedItem];
+
+            (this.dataGridViewModel as CustomControlListDataGridViewModel).SelectedList = this.lists.ElementAt(this.currentSelectedItem);
         }
 
         #endregion

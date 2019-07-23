@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.Controls.WPF;
-using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 

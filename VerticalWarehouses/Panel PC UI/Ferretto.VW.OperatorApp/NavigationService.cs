@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.Utils.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
@@ -97,7 +97,6 @@ namespace Ferretto.VW.OperatorApp
                 ??
                 this.container.Resolve<IMainWindowViewModel>();
 
-
             var viewModel = this.container.Resolve<I>();
 
             if (viewModel is T desiredViewModelWithNavView
@@ -124,7 +123,6 @@ namespace Ferretto.VW.OperatorApp
                 this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
-
         }
 
         public async void NavigateToView<T, I>(object parameterObject)

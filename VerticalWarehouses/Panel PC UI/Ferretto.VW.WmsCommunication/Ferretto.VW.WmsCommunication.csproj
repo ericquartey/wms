@@ -15,4 +15,9 @@
     <PackageReference Include="Unity.NLog" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Source\" />
+  </ItemGroup>
+
 </Project>

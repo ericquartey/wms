@@ -2,11 +2,8 @@
 using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
-using Prism.Events;
-using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 {
