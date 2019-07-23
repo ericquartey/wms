@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs

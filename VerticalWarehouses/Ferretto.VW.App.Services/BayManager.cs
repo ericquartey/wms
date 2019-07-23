@@ -9,7 +9,11 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private readonly IMissionOperationsService missionOperationsAutomationService;
+
         private readonly IMissionOperationsDataService missionOperationsDataService;
+
+        private readonly IMissionsDataService missionsDataService;
 
         private readonly IOperatorHubClient operatorHubClient;
 
@@ -19,7 +23,9 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IOperatorHubClient operatorHubClient,
-            IMissionOperationsDataService missionOperationsDataService)
+            IMissionOperationsDataService missionOperationsDataService,
+            IMissionOperationsService missionOperationsAutomationService,
+            IMissionsDataService missionsDataService)
         {
             if (operatorHubClient == null)
             {
@@ -31,13 +37,31 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(missionOperationsDataService));
             }
 
-            this.operatorHubClient = operatorHubClient;
+            if (missionOperationsAutomationService == null)
+            {
+                throw new ArgumentNullException(nameof(missionOperationsAutomationService));
+            }
+
+            if (missionsDataService == null)
+            {
+                throw new ArgumentNullException(nameof(missionsDataService));
+            }
+
             this.missionOperationsDataService = missionOperationsDataService;
+            this.missionOperationsAutomationService = missionOperationsAutomationService;
+            this.missionsDataService = missionsDataService;
+            this.operatorHubClient = operatorHubClient;
 
             this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnConnectionStatusChangedAsync(sender, e);
             this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
-            this.operatorHubClient.MissionOperationStarted += this.OnMissionOperationStarted;
+            this.operatorHubClient.MissionOperationAvailable += this.OnMissionOperationAvailable;
         }
+
+        #endregion
+
+        #region Events
+
+        public event System.EventHandler NewMissionOperationAvailable;
 
         #endregion
 
@@ -45,9 +69,9 @@ namespace Ferretto.VW.App.Services
 
         public int BayId { get; private set; }
 
-        public MissionInfo CurrentMission { get; set; }
+        public MissionInfo CurrentMission { get; private set; }
 
-        public MissionOperationInfo CurrentMissionOperation { get; set; }
+        public MissionOperationInfo CurrentMissionOperation { get; private set; }
 
         public int PendingMissionsCount { get; private set; }
 
@@ -60,13 +84,21 @@ namespace Ferretto.VW.App.Services
             // TODO Implement mission completion logic
         }
 
+        public async Task CompleteCurrentMissionOperationAsync(double quantity)
+        {
+            await this.missionOperationsAutomationService.CompleteAsync(this.CurrentMissionOperation.Id, quantity);
+
+            this.CurrentMissionOperation = null;
+        }
+
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
             if (this.operatorHubClient.IsConnected == true)
             {
                 this.BayId = e.BayId;// TODO the bay ID should come from configuration.
-                await this.operatorHubClient.RetrieveCurrentMissionOperationAsync();
                 this.PendingMissionsCount = e.PendingMissionsCount;
+
+                await this.operatorHubClient.RetrieveCurrentMissionOperationAsync();
             }
         }
 
@@ -78,13 +110,14 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void OnMissionOperationStarted(object sender, MissionOperationStartedEventArgs e)
+        private void OnMissionOperationAvailable(object sender, MissionOperationAvailableEventArgs e)
         {
-            if (e.MissionOperation == null)
+            if (this.CurrentMissionOperation == null)
+            // no ongoing operations are present
             {
-                this.CurrentMission = e.Mission;
                 this.CurrentMissionOperation = e.MissionOperation;
-                this.PendingMissionsCount = e.PendingMissionsCount;
+
+                this.NewMissionOperationAvailable?.Invoke(this, null);
             }
         }
 

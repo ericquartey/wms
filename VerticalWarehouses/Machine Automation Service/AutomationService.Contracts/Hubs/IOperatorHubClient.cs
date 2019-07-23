@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
-        event EventHandler<MissionOperationStartedEventArgs> MissionOperationStarted;
+        event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
 

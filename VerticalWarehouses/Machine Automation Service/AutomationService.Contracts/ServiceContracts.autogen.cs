@@ -161,11 +161,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMissionOperationsService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, int quantity);
+        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, int quantity, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, System.Threading.CancellationToken cancellationToken);
     
     }
     

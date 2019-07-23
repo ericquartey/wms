@@ -15,43 +15,6 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Methods
 
-        public async void TESTStartBoolSensorsCycle()
-        {
-            var random = new Random();
-            while (true)
-            {
-                var sensorsState = new bool[]
-                {
-                    (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0)
-                };
-
-                Console.WriteLine(sensorsState[0].ToString() + " " + sensorsState[1].ToString() + " " + sensorsState[2].ToString() + " " + sensorsState[3].ToString() +
-                                  sensorsState[4].ToString() + " " + sensorsState[5].ToString() + " " + sensorsState[6].ToString() + " " + sensorsState[7].ToString() +
-                                  sensorsState[8].ToString() + " " + sensorsState[9].ToString() + " " + sensorsState[10].ToString() + " " + sensorsState[11].ToString() +
-                                  sensorsState[12].ToString() + " " + sensorsState[13].ToString() + " " + sensorsState[14].ToString() + " " + sensorsState[15].ToString() +
-                                  sensorsState[16].ToString() + " " + sensorsState[17].ToString() + " " + sensorsState[18].ToString() + " " + sensorsState[19].ToString() +
-                                  sensorsState[20].ToString() + " " + sensorsState[21].ToString() + " " + sensorsState[22].ToString() + " " + sensorsState[23].ToString() +
-                                  sensorsState[24].ToString() + " " + sensorsState[25].ToString() + " " + sensorsState[26].ToString() + " " + sensorsState[27].ToString() +
-                                  sensorsState[28].ToString() + " " + sensorsState[29].ToString() + " " + sensorsState[30].ToString() + " " + sensorsState[31].ToString());
-
-                var dataInterface = new SensorsChangedMessageData();
-                dataInterface.SensorsStates = sensorsState;
-
-                var notify = new NotificationMessage(dataInterface, "Sensors status", MessageActor.Any, MessageActor.AutomationService, MessageType.SensorsChanged, MessageStatus.OperationExecuting);
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notify);
-                await this.installationHub.Clients.All.SensorsChangedNotify(messageToUI);
-
-                await Task.Delay(1000);
-            }
-        }
-
         private void CalibrateAxisMethod(NotificationMessage receivedMessage)
         {
             try
@@ -87,9 +50,17 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
         {
-            if (e.EntityType == "SchedulerRequest")
+            if (e.EntityType == nameof(MissionOperation)
+                &&
+                e.Operation == WMS.Data.Hubs.Models.HubEntityOperation.Created)
             {
-                var message = new NotificationMessage(null, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded, MessageStatus.NoStatus);
+                var message = new NotificationMessage(
+                    null,
+                    "New mission operation from WMS",
+                    MessageActor.MissionsManager,
+                    MessageActor.AutomationService,
+                    MessageType.MissionAdded,
+                    MessageStatus.NoStatus);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
             }
         }
@@ -122,7 +93,9 @@ namespace Ferretto.VW.MAS.AutomationService
             if (receivedMessage.Data is ExecuteMissionMessageData data)
             {
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                await this.operatorHub.Clients.Client(data.BayConnectionId).ProvideMissionsToBay(messageToUI);
+                await this.operatorHub.Clients
+                    .Client(data.BayConnectionId)
+                    .NewMissionOperationAvailable(data.MissionOperation);
             }
         }
 

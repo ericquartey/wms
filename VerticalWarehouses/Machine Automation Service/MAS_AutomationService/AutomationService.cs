@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -133,10 +132,9 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             do
             {
-                CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                     this.logger.LogTrace($"2:Waiting for process:{this.commandQueue.Count}");
                 }

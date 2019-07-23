@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -60,7 +57,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, int quantity)
+        public async Task<ActionResult> CompleteAsync(int id, double quantity)
         {
             try
             {

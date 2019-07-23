@@ -161,9 +161,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
             {
                 try
                 {
-                    await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    await this.BayManager.CompleteCurrentMissionOperationAsync(this.InputQuantity.Value);
 
-                    this.BayManager.CurrentMission = null;
                     this.InputQuantity = null;
 
                     this.UpdateView();

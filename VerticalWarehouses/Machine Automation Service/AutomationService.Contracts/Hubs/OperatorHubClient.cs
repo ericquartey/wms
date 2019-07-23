@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
-        public event EventHandler<MissionOperationStartedEventArgs> MissionOperationStarted;
+        public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
 
@@ -34,11 +34,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<ExecuteMissionMessageData>(
-                "MissionOperationStarted", this.OnMissionOperationStarted);
+            connection.On<MissionOperationInfo>(
+                nameof(Hubs.IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
 
             connection.On<BayConnectedMessageData>(
-                "BayStatusChanged", this.OnBayStatusChanged);
+                nameof(Hubs.IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
         }
 
         private void OnBayStatusChanged(BayConnectedMessageData message)
@@ -51,14 +51,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     message.PendingMissionsCount));
         }
 
-        private void OnMissionOperationStarted(ExecuteMissionMessageData message)
+        private void OnMissionOperationAvailable(MissionOperationInfo missionOperation)
         {
-            this.MissionOperationStarted?.Invoke(
+            this.MissionOperationAvailable?.Invoke(
                 this,
-                new MissionOperationStartedEventArgs(
-                    message.Mission,
-                    message.MissionOperation,
-                    message.PendingMissionsCount));
+                new MissionOperationAvailableEventArgs(missionOperation));
         }
 
         #endregion

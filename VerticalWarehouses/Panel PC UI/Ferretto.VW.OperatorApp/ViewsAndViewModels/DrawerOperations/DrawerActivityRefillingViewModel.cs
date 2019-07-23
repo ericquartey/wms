@@ -52,8 +52,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             ??
             (this.confirmCommand = new DelegateCommand(async () => await this.ExecuteConfirmCommand()));
 
-        public ICommand DrawerActivityRefillingDetailsButtonCommand => this.drawerActivityRefillingDetailsButtonCommand ?? (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
-            async () => await this.DrawerDetailsButtonMethod()));
+        public ICommand DrawerActivityRefillingDetailsButtonCommand =>
+            this.drawerActivityRefillingDetailsButtonCommand
+            ??
+            (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
+                async () => await this.DrawerDetailsButtonMethod()));
 
         #endregion
 

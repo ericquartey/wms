@@ -2062,14 +2062,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, int quantity)
+        public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity)
         {
             return CompleteAsync(id, quantity, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, int quantity, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");

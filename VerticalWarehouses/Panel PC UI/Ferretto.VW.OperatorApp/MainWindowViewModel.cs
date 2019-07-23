@@ -138,17 +138,6 @@ namespace Ferretto.VW.OperatorApp
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
-
-            this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Subscribe(
-                message => this.OnCurrentMissionChanged(message.Data.Mission, message.Data.PendingMissionsCount));
-        }
-
-        private void OnCurrentMissionChanged(MissionInfo mission, int missionsQuantity)
-        {
-            if (this.ContentRegionCurrentViewModel is IDrawerActivityViewModel content)
-            {
-                content.UpdateView();
-            }
         }
 
         #endregion
