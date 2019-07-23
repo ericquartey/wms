@@ -76,6 +76,10 @@
             <local:HelpDrawerCompacting></local:HelpDrawerCompacting>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsother:DrawerCompactingDetailViewModel}">
+            <local:HelpDrawerCompactingDetail></local:HelpDrawerCompactingDetail>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodelsotherstatistics:DrawerSpaceSaturationViewModel}">
             <local:HelpDrawerSpaceSaturation></local:HelpDrawerSpaceSaturation>
         </DataTemplate>

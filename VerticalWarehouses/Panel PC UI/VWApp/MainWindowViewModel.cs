@@ -87,7 +87,7 @@ namespace Ferretto.VW.App
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "installer",
+                UserName = "operator",
                 Password = "password",
             };
 #else
@@ -104,7 +104,7 @@ namespace Ferretto.VW.App
             else
             {
                 try
-                { 
+                {
                     this.Machine = await this.machineProvider.GetIdentityAsync();
                     this.ErrorMessage = null;
                 }
