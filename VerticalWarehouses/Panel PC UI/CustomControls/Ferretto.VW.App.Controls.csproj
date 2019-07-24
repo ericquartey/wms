@@ -87,6 +87,12 @@
     <None Update="Controls\CustomProgressBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Controls\VWIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\VWIcon\VWIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Fonts\Microsoft-sans-serif.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

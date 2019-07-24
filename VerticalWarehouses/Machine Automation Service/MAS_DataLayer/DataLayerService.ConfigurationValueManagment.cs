@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (primaryConfigurationValue != null)
             {
-                if (!decimal.TryParse(primaryConfigurationValue.VarValue, out returnDecimalValue))
+                if (!decimal.TryParse(primaryConfigurationValue.VarValue, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out returnDecimalValue))
                 {
                     this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);

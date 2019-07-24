@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         public bool EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
 
-        public bool LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
+        public bool LuPresentInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
 
         public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
 
@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.ElevatorEngineSelected = false;
             this.CradleEngineSelected = false;
             this.ZeroPawlSensor = false;
-            this.LuPresentiInMachineSide = false;
+            this.LuPresentInMachineSide = false;
             this.LuPresentInOperatorSide = false;
         }
 
@@ -121,7 +121,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
             this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
             this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
-            this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
+            this.LuPresentInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
             this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
         }
 
