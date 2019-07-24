@@ -97,11 +97,14 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (!this.CurrentStateMachine?.ValidateCommandResponse(currentMessage) ?? false)
                 {
-                    var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                    if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam))
+                    {
+                        var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
 
-                    this.logger.LogTrace($"2:readStatusWordMessage={readStatusWordMessage}");
+                        this.logger.LogTrace($"2:readStatusWordMessage={readStatusWordMessage}");
 
-                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                    }
                 }
                 else
                 {
@@ -456,9 +459,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                 {
                     inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
+                    message.GetHeartbeatMessage(inverterStatus.CommonControlWord.HeartBeat);
                 }
             }
-            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:inverterMessage={message}");
+            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
 
             var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
             if (message.SendDelay > 0)
@@ -979,7 +983,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 return;
             }
 
-            inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
+            //inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
             //if (inverterStatus is AngInverterStatus mainInverterStatus)
             //{
             //    mainInverterStatus.WaitingHeartbeatAck = true;
