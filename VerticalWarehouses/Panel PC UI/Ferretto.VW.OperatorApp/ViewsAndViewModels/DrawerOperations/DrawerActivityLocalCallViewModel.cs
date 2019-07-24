@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
+﻿namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 {
     class DrawerActivityLocalCallViewModel
     {

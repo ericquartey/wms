@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 {
     /// <summary>
     /// Logica di interazione per DrawerActivityRefillingView.xaml

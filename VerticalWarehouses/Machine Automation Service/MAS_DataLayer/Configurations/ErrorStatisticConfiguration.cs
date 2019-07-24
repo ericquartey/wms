@@ -1,4 +1,4 @@
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Errors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Ferretto.VW.App.Controls.Controls
+namespace Ferretto.VW.App.Controls.Extensions
 {
     public static class EnumerableExtensions
     {

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.MAS_Utils.Utilities
+namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public class Bay
     {

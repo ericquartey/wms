@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class IoSHDMessage
     {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Utils.Interfaces;
+﻿using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 
-namespace Ferretto.VW.OperatorApp.Interfaces
+namespace Ferretto.VW.App.Operator.Interfaces
 {
     public interface IStatisticsFooterViewModel : IViewModel
     {

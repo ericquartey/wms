@@ -1,16 +1,14 @@
-﻿using System.Threading.Tasks;
-
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IHorizontalManualMovements
     {
         #region Properties
 
-        Task<decimal> FeedRateHM { get; }
+        decimal FeedRateHM { get; }
 
-        Task<decimal> InitialTargetPositionHM { get; }
+        decimal InitialTargetPositionHM { get; }
 
-        Task<decimal> RecoveryTargetPositionHM { get; }
+        decimal RecoveryTargetPositionHM { get; }
 
         #endregion
     }

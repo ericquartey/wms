@@ -1,14 +1,15 @@
-﻿namespace Ferretto.VW.InstallationApp
-{
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Ferretto.VW.InstallationApp.Resources;
-    using Ferretto.VW.InstallationApp.Resources.Enumerables;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
+{
     public class SSNavigationButtonsViewModel : BindableBase, ISSNavigationButtonsViewModel, IViewModelRequiresContainer
     {
         #region Fields

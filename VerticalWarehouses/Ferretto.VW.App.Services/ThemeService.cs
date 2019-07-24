@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Services
 {

@@ -136,7 +136,7 @@
     "MaxEmptySpeed": 730.0,
     "MaxEmptyAcceleration": 1500.0,
     "MaxEmptyDeceleration": 1500.0,
-    "MaxFullSpeed": 550.0,
+    "MaxFullSpeed": 55.0,
     "MaxFullAcceleration": 350.00,
     "MaxFullDeceleration": 350.00,
     //"HomingExecuted":false,

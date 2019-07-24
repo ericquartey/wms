@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_IODriver.Enumerations
+﻿namespace Ferretto.VW.MAS.IODriver.Enumerations
 {
     public enum IoPorts
     {

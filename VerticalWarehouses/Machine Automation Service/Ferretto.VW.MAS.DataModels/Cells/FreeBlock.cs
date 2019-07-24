@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using Ferretto.VW.MAS.DataModels.LoadingUnits;
+
+namespace Ferretto.VW.MAS.DataModels.Cells
 {
     public class FreeBlock
     {

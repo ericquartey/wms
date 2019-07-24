@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.WmsCommunication;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;

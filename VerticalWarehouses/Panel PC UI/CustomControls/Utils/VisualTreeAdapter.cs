@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace Ferretto.VW.App.Controls
+namespace Ferretto.VW.App.Controls.Utils
 {
     public class VisualTreeAdapter : ILinqTree<DependencyObject>
     {
