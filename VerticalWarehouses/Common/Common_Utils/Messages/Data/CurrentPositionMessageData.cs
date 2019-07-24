@@ -32,5 +32,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"BeltBurnishingPosition:{this.BeltBurnishingPosition.ToString()} CurrentPosition:{this.CurrentPosition} ExecutedCycles:{this.ExecutedCycles}";
+        }
+
+        #endregion
     }
 }

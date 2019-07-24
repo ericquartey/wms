@@ -19,15 +19,24 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
         #region Properties
 
+        public ShutterMovementDirection ShutterMovementDirection { get; }
+
         public ShutterPosition ShutterPosition { get; }
 
         public ShutterType ShutterType { get; }
 
-        public ShutterMovementDirection ShutterMovementDirection { get; }
-
         public int SpeedRate { get; set; }
 
         public MessageVerbosity Verbosity { get; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"Direction:{this.ShutterMovementDirection.ToString()} Direction:{this.ShutterMovementDirection.ToString()} Type:{this.ShutterType.ToString()} SpeedRate:{this.SpeedRate}";
+        }
 
         #endregion
     }

@@ -51,5 +51,14 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         public MessageVerbosity Verbosity { get; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"Direction:{this.ShutterMovementDirection.ToString()} Position:{this.ShutterPosition.ToString()} Type:{this.ShutterType.ToString()} SpeedRate:{this.SpeedRate}";
+        }
+
+        #endregion
     }
 }

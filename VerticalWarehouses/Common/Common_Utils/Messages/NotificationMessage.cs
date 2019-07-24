@@ -1,7 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Microsoft.Extensions.Logging;
 using NLog;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages
@@ -43,7 +44,14 @@ namespace Ferretto.VW.CommonUtils.Messages
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
 
-            Logger?.Trace($"{source}.{type}.{destination} {description} {status}");
+            if (Logger?.IsTraceEnabled ?? false)
+            {
+                StackTrace st = new StackTrace();
+                StackFrame sf = st.GetFrame(1);
+                string trace = $"{sf.GetMethod().ReflectedType.Name}.{sf.GetMethod().Name}()";
+
+                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" status:{status} [{data?.ToString()}][{trace}]");
+            }
         }
 
         #endregion

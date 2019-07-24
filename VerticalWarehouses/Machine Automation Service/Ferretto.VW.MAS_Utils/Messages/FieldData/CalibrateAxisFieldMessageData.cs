@@ -23,5 +23,14 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         public MessageVerbosity Verbosity { get; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"AxisToCalibrate:{this.AxisToCalibrate.ToString()}";
+        }
+
+        #endregion
     }
 }
