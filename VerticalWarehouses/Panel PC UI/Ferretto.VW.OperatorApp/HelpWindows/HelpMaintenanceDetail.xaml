@@ -37,7 +37,7 @@
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Elemento" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderElement}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
@@ -58,11 +58,11 @@
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Descrizione" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderDescription}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Quantita'" />
+                    Text="{x:Static Resources:OperatorApp.StatisticsMaintenanceDetailDataGridHeaderQuantity}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"

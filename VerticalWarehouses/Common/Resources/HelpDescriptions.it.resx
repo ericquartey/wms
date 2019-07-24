@@ -1225,4 +1225,34 @@
   <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
     <value>Il campo riporta lo stato corrente del WMS, se presente, che controlla la macchina su cui si sta lavorando.</value>
   </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>La pagina mostra lo stato di avanzamento della procedura di compattazione. Viene indicato il cassetto in fase di movimentazione e da quale cella e' prelevato e verso quale cella e' destinato. Viene mostrato inoltre lo stato di avanzamento della procedura con l'indicazione dei frammenti e dello spazio da recuperare oltre allo spazio gia' recuperato.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Indica il codice del cassetto attualmente movimentato.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Indica la cella sorgente dove era stoccato il cassetto oggetto della movimentazione.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Indica il numero della cella in cui verra' spostato il cassetto in fase di movimentazione.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Riporta la fase corrente del ciclo di movimentazione dei vari cassetti.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Mostra la posizione corrente dell'asse verticale.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Indica la posizione corrente dell'asse orizzontale.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Indica il numero di frammenti ancora da compattare.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Indica il totale dello spazio attualmente recuperato.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Riporta lo spazio richiesto da recuperare raggiunto il quale la procedura termina.</value>
+  </data>
 </root>
