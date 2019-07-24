@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis axisToCalibrate;
 
-        private readonly HomingStateMachine parentHomingStateMachine;
-
         private bool disposed;
 
         #endregion
@@ -31,7 +29,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             : base(parentMachine, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
-            this.parentHomingStateMachine = parentMachine as HomingStateMachine;
         }
 
         #endregion
@@ -91,13 +88,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            string description = (this.parentHomingStateMachine != null && this.parentHomingStateMachine.GetMaxSteps() > 1 ?
-                string.Format(" {0}/{1}", this.parentHomingStateMachine.GetNumberOfExecutedSteps() + 1, this.parentHomingStateMachine.GetMaxSteps()) :
-                string.Empty);
             var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                $"{this.axisToCalibrate} axis calibration started{description}",
+                $"{this.axisToCalibrate} axis calibration started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
