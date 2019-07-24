@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         private readonly IDrawerOperationMessageData drawerOperationData;
 
+        private readonly DrawerOperationStep drawerOperationStep;
+
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly Axis targetAxis;
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             IDrawerOperationMessageData drawerOperationData,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IMachineSensorsStatus machineSensorsStatus,
+            DrawerOperationStep drawerOperationStep,
             ILogger logger)
             : base(parentMachine, logger)
         {
@@ -48,6 +51,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.machineSensorsStatus = machineSensorsStatus;
             this.drawerOperationData = drawerOperationData;
+            this.drawerOperationStep = drawerOperationStep;
         }
 
         #endregion
@@ -65,33 +69,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.Logger.LogTrace($"1:Process CommandMessage {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            //TODO When IODriver and Inverter Driver report Axis Switch move to next state
-            //if (message.Type == FieldMessageType.NoType)
-            //{
-            //    switch (message.Status)
-            //    {
-            //        case MessageStatus.OperationEnd:
-            //            if (this.targetAxis == Axis.Horizontal)
-            //            {
-            //                this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(this.ParentStateMachine, this.Logger));
-            //            }
-            //            else
-            //            {
-            //                this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(this.ParentStateMachine, this.Logger));
-            //            }
-            //            break;
-
-            //        case MessageStatus.OperationError:
-            //            this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
-            //            break;
-            //    }
-            //}
-
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogDebug($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             //TODO When IODriver and Inverter Driver report Axis Switch move to next state
             if (message.Type == FieldMessageType.SwitchAxis)
@@ -103,7 +86,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, this.targetAxis, this.Logger));
                         break;
                 }
             }
@@ -117,20 +100,131 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, this.targetAxis, this.Logger));
                         break;
                 }
             }
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                // change the DrawerOperationStep
-                this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(this.ParentStateMachine, this.drawerOperationData, this.dataLayerConfigurationValueManagement, this.machineSensorsStatus, this.Logger));
+                if (this.drawerOperationStep == DrawerOperationStep.None)
+                {
+                    var operationStep = DrawerOperationStep.None;
+                    switch (this.drawerOperationData.Source)
+                    {
+                        case DrawerDestination.CarouselBay1Down:
+                        case DrawerDestination.CarouselBay1Up:
+                        //...
+                        case DrawerDestination.InternalBay1Up:
+                            operationStep = DrawerOperationStep.LoadingDrawerFromBay;
+                            break;
+
+                        case DrawerDestination.Cell:
+                            operationStep = DrawerOperationStep.LoadingDrawerFromCell;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(
+                        this.ParentStateMachine,
+                        this.drawerOperationData,
+                        this.dataLayerConfigurationValueManagement,
+                        this.machineSensorsStatus,
+                        operationStep,
+                        this.Logger));
+                }
+
+                if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
+                {
+                    this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(
+                        this.ParentStateMachine,
+                        this.drawerOperationData,
+                        this.dataLayerConfigurationValueManagement,
+                        this.machineSensorsStatus,
+                        DrawerOperationStep.MovingElevatorUp,
+                        this.Logger));
+                }
+
+                if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
+                {
+                    this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(
+                        this.ParentStateMachine,
+                        this.drawerOperationData,
+                        this.dataLayerConfigurationValueManagement,
+                        this.machineSensorsStatus,
+                        DrawerOperationStep.MovingElevatorDown,
+                        this.Logger));
+                }
+
+                if (this.drawerOperationStep == DrawerOperationStep.MovingElevatorUp)
+                {
+                    var operationStep = DrawerOperationStep.None;
+                    switch (this.drawerOperationData.Destination)
+                    {
+                        case DrawerDestination.CarouselBay1Down:
+                        case DrawerDestination.CarouselBay1Up:
+                        case DrawerDestination.CarouselBay2Down:
+                        //...
+                        case DrawerDestination.InternalBay1Up:
+                        case DrawerDestination.InternalBay2Up:
+                            operationStep = DrawerOperationStep.StoringDrawerToBay;
+                            break;
+
+                        case DrawerDestination.Cell:
+                            operationStep = DrawerOperationStep.StoringDrawerToCell;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(
+                        this.ParentStateMachine,
+                        this.drawerOperationData,
+                        this.dataLayerConfigurationValueManagement,
+                        this.machineSensorsStatus,
+                        operationStep,
+                        this.Logger));
+                }
+
+                if (this.drawerOperationStep == DrawerOperationStep.MovingElevatorDown)
+                {
+                    var operationStep = DrawerOperationStep.None;
+                    switch (this.drawerOperationData.Destination)
+                    {
+                        case DrawerDestination.CarouselBay1Down:
+                        case DrawerDestination.CarouselBay1Up:
+                        case DrawerDestination.CarouselBay2Down:
+                        //...
+                        case DrawerDestination.InternalBay1Up:
+                        case DrawerDestination.InternalBay2Up:
+                            operationStep = DrawerOperationStep.StoringDrawerToBay;
+                            break;
+
+                        case DrawerDestination.Cell:
+                            operationStep = DrawerOperationStep.StoringDrawerToCell;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(
+                        this.ParentStateMachine,
+                        this.drawerOperationData,
+                        this.dataLayerConfigurationValueManagement,
+                        this.machineSensorsStatus,
+                        operationStep,
+                        this.Logger));
+                }
             }
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -145,7 +239,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.SwitchAxis);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
@@ -158,7 +252,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn);
 
-            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+            this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
@@ -169,20 +263,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                 MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                "Message Description",
+                $"Switch axis",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
-            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            //this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.Logger, true));
+            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
+                this.ParentStateMachine,
+                this.drawerOperationData,
+                this.dataLayerConfigurationValueManagement,
+                this.machineSensorsStatus,
+                this.drawerOperationStep,
+                this.Logger,
+                true));
         }
 
         protected override void Dispose(bool disposing)

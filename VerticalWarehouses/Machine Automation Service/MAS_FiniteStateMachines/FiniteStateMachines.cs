@@ -565,6 +565,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             }
                         }
                         break;
+
+                    case MessageType.DrawerOperation:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogDebug($"17:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"18:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
                 }
 
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);

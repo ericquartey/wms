@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         private readonly IDrawerOperationMessageData drawerOperationData;
 
+        private readonly DrawerOperationStep drawerOperationStep;
+
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private bool disposed;
@@ -38,12 +40,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             IDrawerOperationMessageData drawerOperationData,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IMachineSensorsStatus machineSensorsStatus,
+            DrawerOperationStep drawerOperationStep,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.drawerOperationData = drawerOperationData;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.machineSensorsStatus = machineSensorsStatus;
+            this.drawerOperationStep = drawerOperationStep;
         }
 
         #endregion
@@ -61,6 +65,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.Logger.LogTrace($"1:Process CommandMessage {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -72,7 +77,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                 {
                     case MessageStatus.OperationEnd:
 
-                        // check sensors' status
+                        //TEMP Check sensors' status
                         if (!this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
                         {
                             var notificationMessage = new NotificationMessage(
@@ -87,35 +92,40 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                            this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, Axis.Horizontal, this.Logger));
+
+                            return;
                         }
-                        else
+
+                        if (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToCell ||
+                            this.drawerOperationStep == DrawerOperationStep.StoringDrawerToBay)
                         {
-                            if (this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToBay ||
-                                this.drawerOperationData.Step == DrawerOperationStep.StoringDrawerToCell)
-                            {
-                                this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
-                                        this.ParentStateMachine,
-                                        this.drawerOperationData,
-                                        this.dataLayerConfigurationValueManagement,
-                                        this.machineSensorsStatus,
-                                        this.Logger));
-                            }
-                            else
-                            {
-                                this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
-                                        this.ParentStateMachine,
-                                        Axis.Vertical,
-                                        this.drawerOperationData,
-                                        this.dataLayerConfigurationValueManagement,
-                                        this.machineSensorsStatus,
-                                        this.Logger));
-                            }
+                            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
+                                    this.ParentStateMachine,
+                                    this.drawerOperationData,
+                                    this.dataLayerConfigurationValueManagement,
+                                    this.machineSensorsStatus,
+                                    this.drawerOperationStep,
+                                    this.Logger));
                         }
+
+                        if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay ||
+                            this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
+                        {
+                            this.ParentStateMachine.ChangeState(new MoveDrawerSwitchAxisState(
+                                    this.ParentStateMachine,
+                                    Axis.Vertical,
+                                    this.drawerOperationData,
+                                    this.dataLayerConfigurationValueManagement,
+                                    this.machineSensorsStatus,
+                                    this.drawerOperationStep,
+                                    this.Logger));
+                        }
+
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.Logger));
+                        this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, Axis.Horizontal, this.Logger));
                         break;
                 }
             }
@@ -123,6 +133,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
@@ -141,48 +152,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.Positioning);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.Logger.LogDebug($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-            //var commandMessage = new FieldCommandMessage(
-            //    null,
-            //    $"Message Description",
-            //    FieldMessageActor.IoDriver,
-            //    FieldMessageActor.FiniteStateMachines,
-            //    FieldMessageType.NoType);
-
-            //this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             // Send a notification message about the start operation for move elevator of MessageType.DrawerOperation
             var notificationMessageData = new DrawerOperationMessageData(
                 this.drawerOperationData.Operation,
-                DrawerOperationStep.MovingElevatorUp,
+                this.drawerOperationStep,
                 MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                "Message Description",
+                $"Moving cradle",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.DrawerOperation,
                 MessageStatus.OperationStart);
 
+            this.Logger.LogDebug($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            //var notificationMessage = new NotificationMessage(
-            //    null,
-            //    "Message Description",
-            //    MessageActor.Any,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.NoType,
-            //    MessageStatus.NoStatus);
-
-            //this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(this.ParentStateMachine, this.drawerOperationData, this.dataLayerConfigurationValueManagement, this.machineSensorsStatus, this.Logger, true));
+            this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
+                this.ParentStateMachine,
+                this.drawerOperationData,
+                this.dataLayerConfigurationValueManagement,
+                this.machineSensorsStatus,
+                this.drawerOperationStep,
+                this.Logger,
+                true));
         }
 
         protected override void Dispose(bool disposing)
@@ -201,46 +202,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             base.Dispose(disposing);
         }
 
+        //TEMP Check this code
         private async Task getParameters()
         {
             decimal target = 0;
 
-            if (this.drawerOperationData.Source != DrawerDestination.Cell)
+            if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
             {
-                var configValue = GeneralInfo.Undefined;
-                switch (this.drawerOperationData.Source)
-                {
-                    case DrawerDestination.CarouselBay1Up:
-                    case DrawerDestination.ExternalBay1Up:
-                    case DrawerDestination.InternalBay1Up:
-                        configValue = GeneralInfo.Bay1Position1;
-                        break;
-
-                    case DrawerDestination.CarouselBay1Down:
-                    case DrawerDestination.ExternalBay1Down:
-                    case DrawerDestination.InternalBay1Down:
-                        configValue = GeneralInfo.Bay1Position2;
-                        // TODO
-                        break;
-
-                    case DrawerDestination.CarouselBay2Up:
-                    case DrawerDestination.ExternalBay2Up:
-                    case DrawerDestination.InternalBay2Up:
-                        configValue = GeneralInfo.Bay2Position1;
-                        break;
-
-                    // ...
-
-                    default:
-                        break;
-                }
-
-                target = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                         (long)configValue, (long)ConfigurationCategory.GeneralInfo);
+                target = 75;
             }
-            else
+
+            if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
             {
                 // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+                target = 75;
+            }
+
+            if (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToBay)
+            {
+                target = 110;
+            }
+
+            if (this.drawerOperationStep == DrawerOperationStep.StoringDrawerToCell)
+            {
+                // Take account the sign of movement to store the drawer
+
+                // TODO Get the coordinate of cell (use the dataLayer specialized interface??)
+                target = 110;
             }
 
             var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(

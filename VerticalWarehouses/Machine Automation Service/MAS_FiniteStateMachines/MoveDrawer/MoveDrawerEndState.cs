@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         private readonly IDrawerOperationMessageData drawerOperationData;
 
+        private readonly DrawerOperationStep drawerOperationStep;
+
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly bool stopRequested;
@@ -33,6 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             IDrawerOperationMessageData drawerOperationData,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IMachineSensorsStatus machineSensorsStatus,
+            DrawerOperationStep drawerOperationStep,
             ILogger logger,
             bool stopRequested = false)
             : base(parentMachine, logger)
@@ -41,6 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             this.drawerOperationData = drawerOperationData;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.machineSensorsStatus = machineSensorsStatus;
+            this.drawerOperationStep = drawerOperationStep;
         }
 
         #endregion
@@ -58,32 +62,39 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.Logger.LogTrace($"1:Process CommandMessage {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process FieldNotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
+            // Send a notification message about the completion of operation
             var notificationMessage = new NotificationMessage(
-                null,
-                "Message Description",
+                this.drawerOperationData,
+                $"{MessageType.DrawerOperation} end",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.NoType,
+                MessageType.DrawerOperation,
                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.Logger.LogDebug($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
         }
 
         public override void Stop()
         {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

@@ -44,7 +44,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
             this.logger = logger;
             this.machineSensorsStatus = machineSensorsStatus;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-
             this.drawerOperationData = drawerOperationData;
 
             this.CurrentState = new EmptyState(logger);
@@ -105,10 +104,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
         public override void Start()
         {
             //TODO get homing status from DL. Wait until DL synchronous refactoring
-            //var isHomingDone = this.setupStatus.VerticalHomingDone;
 
             //TEMP Check if homing has been done: if not, send a message of error
-            var homingDone = false;
+            var homingDone = true; // = this.setupStatus.VerticalHomingDone;
             if (!homingDone)
             {
                 var notificationMessage = new NotificationMessage(
@@ -185,7 +183,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new MoveDrawerStartState(this, this.drawerOperationData, this.dataLayerConfigurationValueManagement, this.machineSensorsStatus, this.Logger);
+                this.CurrentState = new MoveDrawerStartState(
+                    this,
+                    this.drawerOperationData,
+                    this.dataLayerConfigurationValueManagement,
+                    this.machineSensorsStatus,
+                    DrawerOperationStep.None,
+                    this.Logger);
                 this.CurrentState?.Start();
             }
         }

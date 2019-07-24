@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -12,6 +13,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
+        private readonly Axis axis;
+
+        private readonly IDrawerOperationMessageData drawerOperationData;
+
         private readonly FieldNotificationMessage errorMessage;
 
         private bool disposed;
@@ -23,10 +28,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
         public MoveDrawerErrorState(
             IStateMachine parentMachine,
             FieldNotificationMessage errorMessage,
+            IDrawerOperationMessageData drawerOperationData,
+            Axis axis,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.errorMessage = errorMessage;
+            this.drawerOperationData = drawerOperationData;
+            this.axis = axis;
         }
 
         #endregion
@@ -44,34 +53,53 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            this.Logger.LogTrace($"1:Process CommandMessage {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process FieldNotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
+            {
+                var notificationMessage = new NotificationMessage(
+                    this.drawerOperationData,
+                    $"{FieldMessageType.InverterStop} Error",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.DrawerOperation,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Error);
+
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
             var stopMessage = new FieldCommandMessage(
                 null,
-                $"Message Description",
+                $"Reset Inverter Axis {this.axis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.NoType);
+                FieldMessageType.InverterStop);
+
+            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
             var notificationMessage = new NotificationMessage(
-                null,
-                "Message Description",
+                this.drawerOperationData,
+                $"{MessageType.DrawerOperation} Error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.NoType,
+                MessageType.DrawerOperation,
                 MessageStatus.OperationError);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -79,6 +107,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
 
         public override void Stop()
         {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)
