@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.MAS.DataModels.Cell;
+﻿using Ferretto.VW.MAS.DataModels.Cells;
 
-namespace Ferretto.VW.MAS.DataModels.LoadingUnit
+namespace Ferretto.VW.MAS.DataModels.LoadingUnits
 {
     public class LoadingUnitPosition
     {

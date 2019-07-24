@@ -1,7 +1,7 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Error;
+using Ferretto.VW.MAS.DataModels.Errors;
 
 // ReSharper disable ArrangeThisQualifier
 

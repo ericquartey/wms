@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Cell;
-using Ferretto.VW.MAS.DataModels.LoadingUnit;
+using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 

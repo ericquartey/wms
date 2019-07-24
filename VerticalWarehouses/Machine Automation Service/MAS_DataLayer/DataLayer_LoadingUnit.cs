@@ -2,7 +2,7 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.LoadingUnit;
+using Ferretto.VW.MAS.DataModels.LoadingUnits;
 
 namespace Ferretto.VW.MAS.DataLayer
 {

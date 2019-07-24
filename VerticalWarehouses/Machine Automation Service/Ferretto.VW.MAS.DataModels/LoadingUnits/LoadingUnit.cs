@@ -1,12 +1,13 @@
-﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+﻿using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
-namespace Ferretto.VW.MAS.DataModels.LoadingUnit
+namespace Ferretto.VW.MAS.DataModels.LoadingUnits
 {
     public class LoadingUnit
     {
         #region Properties
 
-        public Cell.Cell Cell { get; set; }
+        public Cell Cell { get; set; }
 
         public int? CellId { get; set; }
 

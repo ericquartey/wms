@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels.Cell
+﻿namespace Ferretto.VW.MAS.DataModels.Cells
 {
     public enum CellSide
     {

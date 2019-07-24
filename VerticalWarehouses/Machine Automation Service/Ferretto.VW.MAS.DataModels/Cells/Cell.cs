@@ -1,14 +1,16 @@
-﻿namespace Ferretto.VW.MAS.DataModels.Cell
+﻿using Ferretto.VW.MAS.DataModels.LoadingUnits;
+
+namespace Ferretto.VW.MAS.DataModels.Cells
 {
     public sealed class Cell
     {
         #region Properties
 
-        public int Id { get; set; }
-
         public decimal Coord { get; set; }
 
-        public LoadingUnit.LoadingUnit LoadingUnit { get; set; }
+        public int Id { get; set; }
+
+        public LoadingUnit LoadingUnit { get; set; }
 
         public int Priority { get; set; }
 

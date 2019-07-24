@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels.LoadingUnit
+﻿namespace Ferretto.VW.MAS.DataModels.LoadingUnits
 {
     public class LoadingUnitSpaceStatistics
     {
