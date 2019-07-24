@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.Utils.Source.CellsManagement
+﻿using Ferretto.VW.MAS.DataModels.Cells;
+
+namespace Ferretto.VW.Utils.Source.CellsManagement
 {
     public sealed class Cell
     {
