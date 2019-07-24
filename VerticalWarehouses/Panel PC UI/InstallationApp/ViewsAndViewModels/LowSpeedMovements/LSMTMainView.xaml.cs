@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
     public partial class LSMTMainView : UserControl
     {

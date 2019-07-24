@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 {
     public class MainWindowNavigationButtonsViewModel : BindableBase, IMainWindowNavigationButtonsViewModel
     {

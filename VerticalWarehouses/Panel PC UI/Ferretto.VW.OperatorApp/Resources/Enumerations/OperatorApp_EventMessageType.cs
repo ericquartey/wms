@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.OperatorApp.Resources.Enumerations
+﻿namespace Ferretto.VW.App.Operator.Resources.Enumerations
 {
     public enum OperatorApp_EventMessageType
     {

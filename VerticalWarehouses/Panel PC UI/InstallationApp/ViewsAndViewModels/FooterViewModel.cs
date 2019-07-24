@@ -1,16 +1,18 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 {
     public class FooterViewModel : BindableBase, IFooterViewModel
     {

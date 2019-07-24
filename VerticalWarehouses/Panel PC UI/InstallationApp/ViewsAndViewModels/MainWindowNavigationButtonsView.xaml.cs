@@ -1,9 +1,9 @@
-﻿namespace Ferretto.VW.InstallationApp
-{
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels
+{
     /// <summary>
     /// Interaction logic for MainWindowNavigationButtonsView.xaml
     /// </summary>

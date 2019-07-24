@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App
+﻿namespace Ferretto.VW.App.Installation
 {
     public partial class App : System.Windows.Application
     {

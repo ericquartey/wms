@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
     public class ItemDetailViewModel : BaseViewModel, IItemDetailViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.HelpWindows
+namespace Ferretto.VW.App.Operator.HelpWindows
 {
     public partial class HelpStatisticsGeneralData : UserControl
     {

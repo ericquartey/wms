@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
     public class MainWindowNavigationButtonsViewModel : BaseViewModel, IMainWindowNavigationButtonsViewModel
     {

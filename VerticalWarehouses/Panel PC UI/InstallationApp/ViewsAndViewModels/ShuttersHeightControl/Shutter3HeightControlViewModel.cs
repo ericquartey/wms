@@ -1,18 +1,19 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl
 {
     public class Shutter3HeightControlViewModel : BindableBase, IShutter3HeightControlViewModel
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private int activeRaysQuantity;
 
         private decimal currentHeight;
-
-        private IEventAggregator eventAggregator;
 
         private decimal gateCorrection;
 

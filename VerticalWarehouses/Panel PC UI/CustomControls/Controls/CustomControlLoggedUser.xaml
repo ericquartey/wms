@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:vwIcon="clr-namespace:Ferretto.VW.App.Controls.Controls"
              mc:Ignorable="d">
     <Grid Name="LayoutRoot">
         <Button Name="ButtonRoot"
@@ -22,7 +23,7 @@
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                                Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <local:VWIcon Height="24"
+                    <vwIcon:VWIcon Height="24"
                                   Margin="0,0,10,0"
                                   HorizontalAlignment="Center"
                                   ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"

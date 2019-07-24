@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InstallationApp.ServiceUtilities
+﻿namespace Ferretto.VW.App.Installation.ServiceUtilities
 {
     public class SensorsChangedEventArgs
     {

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.VerticalWarehousesApp.Models
+﻿namespace Ferretto.VW.App.Controls.Models
 {
     public class InputCompartment
     {

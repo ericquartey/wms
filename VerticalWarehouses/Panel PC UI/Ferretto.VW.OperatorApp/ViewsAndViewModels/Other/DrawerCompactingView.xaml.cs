@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     /// <summary>
     /// Logica di interazione per DrawerCompactingView.xaml
