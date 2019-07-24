@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -21,7 +22,7 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 
         Task<ObservableCollection<ItemList>> GetItemLists();
 
-        Task<ObservableCollection<Item>> GetItemsAsync(string searchCode, int skip, int quantity);
+        Task<ObservableCollection<Item>> GetItemsAsync(int areaid, string searchCode, int skip, int take, CancellationToken cancellationToken);
 
         Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode);
 
