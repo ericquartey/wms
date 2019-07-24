@@ -113,6 +113,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             await Task.Delay(5, stoppingToken);
 
+            this.IsReadingOk = true;
+
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
                 this.readCompleteEventSlim.Reset();
@@ -122,8 +124,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     currentMessage = this.lastWriteMessage;
                 }
-
-                this.IsReadingOk = true;
 
                 if (currentMessage.IsWriteMessage)
                 {
@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             var rawMessage = new byte[6 + inputValues.Length];
 
             rawMessage[0] = 0x00;
-            rawMessage[1] = 0x06;
+            rawMessage[1] = (byte)(0x04 + inputValues.Length);
             rawMessage[2] = systemIndex;
             rawMessage[3] = dataSet;
 
