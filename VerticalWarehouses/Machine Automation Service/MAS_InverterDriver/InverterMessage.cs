@@ -272,7 +272,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             returnString.Append($"IsWriteMessage={this.IsWriteMessage}:");
 
-            returnString.Append($"parameterId={this.parameterId:X}:");
+            returnString.Append($"parameterId={this.parameterId}:");
 
             returnString.Append($"payloadLength={this.payloadLength:X}:");
 
