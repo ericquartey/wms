@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             if (value is IEnumerable<MachinePick> machines)
             {
-                return string.Join(" ", machines.Select(m => m.Nickname).ToArray());                
+                return string.Join(", ", machines.Select(m => m.Nickname).ToArray());
             }
 
             return null;
