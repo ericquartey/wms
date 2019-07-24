@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface
         ///     Returns Socket Transport connection status
         /// </summary>
         bool IsConnected { get; }
+        bool IsReadingOk { get; set; }
 
         #endregion
 

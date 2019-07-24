@@ -71,6 +71,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         #region Properties
 
         public bool IsConnected => true;
+        public bool IsReadingOk { get; set; }
 
         #endregion
 
@@ -121,6 +122,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     currentMessage = this.lastWriteMessage;
                 }
+
+                this.IsReadingOk = true;
 
                 if (currentMessage.IsWriteMessage)
                 {

@@ -452,9 +452,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task ProcessInverterCommand()
         {
-            this.inverterCommandQueue.Dequeue(out var message);
+            //this.inverterCommandQueue.Dequeue(out var message);
+            this.inverterCommandQueue.Peek(out var message);
 
-            if(message.ParameterId == InverterParameterId.ControlWordParam)
+            if (message.ParameterId == InverterParameterId.ControlWordParam)
             {
                 if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                 {
@@ -472,10 +473,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.roundTripStopwatch.Reset();
                     this.roundTripStopwatch.Start();
                     await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
+                    this.inverterCommandQueue.Dequeue(out var consumedMessage);
                 }
                 catch (InverterDriverException ex)
                 {
-                    this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.socketTransport.Disconnect();
                 }
             }
             else
@@ -485,10 +488,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.roundTripStopwatch.Reset();
                     this.roundTripStopwatch.Start();
                     await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
+                    this.inverterCommandQueue.Dequeue(out var consumedMessage);
                 }
                 catch (InverterDriverException ex)
                 {
-                    this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    this.socketTransport.Disconnect();
                 }
             }
         }
@@ -925,8 +930,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
 
-            this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
-
             this.sensorIntervalStopwatch.Stop();
             this.SensorIntervalTimeData.AddValue(this.sensorIntervalStopwatch.ElapsedTicks);
             this.sensorIntervalStopwatch.Reset();
@@ -936,6 +939,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.sensorStopwatch.Start();
             if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs))
             {
+                this.logger.LogTrace($"1:ReadSensorStatusMessage={readSensorStatusMessage}");
+
                 this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
             }
         }

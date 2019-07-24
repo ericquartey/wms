@@ -649,6 +649,32 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             do
             {
+                if (!this.socketTransport.IsConnected)
+                {
+                    try
+                    {
+                        await this.socketTransport.ConnectAsync();
+                    }
+                    catch (InverterDriverException ex)
+                    {
+                        this.logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
+
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
+                    }
+
+                    if (!this.socketTransport.IsConnected)
+                    {
+                        this.logger.LogError("3:Socket Transport failed to connect");
+
+                        var ex = new Exception();
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
+                        continue;
+                    }
+                }
                 byte[] inverterData;
                 try
                 {
@@ -684,6 +710,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.writeEnableEvent.Set();
                     return;
                 }
+                catch(InvalidOperationException ex)
+                {
+                    // connection error
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                    continue;
+                }
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
@@ -697,12 +729,14 @@ namespace Ferretto.VW.MAS_InverterDriver
                 //INFO: Byte 1 of read data contains packet length, zero means invalid packet
                 if (inverterData == null)
                 {
-                    this.logger.LogTrace($"4:Inverter message is null");
+                    this.logger.LogError($"4:Inverter message is null");
+                    this.socketTransport.Disconnect();
                     continue;
                 }
                 if (inverterData[1] == 0x00)
                 {
-                    this.logger.LogTrace($"5:Inverter message length is zero");
+                    this.logger.LogError($"5:Inverter message length is zero");
+                    this.socketTransport.Disconnect();
                     continue;
                 }
 
@@ -723,7 +757,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
-                    return;
+                    this.socketTransport.Disconnect();
+                    continue;
                 }
 
                 if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
@@ -733,7 +768,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
 
-                    return;
+                    this.socketTransport.Disconnect();
+                    continue;
                 }
 
                 if (currentMessage.IsWriteMessage)
@@ -793,7 +829,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     //        await this.ProcessInverterCommand();
                     //        break;
                     //}
-                    await this.ProcessInverterCommand();
+                    if (this.socketTransport.IsConnected //&& this.socketTransport.IsReadingOk
+                        )
+                    {
+                        await this.ProcessInverterCommand();
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
