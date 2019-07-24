@@ -34,11 +34,6 @@
         </Style>
     </UserControl.Style>
 
-    <UserControl.Resources>
-        <Color x:Key="RedToast">#F44336</Color>
-
-
-    </UserControl.Resources>
     <Grid Margin="10,10,10,10"
           Background="Transparent">
         <Border Name="border"
@@ -51,19 +46,19 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=Mode}"
                                      Value="{x:Static services:StatusType.Error}">
-                            <Setter Property="Background" Value="#F44336" />
+                            <Setter Property="Background" Value="{DynamicResource ErrorNotificationStatus}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=Mode}"
-                                     Value="Success">
-                            <Setter Property="Background" Value="#00C853" />
+                                     Value="{x:Static services:StatusType.Success}">
+                            <Setter Property="Background" Value="{DynamicResource SuccessNotificationStatus}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=Mode}"
                                      Value="{x:Static services:StatusType.Warning}">
-                            <Setter Property="Background" Value="#FF9800" />
+                            <Setter Property="Background" Value="{DynamicResource WarningNotificationStatus}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=Mode}"
                                      Value="{x:Static services:StatusType.Info}">
-                            <Setter Property="Background" Value="#2979FF" />
+                            <Setter Property="Background" Value="{DynamicResource InfoNotificationStatus}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
