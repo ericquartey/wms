@@ -1,5 +1,8 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -13,6 +16,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
+        private readonly MachineSensorsStatus machineSensorsStatus;
+
         private readonly IPositioningMessageData positioningMessageData;
 
         private bool disposed;
@@ -21,7 +26,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
+        public PositioningStateMachine(IEventAggregator eventAggregator,
+            IPositioningMessageData positioningMessageData,
+            ILogger logger,
+            MachineSensorsStatus machineSensorsStatus)
             : base(eventAggregator, logger)
         {
             this.logger = logger;
@@ -33,6 +41,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.CurrentState = new EmptyState(logger);
 
             this.positioningMessageData = positioningMessageData;
+
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -80,11 +90,28 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public override void Start()
         {
+            bool checkVerticalConditions;
+            bool checkHorizontalConditions;
+
+            //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                //INFO Check the Horizontal and Vertical conditions for Positioning
+                checkVerticalConditions = this.CheckVerticalConditions();
+                checkHorizontalConditions = this.CheckHorizontalConditions();
+
+                if (checkVerticalConditions || checkHorizontalConditions)
+                {
+                    this.CurrentState = new PositioningErrorState(this, this.positioningMessageData, null, this.Logger);
+                }
+                else
+                {
+                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                }
+
                 this.CurrentState?.Start();
             }
+            //INFO End check the pre conditions to start the positioning
 
             this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
@@ -112,6 +139,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.disposed = true;
             base.Dispose(disposing);
+        }
+
+        private bool CheckHorizontalConditions()
+        {
+            bool checkHorizontalConditions;
+
+            checkHorizontalConditions = this.machineSensorsStatus.DrawerIsCompletelyOnCradle || this.machineSensorsStatus.DrawerIsPartiallyOnCradle ||
+                                        //TEMP 7, 11  e 15
+                                        (this.machineSensorsStatus.RawRemoteIOsInputs[(int)IOMachineSensors.LUPresentInBay1] ||
+                                         this.machineSensorsStatus.RawRemoteIOsInputs[(int)IOMachineSensors.LUPresentInBay2] ||
+                                         this.machineSensorsStatus.RawRemoteIOsInputs[(int)IOMachineSensors.LUPresentInBay3]) && this.positioningMessageData.AxisMovement == Axis.Horizontal;
+
+            return checkHorizontalConditions;
+        }
+
+        private bool CheckVerticalConditions()
+        {
+            bool checkVerticalConditions;
+
+            checkVerticalConditions = this.machineSensorsStatus.DrawerIsCompletelyOnCradle || this.machineSensorsStatus.DrawerIsPartiallyOnCradle ||
+                                      !this.machineSensorsStatus.SensorInZeroOnCradle && this.positioningMessageData.AxisMovement == Axis.Vertical;
+
+            return checkVerticalConditions;
         }
 
         #endregion

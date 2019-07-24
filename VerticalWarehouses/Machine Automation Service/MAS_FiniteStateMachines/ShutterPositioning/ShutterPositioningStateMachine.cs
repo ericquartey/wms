@@ -1,5 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -10,6 +12,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
     public class ShutterPositioningStateMachine : StateMachineBase
     {
         #region Fields
+
+        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
@@ -22,10 +26,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         public ShutterPositioningStateMachine(
             IEventAggregator eventAggregator,
             IShutterPositioningMessageData shutterPositioningMessageData,
-            ILogger logger)
+            ILogger logger,
+            MachineSensorsStatus machineSensorsStatus)
             : base(eventAggregator, logger)
         {
             this.CurrentState = new EmptyState(logger);
+
+            this.machineSensorsStatus = machineSensorsStatus;
 
             this.shutterPositioningMessageData = shutterPositioningMessageData;
         }
@@ -88,7 +95,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
+                if (this.machineSensorsStatus.DrawerIsPartiallyOnCradle)
+                {
+                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, ShutterPosition.None, null, this.Logger);
+                }
+                else
+                {
+                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
+                }
+
                 this.CurrentState?.Start();
             }
 

@@ -13,9 +13,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         private readonly IOSensorsStatus ioSensorsStatus;
 
-        readonly private bool[] rawInvertersInputs;
+        private readonly bool[] rawInvertersInputs;
 
-        readonly private bool[] rawRemoteIOsInputs;
+        private readonly bool[] rawRemoteIOsInputs;
 
         #endregion
 
@@ -35,9 +35,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         public bool[] DisplayedInputs => this.ioSensorsStatus?.Inputs;
 
-        public bool DrawerIsCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool DrawerIsCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-        public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
         public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
             newInputs[(int)IOMachineSensors.ElevatorMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.ElevatorMotorFeedback];
             newInputs[(int)IOMachineSensors.CradleMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.CradleMotorFeedback];
 
-            newInputs[(int)IOMachineSensors.LuPresentiInMachineSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInMachineSide];
+            newInputs[(int)IOMachineSensors.LuPresentInMachineSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInMachineSide];
             newInputs[(int)IOMachineSensors.LuPresentInOperatorSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInOperatorSide];
 
             // Bay2

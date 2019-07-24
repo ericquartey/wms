@@ -49,7 +49,7 @@ namespace Ferretto.VW.CommonUtils.IO
             Justification = "Code may need to be refactored")]
         public bool[] Inputs => this.inputs;
 
-        public bool LuPresentiInMachineSide => this.inputs?[(int)IOMachineSensors.LuPresentiInMachineSide] ?? false;
+        public bool LuPresentiInMachineSide => this.inputs?[(int)IOMachineSensors.LuPresentInMachineSide] ?? false;
 
         public bool LuPresentInBay1 => this.inputs?[(int)IOMachineSensors.LUPresentInBay1] ?? false;
 

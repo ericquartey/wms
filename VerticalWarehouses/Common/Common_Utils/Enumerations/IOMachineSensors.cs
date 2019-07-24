@@ -18,7 +18,7 @@
 
         ZeroPawl = 4,
 
-        LuPresentiInMachineSide = 5,
+        LuPresentInMachineSide = 5,
 
         LuPresentInOperatorSide = 6,
 

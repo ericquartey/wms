@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             if (message.Data is IPositioningMessageData data)
             {
-                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
+                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger, this.machineSensorsStatus);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
@@ -227,7 +227,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             if (message.Data is IShutterPositioningMessageData data)
             {
-                this.currentStateMachine = new ShutterPositioningStateMachine(this.eventAggregator, data, this.logger);
+                this.currentStateMachine = new ShutterPositioningStateMachine(this.eventAggregator, data, this.logger, this.machineSensorsStatus);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
