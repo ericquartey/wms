@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿namespace Ferretto.VW.MAS.DataModels.Cell
 {
     public sealed class Cell
     {
@@ -8,7 +8,7 @@
 
         public decimal Coord { get; set; }
 
-        public LoadingUnit LoadingUnit { get; set; }
+        public LoadingUnit.LoadingUnit LoadingUnit { get; set; }
 
         public int Priority { get; set; }
 

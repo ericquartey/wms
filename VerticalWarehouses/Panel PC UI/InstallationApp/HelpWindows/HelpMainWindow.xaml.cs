@@ -1,8 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Events;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.HelpWindows
 {
     /// <summary>
     /// Interaction logic for HelpMainWindow.xaml

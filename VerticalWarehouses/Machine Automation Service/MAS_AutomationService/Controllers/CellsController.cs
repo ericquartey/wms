@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Cell;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers

@@ -24,11 +24,17 @@
 
         decimal LowerBound { get; }
 
-        decimal MaxAcceleration { get; }
+        decimal MaxEmptyAcceleration { get; }
 
-        decimal MaxDeceleration { get; }
+        decimal MaxEmptyDeceleration { get; }
 
-        decimal MaxSpeed { get; }
+        decimal MaxEmptySpeed { get; }
+
+        decimal MaxFullAcceleration { get; }
+
+        decimal MaxFullDeceleration { get; }
+
+        decimal MinFullSpeed { get; }
 
         decimal Offset { get; }
 

@@ -3,11 +3,10 @@ using System.IO;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -134,11 +133,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
                     var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
                     var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
                     var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                         (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
 

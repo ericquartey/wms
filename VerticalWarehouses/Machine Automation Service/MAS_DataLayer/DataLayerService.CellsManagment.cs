@@ -1,13 +1,10 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Models;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
-using Microsoft.EntityFrameworkCore;
+using Ferretto.VW.MAS.DataModels.Cell;
+using Ferretto.VW.MAS.DataModels.LoadingUnit;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -19,31 +16,28 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public CellStatisticsSummary GetCellStatistics()
         {
-            lock (this.primaryContextOptions)
+            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
             {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                var totalCells = primaryDataContext.Cells.Count();
+                var cellStatusStatistics = primaryDataContext.Cells.GroupBy(c => c.Status).Select(g => new CellStatusStatistics
                 {
-                    var totalCells = primaryDataContext.Cells.Count();
-                    var cellStatusStatistics = primaryDataContext.Cells.GroupBy(c => c.Status).Select(g => new CellStatusStatistic
-                    {
-                        Status = g.Key,
-                        TotalFrontCells = g.Count(c => c.Side == Side.FrontOdd),
-                        TotalBackCells = g.Count(c => c.Side == Side.BackEven),
-                        RatioFrontCells = g.Count(c => c.Side == Side.FrontOdd) / (double)totalCells,
-                        RatioBackCells = g.Count(c => c.Side == Side.BackEven) / (double)totalCells,
-                    });
+                    Status = g.Key,
+                    TotalFrontCells = g.Count(c => c.Side == CellSide.Front),
+                    TotalBackCells = g.Count(c => c.Side == CellSide.Back),
+                    RatioFrontCells = g.Count(c => c.Side == CellSide.Front) / (double)totalCells,
+                    RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
+                });
 
-                    var cellStatistics = new CellStatistics
-                    {
-                        CellStatusStatistics = cellStatusStatistics,
-                        TotalCells = totalCells,
-                        TotalFrontCells = primaryDataContext.Cells.Count(c => c.Side == Side.FrontOdd),
-                        TotalBackCells = primaryDataContext.Cells.Count(c => c.Side == Side.BackEven),
-                        CellOccupationRatio = primaryDataContext.Cells.Count(c => (c.Status == Status.Occupied || c.Status == Status.Unusable)) / (double)totalCells,
-                    };
+                var cellStatistics = new CellStatisticsSummary()
+                {
+                    CellStatusStatistics = cellStatusStatistics,
+                    TotalCells = totalCells,
+                    TotalFrontCells = primaryDataContext.Cells.Count(c => c.Side == CellSide.Front),
+                    TotalBackCells = primaryDataContext.Cells.Count(c => c.Side == CellSide.Front),
+                    CellOccupationPercentage = primaryDataContext.Cells.Count(c => (c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable)) / (double)totalCells,
+                };
 
-                    return cellStatistics;
-                }
+                return cellStatistics;
             }
         }
 
@@ -99,20 +93,17 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var loadingUnitPosition = new LoadingUnitPosition();
 
-            lock (this.primaryContextOptions)
+            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
             {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                var inMemoryCellPosition = primaryDataContext.Cells.FirstOrDefault(s => s.Id == cellId);
+
+                if (inMemoryCellPosition == null)
                 {
-                    var inMemoryCellPosition = primaryDataContext.Cells.FirstOrDefault(s => s.CellId == cellId);
-
-                    if (inMemoryCellPosition == null)
-                    {
-                        throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
-                    }
-
-                    loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
-                    loadingUnitPosition.LoadingUnitSide = inMemoryCellPosition.Side;
+                    throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
                 }
+
+                loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
+                loadingUnitPosition.LoadingUnitSide = inMemoryCellPosition.Side;
             }
 
             return loadingUnitPosition;

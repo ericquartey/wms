@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataLayer.Models;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -77,13 +76,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    lock (this.primaryContextOptions)
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                     {
-                        using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                        {
-                            primaryDataContext.LogEntries.Add(logEntry);
-                            primaryDataContext.SaveChanges();
-                        }
+                        primaryDataContext.LogEntries.Add(logEntry);
+                        primaryDataContext.SaveChanges();
                     }
                 }
                 catch
@@ -95,13 +91,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     try
                     {
-                        lock (this.secondaryContextOptions)
+                        using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
                         {
-                            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                            {
-                                secondaryDataContext.LogEntries.Add(logEntry);
-                                secondaryDataContext.SaveChanges();
-                            }
+                            secondaryDataContext.LogEntries.Add(logEntry);
+                            secondaryDataContext.SaveChanges();
                         }
                     }
                     catch
@@ -168,13 +161,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    lock (this.primaryContextOptions)
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                     {
-                        using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                        {
-                            primaryDataContext.LogEntries.Add(logEntry);
-                            primaryDataContext.SaveChanges();
-                        }
+                        primaryDataContext.LogEntries.Add(logEntry);
+                        primaryDataContext.SaveChanges();
                     }
                 }
                 catch
@@ -186,13 +176,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     try
                     {
-                        lock (this.secondaryContextOptions)
+                        using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
                         {
-                            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                            {
-                                secondaryDataContext.LogEntries.Add(logEntry);
-                                secondaryDataContext.SaveChanges();
-                            }
+                            secondaryDataContext.LogEntries.Add(logEntry);
+                            secondaryDataContext.SaveChanges();
                         }
                     }
                     catch

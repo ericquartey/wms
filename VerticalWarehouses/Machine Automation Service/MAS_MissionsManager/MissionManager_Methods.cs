@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
+using Bay = Ferretto.VW.MAS.Utils.Utilities.Bay;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.MissionsManager
@@ -93,7 +95,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private void InitializeBays()
         {
-            this.baysManager.Bays = new List<MAS_Utils.Utilities.Bay>();
+            this.baysManager.Bays = new List<Bay>();
             var ip1 = this.setupNetwork.PPC1MasterIPAddress;
             var ip2 = this.setupNetwork.PPC2SlaveIPAddress;
             var ip3 = this.setupNetwork.PPC3SlaveIPAddress;
@@ -102,7 +104,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             var baysQuantity = this.generalInfo.BaysQuantity;
             for (var i = 0; i < baysQuantity; i++)
             {
-                this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
+                this.baysManager.Bays.Add(new Bay
                 {
                     Id = i == 0 ? 2 : 3,
                     IsConnected = false,

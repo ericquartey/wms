@@ -6,8 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier

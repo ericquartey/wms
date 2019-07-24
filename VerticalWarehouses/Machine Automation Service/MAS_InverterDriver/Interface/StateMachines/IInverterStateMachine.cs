@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
 {

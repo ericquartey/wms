@@ -1,15 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -24,8 +21,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
-
-        private readonly ILogger logger;
 
         #endregion
 
@@ -45,7 +40,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
         #endregion
@@ -75,9 +69,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPut("SetBeltBurnishingCompletion")]
-        public async Task<bool> SetBeltBurnishingCompletionAsync()
+        public bool SetBeltBurnishingCompletion()
         {
-            return await this.SetBeltBurnishingCompletion_MethodAsync();
+            return this.SetBeltBurnishingCompletion_Method();
         }
 
         [ProducesResponseType(200)]
@@ -90,11 +84,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private void ExecuteBeltBurnishing_Method(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
             var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
             var acceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var deceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
 
             var positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -128,7 +122,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                     if (verticalAxisParameterId != null)
                     {
-                        decimal value1 = 0;
+                        decimal value1;
 
                         try
                         {
@@ -151,7 +145,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
                     if (horizontalAxisParameterId != null)
                     {
-                        decimal value2 = 0;
+                        decimal value2;
                         try
                         {
                             value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
@@ -171,7 +165,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
                     if (resolutionCalibrationParameterId != null)
                     {
-                        decimal value3 = 0;
+                        decimal value3;
                         try
                         {
                             value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
@@ -187,9 +181,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-
-                default:
-                    break;
             }
 
             return 0;
@@ -221,13 +212,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        private async Task<bool> SetBeltBurnishingCompletion_MethodAsync()
+        private bool SetBeltBurnishingCompletion_Method()
         {
             var result = true;
 
             try
             {
-                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus, true);
+                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus, true);
             }
             catch
             {

@@ -3,15 +3,14 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Models;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -39,12 +38,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                lock (this.primaryContextOptions)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                    }
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
                 }
             }
             catch
@@ -93,12 +89,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                lock (this.primaryContextOptions)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                    }
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
                 }
             }
             catch
@@ -140,12 +133,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                lock (this.primaryContextOptions)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                    }
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
                 }
             }
             catch
@@ -187,12 +177,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                lock (this.primaryContextOptions)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                    }
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
                 }
             }
             catch
@@ -234,12 +221,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             try
             {
-                lock (this.primaryContextOptions)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                    }
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
                 }
             }
             catch
@@ -276,12 +260,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             try
             {
-                lock (this.primaryContextOptions)
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                    }
+                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
                 }
             }
             catch
@@ -436,68 +417,51 @@ namespace Ferretto.VW.MAS.DataLayer
 
             Expression<Func<ConfigurationValue, bool>> queryString = s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName;
 
-            ConfigurationValue primaryConfigurationValue;
-            lock (this.primaryContextOptions)
+            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
             {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                var primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
+
+                try
                 {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
-
-                    try
+                    if (primaryConfigurationValue == null)
                     {
-                        if (primaryConfigurationValue == null)
-                        {
-                            primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                        }
-                        else
-                        {
-                            primaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
-                        }
-
-                        primaryDataContext.SaveChanges();
+                        primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
                     }
-                    catch
+                    else
                     {
-                        primaryPartitionError = true;
+                        primaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
                     }
+
+                    primaryDataContext.SaveChanges();
+                }
+                catch
+                {
+                    primaryPartitionError = true;
                 }
             }
 
             if (!this.suppressSecondary)
             {
-                lock (this.secondaryContextOptions)
+                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
                 {
-                    using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                    var secondaryConfigurationValue = secondaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
+
+                    try
                     {
-                        try
+                        if (secondaryConfigurationValue == null)
                         {
-                            if (primaryConfigurationValue == null)
-                            {
-                                secondaryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                            }
-                            else
-                            {
-                                var secondaryConfigurationValue =
-                                    secondaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
-
-                                if (secondaryConfigurationValue == null)
-                                {
-                                    this.logger.LogCritical(
-                                        $"Configuration value {newConfigurationValue.VarName} present in Primary Database but Missing in Backup Database");
-
-                                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode
-                                        .ValueNotFound);
-                                }
-
-                                secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
-                            }
-
-                            secondaryDataContext.SaveChanges();
+                            secondaryDataContext.ConfigurationValues.Add(newConfigurationValue);
                         }
-                        catch
+                        else
                         {
-                            secondaryPartitionError = true;
+                            secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
                         }
+
+                        secondaryDataContext.SaveChanges();
+                    }
+                    catch
+                    {
+                        secondaryPartitionError = true;
                     }
                 }
             }

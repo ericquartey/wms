@@ -1,9 +1,11 @@
-using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Error;
 
-namespace Ferretto.VW.MAS_DataLayer
+// ReSharper disable ArrangeThisQualifier
+
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IErrorStatisticsDataLayer
     {
@@ -11,33 +13,36 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public ErrorStatisticsSummary GetErrorStatistics()
         {
-            var totalErrors = this.primaryDataContext.ErrorStatistics.Sum(s => s.TotalErrors);
-            var summary = new ErrorStatisticsSummary
+            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
             {
-                TotalErrors = totalErrors,
-                Errors = this.primaryDataContext.ErrorStatistics
-                    .Select(s =>
-                        new ErrorStatisticsDetail
-                        {
-                            Code = s.Code,
-                            Description = s.Error.Description,
-                            Total = s.TotalErrors,
-                            RatioTotal = s.TotalErrors * 100.0 / totalErrors
-                        }),
-            };
-
-            if (this.primaryDataContext.MachineStatistics.Any())
-            {
-                summary.TotalLoadingUnits = this.primaryDataContext.MachineStatistics.First().TotalMovedTrays;
-                if (summary.TotalLoadingUnits > 0)
+                var totalErrors = primaryDataContext.ErrorStatistics.Sum(s => s.TotalErrors);
+                var summary = new ErrorStatisticsSummary
                 {
-                    summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;
+                    TotalErrors = totalErrors,
+                    Errors = primaryDataContext.ErrorStatistics
+                        .Select(s =>
+                            new ErrorStatisticsDetail
+                            {
+                                Code = s.Code,
+                                Description = s.Error.Description,
+                                Total = s.TotalErrors,
+                                RatioTotal = s.TotalErrors * 100.0 / totalErrors
+                            }),
+                };
+
+                if (primaryDataContext.MachineStatistics.Any())
+                {
+                    summary.TotalLoadingUnits = primaryDataContext.MachineStatistics.First().TotalMovedTrays;
+                    if (summary.TotalLoadingUnits > 0)
+                    {
+                        summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;
+                    }
+
+                    summary.ReliabilityPercentage = totalErrors * 100.0 / summary.TotalLoadingUnits;
                 }
 
-                summary.ReliabilityPercentage = totalErrors * 100.0 / summary.TotalLoadingUnits;
+                return summary;
             }
-
-            return summary;
         }
 
         #endregion

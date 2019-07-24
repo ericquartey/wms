@@ -10,11 +10,17 @@
 
         bool HomingExecutedHA { get; }
 
-        decimal MaxAccelerationHA { get; }
+        decimal MaxEmptyAccelerationHA { get; }
 
-        decimal MaxDecelerationHA { get; }
+        decimal MaxEmptyDecelerationHA { get; }
 
-        decimal MaxSpeedHA { get; }
+        decimal MaxEmptySpeedHA { get; }
+
+        decimal MaxFullAccelerationHA { get; }
+
+        decimal MaxFullDecelerationHA { get; }
+
+        decimal MaxFullSpeed { get; }
 
         decimal OffsetHA { get; }
 

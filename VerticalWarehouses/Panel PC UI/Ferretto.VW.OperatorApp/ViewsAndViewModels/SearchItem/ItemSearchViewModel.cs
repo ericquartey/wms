@@ -1,4 +1,5 @@
 ﻿//Header test C#
+
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -7,15 +8,15 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
     public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
     {

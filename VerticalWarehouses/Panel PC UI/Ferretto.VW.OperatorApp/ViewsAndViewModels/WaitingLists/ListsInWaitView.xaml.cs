@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 {
     /// <summary>
     /// Interaction logic for ListsInWaitView.xaml

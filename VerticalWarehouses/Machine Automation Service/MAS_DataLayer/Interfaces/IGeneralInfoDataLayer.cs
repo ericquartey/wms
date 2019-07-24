@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {

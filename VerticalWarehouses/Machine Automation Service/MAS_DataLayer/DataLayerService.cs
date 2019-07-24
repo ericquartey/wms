@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Cell;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.DataModels.LoadingUnit;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -17,7 +22,7 @@ using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : BackgroundService, IDataLayer
     {
@@ -45,10 +50,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private readonly SetupStatusVolatile setupStatusVolatile;
 
-        private DataLayerContext primaryDataContext;
-
-        private DataLayerContext secondaryDataContext;
-
         private CancellationToken stoppingToken;
 
         private bool suppressSecondary;
@@ -57,34 +58,37 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Constructors
 
-        public DataLayerService(
-            DataLayerConfiguration dataLayerConfiguration,
-            DataLayerContext primaryDataContext,
-            IEventAggregator eventAggregator,
-            ILogger<DataLayerService> logger)
+        public DataLayerService(DataLayerConfiguration dataLayerConfiguration, IEventAggregator eventAggregator, ILogger<DataLayerService> logger)
         {
-            if (primaryDataContext == null)
+            if (dataLayerConfiguration == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(dataLayerConfiguration)), string.Empty, 0));
+                return;
             }
 
             if (eventAggregator == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(eventAggregator)), string.Empty, 0));
+                return;
             }
 
             if (logger == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(logger)), string.Empty, 0));
+                return;
             }
-
-            this.dataLayerConfiguration = dataLayerConfiguration;
-
-            this.primaryDataContext = primaryDataContext;
 
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
+
+            this.dataLayerConfiguration = dataLayerConfiguration;
+
+            this.primaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.PrimaryConnectionString).Options;
+
+            this.secondaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options;
+
+            this.dataLayerConfiguration = dataLayerConfiguration;
 
             this.suppressSecondary = false;
 
@@ -98,23 +102,23 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commandReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
-            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
-            this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
+            this.commandReceiveTask = new Task(this.ReceiveCommandTaskFunction);
+            this.notificationReceiveTask = new Task(this.ReceiveNotificationTaskFunction);
+            this.applicationLogWriteTask = new Task(this.ApplicationLogWriterTaskFunction);
 
-            //var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            //commandLogEvent.Subscribe(
-            //    commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandLogEvent.Subscribe(
+                commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
+                ThreadOption.PublisherThread,
+                false);
 
-            //var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            //notificationLogEvent.Subscribe(
-            //    notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationLogEvent.Subscribe(
+                notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
+                ThreadOption.PublisherThread,
+                false);
 
-            this.logger.LogInformation("DataLayer Constructor");
+            this.logger?.LogInformation("DataLayer Constructor");
         }
 
         #endregion
@@ -123,11 +127,9 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public void SwitchDBContext()
         {
-            DataLayerContext switchDataContext;
-
-            switchDataContext = this.primaryDataContext;
-            this.primaryDataContext = this.secondaryDataContext;
-            this.secondaryDataContext = switchDataContext;
+            var switchContextOptions = this.primaryContextOptions;
+            this.primaryContextOptions = this.secondaryContextOptions;
+            this.secondaryContextOptions = switchContextOptions;
 
             this.suppressSecondary = true;
         }
@@ -144,52 +146,61 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch (Exception ex)
             {
-                //TEMP throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                this.SendMessage(new DLExceptionMessageData(ex, ex.Message, 0));
             }
 
             return Task.CompletedTask;
         }
 
-        private async Task DataLayerInitializeAsync()
+        private void DataLayerInitialize()
         {
-            this.primaryDataContext.Database.Migrate();
+            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+            {
+                primaryDataContext.Database.Migrate();
+            }
 
-            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
-            this.secondaryDataContext.Database.Migrate();
-
-            this.suppressSecondary = true;
+            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+            {
+                secondaryDataContext.Database.Migrate();
+            }
 
             try
             {
-                await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
+                this.LoadConfigurationValuesInfo(this.dataLayerConfiguration.ConfigurationFilePath);
+                //this.EnsureMachinestatusInitialization();
             }
-
-            // TEMP catch (DataLayerException ex)
             catch (Exception ex)
             {
                 this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
                 this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                return;
             }
-
-            await this.SecondaryDataLayerInitializeAsync();
-
-            this.suppressSecondary = false;
 
             var errorNotification = new NotificationMessage(
                 null,
-                "DataLayer initialization complete",
-                MessageActor.Any,
-                MessageActor.DataLayer,
-                MessageType.DataLayerReady,
-                MessageStatus.NoStatus);
-
+                                                            "DataLayer initialization complete",
+                                                            MessageActor.Any,
+                                                            MessageActor.DataLayer,
+                                                            MessageType.DataLayerReady,
+                                                            MessageStatus.NoStatus);
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
         }
 
-        private async Task ReceiveCommandTaskFunction()
+        private void EnsureMachinestatusInitialization()
         {
-            await this.DataLayerInitializeAsync();
+            try
+            {
+                this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+            }
+            catch (Exception ex)
+            {
+                this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus, false);
+            }
+        }
+
+        private void ReceiveCommandTaskFunction()
+        {
+            this.DataLayerInitialize();
 
             do
             {
@@ -239,12 +250,19 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                 }
 
-                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
-            }
-            while (!this.stoppingToken.IsCancellationRequested);
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                {
+                    primaryDataContext.SaveChanges();
+                }
+
+                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                {
+                    secondaryDataContext.SaveChanges();
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task ReceiveNotificationTaskFunction()
+        private void ReceiveNotificationTaskFunction()
         {
             do
             {
@@ -294,46 +312,95 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                 }
 
-                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                {
+                    primaryDataContext.SaveChanges();
+                }
+                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                {
+                    secondaryDataContext.SaveChanges();
+                }
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task SecondaryDataLayerInitializeAsync()
+        private void SecondaryDataLayerInitialize()
         {
-            var secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
-
-            if (!secondaryInitialized)
+            try
             {
-                try
+                DbSet<ConfigurationValue> configurationValues;
+                DbSet<Cell> cells;
+                DbSet<FreeBlock> freeBlocks;
+                DbSet<LoadingUnit> loadingUnits;
+                DbSet<LogEntry> logEntries;
+                DbSet<RuntimeValue> runtimeValues;
+
+                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
                 {
-                    var configurationValues = this.primaryDataContext.ConfigurationValues;
-                    await this.secondaryDataContext.ConfigurationValues.AddRangeAsync(configurationValues);
+                    configurationValues = primaryDataContext.ConfigurationValues;
 
-                    var cells = this.primaryDataContext.Cells;
-                    await this.secondaryDataContext.Cells.AddRangeAsync(cells);
+                    cells = primaryDataContext.Cells;
 
-                    var freeBlocks = this.primaryDataContext.FreeBlocks;
-                    await this.secondaryDataContext.FreeBlocks.AddRangeAsync(freeBlocks);
+                    freeBlocks = primaryDataContext.FreeBlocks;
 
-                    var loadingUnits = this.primaryDataContext.LoadingUnits;
-                    await this.secondaryDataContext.LoadingUnits.AddRangeAsync(loadingUnits);
+                    loadingUnits = primaryDataContext.LoadingUnits;
 
-                    var logEntries = this.primaryDataContext.LogEntries;
-                    await this.secondaryDataContext.LogEntries.AddRangeAsync(logEntries);
+                    logEntries = primaryDataContext.LogEntries;
 
-                    var runtimeValues = this.primaryDataContext.RuntimeValues;
-                    await this.secondaryDataContext.RuntimeValues.AddRangeAsync(runtimeValues);
+                    using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                    {
+                        if (configurationValues.Any())
+                        {
+                            secondaryDataContext.ConfigurationValues.UpdateRange(configurationValues);
+                            if (secondaryDataContext.ChangeTracker.Entries<ConfigurationValue>().Any(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+                            {
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
 
-                    await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                        if (cells.Any())
+                        {
+                            secondaryDataContext.Cells.UpdateRange(cells);
+                            if (secondaryDataContext.ChangeTracker.Entries<Cell>().Any(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+                            {
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
+
+                        if (freeBlocks.Any())
+                        {
+                            secondaryDataContext.FreeBlocks.UpdateRange(freeBlocks);
+                            if (secondaryDataContext.ChangeTracker.Entries<FreeBlock>().Any(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+                            {
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
+
+                        if (loadingUnits.Any())
+                        {
+                            secondaryDataContext.LoadingUnits.UpdateRange(loadingUnits);
+                            if (secondaryDataContext.ChangeTracker.Entries<LoadingUnit>().Any(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+                            {
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
+
+                        if (logEntries.Any())
+                        {
+                            secondaryDataContext.LogEntries.UpdateRange(logEntries);
+                            if (secondaryDataContext.ChangeTracker.Entries<LogEntry>().Any(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+                            {
+                                secondaryDataContext.SaveChanges();
+                            }
+                        }
+                    }
                 }
-                catch (Exception ex)
-                {
-                    this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
 
-                    //TEMP throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
-                    this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
         }
 

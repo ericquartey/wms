@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
-namespace Ferretto.VW.MAS_Utils.Exceptions
+namespace Ferretto.VW.MAS.Utils.Exceptions
 {
     public class InverterDriverException : Exception
     {

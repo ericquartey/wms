@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.LoadingUnit;
 
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface ILoadingUnitStatistics
     {

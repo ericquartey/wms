@@ -1,8 +1,6 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

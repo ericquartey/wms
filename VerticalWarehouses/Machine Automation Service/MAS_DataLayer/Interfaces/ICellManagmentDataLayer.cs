@@ -1,6 +1,5 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataLayer.Models;
+﻿using Ferretto.VW.MAS.DataModels.Cell;
+using Ferretto.VW.MAS.DataModels.LoadingUnit;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {

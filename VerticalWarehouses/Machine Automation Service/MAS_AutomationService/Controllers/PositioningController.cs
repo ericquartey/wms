@@ -2,11 +2,10 @@
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataLayer.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -24,8 +23,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger;
-
-        private readonly IVerticalAxis verticalAxis;
 
         #endregion
 
@@ -72,12 +69,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 {
                     // INFO Vertical LSM
                     case Axis.Vertical:
-                        maxSpeed = this.verticalAxis.MaxSpeed;
-
                         maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                            (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
                         maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                            (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
                         feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                             (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
 
@@ -100,11 +95,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     // INFO Horizontal LSM
                     case Axis.Horizontal:
                         maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxSpeed, (long)ConfigurationCategory.HorizontalAxis);
+                            (long)HorizontalAxis.MaxEmptySpeed, (long)ConfigurationCategory.HorizontalAxis);
                         maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxAcceleration, (long)ConfigurationCategory.HorizontalAxis);
+                            (long)HorizontalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.HorizontalAxis);
                         maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxDeceleration, (long)ConfigurationCategory.HorizontalAxis);
+                            (long)HorizontalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.HorizontalAxis);
                         feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                             (long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
 

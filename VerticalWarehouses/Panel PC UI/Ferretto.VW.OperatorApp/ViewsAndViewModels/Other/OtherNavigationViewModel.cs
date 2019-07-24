@@ -1,13 +1,11 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class OtherNavigationViewModel : BaseViewModel, IOtherNavigationViewModel
     {

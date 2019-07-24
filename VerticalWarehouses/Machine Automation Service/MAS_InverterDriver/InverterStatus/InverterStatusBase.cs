@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
-using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeThisQualifier

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {

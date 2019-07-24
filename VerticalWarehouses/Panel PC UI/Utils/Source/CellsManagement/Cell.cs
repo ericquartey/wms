@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels.Cell;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.VW.MAS.DataModels
+namespace Ferretto.VW.MAS.DataModels.Cell
 {
     public sealed class CellStatisticsSummary
     {

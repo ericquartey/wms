@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {

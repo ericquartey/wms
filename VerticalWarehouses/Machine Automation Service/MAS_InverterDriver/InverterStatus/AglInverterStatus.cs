@@ -3,7 +3,9 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
@@ -30,7 +32,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             this.aglInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-            this.InverterType = MAS_Utils.Enumerations.InverterType.Agl;
+            this.InverterType = InverterType.Agl;
             this.shutterType = ShutterType.Shutter2Type;
         }
 

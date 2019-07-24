@@ -1,6 +1,7 @@
-﻿using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
+﻿using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Services.Models
 {
     public class MAS_EventMessage
     {

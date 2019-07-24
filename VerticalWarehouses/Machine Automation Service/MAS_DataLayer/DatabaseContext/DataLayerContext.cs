@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataLayer.Configurations;
-using Ferretto.VW.MAS.DataLayer.Models;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Cell;
+using Ferretto.VW.MAS.DataModels.Error;
+using Ferretto.VW.MAS.DataModels.LoadingUnit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
     public class DataLayerContext : DbContext
     {

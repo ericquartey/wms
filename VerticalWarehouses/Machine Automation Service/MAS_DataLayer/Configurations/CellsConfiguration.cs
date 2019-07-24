@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels.Cell;
+using Ferretto.VW.MAS.DataModels.LoadingUnit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
