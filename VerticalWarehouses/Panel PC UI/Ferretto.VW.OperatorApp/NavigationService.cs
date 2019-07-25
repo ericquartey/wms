@@ -7,6 +7,7 @@ using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.Utils.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
@@ -97,7 +98,6 @@ namespace Ferretto.VW.App.Operator
                 ??
                 this.container.Resolve<IMainWindowViewModel>();
 
-
             var viewModel = this.container.Resolve<I>();
 
             if (viewModel is T desiredViewModelWithNavView
@@ -124,7 +124,6 @@ namespace Ferretto.VW.App.Operator
                 this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
-
         }
 
         public async void NavigateToView<T, I>(object parameterObject)
@@ -133,7 +132,7 @@ namespace Ferretto.VW.App.Operator
         {
             this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
 
-            if (parameterObject is DataGridItem item)
+            if (parameterObject is Item item)
             {
                 if (this.container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
                 {
@@ -141,7 +140,7 @@ namespace Ferretto.VW.App.Operator
                     {
                         this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
-                    desiredViewModel.Article = item;
+                    desiredViewModel.Item = item;
                     await desiredViewModel.OnEnterViewAsync();
                     this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                     this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;

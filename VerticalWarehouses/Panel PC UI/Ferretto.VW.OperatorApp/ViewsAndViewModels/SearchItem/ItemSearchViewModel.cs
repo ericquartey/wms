@@ -12,7 +12,6 @@ using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
@@ -236,6 +235,12 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         public override async Task OnEnterViewAsync()
         {
+            if (this.items != null &&
+                this.selectedItem != null)
+            {
+                return;
+            }
+
             this.currentItemIndex = 0;
             this.RequestedQuantity = "0";
             this.items = new List<Item>();

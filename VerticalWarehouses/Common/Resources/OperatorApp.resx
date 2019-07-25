@@ -1029,7 +1029,7 @@
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchGridItem" xml:space="preserve">
-    <value>ItemSearchGridItem</value>
+    <value>Item</value>
     <comment>Grid header</comment>
   </data>
   <data name="ItemSearchGridDescription" xml:space="preserve">
@@ -1177,5 +1177,17 @@
   <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
     <value>DrawerSpaceSaturazionWeightAnalisys</value>
     <comment>Button text</comment>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+    <comment>enum ItemManagementType</comment>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Volume</value>
+    <comment>enum ItemManagementType</comment>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Not specified</value>
+    <comment>enum ItemManagementType</comment>
   </data>
 </root>
