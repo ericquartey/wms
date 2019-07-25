@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public static class BufferUtility
     {

@@ -28,7 +28,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using static Ferretto.VW.MAS_InverterDriver.BufferUtility;
+using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember

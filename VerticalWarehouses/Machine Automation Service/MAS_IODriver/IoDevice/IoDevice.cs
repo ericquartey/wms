@@ -14,7 +14,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
-using static Ferretto.VW.MAS_InverterDriver.BufferUtility;
+using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
