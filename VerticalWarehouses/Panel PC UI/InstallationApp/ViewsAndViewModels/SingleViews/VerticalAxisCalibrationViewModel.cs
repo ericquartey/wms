@@ -284,16 +284,26 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 var type = c.Type;
                 switch (c.Status)
                 {
-                    case MessageStatus.OperationStart:
-                        this.NoteString = VW.App.Resources.InstallationApp.HomingStarted;
-                        break;
-
-                    case MessageStatus.OperationEnd:
-                        this.NoteString = VW.App.Resources.InstallationApp.HomingCompleted;
+                    case MessageStatus.OperationExecuting:
+                        if (c.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.HorizontalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
+                        else
+                        {
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.VerticalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.App.Resources.InstallationApp.HomingError;
+                        if (c.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.HorizontalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
+                        else
+                        {
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.VerticalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
                         break;
@@ -306,10 +316,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 {
                     case MessageStatus.OperationStart:
                         this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingStarted;
-                        break;
-
-                    case MessageStatus.OperationExecuting:
-                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingExecuting;
                         break;
 
                     case MessageStatus.OperationEnd:

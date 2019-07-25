@@ -16,6 +16,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly Axis axisToSwitch;
 
+        private readonly Axis axisToSwitched;
+
+        private readonly int currentStep;
+
+        private readonly int maxStep;
+
         private bool disposed;
 
         private bool inverterSwitched;
@@ -29,12 +35,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public HomingCalibrateAxisDoneState(
             IStateMachine parentMachine,
             Axis axisCalibrated,
+            int currentStepCalibrated,
+            int maxStepCalibrate,
             ILogger logger)
             : base(parentMachine, logger)
         {
+            this.axisToSwitched = axisCalibrated;
             this.axisToSwitch = axisCalibrated == Axis.Horizontal
                 ? Axis.Vertical
                 : Axis.Horizontal;
+            this.currentStep = (parentMachine as HomingStateMachine)?.GetNumberOfExecutedSteps() ?? 0;
+            this.maxStep = (parentMachine as HomingStateMachine)?.GetMaxSteps() ?? 0;
         }
 
         #endregion
@@ -93,6 +104,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 switch (message.Status)
                 {
+                    case MessageStatus.OperationExecuting:
+                        var notificationMessageData = new CalibrateAxisMessageData(this.axisToSwitch, this.currentStep, this.maxStep, MessageVerbosity.Info);
+                        var notificationMessage = new NotificationMessage(
+                            notificationMessageData,
+                            $"{this.axisToSwitch} axis calibration executing",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.CalibrateAxis,
+                            MessageStatus.OperationExecuting);
+
+                        this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        break;
+
                     case MessageStatus.OperationEnd:
                         this.inverterSwitched = true;
                         break;
@@ -143,10 +169,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-            var notificationMessageData = new CalibrateAxisMessageData(this.axisToSwitch, MessageVerbosity.Info);
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToSwitched, this.currentStep, this.maxStep, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                $"{this.axisToSwitch} axis calibration completed",
+                $"{this.axisToSwitched} axis calibration completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
