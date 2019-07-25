@@ -6,6 +6,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Events;
 using Prism.Ioc;

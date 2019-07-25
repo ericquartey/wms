@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Properties
 
+        public DbSet<Bay> Bays { get; set; }
+
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
@@ -90,17 +92,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-
+            modelBuilder.ApplyConfiguration(new BaysConfiguration());
+            modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
-
             modelBuilder.ApplyConfiguration(new ErrorConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
-
-            modelBuilder.ApplyConfiguration(new CellsConfiguration());
-
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
+            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
+            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
         }
 

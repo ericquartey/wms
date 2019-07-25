@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Commands;
 using Prism.Events;
@@ -37,9 +38,9 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken receivedSwitchAxisUpdateToken;
 
-        private SubscriptionToken receiveHomingUpdateToken;
-
         private SubscriptionToken receiveExceptionToken;
+
+        private SubscriptionToken receiveHomingUpdateToken;
 
         private string resolution;
 

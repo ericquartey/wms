@@ -1,6 +1,6 @@
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class MissionOperationAvailableEventArgs : System.EventArgs
     {

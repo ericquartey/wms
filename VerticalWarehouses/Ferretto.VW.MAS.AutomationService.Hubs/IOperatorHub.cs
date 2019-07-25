@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Methods
 
-        Task BayStatusChanged(BayConnectedMessageData message);
+        Task BayStatusChanged(BayOperationalStatusChangedMessageData message);
 
         Task NewMissionOperationAvailable(MissionOperationInfo missionOperation);
 

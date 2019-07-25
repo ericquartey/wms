@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.SignalR;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
@@ -10,20 +9,22 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private const string BayIdEntry = "bayId";
+
+        private readonly IBaysProvider baysProvider;
 
         #endregion
 
         #region Constructors
 
-        public OperatorHub(IEventAggregator eventAggregator)
+        public OperatorHub(IBaysProvider baysProvider)
         {
-            if (eventAggregator == null)
+            if (baysProvider == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(baysProvider));
             }
 
-            this.eventAggregator = eventAggregator;
+            this.baysProvider = baysProvider;
         }
 
         #endregion
@@ -32,24 +33,18 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            this.eventAggregator
-                .GetEvent<ClientConnectionChangedPubSubEvent>()
-                .Publish(new ClientConnectionChangedPayload(
-                    this.Context.ConnectionId,
-                    this.Context.GetHttpContext().Connection.LocalIpAddress,
-                    true));
+            var bay = this.baysProvider.GetByIpAddress(this.Context.GetHttpContext().Connection.RemoteIpAddress);
+
+            this.Context.Items[BayIdEntry] = bay.Id;
 
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            this.eventAggregator
-               .GetEvent<ClientConnectionChangedPubSubEvent>()
-               .Publish(new ClientConnectionChangedPayload(
-                    this.Context.ConnectionId,
-                    this.Context.GetHttpContext().Connection.LocalIpAddress,
-                    false));
+            var bayId = (int)this.Context.Items[BayIdEntry];
+
+            this.baysProvider.Deactivate(bayId);
 
             await base.OnDisconnectedAsync(exception);
         }

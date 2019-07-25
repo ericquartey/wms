@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Contracts
+﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public sealed class ConnectionStatusChangedEventArgs : System.EventArgs
     {

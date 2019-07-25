@@ -10,8 +10,8 @@ using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
-using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs;
-using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
+using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.ConnectionStatusChangedEventArgs;
+using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IOperatorHubClient;
 
 namespace Ferretto.VW.App
 {
@@ -31,6 +31,8 @@ namespace Ferretto.VW.App
 
         private readonly IThemeService themeService;
 
+        private readonly IModuleManager moduleManager;
+
         private bool isBusy;
 
         private ICommand loginCommand;
@@ -49,6 +51,7 @@ namespace Ferretto.VW.App
             IEventAggregator eventAggregator,
             IAuthenticationService authenticationService,
             IThemeService themeService,
+            IModuleManager moduleManager,
             ISessionService sessionService,
             IIdentityService identityService)
         {
@@ -67,6 +70,11 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(themeService));
             }
 
+            if (moduleManager == null)
+            {
+                throw new ArgumentNullException(nameof(moduleManager));
+            }
+
             if (sessionService == null)
             {
                 throw new ArgumentNullException(nameof(sessionService));
@@ -79,6 +87,7 @@ namespace Ferretto.VW.App
 
             this.eventAggregator = eventAggregator;
             this.themeService = themeService;
+            this.moduleManager = moduleManager;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
             this.identityService = identityService;
@@ -87,7 +96,7 @@ namespace Ferretto.VW.App
             this.UserLogin = new UserLogin
             {
                 UserName = "operator",
-                Password = "password",
+                Password = "********",
             };
 #else
             this.UserLogin = new UserLogin();
@@ -205,22 +214,20 @@ namespace Ferretto.VW.App
                this.UserLogin.UserName,
                this.UserLogin.Password);
 
-            if (claims == null)
+            if (claims != null)
+            {
+                if (claims.AccessLevel == UserAccessLevel.SuperUser)
+                {
+                    this.LoadInstallerModule();
+                }
+                else
+                {
+                    this.LoadOperatorModule();
+                }
+            }
+            else
             {
                 this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
-                this.IsBusy = false;
-                return;
-            }
-
-            switch (claims.AccessLevel)
-            {
-                case UserAccessLevel.SuperUser:
-                    this.LoadInstallerModule();
-                    break;
-
-                case UserAccessLevel.User:
-                    this.LoadOperatorModule();
-                    break;
             }
 
             this.IsBusy = false;
@@ -242,8 +249,7 @@ namespace Ferretto.VW.App
 
             try
             {
-                var moduleManager = this.container.Resolve<IModuleManager>();
-                moduleManager.LoadModule("Installation");
+                this.moduleManager.LoadModule("Installation");
 
                 this.IsBusy = false;
 
@@ -265,8 +271,7 @@ namespace Ferretto.VW.App
 
             try
             {
-                var moduleManager = this.container.Resolve<IModuleManager>();
-                moduleManager.LoadModule("Operator");
+                this.moduleManager.LoadModule("Operator");
 
                 this.IsBusy = false;
 

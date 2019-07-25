@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -21,6 +22,10 @@ namespace Ferretto.VW.MAS.AutomationService
     public partial class AutomationService : BackgroundService
     {
         #region Fields
+
+        private readonly IBaysConfgurationProvider baysConfigurationProvider;
+
+        private readonly IBaysDataService baysDataService;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
@@ -44,8 +49,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
-        private bool disposed;
-
         private CancellationToken stoppingToken;
 
         #endregion
@@ -59,16 +62,65 @@ namespace Ferretto.VW.MAS.AutomationService
             IDataHubClient dataHubClient,
             IMachinesDataService machinesDataService,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
-            IMissionsDataService missionDataService)
+            IBaysDataService baysDataService,
+            IMissionsDataService missionDataService,
+            IBaysConfgurationProvider baysConfigurationProvider)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (baysConfigurationProvider == null)
+            {
+                throw new ArgumentNullException(nameof(baysConfigurationProvider));
+            }
+
             logger.LogTrace("1:Method Start");
+
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (installationHub == null)
+            {
+                throw new ArgumentNullException(nameof(installationHub));
+            }
+
+            if (dataHubClient == null)
+            {
+                throw new ArgumentNullException(nameof(dataHubClient));
+            }
+
+            if (machinesDataService == null)
+            {
+                throw new ArgumentNullException(nameof(machinesDataService));
+            }
+
+            if (operatorHub == null)
+            {
+                throw new ArgumentNullException(nameof(operatorHub));
+            }
+
+            if (baysDataService == null)
+            {
+                throw new ArgumentNullException(nameof(baysDataService));
+            }
+
+            if (missionDataService == null)
+            {
+                throw new ArgumentNullException(nameof(missionDataService));
+            }
+
             this.eventAggregator = eventAggregator;
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
             this.machinesDataService = machinesDataService;
             this.operatorHub = operatorHub;
+            this.baysDataService = baysDataService;
             this.missionDataService = missionDataService;
-
+            this.baysConfigurationProvider = baysConfigurationProvider;
             this.logger = logger;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -78,37 +130,20 @@ namespace Ferretto.VW.MAS.AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-            this.dataHubClient.ConnectAsync();
 
             this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
-            this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~AutomationService()
-        {
-            this.Dispose(false);
+            this.dataHubClient.EntityChanged += this.OnWmsEntityChanged;
         }
 
         #endregion
 
         #region Methods
 
-        public void Dispose(bool disposing)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            if (this.disposed)
-            {
-                return;
-            }
+            await base.StartAsync(cancellationToken);
 
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
+            await this.dataHubClient.ConnectAsync();
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -237,16 +272,20 @@ namespace Ferretto.VW.MAS.AutomationService
                         break;
 
                     case MessageType.ExecuteMission:
-                        if (receivedMessage.Data is IExecuteMissionMessageData data)
+                        if (receivedMessage.Data is INewMissionOperationAvailable data)
                         {
                             await this.ExecuteMissionMethod(receivedMessage);
                             this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.PendingMissionsCount}");
                         }
                         break;
 
-                    case MessageType.BayConnected:
+                    case MessageType.BayOperationalStatusChanged:
                         this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
-                        this.OnBayConnected(receivedMessage.Data as BayConnectedMessageData);
+                        this.OnBayConnected(receivedMessage.Data as BayOperationalStatusChangedMessageData);
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        await this.OnDataLayerReady();
                         break;
 
                     // Adds other Notification Message and send it via SignalR controller
@@ -259,6 +298,11 @@ namespace Ferretto.VW.MAS.AutomationService
             this.logger.LogDebug("9:Method End");
 
             return;
+        }
+
+        private async Task OnDataLayerReady()
+        {
+            await this.baysConfigurationProvider.LoadFromConfigurationAsync();
         }
 
         #endregion

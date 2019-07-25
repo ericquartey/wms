@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;

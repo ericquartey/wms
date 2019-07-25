@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MessageType.ShutterControl:
                         break;
 
-                    case MessageType.MissionAdded:
+                    case MessageType.NewMissionAvailable:
                         break;
 
                     case MessageType.CreateMission:
@@ -302,7 +302,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MessageType.ShutterControl:
                         break;
 
-                    case MessageType.MissionAdded:
+                    case MessageType.NewMissionAvailable:
                         break;
 
                     case MessageType.CreateMission:

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -48,23 +47,6 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
-        {
-            if (e.EntityType == nameof(MissionOperation)
-                &&
-                e.Operation == WMS.Data.Hubs.Models.HubEntityOperation.Created)
-            {
-                var message = new NotificationMessage(
-                    null,
-                    "New mission operation from WMS",
-                    MessageActor.MissionsManager,
-                    MessageActor.AutomationService,
-                    MessageType.MissionAdded,
-                    MessageStatus.NoStatus);
-                this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
-            }
-        }
-
         private void ExceptionHandlerMethod(NotificationMessage receivedMessage)
         {
             try
@@ -90,7 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task ExecuteMissionMethod(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Data is ExecuteMissionMessageData data)
+            if (receivedMessage.Data is NewMissionOperationAvailable data)
             {
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
                 await this.operatorHub.Clients
@@ -118,7 +100,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnBayConnected(BayConnectedMessageData messageData)
+        private void OnBayConnected(BayOperationalStatusChangedMessageData messageData)
         {
             if (messageData == null)
             {
@@ -128,6 +110,28 @@ namespace Ferretto.VW.MAS.AutomationService
             this.operatorHub.Clients
                 .Client(messageData.ConnectionId)
                 .BayStatusChanged(messageData);
+        }
+
+        private void OnWmsEntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            switch (e.EntityType)
+            {
+                case nameof(MissionOperation):
+                    {
+                        if (e.Operation == WMS.Data.Hubs.Models.HubEntityOperation.Created)
+                        {
+                            var message = new NotificationMessage(
+                                null,
+                                "New mission operation from WMS",
+                                MessageActor.MissionsManager,
+                                MessageActor.AutomationService,
+                                MessageType.NewMissionAvailable,
+                                MessageStatus.NoStatus);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
+                        }
+                        break;
+                    }
+            }
         }
 
         private void PositioningMethod(NotificationMessage receivedMessage)

@@ -13,6 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Hubs\Interfaces\**" />
+    <Content Remove="Hubs\Interfaces\**" />
+    <EmbeddedResource Remove="Hubs\Interfaces\**" />
+    <None Remove="Hubs\Interfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="nlog.config" />
     <Content Remove="VertimagConfiguration.json" />
   </ItemGroup>
@@ -63,11 +70,6 @@
     <Content Update="Properties\launchSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Hubs\Interfaces\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">

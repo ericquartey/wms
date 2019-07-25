@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface IExecuteMissionMessageData : IMessageData
+    public interface INewMissionOperationAvailable
     {
         #region Properties
 

@@ -1,4 +1,4 @@
-namespace Ferretto.VW.MAS_Utils.Enumerations
+namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum BayType
     {

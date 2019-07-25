@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.MissionsManager

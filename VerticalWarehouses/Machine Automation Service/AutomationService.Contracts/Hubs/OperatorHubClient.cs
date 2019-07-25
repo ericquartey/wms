@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class OperatorHubClient : AutoReconnectHubClient, IOperatorHubClient
     {
@@ -27,28 +27,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         #region Methods
 
-        public async Task RetrieveCurrentMissionOperationAsync()
-        {
-            await this.SendAsync("RetrieveCurrentMissionOperation");
-        }
-
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On<MissionOperationInfo>(
-                nameof(Hubs.IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
+                nameof(IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
 
-            connection.On<BayConnectedMessageData>(
-                nameof(Hubs.IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
+            connection.On<BayOperationalStatusChangedMessageData>(
+                nameof(IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
         }
 
-        private void OnBayStatusChanged(BayConnectedMessageData message)
+        private void OnBayStatusChanged(BayOperationalStatusChangedMessageData message)
         {
             this.BayStatusChanged?.Invoke(
                 this,
                 new BayStatusChangedEventArgs(
                     message.BayId,
                     message.BayType,
-                    message.PendingMissionsCount));
+                    message.BayStatus,
+                    message.PendingMissionsCount,
+                    message.CurrentMissionOperation));
         }
 
         private void OnMissionOperationAvailable(MissionOperationInfo missionOperation)

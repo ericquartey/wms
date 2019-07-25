@@ -5,9 +5,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Prism.Events;
-using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IInstallationHubClient;
-using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
-using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.MessageNotifiedEventArgs;
+using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
+using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
 
 namespace Ferretto.VW.App.Services
 {

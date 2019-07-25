@@ -4,7 +4,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class ExecuteMissionMessageData : IExecuteMissionMessageData
+    public class NewMissionOperationAvailable : INewMissionOperationAvailable, IMessageData
     {
         #region Properties
 

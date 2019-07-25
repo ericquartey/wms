@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private void BayNowServiceableMethod()
         {
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.OperationEnd));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionOperationCompleted, MessageStatus.OperationEnd));
         }
 
         private async Task ExecuteHomingMethod()

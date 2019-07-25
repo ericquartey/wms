@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -11,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.MissionsManager
+namespace Ferretto.VW.MAS.Utils
 {
     public abstract class AutomationBackgroundService : BackgroundService
     {
@@ -24,6 +22,10 @@ namespace Ferretto.VW.MAS.MissionsManager
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
         private readonly Task notificationReceiveTask;
+
+        private SubscriptionToken commandEventSubscriptionToken;
+
+        private SubscriptionToken notificationEventSubscriptionToken;
 
         #endregion
 
@@ -46,8 +48,8 @@ namespace Ferretto.VW.MAS.MissionsManager
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
 
-            this.commandReceiveTask = new Task(async () => await this.ReceiveCommandsAsync());
-            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationsAsync());
+            this.commandReceiveTask = new Task(async () => await this.DequeueCommandsAsync());
+            this.notificationReceiveTask = new Task(async () => await this.DequeueNotificationsAsync());
         }
 
         #endregion
@@ -68,7 +70,18 @@ namespace Ferretto.VW.MAS.MissionsManager
         {
             await base.StartAsync(cancellationToken);
 
-            this.InitializeMethodSubscriptions();
+            this.InitializeSubscriptions();
+        }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            this.EventAggregator.GetEvent<CommandEvent>().Unsubscribe(
+                this.commandEventSubscriptionToken);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Unsubscribe(
+                this.commandEventSubscriptionToken);
+
+            await base.StopAsync(cancellationToken);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -82,7 +95,7 @@ namespace Ferretto.VW.MAS.MissionsManager
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception: {ex.Message} while starting service threads.", ex);
+                throw new Exception("An error occurred while starting service threads.", ex);
             }
 
             return Task.CompletedTask;
@@ -96,26 +109,7 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         protected abstract Task OnNotificationReceivedAsync(NotificationMessage message);
 
-        private void InitializeMethodSubscriptions()
-        {
-            this.Logger.LogTrace("1:Commands Subscription");
-            var commandEvent = this.EventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(
-                command => this.commandQueue.Enqueue(command),
-                ThreadOption.PublisherThread,
-                false,
-                command => this.FilterCommand(command));
-
-            this.Logger.LogTrace("2:Notifications Subscription");
-            var notificationEvent = this.EventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(
-                notification => this.notificationQueue.Enqueue(notification),
-                ThreadOption.PublisherThread,
-                false,
-                notification => this.FilterNotification(notification));
-        }
-
-        private async Task ReceiveCommandsAsync()
+        private async Task DequeueCommandsAsync()
         {
             do
             {
@@ -123,11 +117,12 @@ namespace Ferretto.VW.MAS.MissionsManager
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out command);
-                    this.Logger.LogTrace($"1:Dequeued Message '{command.Type}': Destination '{command.Source}'.");
+                    this.Logger.LogTrace(
+                        $"Dequeued command '{command.Type}' from '{command.Source}' to '{command.Destination}').");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.Logger.LogTrace("2:Method End - Operation Canceled.");
+                    this.Logger.LogTrace("Operation Canceled.");
                     return;
                 }
 
@@ -136,23 +131,21 @@ namespace Ferretto.VW.MAS.MissionsManager
             while (!this.StoppingToken.IsCancellationRequested);
         }
 
-        private async Task ReceiveNotificationsAsync()
+        private async Task DequeueNotificationsAsync()
         {
             do
             {
-                NotificationMessage notification;
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out notification);
-
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.StoppingToken, out var notification);
                     this.Logger.LogTrace(
-                        $"1:Notification received: {notification.Type}, destination: {notification.Destination}, source: {notification.Source}, status: {notification.Status}");
+                        $"Dequeued notification '{notification.Type}', status {notification.Status} (from '{notification.Source}' to '{notification.Destination}').");
 
                     await this.OnNotificationReceivedAsync(notification);
                 }
                 catch (OperationCanceledException)
                 {
-                    this.Logger.LogDebug("2:Method End - Operation Canceled.");
+                    this.Logger.LogDebug("Operation Canceled.");
 
                     return;
                 }
@@ -162,6 +155,25 @@ namespace Ferretto.VW.MAS.MissionsManager
                 }
             }
             while (!this.StoppingToken.IsCancellationRequested);
+        }
+
+        private void InitializeSubscriptions()
+        {
+            var commandEvent = this.EventAggregator.GetEvent<CommandEvent>();
+            this.commandEventSubscriptionToken = commandEvent.Subscribe(
+                command => this.commandQueue.Enqueue(command),
+                ThreadOption.PublisherThread,
+                false,
+                command => this.FilterCommand(command));
+            this.Logger.LogTrace("Subscribed to command events.");
+
+            var notificationEvent = this.EventAggregator.GetEvent<NotificationEvent>();
+            this.notificationEventSubscriptionToken = notificationEvent.Subscribe(
+                notification => this.notificationQueue.Enqueue(notification),
+                ThreadOption.PublisherThread,
+                false,
+                notification => this.FilterNotification(notification));
+            this.Logger.LogTrace("Subscribed to notification events.");
         }
 
         #endregion

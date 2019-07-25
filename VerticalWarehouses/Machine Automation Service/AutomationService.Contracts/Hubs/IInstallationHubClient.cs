@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public interface IInstallationHubClient : IAutoReconnectHubClient
     {

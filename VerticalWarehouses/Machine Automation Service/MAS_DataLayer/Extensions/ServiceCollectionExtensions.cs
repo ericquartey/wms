@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -63,7 +64,9 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ILoadingUnitStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversionDataLayer);
 
-            services.AddScoped<IServicingProvider, ServicingProvider>();
+            services.AddTransient<IServicingProvider, ServicingProvider>();
+            services.AddTransient<IBaysProvider, BaysProvider>();
+            services.AddTransient<IBaysConfgurationProvider, BaysConfigurationProvider>();
 
             return services;
         }

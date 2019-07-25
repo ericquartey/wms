@@ -1,0 +1,23 @@
+﻿using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Ferretto.VW.MAS.DataLayer.Configurations
+{
+    public class BaysConfiguration : IEntityTypeConfiguration<Bay>
+    {
+        #region Methods
+
+        public void Configure(EntityTypeBuilder<Bay> builder)
+        {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
+
+            builder.HasKey(b => b.Id);
+        }
+
+        #endregion
+    }
+}

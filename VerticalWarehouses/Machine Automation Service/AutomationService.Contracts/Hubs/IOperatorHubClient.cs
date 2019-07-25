@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public interface IOperatorHubClient : IAutoReconnectHubClient
     {
@@ -11,12 +9,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
         event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
-
-        #endregion
-
-        #region Methods
-
-        Task RetrieveCurrentMissionOperationAsync();
 
         #endregion
     }

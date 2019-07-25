@@ -8,6 +8,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Bays",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ExternalId = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bays", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cells",
                 columns: table => new
                 {
@@ -57,14 +74,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "LogEntries",
                 columns: table => new
                 {
+                    LogEntryID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Data = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Destination = table.Column<string>(nullable: true),
                     ErrorLevel = table.Column<string>(nullable: true),
                     Exception = table.Column<string>(nullable: true),
                     Level = table.Column<string>(nullable: true),
-                    LogEntryID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     LoggerName = table.Column<string>(nullable: true),
                     Message = table.Column<string>(nullable: true),
                     Source = table.Column<string>(nullable: true),
@@ -125,7 +142,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     InstallationDate = table.Column<DateTime>(nullable: false),
                     LastServiceDate = table.Column<DateTime>(nullable: true),
-                    NextServiceDate = table.Column<DateTime>(nullable: false),
+                    NextServiceDate = table.Column<DateTime>(nullable: true),
                     ServiceStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -137,13 +154,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "LoadingUnits",
                 columns: table => new
                 {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     CellId = table.Column<int>(nullable: true),
                     Code = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     GrossWeight = table.Column<decimal>(nullable: false),
                     Height = table.Column<decimal>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     MaxNetWeight = table.Column<decimal>(nullable: false),
                     MissionsCount = table.Column<int>(nullable: false),
                     Status = table.Column<long>(nullable: false),
@@ -182,11 +199,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "FreeBlocks",
                 columns: table => new
                 {
+                    FreeBlockId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     BlockSize = table.Column<int>(nullable: false),
                     BookedCellsNumber = table.Column<int>(nullable: false),
                     Coord = table.Column<decimal>(nullable: false),
-                    FreeBlockId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     LoadingUnitId = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     Side = table.Column<int>(nullable: false),
@@ -2186,7 +2203,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 9, 22, 9, 59, 49, 290, DateTimeKind.Local), new DateTime(2019, 4, 22, 9, 59, 49, 297, DateTimeKind.Local), new DateTime(2020, 7, 22, 9, 59, 49, 297, DateTimeKind.Local), 86 });
+                values: new object[] { 1, new DateTime(2016, 9, 25, 10, 32, 12, 492, DateTimeKind.Local).AddTicks(987), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -2271,77 +2288,77 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 14, 14, "01014", null, 296m, 216m, 500m, 36, 3L, 50m });
+                values: new object[] { 14, 14, "01014", null, 356m, 269m, 500m, 40, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 13, 13, "01013", null, 281m, 346m, 750m, 17, 3L, 65m });
+                values: new object[] { 13, 13, "01013", null, 368m, 286m, 750m, 37, 3L, 65m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 12, 12, "01012", null, 249m, 211m, 750m, 29, 3L, 65m });
+                values: new object[] { 12, 12, "01012", null, 210m, 279m, 750m, 21, 3L, 65m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 11, 11, "01011", null, 325m, 317m, 500m, 35, 3L, 50m });
+                values: new object[] { 11, 11, "01011", null, 352m, 298m, 500m, 25, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 10, 10, "01010", null, 219m, 150m, 500m, 42, 3L, 50m });
+                values: new object[] { 10, 10, "01010", null, 215m, 264m, 500m, 34, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 9, 9, "01009", null, 366m, 250m, 500m, 13, 3L, 50m });
+                values: new object[] { 9, 9, "01009", null, 290m, 331m, 500m, 33, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 8, 8, "01008", null, 241m, 321m, 500m, 26, 3L, 50m });
+                values: new object[] { 8, 8, "01008", null, 280m, 60m, 500m, 14, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 7, 7, "01007", null, 241m, 114m, 500m, 2, 3L, 50m });
+                values: new object[] { 7, 7, "01007", null, 202m, 102m, 500m, 19, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 6, 6, "01006", null, 273m, 249m, 500m, 43, 3L, 50m });
+                values: new object[] { 6, 6, "01006", null, 267m, 130m, 500m, 40, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 5, 5, "01005", null, 388m, 63m, 500m, 29, 3L, 50m });
+                values: new object[] { 5, 5, "01005", null, 381m, 92m, 500m, 28, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 4, 4, "01004", null, 315m, 184m, 500m, 45, 3L, 50m });
+                values: new object[] { 4, 4, "01004", null, 300m, 238m, 500m, 43, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 3, 3, "01003", null, 231m, 273m, 750m, 48, 3L, 65m });
+                values: new object[] { 3, 3, "01003", null, 326m, 103m, 750m, 8, 3L, 65m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 2, 2, "01002", null, 372m, 339m, 500m, 36, 3L, 50m });
+                values: new object[] { 2, 2, "01002", null, 228m, 66m, 500m, 8, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 15, 15, "01015", null, 362m, 115m, 500m, 22, 3L, 50m });
+                values: new object[] { 15, 15, "01015", null, 398m, 126m, 500m, 4, 3L, 50m });
 
             migrationBuilder.InsertData(
                 table: "LoadingUnits",
                 columns: new[] { "Id", "CellId", "Code", "Description", "GrossWeight", "Height", "MaxNetWeight", "MissionsCount", "Status", "Tare" },
-                values: new object[] { 1, 1, "01001", null, 299m, 298m, 500m, 41, 3L, 50m });
+                values: new object[] { 1, 1, "01001", null, 388m, 223m, 500m, 0, 3L, 50m });
 
             migrationBuilder.CreateIndex(
                 name: "IX_FreeBlocks_LoadingUnitId",
@@ -2357,6 +2374,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Bays");
+
             migrationBuilder.DropTable(
                 name: "ConfigurationValues");
 

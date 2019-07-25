@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     "Mission Operation Completed",
                     MessageActor.MissionsManager,
                     MessageActor.WebApi,
-                    MessageType.MissionCompleted,
+                    MessageType.MissionOperationCompleted,
                     MessageStatus.NoStatus);
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);

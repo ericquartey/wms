@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -16,6 +17,8 @@ namespace Ferretto.VW.App.Services
         private readonly IMissionsDataService missionsDataService;
 
         private readonly IOperatorHubClient operatorHubClient;
+
+        private MissionOperationInfo currentMissionOperation;
 
         #endregion
 
@@ -52,8 +55,7 @@ namespace Ferretto.VW.App.Services
             this.missionsDataService = missionsDataService;
             this.operatorHubClient = operatorHubClient;
 
-            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnConnectionStatusChangedAsync(sender, e);
-            this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
+            this.operatorHubClient.BayStatusChanged += this.OnBayStatusChanged;
             this.operatorHubClient.MissionOperationAvailable += this.OnMissionOperationAvailable;
         }
 
@@ -71,7 +73,23 @@ namespace Ferretto.VW.App.Services
 
         public MissionInfo CurrentMission { get; private set; }
 
-        public MissionOperationInfo CurrentMissionOperation { get; private set; }
+        public MissionOperationInfo CurrentMissionOperation
+        {
+            get => this.currentMissionOperation;
+            private set
+            {
+                if (value == null)
+                {
+                    this.currentMissionOperation = value;
+                }
+
+                if (this.currentMissionOperation == null)
+                {
+                    this.CurrentMissionOperation = value;
+                    this.NewMissionOperationAvailable?.Invoke(this, null);
+                }
+            }
+        }
 
         public int PendingMissionsCount { get; private set; }
 
@@ -91,34 +109,16 @@ namespace Ferretto.VW.App.Services
             this.CurrentMissionOperation = null;
         }
 
-        private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
+        private void OnBayStatusChanged(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.operatorHubClient.IsConnected == true)
-            {
-                this.BayId = e.BayId;// TODO the bay ID should come from configuration.
-                this.PendingMissionsCount = e.PendingMissionsCount;
-
-                await this.operatorHubClient.RetrieveCurrentMissionOperationAsync();
-            }
-        }
-
-        private async Task OnConnectionStatusChangedAsync(object sender, MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs e)
-        {
-            if (e.IsConnected == true)
-            {
-                await this.operatorHubClient.RetrieveCurrentMissionOperationAsync();
-            }
+            this.BayId = e.BayId;// TODO the bay ID should come from configuration.
+            this.PendingMissionsCount = e.PendingMissionsCount;
+            this.CurrentMissionOperation = e.CurrentMissionOperation;
         }
 
         private void OnMissionOperationAvailable(object sender, MissionOperationAvailableEventArgs e)
         {
-            if (this.CurrentMissionOperation == null)
-            // no ongoing operations are present
-            {
-                this.CurrentMissionOperation = e.MissionOperation;
-
-                this.NewMissionOperationAvailable?.Invoke(this, null);
-            }
+            this.CurrentMissionOperation = e.MissionOperation;
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Ioc;
@@ -74,7 +74,10 @@ namespace Ferretto.VW.App
             containerRegistry.Register<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.Register<IWmsImagesProvider, WmsImagesProvider>();
 
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsDataService>(wmsServiceUrl));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IMissionsDataService>(wmsServiceUrl));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
