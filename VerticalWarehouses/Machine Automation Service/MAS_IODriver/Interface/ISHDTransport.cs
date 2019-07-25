@@ -15,6 +15,10 @@ namespace Ferretto.VW.MAS.IODriver.Interface
         /// </summary>
         bool IsConnected { get; }
 
+        // writing on socket doesn't fail in case of no connection
+        // we write only after a correct reading on socket
+        bool IsReadingOk { get; set; }
+
         #endregion
 
         #region Methods

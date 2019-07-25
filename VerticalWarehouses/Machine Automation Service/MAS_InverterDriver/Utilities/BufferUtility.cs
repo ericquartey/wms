@@ -83,16 +83,15 @@ namespace Ferretto.VW.MAS_InverterDriver
             return messages;
         }
 
-        internal static IList<byte []> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, byte[] messageStartPattern = null, Encoding enconding = null)
+        public static IList<byte []> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
         {
-            const int totalHeaderLength = 4;
             IList<byte []> messages = new List<byte []>();
-            if (receiveBuffer.Length >= totalHeaderLength + 2)
+            if (receiveBuffer.Length >= totalHeaderLength + lengthAdjust)
             {
                 int startIndex = 0;
                 while (startIndex != -1 && receiveBuffer.Length > 0)
                 {
-                    int messageLength = receiveBuffer[startIndex + 1] + 2;
+                    int messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
 
                     // check if there is a message to extract
                     if (receiveBuffer.Length >= messageLength)      

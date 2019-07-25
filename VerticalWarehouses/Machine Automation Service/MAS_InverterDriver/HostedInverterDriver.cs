@@ -668,6 +668,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.logger.LogError($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
 
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
+                        throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 1", ex);
                     }
 
                     if (!this.socketTransport.IsConnected)
@@ -687,6 +688,15 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.readWaitStopwatch.Start();
 
                     inverterData = await this.socketTransport.ReadAsync(this.stoppingToken);
+                    if (inverterData == null || inverterData.Length == 0)
+                    {
+                        // connection error
+                        this.logger.LogError($"2:Inverter message is null");
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                        this.ReceiveBuffer = null;
+                        this.socketTransport.Disconnect();
+                        continue;
+                    }
                     this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(inverterData, inverterData.Length);
 
                     this.readWaitStopwatch.Stop();
@@ -702,7 +712,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("2:Method End operation cancelled");
+                    this.logger.LogDebug("2:Method End - operation cancelled");
 
                     this.writeEnableEvent.Set();
                     return;
@@ -714,12 +724,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
 
                     this.writeEnableEvent.Set();
-                    return;
+                    throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 2", ex);
                 }
-                catch(InvalidOperationException ex)
+                catch (InvalidOperationException ex)
                 {
                     // connection error
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                    this.ReceiveBuffer = null;
+                    this.writeEnableEvent.Set();
                     continue;
                 }
                 catch (Exception ex)
@@ -729,19 +741,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
                     this.writeEnableEvent.Set();
-                    return;
+                    throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 3", ex);
                 }
 
-                //INFO: Byte 1 of read data contains packet length, zero means invalid packet
-                if (inverterData == null)
-                {
-                    // connection error
-                    this.logger.LogError($"4:Inverter message is null");
-                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                    this.ReceiveBuffer = null;
-                    this.socketTransport.Disconnect();
-                    continue;
-                }
+                //INFO: Byte 1 of read data contains packet length
                 if (this.ReceiveBuffer[1] == 0x00)
                 {
                     // message error
@@ -751,14 +754,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.socketTransport.Disconnect();
                     continue;
                 }
-                if(this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
+                if(this.ReceiveBuffer.Length < 2 || this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
                 {
                     // this is not an error: we try to recover from messages received in more pieces
                     this.logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     continue;
                 }
 
-                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer);
+                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 4, 1, 2);
                 foreach( var extractedMessage in ExtractedMessages)
                 {
                     InverterMessage currentMessage;
@@ -767,12 +770,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         currentMessage = new InverterMessage(extractedMessage);
 
                         this.logger.LogTrace($"6:currentMessage={currentMessage}");
-                    }
-                    catch (InverterDriverException)
-                    {
-                        this.ReceiveBuffer = null;
-                        this.socketTransport.Disconnect();
-                        break;
                     }
                     catch (Exception ex)
                     {

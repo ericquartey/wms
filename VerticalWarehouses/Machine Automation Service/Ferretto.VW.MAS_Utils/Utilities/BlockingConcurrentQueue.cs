@@ -78,6 +78,34 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             return false;
         }
 
+        public bool TryPeek(int timeout, CancellationToken cancellationToken, out T result)
+        {
+            try
+            {
+                if (this.Count > 0)
+                {
+                    return this.Peek(out result);
+                }
+
+                if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
+                {
+                    this.dataReady.Reset();
+                    return this.TryPeek(out result);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception {ex.Message} while trying to peek object from blocking queue {this.GetType()}");
+            }
+
+            result = default(T);
+
+            return false;
+        }
         #endregion
     }
 }

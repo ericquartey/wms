@@ -1018,18 +1018,19 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (InverterDriverException ex)
             {
-                this.logger.LogCritical($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
+                this.logger.LogError($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
             }
             catch (Exception ex)
             {
                 this.logger.LogCritical($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
 
                 this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
+                throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 1", ex);
             }
 
             if (!this.socketTransport.IsConnected)
             {
-                this.logger.LogCritical("3:Socket Transport failed to connect");
+                this.logger.LogError("3:Socket Transport failed to connect");
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
@@ -1045,6 +1046,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.logger.LogCritical($"4:Exception: {ex.Message} while starting service threads");
 
                 this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
+                throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);
             }
         }
 
