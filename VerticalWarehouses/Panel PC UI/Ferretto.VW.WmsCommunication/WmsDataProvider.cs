@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
@@ -12,6 +13,8 @@ namespace Ferretto.VW.WmsCommunication
     public class WmsDataProvider : IWmsDataProvider
     {
         #region Fields
+
+        private readonly IAreasDataService areasDataService;
 
         private readonly IItemListRowsDataService itemListRowsDataService;
 
@@ -32,6 +35,7 @@ namespace Ferretto.VW.WmsCommunication
         public WmsDataProvider(Uri wmsConnectionString)
         {
             this.itemsDataService = DataServiceFactory.GetService<IItemsDataService>(wmsConnectionString);
+            this.areasDataService = DataServiceFactory.GetService<IAreasDataService>(wmsConnectionString);
             this.loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsConnectionString);
             this.materialStatusesDataService = DataServiceFactory.GetService<IMaterialStatusesDataService>(wmsConnectionString);
             this.packageTypesDataService = DataServiceFactory.GetService<IPackageTypesDataService>(wmsConnectionString);
@@ -103,10 +107,9 @@ namespace Ferretto.VW.WmsCommunication
             }
         }
 
-        public async Task<ObservableCollection<Item>> GetItemsAsync(string searchCode, int skip, int quantity)
+        public async Task<ObservableCollection<Item>> GetItemsAsync(int areaId, string searchCode, int skip, int take, CancellationToken cancellationToken)
         {
-            var items = await this.itemsDataService.GetAllAsync(search: searchCode, skip: skip, take: quantity);
-            return items;
+            return await this.areasDataService.GetItemsAsync(areaId, skip, take, null, null, searchCode, cancellationToken);
         }
 
         public async Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode)
