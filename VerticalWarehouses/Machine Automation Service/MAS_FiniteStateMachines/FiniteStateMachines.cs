@@ -39,6 +39,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task fieldNotificationReceiveTask;
 
+        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxis horizontalAxis;
+
         private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly MachineSensorsStatus machineSensorsStatus;
@@ -48,6 +52,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private readonly Task notificationReceiveTask;
 
         private readonly ISetupStatus setupStatus;
+
+        private readonly IVerticalAxis verticalAxis;
 
         private readonly IVertimagConfiguration vertimagConfiguration;
 
@@ -72,7 +78,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             ILogger<FiniteStateMachines> logger,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             ISetupStatus setupStatus,
-            IVertimagConfiguration vertimagConfiguration)
+            IVertimagConfiguration vertimagConfiguration,
+            IGeneralInfoDataLayer generalInfoDataLayer,
+            IVerticalAxis verticalAxis,
+            IHorizontalAxis horizontalAxis)
         {
             this.eventAggregator = eventAggregator;
 
@@ -83,6 +92,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.setupStatus = setupStatus;
 
             this.vertimagConfiguration = vertimagConfiguration;
+
+            this.generalInfoDataLayer = generalInfoDataLayer;
+
+            this.verticalAxis = verticalAxis;
+
+            this.horizontalAxis = horizontalAxis;
 
             this.machineSensorsStatus = new MachineSensorsStatus();
 

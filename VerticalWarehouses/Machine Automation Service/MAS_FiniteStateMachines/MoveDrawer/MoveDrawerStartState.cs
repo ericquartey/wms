@@ -16,13 +16,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
         private readonly IDrawerOperationMessageData drawerOperationData;
 
-        private readonly DrawerOperationStep drawerOperationStep;
+        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxis horizontalAxis;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
+
+        private readonly IVerticalAxis verticalAxis;
 
         private bool disposed;
 
@@ -37,16 +39,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public MoveDrawerStartState(
             IStateMachine parentMachine,
             IDrawerOperationMessageData drawerOperationData,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IGeneralInfoDataLayer generalInfoDataLayer,
+            IVerticalAxis verticalAxis,
+            IHorizontalAxis horizontalAxis,
             IMachineSensorsStatus machineSensorsStatus,
-            DrawerOperationStep drawerOperationStep,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.drawerOperationData = drawerOperationData;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.generalInfoDataLayer = generalInfoDataLayer;
+            this.verticalAxis = verticalAxis;
+            this.horizontalAxis = horizontalAxis;
             this.machineSensorsStatus = machineSensorsStatus;
-            this.drawerOperationStep = drawerOperationStep;
         }
 
         #endregion
@@ -102,12 +106,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             if (this.ioSwitched && this.inverterSwitched)
             {
+                this.drawerOperationData.Step = DrawerOperationStep.None;
+
                 this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(
                     this.ParentStateMachine,
                     this.drawerOperationData,
-                    this.dataLayerConfigurationValueManagement,
+                    this.generalInfoDataLayer,
+                    this.verticalAxis,
+                    this.horizontalAxis,
                     this.machineSensorsStatus,
-                    DrawerOperationStep.None,
                     this.Logger));
             }
         }
@@ -168,9 +175,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
                 this.ParentStateMachine,
                 this.drawerOperationData,
-                this.dataLayerConfigurationValueManagement,
-                this.machineSensorsStatus,
-                this.drawerOperationStep,
                 this.Logger,
                 true));
         }

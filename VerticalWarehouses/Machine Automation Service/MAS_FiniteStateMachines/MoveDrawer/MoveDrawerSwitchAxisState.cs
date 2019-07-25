@@ -16,15 +16,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
         private readonly IDrawerOperationMessageData drawerOperationData;
 
-        private readonly DrawerOperationStep drawerOperationStep;
+        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxis horizontalAxis;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly Axis targetAxis;
+
+        private readonly IVerticalAxis verticalAxis;
 
         private bool disposed;
 
@@ -40,17 +42,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             IStateMachine parentMachine,
             Axis targetAxis,
             IDrawerOperationMessageData drawerOperationData,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IGeneralInfoDataLayer generalInfoDataLayer,
+            IVerticalAxis verticalAxis,
+            IHorizontalAxis horizontalAxis,
             IMachineSensorsStatus machineSensorsStatus,
-            DrawerOperationStep drawerOperationStep,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.targetAxis = targetAxis;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.generalInfoDataLayer = generalInfoDataLayer;
+            this.verticalAxis = verticalAxis;
+            this.horizontalAxis = horizontalAxis;
             this.machineSensorsStatus = machineSensorsStatus;
             this.drawerOperationData = drawerOperationData;
-            this.drawerOperationStep = drawerOperationStep;
         }
 
         #endregion
@@ -106,60 +110,73 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                if (this.drawerOperationStep == DrawerOperationStep.None)
+                var currentStep = this.drawerOperationData.Step;
+
+                if (currentStep == DrawerOperationStep.None)
                 {
-                    var operationStep = DrawerOperationStep.None;
+                    var nextStep = DrawerOperationStep.None;
                     switch (this.drawerOperationData.Source)
                     {
                         case DrawerDestination.CarouselBay1Down:
                         case DrawerDestination.CarouselBay1Up:
+                        case DrawerDestination.CarouselBay2Down:
                         //...
                         case DrawerDestination.InternalBay1Up:
-                            operationStep = DrawerOperationStep.LoadingDrawerFromBay;
+                        case DrawerDestination.InternalBay2Up:
+                            nextStep = DrawerOperationStep.LoadingDrawerFromBay;
                             break;
 
                         case DrawerDestination.Cell:
-                            operationStep = DrawerOperationStep.LoadingDrawerFromCell;
+                            nextStep = DrawerOperationStep.LoadingDrawerFromCell;
                             break;
 
                         default:
                             break;
                     }
 
+                    this.drawerOperationData.Step = nextStep;
+
                     this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(
                         this.ParentStateMachine,
                         this.drawerOperationData,
-                        this.dataLayerConfigurationValueManagement,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
                         this.machineSensorsStatus,
-                        operationStep,
                         this.Logger));
                 }
 
-                if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromBay)
+                if (currentStep == DrawerOperationStep.LoadingDrawerFromBay)
                 {
+                    this.drawerOperationData.Step = DrawerOperationStep.MovingElevatorUp;
+
                     this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(
                         this.ParentStateMachine,
                         this.drawerOperationData,
-                        this.dataLayerConfigurationValueManagement,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
                         this.machineSensorsStatus,
-                        DrawerOperationStep.MovingElevatorUp,
                         this.Logger));
                 }
 
-                if (this.drawerOperationStep == DrawerOperationStep.LoadingDrawerFromCell)
+                if (currentStep == DrawerOperationStep.LoadingDrawerFromCell)
                 {
+                    this.drawerOperationData.Step = DrawerOperationStep.MovingElevatorDown;
+
                     this.ParentStateMachine.ChangeState(new MoveDrawerElevatorToPositionState(
                         this.ParentStateMachine,
                         this.drawerOperationData,
-                        this.dataLayerConfigurationValueManagement,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
                         this.machineSensorsStatus,
-                        DrawerOperationStep.MovingElevatorDown,
                         this.Logger));
                 }
 
-                if (this.drawerOperationStep == DrawerOperationStep.MovingElevatorUp)
+                if (currentStep == DrawerOperationStep.MovingElevatorUp)
                 {
-                    var operationStep = DrawerOperationStep.None;
+                    var nextStep = DrawerOperationStep.None;
                     switch (this.drawerOperationData.Destination)
                     {
                         case DrawerDestination.CarouselBay1Down:
@@ -168,29 +185,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                         //...
                         case DrawerDestination.InternalBay1Up:
                         case DrawerDestination.InternalBay2Up:
-                            operationStep = DrawerOperationStep.StoringDrawerToBay;
+                            nextStep = DrawerOperationStep.StoringDrawerToBay;
                             break;
 
                         case DrawerDestination.Cell:
-                            operationStep = DrawerOperationStep.StoringDrawerToCell;
+                            nextStep = DrawerOperationStep.StoringDrawerToCell;
                             break;
 
                         default:
                             break;
                     }
 
+                    this.drawerOperationData.Step = nextStep;
+
                     this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(
                         this.ParentStateMachine,
                         this.drawerOperationData,
-                        this.dataLayerConfigurationValueManagement,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
                         this.machineSensorsStatus,
-                        operationStep,
                         this.Logger));
                 }
 
-                if (this.drawerOperationStep == DrawerOperationStep.MovingElevatorDown)
+                if (currentStep == DrawerOperationStep.MovingElevatorDown)
                 {
-                    var operationStep = DrawerOperationStep.None;
+                    var nextStep = DrawerOperationStep.None;
                     switch (this.drawerOperationData.Destination)
                     {
                         case DrawerDestination.CarouselBay1Down:
@@ -199,23 +219,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                         //...
                         case DrawerDestination.InternalBay1Up:
                         case DrawerDestination.InternalBay2Up:
-                            operationStep = DrawerOperationStep.StoringDrawerToBay;
+                            nextStep = DrawerOperationStep.StoringDrawerToBay;
                             break;
 
                         case DrawerDestination.Cell:
-                            operationStep = DrawerOperationStep.StoringDrawerToCell;
+                            nextStep = DrawerOperationStep.StoringDrawerToCell;
                             break;
 
                         default:
                             break;
                     }
 
+                    this.drawerOperationData.Step = nextStep;
+
                     this.ParentStateMachine.ChangeState(new MoveDrawerCradleState(
                         this.ParentStateMachine,
                         this.drawerOperationData,
-                        this.dataLayerConfigurationValueManagement,
+                        this.generalInfoDataLayer,
+                        this.verticalAxis,
+                        this.horizontalAxis,
                         this.machineSensorsStatus,
-                        operationStep,
                         this.Logger));
                 }
             }
@@ -278,9 +301,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.ParentStateMachine.ChangeState(new MoveDrawerEndState(
                 this.ParentStateMachine,
                 this.drawerOperationData,
-                this.dataLayerConfigurationValueManagement,
-                this.machineSensorsStatus,
-                this.drawerOperationStep,
                 this.Logger,
                 true));
         }

@@ -14,15 +14,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
         private readonly IDrawerOperationMessageData drawerOperationData;
+
+        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxis horizontalAxis;
 
         private readonly ILogger logger;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly ISetupStatus setupStatus;
+
+        private readonly IVerticalAxis verticalAxis;
 
         private bool disposed;
 
@@ -34,7 +38,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             IEventAggregator eventAggregator,
             ISetupStatus setupStatus,
             IMachineSensorsStatus machineSensorsStatus,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IGeneralInfoDataLayer generalInfoDataLayer,
+            IVerticalAxis verticalAxis,
+            IHorizontalAxis horizontalAxis,
             IDrawerOperationMessageData drawerOperationData,
             ILogger logger)
             : base(eventAggregator, logger)
@@ -42,7 +48,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             this.setupStatus = setupStatus;
             this.logger = logger;
             this.machineSensorsStatus = machineSensorsStatus;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.generalInfoDataLayer = generalInfoDataLayer;
+            this.verticalAxis = verticalAxis;
+            this.horizontalAxis = horizontalAxis;
             this.drawerOperationData = drawerOperationData;
 
             this.CurrentState = new EmptyState(logger);
@@ -182,12 +190,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
             lock (this.CurrentState)
             {
+                this.drawerOperationData.Step = DrawerOperationStep.None;
+
                 this.CurrentState = new MoveDrawerStartState(
                     this,
                     this.drawerOperationData,
-                    this.dataLayerConfigurationValueManagement,
+                    this.generalInfoDataLayer,
+                    this.verticalAxis,
+                    this.horizontalAxis,
                     this.machineSensorsStatus,
-                    DrawerOperationStep.None,
                     this.Logger);
                 this.CurrentState?.Start();
             }

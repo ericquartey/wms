@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -13,13 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
         private readonly IDrawerOperationMessageData drawerOperationData;
-
-        private readonly DrawerOperationStep drawerOperationStep;
-
-        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly bool stopRequested;
 
@@ -32,18 +25,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public MoveDrawerEndState(
             IStateMachine parentMachine,
             IDrawerOperationMessageData drawerOperationData,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IMachineSensorsStatus machineSensorsStatus,
-            DrawerOperationStep drawerOperationStep,
             ILogger logger,
             bool stopRequested = false)
             : base(parentMachine, logger)
         {
             this.stopRequested = stopRequested;
             this.drawerOperationData = drawerOperationData;
-            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
-            this.machineSensorsStatus = machineSensorsStatus;
-            this.drawerOperationStep = drawerOperationStep;
         }
 
         #endregion
