@@ -657,6 +657,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     try
                     {
+                        this.ReceiveBuffer = null;
                         await this.socketTransport.ConnectAsync();
                     }
                     catch (InverterDriverException ex)

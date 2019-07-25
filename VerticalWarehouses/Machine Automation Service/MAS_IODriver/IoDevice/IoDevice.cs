@@ -117,6 +117,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 {
                     try
                     {
+                        this.ReceiveBuffer = null;
                         await this.shdTransport.ConnectAsync();
                     }
                     catch (IoDriverException ex)
@@ -178,7 +179,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
 
-                this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(telegram, telegram.Length);
+                //this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(telegram, telegram.Length);
+                this.ReceiveBuffer = telegram;
 
                 //INFO: Byte 0 of read data contains packet length
                 if (!(this.ReceiveBuffer[0] == 3 || this.ReceiveBuffer[0] == 15 || this.ReceiveBuffer[0] == 26))
@@ -198,9 +200,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     continue;
                 }
 
-                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
-                foreach (var extractedMessage in ExtractedMessages)
+                //var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
+                //foreach (var extractedMessage in ExtractedMessages)
                 {
+                    var extractedMessage = this.ReceiveBuffer;
                     if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release   
                         || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release 
                         )
@@ -354,8 +357,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 }
                 catch(IoDriverException ex)
                 {
+                    // connection error
                     this.logger.LogError($"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
-
+                    this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                    continue;
                 }
                 this.ioCommandQueue.Dequeue(out var consumedMessage);
             }
