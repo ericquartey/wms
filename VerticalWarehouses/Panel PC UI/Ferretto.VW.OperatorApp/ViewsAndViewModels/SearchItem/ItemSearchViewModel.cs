@@ -15,7 +15,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
     public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
     {

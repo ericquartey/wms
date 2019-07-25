@@ -1,12 +1,13 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     public class PowerOnStateMachine : InverterStateMachineBase
     {
@@ -53,7 +54,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         {
             if (this.CurrentState is PowerOnEndState)
             {
-                if (this.nextCommandMessage.Type != MAS_Utils.Enumerations.FieldMessageType.InverterPowerOn)
+                if (this.nextCommandMessage.Type != FieldMessageType.InverterPowerOn)
                 {
                     ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
                 }

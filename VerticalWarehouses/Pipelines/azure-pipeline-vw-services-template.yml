@@ -27,14 +27,6 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Run Automated Tests'
-  inputs:
-    command: test
-    projects: ${{ parameters.TestProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --collect:"Code Coverage" --verbosity detailed -- MSTest.MapInconclusiveToFailed=False'
-
-
-- task: DotNetCoreCLI@2
   displayName: 'Publish (netcore)'
   inputs:
     command: publish

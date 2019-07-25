@@ -95,11 +95,11 @@ namespace Ferretto.VW.WmsCommunication
             return item.Image;
         }
 
-        public Task<ObservableCollection<ItemList>> GetItemLists()
+        public async Task<ObservableCollection<ItemList>> GetItemLists()
         {
             try
             {
-                return this.itemListsDataService.GetAllAsync(take: 10);
+                return await this.itemListsDataService.GetAllAsync(take: 10);
             }
             catch (SwaggerException ex)
             {

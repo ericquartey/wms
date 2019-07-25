@@ -3,14 +3,15 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Utilities.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Hubs
+namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
     public class OperatorHub : Hub<IOperatorHub>
     {
@@ -18,11 +19,11 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
 
         private readonly IBaysManager baysManager;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly ILogger<AutomationService> logger;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
-
-        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -49,15 +50,15 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
 
-            if ( this.baysManager.Bays != null && this.baysManager.Bays.Count > 0 )
+            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
             {
-                for ( var i = 0; i < this.baysManager.Bays.Count; i++ )
+                for (var i = 0; i < this.baysManager.Bays.Count; i++)
                 {
-                    if ( this.baysManager.Bays[i].IpAddress == localIP.ToString() )
+                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
                     {
                         this.baysManager.Bays[i].ConnectionId = this.Context.ConnectionId;
                         this.baysManager.Bays[i].IsConnected = true;
-                        this.baysManager.Bays[i].Status = MAS_Utils.Enumerations.BayStatus.Available;
+                        this.baysManager.Bays[i].Status = BayStatus.Available;
                         this.baysManager.Bays[i].Id = 2;
 
                         var messageData = new BayConnectedMessageData
@@ -81,15 +82,15 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
 
-            if ( this.baysManager.Bays != null && this.baysManager.Bays.Count > 0 )
+            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
             {
-                for ( var i = 0; i < this.baysManager.Bays.Count; i++ )
+                for (var i = 0; i < this.baysManager.Bays.Count; i++)
                 {
-                    if ( this.baysManager.Bays[i].IpAddress == localIP.ToString() )
+                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
                     {
                         this.baysManager.Bays[i].ConnectionId = string.Empty;
                         this.baysManager.Bays[i].IsConnected = false;
-                        this.baysManager.Bays[i].Status = MAS_Utils.Enumerations.BayStatus.Unavailable;
+                        this.baysManager.Bays[i].Status = BayStatus.Unavailable;
                     }
                 }
             }

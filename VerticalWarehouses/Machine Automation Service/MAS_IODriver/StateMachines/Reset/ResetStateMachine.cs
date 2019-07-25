@@ -1,10 +1,10 @@
 ﻿using System.Threading;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
+namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     public class ResetStateMachine : IoStateMachineBase
     {

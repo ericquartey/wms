@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public abstract class AutoReconnectHubClient : IAutoReconnectHubClient
     {

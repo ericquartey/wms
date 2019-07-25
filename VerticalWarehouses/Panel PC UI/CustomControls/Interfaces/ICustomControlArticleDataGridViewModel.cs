@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Ferretto.VW.Utils.Interfaces;
+﻿using Ferretto.VW.Utils.Interfaces;
+using System.Collections.Generic;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Controls.Interfaces

@@ -1,11 +1,14 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+// ReSharper disable ArrangeThisQualifier
+
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AglInverterStatus : InverterStatusBase, IAglInverterStatus
     {
@@ -15,9 +18,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 9;
 
-        private ShutterPosition currentShutterPosition;
+        private readonly ShutterType shutterType;
 
-        private ShutterType shutterType;
+        private ShutterPosition currentShutterPosition;
 
         #endregion
 
@@ -29,7 +32,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             this.aglInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
-            this.InverterType = MAS_Utils.Enumerations.InverterType.Agl;
+            this.InverterType = InverterType.Agl;
             this.shutterType = ShutterType.Shutter2Type;
         }
 

@@ -1,15 +1,14 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels.Enumerations;
 
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IResolutionConversion
     {
         #region Methods
 
-        Task<int> MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory);
+        int MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory);
 
-        Task<decimal> PulsesToMeterSUConversion(int pulses, ConfigurationCategory configurationCategory);
+        decimal PulsesToMeterSUConversion(int pulses, ConfigurationCategory configurationCategory);
 
         #endregion
     }

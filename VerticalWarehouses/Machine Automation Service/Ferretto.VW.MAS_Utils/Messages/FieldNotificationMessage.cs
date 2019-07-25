@@ -1,8 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
-namespace Ferretto.VW.MAS_Utils.Messages
+namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldNotificationMessage
     {

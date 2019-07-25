@@ -2,17 +2,16 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Models;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
-using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs;
-using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
 
 namespace Ferretto.VW.App
 {
@@ -87,7 +86,7 @@ namespace Ferretto.VW.App
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "installer",
+                UserName = "operator",
                 Password = "password",
             };
 #else
@@ -104,7 +103,7 @@ namespace Ferretto.VW.App
             else
             {
                 try
-                { 
+                {
                     this.Machine = await this.machineProvider.GetIdentityAsync();
                     this.ErrorMessage = null;
                 }

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InstallationApp
+﻿namespace Ferretto.VW.App.Installation.Interfaces
 {
     public interface IMainWindowViewModel
     {

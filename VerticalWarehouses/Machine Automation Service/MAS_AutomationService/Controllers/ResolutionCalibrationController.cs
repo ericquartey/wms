@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
@@ -43,18 +43,18 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [ProducesResponseType(200, Type = typeof(bool))]
         [HttpPost("Completed")]
-        public async Task<bool> CompletedAsync()
+        public bool CompletedAsync()
         {
-            return await this.Completed_MethodAsync();
+            return this.Completed_Method();
         }
 
         [ProducesResponseType(200)]
         [ProducesResponseType(422)]
         [ProducesResponseType(400)]
         [HttpPost("Execute/{position}/{resolutionCalibrationSteps}")]
-        public async Task<ActionResult> ExecuteAsync(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        public ActionResult ExecuteAsync(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
-            return await this.ExecuteResolution_MethodAsync(position, resolutionCalibrationSteps);
+            return this.ExecuteResolution_Method(position, resolutionCalibrationSteps);
         }
 
         [HttpGet("GetComputedResolution/{readDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
@@ -66,18 +66,18 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
+        public ActionResult<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
-            return await this.GetDecimalConfigurationParameter_MethodAsync(category, parameter);
+            return this.GetDecimalConfigurationParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200)]
         [ProducesResponseType(422)]
         [ProducesResponseType(400)]
         [HttpPost("SetResolutionParameter/{newResolution}/")]
-        public async Task<bool> SetResolutionParameterAsync(decimal newResolution)
+        public bool SetResolutionParameter(decimal newResolution)
         {
-            return await this.SetResolutionParameter_MethodAsync(newResolution);
+            return this.SetResolutionParameter_Method(newResolution);
         }
 
         [ProducesResponseType(200)]
@@ -87,13 +87,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.Stop_Method();
         }
 
-        private async Task<bool> Completed_MethodAsync()
+        private bool Completed_Method()
         {
             var completionPersist = true;
 
             try
             {
-                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus, true);
+                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus, true);
             }
             catch (Exception)
             {
@@ -103,11 +103,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return completionPersist;
         }
 
-        private async Task<ActionResult> ExecuteResolution_MethodAsync(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        private ActionResult ExecuteResolution_Method(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
             string message;
 
-            var homingDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
+            var homingDone = this.dataLayerConfigurationValueManagement.GetBoolConfigurationValue((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
 
             if (homingDone)
             {
@@ -132,13 +132,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                         (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
-                    var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                         (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
-                    var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                         (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
-                    var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                         (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
 
                     var speed = maxSpeed * feedRate;
@@ -203,7 +203,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return newResolution;
         }
 
-        private async Task<ActionResult<decimal>> GetDecimalConfigurationParameter_MethodAsync(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                         try
                         {
-                            value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)horizontalAxisParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -261,7 +261,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         decimal value3 = 0;
                         try
                         {
-                            value3 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId);
+                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -282,13 +282,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return 0;
         }
 
-        private async Task<bool> SetResolutionParameter_MethodAsync(decimal newResolution)
+        private bool SetResolutionParameter_Method(decimal newResolution)
         {
             var resultAssignment = true;
 
             try
             {
-                await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newResolution);
+                this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newResolution);
             }
             catch (Exception)
             {

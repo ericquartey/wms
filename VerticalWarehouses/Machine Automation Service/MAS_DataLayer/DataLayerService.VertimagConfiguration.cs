@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_DataLayer
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IVertimagConfiguration
     {
         #region Methods
 
-        public async Task<Dictionary<InverterIndex, InverterType>> GetInstalledInverterListAsync()
+        public Dictionary<InverterIndex, InverterType> GetInstalledInverterList()
         {
             long setupNetworkInverterIndex;
             InverterType inverterType;
@@ -73,7 +72,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 try
                 {
-                    setupNetworkInverterIndex = await this.GetIntegerConfigurationValueAsync(setupNetworkInverterIndex, (long)ConfigurationCategory.SetupNetwork);
+                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, (long)ConfigurationCategory.SetupNetwork);
                     installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
                 }
                 catch (DataLayerPersistentException ex)
@@ -86,12 +85,10 @@ namespace Ferretto.VW.MAS_DataLayer
                 }
             }
 
-            await Task.Delay(5, this.stoppingToken);
-
             return installedInverters;
         }
 
-        public async Task<List<IoIndex>> GetInstalledIoListAsync()
+        public List<IoIndex> GetInstalledIoList()
         {
             long setupNetworkIoIndex;
             var installedIoDevices = new List<IoIndex>();
@@ -119,7 +116,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 try
                 {
-                    var ipAddress = await this.GetIPAddressConfigurationValueAsync(setupNetworkIoIndex, (long)ConfigurationCategory.SetupNetwork);
+                    var ipAddress = this.GetIpAddressConfigurationValue(setupNetworkIoIndex, (long)ConfigurationCategory.SetupNetwork);
                     if (ipAddress != null)
                     {
                         installedIoDevices.Add(ioIndex);

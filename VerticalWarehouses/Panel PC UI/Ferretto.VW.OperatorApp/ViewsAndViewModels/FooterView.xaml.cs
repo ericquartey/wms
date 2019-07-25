@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
     /// <summary>
     /// Interaction logic for MainWindowBackToOAPPButtonView.xaml
@@ -9,7 +9,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
     {
         public MainWindowBackToOAPPButtonView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }
