@@ -115,7 +115,6 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IItemSearchViewModel, ItemSearchViewModel>();
             containerRegistry.RegisterSingleton<IMachineStatisticsViewModel, MachineStatisticsViewModel>();
 
-            containerRegistry.Register<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
             containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
