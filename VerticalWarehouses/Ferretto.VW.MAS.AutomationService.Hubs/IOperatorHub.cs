@@ -3,7 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.MAS.AutomationService.Hubs
+namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 {
     public interface IOperatorHub
     {

@@ -1,10 +1,10 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
     public class PowerOffSwitchOffState : InverterStateBase
     {

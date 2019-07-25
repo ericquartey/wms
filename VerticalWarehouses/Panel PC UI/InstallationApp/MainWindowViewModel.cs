@@ -1,15 +1,19 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.App.Installation.HelpWindows;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
+using Ferretto.VW.App.Installation.ViewsAndViewModels;
+using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation
 {
     public delegate void ClickedOnMachineModeEvent();
 

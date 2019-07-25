@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.App.Services;
-using Ferretto.VW.Utils.Interfaces;
+﻿using Ferretto.VW.Utils.Interfaces;
+using Ferretto.VW.App.Services;
 
-namespace Ferretto.VW.OperatorApp.Interfaces
+namespace Ferretto.VW.App.Operator.Interfaces
 {
     public interface IDrawerActivityDetailViewModel : IViewModel
     {

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -10,6 +12,8 @@ namespace Ferretto.VW.App.Services
     public class WmsDataProvider : IWmsDataProvider
     {
         #region Fields
+
+        private readonly IAreasDataService areasDataService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -25,6 +29,7 @@ namespace Ferretto.VW.App.Services
 
         public WmsDataProvider(
             IStatusMessageService statusMessageService,
+            IAreasDataService areasDataService,
             ILoadingUnitsDataService loadingUnitsDataService,
             IItemsDataService itemsDataService,
             IItemListsDataService itemListsDataService)
@@ -32,6 +37,11 @@ namespace Ferretto.VW.App.Services
             if (statusMessageService == null)
             {
                 throw new ArgumentNullException(nameof(statusMessageService));
+            }
+
+            if (areasDataService == null)
+            {
+                throw new ArgumentNullException(nameof(areasDataService));
             }
 
             if (loadingUnitsDataService == null)
@@ -50,6 +60,7 @@ namespace Ferretto.VW.App.Services
             }
 
             this.statusMessageService = statusMessageService;
+            this.areasDataService = areasDataService;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.itemsDataService = itemsDataService;
             this.itemListsDataService = itemListsDataService;
@@ -86,11 +97,11 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task<IEnumerable<Item>> GetItemsAsync(string searchCode, int skip, int quantity)
+        public async Task<IEnumerable<Item>> GetItemsAsync(int areaId, string searchCode, int skip, int take, CancellationToken cancellationToken)
         {
             try
             {
-                return await this.itemsDataService.GetAllAsync(search: searchCode, skip: skip, take: quantity);
+                return await this.areasDataService.GetItemsAsync(areaId, skip, take, null, null, searchCode, cancellationToken);
             }
             catch (SwaggerException ex)
             {

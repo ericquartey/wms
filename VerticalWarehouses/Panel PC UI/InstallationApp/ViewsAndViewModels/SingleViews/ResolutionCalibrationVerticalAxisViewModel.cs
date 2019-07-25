@@ -1,18 +1,20 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 using MessageStatus = Ferretto.VW.CommonUtils.Messages.Enumerations.MessageStatus;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IResolutionCalibrationVerticalAxisViewModel, IViewModelRequiresContainer
     {
@@ -387,7 +389,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 this.IsMoveButtonActive = false;
                 this.IsDesiredFinalPositionHighlighted = true;
-                this.statusMessageService.Notify(App.Resources.InstallationApp.ValueNotValid);
+                this.statusMessageService.Notify(VW.App.Resources.InstallationApp.ValueNotValid);
             }
         }
 
@@ -403,7 +405,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 this.IsSetPositionButtonActive = false;
                 this.IsDesiredInitialPositionHighlighted = true;
-                this.statusMessageService.Notify(App.Resources.InstallationApp.ValueNotValid);
+                this.statusMessageService.Notify(VW.App.Resources.InstallationApp.ValueNotValid);
             }
         }
 
@@ -422,7 +424,7 @@ namespace Ferretto.VW.InstallationApp
             else
             {
                 this.IsReadFinalPositionHighlighted = true;
-                this.statusMessageService.Notify(App.Resources.InstallationApp.ValueNotValid);
+                this.statusMessageService.Notify(VW.App.Resources.InstallationApp.ValueNotValid);
             }
         }
 
@@ -439,7 +441,7 @@ namespace Ferretto.VW.InstallationApp
                 this.IsMoveButtonActive = false;
                 this.IsMesuredInitialPositionHighlighted = true;
                 this.IsDesiredFinalPositionActive = false;
-                this.statusMessageService.Notify(App.Resources.InstallationApp.ValueNotValid);
+                this.statusMessageService.Notify(VW.App.Resources.InstallationApp.ValueNotValid);
             }
         }
 

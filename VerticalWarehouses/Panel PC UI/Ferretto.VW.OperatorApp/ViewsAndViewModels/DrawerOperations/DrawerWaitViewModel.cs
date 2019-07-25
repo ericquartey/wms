@@ -2,9 +2,12 @@
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Events;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 {
     public class DrawerWaitViewModel : BaseViewModel, IDrawerWaitViewModel, IDrawerActivityViewModel
     {

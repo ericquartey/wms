@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.LoadingUnits;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Services.Interfaces
 {
     public interface IAuthenticationService
     {

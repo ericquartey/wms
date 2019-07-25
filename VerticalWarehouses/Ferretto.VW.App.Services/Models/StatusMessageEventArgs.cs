@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.App.Services
+﻿using Ferretto.VW.App.Services.Interfaces;
+
+namespace Ferretto.VW.App.Services.Models
 {
     public class StatusMessageEventArgs : System.EventArgs
     {

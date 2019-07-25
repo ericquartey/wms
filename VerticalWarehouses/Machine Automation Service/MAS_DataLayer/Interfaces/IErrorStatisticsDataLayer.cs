@@ -1,4 +1,4 @@
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Errors;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {

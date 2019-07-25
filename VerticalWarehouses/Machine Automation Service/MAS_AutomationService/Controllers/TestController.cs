@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.LoadingUnits;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -17,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      MissionsCount = l.MissionsCount,
                      Code = l.Code,
                  }
-            );
+            ).ToArray();
 
             return loadingUnits;
         }
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      MaxNetWeight = l.MaxNetWeight,
                      MaxWeightPercentage = (l.GrossWeight - l.Tare) / l.MaxNetWeight,
                  }
-            );
+            ).ToArray();
 
             return loadingUnits;
         }

@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.OperatorApp
+namespace Ferretto.VW.App.Operator
 {
     public class NavigationService : INavigationService
     {

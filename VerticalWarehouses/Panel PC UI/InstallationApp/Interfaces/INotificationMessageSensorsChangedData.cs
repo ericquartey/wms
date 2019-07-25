@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.App.Services;
+﻿using Ferretto.VW.App.Services.Interfaces;
 
-namespace Ferretto.VW.InstallationApp.Interfaces
+namespace Ferretto.VW.App.Installation.Interfaces
 {
     public interface INotificationMessageSensorsChangedData : INotificationMessageData
     {

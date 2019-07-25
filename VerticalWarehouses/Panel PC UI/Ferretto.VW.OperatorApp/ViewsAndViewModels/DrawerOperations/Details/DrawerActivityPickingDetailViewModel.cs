@@ -4,12 +4,22 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.WmsCommunication.Source;
+using Prism.Events;
+using Unity;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details
 {
     public class DrawerActivityPickingDetailViewModel : BaseViewModel, IDrawerActivityPickingDetailViewModel
     {
         #region Fields
+
+        private readonly IWmsImagesProvider wmsImagesProvider;
+        private readonly IUnityContainer container;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IWmsImagesProvider wmsImagesProvider;
 

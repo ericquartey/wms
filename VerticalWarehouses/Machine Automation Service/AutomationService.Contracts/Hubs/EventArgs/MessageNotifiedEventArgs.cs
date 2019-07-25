@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs
 {
     public class MessageNotifiedEventArgs : System.EventArgs
     {

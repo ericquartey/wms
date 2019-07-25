@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public Task<decimal> FeedRateLFD => this.GetDecimalConfigurationValueAsync((long)LoadFirstDrawer.FeedRate, (long)ConfigurationCategory.LoadFirstDrawer);
+        public decimal FeedRateLFD => this.GetDecimalConfigurationValue((long)LoadFirstDrawer.FeedRate, (long)ConfigurationCategory.LoadFirstDrawer);
 
         #endregion
     }

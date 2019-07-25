@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.EntityFrameworkCore;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal class ServicingProvider : IServicingProvider

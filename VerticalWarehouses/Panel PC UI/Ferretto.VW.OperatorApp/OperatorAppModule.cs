@@ -2,7 +2,20 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Operator.HelpWindows;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ServiceUtilities;
+using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp;
 using Ferretto.VW.OperatorApp.Interfaces;
@@ -101,7 +114,6 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IItemSearchViewModel, ItemSearchViewModel>();
             containerRegistry.RegisterSingleton<IMachineStatisticsViewModel, MachineStatisticsViewModel>();
 
-            containerRegistry.Register<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
             containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();

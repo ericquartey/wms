@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.OperatorApp.Interfaces;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class GeneralInfoViewModel : BaseViewModel, IGeneralInfoViewModel
     {

@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.MAS_IODriver.Interface;
+﻿using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationErrorState : IoStateBase
     {

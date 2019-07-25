@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,11 +9,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public Task<decimal> FeedRateHM => this.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
+        public decimal FeedRateHM => this.GetDecimalConfigurationValue((long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
 
-        public Task<decimal> InitialTargetPositionHM => this.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+        public decimal InitialTargetPositionHM => this.GetDecimalConfigurationValue((long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
 
-        public Task<decimal> RecoveryTargetPositionHM => this.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+        public decimal RecoveryTargetPositionHM => this.GetDecimalConfigurationValue((long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
 
         #endregion
     }

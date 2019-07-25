@@ -5,12 +5,14 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class DrawerSpaceSaturationViewModel : BaseViewModel, IDrawerSpaceSaturationViewModel
     {

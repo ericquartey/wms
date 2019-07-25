@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace Ferretto.VW.App.Controls
+namespace Ferretto.VW.App.Controls.Utils
 {
     public static class EnumerableTreeExtensions
     {

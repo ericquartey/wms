@@ -1,11 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStateMachine : StateMachineBase
     {

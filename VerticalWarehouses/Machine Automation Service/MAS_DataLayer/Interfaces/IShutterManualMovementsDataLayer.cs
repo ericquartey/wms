@@ -1,18 +1,16 @@
-using System.Threading.Tasks;
-
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IShutterManualMovementsDataLayer
     {
         #region Properties
 
-        Task<decimal> Acceleration { get; }
+        decimal Acceleration { get; }
 
-        Task<decimal> Deceleration { get; }
+        decimal Deceleration { get; }
 
-        Task<decimal> FeedRate { get; }
+        decimal FeedRateSM { get; }
 
-        Task<decimal> MaxSpeed { get; }
+        decimal MaxSpeed { get; }
 
         #endregion
     }

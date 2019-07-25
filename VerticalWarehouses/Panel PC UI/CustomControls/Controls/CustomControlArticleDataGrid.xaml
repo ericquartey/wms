@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
+
+
+    <UserControl.Resources>
+        <conv:MachinesToStringConverter x:Key="MTSC" />
+    </UserControl.Resources>
+
     <Grid>
         <DataGrid Name="DataGrid"
                   Width="auto"
@@ -22,9 +26,9 @@
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
-                  ItemsSource="{Binding Articles}"
+                  ItemsSource="{Binding Items}"
                   RowHeight="30"
-                  SelectedItem="{Binding SelectedArticle}"
+                  SelectedItem="{Binding SelectedItem}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   VerticalScrollBarVisibility="Hidden">
@@ -85,7 +89,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="1*"
-                                    Binding="{Binding Path=Article}"
+                                    Binding="{Binding Path=Code}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridItem}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -138,7 +142,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column3"
                                     Width="*"
-                                    Binding="{Binding Path=Machine}"
+                                    Binding="{Binding Path=Machines, Converter={StaticResource MTSC}}"
                                     Header="{x:Static Resources:OperatorApp.ItemSearchGridMachine}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 {
     public class DetailListInWaitViewModel : BaseViewModel, IDetailListInWaitViewModel
     {

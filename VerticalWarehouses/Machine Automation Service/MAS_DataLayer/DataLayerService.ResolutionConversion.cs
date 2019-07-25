@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        public async Task<int> MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory)
+        public int MeterSUToPulsesConversion(decimal milliMeters, ConfigurationCategory configurationCategory)
         {
             if (milliMeters == 0)
             {
@@ -21,17 +21,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException(errorMessage);
             }
 
-            decimal resolution = 0;
+            decimal resolution;
             int pulses;
 
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    resolution = await this.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    resolution = await this.GetDecimalConfigurationValueAsync((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
                     break;
 
                 default:
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return pulses;
         }
 
-        public async Task<decimal> PulsesToMeterSUConversion(int pulses, ConfigurationCategory configurationCategory)
+        public decimal PulsesToMeterSUConversion(int pulses, ConfigurationCategory configurationCategory)
         {
             if (pulses == 0)
             {
@@ -54,17 +54,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException(errorMessage);
             }
 
-            decimal resolution = 0;
-            decimal milliMeters = 0;
+            decimal resolution;
+            decimal milliMeters;
 
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    resolution = await this.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    resolution = await this.GetDecimalConfigurationValueAsync((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
                     break;
 
                 default:

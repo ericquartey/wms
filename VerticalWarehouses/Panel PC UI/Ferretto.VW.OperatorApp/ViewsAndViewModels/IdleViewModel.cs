@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.OperatorApp.Interfaces;
+﻿using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
     public class IdleViewModel : BaseViewModel, IIdleViewModel
     {

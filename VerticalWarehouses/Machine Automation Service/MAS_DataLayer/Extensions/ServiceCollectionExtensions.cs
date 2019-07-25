@@ -1,11 +1,11 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
-using Microsoft.EntityFrameworkCore;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
@@ -25,14 +25,15 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            services.AddDbContext<DataLayerContext>(
-               options => options.UseSqlite(configuration.GetDataLayerPrimaryConnectionString()),
-               ServiceLifetime.Singleton);
-
-            services.AddSingleton(
-                new DataLayerConfiguration(
+            var dataLayerConfiguration = new DataLayerConfiguration(
+                configuration.GetDataLayerPrimaryConnectionString(),
                 configuration.GetDataLayerSecondaryConnectionString(),
-                configuration.GetDataLayerConfigurationFile()));
+                configuration.GetDataLayerConfigurationFile());
+
+            services.AddDbContext<DataLayerContext>(
+               options => options.UseSqlite(configuration.GetDataLayerPrimaryConnectionString()));
+
+            services.AddSingleton(dataLayerConfiguration);
 
             services.AddSingleton<IDataLayer, DataLayerService>();
 
@@ -57,14 +58,13 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IWeightControlDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ICellManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IConfigurationValueManagmentDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IRuntimeValueManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVertimagConfigurationDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IMachineStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ILoadingUnitStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversionDataLayer);
 
-            services.AddTransient<IServicingProvider, ServicingProvider>();
+            services.AddTransient<IServicingProvider, ServicingProvider>(provider => new ServicingProvider(dataLayerConfiguration));
             services.AddTransient<IBaysProvider, BaysProvider>();
             services.AddTransient<IBaysConfgurationProvider, BaysConfigurationProvider>();
 

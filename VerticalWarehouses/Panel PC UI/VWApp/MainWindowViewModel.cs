@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;

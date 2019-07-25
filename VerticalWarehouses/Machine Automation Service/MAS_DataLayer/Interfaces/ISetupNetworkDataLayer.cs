@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
@@ -7,63 +6,62 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
-        Task<IPAddress> AlfaNumBay1Net { get; }
+        IPAddress AlfaNumBay1Net { get; }
 
-        Task<IPAddress> AlfaNumBay2Net { get; }
+        IPAddress AlfaNumBay2Net { get; }
 
-        Task<IPAddress> AlfaNumBay3Net { get; }
+        IPAddress AlfaNumBay3Net { get; }
 
-        Task<IPAddress> Inverter1 { get; }
+        IPAddress Inverter1 { get; }
 
-        Task<int> Inverter1Port { get; }
+        int Inverter1Port { get; }
 
-        Task<int> InverterIndexBay1 { get; }
+        int InverterIndexBay1 { get; }
 
-        Task<int> InverterIndexBay2 { get; }
+        int InverterIndexBay2 { get; }
 
-        Task<int> InverterIndexBay3 { get; }
+        int InverterIndexBay3 { get; }
 
-        Task<int> InverterIndexChain { get; }
+        int InverterIndexChain { get; }
 
-        Task<int> InverterIndexMaster { get; }
+        int InverterIndexMaster { get; }
 
-        Task<int> InverterIndexShutter1 { get; }
+        int InverterIndexShutter1 { get; }
 
-        Task<int> InverterIndexShutter2 { get; }
+        int InverterIndexShutter2 { get; }
 
-        Task<int> InverterIndexShutter3 { get; }
+        int InverterIndexShutter3 { get; }
 
-        Task<IPAddress> IOExpansion1 { get; }
+        IPAddress IOExpansion1 { get; }
 
-        Task<int> IOExpansion1Port { get; }
+        int IOExpansion1Port { get; }
 
-        Task<IPAddress> IOExpansion2 { get; }
+        IPAddress IOExpansion2 { get; }
 
-        Task<int> IOExpansion2Port { get; }
+        int IOExpansion2Port { get; }
 
-        Task<IPAddress> IOExpansion3 { get; }
+        IPAddress IOExpansion3 { get; }
 
-        Task<int> IOExpansion3Port { get; }
+        int IOExpansion3Port { get; }
 
-        Task<IPAddress> LaserBay1Net { get; }
+        IPAddress LaserBay1Net { get; }
 
-        Task<IPAddress> LaserBay2Net { get; }
+        IPAddress LaserBay2Net { get; }
 
-        Task<IPAddress> LaserBay3Net { get; }
+        IPAddress LaserBay3Net { get; }
 
-        Task<int> MachineNumber { get; }
+        int MachineNumber { get; }
 
-        Task<IPAddress> PPC1MasterIPAddress { get; }
+        IPAddress PPC1MasterIPAddress { get; }
 
-        Task<IPAddress> PPC2SlaveIPAddress { get; }
+        IPAddress PPC2SlaveIPAddress { get; }
 
-        Task<IPAddress> PPC3SlaveIPAddress { get; }
+        IPAddress PPC3SlaveIPAddress { get; }
 
-        Task<IPAddress> SQLServerIPAddress { get; }
+        IPAddress SQLServerIPAddress { get; }
 
-        Task<int> SQLServerPort { get; }
-
-        Task<bool> WMS_ON { get; }
+        bool WMS_ON { get; }
+        int SQLServerPort { get; }
 
         #endregion
     }

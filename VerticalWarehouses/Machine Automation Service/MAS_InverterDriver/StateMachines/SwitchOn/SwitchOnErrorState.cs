@@ -1,14 +1,14 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 {
     public class SwitchOnErrorState : InverterStateBase
     {

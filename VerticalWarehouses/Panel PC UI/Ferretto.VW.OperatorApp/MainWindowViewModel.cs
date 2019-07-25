@@ -1,5 +1,14 @@
 ﻿using System.Windows.Input;
+using Ferretto.VW.App.Operator.HelpWindows;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.Resources;
+using Ferretto.VW.App.Operator.Resources.Enumerations;
+using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Resources;
@@ -9,7 +18,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp
+namespace Ferretto.VW.App.Operator
 {
     public delegate void ClickedOnMachineModeEvent();
 

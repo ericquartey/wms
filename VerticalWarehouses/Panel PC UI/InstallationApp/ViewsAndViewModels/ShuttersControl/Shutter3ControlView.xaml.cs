@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 {
     /// <summary>
     /// Interaction logic for Gate3ControlView.xaml
