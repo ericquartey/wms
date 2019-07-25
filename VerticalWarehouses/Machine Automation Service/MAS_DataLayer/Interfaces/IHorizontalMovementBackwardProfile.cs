@@ -1,64 +1,62 @@
-﻿using System.Threading.Tasks;
-
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IHorizontalMovementBackwardProfile
     {
         #region Properties
 
-        Task<decimal> MovementCorrection { get; }
+        decimal MovementCorrection { get; }
 
-        Task<decimal> P0Acceleration { get; }
+        decimal P0Acceleration { get; }
 
-        Task<decimal> P0Deceleration { get; }
+        decimal P0Deceleration { get; }
 
-        Task<decimal> P0Quote { get; }
+        decimal P0Quote { get; }
 
-        Task<decimal> P0SpeedV1 { get; }
+        decimal P0SpeedV1 { get; }
 
-        Task<decimal> P1Acceleration { get; }
+        decimal P1Acceleration { get; }
 
-        Task<decimal> P1Deceleration { get; }
+        decimal P1Deceleration { get; }
 
-        Task<decimal> P1Quote { get; }
+        decimal P1Quote { get; }
 
-        Task<decimal> P1SpeedV2 { get; }
+        decimal P1SpeedV2 { get; }
 
-        Task<decimal> P2Acceleration { get; }
+        decimal P2Acceleration { get; }
 
-        Task<decimal> P2Deceleration { get; }
+        decimal P2Deceleration { get; }
 
-        Task<decimal> P2Quote { get; }
+        decimal P2Quote { get; }
 
-        Task<decimal> P2SpeedV3 { get; }
+        decimal P2SpeedV3 { get; }
 
-        Task<decimal> P3Acceleration { get; }
+        decimal P3Acceleration { get; }
 
-        Task<decimal> P3Deceleration { get; }
+        decimal P3Deceleration { get; }
 
-        Task<decimal> P3Quote { get; }
+        decimal P3Quote { get; }
 
-        Task<decimal> P3SpeedV4 { get; }
+        decimal P3SpeedV4 { get; }
 
-        Task<decimal> P4Acceleration { get; }
+        decimal P4Acceleration { get; }
 
-        Task<decimal> P4Deceleration { get; }
+        decimal P4Deceleration { get; }
 
-        Task<decimal> P4Quote { get; }
+        decimal P4Quote { get; }
 
-        Task<decimal> P4SpeedV5 { get; }
+        decimal P4SpeedV5 { get; }
 
-        Task<decimal> P5Acceleration { get; }
+        decimal P5Acceleration { get; }
 
-        Task<decimal> P5Deceleration { get; }
+        decimal P5Deceleration { get; }
 
-        Task<decimal> P5Quote { get; }
+        decimal P5Quote { get; }
 
-        Task<decimal> P5Speed { get; }
+        decimal P5Speed { get; }
 
-        Task<decimal> TotalMovement { get; }
+        decimal TotalMovement { get; }
 
-        Task<int> TotalSteps { get; }
+        int TotalSteps { get; }
 
         #endregion
     }

@@ -1,10 +1,11 @@
-﻿<UserControl x:Class="Ferretto.VW.OperatorApp.HelpWindows.HelpDetailListInWait"
+﻿<UserControl x:Class="Ferretto.VW.App.Operator.HelpWindows.HelpDetailListInWait"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.HelpWindows"            
+             xmlns:local="clr-namespace:Ferretto.VW.App.Operator.HelpWindows"            
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     
@@ -41,7 +42,7 @@
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Riga" />
+                     Text="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderRow }" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="E' possibile eseguire"
@@ -57,15 +58,15 @@
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Articolo" />
+                    Text="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderItem }" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Descrizione" />
+                    Text="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderDescription }" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Quantita'" />
+                    Text="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderQuantity }" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
@@ -121,7 +122,7 @@
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                    Text="Macchina" />
+                    Text="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderMachine }" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"

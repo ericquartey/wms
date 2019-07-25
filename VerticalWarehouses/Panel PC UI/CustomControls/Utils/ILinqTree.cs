@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.VW.App.Controls
+namespace Ferretto.VW.App.Controls.Utils
 {
     public interface ILinqTree<out T>
     {

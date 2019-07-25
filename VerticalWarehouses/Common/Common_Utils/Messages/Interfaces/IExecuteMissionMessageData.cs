@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {

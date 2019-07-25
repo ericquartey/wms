@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Ferretto.VW.MAS_Utils.Utilities
+namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public class BlockingConcurrentQueue<T> : ConcurrentQueue<T>
     {
@@ -35,6 +35,11 @@ namespace Ferretto.VW.MAS_Utils.Utilities
             return this.TryDequeue(out result);
         }
 
+        public bool Peek(out T result)
+        {
+            this.dataReady?.Reset();
+            return this.TryPeek(out result);
+        }
         public new void Enqueue(T item)
         {
             if (item != null)

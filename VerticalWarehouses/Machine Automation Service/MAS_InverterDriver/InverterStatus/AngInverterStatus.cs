@@ -1,12 +1,13 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
     {
@@ -30,7 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         {
             this.SystemIndex = systemIndex;
             this.angInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
-            this.InverterType = MAS_Utils.Enumerations.InverterType.Ang;
+            this.InverterType = InverterType.Ang;
         }
 
         #endregion

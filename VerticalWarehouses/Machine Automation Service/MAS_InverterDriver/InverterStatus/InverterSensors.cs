@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+﻿namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public enum InverterSensors
     {

@@ -4,14 +4,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_InverterDriver.Diagnostics;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
+using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public class SocketTransport : ISocketTransport, IDisposable
     {
@@ -67,6 +67,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public InverterDiagnosticsData WriteRoundtripTimeData { get; }
 
+        public bool IsReadingOk {get; set;}
+
         #endregion
 
         #region Methods
@@ -109,9 +111,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                throw new InverterDriverException(
-                    "Socket Transport is already open",
-                    InverterDriverExceptionCode.SocketOpen);
+                //throw new InverterDriverException(
+                //    "Socket Transport is already open",
+                //    InverterDriverExceptionCode.SocketOpen);
+                this.transportClient?.Dispose();
+                this.transportStream?.Dispose();
+                this.transportClient = null;
+                this.transportStream = null;
             }
 
             try
@@ -166,7 +172,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.transportStream?.Close();
             this.transportClient?.Close();
 
-            this.Dispose(true);
+            //this.Dispose(true);
         }
 
         public void Dispose()
@@ -207,17 +213,24 @@ namespace Ferretto.VW.MAS_InverterDriver
                     var receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    this.IsReadingOk = true;
                 }
                 else
                 {
-                    return null;
+                    //return null;
+                    this.Disconnect();
+                    throw new InvalidOperationException("Error reading data from Transport Stream");
                 }
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException(
+                //throw new InverterDriverException(
+                //    "Error reading data from Transport Stream",
+                //    InverterDriverExceptionCode.NetworkStreamReadFailure,
+                //    ex);
+                this.Disconnect();
+                throw new InvalidOperationException(
                     "Error reading data from Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamReadFailure,
                     ex);
             }
 
@@ -249,6 +262,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new InverterDriverException(
                     "Error writing data to Transport Stream",
                     InverterDriverExceptionCode.NetworkStreamWriteFailure,
@@ -286,6 +300,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new InverterDriverException(
                     "Error writing data to Transport Stream",
                     InverterDriverExceptionCode.NetworkStreamWriteFailure,

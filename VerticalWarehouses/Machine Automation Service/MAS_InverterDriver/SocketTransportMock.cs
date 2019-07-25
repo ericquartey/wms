@@ -3,11 +3,11 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public class SocketTransportMock : ISocketTransport, IDisposable
     {
@@ -71,6 +71,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         #region Properties
 
         public bool IsConnected => true;
+        public bool IsReadingOk { get; set; }
 
         #endregion
 
@@ -111,6 +112,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             await Task.Delay(5, stoppingToken);
+
+            this.IsReadingOk = true;
 
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
@@ -167,7 +170,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             var rawMessage = new byte[6 + inputValues.Length];
 
             rawMessage[0] = 0x00;
-            rawMessage[1] = 0x06;
+            rawMessage[1] = (byte)(0x04 + inputValues.Length);
             rawMessage[2] = systemIndex;
             rawMessage[3] = dataSet;
 

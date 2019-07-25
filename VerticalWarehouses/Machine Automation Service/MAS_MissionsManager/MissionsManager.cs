@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Utilities;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
+using Ferretto.VW.MAS.Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_MissionsManager
+namespace Ferretto.VW.MAS.MissionsManager
 {
     public partial class MissionsManager : BackgroundService
     {
@@ -219,7 +221,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                         this.logger.LogDebug($"MM NotificationCycle: MissionCompleted received");
                         if (receivedMessage.Data is IMissionCompletedMessageData missionCompletedData)
                         {
-                            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Available;
+                            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = BayStatus.Available;
                             this.logger.LogDebug($"MM NotificationCycle: Bay {missionCompletedData.BayId} status set to Available");
                             await this.DistributeMissions();
                             this.bayNowServiceableResetEvent.Set();
@@ -243,7 +245,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                     case MessageType.DataLayerReady:
                         this.logger.LogDebug($"MM NotificationCycle: DataLayerReady received");
-                        await this.InitializeBays();
+                        this.InitializeBays();
                         await this.DistributeMissions();
                         this.missionManagementTask.Start();
                         break;

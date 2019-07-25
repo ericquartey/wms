@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Cells;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement

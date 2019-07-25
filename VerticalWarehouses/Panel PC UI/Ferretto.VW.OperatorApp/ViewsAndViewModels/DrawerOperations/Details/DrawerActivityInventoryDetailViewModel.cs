@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
-using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details
 {
     public class DrawerActivityInventoryDetailViewModel : BaseViewModel, IDrawerActivityInventoryDetailViewModel
     {
         #region Fields
 
+        private readonly IUnityContainer container;
+
         private readonly IEventAggregator eventAggregator;
 
-        private string batch;
+        private readonly IWmsImagesProvider wmsImagesProvider;
 
-        private IUnityContainer container;
+        private string batch;
 
         private Image image;
 
@@ -46,8 +43,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
         private string productionDate;
 
         private string requestedQuantity;
-
-        private IWmsImagesProvider wmsImagesProvider;
 
         #endregion
 

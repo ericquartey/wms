@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Ferretto.VW.MAS_InverterDriver.Diagnostics
+namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
 {
     public class InverterDiagnosticsData
     {

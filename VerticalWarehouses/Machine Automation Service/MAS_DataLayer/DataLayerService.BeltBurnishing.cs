@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     /// <inheritdoc/>
     public partial class DataLayerService : IBeltBurnishingDataLayer
@@ -10,7 +9,7 @@ namespace Ferretto.VW.MAS_DataLayer
         #region Properties
 
         /// <inheritdoc/>
-        public Task<int> CycleQuantity => this.GetIntegerConfigurationValueAsync((long)BeltBurnishing.CycleQuantity, (long)ConfigurationCategory.BeltBurnishing);
+        public int CycleQuantity => this.GetIntegerConfigurationValue((long)BeltBurnishing.CycleQuantity, (long)ConfigurationCategory.BeltBurnishing);
 
         #endregion
     }

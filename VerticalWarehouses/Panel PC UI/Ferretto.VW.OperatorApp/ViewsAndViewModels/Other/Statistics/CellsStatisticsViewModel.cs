@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class CellsStatisticsViewModel : BaseViewModel, ICellsStatisticsViewModel
     {

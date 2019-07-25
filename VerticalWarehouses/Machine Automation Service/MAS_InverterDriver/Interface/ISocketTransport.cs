@@ -2,9 +2,9 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
-namespace Ferretto.VW.MAS_InverterDriver.Interface
+namespace Ferretto.VW.MAS.InverterDriver.Interface
 {
     public interface ISocketTransport
     {
@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface
         ///     Returns Socket Transport connection status
         /// </summary>
         bool IsConnected { get; }
+        bool IsReadingOk { get; set; }
 
         #endregion
 

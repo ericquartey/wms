@@ -1,36 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.Diagnostics;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
+using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using static Ferretto.VW.MAS_InverterDriver.BufferUtility;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver : BackgroundService
     {
@@ -108,6 +110,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         private int shaftPositionUpdateNumberOfTimes;
 
         private CancellationToken stoppingToken;
+
+        private byte[] ReceiveBuffer;
 
         #endregion
 
@@ -414,7 +418,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.DataLayerReady:
 
                         await this.StartHardwareCommunications();
-                        await this.InitializeInverterStatus();
+                        this.InitializeInverterStatus();
 
                         break;
 
@@ -649,6 +653,32 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             do
             {
+                if (!this.socketTransport.IsConnected)
+                {
+                    try
+                    {
+                        await this.socketTransport.ConnectAsync();
+                    }
+                    catch (InverterDriverException ex)
+                    {
+                        this.logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
+
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
+                    }
+
+                    if (!this.socketTransport.IsConnected)
+                    {
+                        this.logger.LogError("3:Socket Transport failed to connect");
+
+                        var ex = new Exception();
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
+                        continue;
+                    }
+                }
                 byte[] inverterData;
                 try
                 {
@@ -656,6 +686,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.readWaitStopwatch.Start();
 
                     inverterData = await this.socketTransport.ReadAsync(this.stoppingToken);
+                    this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(inverterData, inverterData.Length);
 
                     this.readWaitStopwatch.Stop();
                     this.roundTripStopwatch.Stop();
@@ -684,6 +715,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.writeEnableEvent.Set();
                     return;
                 }
+                catch(InvalidOperationException ex)
+                {
+                    // connection error
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                    continue;
+                }
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
@@ -697,57 +734,76 @@ namespace Ferretto.VW.MAS_InverterDriver
                 //INFO: Byte 1 of read data contains packet length, zero means invalid packet
                 if (inverterData == null)
                 {
-                    this.logger.LogTrace($"4:Inverter message is null");
+                    this.logger.LogError($"4:Inverter message is null");
+                    this.ReceiveBuffer = null;
+                    this.socketTransport.Disconnect();
                     continue;
                 }
-                if (inverterData[1] == 0x00)
+                if (this.ReceiveBuffer[1] == 0x00)
                 {
-                    this.logger.LogTrace($"5:Inverter message length is zero");
+                    this.logger.LogError($"5:Inverter message length is zero");
+                    this.ReceiveBuffer = null;
+                    this.socketTransport.Disconnect();
+                    continue;
+                }
+                if(this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
+                {
+                    this.logger.LogTrace($"5:Inverter message is not complete");
                     continue;
                 }
 
-                InverterMessage currentMessage;
-                try
+                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer);
+                foreach( var ExtractedMessage in ExtractedMessages.Where( x => (x[1] + 2 ) >= x.Length))
                 {
-                    currentMessage = new InverterMessage(inverterData);
+                    InverterMessage currentMessage;
+                    try
+                    {
+                        currentMessage = new InverterMessage(ExtractedMessage);
 
-                    this.logger.LogTrace($"6:currentMessage={currentMessage}");
-                }
-                catch (InverterDriverException)
-                {
-                    continue;
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogTrace($"7:Exception {ex.Message} while parsing Inverter raw message bytes");
+                        this.logger.LogTrace($"6:currentMessage={currentMessage}");
+                    }
+                    catch (InverterDriverException)
+                    {
+                        this.ReceiveBuffer = null;
+                        this.socketTransport.Disconnect();
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogTrace($"7:Exception {ex.Message} while parsing Inverter raw message bytes");
 
-                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
-                    return;
-                }
+                        this.ReceiveBuffer = null;
+                        this.socketTransport.Disconnect();
+                        break;
+                    }
 
-                if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
-                {
-                    this.logger.LogTrace($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
+                    if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
+                    {
+                        this.logger.LogTrace($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
 
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
+                        var ex = new Exception();
+                        this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
 
-                    return;
-                }
+                        this.ReceiveBuffer = null;
+                        this.socketTransport.Disconnect();
+                        break;
+                    }
 
-                if (currentMessage.IsWriteMessage)
-                {
-                    this.logger.LogTrace("9:Evaluate Write Message");
+                    if (currentMessage.IsWriteMessage)
+                    {
+                        this.logger.LogTrace("9:Evaluate Write Message");
 
-                    this.EvaluateWriteMessage(currentMessage, inverterIndex);
-                }
+                        this.EvaluateWriteMessage(currentMessage, inverterIndex);
+                    }
 
-                if (currentMessage.IsReadMessage)
-                {
-                    this.logger.LogTrace("10:Evaluate Read Message");
+                    if (currentMessage.IsReadMessage)
+                    {
+                        this.logger.LogTrace("10:Evaluate Read Message");
 
-                    this.EvaluateReadMessage(currentMessage, inverterIndex);
+                        this.EvaluateReadMessage(currentMessage, inverterIndex);
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
@@ -793,7 +849,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     //        await this.ProcessInverterCommand();
                     //        break;
                     //}
-                    await this.ProcessInverterCommand();
+                    if (this.socketTransport.IsConnected && this.socketTransport.IsReadingOk
+                        )
+                    {
+                        await this.ProcessInverterCommand();
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details
 {
     public partial class DrawerActivityRefillingDetailView : UserControl
     {

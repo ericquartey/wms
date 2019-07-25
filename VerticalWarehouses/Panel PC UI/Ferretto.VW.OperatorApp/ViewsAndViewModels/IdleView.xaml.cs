@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
     public partial class IdleView : UserControl
     {

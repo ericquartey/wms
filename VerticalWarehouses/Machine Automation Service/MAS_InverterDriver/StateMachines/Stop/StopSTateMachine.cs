@@ -1,10 +1,10 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 {
     public class StopStateMachine : InverterStateMachineBase
     {

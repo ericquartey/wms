@@ -5,14 +5,14 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 {
     public class ListsInWaitViewModel : BaseViewModel, IListsInWaitViewModel
     {

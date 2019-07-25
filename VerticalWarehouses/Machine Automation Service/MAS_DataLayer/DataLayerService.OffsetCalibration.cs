@@ -1,18 +1,18 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IOffsetCalibration
     {
         #region Properties
 
-        public Task<decimal> FeedRateOC => this.GetDecimalConfigurationValueAsync((long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
+        public decimal FeedRateOC => this.GetDecimalConfigurationValue((long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
 
-        public Task<int> ReferenceCell => this.GetIntegerConfigurationValueAsync((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+        public int ReferenceCell => this.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
 
-        public Task<decimal> StepValue => this.GetDecimalConfigurationValueAsync((long)OffsetCalibration.StepValue, (long)ConfigurationCategory.OffsetCalibration);
+        public decimal StepValue => this.GetDecimalConfigurationValue((long)OffsetCalibration.StepValue, (long)ConfigurationCategory.OffsetCalibration);
 
         #endregion
     }

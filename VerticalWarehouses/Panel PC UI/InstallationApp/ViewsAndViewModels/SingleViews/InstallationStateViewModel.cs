@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class InstallationStateViewModel : BindableBase, IInstallationStateViewModel
     {
