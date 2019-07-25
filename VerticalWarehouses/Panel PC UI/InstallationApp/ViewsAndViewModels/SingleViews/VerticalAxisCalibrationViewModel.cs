@@ -287,22 +287,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                     case MessageStatus.OperationExecuting:
                         if (c.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.Horizontal)
                         {
-                            this.NoteString = string.Format(App.Resources.InstallationApp.HorizontalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.HorizontalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
                         }
                         else
                         {
-                            this.NoteString = string.Format(App.Resources.InstallationApp.VerticalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.VerticalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
                         }
                         break;
 
                     case MessageStatus.OperationError:
                         if (c.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.Horizontal)
                         {
-                            this.NoteString = string.Format(App.Resources.InstallationApp.HorizontalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.HorizontalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
                         }
                         else
                         {
-                            this.NoteString = string.Format(App.Resources.InstallationApp.VerticalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                            this.NoteString = string.Format(VW.App.Resources.InstallationApp.VerticalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
                         }
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
