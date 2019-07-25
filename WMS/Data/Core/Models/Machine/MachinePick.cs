@@ -10,6 +10,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public double? AvailableQuantityItem { get; set; }
 
+        [Unique]
         public string Nickname { get; set; }
 
         #endregion

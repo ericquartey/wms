@@ -41,6 +41,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public Side CellSide { get; set; }
 
         [Required]
+        [Unique]
         public string Code { get; set; }
 
         [PositiveOrZero]
