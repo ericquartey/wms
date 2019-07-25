@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\MAS_DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
+    <ProjectReference Include="..\MAS_InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj" />
   </ItemGroup>
 
 </Project>
