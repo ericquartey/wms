@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay];
             newInputs[(int)IOMachineSensors.MicroCarterRightSideBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay];
             newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay1] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay];
-            newInputs[(int)IOMachineSensors.LUPresentInBay1] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay];
+            newInputs[(int)IOMachineSensors.LUPresentInBay1] = !this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay];
             newInputs[(int)IOMachineSensors.HeightControlCheckBay1] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay];
             //TEMP End only for Bay1
 
@@ -138,6 +138,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
             newInputs[(int)IOMachineSensors.ZeroVertical] = this.rawInvertersInputs[2];
 
+            newInputs[(int)IOMachineSensors.ZeroPawl] = this.rawInvertersInputs[7]; //TEMP The zero chain position
+
             newInputs[(int)IOMachineSensors.LuPresentiInMachineSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInMachineSide];
             newInputs[(int)IOMachineSensors.LuPresentInOperatorSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInOperatorSide];
 
@@ -146,7 +148,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay2] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay + 16];
             newInputs[(int)IOMachineSensors.MicroCarterRightSideBay2] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay + 16];
             newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay2] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay + 16];
-            newInputs[(int)IOMachineSensors.LUPresentInBay2] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay + 16];
+            newInputs[(int)IOMachineSensors.LUPresentInBay2] = !this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay + 16];
             newInputs[(int)IOMachineSensors.HeightControlCheckBay2] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay + 16];
 
             // Bay3
@@ -154,7 +156,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay3] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay + 32];
             newInputs[(int)IOMachineSensors.MicroCarterRightSideBay3] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay + 32];
             newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay3] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay + 32];
-            newInputs[(int)IOMachineSensors.LUPresentInBay3] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay + 32];
+            newInputs[(int)IOMachineSensors.LUPresentInBay3] = !this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay + 32];
             newInputs[(int)IOMachineSensors.HeightControlCheckBay3] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay + 32];
 
             this.ioSensorsStatus?.UpdateInputStates(newInputs);
