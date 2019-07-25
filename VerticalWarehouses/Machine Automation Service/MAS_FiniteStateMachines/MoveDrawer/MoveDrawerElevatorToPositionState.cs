@@ -3,17 +3,16 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.FiniteStateMachines.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
+namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 {
     public class MoveDrawerElevatorToPositionState : StateBase
     {
@@ -224,7 +223,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                             break;
                     }
 
-                    target = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    target = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                              (long)configValue, (long)ConfigurationCategory.GeneralInfo);
 
                     target /= 10;
@@ -267,20 +266,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer
                             break;
                     }
 
-                    target = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    target = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                              (long)configValue, (long)ConfigurationCategory.GeneralInfo);
 
                     target /= 10;
                 }
             }
 
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
-            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
-            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
 
             var speed = maxSpeed * feedRate;

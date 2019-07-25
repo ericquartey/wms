@@ -4,8 +4,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
-using Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -28,15 +28,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             switch (condition)
             {
                 case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineSensorsStatus.MachineIsInEmergencyState;
+                    result = this.machineSensorsStatus.IsMachineInEmergencyState;
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.DrawerIsCompletelyOnCradle;
+                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineSensorsStatus.DrawerIsPartiallyOnCradle;
+                    result = this.machineSensorsStatus.IsDrawerPartiallyOnCradle;
                     break;
 
                 //TEMP Add here other condition getters
