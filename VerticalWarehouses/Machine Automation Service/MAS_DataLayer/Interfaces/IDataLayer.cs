@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IDataLayer
     {

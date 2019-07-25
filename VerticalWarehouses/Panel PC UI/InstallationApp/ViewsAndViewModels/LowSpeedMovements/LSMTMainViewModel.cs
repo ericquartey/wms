@@ -1,10 +1,11 @@
-﻿namespace Ferretto.VW.InstallationApp
-{
-    using System.Threading.Tasks;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
+{
     public class LSMTMainViewModel : BindableBase, ILSMTMainViewModel, IViewModelRequiresContainer
     {
         #region Fields

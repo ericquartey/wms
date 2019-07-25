@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS.Utils.Enumerations
 {
     public enum MissionsManagerExceptionCode
     {

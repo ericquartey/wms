@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.OperatorApp.Interfaces;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class GeneralInfoViewModel : BaseViewModel, IGeneralInfoViewModel
     {
@@ -51,12 +51,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         {
             if (true/*this.dataHubClient.IsConnected*/)
             {
-                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusDescription = VW.App.Resources.OperatorApp.WmsServicesOnline;
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else
             {
-                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusDescription = VW.App.Resources.OperatorApp.WmsServicesOffline;
                 this.WmsServicesStatusBrush = Brushes.Red;
             }
         }

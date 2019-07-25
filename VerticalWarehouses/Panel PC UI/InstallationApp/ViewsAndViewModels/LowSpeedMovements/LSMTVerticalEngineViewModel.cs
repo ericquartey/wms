@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
     public class LSMTVerticalEngineViewModel : BindableBase, ILSMTVerticalEngineViewModel
     {

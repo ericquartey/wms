@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
-namespace Ferretto.VW.MAS.DataModels
+namespace Ferretto.VW.MAS.DataModels.LoadingUnits
 {
     public class LoadingUnit
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.Utils.Utilities.Interfaces;
 
-namespace Ferretto.VW.MAS_Utils.Utilities
+namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public class BaysManager : IBaysManager
     {

@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
     public class SSVariousInputsViewModel : BindableBase, ISSVariousInputsViewModel
     {

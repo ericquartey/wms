@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS.DataModels;
+﻿using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IServicingProvider
     {

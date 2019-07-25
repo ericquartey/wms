@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Ferretto.VW.OperatorApp.Resources
+namespace Ferretto.VW.App.Operator.Resources
 {
     /// <summary>
     /// Interaction logic for Views.xaml
@@ -11,7 +11,7 @@ namespace Ferretto.VW.OperatorApp.Resources
 
         public Views()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

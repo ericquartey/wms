@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Services
+﻿namespace Ferretto.VW.App.Services.Models
 {
     public enum ApplicationTheme
     {

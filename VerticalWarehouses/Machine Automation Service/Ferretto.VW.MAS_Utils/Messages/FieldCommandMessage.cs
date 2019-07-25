@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using NLog;
 using System.Diagnostics;
@@ -6,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_Utils.Messages
+namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldCommandMessage
     {

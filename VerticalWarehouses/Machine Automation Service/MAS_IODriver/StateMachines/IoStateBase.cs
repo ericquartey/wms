@@ -1,9 +1,9 @@
 ﻿using System;
-using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines
+namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     public abstract class IoStateBase : IIoState
     {

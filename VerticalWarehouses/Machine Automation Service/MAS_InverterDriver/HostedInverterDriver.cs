@@ -5,26 +5,26 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.Diagnostics;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
+using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -32,7 +32,7 @@ using static Ferretto.VW.MAS_InverterDriver.BufferUtility;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public partial class HostedInverterDriver : BackgroundService
     {
@@ -418,7 +418,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.DataLayerReady:
 
                         await this.StartHardwareCommunications();
-                        await this.InitializeInverterStatus();
+                        this.InitializeInverterStatus();
 
                         break;
 
