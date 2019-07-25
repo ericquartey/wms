@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -70,17 +71,6 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private async Task ExecuteMissionMethod(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.Data is NewMissionOperationAvailable data)
-            {
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                await this.operatorHub.Clients
-                    .Client(data.BayConnectionId)
-                    .NewMissionOperationAvailable(data.MissionOperation);
-            }
-        }
-
         private void HomingMethod(NotificationMessage receivedMessage)
         {
             try
@@ -110,6 +100,18 @@ namespace Ferretto.VW.MAS.AutomationService
             this.operatorHub.Clients
                 .Client(messageData.ConnectionId)
                 .BayStatusChanged(messageData);
+        }
+
+        private async Task OnNewMissionOperationAvailable(INewMissionOperationAvailable e)
+        {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            await this.operatorHub.Clients
+                .All
+                .NewMissionOperationAvailable(e);
         }
 
         private void OnWmsEntityChanged(object sender, EntityChangedEventArgs e)

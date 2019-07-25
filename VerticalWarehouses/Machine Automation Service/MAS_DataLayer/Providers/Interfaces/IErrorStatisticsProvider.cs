@@ -1,8 +1,8 @@
 using Ferretto.VW.MAS.DataModels.Errors;
 
-namespace Ferretto.VW.MAS.DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
-    public interface IErrorStatisticsDataLayer
+    public interface IErrorStatisticsProvider
     {
         #region Methods
 

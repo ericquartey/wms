@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.MissionsManager
 {

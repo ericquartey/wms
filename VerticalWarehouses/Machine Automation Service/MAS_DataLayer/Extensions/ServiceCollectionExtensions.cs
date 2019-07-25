@@ -1,11 +1,13 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
@@ -59,14 +61,15 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ICellManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IConfigurationValueManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVertimagConfigurationDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsDataLayer);
+            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsProvider);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IMachineStatisticsDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as ILoadingUnitStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversionDataLayer);
 
-            services.AddTransient<IServicingProvider, ServicingProvider>(provider => new ServicingProvider(dataLayerConfiguration));
+            services.AddTransient<IServicingProvider, ServicingProvider>();
             services.AddTransient<IBaysProvider, BaysProvider>();
-            services.AddTransient<IBaysConfgurationProvider, BaysConfigurationProvider>();
+            services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
+            services.AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>();
+            services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
 
             return services;
         }

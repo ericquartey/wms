@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 {
@@ -9,9 +7,9 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
     {
         #region Methods
 
-        Task BayStatusChanged(BayOperationalStatusChangedMessageData message);
+        Task BayStatusChanged(IBayOperationalStatusChangedMessageData message);
 
-        Task NewMissionOperationAvailable(MissionOperationInfo missionOperation);
+        Task NewMissionOperationAvailable(INewMissionOperationAvailable message);
 
         Task SetBayDrawerOperationToInventory();
 

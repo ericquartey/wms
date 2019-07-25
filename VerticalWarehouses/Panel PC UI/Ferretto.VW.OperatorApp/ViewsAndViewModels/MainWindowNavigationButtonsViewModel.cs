@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;

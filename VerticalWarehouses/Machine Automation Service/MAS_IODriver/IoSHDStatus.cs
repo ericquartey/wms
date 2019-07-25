@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const int TOTAL_OUTPUTS = 8;
 
-        private readonly byte errorCode;
-
         private readonly bool[] inputs;
 
         private readonly bool[] outputs;

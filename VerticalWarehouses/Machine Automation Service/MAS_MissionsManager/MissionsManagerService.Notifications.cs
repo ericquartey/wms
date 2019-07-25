@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -28,86 +29,71 @@ namespace Ferretto.VW.MAS.MissionsManager
                 notification.Destination == MessageActor.Any;
         }
 
-        protected override async Task OnNotificationReceivedAsync(NotificationMessage message)
+        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
         {
             switch (message.Type)
             {
                 case MessageType.MissionOperationCompleted:
-                    await this.OnMissionOperationCompleted(message.Data as IMissionOperationCompletedMessageData);
+                    this.OnMissionOperationCompleted(message.Data as IMissionOperationCompletedMessageData);
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
-                    this.OnBayOperationalStatusChanged(message.Data as IBayOperationalStatusChangedMessageData);
+                    this.OnBayOperationalStatusChanged();
                     break;
 
                 case MessageType.NewMissionAvailable:
-                    await this.OnNewMissionAvailable();
+                    this.OnNewMissionAvailable();
                     break;
 
                 case MessageType.DataLayerReady:
-                    await this.OnDataLayerReady();
+                    this.OnDataLayerReady();
                     break;
             }
+
+            return Task.CompletedTask;
         }
 
-        private void OnBayOperationalStatusChanged(IBayOperationalStatusChangedMessageData e)
+        private void OnBayOperationalStatusChanged()
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            var bay = this.bays.SingleOrDefault(b => b.Id == e.BayId);
-            if (bay != null)
-            {
-                bay.Status = e.BayStatus;
-
-                this.Logger.LogDebug($"Bay #{bay.Id}: the bay is now {bay.Status}.");
-
-                this.bayStatusChangedEvent.Set();
-            }
-        }
-
-        private async Task OnDataLayerReady()
-        {
-            await this.RefreshPendingMissionsQueue();
-
-            this.missionManagementTask.Start();
-        }
-
-        private async Task OnMissionOperationCompleted(IMissionOperationCompletedMessageData e)
-        {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            var bay = this.bays
-                .Where(b => b.CurrentMissionOperation != null)
-                .SingleOrDefault(b => b.CurrentMissionOperation.Id == e.MissionOperationId);
-
-            if (bay != null)
-            {
-                bay.Status = BayStatus.Idle;
-                bay.CurrentMissionOperation.Status = MissionOperationStatus.Completed;
-                bay.CurrentMissionOperation = null;
-            }
-            else
-            {
-                this.Logger.LogWarning($"No bay with mission operation id={e.MissionOperationId} was found.");
-            }
-
-            this.Logger.LogDebug($"MM NotificationCycle: Bay {bay.Id} status set to Available");
-
-            await this.RefreshPendingMissionsQueue();
-
             this.bayStatusChangedEvent.Set();
         }
 
-        private async Task OnNewMissionAvailable()
+        private void OnDataLayerReady()
         {
-            await this.RefreshPendingMissionsQueue();
+            this.missionManagementTask.Start();
+        }
 
+        private void OnMissionOperationCompleted(IMissionOperationCompletedMessageData e)
+        {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+
+                var bay = bayProvider.GetAll()
+                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
+                    .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
+
+                if (bay != null)
+                {
+                    bayProvider.AssignMissionOperation(bay.Id, bay.CurrentMissionId.Value, null);
+                    this.Logger.LogDebug($"Bay#{bay.Id}: operation competed.");
+
+                    this.bayStatusChangedEvent.Set();
+                }
+                else
+                {
+                    this.Logger.LogWarning($"No bay with mission operation id={e.MissionOperationId} was found.");
+                }
+            }
+        }
+
+        private void OnNewMissionAvailable()
+        {
             this.newMissionArrivedResetEvent.Set();
         }
 

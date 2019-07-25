@@ -8,8 +8,6 @@ using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics

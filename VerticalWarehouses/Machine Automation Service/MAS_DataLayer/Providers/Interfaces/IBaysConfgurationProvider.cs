@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
-    public interface IBaysConfgurationProvider
+    public interface IBaysConfigurationProvider
     {
         #region Methods
 
-        Task LoadFromConfigurationAsync();
+        void LoadFromConfiguration();
 
         #endregion
     }

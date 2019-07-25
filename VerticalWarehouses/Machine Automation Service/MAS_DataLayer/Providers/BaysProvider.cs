@@ -5,12 +5,13 @@ using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     internal class BaysProvider : IBaysProvider
     {
@@ -59,6 +60,22 @@ namespace Ferretto.VW.MAS.DataLayer
             return bay;
         }
 
+        public Bay AssignMissionOperation(int id, int? missionId, int? missionOperationId)
+        {
+            var bay = this.GetById(id);
+            if (bay != null)
+            {
+                bay.CurrentMissionId = missionId;
+                bay.CurrentMissionOperationId = missionOperationId;
+
+                this.Update(bay);
+
+                this.NotifyBayStatusChanged(bay);
+            }
+
+            return bay;
+        }
+
         public void Create(Bay bay)
         {
             this.dataContext.Bays.Add(bay);
@@ -91,7 +108,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Bay GetByIpAddress(IPAddress remoteIpAddress)
         {
-            return this.dataContext.Bays.SingleOrDefault(b => b.IpAddress == remoteIpAddress.ToString());
+            return this.dataContext.Bays
+                .SingleOrDefault(b => b.IpAddress == remoteIpAddress.ToString());
         }
 
         public void Update(int id, string ipAddress, BayType bayType)

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
-    public static class DataLayerExtensions
+    public static class MigrationBuilderExtensions
     {
         #region Methods
 

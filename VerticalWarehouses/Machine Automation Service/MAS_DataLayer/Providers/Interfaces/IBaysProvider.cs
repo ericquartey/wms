@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         Bay Activate(int id);
 
+        Bay AssignMissionOperation(int bayId, int? missionId, int? missionOperationId);
+
         void Create(Bay bay);
 
         Bay Deactivate(int id);

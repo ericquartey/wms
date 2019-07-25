@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -8,10 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Cells;
 using Ferretto.VW.MAS.DataModels.Enumerations;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -58,7 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public DataLayerService(DataLayerConfiguration dataLayerConfiguration,
+        public DataLayerService(
+            DataLayerConfiguration dataLayerConfiguration,
             IEventAggregator eventAggregator,
             IApplicationLifetime applicationLifetime,
             ILogger<DataLayerService> logger)
@@ -192,11 +189,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var errorNotification = new NotificationMessage(
                 null,
-                                                            "DataLayer initialization complete",
-                                                            MessageActor.Any,
-                                                            MessageActor.DataLayer,
-                                                            MessageType.DataLayerReady,
-                                                            MessageStatus.NoStatus);
+                "DataLayer initialization complete",
+                MessageActor.Any,
+                MessageActor.DataLayer,
+                MessageType.DataLayerReady,
+                MessageStatus.NoStatus);
             this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
         }
 
@@ -206,7 +203,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus, false);
             }

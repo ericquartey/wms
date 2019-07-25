@@ -1,13 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_FiniteStateMachines;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_IODriver;
-using Ferretto.VW.MAS_Utils.Utilities;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -16,6 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.MissionsManager;
+using Ferretto.VW.MAS.InverterDriver.Interface;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService

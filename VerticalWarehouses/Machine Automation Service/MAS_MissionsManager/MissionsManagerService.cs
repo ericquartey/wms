@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -12,10 +12,6 @@ namespace Ferretto.VW.MAS.MissionsManager
     public partial class MissionsManagerService : AutomationBackgroundService
     {
         #region Fields
-
-        private const int MaximumBaysCount = 3;
-
-        private readonly IList<Bay> bays = new List<Bay>(MaximumBaysCount);
 
         private readonly AutoResetEvent bayStatusChangedEvent = new AutoResetEvent(false);
 
@@ -27,6 +23,8 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private readonly AutoResetEvent newMissionArrivedResetEvent = new AutoResetEvent(false);
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         #endregion
 
         #region Constructors
@@ -35,7 +33,8 @@ namespace Ferretto.VW.MAS.MissionsManager
             IEventAggregator eventAggregator,
             ILogger<MissionsManagerService> logger,
             IMachinesDataService machinesDataService,
-            IMissionsDataService missionsDataService)
+            IMissionsDataService missionsDataService,
+            IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger)
         {
             if (eventAggregator == null)
@@ -53,10 +52,15 @@ namespace Ferretto.VW.MAS.MissionsManager
                 throw new ArgumentNullException(nameof(missionsDataService));
             }
 
+            if (serviceScopeFactory == null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.eventAggregator = eventAggregator;
             this.machinesDataService = machinesDataService;
             this.missionsDataService = missionsDataService;
-
+            this.serviceScopeFactory = serviceScopeFactory;
             this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
 
             this.Logger.LogTrace("Mission manager initialised.");

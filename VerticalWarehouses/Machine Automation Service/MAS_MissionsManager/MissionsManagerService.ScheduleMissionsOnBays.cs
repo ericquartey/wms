@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionsManager
@@ -17,31 +20,59 @@ namespace Ferretto.VW.MAS.MissionsManager
 
         private async Task ExecuteNextMissionAsync()
         {
-            var connectedIdleBays = this.bays.Where(b => b.Status == BayStatus.Idle);
-
-            System.Diagnostics.Debug.Assert(
-                connectedIdleBays.Any(b => b.CurrentMissionOperation != null) == false,
-                "Current mission operation on all bays should be null because the bays are idle.");
-
-            this.Logger.LogDebug($"There are {connectedIdleBays.Count()} active bays.");
-
-            foreach (var bay in connectedIdleBays)
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                await this.ExecuteNextMissionAsync(bay);
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+
+                var idleBays = bayProvider
+                    .GetAll()
+                    .Where(b => b.Status == BayStatus.Idle);
+
+                this.Logger.LogDebug($"There are {idleBays.Count()} idle (useable) bays.");
+
+                try
+                {
+                    var machineId = 1; // TODO get machine Id from DataLayer
+                    var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+
+                    foreach (var bay in idleBays)
+                    {
+                        var pendingMissionsOnBay = missions
+                            .Where(m =>
+                                m.BayId.HasValue
+                                &&
+                                m.BayId.Value == bay.ExternalId
+                                &&
+                                m.Status != WMS.Data.WebAPI.Contracts.MissionStatus.Completed
+                                &&
+                                (!bay.CurrentMissionId.HasValue || m.Id != bay.CurrentMissionId.Value))
+                            .ToArray();
+
+                        await this.ExecuteNextMissionAsync(bay, pendingMissionsOnBay);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // do nothing
+                    this.Logger.LogWarning(ex, "Unable to load missions from WMS service.");
+                }
             }
         }
 
-        private async Task ExecuteNextMissionAsync(Bay bay)
+        private async Task ExecuteNextMissionAsync(
+            Bay bay,
+            IEnumerable<WMS.Data.WebAPI.Contracts.MissionInfo> pendingMissions)
         {
-            this.Logger.LogDebug($"Bay #{bay.Id}: there are {bay.PendingMissions.Count()} pending missions.");
+            this.Logger.LogDebug($"Bay #{bay.Id}: there are {pendingMissions.Count()} pending missions.");
 
-            if (bay.CurrentMission == null
+            if (!bay.CurrentMissionId.HasValue
                 &&
-                bay.PendingMissions.Any())
+                pendingMissions.Any())
             {
-                bay.CurrentMission = bay.PendingMissions
+                bay.CurrentMissionId = pendingMissions
                     .OrderBy(m => m.Priority)
-                    .First();
+                    .First()
+                    .Id;
 
                 /* TO RESTORE
                 System.Diagnostics.Debug.Assert(
@@ -49,47 +80,53 @@ namespace Ferretto.VW.MAS.MissionsManager
                    "All the pending missions should be in the new state.");
                    */
 
-                // remove the new current mission from the queue
-                bay.PendingMissions = bay.PendingMissions.Where(m => m != bay.CurrentMission);
-
-                this.Logger.LogDebug($"Bay #{bay.Id}: new mission id='{bay.CurrentMission.Id}' assigned.");
+                this.Logger.LogDebug($"Bay #{bay.Id}: new mission id='{bay.CurrentMissionId}' assigned.");
             }
 
-            if (bay.CurrentMission != null)
+            if (bay.CurrentMissionId.HasValue)
             {
                 try
                 {
-                    var mission = await this.missionsDataService.GetByIdAsync(bay.CurrentMission.Id);
+                    var mission = await this.missionsDataService.GetByIdAsync(bay.CurrentMissionId.Value);
 
-                    bay.CurrentMissionOperation = mission.Operations
+                    var missionOperation = mission.Operations?
                         .OrderBy(o => o.Priority)
-                        .FirstOrDefault(o => o.Status == MissionOperationStatus.New);
+                        .FirstOrDefault(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed);
 
-                    System.Diagnostics.Debug.Assert(
-                        bay.CurrentMissionOperation != null,
-                        "There should be at least one new operation in the mission: that's why we are here for.");
+                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    {
+                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
-                    bay.Status = BayStatus.Busy;
+                        if (missionOperation != null)
+                        {
+                            bayProvider.AssignMissionOperation(bay.Id, mission.Id, missionOperation.Id);
 
-                    this.Logger.LogDebug($"Bay #{bay.Id}: busy executing mission operation id='{bay.CurrentMissionOperation.Id}'.");
+                            this.Logger.LogDebug($"Bay #{bay.Id}: busy executing mission operation id='{bay.CurrentMissionOperationId}'.");
 
-                    this.NotifyMissionExecution(bay);
+                            this.NotifyNewMissionOperationAvailable(bay, pendingMissions.Count());
+                        }
+                        else
+                        {
+                            bayProvider.AssignMissionOperation(bay.Id, null, null);
+
+                            this.Logger.LogDebug($"Bay #{bay.Id}: no more operations available for mission id='{mission.Id}'.");
+                        }
+                    }
                 }
-                catch (SwaggerException ex)
+                catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
                 {
-                    this.Logger.LogError(ex, $"Unable to load details for mission id='{bay.CurrentMission.Id}' from WMS.");
+                    this.Logger.LogError(ex, $"Unable to load details for mission id='{bay.CurrentMissionId}' from WMS.");
                 }
             }
         }
 
-        private void NotifyMissionExecution(Bay bay)
+        private void NotifyNewMissionOperationAvailable(Bay bay, int pendingMissionsCount)
         {
             var data = new NewMissionOperationAvailable
             {
-                Mission = bay.CurrentMission,
-                MissionOperation = bay.CurrentMissionOperation,
-                PendingMissionsCount = bay.PendingMissions.Count(),
-                BayConnectionId = bay.ConnectionId
+                MissionId = bay.CurrentMissionId.Value,
+                MissionOperationId = bay.CurrentMissionOperationId.Value,
+                PendingMissionsCount = pendingMissionsCount
             };
 
             var notificationMessage = new NotificationMessage(
@@ -105,33 +142,6 @@ namespace Ferretto.VW.MAS.MissionsManager
                 .Publish(notificationMessage);
         }
 
-        private async Task RefreshPendingMissionsQueue()
-        {
-            try
-            {
-                var machineId = 1; // TODO get machine Id from DataLayer
-                var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
-
-                foreach (var bay in this.bays)
-                {
-                    bay.PendingMissions = missions
-                        .Where(m =>
-                            m.BayId == bay.Id
-                            &&
-                            m.Status != MissionStatus.Completed
-                            &&
-                            (bay.CurrentMission == null || bay.CurrentMission.Id != m.Id))
-                        .OrderBy(m => m.Priority)
-                        .ToArray();
-                }
-            }
-            catch (Exception ex)
-            {
-                // do nothing
-                this.Logger.LogWarning(ex, "Unable to load missions from WMS service.");
-            }
-        }
-
         private async Task ScheduleMissionsOnBaysAsync()
         {
             var waitHandles = new WaitHandle[]
@@ -143,22 +153,9 @@ namespace Ferretto.VW.MAS.MissionsManager
 
             do
             {
-                var hasActiveBaysAndPendingMissions =
-                    this.bays.Any(bay =>
-                        bay.Status == BayStatus.Idle
-                        &&
-                        bay.PendingMissions.Any());
+                await this.ExecuteNextMissionAsync();
 
-                if (hasActiveBaysAndPendingMissions)
-                {
-                    this.Logger.LogDebug("There are active bays with pending missions.");
-                    await this.ExecuteNextMissionAsync();
-                }
-                else
-                {
-                    this.Logger.LogDebug("No active bays nor pending missions available.");
-                    WaitHandle.WaitAny(waitHandles);
-                }
+                WaitHandle.WaitAny(waitHandles);
             }
             while (!this.StoppingToken.IsCancellationRequested);
         }

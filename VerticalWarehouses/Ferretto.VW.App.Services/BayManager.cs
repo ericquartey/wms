@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Services
 
         #region Events
 
-        public event System.EventHandler NewMissionOperationAvailable;
+        public event EventHandler NewMissionOperationAvailable;
 
         #endregion
 
@@ -80,12 +80,11 @@ namespace Ferretto.VW.App.Services
             {
                 if (value == null)
                 {
-                    this.currentMissionOperation = value;
+                    this.currentMissionOperation = null;
                 }
-
-                if (this.currentMissionOperation == null)
+                else if (this.currentMissionOperation == null)
                 {
-                    this.CurrentMissionOperation = value;
+                    this.currentMissionOperation = value;
                     this.NewMissionOperationAvailable?.Invoke(this, null);
                 }
             }

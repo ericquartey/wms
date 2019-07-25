@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 

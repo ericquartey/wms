@@ -12,11 +12,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BayType BayType { get; }
 
-        string ClientIpAddress { get; }
-
-        string ConnectionId { get; }
-
-        Ferretto.WMS.Data.WebAPI.Contracts.MissionOperationInfo CurrentMissionOperation { get; }
+        int? CurrentMissionOperationId { get; }
 
         int PendingMissionsCount { get; }
 

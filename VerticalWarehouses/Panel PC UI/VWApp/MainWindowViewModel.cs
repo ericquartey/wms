@@ -3,15 +3,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Models;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
-using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.ConnectionStatusChangedEventArgs;
+using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.ConnectionStatusChangedEventArgs;
 using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IOperatorHubClient;
 
 namespace Ferretto.VW.App

@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
@@ -8,11 +7,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Properties
 
-        public string BayConnectionId { get; set; }
+        public int BayId { get; set; }
 
-        public MissionInfo Mission { get; set; }
+        public int MissionId { get; set; }
 
-        public MissionOperationInfo MissionOperation { get; set; }
+        public int MissionOperationId { get; set; }
 
         public int PendingMissionsCount { get; set; }
 

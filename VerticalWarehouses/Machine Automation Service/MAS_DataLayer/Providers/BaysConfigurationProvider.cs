@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class BaysConfigurationProvider : IBaysConfgurationProvider
+    internal class BaysConfigurationProvider : IBaysConfigurationProvider
     {
         #region Fields
 
@@ -51,37 +50,37 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public async Task LoadFromConfigurationAsync()
+        public void LoadFromConfiguration()
         {
-            var baysCount = await this.generalInfoConfiguration.BaysQuantity;
+            var baysCount = this.generalInfoConfiguration.BaysQuantity;
             var ipAddresses = new List<System.Net.IPAddress>();
             var bayTypes = new List<BayType>();
 
             switch (baysCount)
             {
                 case 1:
-                    ipAddresses.Add(await this.networkConfiguration.PPC1MasterIPAddress);
+                    ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
 
-                    bayTypes.Add((BayType)await this.generalInfoConfiguration.Bay1Type);
+                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
                     break;
 
                 case 2:
-                    ipAddresses.Add(await this.networkConfiguration.PPC1MasterIPAddress);
-                    ipAddresses.Add(await this.networkConfiguration.PPC2SlaveIPAddress);
+                    ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
+                    ipAddresses.Add(this.networkConfiguration.PPC2SlaveIPAddress);
 
-                    bayTypes.Add((BayType)await this.generalInfoConfiguration.Bay1Type);
-                    bayTypes.Add((BayType)await this.generalInfoConfiguration.Bay2Type);
+                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
+                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay2Type);
 
                     break;
 
                 case 3:
-                    ipAddresses.Add(await this.networkConfiguration.PPC1MasterIPAddress);
-                    ipAddresses.Add(await this.networkConfiguration.PPC2SlaveIPAddress);
-                    ipAddresses.Add(await this.networkConfiguration.PPC3SlaveIPAddress);
+                    ipAddresses.Add(this.networkConfiguration.PPC1MasterIPAddress);
+                    ipAddresses.Add(this.networkConfiguration.PPC2SlaveIPAddress);
+                    ipAddresses.Add(this.networkConfiguration.PPC3SlaveIPAddress);
 
-                    bayTypes.Add((BayType)await this.generalInfoConfiguration.Bay1Type);
-                    bayTypes.Add((BayType)await this.generalInfoConfiguration.Bay2Type);
-                    bayTypes.Add((BayType)await this.generalInfoConfiguration.Bay3Type);
+                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay1Type);
+                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay2Type);
+                    bayTypes.Add((BayType)this.generalInfoConfiguration.Bay3Type);
 
                     break;
 
@@ -91,21 +90,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
             for (var i = 0; i < baysCount; i++)
             {
-                var bay = this.baysProvider.GetById(i);
+                var bayId = i + 1;
+                var bay = this.baysProvider.GetById(bayId);
                 if (bay == null)
                 {
                     this.baysProvider.Create(new Bay
                     {
-                        Id = i,
+                        Id = bayId,
+                        ExternalId = bayId,
                         IpAddress = ipAddresses[i].ToString(),
                         Type = bayTypes[i],
-                        Status = BayStatus.Unavailable,
                     });
                 }
                 else
                 {
                     this.baysProvider.Update(
-                        i,
+                        bayId,
                         ipAddresses[i].ToString(),
                         bayTypes[i]);
                 }

@@ -15,7 +15,15 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(b => b.Id);
+            builder
+                .HasKey(b => b.Id);
+
+            builder
+                .HasIndex(b => b.IpAddress)
+                .IsUnique();
+
+            builder
+                .Ignore(b => b.Status);
         }
 
         #endregion

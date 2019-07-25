@@ -6,6 +6,10 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public int? CurrentMissionId { get; set; }
+
+        public int? CurrentMissionOperationId { get; set; }
+
         public int ExternalId { get; set; }
 
         public int Id { get; set; }
@@ -14,7 +18,18 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
-        public BayStatus Status { get; set; }
+        public BayStatus Status
+        {
+            get
+            {
+                if (this.IsActive)
+                {
+                    return this.CurrentMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
+                }
+
+                return BayStatus.Unavailable;
+            }
+        }
 
         public BayType Type { get; set; }
 

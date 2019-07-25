@@ -7,13 +7,14 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
-using Ferretto.VW.MAS.Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -23,8 +24,6 @@ namespace Ferretto.VW.MAS.AutomationService
     public partial class AutomationService : BackgroundService
     {
         #region Fields
-
-        private readonly IBaysConfgurationProvider baysConfigurationProvider;
 
         private readonly IBaysDataService baysDataService;
 
@@ -50,6 +49,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private CancellationToken stoppingToken;
 
         #endregion
@@ -65,16 +66,16 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IBaysDataService baysDataService,
             IMissionsDataService missionDataService,
-            IBaysConfgurationProvider baysConfigurationProvider)
+            IServiceScopeFactory serviceScopeFactory)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            if (baysConfigurationProvider == null)
+            if (serviceScopeFactory == null)
             {
-                throw new ArgumentNullException(nameof(baysConfigurationProvider));
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
             logger.LogTrace("1:Method Start");
@@ -121,7 +122,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.operatorHub = operatorHub;
             this.baysDataService = baysDataService;
             this.missionDataService = missionDataService;
-            this.baysConfigurationProvider = baysConfigurationProvider;
+            this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -275,8 +276,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     case MessageType.ExecuteMission:
                         if (receivedMessage.Data is INewMissionOperationAvailable data)
                         {
-                            await this.ExecuteMissionMethod(receivedMessage);
-                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.PendingMissionsCount}");
+                            await this.OnNewMissionOperationAvailable(data);
+                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.MissionId}, mission quantity: {data.PendingMissionsCount}");
                         }
                         break;
 
@@ -286,10 +287,9 @@ namespace Ferretto.VW.MAS.AutomationService
                         break;
 
                     case MessageType.DataLayerReady:
-                        await this.OnDataLayerReady();
+                        this.OnDataLayerReady();
                         break;
 
-                    // Adds other Notification Message and send it via SignalR controller
                     default:
                         break;
                 }
@@ -301,9 +301,14 @@ namespace Ferretto.VW.MAS.AutomationService
             return;
         }
 
-        private async Task OnDataLayerReady()
+        private void OnDataLayerReady()
         {
-            await this.baysConfigurationProvider.LoadFromConfigurationAsync();
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var baysConfigurationProvider = scope.ServiceProvider.GetRequiredService<IBaysConfigurationProvider>();
+
+                baysConfigurationProvider.LoadFromConfiguration();
+            }
         }
 
         #endregion

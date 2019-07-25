@@ -1,9 +1,7 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.AutomationService.Hubs;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Microsoft.AspNetCore.SignalR.Client;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
@@ -30,26 +28,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<MissionOperationInfo>(
+            connection.On<INewMissionOperationAvailable>(
                 nameof(IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
 
-            connection.On<BayOperationalStatusChangedMessageData>(
+            connection.On<IBayOperationalStatusChangedMessageData>(
                 nameof(IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
         }
 
-        private void OnBayStatusChanged(BayOperationalStatusChangedMessageData message)
+        private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)
         {
             this.BayStatusChanged?.Invoke(
                 this,
                 new BayStatusChangedEventArgs(
-                    message.BayId,
-                    message.BayType,
-                    message.BayStatus,
-                    message.PendingMissionsCount,
-                    message.CurrentMissionOperation));
+                    e.BayId,
+                    e.BayType,
+                    e.BayStatus,
+                    e.PendingMissionsCount,
+                    e.CurrentMissionOperation));
         }
 
-        private void OnMissionOperationAvailable(MissionOperationInfo missionOperation)
+        private void OnMissionOperationAvailable(INewMissionOperationAvailable e)
         {
             this.MissionOperationAvailable?.Invoke(
                 this,

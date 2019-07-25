@@ -13,9 +13,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private readonly IOSensorsStatus ioSensorsStatus;
 
-        readonly private bool[] rawInvertersInputs;
+        private readonly bool[] rawInvertersInputs;
 
-        readonly private bool[] rawRemoteIOsInputs;
+        private readonly bool[] rawRemoteIOsInputs;
 
         #endregion
 

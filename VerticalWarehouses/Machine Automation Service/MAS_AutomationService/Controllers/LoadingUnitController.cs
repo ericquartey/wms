@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitStatisticsDataLayer loadingUnitStatistics;
+        private readonly ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -23,12 +23,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            ILoadingUnitStatisticsDataLayer loadingUnitStatistics,
+            ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
             IMachinesDataService machinesDataService)
         {
-            if (loadingUnitStatistics == null)
+            if (loadingUnitStatisticsProvider == null)
             {
-                throw new System.ArgumentNullException(nameof(loadingUnitStatistics));
+                throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             }
 
             if (machinesDataService == null)
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(machinesDataService));
             }
 
-            this.loadingUnitStatistics = loadingUnitStatistics;
+            this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
             this.machinesDataService = machinesDataService;
         }
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("SpaceStatistics")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync()
         {
-            var statistics = this.loadingUnitStatistics.GetSpaceStatistics();
+            var statistics = this.loadingUnitStatisticsProvider.GetSpaceStatistics();
 
             try
             {
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("WeightStatistics")]
         public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync()
         {
-            var statistics = this.loadingUnitStatistics.GetWeightStatistics();
+            var statistics = this.loadingUnitStatisticsProvider.GetWeightStatistics();
             try
             {
                 var machineId = 1; // TODO this is the WMS machine ID

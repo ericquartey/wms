@@ -4,8 +4,6 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Operator.HelpWindows;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ServiceUtilities;
-using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
@@ -17,16 +15,6 @@ using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.OperatorApp;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -138,6 +126,9 @@ namespace Ferretto.VW.App.Operator
 
             var errorsService = new ErrorsService(this.automationServiceUrl);
             containerRegistry.RegisterInstance<IErrorsService>(errorsService);
+
+            var baysService = new BaysService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IBaysService>(baysService);
 
             var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
             containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);

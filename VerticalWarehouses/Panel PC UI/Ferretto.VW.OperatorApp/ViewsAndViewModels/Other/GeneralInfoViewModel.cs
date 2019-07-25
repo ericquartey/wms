@@ -124,12 +124,12 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
         {
             if (this.dataHubClient.IsConnected)
             {
-                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusDescription = VW.App.Resources.OperatorApp.WmsServicesOnline;
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else
             {
-                this.WmsServicesStatusDescription = App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusDescription = VW.App.Resources.OperatorApp.WmsServicesOffline;
                 this.WmsServicesStatusBrush = Brushes.Red;
             }
         }
