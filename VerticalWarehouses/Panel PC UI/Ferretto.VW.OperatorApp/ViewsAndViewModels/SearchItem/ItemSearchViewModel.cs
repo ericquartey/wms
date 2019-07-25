@@ -6,10 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
 using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.WmsCommunication.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -27,13 +26,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IBayManager bayManager;
 
-        private readonly IEventAggregator eventAggregator;
-
         private readonly IMachineProvider machineProvider;
 
         private readonly INavigationService navigationService;
-
-        private readonly SynchronizationContext uiContext;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -239,7 +234,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             this.RequestedQuantity = "0";
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             this.currentItemIndex = 0;
             this.RequestedQuantity = "0";
