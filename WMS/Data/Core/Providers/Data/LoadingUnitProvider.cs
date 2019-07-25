@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
+        public async Task<IOperationResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
             }
 
-            return new SuccessOperationResult<LoadingUnitCreating>(model);
+            return new SuccessOperationResult<LoadingUnitDetails>(model);
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> DeleteAsync(int id)
