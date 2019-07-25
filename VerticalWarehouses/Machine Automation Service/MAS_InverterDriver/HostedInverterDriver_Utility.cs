@@ -478,7 +478,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 catch (InverterDriverException ex)
                 {
                     this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                    this.socketTransport.Disconnect();
                 }
             }
             else
@@ -493,7 +492,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 catch (InverterDriverException ex)
                 {
                     this.logger.LogError($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                    this.socketTransport.Disconnect();
                 }
             }
         }
@@ -619,7 +617,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private async Task ProcessPositioningMessage(FieldCommandMessage receivedMessage)
+        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage)
         {
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {

@@ -679,6 +679,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         continue;
                     }
                 }
+                // socket connected
                 byte[] inverterData;
                 try
                 {
@@ -723,7 +724,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+                    this.logger.LogCritical($"3:Exception: {ex.Message}");
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
@@ -734,31 +735,36 @@ namespace Ferretto.VW.MAS.InverterDriver
                 //INFO: Byte 1 of read data contains packet length, zero means invalid packet
                 if (inverterData == null)
                 {
+                    // connection error
                     this.logger.LogError($"4:Inverter message is null");
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                     this.ReceiveBuffer = null;
                     this.socketTransport.Disconnect();
                     continue;
                 }
                 if (this.ReceiveBuffer[1] == 0x00)
                 {
-                    this.logger.LogError($"5:Inverter message length is zero");
+                    // message error
+                    this.logger.LogError($"5:Inverter message length is zero: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                     this.ReceiveBuffer = null;
                     this.socketTransport.Disconnect();
                     continue;
                 }
                 if(this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
                 {
-                    this.logger.LogTrace($"5:Inverter message is not complete");
+                    // this is not an error: we try to recover from messages received in more pieces
+                    this.logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     continue;
                 }
 
                 var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer);
-                foreach( var ExtractedMessage in ExtractedMessages.Where( x => (x[1] + 2 ) >= x.Length))
+                foreach( var extractedMessage in ExtractedMessages)
                 {
                     InverterMessage currentMessage;
                     try
                     {
-                        currentMessage = new InverterMessage(ExtractedMessage);
+                        currentMessage = new InverterMessage(extractedMessage);
 
                         this.logger.LogTrace($"6:currentMessage={currentMessage}");
                     }
@@ -770,7 +776,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogTrace($"7:Exception {ex.Message} while parsing Inverter raw message bytes");
+                        this.logger.LogError($"7:Exception {ex.Message} while parsing Inverter raw message bytes {BitConverter.ToString(extractedMessage)}");
 
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
@@ -781,7 +787,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
                     {
-                        this.logger.LogTrace($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
+                        this.logger.LogError($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message {BitConverter.ToString(extractedMessage)}");
 
                         var ex = new Exception();
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
