@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -17,11 +18,21 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class LoadingUnitProvider : BaseProvider, ILoadingUnitProvider
     {
+        #region Fields
+
+        private readonly IMapper mapper;
+
+        #endregion
+
         #region Constructors
 
-        public LoadingUnitProvider(DatabaseContext dataContext, INotificationService notificationService)
+        public LoadingUnitProvider(
+            DatabaseContext dataContext,
+            IMapper mapper,
+            INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
         }
 
         #endregion
@@ -35,35 +46,32 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.DataContext.LoadingUnits.AddAsync(new Common.DataModels.LoadingUnit
+            var validationError = model.ValidateBusinessModel(this.DataContext.LoadingUnits);
+            if (!string.IsNullOrEmpty(validationError))
             {
-                AbcClassId = model.AbcClassId,
-                CellId = model.CellId,
-                CellPositionId = model.CellPositionId,
-                Code = model.Code,
-                HandlingParametersCorrection = model.HandlingParametersCorrection,
-                Height = model.Height,
-                IsCellPairingFixed = model.IsCellPairingFixed,
-                LoadingUnitStatusId = model.LoadingUnitStatusId,
-                LoadingUnitTypeId = model.LoadingUnitTypeId,
-                Note = model.Note,
-                ReferenceType = (Common.DataModels.ReferenceType)model.ReferenceType,
-                Weight = model.Weight,
-            });
-
-            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
-            {
-                model.Id = entry.Entity.Id;
-
-                this.NotificationService.PushCreate(model);
-                if (model.CellId != null)
-                {
-                    this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
-                }
+                return new BadRequestOperationResult<LoadingUnitDetails>(
+                    validationError,
+                    model);
             }
 
-            return new SuccessOperationResult<LoadingUnitDetails>(model);
+            var entry = await this.DataContext.LoadingUnits.AddAsync(
+                this.mapper.Map<Common.DataModels.LoadingUnit>(model));
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount <= 0)
+            {
+                return new CreationErrorOperationResult<LoadingUnitDetails>();
+            }
+
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+
+            this.NotificationService.PushCreate(createdModel);
+            if (createdModel.CellId != null)
+            {
+                this.NotificationService.PushUpdate(new Cell { Id = createdModel.CellId.Value });
+            }
+
+            return new SuccessOperationResult<LoadingUnitDetails>(createdModel);
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> DeleteAsync(int id)

@@ -49,7 +49,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        [Positive]
         public double Depth { get; set; }
 
         [PositiveOrZero]
@@ -96,7 +95,6 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int Weight { get; set; }
 
-        [Positive]
         public double Width { get; set; }
 
         public int? MachineId { get; internal set; }
