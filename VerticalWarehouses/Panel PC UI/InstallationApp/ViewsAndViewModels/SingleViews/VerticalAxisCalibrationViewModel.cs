@@ -282,16 +282,26 @@ namespace Ferretto.VW.InstallationApp
                 var type = c.Type;
                 switch (c.Status)
                 {
-                    case MessageStatus.OperationStart:
-                        this.NoteString = $"{App.Resources.InstallationApp.HomingStarted} ({c.Description})";
-                        break;
-
-                    case MessageStatus.OperationEnd:
-                        this.NoteString = App.Resources.InstallationApp.HomingCompleted;
+                    case MessageStatus.OperationExecuting:
+                        if (c.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.NoteString = string.Format(App.Resources.InstallationApp.HorizontalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
+                        else
+                        {
+                            this.NoteString = string.Format(App.Resources.InstallationApp.VerticalHomingExecuting, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = App.Resources.InstallationApp.HomingError;
+                        if (c.Data.AxisToCalibrate == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.NoteString = string.Format(App.Resources.InstallationApp.HorizontalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
+                        else
+                        {
+                            this.NoteString = string.Format(App.Resources.InstallationApp.VerticalHomingError, c.Data.CurrentStepCalibrate, c.Data.MaxStepCalibrate);
+                        }
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
                         break;
@@ -304,10 +314,6 @@ namespace Ferretto.VW.InstallationApp
                 {
                     case MessageStatus.OperationStart:
                         this.NoteString = App.Resources.InstallationApp.HorizontalHomingStarted;
-                        break;
-
-                    case MessageStatus.OperationExecuting:
-                        this.NoteString = App.Resources.InstallationApp.HorizontalHomingExecuting;
                         break;
 
                     case MessageStatus.OperationEnd:

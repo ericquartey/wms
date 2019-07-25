@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -1033,7 +1033,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal Homing Error.
+        ///   Looks up a localized string similar to Horizontal Homing Error ({0} of {1}).
         /// </summary>
         public static string HorizontalHomingError {
             get {
@@ -1042,7 +1042,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal Homing Executing.
+        ///   Looks up a localized string similar to Horizontal Homing Executing ({0} of {1}).
         /// </summary>
         public static string HorizontalHomingExecuting {
             get {
@@ -2212,7 +2212,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Update Resolution.
+        ///   Looks up a localized string similar to Update Resolution.
         /// </summary>
         public static string UpdateResolution {
             get {
@@ -2221,7 +2221,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Upper bound [mm]:.
+        ///   Looks up a localized string similar to Upper bound [mm]:.
         /// </summary>
         public static string UpperBound {
             get {
@@ -2338,7 +2338,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Homing Error.
+        ///   Looks up a localized string similar to Vertical Homing Error ({0} of {1}).
         /// </summary>
         public static string VerticalHomingError {
             get {
@@ -2347,7 +2347,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Homing Executing.
+        ///   Looks up a localized string similar to Vertical Homing Executing ({0} of {1}).
         /// </summary>
         public static string VerticalHomingExecuting {
             get {

@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis axisToCalibrate;
 
+        private readonly int currentStep;
+
+        private readonly int maxStep;
+
         private bool disposed;
 
         #endregion
@@ -29,6 +33,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             : base(parentMachine, logger)
         {
             this.axisToCalibrate = axisToCalibrate;
+            this.currentStep = (parentMachine as HomingStateMachine)?.GetNumberOfExecutedSteps() ?? 0;
+            this.maxStep = (parentMachine as HomingStateMachine)?.GetMaxSteps() ?? 0;
         }
 
         #endregion
@@ -57,8 +63,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 switch (message.Status)
                 {
+                    case MessageStatus.OperationExecuting:
+                        var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, this.currentStep, this.maxStep, MessageVerbosity.Info);
+                        var notificationMessage = new NotificationMessage(
+                            notificationMessageData,
+                            $"{this.axisToCalibrate} axis calibration executing",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.CalibrateAxis,
+                            MessageStatus.OperationExecuting);
+
+                        this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        break;
+
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.Logger));
+                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.currentStep, this.maxStep, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
@@ -88,7 +109,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, this.currentStep, this.maxStep, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 $"{this.axisToCalibrate} axis calibration started",
