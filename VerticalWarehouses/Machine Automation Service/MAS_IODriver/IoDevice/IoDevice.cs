@@ -155,7 +155,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.logger.LogError($"4:IO Driver message is null");
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                        this.ReceiveBuffer = null;
                         this.shdTransport.Disconnect();
                         continue;
                     }
@@ -169,7 +168,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 {
                     // connection error
                     this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                    this.ReceiveBuffer = null;
                     continue;
                 }
                 catch (Exception ex)
@@ -178,10 +176,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
-
-                //this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(telegram, telegram.Length);
+#if DEFRAG
+                this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(telegram, telegram.Length);
+#else
                 this.ReceiveBuffer = telegram;
-
+#endif
                 //INFO: Byte 0 of read data contains packet length
                 if (!(this.ReceiveBuffer[0] == 3 || this.ReceiveBuffer[0] == 15 || this.ReceiveBuffer[0] == 26))
                 {
@@ -189,21 +188,24 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     this.logger.LogError($"5:IO Driver message length error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     var ex = new Exception();
                     this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                    this.ReceiveBuffer = null;
                     this.shdTransport.Disconnect();
                     continue;
                 }
                 if (this.ReceiveBuffer.Length < this.ReceiveBuffer[0])
                 {
                     // this is not an error: we try to recover from messages received in more pieces
-                    this.logger.LogError($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    this.logger.LogTrace($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     continue;
                 }
 
-                //var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
-                //foreach (var extractedMessage in ExtractedMessages)
+#if DEFRAG
+                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
+                foreach (var extractedMessage in ExtractedMessages)
+#endif
                 {
+#if !DEFRAG
                     var extractedMessage = this.ReceiveBuffer;
+#endif
                     if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release   
                         || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release 
                         )
@@ -212,9 +214,12 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.logger.LogError($"5:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                        this.ReceiveBuffer = null;
                         this.shdTransport.Disconnect();
+#if DEFRAG
                         break;
+#else
+                        continue;
+#endif
                     }
                     try
                     {
@@ -234,9 +239,12 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         // message error
                         this.logger.LogError($"6:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(extractedMessage)}");
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                        this.ReceiveBuffer = null;
                         this.shdTransport.Disconnect();
+#if DEFRAG
                         break;
+#else
+                        continue;
+#endif
                     }
 
                     // message ok
@@ -471,6 +479,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             this.disposed = true;
         }
 
-        #endregion
+#endregion
     }
 }

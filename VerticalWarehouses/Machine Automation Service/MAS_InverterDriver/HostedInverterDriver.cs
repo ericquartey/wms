@@ -694,7 +694,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // connection error
                         this.logger.LogError($"2:Inverter message is null");
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                        this.ReceiveBuffer = null;
                         this.socketTransport.Disconnect();
                         continue;
                     }
@@ -731,7 +730,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     // connection error
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                    this.ReceiveBuffer = null;
                     this.writeEnableEvent.Set();
                     continue;
                 }
@@ -751,7 +749,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     // message error
                     this.logger.LogError($"5:Inverter message length is zero: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                    this.ReceiveBuffer = null;
                     this.socketTransport.Disconnect();
                     continue;
                 }
@@ -778,7 +775,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
-                        this.ReceiveBuffer = null;
                         this.socketTransport.Disconnect();
                         break;
                     }
@@ -790,7 +786,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var ex = new Exception();
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
 
-                        this.ReceiveBuffer = null;
                         this.socketTransport.Disconnect();
                         break;
                     }
