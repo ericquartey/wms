@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
+﻿using Ferretto.VW.MAS.IODriver.StateMachines.PowerUp;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
     public partial class IoDevice
     {

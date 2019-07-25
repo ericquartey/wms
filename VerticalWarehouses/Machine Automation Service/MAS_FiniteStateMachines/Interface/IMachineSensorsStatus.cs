@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Interfaces
 {
@@ -8,19 +8,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interfaces
 
         bool[] DisplayedInputs { get; }
 
-        bool IsDrawerCompletelyOffCradle { get; }
+        bool DrawerIsCompletelyOnCradle { get; }
 
-        bool IsDrawerCompletelyOnCradle { get; }
+        bool DrawerIsPartiallyOnCradle { get; }
 
         bool IsDrawerInBay1Up { get; }
-
-        bool IsDrawerPartiallyOnCradle { get; }
-
-        bool IsMachineInEmergencyState { get; }
 
         bool IsSensorZeroOnCradle { get; }
 
         bool IsSensorZeroOnElevator { get; }
+
+        bool MachineIsInEmergencyState { get; }
 
         #endregion
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
+namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
 {
     public interface IInverterState : IDisposable
     {

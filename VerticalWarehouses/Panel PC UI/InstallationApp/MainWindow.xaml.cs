@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Prism.Events;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation
 {
     public delegate void FinishedMachineModeChangeStateEvent();
 

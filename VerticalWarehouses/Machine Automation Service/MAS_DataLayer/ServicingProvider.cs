@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.EntityFrameworkCore;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -10,20 +13,24 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly DataLayerContext primaryDataContext;
+        private readonly DataLayerConfiguration dataLayerConfiguration;
+
+        private readonly DbContextOptions<DataLayerContext> primaryContextOptions;
 
         #endregion
 
         #region Constructors
 
-        public ServicingProvider(DataLayerContext primaryDataContext)
+        public ServicingProvider(DataLayerConfiguration dataLayerConfiguration)
         {
-            if (primaryDataContext == null)
+            if (dataLayerConfiguration == null)
             {
-                throw new ArgumentNullException(nameof(primaryDataContext));
+                throw new ArgumentNullException(nameof(dataLayerConfiguration));
             }
 
-            this.primaryDataContext = primaryDataContext;
+            this.dataLayerConfiguration = dataLayerConfiguration;
+
+            this.primaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.PrimaryConnectionString).Options;
         }
 
         #endregion
@@ -32,7 +39,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ServicingInfo GetInfo()
         {
-            return this.primaryDataContext.ServicingInfo.FirstOrDefault();
+            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+            {
+                return primaryDataContext.ServicingInfo.FirstOrDefault();
+            }
         }
 
         #endregion

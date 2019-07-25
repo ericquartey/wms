@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Utils;
 
-namespace Ferretto.VW.App
+namespace Ferretto.VW.App.Models
 {
     public class UserLogin : BaseModel
     {

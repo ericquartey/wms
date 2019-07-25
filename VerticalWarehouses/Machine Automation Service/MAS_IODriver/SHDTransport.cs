@@ -3,11 +3,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class SHDTransport : ISHDTransport, IDisposable
     {

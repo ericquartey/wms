@@ -1,12 +1,11 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
-using Microsoft.EntityFrameworkCore;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
@@ -26,16 +25,15 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            services.AddDbContext<DataLayerContext>(
-               options => options.UseSqlite(configuration.GetDataLayerPrimaryConnectionString()),
-               ServiceLifetime.Singleton);
-
-            services.AddSingleton(
-                new DataLayerConfiguration(
+            var dataLayerConfiguration = new DataLayerConfiguration(
+                configuration.GetDataLayerPrimaryConnectionString(),
                 configuration.GetDataLayerSecondaryConnectionString(),
-                configuration.GetDataLayerConfigurationFile()));
+                configuration.GetDataLayerConfigurationFile());
 
-            services.AddSingleton<IDataLayer, DataLayerService>();
+            services.AddSingleton<IDataLayer, DataLayerService>(provider => new DataLayerService(
+                dataLayerConfiguration,
+                provider.GetService<IEventAggregator>(),
+                provider.GetService<ILogger<DataLayerService>>()));
 
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IHostedService);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IBayPositionControlDataLayer);
@@ -58,14 +56,13 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IWeightControl);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ICellManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IConfigurationValueManagmentDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IRuntimeValueManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVertimagConfiguration);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IMachineStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ILoadingUnitStatistics);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversion);
 
-            services.AddScoped<IServicingProvider, ServicingProvider>();
+            services.AddScoped<IServicingProvider, ServicingProvider>(provider => new ServicingProvider(dataLayerConfiguration));
 
             return services;
         }

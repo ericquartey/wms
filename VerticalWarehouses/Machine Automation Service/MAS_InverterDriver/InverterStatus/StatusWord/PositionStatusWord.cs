@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
+﻿using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
 {
     public class PositionStatusWord : StatusWordBase, IPositionStatusWord
     {

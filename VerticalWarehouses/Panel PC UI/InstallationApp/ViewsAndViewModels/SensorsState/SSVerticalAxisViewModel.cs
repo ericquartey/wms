@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
     public class SSVerticalAxisViewModel : BindableBase, ISSVerticalAxisViewModel
     {
@@ -58,7 +59,7 @@ namespace Ferretto.VW.InstallationApp
 
         public bool EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
 
-        public bool LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
+        public bool LuPresentInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
 
         public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
 
@@ -107,7 +108,7 @@ namespace Ferretto.VW.InstallationApp
             this.ElevatorEngineSelected = false;
             this.CradleEngineSelected = false;
             this.ZeroPawlSensor = false;
-            this.LuPresentiInMachineSide = false;
+            this.LuPresentInMachineSide = false;
             this.LuPresentInOperatorSide = false;
         }
 
@@ -120,7 +121,7 @@ namespace Ferretto.VW.InstallationApp
             this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
             this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
             this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
-            this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
+            this.LuPresentInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
             this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
         }
 

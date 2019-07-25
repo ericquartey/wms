@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
     public class ConfigState : IoStateBase
     {

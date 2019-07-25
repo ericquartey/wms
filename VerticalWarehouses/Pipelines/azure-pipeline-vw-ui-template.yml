@@ -21,16 +21,6 @@ steps:
     msbuildArchitecture: x64
 
 
-- task: VSTest@2
-  displayName: 'Run Tests'
-  inputs:
-    testAssemblyVer2: |
-     VerticalWarehouses/Panel PC UI/**/${{ parameters.BuildConfiguration }}/*Tests.dll
-     !**\obj\**
-    codeCoverageEnabled: true
-    platform: ${{ parameters.BuildPlatform }}
-    configuration: ${{ parameters.BuildConfiguration }}
-
 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'

@@ -1,9 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     public class SwitchOffMotorState : IoStateBase
     {

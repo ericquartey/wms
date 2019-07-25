@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.HelpWindows
+namespace Ferretto.VW.App.Installation.HelpWindows
 {
     /// <summary>
     /// Interaction logic for CellsControlHelpView.xaml

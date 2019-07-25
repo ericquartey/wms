@@ -1,5 +1,7 @@
 ﻿#if DEBUG
 using System.Windows;
+using Ferretto.VW.App.Services.Interfaces;
+
 #else
 using System.Diagnostics;
 #endif

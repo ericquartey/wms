@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
@@ -42,23 +41,23 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #region Methods
 
         [HttpPost("ExecuteControlTest/{bayNumber}/{delay}/{numberCycles}")]
-        public async Task ExecuteControlTestAsync(int bayNumber, int delay, int numberCycles)
+        public void ExecuteControlTest(int bayNumber, int delay, int numberCycles)
         {
-            await this.ExecuteControlTest_MethodAsync(bayNumber, delay, numberCycles);
+            this.ExecuteControlTest_Method(bayNumber, delay, numberCycles);
         }
 
         [HttpPost("ExecutePositioning")]
-        public async Task ExecutePositioningAsync([FromBody]ShutterPositioningMovementMessageDataDto data)
+        public void ExecutePositioning([FromBody]ShutterPositioningMovementMessageDataDto data)
         {
-            await this.ExecutePositioning_MethodAsync(data);
+            this.ExecutePositioning_Method(data);
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
+        public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
         {
-            return await this.GetIntegerConfigurationParameter_MethodAsync(category, parameter);
+            return this.GetIntegerConfigurationParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200)]
@@ -68,10 +67,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.Stop_Method();
         }
 
-        private async Task ExecuteControlTest_MethodAsync(int bayNumber, int delay, int numberCycles)
+        private void ExecuteControlTest_Method(int bayNumber, int delay, int numberCycles)
         {
             // TEMP Retrieve the max speed rate from the database
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)ShutterHeightControl.FeedRate, (long)ConfigurationCategory.ShutterHeightControl);
 
             var shutterControlMessageData = new ShutterControlMessageData(
@@ -89,27 +88,27 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     MessageType.ShutterControl));
         }
 
-        private async Task ExecutePositioning_MethodAsync(ShutterPositioningMovementMessageDataDto data)
+        private void ExecutePositioning_Method(ShutterPositioningMovementMessageDataDto data)
         {
             switch (data.ShutterType)
             {
                 case ShutterType.NoType:
-                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                    this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
                         (long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter2Type:
-                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                    this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
                         (long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter3Type:
-                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                    this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
                         (long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
             }
 
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)ShutterHeightControl.FeedRate, (long)ConfigurationCategory.ShutterHeightControl);
 
             //TEMP Speed rate parameter need to be multiply by 100
@@ -131,7 +130,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     MessageType.ShutterPositioning));
         }
 
-        private async Task<ActionResult<int>> GetIntegerConfigurationParameter_MethodAsync(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
             Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
@@ -142,7 +141,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)parameterId, (long)categoryId);
+                    value = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)parameterId, (long)categoryId);
                 }
                 catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {

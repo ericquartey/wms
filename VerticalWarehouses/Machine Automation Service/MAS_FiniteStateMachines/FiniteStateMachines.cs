@@ -6,22 +6,22 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines : BackgroundService
     {
@@ -441,7 +441,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     try
                                     {
                                         // update the installation status homing flag in the dataLayer
-                                        this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync(
+                                        this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue(
                                             (long)SetupStatus.VerticalHomingDone,
                                             (long)ConfigurationCategory.SetupStatus,
                                             true);
@@ -597,9 +597,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task RetrieveIoDevicesConfigurationAsync()
+        private void RetrieveIoDevicesConfigurationAsync()
         {
-            this.ioIndexDeviceList = await this.vertimagConfiguration.GetInstalledIoListAsync();
+            this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
         }
 
         private void SendMessage(IMessageData data)

@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.InstallationApp.Resources.Enumerables;
+﻿using Ferretto.VW.App.Installation.Resources.Enumerables;
 
-namespace Ferretto.VW.InstallationApp.Resources
+namespace Ferretto.VW.App.Installation.Resources
 {
     public class InstallationApp_EventMessage
     {

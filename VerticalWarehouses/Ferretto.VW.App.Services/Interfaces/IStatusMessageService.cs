@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.App.Services
+﻿using Ferretto.VW.App.Services.Models;
+
+namespace Ferretto.VW.App.Services.Interfaces
 {
     public interface IStatusMessageService
     {

@@ -1,111 +1,106 @@
 ﻿using System;
-using System.Threading.Tasks;
 
-namespace Ferretto.VW.MAS_DataLayer.Interfaces
+namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IGeneralInfoDataLayer
     {
         #region Properties
 
-        Task<string> Address { get; }
+        string Address { get; }
 
-        Task<bool> AlfaNumBay1 { get; }
+        bool AlfaNumBay1 { get; }
 
-        Task<bool> AlfaNumBay2 { get; }
+        bool AlfaNumBay2 { get; }
 
-        Task<bool> AlfaNumBay3 { get; }
+        bool AlfaNumBay3 { get; }
 
-        Task<int> Barrier1Height { get; }
+        int Barrier1Height { get; }
 
-        Task<int> Barrier2Height { get; }
+        int Barrier2Height { get; }
 
-        Task<int> Barrier3Height { get; }
+        int Barrier3Height { get; }
 
-        Task<decimal> Bay1Height1 { get; }
+        decimal Bay1Height1 { get; }
 
-        Task<decimal> Bay1Height2 { get; }
+        decimal Bay1Height2 { get; }
 
-        Task<decimal> Bay1Position1 { get; }
+        decimal Bay1Position1 { get; }
 
-        Task<decimal> Bay1Position2 { get; }
+        decimal Bay1Position2 { get; }
 
-        Task<int> Bay1Type { get; }
+        int Bay1Type { get; }
 
-        Task<decimal> Bay2Height1 { get; }
+        decimal Bay2Height1 { get; }
 
-        Task<decimal> Bay2Height2 { get; }
+        decimal Bay2Height2 { get; }
 
-        Task<decimal> Bay2Position1 { get; }
+        decimal Bay2Position1 { get; }
 
-        Task<decimal> Bay2Position2 { get; }
+        decimal Bay2Position2 { get; }
 
-        Task<int> Bay2Type { get; }
+        int Bay2Type { get; }
 
-        Task<decimal> Bay3Height1 { get; }
+        decimal Bay3Height1 { get; }
 
-        Task<decimal> Bay3Height2 { get; }
+        decimal Bay3Height2 { get; }
 
-        Task<decimal> Bay3Position1 { get; }
+        decimal Bay3Position1 { get; }
 
-        Task<decimal> Bay3Position2 { get; }
+        decimal Bay3Position2 { get; }
 
-        Task<int> Bay3Type { get; }
+        int Bay3Type { get; }
 
-        Task<int> BaysQuantity { get; }
+        int BaysQuantity { get; }
 
-        Task<string> City { get; }
+        string City { get; }
 
-        Task<string> ClientCode { get; }
+        string ClientCode { get; }
 
-        Task<string> ClientName { get; }
+        string ClientName { get; }
 
-        Task<string> Country { get; }
+        string Country { get; }
 
-        Task<int> DrawersQuantity { get; }
+        int DrawersQuantity { get; }
 
-        Task<decimal> Height { get; }
+        decimal Height { get; }
 
-        Task<bool> LaserBay1 { get; }
+        DateTime InstallationDate { get; }
 
-        Task<bool> LaserBay2 { get; }
+        bool LaserBay1 { get; }
 
-        Task<bool> LaserBay3 { get; }
+        bool LaserBay2 { get; }
 
-        Task<string> Latitude { get; }
+        bool LaserBay3 { get; }
 
-        Task<string> Longitude { get; }
+        string Latitude { get; }
 
-        Task<int> MaxAcceptedBai1Height { get; }
+        string Longitude { get; }
 
-        Task<int> MaxAcceptedBai2Height { get; }
+        int MaxAcceptedBai1Height { get; }
 
-        Task<int> MaxAcceptedBai3Height { get; }
+        int MaxAcceptedBai2Height { get; }
 
-        Task<string> Order { get; }
+        int MaxAcceptedBai3Height { get; }
 
-        Task<DateTime> ProductionDate { get; }
+        decimal MaxGrossWeight { get; }
 
-        Task<string> Province { get; }
+        string Model { get; }
 
-        Task<int> Shutter1Type { get; }
+        string Order { get; }
 
-        Task<int> Shutter2Type { get; }
+        DateTime ProductionDate { get; }
 
-        Task<int> Shutter3Type { get; }
+        string Province { get; }
 
-        Task<string> Zip { get; }
+        string Serial { get; }
 
-        #endregion
+        int Shutter1Type { get; }
 
-        #region Methods
+        int Shutter2Type { get; }
 
-        Task<DateTime> GetInstallationDate();
+        int Shutter3Type { get; }
 
-        Task<decimal> GetMaxGrossWeight();
-
-        Task<string> GetModel();
-
-        Task<string> GetSerial();
+        string Zip { get; }
 
         #endregion
     }

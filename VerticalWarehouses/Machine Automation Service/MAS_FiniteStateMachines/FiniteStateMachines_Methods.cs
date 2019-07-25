@@ -3,20 +3,20 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Homing;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing;
+using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.MoveDrawer;
-using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
-using Ferretto.VW.MAS_FiniteStateMachines.ShutterControl;
-using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
+using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.FiniteStateMachines
 
-namespace Ferretto.VW.MAS_FiniteStateMachines
 {
     public partial class FiniteStateMachines
     {
@@ -28,15 +28,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             switch (condition)
             {
                 case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineSensorsStatus.IsMachineInEmergencyState;
+                    result = this.machineSensorsStatus.MachineIsInEmergencyState;
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
+                    result = this.machineSensorsStatus.DrawerIsCompletelyOnCradle;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerPartiallyOnCradle;
+                    result = this.machineSensorsStatus.DrawerIsPartiallyOnCradle;
                     break;
 
                 //TEMP Add here other condition getters

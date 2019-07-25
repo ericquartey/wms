@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Contracts
+﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public interface IOperatorHubClient : IAutoReconnectHubClient
     {

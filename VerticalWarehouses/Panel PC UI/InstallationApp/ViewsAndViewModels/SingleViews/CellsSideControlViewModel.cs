@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class CellsSideControlViewModel : BindableBase, ICellsSideControlViewModel
     {

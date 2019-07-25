@@ -4,12 +4,12 @@ using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     public partial class TestController
     {
@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     }
             }
 
-            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync(longParameter, longCategory);
+            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValue(longParameter, longCategory);
 
             return this.Ok(returnValue);
         }
