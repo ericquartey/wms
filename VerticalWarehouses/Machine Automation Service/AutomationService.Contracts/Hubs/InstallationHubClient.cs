@@ -64,12 +64,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
+        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

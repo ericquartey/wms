@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ISetupStatus dataLayerSetupStatus;
+        private readonly ISetupStatusDataLayer dataLayerSetupStatus;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.eventAggregator = eventAggregator;
-            this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatus)) as ISetupStatus;
+            this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 

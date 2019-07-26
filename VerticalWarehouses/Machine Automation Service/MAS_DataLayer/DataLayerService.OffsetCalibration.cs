@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IOffsetCalibration
+    public partial class DataLayerService : IOffsetCalibrationDataLayer
     {
         #region Properties
 

@@ -1,18 +1,17 @@
-﻿using Ferretto.VW.MAS.AutomationService.Hubs;
-using Ferretto.VW.MAS.InverterDriver;
-using Ferretto.VW.MAS.InverterDriver.Interface;
-using Ferretto.VW.MAS.IODriver;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+﻿using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.Utils.Utilities;
-using Ferretto.VW.MAS.Utils.Utilities.Interfaces;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.MissionsManager;
+using Ferretto.VW.MAS.InverterDriver.Interface;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
@@ -54,9 +53,13 @@ namespace Ferretto.VW.MAS.AutomationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataLayer(this.Configuration);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
+
+            this.InitialiseWmsInterfaces(services);
 
             services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
 
@@ -68,10 +71,6 @@ namespace Ferretto.VW.MAS.AutomationService
             });
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
-
-            services.AddSingleton<IBaysManager, BaysManager>();
-
-            services.AddDataLayer(this.Configuration);
 
             this.RegisterSocketTransport(services);
 
@@ -92,15 +91,17 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddHostedService<FiniteStateMachines.FiniteStateMachines>();
 
-            // HACK commented out module initialization for development purpose
-            //services.AddHostedService<MissionsManager>();
+            services.AddHostedService<MissionsManagerService>();
 
             services.AddHostedService<AutomationService>();
+        }
 
-            var wmsServiceAddress = new System.Uri(this.Configuration.GetDataServiceUrl());
+        private void InitialiseWmsInterfaces(IServiceCollection services)
+        {
+            var wmsServiceAddress = this.Configuration.GetDataServiceUrl();
             services.AddWebApiServices(wmsServiceAddress);
 
-            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetDataServiceHubUrl());
+            var wmsServiceAddressHubsEndpoint = this.Configuration.GetDataServiceHubUrl();
             services.AddDataHub(wmsServiceAddressHubsEndpoint);
         }
 

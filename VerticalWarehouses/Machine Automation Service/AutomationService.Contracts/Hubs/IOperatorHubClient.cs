@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+﻿using System;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
@@ -6,7 +6,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
     {
         #region Events
 
-        event System.EventHandler<MessageNotifiedEventArgs> MessageNotified;
+        event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
+
+        event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
     }

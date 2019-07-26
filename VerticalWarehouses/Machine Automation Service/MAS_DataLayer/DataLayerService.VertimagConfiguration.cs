@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IVertimagConfiguration
+    public partial class DataLayerService : IVertimagConfigurationDataLayer
     {
         #region Methods
 

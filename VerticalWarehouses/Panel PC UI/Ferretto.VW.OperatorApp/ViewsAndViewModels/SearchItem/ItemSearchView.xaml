@@ -6,7 +6,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d">
 
     <Grid Width="1024"
@@ -18,16 +17,23 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
-        <ContentControl Width="640" Height="340" Margin="170,90,0,0"
-                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Content="{Binding DataGridViewModel}" />
 
-        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,130,20,0"
+        <Controls:CustomControlArticleDataGrid Width="640"
+                                               Height="340"
+                                               Margin="170,90,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Top" />
+
+        <Button Margin="0,130,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,195,20,0"             
+
+        <Button Margin="0,195,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
@@ -44,7 +50,7 @@
                                               Margin="610,450,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ContentText="{Binding SelectedItem.TotalAvailable}"
                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
         <Button Margin="0,0,20,20"
@@ -52,21 +58,28 @@
                 VerticalAlignment="Bottom"
                 Command="{Binding ItemCallCommand}"
                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
-                IsEnabled="{Binding IsItemCallButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"             
+        <Button Margin="0,370,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
                 Command="{Binding ItemDetailButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-        <Controls:CustomInputFieldControlFocusable HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,450,0,0" MaxWidth="200"
-                                                   InputText="{Binding SearchArticleCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+
+        <Controls:CustomInputFieldControlFocusable MaxWidth="200"
+                                                   Margin="170,450,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Top"
+                                                   InputText="{Binding SearchItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        
-        <Controls:BusyIndicator Width="40" Height="40"
-                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,450,0,0"
+
+        <Controls:BusyIndicator Width="40"
+                                Height="40"
+                                Margin="100,450,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
                                 IsWorking="{Binding IsSearching, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>

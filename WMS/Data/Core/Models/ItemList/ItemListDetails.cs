@@ -12,6 +12,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string AreaName { get; set; }
 
+        [Unique]
         public string Code { get; set; }
 
         [JsonIgnore]

@@ -1,4 +1,4 @@
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels.Errors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +10,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IErrorStatisticsDataLayer errorStatistics;
+        private readonly IErrorStatisticsProvider errorStatistics;
 
         #endregion
 
         #region Constructors
 
-        public ErrorsController(IErrorStatisticsDataLayer errorStatistics)
+        public ErrorsController(IErrorStatisticsProvider errorStatistics)
         {
             this.errorStatistics = errorStatistics;
         }

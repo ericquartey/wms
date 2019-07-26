@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.Utils.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Operator.Interfaces
 {

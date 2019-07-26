@@ -15,8 +15,6 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly CustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModelRef;
-
         private readonly IIdentityService identityService;
 
         private readonly ILoadingUnitsService loadingUnitService;
@@ -71,7 +69,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public ICustomControlDrawerWeightSaturationDataGridViewModel DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
 
         public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
@@ -90,13 +88,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(true)));
 
         #endregion
 
         #region Methods
 
-        public async void ChangeSelectedItemAsync(bool isUp)
+        public void ChangeSelectedItem(bool isUp)
         {
             if (!(this.dataGridViewModel is CustomControlDrawerWeightSaturationDataGridViewModel gridData))
             {
