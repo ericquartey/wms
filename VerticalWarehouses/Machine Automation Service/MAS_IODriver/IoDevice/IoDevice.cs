@@ -17,6 +17,7 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
@@ -176,11 +177,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
-#if DEFRAG
                 this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(telegram, telegram.Length);
-#else
-                this.ReceiveBuffer = telegram;
-#endif
+
                 //INFO: Byte 0 of read data contains packet length
                 if (!(this.ReceiveBuffer[0] == 3 || this.ReceiveBuffer[0] == 15 || this.ReceiveBuffer[0] == 26))
                 {
@@ -194,18 +192,17 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 if (this.ReceiveBuffer.Length < this.ReceiveBuffer[0])
                 {
                     // this is not an error: we try to recover from messages received in more pieces
-                    this.logger.LogTrace($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    this.logger.LogWarning($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     continue;
                 }
-
-#if DEFRAG
                 var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
-                foreach (var extractedMessage in ExtractedMessages)
-#endif
+                if(this.ReceiveBuffer.Length > 0)
                 {
-#if !DEFRAG
-                    var extractedMessage = this.ReceiveBuffer;
-#endif
+                    this.logger.LogWarning($" extracted: count {ExtractedMessages.Count}: left bytes {this.ReceiveBuffer.Length}");
+                }
+
+                foreach (var extractedMessage in ExtractedMessages)
+                {
                     if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release   
                         || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release 
                         )
@@ -215,11 +212,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.shdTransport.Disconnect();
-#if DEFRAG
                         break;
-#else
-                        continue;
-#endif
                     }
                     try
                     {
@@ -240,11 +233,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.logger.LogError($"6:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(extractedMessage)}");
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.shdTransport.Disconnect();
-#if DEFRAG
                         break;
-#else
-                        continue;
-#endif
                     }
 
                     // message ok

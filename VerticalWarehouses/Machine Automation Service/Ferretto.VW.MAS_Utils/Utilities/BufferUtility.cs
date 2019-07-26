@@ -9,8 +9,15 @@ namespace Ferretto.VW.MAS.Utils.Utilities
     {
         public static byte[] AppendArrays(this byte[] a, byte[] b, int bytesRead)
         {
-            if (a == null) Array.Resize<byte>(ref a, 0);
-            if (b == null) throw new ArgumentNullException("b");
+            if (a == null)
+            {
+                Array.Resize<byte>(ref a, 0);
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException("b");
+            }
 
             byte[] c = new byte[a.Length + bytesRead];
             Buffer.BlockCopy(a, 0, c, 0, a.Length);
@@ -25,28 +32,41 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                 var matched = true;
                 for (int subIndex = 0; subIndex < find.Length; ++subIndex)
                 {
-                    if (find[subIndex] == searched[index + subIndex]) continue;
+                    if (find[subIndex] == searched[index + subIndex])
+                    {
+                        continue;
+                    }
 
                     matched = false;
                     break;
                 }
 
                 if (matched)
+                {
                     return index;
+                }
             }
             return -1;
         }
 
         internal static IList<string> GetMessagesToEnqueue(ref byte[] receiveBuffer, byte[] messageStartPattern, byte[] messageEndPattern)
         {
-            if (messageEndPattern == null) throw new ArgumentNullException(nameof(messageEndPattern));
+            if (messageEndPattern == null)
+            {
+                throw new ArgumentNullException(nameof(messageEndPattern));
+            }
 
             int startIndex = 0;
 
             bool useStartPattern = false;
             if (messageStartPattern != null)
+            {
                 useStartPattern = messageStartPattern.Any();
-            else messageStartPattern = new byte[0];
+            }
+            else
+            {
+                messageStartPattern = new byte[0];
+            }
 
             IList<string> messages = new List<string>();
             while (startIndex != -1 && startIndex < receiveBuffer.Length)
@@ -54,7 +74,9 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                 if (receiveBuffer.Length > 0)
                 {
                     if (useStartPattern)
+                    {
                         startIndex = ByteIndexOf(receiveBuffer, messageStartPattern, startIndex);
+                    }
 
                     if (!useStartPattern || (startIndex != -1 && receiveBuffer.Length >= (startIndex + messageStartPattern.Length)))
                     {
@@ -74,11 +96,20 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                             startIndex = 0;
 
                         }
-                        else break;
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else break;
+                    else
+                    {
+                        break;
+                    }
                 }
-                else break;
+                else
+                {
+                    break;
+                }
             }
             return messages;
         }
@@ -94,7 +125,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     int messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
 
                     // check if there is a message to extract
-                    if (receiveBuffer.Length >= messageLength)      
+                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)      
                     {
                         // Cut message from raw buffer and enqueue it
                         byte[] message = new byte[messageLength];
@@ -109,7 +140,10 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                         startIndex = 0;
                         
                     }
-                    else break;
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
