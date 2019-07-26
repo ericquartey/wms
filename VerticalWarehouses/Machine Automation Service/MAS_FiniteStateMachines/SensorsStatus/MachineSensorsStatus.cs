@@ -1,11 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
-    public class MachineSensorsStatus
+    public class MachineSensorsStatus : IMachineSensorsStatus
     {
         #region Fields
 
@@ -35,20 +37,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool[] DisplayedInputs => this.ioSensorsStatus?.Inputs;
 
-        public bool DrawerIsCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerCompletelyOffCradle => !this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && !this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-        public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+
+        public bool IsDrawerInBay1Up => this.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
+        public bool IsMachineInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
+
+        public bool IsSensorZeroOnCradle => this.DisplayedInputs[(int)IOMachineSensors.ZeroPawl];
+
+        public bool IsSensorZeroOnElevator => this.DisplayedInputs[(int)IOMachineSensors.ZeroVertical];
 
         public bool[] RawInvertersInputs => this.rawInvertersInputs;
 
         public bool[] RawRemoteIOsInputs => this.rawRemoteIOsInputs;
-
-        public bool SensorInZeroOnCradle => this.DisplayedInputs[(int)IOMachineSensors.ZeroPawl];
-
-        public bool SensorInZeroOnElevator => this.DisplayedInputs[(int)IOMachineSensors.ZeroVertical];
 
         #endregion
 
@@ -60,7 +66,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
             if (newRawInputs == null)
             {
-                return requiredUpdateIoInverters;
+                return false;
             }
 
             if (messageActor == FieldMessageActor.InverterDriver)
@@ -79,13 +85,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
             if (messageActor == FieldMessageActor.IoDriver)
             {
-                if (ioIndex < 0)
-                {
-                    return requiredUpdateRemoteIos;
-                }
                 if (ioIndex > 2)
                 {
-                    return requiredUpdateRemoteIos;
+                    return false;
                 }
 
                 for (var index = 0; index < newRawInputs.Length; index++)
@@ -100,7 +102,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
             if (requiredUpdateRemoteIos || requiredUpdateIoInverters)
             {
-                this.updateIoSensorsStatus();
+                this.UpdateIoSensorsStatus();
                 return true;
             }
             else
@@ -109,7 +111,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
             }
         }
 
-        private void updateIoSensorsStatus()
+        private void UpdateIoSensorsStatus()
         {
             const int N_TOT_CHANNELS = 32;
 

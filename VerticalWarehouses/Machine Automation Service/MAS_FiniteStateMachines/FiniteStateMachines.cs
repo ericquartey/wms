@@ -39,6 +39,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task fieldNotificationReceiveTask;
 
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
+
         private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly MachineSensorsStatus machineSensorsStatus;
@@ -46,6 +50,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
+
+        private readonly ISetupStatusDataLayer setupStatus;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
 
         private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
@@ -69,7 +77,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfigurationDataLayer vertimagConfiguration)
+            ISetupStatusDataLayer setupStatus,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
+            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
+            IVerticalAxisDataLayer verticalAxis,
+            IHorizontalAxisDataLayer horizontalAxis)
         {
             this.eventAggregator = eventAggregator;
 
@@ -77,7 +89,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
+            this.setupStatus = setupStatus;
+
             this.vertimagConfiguration = vertimagConfiguration;
+
+            this.generalInfoDataLayer = generalInfoDataLayer;
+
+            this.verticalAxis = verticalAxis;
+
+            this.horizontalAxis = horizontalAxis;
 
             this.machineSensorsStatus = new MachineSensorsStatus();
 
@@ -214,6 +234,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.CheckCondition:
                         this.ProcessCheckConditionMessage(receivedMessage);
+                        break;
+
+                    case MessageType.DrawerOperation:
+                        this.ProcessDrawerOperation(receivedMessage);
                         break;
                 }
             }
@@ -552,6 +576,31 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     this.currentStateMachine = null;
 
                                     //TODO: According to the type of error we can try to resolve here
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case MessageType.DrawerOperation:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogDebug($"17:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"18:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
                                     break;
                             }
                         }
