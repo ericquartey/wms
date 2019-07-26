@@ -1,12 +1,13 @@
-﻿namespace Ferretto.VW.InstallationApp
-{
-    using System.Threading.Tasks;
-    using System.Windows.Input;
-    using Prism.Commands;
-    using Prism.Events;
-    using Prism.Mvvm;
-    using Unity;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Installation.Interfaces;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
+using Unity;
 
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+{
     public class WeightControlViewModel : BindableBase, IWeightControlViewModel
     {
         #region Fields
@@ -31,7 +32,7 @@
 
         private int mesuredWeight;
 
-        private string noteText = App.Resources.InstallationApp.WeightControl;
+        private string noteText = VW.App.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 

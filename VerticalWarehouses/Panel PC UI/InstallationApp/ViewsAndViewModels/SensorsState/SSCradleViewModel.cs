@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.App.Installation.Interfaces;
+//using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
     public class SSCradleViewModel : BindableBase, ISSCradleViewModel
     {
@@ -15,7 +16,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IOSensorsStatus ioSensorsStatus;
+        //private readonly IOSensorsStatus ioSensorsStatus;
 
         private IUnityContainer container;
 
@@ -36,7 +37,7 @@ namespace Ferretto.VW.InstallationApp
         public SSCradleViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.ioSensorsStatus = new IOSensorsStatus();
+            //this.ioSensorsStatus = new IOSensorsStatus();
             this.NavigationViewModel = null;
         }
 
@@ -85,11 +86,11 @@ namespace Ferretto.VW.InstallationApp
 
         private void UpdateCradleSensorsState(bool[] message)
         {
-            this.ioSensorsStatus.UpdateInputStates(message);
+            //this.ioSensorsStatus.UpdateInputStates(message);
 
-            this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
-            this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
-            this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
+            //this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
+            //this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
+            //this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
         }
 
         #endregion

@@ -1,18 +1,19 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
-namespace Ferretto.VW.MAS_DataLayer
+// ReSharper disable ArrangeThisQualifier
+
+namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IWeightControl
+    public partial class DataLayerService : IWeightControlDataLayer
     {
         #region Properties
 
-        public Task<decimal> FeedRateWC => this.GetDecimalConfigurationValueAsync((long)WeightControl.FeedRate, (long)ConfigurationCategory.WeightControl);
+        public decimal FeedRateWC => this.GetDecimalConfigurationValue((long)WeightControl.FeedRate, (long)ConfigurationCategory.WeightControl);
 
-        public Task<decimal> RequiredToleranceWC => this.GetDecimalConfigurationValueAsync((long)WeightControl.RequiredTolerance, (long)ConfigurationCategory.WeightControl);
+        public decimal RequiredToleranceWC => this.GetDecimalConfigurationValue((long)WeightControl.RequiredTolerance, (long)ConfigurationCategory.WeightControl);
 
-        public Task<decimal> TestRun => this.GetDecimalConfigurationValueAsync((long)WeightControl.TestRun, (long)ConfigurationCategory.WeightControl);
+        public decimal TestRun => this.GetDecimalConfigurationValue((long)WeightControl.TestRun, (long)ConfigurationCategory.WeightControl);
 
         #endregion
     }

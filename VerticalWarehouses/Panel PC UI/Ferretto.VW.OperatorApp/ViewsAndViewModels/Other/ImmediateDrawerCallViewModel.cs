@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
+using Ferretto.VW.App.Operator.Interfaces;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class ImmediateDrawerCallViewModel : BaseViewModel, IImmediateDrawerCallViewModel
     {

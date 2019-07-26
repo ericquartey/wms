@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class IoSHDWriteMessage
     {
@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS_IODriver
         private readonly byte[] configurationData;
 
         private readonly byte debounceInput = 0x32;
-
-        private readonly string ipAddress;
 
         private readonly bool[] outputs;
 

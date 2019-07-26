@@ -1,8 +1,6 @@
-﻿using System.Configuration;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.WmsCommunication;
-using Ferretto.VW.WmsCommunication.Interfaces;
+﻿using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Ioc;
@@ -14,8 +12,6 @@ namespace Ferretto.VW.App
     public class VWAppModule : IModule
     {
         #region Fields
-
-        private const string WmsServiceAddress = "WMSServiceAddress";
 
         private readonly IUnityContainer container;
 
@@ -47,36 +43,6 @@ namespace Ferretto.VW.App
         {
             containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
             containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
-
-            RegisterWmsProviders(containerRegistry);
-
-            RegisterHubs(containerRegistry);
-        }
-
-        private static void RegisterHubs(IContainerRegistry containerRegistry)
-        {
-            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
-
-            var operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
-            var operatorHubUrl = new System.Uri(new System.Uri(automationServiceUrl), operatorHubPath);
-            var operatorHubClient = new OperatorHubClient(operatorHubUrl);
-            containerRegistry.RegisterInstance<IOperatorHubClient>(operatorHubClient);
-
-            var installationHubPath = ConfigurationManager.AppSettings.Get("InstallationHubEndpoint");
-            var installationHubClient = new InstallationHubClient(automationServiceUrl, installationHubPath);
-            containerRegistry.RegisterInstance<IInstallationHubClient>(installationHubClient);
-
-            var wmsHubPath = ConfigurationManager.AppSettings.Get("WMSServiceAddressHubsEndpoint");
-            var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new System.Uri(wmsHubPath));
-            containerRegistry.RegisterInstance(wmsHub);
-        }
-
-        private static void RegisterWmsProviders(IContainerRegistry containerRegistry)
-        {
-            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get(WmsServiceAddress));
-
-            containerRegistry.RegisterInstance<IWmsDataProvider>(new WmsDataProvider(wmsServiceUrl));
-            containerRegistry.RegisterInstance<IWmsImagesProvider>(new WmsImagesProvider(wmsServiceUrl));
         }
 
         #endregion

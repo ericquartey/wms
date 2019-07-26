@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+        xmlns:vwIcon="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         Title="MainWindow"
         Width="1024"
         Height="768"
@@ -84,7 +85,7 @@
 
 
 
-        <custom:CustomInputFieldControlFocusable Grid.Row="1"
+        <vwIcon:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
                                                  Margin="80,370,0,0"
                                                  HorizontalAlignment="Left"
@@ -93,7 +94,7 @@
                                                  LabelText="{x:Static res:VWApp.UserLogin_UserName}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <custom:CustomInputFieldControlFocusable Grid.Row="1"
+        <vwIcon:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
                                                  Margin="80,430,0,0"
                                                  HorizontalAlignment="Left"
@@ -135,13 +136,13 @@
                 Command="{Binding ToggleThemeCommand}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <custom:VWIcon Height="36"
+                    <vwIcon:VWIcon Height="36"
                                    Margin="10"
                                    ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                                    Source="pack://application:,,,/Ferretto.VW.App;Component/Icons/theme_dark.png"
                                    Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
-                    <custom:VWIcon Height="36"
+                    <vwIcon:VWIcon Height="36"
                                    Margin="10"
                                    ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                                    Source="pack://application:,,,/Ferretto.VW.App;Component/Icons/theme_light.png"

@@ -1,9 +1,10 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class InstallationHubClient : AutoReconnectHubClient, IInstallationHubClient
     {
@@ -63,12 +64,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
+        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

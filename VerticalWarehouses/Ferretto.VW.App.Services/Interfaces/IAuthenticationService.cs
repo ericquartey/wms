@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Services.Interfaces
 {
     public interface IAuthenticationService
     {
@@ -26,8 +27,8 @@ namespace Ferretto.VW.App.Services
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <returns>True if the user was successfully logged in, False otherwise.</returns>
-        Task<bool> LogInAsync(string userName, string password);
+        /// <returns>The user claims if the user was successfully logged in, <c>null</c> otherwise.</returns>
+        Task<UserClaims> LogInAsync(string userName, string password);
 
         /// <summary>
         /// Logs out the user.

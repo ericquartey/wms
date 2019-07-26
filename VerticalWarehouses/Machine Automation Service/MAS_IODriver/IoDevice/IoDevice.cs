@@ -4,19 +4,20 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
     public partial class IoDevice : IIoDevice
     {
@@ -26,6 +27,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IoIndex index;
+
         private readonly BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue;
 
         private readonly Task ioReceiveTask;
@@ -34,9 +37,15 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IoSHDStatus ioSHDStatus;
 
+        private readonly IPAddress ipAddress;
+
         private readonly ILogger logger;
 
+        private readonly int port;
+
         private readonly ISHDTransport shdTransport;
+
+        private readonly CancellationToken stoppingToken;
 
         private IIoStateMachine currentStateMachine;
 
@@ -44,15 +53,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private bool forceIoStatusPublish;
 
-        private IoIndex index;
-
-        private IPAddress ipAddress;
-
         private Timer pollIoTimer;
-
-        private int port;
-
-        private CancellationToken stoppingToken;
 
         #endregion
 

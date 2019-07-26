@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.DTOs;
-using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Test/[controller]")]
     [ApiController]
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpGet("Homing")]
-        public async void Homing()
+        public void Homing()
         {
             this.HomingMethod();
         }

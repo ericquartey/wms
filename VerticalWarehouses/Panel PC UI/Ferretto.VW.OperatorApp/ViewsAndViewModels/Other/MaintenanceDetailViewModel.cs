@@ -4,20 +4,16 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
+using Ferretto.VW.App.Operator.Interfaces;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class MaintenanceDetailViewModel : BaseViewModel, IMaintenanceDetailViewModel
     {
         #region Fields
 
         private readonly CustomControlMaintenanceDetailDataGridViewModel dataGridViewModelRef;
-
-        private readonly DataGridKit selectedKit;
 
         private BindableBase dataGridViewModel;
 

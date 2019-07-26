@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     public class SwitchOffEndState : InverterStateBase
     {
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             //TEMP Workaround: Give time to inverter to perform the switchOff operation
-            Thread.Sleep(300);
+            Thread.Sleep(500);
 
             this.Logger.LogDebug($"Axis: {this.InverterStatus.CommonControlWord.HorizontalAxis} - ControlWord={this.InverterStatus.CommonControlWord.Value}");
 

@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public class ConfigurationValue
     {

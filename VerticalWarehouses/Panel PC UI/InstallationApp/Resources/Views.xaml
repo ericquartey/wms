@@ -1,7 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-                    xmlns:local="clr-namespace:Ferretto.VW.InstallationApp">
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState"
+                    xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements"
+                    xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
+                    xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
+                    xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
+                    xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
     <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
         <local:SSNavigationButtonsView />
     </DataTemplate>
@@ -20,95 +25,95 @@
     <DataTemplate DataType="{x:Type local:SSVariousInputsViewModel}">
         <local:SSVariousInputsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTShutterEngineViewModel}">
-        <local:LSMTShutterEngineView />
+    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTShutterEngineViewModel}">
+        <lowSpeedMovements:LSMTShutterEngineView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTHorizontalEngineViewModel}">
-        <local:LSMTHorizontalEngineView />
+    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTHorizontalEngineViewModel}">
+        <lowSpeedMovements:LSMTHorizontalEngineView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTVerticalEngineViewModel}">
-        <local:LSMTVerticalEngineView />
+    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTVerticalEngineViewModel}">
+        <lowSpeedMovements:LSMTVerticalEngineView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTNavigationButtonsViewModel}">
-        <local:LSMTNavigationButtonsView />
+    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTNavigationButtonsViewModel}">
+        <lowSpeedMovements:LSMTNavigationButtonsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:VerticalAxisCalibrationViewModel}">
-        <local:VerticalAxisCalibrationView />
+    <DataTemplate DataType="{x:Type singleViews:VerticalAxisCalibrationViewModel}">
+        <singleViews:VerticalAxisCalibrationView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:ResolutionCalibrationVerticalAxisViewModel}">
-        <local:ResolutionCalibrationVerticalAxisView />
+    <DataTemplate DataType="{x:Type singleViews:ResolutionCalibrationVerticalAxisViewModel}">
+        <singleViews:ResolutionCalibrationVerticalAxisView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:BeltBurnishingViewModel}">
-        <local:BeltBurnishingView />
+    <DataTemplate DataType="{x:Type singleViews:BeltBurnishingViewModel}">
+        <singleViews:BeltBurnishingView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:WeightControlViewModel}">
-        <local:WeightControlView />
+    <DataTemplate DataType="{x:Type singleViews:WeightControlViewModel}">
+        <singleViews:WeightControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:CellsPanelsControlViewModel}">
-        <local:CellsPanelsControlView />
+    <DataTemplate DataType="{x:Type singleViews:CellsPanelsControlViewModel}">
+        <singleViews:CellsPanelsControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:VerticalOffsetCalibrationViewModel}">
-        <local:VerticalOffsetCalibrationView />
+    <DataTemplate DataType="{x:Type singleViews:VerticalOffsetCalibrationViewModel}">
+        <singleViews:VerticalOffsetCalibrationView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:InstallationStateViewModel}">
-        <local:InstallationStateView />
+    <DataTemplate DataType="{x:Type singleViews:InstallationStateViewModel}">
+        <singleViews:InstallationStateView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:CellsControlViewModel}">
-        <local:CellsControlView />
+    <DataTemplate DataType="{x:Type singleViews:CellsControlViewModel}">
+        <singleViews:CellsControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:IdleViewModel}">
-        <local:IdleView />
+    <DataTemplate DataType="{x:Type singleViews:IdleViewModel}">
+        <singleViews:IdleView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Shutter1ControlViewModel}">
-        <local:Shutter1ControlView />
+    <DataTemplate DataType="{x:Type shuttersControl:Shutter1ControlViewModel}">
+        <shuttersControl:Shutter1ControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Shutter2ControlViewModel}">
-        <local:Shutter2ControlView />
+    <DataTemplate DataType="{x:Type shuttersControl:Shutter2ControlViewModel}">
+        <shuttersControl:Shutter2ControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Shutter3ControlViewModel}">
-        <local:Shutter3ControlView />
+    <DataTemplate DataType="{x:Type shuttersControl:Shutter3ControlViewModel}">
+        <shuttersControl:Shutter3ControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Shutter1HeightControlViewModel}">
-        <local:Shutter1HeightControlView />
+    <DataTemplate DataType="{x:Type shuttersHeightControl:Shutter1HeightControlViewModel}">
+        <shuttersHeightControl:Shutter1HeightControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Shutter2HeightControlViewModel}">
-        <local:Shutter2HeightControlView />
+    <DataTemplate DataType="{x:Type shuttersHeightControl:Shutter2HeightControlViewModel}">
+        <shuttersHeightControl:Shutter2HeightControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:Shutter3HeightControlViewModel}">
-        <local:Shutter3HeightControlView />
+    <DataTemplate DataType="{x:Type shuttersHeightControl:Shutter3HeightControlViewModel}">
+        <shuttersHeightControl:Shutter3HeightControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:MainWindowNavigationButtonsViewModel}">
-        <local:MainWindowNavigationButtonsView />
+    <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
+        <viewsAndViewModels:MainWindowNavigationButtonsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:FooterViewModel}">
-        <local:FooterView />
+    <DataTemplate DataType="{x:Type viewsAndViewModels:FooterViewModel}">
+        <viewsAndViewModels:FooterView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTMainViewModel}">
-        <local:LSMTMainView />
+    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTMainViewModel}">
+        <lowSpeedMovements:LSMTMainView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:SSMainViewModel}">
         <local:SSMainView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:CellsSideControlViewModel}">
-        <local:CellsSideControlView />
+    <DataTemplate DataType="{x:Type singleViews:CellsSideControlViewModel}">
+        <singleViews:CellsSideControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LoadFirstDrawerViewModel}">
-        <local:LoadFirstDrawerView />
+    <DataTemplate DataType="{x:Type singleViews:LoadFirstDrawerViewModel}">
+        <singleViews:LoadFirstDrawerView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LoadingDrawersViewModel}">
-        <local:LoadingDrawersView />
+    <DataTemplate DataType="{x:Type singleViews:LoadingDrawersViewModel}">
+        <singleViews:LoadingDrawersView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:BayControlViewModel}">
-        <local:BayControlView />
+    <DataTemplate DataType="{x:Type singleViews:BayControlViewModel}">
+        <singleViews:BayControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:DrawerLoadingUnloadingTestViewModel}">
-        <local:DrawerLoadingUnloadingTestView />
+    <DataTemplate DataType="{x:Type singleViews:DrawerLoadingUnloadingTestViewModel}">
+        <singleViews:DrawerLoadingUnloadingTestView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LSMTCarouselViewModel}">
-        <local:LSMTCarouselView />
+    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTCarouselViewModel}">
+        <lowSpeedMovements:LSMTCarouselView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SaveRestoreConfigViewModel}">
-        <local:SaveRestoreConfigView />
+    <DataTemplate DataType="{x:Type singleViews:SaveRestoreConfigViewModel}">
+        <singleViews:SaveRestoreConfigView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsThreePositionsViewModel}">

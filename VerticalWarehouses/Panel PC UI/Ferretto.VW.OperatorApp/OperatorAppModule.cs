@@ -2,20 +2,19 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Operator.HelpWindows;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.OperatorApp;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -64,23 +63,11 @@ namespace Ferretto.VW.App.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var operatorService = new OperatorService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IOperatorService>(operatorService);
-
-            var loadingUnitsService = new LoadingUnitsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ILoadingUnitsService>(loadingUnitsService);
-            var cellsService = new CellsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ICellsService>(cellsService);
-            var errorsService = new ErrorsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IErrorsService>(errorsService);
-
-            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
+            this.RegisterMachineAutomationServiceWebApis(containerRegistry);
 
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-            containerRegistry.RegisterSingleton<IBayManager, BayManager>();
             containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<INavigationService, NavigationService>();
 
@@ -114,7 +101,6 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IItemSearchViewModel, ItemSearchViewModel>();
             containerRegistry.RegisterSingleton<IMachineStatisticsViewModel, MachineStatisticsViewModel>();
 
-            containerRegistry.Register<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
             containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
@@ -124,6 +110,27 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
+        }
+
+        private void RegisterMachineAutomationServiceWebApis(IContainerRegistry containerRegistry)
+        {
+            var missionOperationsService = new MissionOperationsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMissionOperationsService>(missionOperationsService);
+
+            var loadingUnitsService = new LoadingUnitsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ILoadingUnitsService>(loadingUnitsService);
+
+            var cellsService = new CellsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ICellsService>(cellsService);
+
+            var errorsService = new ErrorsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IErrorsService>(errorsService);
+
+            var baysService = new BaysService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IBaysService>(baysService);
+
+            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
         }
 
         #endregion

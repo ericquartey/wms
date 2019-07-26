@@ -5,13 +5,11 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class MaintenanceMainPageViewModel : BaseViewModel, IMaintenanceMainPageViewModel
     {
@@ -20,8 +18,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         private readonly CustomControlMaintenanceDataGridViewModel dataGridViewModelRef;
 
         private readonly INavigationService navigationService;
-
-        private readonly DataGridKit selectedKit;
 
         private BindableBase dataGridViewModel;
 
@@ -77,7 +73,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #endregion
 
         #region Methods
-
 
         public override Task OnEnterViewAsync()
         {

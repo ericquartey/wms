@@ -1,9 +1,9 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Microsoft.AspNetCore.SignalR.Client;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public class OperatorHubClient : AutoReconnectHubClient, IOperatorHubClient
     {
@@ -18,7 +18,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         #region Events
 
-        public event EventHandler<MessageNotifiedEventArgs> MessageNotified;
+        public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
+
+        public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
 
@@ -26,21 +28,34 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<NotificationMessageUI<ExecuteMissionMessageData>>(
-               "ProvideMissionsToBay", this.OnProvidedMissionsToBay);
+            connection.On<INewMissionOperationAvailable>(
+                nameof(IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
 
-            connection.On<NotificationMessageUI<BayConnectedMessageData>>(
-                "OnConnectionEstablished", this.OnConnectionEstablished);
+            connection.On<IBayOperationalStatusChangedMessageData>(
+                nameof(IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
         }
 
-        private void OnConnectionEstablished(NotificationMessageUI<BayConnectedMessageData> message)
+        private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.BayStatusChanged?.Invoke(
+                this,
+                new BayStatusChangedEventArgs(
+                    e.BayId,
+                    e.BayType,
+                    e.BayStatus,
+                    e.PendingMissionsCount,
+                    e.CurrentMissionOperationId));
         }
 
-        private void OnProvidedMissionsToBay(NotificationMessageUI<ExecuteMissionMessageData> message)
+        private void OnMissionOperationAvailable(INewMissionOperationAvailable e)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MissionOperationAvailable?.Invoke(
+                this,
+                new MissionOperationAvailableEventArgs(
+                    e.BayId,
+                    e.MissionId,
+                    e.MissionOperationId,
+                    e.PendingMissionsCount));
         }
 
         #endregion

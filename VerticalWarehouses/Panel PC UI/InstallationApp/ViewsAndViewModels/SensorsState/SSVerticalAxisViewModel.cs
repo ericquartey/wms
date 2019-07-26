@@ -1,21 +1,24 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.App.Installation.Interfaces;
+//using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
     public class SSVerticalAxisViewModel : BindableBase, ISSVerticalAxisViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private const int INVERTER_INPUTS = 64;
 
-        private readonly IOSensorsStatus ioSensorsStatus;
+        private const int REMOTEIO_INPUTS = 48;
+
+        private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
 
@@ -28,6 +31,8 @@ namespace Ferretto.VW.InstallationApp
         private bool luPresentiInMachineSide;
 
         private bool luPresentInOperatorSide;
+
+        private bool[] sensorStatus;
 
         private IUpdateSensorsService updateSensorsService;
 
@@ -44,8 +49,8 @@ namespace Ferretto.VW.InstallationApp
         public SSVerticalAxisViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.ioSensorsStatus = new IOSensorsStatus();
             this.NavigationViewModel = null;
+            this.sensorStatus = new bool[REMOTEIO_INPUTS + INVERTER_INPUTS];
         }
 
         #endregion
@@ -58,11 +63,13 @@ namespace Ferretto.VW.InstallationApp
 
         public bool EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
 
-        public bool LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
+        public bool LuPresentInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
 
         public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
 
         public BindableBase NavigationViewModel { get; set; }
+
+        public bool[] SensorStatus { get => this.sensorStatus; set => this.SetProperty(ref this.sensorStatus, value); }
 
         public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
 
@@ -85,7 +92,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            this.DisableVerticalandCradleSensorsState();
+            //this.DisableVerticalandCradleSensorsState();
             this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                 message => this.UpdateVerticalandCradleSensorsState(message.Data.SensorsStates),
@@ -100,28 +107,30 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVerticalandCradleSensorsState);
         }
 
-        private void DisableVerticalandCradleSensorsState()
-        {
-            this.EmergencyEndRun = false;
-            this.ZeroVerticalSensor = false;
-            this.ElevatorEngineSelected = false;
-            this.CradleEngineSelected = false;
-            this.ZeroPawlSensor = false;
-            this.LuPresentiInMachineSide = false;
-            this.LuPresentInOperatorSide = false;
-        }
+        //private void DisableVerticalandCradleSensorsState()
+        //{
+        //    this.EmergencyEndRun = false;
+        //    this.ZeroVerticalSensor = false;
+        //    this.ElevatorEngineSelected = false;
+        //    this.CradleEngineSelected = false;
+        //    this.ZeroPawlSensor = false;
+        //    this.LuPresentInMachineSide = false;
+        //    this.LuPresentInOperatorSide = false;
+        //}
 
         private void UpdateVerticalandCradleSensorsState(bool[] message)
         {
-            this.ioSensorsStatus.UpdateInputStates(message);
+            this.SensorStatus = message;
 
-            this.EmergencyEndRun = this.ioSensorsStatus.EmergencyEndRun;
-            this.ZeroVerticalSensor = this.ioSensorsStatus.ZeroVertical;
-            this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
-            this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
-            this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
-            this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
-            this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
+            //this.ioSensorsStatus.UpdateInputStates(message);
+
+            //this.EmergencyEndRun = this.ioSensorsStatus.EmergencyEndRun;
+            //this.ZeroVerticalSensor = this.ioSensorsStatus.ZeroVertical;
+            //this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
+            //this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
+            //this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
+            //this.LuPresentInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
+            //this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
         }
 
         #endregion

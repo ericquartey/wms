@@ -87,6 +87,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? NextServiceDate { get; set; }
 
+        [Unique]
         public string Nickname { get; set; }
 
         [PositiveOrZero]

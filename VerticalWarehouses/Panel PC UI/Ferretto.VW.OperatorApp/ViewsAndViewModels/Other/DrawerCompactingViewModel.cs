@@ -1,15 +1,13 @@
 ﻿//Header test C#
+
 using System;
-using System.Threading.Tasks;
-using Ferretto.VW.App.Controls.Controls;
 using System.Windows.Input;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
     public class DrawerCompactingViewModel : BaseViewModel, IDrawerCompactingViewModel
     {

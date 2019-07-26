@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_DataLayer
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
         #region Methods
 
-        private async Task ApplicationLogWriterTaskFunction()
+        private void ApplicationLogWriterTaskFunction()
         {
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
@@ -33,18 +32,18 @@ namespace Ferretto.VW.MAS_DataLayer
                 switch (handleIndex)
                 {
                     case 0:
-                        await this.LogCommandMessageAsync();
+                        this.LogCommandMessage();
                         break;
 
                     case 1:
-                        await this.LogNotificationMessageAsync();
+                        this.LogNotificationMessage();
                         break;
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task LogCommandMessageAsync()
+        private void LogCommandMessage()
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -52,7 +51,16 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                var serializedData = JsonConvert.SerializeObject(message.Data);
+                var serializedData = "Data Not Serializable";
+
+                try
+                {
+                    serializedData = JsonConvert.SerializeObject(message.Data);
+                }
+                catch (Exception ex)
+                {
+                    serializedData = "Data is not serializabel";
+                }
 
                 var logEntry = new LogEntry();
 
@@ -68,8 +76,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 try
                 {
-                    await this.primaryDataContext.LogEntries.AddAsync(logEntry, this.stoppingToken);
-                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryDataContext.LogEntries.Add(logEntry);
+                        primaryDataContext.SaveChanges();
+                    }
                 }
                 catch
                 {
@@ -80,8 +91,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     try
                     {
-                        await this.secondaryDataContext.LogEntries.AddAsync(logEntry, this.stoppingToken);
-                        await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                        using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                        {
+                            secondaryDataContext.LogEntries.Add(logEntry);
+                            secondaryDataContext.SaveChanges();
+                        }
                     }
                     catch
                     {
@@ -112,7 +126,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        private async Task LogNotificationMessageAsync()
+        private void LogNotificationMessage()
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -120,18 +134,20 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                var logEntry = new LogEntry();
+                var serializedData = "Data Not Serializable";
 
                 try
                 {
-                    var serializedData = JsonConvert.SerializeObject(message.Data);
-                    logEntry.Data = serializedData;
+                    serializedData = JsonConvert.SerializeObject(message.Data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    logEntry.Data = "Data Not Serializable";
+                    serializedData = "Data is not serializabel";
                 }
 
+                var logEntry = new LogEntry();
+
+                logEntry.Data = serializedData;
                 logEntry.Description = message.Description;
                 logEntry.Destination = message.Destination.ToString();
                 logEntry.ErrorLevel = message.ErrorLevel.ToString();
@@ -145,8 +161,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 try
                 {
-                    this.primaryDataContext.LogEntries.Add(logEntry);
-                    await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
+                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                    {
+                        primaryDataContext.LogEntries.Add(logEntry);
+                        primaryDataContext.SaveChanges();
+                    }
                 }
                 catch
                 {
@@ -157,8 +176,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 {
                     try
                     {
-                        this.secondaryDataContext.LogEntries.Add(logEntry);
-                        await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                        using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
+                        {
+                            secondaryDataContext.LogEntries.Add(logEntry);
+                            secondaryDataContext.SaveChanges();
+                        }
                     }
                     catch
                     {

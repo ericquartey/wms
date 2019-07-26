@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls.Utils
 {
@@ -24,6 +19,8 @@ namespace Ferretto.VW.App.Controls.Utils
         #region Properties
 
         public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
+
+        public int Id { get; set; }
 
         public string List { get => this.list; set => this.SetProperty(ref this.list, value); }
 

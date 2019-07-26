@@ -1,17 +1,17 @@
 ﻿using System.Windows.Input;
+using Ferretto.VW.App.Operator.HelpWindows;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.Resources;
+using Ferretto.VW.App.Operator.Resources.Enumerations;
+using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.Resources;
-using Ferretto.VW.OperatorApp.Resources.Enumerations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp
+namespace Ferretto.VW.App.Operator
 {
     public delegate void ClickedOnMachineModeEvent();
 
@@ -20,6 +20,8 @@ namespace Ferretto.VW.OperatorApp
     public class MainWindowViewModel : BindableBase, IMainWindowViewModel
     {
         #region Fields
+
+        private readonly IBaysService baysService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -53,14 +55,41 @@ namespace Ferretto.VW.OperatorApp
             IEventAggregator eventAggregator,
             IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
             IIdleViewModel idleViewModel,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IBaysService baysService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (navigationButtonsViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationButtonsViewModel));
+            }
+
+            if (idleViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(idleViewModel));
+            }
+
             if (authenticationService == null)
             {
                 throw new System.ArgumentNullException(nameof(authenticationService));
             }
 
+            if (baysService == null)
+            {
+                throw new System.ArgumentNullException(nameof(baysService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.baysService = baysService;
+
+            // Hack: should be done on view model initialized
+            this.baysService.ActivateAsync(2); // TODO retrieve real bay Id
+            // Hack: end
+
             this.NavigationRegionCurrentViewModel = navigationButtonsViewModel as MainWindowNavigationButtonsViewModel;
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)idleViewModel;
@@ -138,17 +167,6 @@ namespace Ferretto.VW.OperatorApp
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
-
-            this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Subscribe(
-             message => this.OnCurrentMissionChanged(message.Data.Mission, message.Data.MissionsQuantity));
-        }
-
-        private void OnCurrentMissionChanged(Mission mission, int missionsQuantity)
-        {
-            if (this.ContentRegionCurrentViewModel is IDrawerActivityViewModel content)
-            {
-                content.UpdateView();
-            }
         }
 
         #endregion

@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.InstallationApp.Interfaces;
+﻿using Ferretto.VW.App.Installation.Interfaces;
 
-namespace Ferretto.VW.InstallationApp.Resources
+namespace Ferretto.VW.App.Installation.Resources
 {
     public class NotificationMessageReceivedMessageData : INotificationMessageReceivedMessageData
     {

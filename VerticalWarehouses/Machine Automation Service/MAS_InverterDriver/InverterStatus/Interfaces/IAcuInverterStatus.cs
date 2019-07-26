@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
+﻿namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
     public interface IAcuInverterStatus : IInverterStatusBase
     {

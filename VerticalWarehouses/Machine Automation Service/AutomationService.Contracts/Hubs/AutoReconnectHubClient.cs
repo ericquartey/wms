@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
     public abstract class AutoReconnectHubClient : IAutoReconnectHubClient
     {
@@ -77,6 +78,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             await this.connection?.StopAsync();
 
             this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
+        }
+
+        public async Task SendAsync(string methodName)
+        {
+            await this.connection.SendAsync(methodName);
         }
 
         protected abstract void RegisterEvents(HubConnection connection);

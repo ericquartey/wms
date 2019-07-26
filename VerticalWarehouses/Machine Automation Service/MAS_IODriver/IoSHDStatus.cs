@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class IoSHDStatus
     {
@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS_IODriver
         private const int TOTAL_INPUTS = 16;
 
         private const int TOTAL_OUTPUTS = 8;
-
-        private readonly byte errorCode;
 
         private readonly bool[] inputs;
 

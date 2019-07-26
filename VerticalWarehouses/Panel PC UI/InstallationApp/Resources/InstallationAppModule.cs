@@ -2,10 +2,18 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Installation.HelpWindows;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.ViewsAndViewModels;
+using Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements;
+using Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState;
+using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
+using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
+using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Events;
 using Prism.Ioc;
@@ -13,7 +21,7 @@ using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.App.Installation
+namespace Ferretto.VW.App.Installation.Resources
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -131,7 +139,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterInstance<INotificationService>(
                 new NotificationService(
                     this.container.Resolve<IEventAggregator>(),
-                    this.container.Resolve<IOperatorHubClient>(),
                     this.container.Resolve<IInstallationHubClient>()));
 
             this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);

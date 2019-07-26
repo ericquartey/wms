@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Contracts
+﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs
 {
     public class ReceivedMessageEventArgs : System.EventArgs
     {

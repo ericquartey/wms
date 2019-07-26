@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Ferretto.VW.App.Controls.Utils;
 
 namespace Ferretto.VW.App.Controls.Controls
 {

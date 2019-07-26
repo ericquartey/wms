@@ -6,22 +6,22 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public partial class FiniteStateMachines : BackgroundService
     {
@@ -39,6 +39,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly Task fieldNotificationReceiveTask;
 
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
+
         private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly MachineSensorsStatus machineSensorsStatus;
@@ -47,7 +51,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly Task notificationReceiveTask;
 
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly ISetupStatusDataLayer setupStatus;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
+
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private IStateMachine currentStateMachine;
 
@@ -69,7 +77,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration)
+            ISetupStatusDataLayer setupStatus,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
+            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
+            IVerticalAxisDataLayer verticalAxis,
+            IHorizontalAxisDataLayer horizontalAxis)
         {
             this.eventAggregator = eventAggregator;
 
@@ -77,7 +89,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
+            this.setupStatus = setupStatus;
+
             this.vertimagConfiguration = vertimagConfiguration;
+
+            this.generalInfoDataLayer = generalInfoDataLayer;
+
+            this.verticalAxis = verticalAxis;
+
+            this.horizontalAxis = horizontalAxis;
 
             this.machineSensorsStatus = new MachineSensorsStatus();
 
@@ -214,6 +234,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     case MessageType.CheckCondition:
                         this.ProcessCheckConditionMessage(receivedMessage);
+                        break;
+
+                    case MessageType.DrawerOperation:
+                        this.ProcessDrawerOperation(receivedMessage);
                         break;
                 }
             }
@@ -432,7 +456,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     try
                                     {
                                         // update the installation status homing flag in the dataLayer
-                                        this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync(
+                                        this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue(
                                             (long)SetupStatus.VerticalHomingDone,
                                             (long)ConfigurationCategory.SetupStatus,
                                             true);
@@ -556,6 +580,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             }
                         }
                         break;
+
+                    case MessageType.DrawerOperation:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogDebug($"17:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"18:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
                 }
 
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
@@ -563,9 +612,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task RetrieveIoDevicesConfigurationAsync()
+        private void RetrieveIoDevicesConfigurationAsync()
         {
-            this.ioIndexDeviceList = await this.vertimagConfiguration.GetInstalledIoListAsync();
+            this.ioIndexDeviceList = this.vertimagConfiguration.GetInstalledIoList();
         }
 
         private void SendMessage(IMessageData data)

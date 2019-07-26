@@ -1,26 +1,28 @@
 ﻿using System;
 using System.IO;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataLayer.Configurations;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataModels.Errors;
+using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.DataLayer
+namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
     public class DataLayerContext : DbContext
     {
         #region Fields
 
-        private const string ConnectionStringName = "AutomationService";
+        private const string CONNECTION_STRING_NAME = "AutomationService";
 
-        private const string DefaultApplicationSettingsFile = "appsettings.json";
+        private const string DEFAULT_APPLICATION_SETTINGS_FILE = "appsettings.json";
 
         #endregion
 
-        // TODO: use IConfiguration injection instead
-
         #region Constructors
 
+        // TODO: use IConfiguration injection instead
         public DataLayerContext()
         {
         }
@@ -33,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public DbSet<Bay> Bays { get; set; }
 
         public DbSet<Cell> Cells { get; set; }
 
@@ -71,14 +75,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                .AddJsonFile(DEFAULT_APPLICATION_SETTINGS_FILE, optional: false, reloadOnChange: false)
                 .Build();
 
-            var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
+            var connectionString = configurationBuilder.GetConnectionString(CONNECTION_STRING_NAME);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
+                throw new InvalidOperationException($"Unable to locate the connection string '{CONNECTION_STRING_NAME}'.");
             }
 
             optionsBuilder.UseSqlite(connectionString);
@@ -91,17 +95,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-
+            modelBuilder.ApplyConfiguration(new BaysConfiguration());
+            modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
-
             modelBuilder.ApplyConfiguration(new ErrorConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
-
-            modelBuilder.ApplyConfiguration(new CellsConfiguration());
-
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
+            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
+            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
         }
 

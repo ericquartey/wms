@@ -2,16 +2,18 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Ferretto.VW.App.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
-using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.ConnectionStatusChangedEventArgs;
-using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.IOperatorHubClient;
+using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.ConnectionStatusChangedEventArgs;
+using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IOperatorHubClient;
 
 namespace Ferretto.VW.App
 {
@@ -27,9 +29,13 @@ namespace Ferretto.VW.App
 
         private readonly ISessionService sessionService;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IBayManager bayManager;
+
+        private readonly IIdentityService identityService;
 
         private readonly IThemeService themeService;
+
+        private readonly IModuleManager moduleManager;
 
         private bool isBusy;
 
@@ -49,8 +55,10 @@ namespace Ferretto.VW.App
             IEventAggregator eventAggregator,
             IAuthenticationService authenticationService,
             IThemeService themeService,
+            IModuleManager moduleManager,
             ISessionService sessionService,
-            IMachineProvider machineProvider)
+            IBayManager bayManager,
+            IIdentityService identityService)
         {
             if (eventAggregator == null)
             {
@@ -67,21 +75,33 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(themeService));
             }
 
+            if (moduleManager == null)
+            {
+                throw new ArgumentNullException(nameof(moduleManager));
+            }
+
             if (sessionService == null)
             {
                 throw new ArgumentNullException(nameof(sessionService));
             }
 
-            if (machineProvider == null)
+            if (bayManager == null)
             {
-                throw new ArgumentNullException(nameof(machineProvider));
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
             }
 
             this.eventAggregator = eventAggregator;
             this.themeService = themeService;
+            this.moduleManager = moduleManager;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
-            this.machineProvider = machineProvider;
+            this.bayManager = bayManager;
+            this.identityService = identityService;
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -94,7 +114,7 @@ namespace Ferretto.VW.App
 #endif
         }
 
-        private async void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async Task OnHubConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             if (!e.IsConnected)
             {
@@ -104,7 +124,9 @@ namespace Ferretto.VW.App
             {
                 try
                 {
-                    this.Machine = await this.machineProvider.GetIdentityAsync();
+                    await this.bayManager.InitializeAsync();
+                    this.Machine = this.bayManager.Identity;
+
                     this.ErrorMessage = null;
                 }
                 catch
@@ -178,50 +200,52 @@ namespace Ferretto.VW.App
         {
             this.operatorHubClient = this.container.Resolve<IOperatorHubClient>();
 
-            this.operatorHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
-            if (!this.operatorHubClient.IsConnected)
-            {
-                this.ErrorMessage = "Machine Automation Service unavailable.";
-            }
+            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionStatusChanged(sender, e);
         }
 
         public bool IsMachineIdentityAvailable
-        { get => this.isMachineIdentityAvailable; set => this.SetProperty(ref this.isMachineIdentityAvailable, value); }
+        {
+            get => this.isMachineIdentityAvailable;
+            set => this.SetProperty(ref this.isMachineIdentityAvailable, value);
+        }
 
         private async Task ExecuteLoginCommandAsync()
         {
             this.ErrorMessage = null;
 
-            this.UserLogin.IsValidationEnabled = true;
-            if (!string.IsNullOrEmpty(this.UserLogin.Error))
-            {
-                this.ErrorMessage = this.UserLogin.Error;
-                return;
-            }
+            //TEMP: I have commented these code lines in order to use the AS without connection of WMS server
+            // Start always the Installer application
 
-            this.IsBusy = true;
+            //this.UserLogin.IsValidationEnabled = true;
+            //if (!string.IsNullOrEmpty(this.UserLogin.Error))
+            //{
+            //    this.ErrorMessage = this.UserLogin.Error;
+            //    return;
+            //}
 
-            var loginSuccessful = await this.authenticationService.LogInAsync(
-               this.UserLogin.UserName,
-               this.UserLogin.Password);
+            //this.IsBusy = true;
 
-            if (!loginSuccessful)
-            {
-                this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
-                this.IsBusy = false;
-                return;
-            }
+            //var claims = await this.authenticationService.LogInAsync(
+            //   this.UserLogin.UserName,
+            //   this.UserLogin.Password);
 
-            switch (this.UserLogin.UserName.ToUpperInvariant())
-            {
-                case "INSTALLER":
-                    this.LoadInstallerModule();
-                    break;
+            //if (claims != null)
+            //{
+            //    if (claims.AccessLevel == UserAccessLevel.SuperUser)
+            //    {
+            //        this.LoadInstallerModule();
+            //    }
+            //    else
+            //    {
+            //        this.LoadOperatorModule();
+            //    }
+            //}
+            //else
+            //{
+            //    this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
+            //}
 
-                case "OPERATOR":
-                    this.LoadOperatorModule();
-                    break;
-            }
+            this.LoadInstallerModule();
 
             this.IsBusy = false;
         }
@@ -242,8 +266,7 @@ namespace Ferretto.VW.App
 
             try
             {
-                var moduleManager = this.container.Resolve<IModuleManager>();
-                moduleManager.LoadModule("Installation");
+                this.moduleManager.LoadModule("Installation");
 
                 this.IsBusy = false;
 
@@ -265,8 +288,7 @@ namespace Ferretto.VW.App
 
             try
             {
-                var moduleManager = this.container.Resolve<IModuleManager>();
-                moduleManager.LoadModule("Operator");
+                this.moduleManager.LoadModule("Operator");
 
                 this.IsBusy = false;
 

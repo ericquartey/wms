@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class VerticalOffsetCalibrationViewModel : BindableBase, IVerticalOffsetCalibrationViewModel
     {
@@ -43,7 +46,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStepUpButtonActive = true;
 
-        private string noteString = App.Resources.InstallationApp.VerticalOffsetCalibration;
+        private string noteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
         private IOffsetCalibrationService offsetCalibrationService;
 
@@ -68,7 +71,7 @@ namespace Ferretto.VW.InstallationApp
         public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.NoteString = App.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NoteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
             this.NavigationViewModel = null;
         }
 
@@ -165,7 +168,7 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (SwaggerException)
             {
-                this.NoteString = App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+                this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
         }
 
@@ -230,15 +233,15 @@ namespace Ferretto.VW.InstallationApp
                 switch (p.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = App.Resources.InstallationApp.GoToInitialPosition;
+                        this.NoteString = VW.App.Resources.InstallationApp.GoToInitialPosition;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = App.Resources.InstallationApp.GoToInitialPosition;
+                        this.NoteString = VW.App.Resources.InstallationApp.GoToInitialPosition;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = App.Resources.InstallationApp.Error;
+                        this.NoteString = VW.App.Resources.InstallationApp.Error;
                         break;
 
                     default:

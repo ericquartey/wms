@@ -2,9 +2,9 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
-namespace Ferretto.VW.MAS_IODriver.Interface
+namespace Ferretto.VW.MAS.IODriver.Interface
 {
     public interface ISHDTransport
     {
