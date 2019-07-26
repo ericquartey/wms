@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 // ReSharper disable ArrangeThisQualifier
 
@@ -34,20 +35,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
-        public bool IsDrawerCompletelyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+        public bool IsDrawerCompletelyOffCradle => !this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && !this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
-        public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+        public bool IsDrawerCompletelyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
         public bool IsDrawerInBay1Up => this.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay1];
 
-        public bool IsDrawerPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+
+        public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
         public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalStateBay1];
 
-        public bool IsZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawl];
+        public bool IsSensorZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawl];
 
-        public bool IsZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVertical];
+        public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVertical];
 
         #endregion
 

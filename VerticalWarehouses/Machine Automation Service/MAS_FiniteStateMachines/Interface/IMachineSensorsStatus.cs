@@ -10,13 +10,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         bool IsDrawerCompletelyOffCradle { get; }
 
-        bool IsDrawerCompletelyOnCradle { get; }
+        bool IsDrawerCompletelyOnCradleBay1 { get; }
 
         bool IsDrawerInBay1Up { get; }
 
-        bool IsDrawerPartiallyOnCradle { get; }
+        bool IsDrawerPartiallyOnCradleBay1 { get; }
 
-        bool IsMachineInEmergencyState { get; }
+        bool IsMachineInEmergencyStateBay1 { get; }
 
         bool IsSensorZeroOnCradle { get; }
 
