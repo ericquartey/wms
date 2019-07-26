@@ -69,6 +69,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 {
                     // INFO Vertical LSM
                     case Axis.Vertical:
+                        maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                            (long)HorizontalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
                         maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                             (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
                         maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(

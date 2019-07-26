@@ -273,15 +273,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     case ConfigurationDataType.String:
                         var stringValue = jsonDataValue.Value<string>();
-                        var splitDot = stringValue.Split('.');
-                        var ipAddress = false;
 
-                        if (splitDot.Length == 4)
-                        {
-                            ipAddress = true;
-                        }
-
-                        if (ipAddress && IPAddress.TryParse(stringValue, out var configurationValue))
+                        if (IPAddress.TryParse(stringValue, out var configurationValue))
                         {
                             this.SetIpAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
                         }

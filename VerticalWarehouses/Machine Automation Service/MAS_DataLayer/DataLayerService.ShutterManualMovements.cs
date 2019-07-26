@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IShutterManualMovements
+    public partial class DataLayerService : IShutterManualMovementsDataLayer
     {
         #region Properties
 

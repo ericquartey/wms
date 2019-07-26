@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -91,20 +91,20 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         public void DrawerActivityButtonMethod()
         {
-            var mission = this.bayManager.CurrentMission;
-            if (mission != null)
+            var missionOperation = this.bayManager.CurrentMissionOperation;
+            if (missionOperation != null)
             {
-                switch (mission.Type)
+                switch (missionOperation.Type)
                 {
-                    case MissionType.Inventory:
+                    case MissionOperationType.Inventory:
                         this.navigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                         break;
 
-                    case MissionType.Pick:
+                    case MissionOperationType.Pick:
                         this.navigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                         break;
 
-                    case MissionType.Put:
+                    case MissionOperationType.Put:
                         this.navigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                         break;
                 }

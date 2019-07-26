@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Errors {
@@ -358,29 +358,20 @@ namespace Ferretto.WMS.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; for field &apos;{1}&apos; is already used by another entry..
+        /// </summary>
+        public static string TheValueForFieldIsAlreadyUsedByAnotherEntry {
+            get {
+                return ResourceManager.GetString("TheValueForFieldIsAlreadyUsedByAnotherEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This Registration Number is already present for this Item..
         /// </summary>
         public static string ThisRegistrationNumberIsAlreadyPresentForThisItem {
             get {
                 return ResourceManager.GetString("ThisRegistrationNumberIsAlreadyPresentForThisItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to complete the specified mission because it has no associated compartment..
-        /// </summary>
-        public static string UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment {
-            get {
-                return ResourceManager.GetString("UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unable to complete the specified mission because it has no associated item..
-        /// </summary>
-        public static string UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem {
-            get {
-                return ResourceManager.GetString("UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem", resourceCulture);
             }
         }
         

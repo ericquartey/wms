@@ -16,17 +16,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IDrawerOperationMessageData drawerOperationData;
 
-        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
 
-        private readonly IHorizontalAxis horizontalAxis;
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
 
         private readonly ILogger logger;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
-        private readonly ISetupStatus setupStatus;
+        private readonly ISetupStatusDataLayer setupStatus;
 
-        private readonly IVerticalAxis verticalAxis;
+        private readonly IVerticalAxisDataLayer verticalAxis;
 
         private bool disposed;
 
@@ -36,11 +36,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         public MoveDrawerStateMachine(
             IEventAggregator eventAggregator,
-            ISetupStatus setupStatus,
+            ISetupStatusDataLayer setupStatus,
             IMachineSensorsStatus machineSensorsStatus,
-            IGeneralInfoDataLayer generalInfoDataLayer,
-            IVerticalAxis verticalAxis,
-            IHorizontalAxis horizontalAxis,
+            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
+            IVerticalAxisDataLayer verticalAxis,
+            IHorizontalAxisDataLayer horizontalAxis,
             IDrawerOperationMessageData drawerOperationData,
             ILogger logger)
             : base(eventAggregator, logger)
@@ -111,6 +111,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public override void Start()
         {
             //TODO get homing status from DL. Wait until DL synchronous refactoring
+
+            // NOTE: If you want to use it in Bender, then comment the line related to che check
 
             //TEMP Check if homing has been done: if not, send a message of error
             var homingDone = this.setupStatus.VerticalHomingDone;

@@ -6,8 +6,35 @@ namespace Ferretto.VW.App.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
+        #region Fields
+
+        private readonly IStatusMessageService statusMessageService;
+
         private readonly IUsersDataService usersDataService;
 
+        #endregion
+
+        #region Constructors
+
+        public AuthenticationService(
+            IUsersDataService usersDataService,
+            IStatusMessageService statusMessageService)
+        {
+            if (usersDataService == null)
+            {
+                throw new System.ArgumentNullException(nameof(usersDataService));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
+            this.usersDataService = usersDataService;
+            this.statusMessageService = statusMessageService;
+        }
+
+        #endregion
 
         #region Events
 
@@ -15,18 +42,9 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
-
-        public AuthenticationService(IUsersDataService usersDataService)
-        {
-            if (usersDataService == null)
-            {
-                throw new System.ArgumentNullException(nameof(usersDataService));
-            }
-
-            this.usersDataService = usersDataService;
-        }
-
         #region Properties
+
+        public UserAccessLevel AccessLevel { get; private set; }
 
         public string UserName { get; private set; }
 
@@ -34,40 +52,27 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public async Task<bool> LogInAsync(string userName, string password)
+        public async Task<UserClaims> LogInAsync(string userName, string password)
         {
-            var isLoginSuccessful = false;
-            // TODO: uncomment when data service is released
-            /*
-            var loginSuccessful = await this.usersDataService.IsValidAsync(
-                new User
-                {
-                    Login = this.UserLogin.UserName,
-                    Password = this.UserLogin.Password
-                });
-              */
-
-
-            switch (userName.ToUpperInvariant())
+            try
             {
-                case "OPERATOR":
-                    isLoginSuccessful = password == "password";
-                    break;
+                var userClaims = await this.usersDataService
+                    .AuthenticateWithResourceOwnerPasswordAsync(
+                        userName,
+                        password);
 
-                case "INSTALLER":
-                    isLoginSuccessful = password == "password";
-                    break;
-            }
-
-            if (isLoginSuccessful)
-            {
                 this.UserName = userName;
-                this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName));
+                this.AccessLevel = userClaims.AccessLevel;
+                this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, userClaims.AccessLevel));
+
+                return userClaims;
             }
+            catch (SwaggerException ex)
+            {
+                this.statusMessageService.Notify(ex, "Unable to login.");
 
-            await Task.Delay(500);
-
-            return isLoginSuccessful;
+                return null;
+            }
         }
 
         public Task LogOutAsync()

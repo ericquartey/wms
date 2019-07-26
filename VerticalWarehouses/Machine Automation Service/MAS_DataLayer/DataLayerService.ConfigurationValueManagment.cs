@@ -12,7 +12,6 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IConfigurationValueManagmentDataLayer

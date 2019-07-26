@@ -18,13 +18,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IDrawerOperationMessageData drawerOperationData;
 
-        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
 
-        private readonly IHorizontalAxis horizontalAxis;
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
-        private readonly IVerticalAxis verticalAxis;
+        private readonly IVerticalAxisDataLayer verticalAxis;
 
         private bool disposed;
 
@@ -37,9 +37,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
         public MoveDrawerCradleState(
             IStateMachine parentMachine,
             IDrawerOperationMessageData drawerOperationData,
-            IGeneralInfoDataLayer generalInfoDataLayer,
-            IVerticalAxis verticalAxis,
-            IHorizontalAxis horizontalAxis,
+            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
+            IVerticalAxisDataLayer verticalAxis,
+            IHorizontalAxisDataLayer horizontalAxis,
             IMachineSensorsStatus machineSensorsStatus,
             ILogger logger)
             : base(parentMachine, logger)
@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                     case MessageStatus.OperationEnd:
 
                         //TEMP Check sensors' status
+                        // NOTE: Comment the line about the sensor check, if you use it with Bender
                         if (!this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
                         {
                             var notificationMessage = new NotificationMessage(

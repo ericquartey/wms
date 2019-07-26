@@ -35,7 +35,12 @@ namespace Ferretto.WMS.App.Modules.Layout
 
         public LoginViewModel()
         {
+#if DEBUG
+            this.User = new User { Login = "admin" };
+#else
             this.User = new User();
+#endif
+
             this.LoginCheck = App.Resources.Layout.Access;
             this.IsBusy = false;
             this.IsEnabled = true;

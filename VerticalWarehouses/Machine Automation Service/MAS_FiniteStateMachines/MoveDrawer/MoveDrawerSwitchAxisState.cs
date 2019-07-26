@@ -18,15 +18,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
         private readonly IDrawerOperationMessageData drawerOperationData;
 
-        private readonly IGeneralInfoDataLayer generalInfoDataLayer;
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
 
-        private readonly IHorizontalAxis horizontalAxis;
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
 
         private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly Axis targetAxis;
 
-        private readonly IVerticalAxis verticalAxis;
+        private readonly IVerticalAxisDataLayer verticalAxis;
 
         private bool disposed;
 
@@ -42,9 +42,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             IStateMachine parentMachine,
             Axis targetAxis,
             IDrawerOperationMessageData drawerOperationData,
-            IGeneralInfoDataLayer generalInfoDataLayer,
-            IVerticalAxis verticalAxis,
-            IHorizontalAxis horizontalAxis,
+            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
+            IVerticalAxisDataLayer verticalAxis,
+            IHorizontalAxisDataLayer horizontalAxis,
             IMachineSensorsStatus machineSensorsStatus,
             ILogger logger)
             : base(parentMachine, logger)
