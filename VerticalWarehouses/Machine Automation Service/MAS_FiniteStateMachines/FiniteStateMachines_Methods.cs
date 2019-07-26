@@ -25,15 +25,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             switch (condition)
             {
                 case ConditionToCheckType.MachineIsInEmergencyState:
-                    result = this.machineSensorsStatus.MachineIsInEmergencyState;
+                    result = this.machineSensorsStatus.IsMachineInEmergencyStateBay1;
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.DrawerIsCompletelyOnCradle;
+                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                    result = this.machineSensorsStatus.DrawerIsPartiallyOnCradle;
+                    result = this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1;
                     break;
 
                 //TEMP Add here other condition getters
