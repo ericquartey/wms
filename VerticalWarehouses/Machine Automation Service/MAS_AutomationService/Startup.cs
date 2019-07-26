@@ -109,11 +109,11 @@ namespace Ferretto.VW.MAS.AutomationService
             var useMockedTransport = this.Configuration.UseInverterDriverMock();
             if (useMockedTransport)
             {
-                services.AddScoped<ISocketTransport, SocketTransportMock>();
+                services.AddSingleton<ISocketTransport, SocketTransportMock>();
             }
             else
             {
-                services.AddScoped<ISocketTransport, SocketTransport>();
+                services.AddSingleton<ISocketTransport, SocketTransport>();
             }
         }
 
