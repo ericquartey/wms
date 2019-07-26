@@ -83,12 +83,17 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            foreach (var b in this.CurrentSensorStatus)
+            string currentSensorStatus = string.Empty;
+            if (this.CurrentSensorStatus != null)
             {
-                sb.AppendFormat("{0:x2}", b);
+                var sb = new StringBuilder();
+                foreach (var b in this.CurrentSensorStatus)
+                {
+                    sb.AppendFormat("{0:x2}", b);
+                }
+                currentSensorStatus = sb.ToString();
             }
-            return $"Position:{this.AxisPosition} Interval:{this.AxisUpdateInterval} Position:{this.AxisPosition} CurrentAxis:{this.CurrentAxis.ToString()} CurrentPosition:{this.CurrentPosition} CurrentSensorStatus:{sb.ToString()}";
+            return $"Position:{this.AxisPosition} Interval:{this.AxisUpdateInterval} Position:{this.AxisPosition} CurrentAxis:{this.CurrentAxis} CurrentPosition:{this.CurrentPosition} CurrentSensorStatus:{currentSensorStatus}";
         }
 
         #endregion

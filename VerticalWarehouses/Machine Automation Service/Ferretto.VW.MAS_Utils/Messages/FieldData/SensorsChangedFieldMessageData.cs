@@ -24,12 +24,18 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            foreach (var b in this.SensorsStates)
+            string sensorsStates = string.Empty;
+            if (this.SensorsStates != null)
             {
-                sb.AppendFormat("{0:x2};", b);
+                var sb = new StringBuilder();
+                foreach (var b in this.SensorsStates)
+                {
+                    sb.AppendFormat("{0:x2}", b);
+                }
+                sensorsStates = sb.ToString();
             }
-            return $"SensorsStates:{sb.ToString()} SensorsStatus:{this.SensorsStatus}";
+
+            return $"SensorsStatus(bool):{this.SensorsStatus} SensorsStates:{sensorsStates}";
         }
 
         #endregion
