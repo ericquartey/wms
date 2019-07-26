@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
             //TODO get homing status from DL. Wait until DL synchronous refactoring
 
             //TEMP Check if homing has been done: if not, send a message of error
-            var homingDone = true; // = this.setupStatus.VerticalHomingDone;
+            var homingDone = this.setupStatus.VerticalHomingDone;
             if (!homingDone)
             {
                 var notificationMessage = new NotificationMessage(
