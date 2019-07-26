@@ -1,10 +1,11 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
-    public class MachineSensorsStatus
+    public class MachineSensorsStatus : IMachineSensorsStatus
     {
         #region Fields
 
@@ -36,6 +37,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public bool IsDrawerCompletelyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
         public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+
+        public bool IsDrawerInBay1Up => this.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
         public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalStateBay1];

@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
+using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
@@ -13,7 +14,9 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines
+
 {
     public partial class FiniteStateMachines
     {
@@ -92,6 +95,43 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            }
+        }
+
+        private void ProcessDrawerOperation(CommandMessage receivedMessage)
+        {
+            this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
+
+            if (receivedMessage.Data is IDrawerOperationMessageData data)
+            {
+                this.logger.LogTrace("2: Starting Drawer Operation FSM");
+
+                this.currentStateMachine = new MoveDrawerStateMachine(
+                    this.eventAggregator,
+                    this.setupStatus,
+                    this.machineSensorsStatus,
+                    this.generalInfoDataLayer,
+                    this.verticalAxis,
+                    this.horizontalAxis,
+                    data,
+                    this.logger);
+
+                try
+                {
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError($"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine");
+
+                    this.SendMessage(new FsmExceptionMessageData(ex, $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine", 1, MessageVerbosity.Error));
+                }
+            }
+            else
+            {
+                this.logger.LogError($"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
+
+                this.SendMessage(new FsmExceptionMessageData(null, $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type", 2, MessageVerbosity.Error));
             }
         }
 
