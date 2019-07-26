@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -10,6 +11,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private readonly IIdentityService identityService;
+
         private readonly IMissionOperationsService missionOperationsAutomationService;
 
         private readonly IMissionOperationsDataService missionOperationsDataService;
@@ -18,7 +21,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
-        private MissionOperationInfo currentMissionOperation;
+        private readonly IStatusMessageService statusMessageService;
+
+        private MissionOperation currentMissionOperation;
 
         #endregion
 
@@ -26,13 +31,20 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IOperatorHubClient operatorHubClient,
+            IIdentityService identityService,
             IMissionOperationsDataService missionOperationsDataService,
             IMissionOperationsService missionOperationsAutomationService,
-            IMissionsDataService missionsDataService)
+            IMissionsDataService missionsDataService,
+            IStatusMessageService statusMessageService)
         {
             if (operatorHubClient == null)
             {
                 throw new ArgumentNullException(nameof(operatorHubClient));
+            }
+
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
             }
 
             if (missionOperationsDataService == null)
@@ -50,13 +62,19 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(missionsDataService));
             }
 
+            if (statusMessageService == null)
+            {
+                throw new ArgumentNullException(nameof(statusMessageService));
+            }
+
             this.missionOperationsDataService = missionOperationsDataService;
             this.missionOperationsAutomationService = missionOperationsAutomationService;
             this.missionsDataService = missionsDataService;
+            this.statusMessageService = statusMessageService;
             this.operatorHubClient = operatorHubClient;
-
-            this.operatorHubClient.BayStatusChanged += this.OnBayStatusChanged;
-            this.operatorHubClient.MissionOperationAvailable += this.OnMissionOperationAvailable;
+            this.identityService = identityService;
+            this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
+            this.operatorHubClient.MissionOperationAvailable += async (sender, e) => await this.OnMissionOperationAvailableAsync(sender, e);
         }
 
         #endregion
@@ -73,7 +91,7 @@ namespace Ferretto.VW.App.Services
 
         public MissionInfo CurrentMission { get; private set; }
 
-        public MissionOperationInfo CurrentMissionOperation
+        public MissionOperation CurrentMissionOperation
         {
             get => this.currentMissionOperation;
             private set
@@ -89,6 +107,8 @@ namespace Ferretto.VW.App.Services
                 }
             }
         }
+
+        public MachineIdentity Identity { get; private set; }
 
         public int PendingMissionsCount { get; private set; }
 
@@ -108,16 +128,45 @@ namespace Ferretto.VW.App.Services
             this.CurrentMissionOperation = null;
         }
 
-        private void OnBayStatusChanged(object sender, BayStatusChangedEventArgs e)
+        public async Task InitializeAsync()
         {
-            this.BayId = e.BayId;// TODO the bay ID should come from configuration.
-            this.PendingMissionsCount = e.PendingMissionsCount;
-            this.CurrentMissionOperation = e.CurrentMissionOperation;
+            this.Identity = await this.identityService.GetAsync();
         }
 
-        private void OnMissionOperationAvailable(object sender, MissionOperationAvailableEventArgs e)
+        private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            this.CurrentMissionOperation = e.MissionOperation;
+            if (this.BayId == e.BayId)
+            {
+                this.PendingMissionsCount = e.PendingMissionsCount;
+                await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
+            }
+        }
+
+        private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
+        {
+            if (this.BayId == e.BayId)
+            {
+                this.PendingMissionsCount = e.PendingMissionsCount;
+                await this.RetrieveMissionOperation(e.MissionOperationId);
+            }
+        }
+
+        private async Task RetrieveMissionOperation(int? missionOperationId)
+        {
+            try
+            {
+                if (missionOperationId.HasValue
+                    &&
+                    missionOperationId.Value != this.CurrentMissionOperation?.Id)
+                {
+                    this.CurrentMissionOperation =
+                        await this.missionOperationsDataService.GetByIdAsync(missionOperationId.Value);
+                }
+            }
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            {
+                this.statusMessageService.Notify(ex);
+            }
         }
 
         #endregion

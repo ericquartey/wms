@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Models;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -28,6 +29,8 @@ namespace Ferretto.VW.App
         private readonly IEventAggregator eventAggregator;
 
         private readonly ISessionService sessionService;
+
+        private readonly IBayManager bayManager;
 
         private readonly IIdentityService identityService;
 
@@ -55,6 +58,7 @@ namespace Ferretto.VW.App
             IThemeService themeService,
             IModuleManager moduleManager,
             ISessionService sessionService,
+            IBayManager bayManager,
             IIdentityService identityService)
         {
             if (eventAggregator == null)
@@ -82,6 +86,11 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(sessionService));
             }
 
+            if (bayManager == null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
             if (identityService == null)
             {
                 throw new ArgumentNullException(nameof(identityService));
@@ -92,6 +101,7 @@ namespace Ferretto.VW.App
             this.moduleManager = moduleManager;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
+            this.bayManager = bayManager;
             this.identityService = identityService;
 
 #if DEBUG
@@ -105,7 +115,7 @@ namespace Ferretto.VW.App
 #endif
         }
 
-        private async void OperatorHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async Task OnHubConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             if (!e.IsConnected)
             {
@@ -115,7 +125,9 @@ namespace Ferretto.VW.App
             {
                 try
                 {
-                    this.Machine = await this.identityService.GetAsync();
+                    await this.bayManager.InitializeAsync();
+                    this.Machine = this.bayManager.Identity;
+
                     this.ErrorMessage = null;
                 }
                 catch
@@ -189,15 +201,14 @@ namespace Ferretto.VW.App
         {
             this.operatorHubClient = this.container.Resolve<IOperatorHubClient>();
 
-            this.operatorHubClient.ConnectionStatusChanged += this.OperatorHubClient_ConnectionStatusChanged;
-            if (!this.operatorHubClient.IsConnected)
-            {
-                this.ErrorMessage = "Machine Automation Service unavailable.";
-            }
+            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionStatusChanged(sender, e);
         }
 
         public bool IsMachineIdentityAvailable
-        { get => this.isMachineIdentityAvailable; set => this.SetProperty(ref this.isMachineIdentityAvailable, value); }
+        {
+            get => this.isMachineIdentityAvailable;
+            set => this.SetProperty(ref this.isMachineIdentityAvailable, value);
+        }
 
         private async Task ExecuteLoginCommandAsync()
         {

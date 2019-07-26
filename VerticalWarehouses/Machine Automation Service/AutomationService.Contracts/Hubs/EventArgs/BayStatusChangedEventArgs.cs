@@ -12,32 +12,28 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             CommonUtils.Messages.Enumerations.BayType bayType,
             CommonUtils.Messages.Enumerations.BayStatus bayStatus,
             int pendingMissionsCount,
-            WMS.Data.WebAPI.Contracts.MissionOperationInfo missionOperation)
+            int? currentMissionOperation)
         {
             this.BayId = bayId;
             this.BayType = bayType;
             this.BayStatus = bayStatus;
             this.PendingMissionsCount = pendingMissionsCount;
-            this.CurrentMissionOperation = missionOperation;
+            this.CurrentMissionOperationId = currentMissionOperation;
         }
 
         #endregion
 
         #region Properties
 
-        public int BayId { get; set; }
+        public int BayId { get; }
 
-        public CommonUtils.Messages.Enumerations.BayStatus BayStatus { get; set; }
+        public CommonUtils.Messages.Enumerations.BayStatus BayStatus { get; }
 
-        public CommonUtils.Messages.Enumerations.BayType BayType { get; set; }
+        public CommonUtils.Messages.Enumerations.BayType BayType { get; }
 
-        public string ClientIpAddress { get; set; }
+        public int? CurrentMissionOperationId { get; }
 
-        public string ConnectionId { get; set; }
-
-        public WMS.Data.WebAPI.Contracts.MissionOperationInfo CurrentMissionOperation { get; set; }
-
-        public int PendingMissionsCount { get; set; }
+        public int PendingMissionsCount { get; }
 
         #endregion
     }

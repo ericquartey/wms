@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -17,7 +18,9 @@ namespace Ferretto.VW.App.Services
 
         MissionInfo CurrentMission { get; }
 
-        MissionOperationInfo CurrentMissionOperation { get; }
+        MissionOperation CurrentMissionOperation { get; }
+
+        MachineIdentity Identity { get; }
 
         int PendingMissionsCount { get; }
 
@@ -28,6 +31,8 @@ namespace Ferretto.VW.App.Services
         void CompleteCurrentMission();
 
         Task CompleteCurrentMissionOperationAsync(double quantity);
+
+        Task InitializeAsync();
 
         #endregion
     }

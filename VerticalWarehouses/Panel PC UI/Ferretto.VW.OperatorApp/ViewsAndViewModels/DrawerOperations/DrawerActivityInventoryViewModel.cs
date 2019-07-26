@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
@@ -70,8 +69,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
-            this.ItemImage = Image.FromStream(imageStram);
+            //TODO  var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
+            //TODO   this.ItemImage = Image.FromStream(imageStram);
         }
 
         #endregion

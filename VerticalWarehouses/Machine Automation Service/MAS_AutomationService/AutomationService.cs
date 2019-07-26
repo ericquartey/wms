@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -283,7 +282,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
                     case MessageType.BayOperationalStatusChanged:
                         this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
-                        this.OnBayConnected(receivedMessage.Data as BayOperationalStatusChangedMessageData);
+                        this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
                         break;
 
                     case MessageType.DataLayerReady:

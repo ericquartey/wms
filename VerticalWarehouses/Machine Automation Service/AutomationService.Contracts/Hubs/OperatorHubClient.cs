@@ -44,14 +44,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                     e.BayType,
                     e.BayStatus,
                     e.PendingMissionsCount,
-                    e.CurrentMissionOperation));
+                    e.CurrentMissionOperationId));
         }
 
         private void OnMissionOperationAvailable(INewMissionOperationAvailable e)
         {
             this.MissionOperationAvailable?.Invoke(
                 this,
-                new MissionOperationAvailableEventArgs(missionOperation));
+                new MissionOperationAvailableEventArgs(
+                    e.BayId,
+                    e.MissionId,
+                    e.MissionOperationId,
+                    e.PendingMissionsCount));
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -90,15 +89,14 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnBayConnected(BayOperationalStatusChangedMessageData messageData)
+        private void OnBayConnected(IBayOperationalStatusChangedMessageData messageData)
         {
             if (messageData == null)
             {
                 throw new ArgumentNullException(nameof(messageData));
             }
 
-            this.operatorHub.Clients
-                .Client(messageData.ConnectionId)
+            this.operatorHub.Clients.All
                 .BayStatusChanged(messageData);
         }
 

@@ -68,7 +68,6 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-            containerRegistry.RegisterSingleton<IBayManager, BayManager>();
             containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<INavigationService, NavigationService>();
 
