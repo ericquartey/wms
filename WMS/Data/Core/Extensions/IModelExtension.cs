@@ -25,6 +25,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 if (dataModelProperty != null &&
                     dbSet.Any(
                         m => !m.Id.Equals(model.Id) &&
+                            businessModelPropertyValue != null &&
                             businessModelPropertyValue.Equals(dataModelProperty.GetValue(m))))
                 {
                     return string.Format(
