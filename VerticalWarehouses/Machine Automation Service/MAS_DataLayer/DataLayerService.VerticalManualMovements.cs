@@ -2,10 +2,9 @@
 using Ferretto.VW.MAS.DataModels.Enumerations;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IVerticalManualMovements
+    public partial class DataLayerService : IVerticalManualMovementsDataLayer
     {
         #region Properties
 

@@ -43,9 +43,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly ISHDTransport shdTransport;
-
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private bool disposed;
 
@@ -58,7 +56,7 @@ namespace Ferretto.VW.MAS.IODriver
         public HostedSHDIoDriver(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger,
             IConfiguration configuration)
         {
@@ -180,7 +178,7 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private async Task InitializeIoDevice()
+        private void InitializeIoDevice()
         {
             var ioDevicesList = this.vertimagConfiguration.GetInstalledIoList();
             IIoDevice ioDevice = null;
@@ -268,7 +266,7 @@ namespace Ferretto.VW.MAS.IODriver
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
-                        await this.InitializeIoDevice();
+                        this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
                         foreach (var ioDevice in this.ioDevices)

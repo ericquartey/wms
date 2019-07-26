@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : ISetupNetwork
+    public partial class DataLayerService : ISetupNetworkDataLayer
     {
         #region Properties
 
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool WMS_ON => this.GetBoolConfigurationValue((long)SetupNetwork.WMS_ON, (long)ConfigurationCategory.SetupNetwork);
         public int SQLServerPort => this.GetIntegerConfigurationValue((long)SetupNetwork.SQLServerPort, (long)ConfigurationCategory.SetupNetwork);
 
-       
+
         #endregion
     }
 }

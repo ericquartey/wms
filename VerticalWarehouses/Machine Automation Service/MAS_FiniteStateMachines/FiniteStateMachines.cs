@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task notificationReceiveTask;
 
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private IStateMachine currentStateMachine;
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration)
+            IVertimagConfigurationDataLayer vertimagConfiguration)
         {
             this.eventAggregator = eventAggregator;
 

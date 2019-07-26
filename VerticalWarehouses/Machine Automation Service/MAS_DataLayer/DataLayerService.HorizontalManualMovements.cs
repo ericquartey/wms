@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IHorizontalManualMovements
+    public partial class DataLayerService : IHorizontalManualMovementsDataLayer
     {
         #region Properties
 

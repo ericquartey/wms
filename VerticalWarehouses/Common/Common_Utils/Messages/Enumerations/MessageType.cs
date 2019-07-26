@@ -24,7 +24,7 @@
 
         ShutterControl,
 
-        MissionAdded,
+        NewMissionAvailable,
 
         CreateMission,
 
@@ -44,14 +44,15 @@
 
         IoDriverException,
 
-        MissionCompleted,
+        MissionOperationCompleted,
 
         MissionManagerInitialized,
 
-        BayConnected,
+        BayOperationalStatusChanged,
 
         WebApiException,
 
-        CheckCondition
+        CheckCondition,
+        NewMissionOperationAvailable
     }
 }
