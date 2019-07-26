@@ -21,17 +21,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IHorizontalAxis horizontalAxis;
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
 
-        private readonly IHorizontalManualMovements horizontalManualMovements;
+        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
 
         private readonly ILogger logger;
 
-        private readonly ISetupStatus setupStatus;
+        private readonly ISetupStatusDataLayer setupStatus;
 
-        private readonly IVerticalAxis verticalAxis;
+        private readonly IVerticalAxisDataLayer verticalAxis;
 
-        private readonly IVerticalManualMovements verticalManualMovements;
+        private readonly IVerticalManualMovementsDataLayer verticalManualMovements;
 
         #endregion
 
@@ -41,11 +41,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.verticalAxis = services.GetService(typeof(IVerticalAxis)) as IVerticalAxis;
-            this.verticalManualMovements = services.GetService(typeof(IVerticalManualMovements)) as IVerticalManualMovements;
-            this.horizontalAxis = services.GetService(typeof(IHorizontalAxis)) as IHorizontalAxis;
-            this.horizontalManualMovements = services.GetService(typeof(IHorizontalManualMovements)) as IHorizontalManualMovements;
-            this.setupStatus = services.GetService(typeof(ISetupStatus)) as ISetupStatus;
+            this.verticalAxis = services.GetService(typeof(IVerticalAxisDataLayer)) as IVerticalAxisDataLayer;
+            this.verticalManualMovements = services.GetService(typeof(IVerticalManualMovementsDataLayer)) as IVerticalManualMovementsDataLayer;
+            this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;
+            this.horizontalManualMovements = services.GetService(typeof(IHorizontalManualMovementsDataLayer)) as IHorizontalManualMovementsDataLayer;
+            this.setupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
             this.logger = logger;
         }
 
