@@ -54,16 +54,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Methods
 
-        /// <inheritdoc/>
-        public override void ChangeState(IState newState, CommandMessage message = null)
-        {
-            if (this.numberOfExecutedSteps == this.nMaxSteps)
-            {
-                newState = new HomingEndState(this, this.currentAxis, this.logger);
-            }
-            base.ChangeState(newState, message);
-        }
-
         public int GetMaxSteps()
         {
             return this.nMaxSteps;

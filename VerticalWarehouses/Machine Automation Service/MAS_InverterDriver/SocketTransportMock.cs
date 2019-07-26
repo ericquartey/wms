@@ -71,6 +71,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Properties
 
         public bool IsConnected => true;
+
         public bool IsReadingOk { get; set; }
 
         #endregion
@@ -579,6 +580,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.statusWord |= 0x0400;
                 this.targetTimerActive = false;
                 this.targetTimer.Change(-1, Timeout.Infinite);
+                // Reset contatore
+                this.targetTickCount = 0;
             }
         }
 

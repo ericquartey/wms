@@ -131,7 +131,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToSwitch, this.Logger));
+                if (this.currentStep == this.maxStep)
+                {
+                    this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToSwitched, this.Logger));
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToSwitch, this.Logger));
+                }
             }
         }
 
