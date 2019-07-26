@@ -11,6 +11,7 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
+        [Unique]
         public string Code { get; set; }
 
         [PositiveOrZero]

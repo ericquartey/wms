@@ -67,7 +67,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var loadingUnit = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitCreating
+                var loadingUnit = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitDetails
                 {
                     Id = model.Id,
                     Code = model.Code,

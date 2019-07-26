@@ -49,9 +49,9 @@ namespace Ferretto.WMS.App.Controls
                     DesktopApp.AreYouSureToLeaveThePage,
                     DesktopApp.ConfirmOperation,
                     DialogType.Exclamation,
-                    DialogButtons.OKCancel);
+                    DialogButtons.YesNo);
 
-                if (result == DialogResult.Cancel)
+                if (result == DialogResult.No)
                 {
                     return false;
                 }

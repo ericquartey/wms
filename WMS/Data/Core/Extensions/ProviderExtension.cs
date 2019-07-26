@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.DataModels;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +53,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             DatabaseContext dataContext,
             bool checkForPolicies = true)
             where TBusinessModel : class, IModel<TKey>, IPolicyDescriptor<Policy>
-            where TDataModel : class
+            where TDataModel : class, IDataModel<TKey>
         {
             if (model == null)
             {
@@ -72,6 +73,14 @@ namespace Ferretto.WMS.Data.Core.Extensions
             if (dataContext == null)
             {
                 throw new ArgumentNullException(nameof(dataContext));
+            }
+
+            var validationError = model.ValidateBusinessModel(dbSet);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<TBusinessModel>(
+                    validationError,
+                    model);
             }
 
             if (checkForPolicies && provider is IReadSingleAsyncProvider<TBusinessModel, TKey> readProvider)
