@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
+
+        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+
         private readonly ILogger logger;
+
+        private readonly ISetupStatusDataLayer setupStatus;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
+
+        private readonly IVerticalManualMovementsDataLayer verticalManualMovements;
 
         #endregion
 
@@ -32,6 +41,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
+            this.verticalAxis = services.GetService(typeof(IVerticalAxisDataLayer)) as IVerticalAxisDataLayer;
+            this.verticalManualMovements = services.GetService(typeof(IVerticalManualMovementsDataLayer)) as IVerticalManualMovementsDataLayer;
+            this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;
+            this.horizontalManualMovements = services.GetService(typeof(IHorizontalManualMovementsDataLayer)) as IHorizontalManualMovementsDataLayer;
+            this.setupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
             this.logger = logger;
         }
 
@@ -62,31 +76,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                var machineDone = this.dataLayerConfigurationValueManagement.GetBoolConfigurationValue(
-                    (long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                var machineDone = this.setupStatus.MachineDone;
 
                 switch (data.Axis)
                 {
                     // INFO Vertical LSM
                     case Axis.Vertical:
-                        maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
-                        maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
-                        maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
-                        feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
+                        maxSpeed = this.verticalAxis.MaxEmptySpeed;
+                        maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
+                        maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+                        feedRate = this.verticalManualMovements.FeedRateVM;
 
                         if (machineDone)
                         {
-                            initialTargetPosition = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                                (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                            initialTargetPosition = this.verticalManualMovements.RecoveryTargetPositionVM;
                         }
                         else
                         {
-                            initialTargetPosition = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                                (long)VerticalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                            initialTargetPosition = this.verticalManualMovements.InitialTargetPositionVM;
                         }
 
                         // INFO +1 for Up, -1 for Down
@@ -96,28 +103,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                     // INFO Horizontal LSM
                     case Axis.Horizontal:
-                        maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxEmptySpeed, (long)ConfigurationCategory.HorizontalAxis);
-                        maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.HorizontalAxis);
-                        maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.HorizontalAxis);
-                        feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
+                        maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
+                        maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
+                        maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
+                        feedRate = this.horizontalManualMovements.FeedRateHM;
 
                         if (machineDone)
                         {
-                            initialTargetPosition = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                                (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                            initialTargetPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
                         }
                         else
                         {
-                            initialTargetPosition = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                                (long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                            initialTargetPosition = this.horizontalManualMovements.InitialTargetPositionHM;
                         }
-
-                        initialTargetPosition = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                            (long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
 
                         // INFO +1 for Forward, -1 for Back
                         initialTargetPosition *= data.Displacement;

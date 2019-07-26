@@ -106,8 +106,8 @@ namespace Ferretto.VW.App
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "operator",
-                Password = "********",
+                UserName = "installer",
+                Password = "password",
             };
 #else
             this.UserLogin = new UserLogin();
