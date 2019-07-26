@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
@@ -7,7 +8,11 @@ using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -57,6 +62,12 @@ namespace Ferretto.VW.App.Installation
 
         private ICommand openClosePopupCommand;
 
+        private readonly IOSensorsStatus ioSensorsStatus;
+
+        private bool securityFunctionActive;
+
+        private IUpdateSensorsService updateSensorsService;
+
         #endregion
 
         #region Constructors
@@ -75,10 +86,13 @@ namespace Ferretto.VW.App.Installation
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.idleViewModel = idleViewModel as IdleViewModel;
             this.ContentRegionCurrentViewModel = this.idleViewModel;
+            this.ioSensorsStatus = new IOSensorsStatus();
+            this.SecurityFunctionActive = false;
             this.InitializeEvents();
 
             this.helpWindow = new HelpMainWindow(eventAggregator);
             this.IsErrorViewButtonVisible = Visibility.Collapsed;
+
         }
 
         #endregion
@@ -141,6 +155,7 @@ namespace Ferretto.VW.App.Installation
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
         public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
+        //public bool MachineOnMarchSelectionBool => this.SecurityFunctionActive;
 
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
@@ -151,6 +166,8 @@ namespace Ferretto.VW.App.Installation
             this.helpWindow.Show();
             this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
         }));
+
+        public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 
         #endregion
 
@@ -170,26 +187,43 @@ namespace Ferretto.VW.App.Installation
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) =>
-            {
-                this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-                this.ExitViewButtonRegionCurrentViewModel = null;
-            },
-            ThreadOption.PublisherThread,
-            false,
-            message => message.Type == InstallationApp_EventMessageType.ExitView);
+                {
+                    this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+                    this.ExitViewButtonRegionCurrentViewModel = null;
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Type == InstallationApp_EventMessageType.ExitView);
 
             this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
                 (message) =>
-            {
-                this.IsErrorViewButtonVisible = Visibility.Visible;
-            },
-            ThreadOption.PublisherThread,
-            false);
+                {
+                    this.IsErrorViewButtonVisible = Visibility.Visible;
+                },
+                ThreadOption.PublisherThread,
+                false);
+
+            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
+                ThreadOption.PublisherThread,
+                false);
 
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
-            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
+            //MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
+
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
+            this.updateSensorsService.ExecuteAsync();
+
+        }
+
+        private void UpdateVariousInputsSensorsState(bool[] message)
+        {
+            this.ioSensorsStatus.UpdateInputStates(message);
+
+            this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
         }
 
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();

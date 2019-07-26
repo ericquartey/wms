@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
+                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop && receivedMessage.Type != MessageType.SensorsChanged)
                 {
                     var errorNotification = new NotificationMessage(
                         null,
