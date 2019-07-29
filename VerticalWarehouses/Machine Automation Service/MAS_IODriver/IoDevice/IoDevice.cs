@@ -195,13 +195,13 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     this.logger.LogWarning($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
                     continue;
                 }
-                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
-                if (this.ReceiveBuffer.Length > 0)
+                var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
+                if(this.ReceiveBuffer.Length > 0)
                 {
-                    this.logger.LogWarning($" extracted: count {ExtractedMessages.Count}: left bytes {this.ReceiveBuffer.Length}");
+                    this.logger.LogWarning($" extracted: count {extractedMessages.Count}: left bytes {this.ReceiveBuffer.Length}");
                 }
 
-                foreach (var extractedMessage in ExtractedMessages)
+                foreach (var extractedMessage in extractedMessages)
                 {
                     if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release
                         || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release
