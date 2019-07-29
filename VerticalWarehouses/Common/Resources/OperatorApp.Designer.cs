@@ -1337,7 +1337,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemManagementType_FIFO", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Not specified.
         /// </summary>
@@ -1346,7 +1346,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemManagementType_NotSpecified", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Volume.
         /// </summary>
@@ -1355,7 +1355,43 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemManagementType_Volume", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        public static string ItemListType_Inventory {
+            get {
+                return ResourceManager.GetString("ItemListType_Inventory", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to NotSpecified.
+        /// </summary>
+        public static string ItemListType_NotSpecified {
+            get {
+                return ResourceManager.GetString("ItemListType_NotSpecified", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pick.
+        /// </summary>
+        public static string ItemListType_Pick {
+            get {
+                return ResourceManager.GetString("ItemListType_Pick", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Put.
+        /// </summary>
+        public static string ItemListType_Put {
+            get {
+                return ResourceManager.GetString("ItemListType_Put", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Item call.
         /// </summary>
