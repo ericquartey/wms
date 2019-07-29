@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 // TEMP To be removed
 using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 // ReSharper disable ArrangeThisQualifier
@@ -22,17 +21,15 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IShutterMachineService shutterService;
+
         private readonly ITestMachineService testService;
 
         private DelegateCommand closeButtonCommand;
 
-        private IUnityContainer container;
-
         private string currentPosition;
 
         private DelegateCommand openButtonCommand;
-
-        private IShutterMachineService shutterService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -42,9 +39,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         #region Constructors
 
-        public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
+        public LSMTShutterEngineViewModel(
+            IEventAggregator eventAggregator,
+            IShutterMachineService shutterService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (shutterService == null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.shutterService = shutterService;
             this.NavigationViewModel = null;
             this.CurrentPosition = ShutterPosition.Closed.ToString();
         }
@@ -76,12 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.shutterService = this.container.Resolve<IShutterMachineService>();
         }
 
         public Task OnEnterViewAsync()

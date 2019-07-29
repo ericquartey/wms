@@ -6,7 +6,6 @@ using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 {
@@ -16,9 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
-        private IInstallationStatusMachineService installationStatusService;
+        private readonly IInstallationStatusMachineService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -66,9 +63,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public MainWindowNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IInstallationStatusMachineService installationStatusService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (installationStatusService == null)
+            {
+                throw new System.ArgumentNullException(nameof(installationStatusService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.installationStatusService = installationStatusService;
+
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) => { this.SetAllNavigationButtonDisabled(); },
                 ThreadOption.PublisherThread,
@@ -145,16 +156,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             // TODO
         }
 
-        public async Task InitializeViewModelAsync(IUnityContainer container)
+        public async Task OnEnterViewAsync()
         {
-            this.container = container;
-            this.installationStatusService = this.container.Resolve<IInstallationStatusMachineService>();
             await this.UpdateButtonsEnableStateAsync();
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            return Task.CompletedTask;
         }
 
         public void SetAllNavigationButtonDisabled()

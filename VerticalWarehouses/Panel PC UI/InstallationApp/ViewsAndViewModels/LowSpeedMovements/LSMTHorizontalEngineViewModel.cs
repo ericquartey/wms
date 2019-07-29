@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
@@ -17,7 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IPositioningMachineService positioningService;
 
         private string currentPosition;
 
@@ -29,8 +28,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private DelegateCommand moveForwardButtonCommand;
 
-        private IPositioningMachineService positioningService;
-
         private DelegateCommand stopButtonCommand;
 
         private SubscriptionToken updateCurrentPositionToken;
@@ -39,9 +36,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         #region Constructors
 
-        public LSMTHorizontalEngineViewModel(IEventAggregator eventAggregator)
+        public LSMTHorizontalEngineViewModel(
+            IEventAggregator eventAggregator,
+            IPositioningMachineService positioningService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (positioningService == null)
+            {
+                throw new System.ArgumentNullException(nameof(positioningService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.positioningService = positioningService;
             this.NavigationViewModel = null;
         }
 
@@ -72,12 +82,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.positioningService = this.container.Resolve<IPositioningMachineService>();
         }
 
         public Task OnEnterViewAsync()

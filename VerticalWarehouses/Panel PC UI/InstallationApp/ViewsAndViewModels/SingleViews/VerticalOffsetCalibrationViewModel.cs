@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
@@ -21,9 +20,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand acceptOffsetButtonCommand;
+        private readonly IOffsetCalibrationMachineService offsetCalibrationService;
 
-        private IUnityContainer container;
+        private ICommand acceptOffsetButtonCommand;
 
         private string correctOffset;
 
@@ -47,8 +46,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private string noteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
-        private IOffsetCalibrationMachineService offsetCalibrationService;
-
         private SubscriptionToken receivePositioningUpdateToken;
 
         private string referenceCellHeight;
@@ -67,9 +64,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Constructors
 
-        public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
+        public VerticalOffsetCalibrationViewModel(
+            IEventAggregator eventAggregator,
+            IOffsetCalibrationMachineService offsetCalibrationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (offsetCalibrationService == null)
+            {
+                throw new ArgumentNullException(nameof(offsetCalibrationService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.offsetCalibrationService = offsetCalibrationService;
+
             this.NoteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
             this.NavigationViewModel = null;
         }
@@ -169,13 +180,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             {
                 this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.offsetCalibrationService = container.Resolve<IOffsetCalibrationMachineService>();
-            this.container = container;
-            this.offsetCalibrationService = this.container.Resolve<IOffsetCalibrationMachineService>();
         }
 
         public async Task OnEnterViewAsync()
