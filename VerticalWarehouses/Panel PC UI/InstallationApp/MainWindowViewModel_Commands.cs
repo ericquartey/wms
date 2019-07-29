@@ -74,6 +74,8 @@ namespace Ferretto.VW.App.Installation
 
         private ICommand machineOnMarchCustomCommand;
 
+        private ICommand manualDrawerStoreRecallButtonCommand;
+
         private ICommand openHelpWindow;
 
         private ICommand resolutionCalibrationVerticalAxisButtonCommand;
@@ -229,6 +231,12 @@ namespace Ferretto.VW.App.Installation
             ??
             (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<LSMTVerticalEngineViewModel, ILSMTVerticalEngineViewModel>()));
+
+        public ICommand ManualDrawerStoreRecallButtonCommand =>
+            this.manualDrawerStoreRecallButtonCommand
+            ??
+            (this.manualDrawerStoreRecallButtonCommand = new DelegateCommand(
+                async () => await this.NavigateToViewAsync<DrawerStoreRecallViewModel, IDrawerStoreRecallViewModel>()));
 
         public ICommand ResolutionCalibrationVerticalAxisButtonCommand =>
             this.resolutionCalibrationVerticalAxisButtonCommand

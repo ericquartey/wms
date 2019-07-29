@@ -113,6 +113,7 @@ namespace Ferretto.VW.App.Installation.Resources
             var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();
             var saveRestoreConfigVMInstance = new SaveRestoreConfigViewModel();
+            var drawerStoreRecallVMInstance = new DrawerStoreRecallViewModel();
             var cellsSideControlVMInstance = new CellsSideControlViewModel();
             var drawerLoadingUnloadingTestVMInstance = new DrawerLoadingUnloadingTestViewModel();
             var lSMTCarouselVMInstance = new LSMTCarouselViewModel(this.container.Resolve<IEventAggregator>());
@@ -174,6 +175,7 @@ namespace Ferretto.VW.App.Installation.Resources
             this.RegisterInstanceAndBindViewToViewModel<ILoadFirstDrawerViewModel, LoadFirstDrawerViewModel>(loadFirstDrawerVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<ILoadingDrawersViewModel, LoadingDrawersViewModel>(loadingDrawersVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<ISaveRestoreConfigViewModel, SaveRestoreConfigViewModel>(saveRestoreConfigVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>(drawerStoreRecallVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<ICellsSideControlViewModel, CellsSideControlViewModel>(cellsSideControlVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<ILSMTCarouselViewModel, LSMTCarouselViewModel>(lSMTCarouselVMInstance);
