@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -19,15 +20,22 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly IMapper mapper;
+
         private readonly IItemListProvider itemListProvider;
 
         #endregion
 
         #region Constructors
 
-        public ItemListRowProvider(DatabaseContext dataContext, IItemListProvider itemListProvider, INotificationService notificationService)
+        public ItemListRowProvider(
+            DatabaseContext dataContext,
+            IMapper mapper,
+            IItemListProvider itemListProvider,
+            INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
             this.itemListProvider = itemListProvider;
         }
 
@@ -42,6 +50,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var validationError = model.ValidateBusinessModel(this.DataContext.ItemListRows);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<ItemListRowDetails>(
+                    validationError,
+                    model);
+            }
+
             var list = await this.itemListProvider.GetByIdAsync(model.ItemListId);
             if (!list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
             {
@@ -49,38 +65,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                     list.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
             }
 
-            var entry = await this.DataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow
-            {
-                Code = model.Code,
-                DispatchedQuantity = model.DispatchedQuantity,
-                ItemId = model.ItemId,
-                ItemListId = model.ItemListId,
-                Lot = model.Lot,
-                MaterialStatusId = model.MaterialStatusId,
-                PackageTypeId = model.PackageTypeId,
-                Priority = model.Priority,
-                RegistrationNumber = model.RegistrationNumber,
-                RequestedQuantity = model.RequestedQuantity,
-                Status = (Common.DataModels.ItemListRowStatus)model.Status,
-                Sub1 = model.Sub1,
-                Sub2 = model.Sub2,
-            });
+            var entry = await this.DataContext.ItemListRows.AddAsync(
+                this.mapper.Map<Common.DataModels.ItemListRow>(model));
 
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
+            if (changedEntitiesCount <= 0)
             {
-                model.Id = entry.Entity.Id;
-                model.CompletionDate = entry.Entity.CompletionDate;
-                model.CreationDate = entry.Entity.CreationDate;
-                model.LastExecutionDate = entry.Entity.LastExecutionDate;
-                model.LastModificationDate = entry.Entity.LastModificationDate;
-
-                this.NotificationService.PushCreate(model);
-                this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
-                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                return new CreationErrorOperationResult<ItemListRowDetails>();
             }
 
-            return new SuccessOperationResult<ItemListRowDetails>(model);
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+
+            this.NotificationService.PushCreate(createdModel);
+            this.NotificationService.PushUpdate(new ItemList { Id = createdModel.ItemListId });
+            this.NotificationService.PushUpdate(new Item { Id = createdModel.ItemId });
+
+            return new SuccessOperationResult<ItemListRowDetails>(createdModel);
         }
 
         public async Task<IOperationResult<ItemListRowDetails>> DeleteAsync(int id)

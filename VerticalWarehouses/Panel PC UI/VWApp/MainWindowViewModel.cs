@@ -106,8 +106,8 @@ namespace Ferretto.VW.App
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "operator",
-                Password = "********",
+                UserName = "installer",
+                Password = "password",
             };
 #else
             this.UserLogin = new UserLogin();
@@ -213,34 +213,39 @@ namespace Ferretto.VW.App
         {
             this.ErrorMessage = null;
 
-            this.UserLogin.IsValidationEnabled = true;
-            if (!string.IsNullOrEmpty(this.UserLogin.Error))
-            {
-                this.ErrorMessage = this.UserLogin.Error;
-                return;
-            }
+            //TEMP: I have commented these code lines in order to use the AS without connection of WMS server
+            // Start always the Installer application
 
-            this.IsBusy = true;
+            //this.UserLogin.IsValidationEnabled = true;
+            //if (!string.IsNullOrEmpty(this.UserLogin.Error))
+            //{
+            //    this.ErrorMessage = this.UserLogin.Error;
+            //    return;
+            //}
 
-            var claims = await this.authenticationService.LogInAsync(
-               this.UserLogin.UserName,
-               this.UserLogin.Password);
+            //this.IsBusy = true;
 
-            if (claims != null)
-            {
-                if (claims.AccessLevel == UserAccessLevel.SuperUser)
-                {
-                    this.LoadInstallerModule();
-                }
-                else
-                {
-                    this.LoadOperatorModule();
-                }
-            }
-            else
-            {
-                this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
-            }
+            //var claims = await this.authenticationService.LogInAsync(
+            //   this.UserLogin.UserName,
+            //   this.UserLogin.Password);
+
+            //if (claims != null)
+            //{
+            //    if (claims.AccessLevel == UserAccessLevel.SuperUser)
+            //    {
+            //        this.LoadInstallerModule();
+            //    }
+            //    else
+            //    {
+            //        this.LoadOperatorModule();
+            //    }
+            //}
+            //else
+            //{
+            //    this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
+            //}
+
+            this.LoadInstallerModule();
 
             this.IsBusy = false;
         }
