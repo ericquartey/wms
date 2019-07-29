@@ -35,6 +35,7 @@ namespace Ferretto.VW.App
 
             // MAS Web API services
             this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
+            this.Container.RegisterInstance<IUsersService>(new UsersService(automationServiceUrl));
             this.Container.RegisterInstance<IMissionOperationsService>(new MissionOperationsService(automationServiceUrl));
 
             this.Container.RegisterType<MainWindowViewModel>();
@@ -94,7 +95,6 @@ namespace Ferretto.VW.App
             container.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             container.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
 
-            container.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsDataService>(wmsServiceUrl));
