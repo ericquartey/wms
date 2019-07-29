@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -7,7 +6,9 @@ namespace Ferretto.VW.App.Services
     {
         #region Constructors
 
-        public UserAuthenticatedEventArgs(string userName, UserAccessLevel accessLevel)
+        public UserAuthenticatedEventArgs(
+            string userName,
+            MAS.AutomationService.Contracts.UserAccessLevel accessLevel)
         {
             this.UserName = userName;
             this.AccessLevel = accessLevel;
@@ -17,7 +18,7 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public UserAccessLevel AccessLevel { get; }
+        public MAS.AutomationService.Contracts.UserAccessLevel AccessLevel { get; }
 
         public string UserName { get; }
 

@@ -54,9 +54,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
 
-        public DbSet<RuntimeValue> RuntimeValues { get; set; }
-
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         #endregion
 
@@ -102,8 +102,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
 
         #endregion

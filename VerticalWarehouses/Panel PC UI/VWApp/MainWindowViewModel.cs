@@ -213,39 +213,34 @@ namespace Ferretto.VW.App
         {
             this.ErrorMessage = null;
 
-            //TEMP: I have commented these code lines in order to use the AS without connection of WMS server
-            // Start always the Installer application
+            this.UserLogin.IsValidationEnabled = true;
+            if (!string.IsNullOrEmpty(this.UserLogin.Error))
+            {
+                this.ErrorMessage = this.UserLogin.Error;
+                return;
+            }
 
-            //this.UserLogin.IsValidationEnabled = true;
-            //if (!string.IsNullOrEmpty(this.UserLogin.Error))
-            //{
-            //    this.ErrorMessage = this.UserLogin.Error;
-            //    return;
-            //}
+            this.IsBusy = true;
 
-            //this.IsBusy = true;
+            var claims = await this.authenticationService.LogInAsync(
+               this.UserLogin.UserName,
+               this.UserLogin.Password);
 
-            //var claims = await this.authenticationService.LogInAsync(
-            //   this.UserLogin.UserName,
-            //   this.UserLogin.Password);
-
-            //if (claims != null)
-            //{
-            //    if (claims.AccessLevel == UserAccessLevel.SuperUser)
-            //    {
-            //        this.LoadInstallerModule();
-            //    }
-            //    else
-            //    {
-            //        this.LoadOperatorModule();
-            //    }
-            //}
-            //else
-            //{
-            //    this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
-            //}
-
-            this.LoadInstallerModule();
+            if (claims != null)
+            {
+                if (claims.AccessLevel == UserAccessLevel.SuperUser)
+                {
+                    this.LoadInstallerModule();
+                }
+                else
+                {
+                    this.LoadOperatorModule();
+                }
+            }
+            else
+            {
+                this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
+            }
 
             this.IsBusy = false;
         }
