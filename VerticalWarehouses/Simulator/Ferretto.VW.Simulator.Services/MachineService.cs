@@ -49,14 +49,14 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts = new CancellationTokenSource();
             this.listenerInverter.Start();
-            this.listenerIoDriver1.Start();
-            this.listenerIoDriver2.Start();
-            this.listenerIoDriver3.Start();
+            //this.listenerIoDriver1.Start();
+            //this.listenerIoDriver2.Start();
+            //this.listenerIoDriver3.Start();
 
             Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token));
-            Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token));
-            Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token));
-            Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
@@ -82,10 +82,16 @@ namespace Ferretto.VW.Simulator.Services
 
         private void AcceptClient(TcpListener listener, CancellationToken token)
         {
-            while (!token.IsCancellationRequested)
+            try
             {
-                var client = listener.AcceptTcpClient();
-                Task.Run(() => this.ManageClient(client, this.cts.Token));
+                while (!token.IsCancellationRequested)
+                {
+                    var client = listener.AcceptTcpClient();
+                    Task.Run(() => this.ManageClient(client, this.cts.Token));
+                }
+            }
+            catch (SocketException)
+            {
             }
         }
 
@@ -95,30 +101,37 @@ namespace Ferretto.VW.Simulator.Services
             {
                 var buffer = new byte[1024];
                 Socket socket = client.Client;
-                while (!token.IsCancellationRequested)
+                try
                 {
-                    if (socket != null && socket.Connected)
+                    while (!token.IsCancellationRequested)
                     {
-                        if (socket.Poll(0, SelectMode.SelectRead))
+                        if (socket != null && socket.Connected)
                         {
-                            var bytes = socket.Receive(buffer);
-                            if (bytes > 0)
+                            if (socket.Poll(0, SelectMode.SelectRead))
                             {
-                                // TODO: Parse
+                                var bytes = socket.Receive(buffer);
+                                if (bytes > 0)
+                                {
+                                    // TODO: Parse
 
-                                // TODO: Reply
-                            }
-                            else
-                            {
-                                break;
+                                    // TODO: Reply
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        break;
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
+                catch (SocketException)
+                {
+                }
+
             }
         }
 
