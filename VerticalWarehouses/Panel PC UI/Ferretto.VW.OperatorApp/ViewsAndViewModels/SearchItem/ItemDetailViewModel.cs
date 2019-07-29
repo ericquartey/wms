@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Services;
-using Prism.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
@@ -12,37 +12,24 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
         private readonly IWmsImagesProvider wmsImagesProvider;
 
-        private DataGridItem article;
-
-        private string articleCode;
-
-        private string articleDescription;
-
         private Image image;
+
+        private Item item;
 
         #endregion
 
         #region Constructors
 
         public ItemDetailViewModel(
-            IEventAggregator eventAggregator,
             IWmsImagesProvider wmsImagesProvider)
         {
-            if (eventAggregator == null)
-            {
-                throw new System.ArgumentNullException(nameof(eventAggregator));
-            }
-
             if (wmsImagesProvider == null)
             {
                 throw new System.ArgumentNullException(nameof(wmsImagesProvider));
             }
 
-            this.eventAggregator = eventAggregator;
             this.wmsImagesProvider = wmsImagesProvider;
 
             this.NavigationViewModel = null;
@@ -52,22 +39,16 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         #region Properties
 
-        public DataGridItem Article
+        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
+
+        public Item Item
         {
-            get => this.article;
+            get => this.item;
             set
             {
-                this.article = value;
-                this.articleCode = this.article.Article;
-                this.articleDescription = this.article.Description;
+                this.item = value;
             }
         }
-
-        public string ArticleCode { get => this.articleCode; set => this.SetProperty(ref this.articleCode, value); }
-
-        public string ArticleDescription { get => this.articleDescription; set => this.SetProperty(ref this.articleDescription, value); }
-
-        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         #endregion
 
@@ -75,17 +56,26 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         public override void ExitFromViewMethod()
         {
-            this.image?.Dispose();
             this.Image?.Dispose();
         }
 
         public override async Task OnEnterViewAsync()
         {
-            this.image?.Dispose();
+            var searchViewModel = ServiceLocator.Current.GetInstance<IItemSearchViewModel>();
+
+            if (searchViewModel != null &&
+                searchViewModel.SelectedItem != null)
+            {
+                this.Item = searchViewModel.SelectedItem;
+                await this.LoadImage(this.item.Code);
+            }
+        }
+
+        private async Task LoadImage(string code)
+        {
             this.Image?.Dispose();
-            this.image = null;
             this.Image = null;
-            var stream = await this.wmsImagesProvider.GetImageAsync(this.Article.ImageCode);
+            var stream = await this.wmsImagesProvider.GetImageAsync(code);
             this.Image = Image.FromStream(stream);
         }
 

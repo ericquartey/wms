@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Operator
         {
             this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
 
-            if (parameterObject is DataGridItem item)
+            if (parameterObject is Item item)
             {
                 if (this.container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
                 {
@@ -140,7 +140,7 @@ namespace Ferretto.VW.App.Operator
                     {
                         this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
-                    desiredViewModel.Article = item;
+                    desiredViewModel.Item = item;
                     await desiredViewModel.OnEnterViewAsync();
                     this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                     this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;

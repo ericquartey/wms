@@ -234,6 +234,12 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         public override async Task OnEnterViewAsync()
         {
+            if (this.items != null &&
+                this.selectedItem != null)
+            {
+                return;
+            }
+
             this.currentItemIndex = 0;
             this.RequestedQuantity = "0";
             this.items = new List<Item>();

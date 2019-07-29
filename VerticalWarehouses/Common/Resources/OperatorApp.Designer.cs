@@ -1330,6 +1330,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FIFO.
+        /// </summary>
+        public static string ItemManagementType_FIFO {
+            get {
+                return ResourceManager.GetString("ItemManagementType_FIFO", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not specified.
+        /// </summary>
+        public static string ItemManagementType_NotSpecified {
+            get {
+                return ResourceManager.GetString("ItemManagementType_NotSpecified", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public static string ItemManagementType_Volume {
+            get {
+                return ResourceManager.GetString("ItemManagementType_Volume", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
         public static string ItemListType_Inventory {
@@ -1337,7 +1364,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_Inventory", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to NotSpecified.
         /// </summary>
@@ -1346,7 +1373,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_NotSpecified", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pick.
         /// </summary>
@@ -1355,7 +1382,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_Pick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Put.
         /// </summary>
@@ -1364,7 +1391,7 @@ namespace Ferretto.VW.App.Resources {
                 return ResourceManager.GetString("ItemListType_Put", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Item call.
         /// </summary>
@@ -1393,7 +1420,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemSearchGridItem.
+        ///   Looks up a localized string similar to Item.
         /// </summary>
         public static string ItemSearchGridItem {
             get {
