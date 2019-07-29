@@ -19,6 +19,8 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
 
         Task ProcessStartSimulatorAsync();
 
+        Task ProcessStopSimulatorAsync();
+
         #endregion
     }
 }
