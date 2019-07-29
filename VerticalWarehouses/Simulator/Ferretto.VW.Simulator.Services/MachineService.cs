@@ -49,14 +49,14 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts = new CancellationTokenSource();
             this.listenerInverter.Start();
-            //this.listenerIoDriver1.Start();
-            //this.listenerIoDriver2.Start();
-            //this.listenerIoDriver3.Start();
+            this.listenerIoDriver1.Start();
+            this.listenerIoDriver2.Start();
+            this.listenerIoDriver3.Start();
 
-            Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token));
+            Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message)));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message)));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message)));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
@@ -70,9 +70,9 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts.Cancel();
             this.listenerInverter.Stop();
-            this.listenerIoDriver1.Stop();
-            this.listenerIoDriver2.Stop();
-            this.listenerIoDriver3.Stop();
+            //this.listenerIoDriver1.Stop();
+            //this.listenerIoDriver2.Stop();
+            //this.listenerIoDriver3.Stop();
 
             await Task.Delay(100);
             this.IsStartedSimulator = false;
@@ -80,14 +80,14 @@ namespace Ferretto.VW.Simulator.Services
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
         }
 
-        private void AcceptClient(TcpListener listener, CancellationToken token)
+        private void AcceptClient(TcpListener listener, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
         {
             try
             {
                 while (!token.IsCancellationRequested)
                 {
                     var client = listener.AcceptTcpClient();
-                    Task.Run(() => this.ManageClient(client, this.cts.Token));
+                    Task.Run(() => this.ManageClient(client, this.cts.Token, messageHandler));
                 }
             }
             catch (SocketException)
@@ -95,12 +95,12 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private void ManageClient(TcpClient client, CancellationToken token)
+        private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
         {
             using (client)
             {
                 var buffer = new byte[1024];
-                Socket socket = client.Client;
+                var socket = client.Client;
                 try
                 {
                     while (!token.IsCancellationRequested)
@@ -112,9 +112,9 @@ namespace Ferretto.VW.Simulator.Services
                                 var bytes = socket.Receive(buffer);
                                 if (bytes > 0)
                                 {
-                                    // TODO: Parse
-
-                                    // TODO: Reply
+                                    byte[] message = new byte[bytes];
+                                    Array.Copy(buffer, 0, message, 0, message.Length);
+                                    messageHandler(client, message);
                                 }
                                 else
                                 {
@@ -126,6 +126,7 @@ namespace Ferretto.VW.Simulator.Services
                         {
                             break;
                         }
+                        Task.Delay(50);
                     }
                 }
                 catch (SocketException)
@@ -133,6 +134,16 @@ namespace Ferretto.VW.Simulator.Services
                 }
 
             }
+        }
+
+        private void ReplyInverter(TcpClient client, byte[] message)
+        {
+
+        }
+
+        private void ReplyIoDriver(TcpClient client, byte[] message)
+        {
+
         }
 
         #endregion
