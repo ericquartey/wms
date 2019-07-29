@@ -17,12 +17,13 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(s => s.Id);
 
+            var installationDate = System.DateTime.Now.AddMonths(-34);
             builder.HasData(new ServicingInfo
             {
                 Id = 1,
-                InstallationDate = System.DateTime.Now.AddMonths(-34),
-                LastServiceDate = System.DateTime.Now.AddMonths(-3),
-                NextServiceDate = System.DateTime.Now.AddMonths(12),
+                InstallationDate = installationDate,
+                LastServiceDate = null,
+                NextServiceDate = null,
             });
         }
 

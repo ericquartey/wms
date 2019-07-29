@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             //TEMP Workaround: Give time to inverter to perform the switchOff operation
-            Thread.Sleep(300);
+            Thread.Sleep(500);
 
             this.Logger.LogDebug($"Axis: {this.InverterStatus.CommonControlWord.HorizontalAxis} - ControlWord={this.InverterStatus.CommonControlWord.Value}");
 

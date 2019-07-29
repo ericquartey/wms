@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IGeneralInfoDataLayer
+    public partial class DataLayerService : IGeneralInfoConfigurationDataLayer
     {
         #region Properties
 

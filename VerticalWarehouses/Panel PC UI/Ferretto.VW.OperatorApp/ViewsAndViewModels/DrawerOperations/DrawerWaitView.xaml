@@ -5,7 +5,6 @@
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d">
 
     <Grid Width="1024"
@@ -28,7 +27,7 @@
                                               Margin="320,350,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding WaitingMissions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ContentText="{Binding PendingMissionsCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}" />
 
     </Grid>

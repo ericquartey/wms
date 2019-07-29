@@ -26,8 +26,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly byte debounceInput = 0x32;
 
-        private readonly string ipAddress;
-
         private readonly bool[] outputs;
 
         private readonly byte setupOutputLines = 0x00;

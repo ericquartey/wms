@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IPanelControl
+    public partial class DataLayerService : IPanelControlDataLayer
     {
         #region Properties
 

@@ -18,7 +18,7 @@
 
         public string ModelName { get; set; }
 
-        public System.DateTime NextServiceDate { get; set; }
+        public System.DateTime? NextServiceDate { get; set; }
 
         public string SerialNumber { get; set; }
 

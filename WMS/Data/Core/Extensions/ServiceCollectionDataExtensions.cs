@@ -54,8 +54,11 @@ namespace Ferretto.WMS.Data.Core.Extensions
             services.AddSingleton<INotificationService, NotificationService>();
 
             services.AddAutoMapper(
-                typeof(Models.BaseModel<>),
-                typeof(Common.DataModels.IDataModel));
+                typeof(BaseModel<int>),
+                typeof(Common.DataModels.IDataModel<int>));
+            services.AddAutoMapper(
+                typeof(BaseModel<string>),
+                typeof(Common.DataModels.IDataModel<string>));
 
             return services;
         }

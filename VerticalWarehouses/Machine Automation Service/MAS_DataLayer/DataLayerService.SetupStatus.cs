@@ -1,10 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : ISetupStatus
+    public partial class DataLayerService : ISetupStatusDataLayer
     {
         #region Properties
 

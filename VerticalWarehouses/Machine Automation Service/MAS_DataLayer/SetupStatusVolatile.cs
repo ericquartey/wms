@@ -3,7 +3,7 @@
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public class SetupStatusVolatile : ISetupStatusVolatile
+    public class SetupStatusVolatile : ISetupStatusVolatileDataLayer
     {
         #region Fields
 
