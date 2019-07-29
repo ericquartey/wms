@@ -1,15 +1,15 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 {
@@ -17,11 +17,11 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
     {
         #region Fields
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IIdentityService identityService;
+
+        private readonly IItemListsDataService itemListsDataService;
 
         private readonly INavigationService navigationService;
-
-        private readonly IWmsDataProvider wmsDataProvider;
 
         private int areaId;
 
@@ -47,9 +47,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         public DetailListInWaitViewModel(
             IStatusMessageService statusMessageService,
-            IWmsDataProvider wmsDataProvider,
             INavigationService navigationService,
-            IMachineProvider machineProvider
+            IIdentityService identityService,
+            IItemListsDataService itemListsDataService
             )
         {
             if (statusMessageService == null)
@@ -57,9 +57,14 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
                 throw new ArgumentNullException(nameof(statusMessageService));
             }
 
-            if (wmsDataProvider == null)
+            if (itemListsDataService == null)
             {
-                throw new ArgumentNullException(nameof(wmsDataProvider));
+                throw new ArgumentNullException(nameof(itemListsDataService));
+            }
+
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
             }
 
             if (navigationService == null)
@@ -68,9 +73,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
             }
 
             this.StatusMessageService = statusMessageService;
-            this.machineProvider = machineProvider;
-            this.wmsDataProvider = wmsDataProvider;
             this.navigationService = navigationService;
+            this.identityService = identityService;
+            this.itemListsDataService = itemListsDataService;
             this.NavigationViewModel = null;
         }
 
@@ -79,6 +84,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
         #region Properties
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
+
+        public IItemListsDataService ItemListsDataService { get; }
 
         public ItemList List => this.list;
 
@@ -125,7 +132,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
         {
             try
             {
-                await this.wmsDataProvider.ItemListExecute(this.list.Id, this.areaId);
+                await this.itemListsDataService.ExecuteAsync(this.list.Id, this.areaId);
                 await this.LoadListRowsAsync();
             }
             catch (Exception ex)
@@ -136,7 +143,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         public override async Task OnEnterViewAsync()
         {
-            var machineIdentity = await this.machineProvider.GetIdentityAsync();
+            var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity == null)
             {
                 return;
@@ -177,7 +184,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         private async Task LoadListRowsAsync()
         {
-            this.listRows = await this.wmsDataProvider.GetListRowsAsync(this.list.Id);
+            this.listRows = await this.itemListsDataService.GetRowsAsync(this.list.Id);
             this.RaisePropertyChanged(nameof(this.ListRows));
             this.currentItemIndex = 0;
             this.SelectedListRow = this.listRows.FirstOrDefault();

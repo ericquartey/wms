@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
-using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 {
@@ -17,11 +17,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
     {
         #region Fields
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IAreasDataService areasDataService;
+
+        private readonly IIdentityService identityService;
+
+        private readonly IItemListsDataService itemListsDataService;
 
         private readonly INavigationService navigationService;
-
-        private readonly IWmsDataProvider wmsDataProvider;
 
         private int areaId;
 
@@ -47,9 +49,10 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 
         public ListsInWaitViewModel(
             IStatusMessageService statusMessageService,
-            IWmsDataProvider wmsDataProvider,
+            IIdentityService identityService,
             INavigationService navigationService,
-            IMachineProvider machineProvider
+            IItemListsDataService itemListsDataService,
+            IAreasDataService areasDataService
             )
         {
             if (statusMessageService == null)
@@ -57,9 +60,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
                 throw new ArgumentNullException(nameof(statusMessageService));
             }
 
-            if (wmsDataProvider == null)
+            if (identityService == null)
             {
-                throw new ArgumentNullException(nameof(wmsDataProvider));
+                throw new ArgumentNullException(nameof(identityService));
             }
 
             if (navigationService == null)
@@ -67,10 +70,21 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
+            if (itemListsDataService == null)
+            {
+                throw new ArgumentNullException(nameof(itemListsDataService));
+            }
+
+            if (areasDataService == null)
+            {
+                throw new ArgumentNullException(nameof(areasDataService));
+            }
+
             this.StatusMessageService = statusMessageService;
-            this.machineProvider = machineProvider;
-            this.wmsDataProvider = wmsDataProvider;
+            this.identityService = identityService;
             this.navigationService = navigationService;
+            this.itemListsDataService = itemListsDataService;
+            this.areasDataService = areasDataService;
             this.NavigationViewModel = null;
         }
 
@@ -140,7 +154,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
         {
             try
             {
-                await this.wmsDataProvider.ItemListExecute(this.selectedList.Id, this.areaId);
+                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId);
                 await this.LoadListsAsync();
             }
             catch (Exception ex)
@@ -156,14 +170,14 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
                 return;
             }
 
-            var machineIdentity = await this.machineProvider.GetIdentityAsync();
-            if (machineIdentity == null)
+            var identityService = await this.identityService.GetAsync();
+            if (identityService == null)
             {
                 return;
             }
 
-            this.machineId = machineIdentity.Id;
-            this.areaId = machineIdentity.AreaId;
+            this.machineId = identityService.Id;
+            this.areaId = identityService.AreaId;
             await this.LoadListsAsync();
         }
 
@@ -189,7 +203,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 
         private async Task LoadListsAsync()
         {
-            this.lists = await this.wmsDataProvider.GetItemLists(this.areaId);
+            this.lists = await this.areasDataService.GetItemListsAsync(this.areaId);
             this.RaisePropertyChanged(nameof(this.Lists));
             this.currentItemIndex = 0;
             this.SelectedList = this.lists.FirstOrDefault();
