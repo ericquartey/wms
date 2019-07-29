@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                string serializedData = "Data Not Serializable";
+                var serializedData = "Data Not Serializable";
 
                 try
                 {
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError($"Exception {ex.Message} while serializing {message.Type} data");
+                    serializedData = "Data is not serializabel";
                 }
 
                 var logEntry = new LogEntry();
@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                string serializedData = "Data Not Serializable";
+                var serializedData = "Data Not Serializable";
 
                 try
                 {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError($"Exception {ex.Message} while serializing {message.Type} data");
+                    serializedData = "Data is not serializabel";
                 }
 
                 var logEntry = new LogEntry();

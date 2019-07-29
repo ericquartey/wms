@@ -67,6 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
             services.AddTransient<IServicingProvider, ServicingProvider>();
             services.AddTransient<IBaysProvider, BaysProvider>();
+            services.AddTransient<IUsersProvider, UsersProvider>();
             services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
             services.AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>();
             services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
