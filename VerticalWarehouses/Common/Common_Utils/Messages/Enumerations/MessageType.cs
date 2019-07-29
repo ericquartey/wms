@@ -52,6 +52,8 @@
 
         WebApiException,
 
-        CheckCondition
+        CheckCondition,
+
+        ResetHardware
     }
 }

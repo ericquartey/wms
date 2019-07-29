@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 var notificationMessageData = new PositioningMessageData(
                     this.positioningMessageData.AxisMovement,
                 this.positioningMessageData.MovementType,
+                this.positioningMessageData.MovementMode,
                 this.positioningMessageData.TargetPosition,
                 this.positioningMessageData.TargetSpeed,
                 this.positioningMessageData.TargetAcceleration,
@@ -105,6 +106,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             var notificationMessageData = new PositioningMessageData(
                 this.positioningMessageData.AxisMovement,
                 this.positioningMessageData.MovementType,
+                this.positioningMessageData.MovementMode,
                 this.positioningMessageData.TargetPosition,
                 this.positioningMessageData.TargetSpeed,
                 this.positioningMessageData.TargetAcceleration,
