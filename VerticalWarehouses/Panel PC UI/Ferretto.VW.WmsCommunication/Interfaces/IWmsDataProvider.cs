@@ -20,15 +20,17 @@ namespace Ferretto.VW.WmsCommunication.Interfaces
 
         Task<string> GetItemImageCodeAsync(int itemId);
 
-        Task<ObservableCollection<ItemList>> GetItemLists();
+        Task<IList<ItemList>> GetItemLists(int areaId);
 
         Task<ObservableCollection<Item>> GetItemsAsync(int areaid, string searchCode, int skip, int take, CancellationToken cancellationToken);
 
-        Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode);
+        Task<IList<ItemListRow>> GetListRowsAsync(int listId);
 
         Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission);
 
         TrayControlCompartment GetTrayControlSelectedCompartment(IEnumerable<TrayControlCompartment> viewCompartments, Mission mission);
+
+        Task ItemListExecute(int listId, int areaId);
 
         Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity);
 

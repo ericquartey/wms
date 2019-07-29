@@ -1,12 +1,16 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.CustomControlListDataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
+
+    <UserControl.Resources>
+        <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
+        <conv:MachinesToStringConverter x:Key="MTSC" />
+    </UserControl.Resources>
+
     <Grid>
         <DataGrid Name="DataGrid"
                   Width="auto"
@@ -14,13 +18,14 @@
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
+                  IsHitTestVisible="False"
                   IsReadOnly="True"
                   ItemsSource="{Binding Lists}"
                   RowHeight="30"
@@ -83,9 +88,9 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
-                                    Width="0.8*"
-                                    Binding="{Binding Path=Type}"
-                                    Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderType }">
+                                    Width="0.9*"
+                                    Binding="{Binding Path=ItemListType, Converter={StaticResource ILTEC}}"
+                                    Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderType}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
@@ -111,7 +116,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
-                                    Binding="{Binding Path=List}"
+                                    Binding="{Binding Path=Code}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderList}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -163,7 +168,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column4"
                                     Width="1*"
-                                    Binding="{Binding Path=Machines}"
+                                    Binding="{Binding Path=Machines, Converter={StaticResource MTSC}}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderMachines}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">

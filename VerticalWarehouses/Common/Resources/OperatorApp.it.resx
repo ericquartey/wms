@@ -918,4 +918,16 @@
   <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
     <value>Analisi spazio</value>
   </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Non specificato</value>
+  </data>
 </root>

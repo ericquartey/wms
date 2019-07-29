@@ -95,11 +95,11 @@ namespace Ferretto.VW.WmsCommunication
             return item.Image;
         }
 
-        public async Task<ObservableCollection<ItemList>> GetItemLists()
+        public async Task<IList<ItemList>> GetItemLists(int areaId)
         {
             try
             {
-                return await this.itemListsDataService.GetAllAsync(take: 10);
+                return await this.areasDataService.GetItemListsAsync(areaId);
             }
             catch (SwaggerException ex)
             {
@@ -112,19 +112,16 @@ namespace Ferretto.VW.WmsCommunication
             return await this.areasDataService.GetItemsAsync(areaId, skip, take, null, null, searchCode, cancellationToken);
         }
 
-        public async Task<ObservableCollection<ItemListRow>> GetListRowsAsync(string listCode)
+        public async Task<IList<ItemListRow>> GetListRowsAsync(int listId)
         {
-            var lists = new ObservableCollection<ItemListRow>();
             try
             {
-                var searchCode = listCode.Trim('-');
-                lists = await this.itemListRowsDataService.GetAllAsync(search: searchCode);
+                return await this.itemListsDataService.GetRowsAsync(listId);
             }
             catch (Exception ex)
             {
                 throw new Exception("WMS Data Provider - " + ex.Message);
             }
-            return lists;
         }
 
         public async Task<ObservableCollection<TrayControlCompartment>> GetTrayControlCompartmentsAsync(Mission mission)
@@ -153,6 +150,18 @@ namespace Ferretto.VW.WmsCommunication
         {
             var compartmentId = (int)mission.CompartmentId;
             return viewCompartments.First(x => x.Id == compartmentId);
+        }
+
+        public async Task ItemListExecute(int listId, int areaId)
+        {
+            try
+            {
+                await this.itemListsDataService.ExecuteAsync(listId, areaId);
+            }
+            catch (SwaggerException ex)
+            {
+                throw new NotImplementedException(ex.Message);
+            }
         }
 
         public async Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity)
