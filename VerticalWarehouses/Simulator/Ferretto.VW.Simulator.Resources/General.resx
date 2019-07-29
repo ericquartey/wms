@@ -120,4 +120,10 @@
   <data name="Accept" xml:space="preserve">
     <value>Accept</value>
   </data>
+  <data name="StartSimulatorCommand" xml:space="preserve">
+    <value>Start simulation</value>
+  </data>
+  <data name="StopSimulatorCommand" xml:space="preserve">
+    <value>Stop simulation</value>
+  </data>
 </root>

@@ -17,10 +17,6 @@ namespace Ferretto.VW.Simulator.Services
     {
         #region Fields
 
-        private readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private CancellationTokenSource cts = new CancellationTokenSource();
-
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -29,13 +25,15 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly TcpListener listenerIoDriver3 = new TcpListener(IPAddress.Any, 19552);
 
+        private readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private CancellationTokenSource cts = new CancellationTokenSource();
+
         #endregion
 
         #region Properties
 
         public bool IsStartedSimulator { get; private set; }
-
-        public bool NotIsStartedSimulator => !this.IsStartedSimulator;
 
         #endregion
 
@@ -64,7 +62,6 @@ namespace Ferretto.VW.Simulator.Services
             this.IsStartedSimulator = true;
 
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
-            this.RaisePropertyChanged(nameof(this.NotIsStartedSimulator));
         }
 
         public async Task ProcessStopSimulatorAsync()
@@ -81,8 +78,6 @@ namespace Ferretto.VW.Simulator.Services
             this.IsStartedSimulator = false;
 
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
-            this.RaisePropertyChanged(nameof(this.NotIsStartedSimulator));
-
         }
 
         private void AcceptClient(TcpListener listener, CancellationToken token)
@@ -125,7 +120,6 @@ namespace Ferretto.VW.Simulator.Services
                     }
                 }
             }
-
         }
 
         #endregion

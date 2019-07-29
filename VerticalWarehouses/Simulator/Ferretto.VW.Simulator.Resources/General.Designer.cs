@@ -68,5 +68,23 @@ namespace Ferretto.VW.Simulator.Resources {
                 return ResourceManager.GetString("Accept", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start simulation.
+        /// </summary>
+        public static string StartSimulatorCommand {
+            get {
+                return ResourceManager.GetString("StartSimulatorCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop simulation.
+        /// </summary>
+        public static string StopSimulatorCommand {
+            get {
+                return ResourceManager.GetString("StopSimulatorCommand", resourceCulture);
+            }
+        }
     }
 }

@@ -18,9 +18,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Update="Errors.it.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
         <EmbeddedResource Update="Errors.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="General.it.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
         <EmbeddedResource Update="General.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>

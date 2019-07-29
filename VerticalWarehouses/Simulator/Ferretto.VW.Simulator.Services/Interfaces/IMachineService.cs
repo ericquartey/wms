@@ -11,8 +11,6 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
 
         bool IsStartedSimulator { get; }
 
-        bool NotIsStartedSimulator { get; }
-
         #endregion
 
         #region Methods

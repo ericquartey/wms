@@ -4,8 +4,8 @@
         xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
         xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ferretto.VW.Simulator"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:Ferretto.VW.Simulator.Resources;assembly=Ferretto.VW.Simulator.Resources"
         Title="Simulator"
         Width="1024"
@@ -19,7 +19,8 @@
     <Window.Resources>
         <converter:BooleanNegationConverter x:Key="BNC" />
         <converter:BoolToVisibilityConverter x:Key="BTVC" />
-        <converter:BoolToVisibilityConverter x:Key="BTVIC" Invert="True" />
+        <converter:BoolToVisibilityConverter x:Key="BTVIC"
+                                             Invert="True" />
     </Window.Resources>
 
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}"
@@ -152,9 +153,19 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding StartSimulatorCommand}"
-                    Content="Start simulator"
-                    IsEnabled="{Binding InverterService.NotIsStartedSimulator}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                    Content="{x:Static res:General.StartSimulatorCommand}"
+                    IsEnabled="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BNC}}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+                    Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVIC}}" />
+
+            <Button Grid.Row="1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding StopSimulatorCommand}"
+                    Content="{x:Static res:General.StopSimulatorCommand}"
+                    IsEnabled="{Binding InverterService.IsStartedSimulator}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+                    Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
 
             <StackPanel Grid.Row="1"
                         Grid.Column="1"
@@ -189,7 +200,7 @@
                         Margin="0,15,15,15"
                         BorderBrush="Gray"
                         BorderThickness="1">
-                    <!--  {x:Static res:InstallationApp.LuPresentInBay}  -->
+                    <!--    -->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

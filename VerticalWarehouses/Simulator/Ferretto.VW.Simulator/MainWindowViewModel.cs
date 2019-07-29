@@ -28,6 +28,8 @@ namespace Ferretto.VW.Simulator
 
         private ICommand startSimulatorCommand;
 
+        private ICommand stopSimulatorCommand;
+
         private ICommand toggleThemeCommand;
 
         #endregion
@@ -77,6 +79,11 @@ namespace Ferretto.VW.Simulator
             ??
             (this.startSimulatorCommand = new DelegateCommand(async () => await this.inverterService.ProcessStartSimulatorAsync()));
 
+        public ICommand StopSimulatorCommand =>
+            this.stopSimulatorCommand
+            ??
+            (this.stopSimulatorCommand = new DelegateCommand(async () => await this.inverterService.ProcessStopSimulatorAsync()));
+
         public ICommand ToggleThemeCommand =>
             this.toggleThemeCommand
             ??
@@ -91,29 +98,6 @@ namespace Ferretto.VW.Simulator
             this.container = container;
 
             return Task.CompletedTask;
-        }
-
-        private void LoadOperatorModule()
-        {
-            this.IsBusy = true;
-
-            try
-            {
-                var moduleManager = this.container.Resolve<IModuleManager>();
-                moduleManager.LoadModule("Operator");
-
-                this.IsBusy = false;
-
-                (Application.Current as App)?.OperatorAppMainWindowInstance.Show();
-            }
-            catch (Exception ex)
-            {
-                this.ErrorMessage = Resources.Errors.Error.FormatWith(ex.Message);
-            }
-            finally
-            {
-                this.IsBusy = false;
-            }
         }
 
         private void ToggleTheme()
