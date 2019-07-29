@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private DelegateCommand moveUpButtonCommand;
 
-        private IPositioningService positioningService;
+        private IPositioningMachineService positioningService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.positioningService = this.container.Resolve<IPositioningService>();
+            this.positioningService = this.container.Resolve<IPositioningMachineService>();
         }
 
         public async Task MoveDownVerticalAxisAsync()

@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private IUnityContainer container;
 
-        private IInstallationStatusService installationStatusService;
+        private IInstallationStatusMachineService installationStatusService;
 
         private bool isBeltBurnishingDone;
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
+            this.installationStatusService = this.container.Resolve<IInstallationStatusMachineService>();
         }
 
         public async Task OnEnterViewAsync()

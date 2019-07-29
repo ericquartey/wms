@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
@@ -22,7 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private IBeltBurnishingService beltBurnishingService;
+        private IBeltBurnishingMachineService beltBurnishingService;
 
         private string completedCycles;
 
@@ -157,7 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.beltBurnishingService = this.container.Resolve<IBeltBurnishingService>();
+            this.beltBurnishingService = this.container.Resolve<IBeltBurnishingMachineService>();
         }
 
         public async Task OnEnterViewAsync()

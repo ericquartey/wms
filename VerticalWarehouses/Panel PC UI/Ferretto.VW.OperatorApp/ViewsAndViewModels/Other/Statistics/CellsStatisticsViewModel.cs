@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -15,11 +16,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly ICellsService cellsService;
+        private readonly ICellsMachineService cellsService;
 
         private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
 
         private readonly INavigationService navigationService;
+
+        private readonly IStatusMessageService statusMessageService;
 
         private ObservableCollection<CellStatusStatistics> cells;
 
@@ -37,11 +40,28 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public CellsStatisticsViewModel(
             INavigationService navigationService,
-            ICellsService cellsService,
+            ICellsMachineService cellsService,
+            IStatusMessageService statusMessageService,
             ICustomControlCellStatisticsDataGridViewModel cellStatisticsDataGridViewModel)
         {
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
+            if (cellsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(cellsService));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
             this.navigationService = navigationService;
             this.cellsService = cellsService;
+            this.statusMessageService = statusMessageService;
             this.dataGridViewModelRef = cellStatisticsDataGridViewModel as CustomControlCellStatisticsDataGridViewModel;
 
             this.NavigationViewModel = null;
@@ -57,7 +77,11 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
             set => this.SetProperty(ref this.cells, value);
         }
 
-        public CellStatisticsSummary CellStatistics => this.cellStatistics;
+        public CellStatisticsSummary CellStatistics
+        {
+            get => this.cellStatistics;
+            set => this.SetProperty(ref this.cellStatistics, value);
+        }
 
         public BindableBase DataGridViewModel
         {
@@ -85,20 +109,18 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
         {
             try
             {
-                this.cellStatistics = await this.cellsService.GetStatisticsAsync();
+                this.CellStatistics = await this.cellsService.GetStatisticsAsync();
 
-                this.SelectedCell = this.cellStatistics.CellStatusStatistics.FirstOrDefault();
+                this.SelectedCell = this.CellStatistics.CellStatusStatistics.FirstOrDefault();
 
-                this.dataGridViewModelRef.Cells = this.cellStatistics.CellStatusStatistics;
+                this.dataGridViewModelRef.Cells = this.CellStatistics.CellStatusStatistics;
                 this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
                 this.DataGridViewModel = this.dataGridViewModelRef;
-
-                this.RaisePropertyChanged(nameof(this.CellStatistics));
             }
-            catch
+            catch (SwaggerException ex)
             {
-                //TODO call toolbar notification service
+                this.statusMessageService.Notify(ex);
             }
         }
 

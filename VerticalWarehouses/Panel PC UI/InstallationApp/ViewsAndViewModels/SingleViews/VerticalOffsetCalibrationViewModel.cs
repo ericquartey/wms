@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
@@ -48,7 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private string noteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
-        private IOffsetCalibrationService offsetCalibrationService;
+        private IOffsetCalibrationMachineService offsetCalibrationService;
 
         private SubscriptionToken receivePositioningUpdateToken;
 
@@ -174,9 +173,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.offsetCalibrationService = container.Resolve<IOffsetCalibrationService>();
+            this.offsetCalibrationService = container.Resolve<IOffsetCalibrationMachineService>();
             this.container = container;
-            this.offsetCalibrationService = this.container.Resolve<IOffsetCalibrationService>();
+            this.offsetCalibrationService = this.container.Resolve<IOffsetCalibrationMachineService>();
         }
 
         public async Task OnEnterViewAsync()

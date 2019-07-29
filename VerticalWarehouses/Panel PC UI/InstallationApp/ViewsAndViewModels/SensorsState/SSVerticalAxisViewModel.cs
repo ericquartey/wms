@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private bool[] sensorStatus;
 
-        private IUpdateSensorsService updateSensorsService;
+        private IUpdateSensorsMachineService updateSensorsService;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsMachineService>();
         }
 
         public async Task OnEnterViewAsync()

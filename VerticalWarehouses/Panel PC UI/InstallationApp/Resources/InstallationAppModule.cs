@@ -70,16 +70,16 @@ namespace Ferretto.VW.App.Installation.Resources
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var homingService = new HomingService(this.automationServiceUrl);
-            var positioningService = new PositioningService(this.automationServiceUrl);
-            var beltBurnishingService = new BeltBurnishingService(this.automationServiceUrl);
-            var shutterService = new ShutterService(this.automationServiceUrl);
-            var resolutionCalibrationService = new ResolutionCalibrationService(this.automationServiceUrl);
-            var offsetCalibrationService = new OffsetCalibrationService(this.automationServiceUrl);
-            var installationStatusService = new InstallationStatusService(this.automationServiceUrl);
-            var updateSensorsService = new UpdateSensorsService(this.automationServiceUrl);
+            var homingService = new HomingMachineService(this.automationServiceUrl);
+            var positioningService = new PositioningMachineService(this.automationServiceUrl);
+            var beltBurnishingService = new BeltBurnishingMachineService(this.automationServiceUrl);
+            var shutterService = new ShutterMachineService(this.automationServiceUrl);
+            var resolutionCalibrationService = new ResolutionCalibrationMachineService(this.automationServiceUrl);
+            var offsetCalibrationService = new OffsetCalibrationMachineService(this.automationServiceUrl);
+            var installationStatusService = new InstallationStatusMachineService(this.automationServiceUrl);
+            var updateSensorsService = new UpdateSensorsMachineService(this.automationServiceUrl);
 
-            var testService = new TestService(this.automationServiceUrl);
+            var testService = new TestMachineService(this.automationServiceUrl);
             var helpMainWindowInstance = new HelpMainWindow(this.container.Resolve<IEventAggregator>());
 
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(this.container.Resolve<IEventAggregator>());
@@ -121,17 +121,17 @@ namespace Ferretto.VW.App.Installation.Resources
 
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
 
-            this.container.RegisterInstance<IHomingService>(homingService);
-            this.container.RegisterInstance<IPositioningService>(positioningService);
-            this.container.RegisterInstance<IBeltBurnishingService>(beltBurnishingService);
-            this.container.RegisterInstance<IShutterService>(shutterService);
-            this.container.RegisterInstance<IResolutionCalibrationService>(resolutionCalibrationService);
-            this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
-            this.container.RegisterInstance<IInstallationStatusService>(installationStatusService);
-            this.container.RegisterInstance<IUpdateSensorsService>(updateSensorsService);
-            this.container.RegisterInstance<IOffsetCalibrationService>(offsetCalibrationService);
+            this.container.RegisterInstance<IHomingMachineService>(homingService);
+            this.container.RegisterInstance<IPositioningMachineService>(positioningService);
+            this.container.RegisterInstance<IBeltBurnishingMachineService>(beltBurnishingService);
+            this.container.RegisterInstance<IShutterMachineService>(shutterService);
+            this.container.RegisterInstance<IResolutionCalibrationMachineService>(resolutionCalibrationService);
+            this.container.RegisterInstance<IOffsetCalibrationMachineService>(offsetCalibrationService);
+            this.container.RegisterInstance<IInstallationStatusMachineService>(installationStatusService);
+            this.container.RegisterInstance<IUpdateSensorsMachineService>(updateSensorsService);
+            this.container.RegisterInstance<IOffsetCalibrationMachineService>(offsetCalibrationService);
 
-            this.container.RegisterInstance<ITestService>(testService);
+            this.container.RegisterInstance<ITestMachineService>(testService);
 
             this.container.RegisterInstance<IStatusMessageService>(new StatusMessageService());
 

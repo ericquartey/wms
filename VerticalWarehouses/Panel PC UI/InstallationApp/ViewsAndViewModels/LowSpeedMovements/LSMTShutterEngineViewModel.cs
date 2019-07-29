@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ITestService testService;
+        private readonly ITestMachineService testService;
 
         private DelegateCommand closeButtonCommand;
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private DelegateCommand openButtonCommand;
 
-        private IShutterService shutterService;
+        private IShutterMachineService shutterService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -81,7 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.shutterService = this.container.Resolve<IShutterService>();
+            this.shutterService = this.container.Resolve<IShutterMachineService>();
         }
 
         public Task OnEnterViewAsync()

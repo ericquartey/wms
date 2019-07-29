@@ -7,7 +7,6 @@ using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
@@ -41,13 +40,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         private BindableBase sensorRegion;
 
-        private IShutterService shutterService;
+        private IShutterMachineService shutterService;
 
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
 
-        private ITestService testService;
+        private ITestMachineService testService;
 
         #endregion
 
@@ -162,8 +161,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.shutterService = this.container.Resolve<IShutterService>();
-            this.testService = this.container.Resolve<ITestService>();
+            this.shutterService = this.container.Resolve<IShutterMachineService>();
+            this.testService = this.container.Resolve<ITestMachineService>();
         }
 
         public Task OnEnterViewAsync()

@@ -53,6 +53,7 @@
         WebApiException,
 
         CheckCondition,
+
         NewMissionOperationAvailable
     }
 }

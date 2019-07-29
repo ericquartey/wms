@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Operator
     {
         #region Fields
 
-        private readonly IBaysService baysService;
+        private readonly IBaysMachineService baysService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Operator
             IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
             IIdleViewModel idleViewModel,
             IAuthenticationService authenticationService,
-            IBaysService baysService)
+            IBaysMachineService baysService)
         {
             if (eventAggregator == null)
             {

@@ -61,12 +61,14 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as ICellManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IConfigurationValueManagmentDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVertimagConfigurationDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsProvider);
+            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorsProvider);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IMachineStatisticsDataLayer);
             services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversionDataLayer);
 
             services.AddTransient<IServicingProvider, ServicingProvider>();
             services.AddTransient<IBaysProvider, BaysProvider>();
+            services.AddTransient<ICellsProvider, CellsProvider>();
+            services.AddTransient<IErrorsProvider, ErrorsProvider>();
             services.AddTransient<IUsersProvider, UsersProvider>();
             services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
             services.AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>();

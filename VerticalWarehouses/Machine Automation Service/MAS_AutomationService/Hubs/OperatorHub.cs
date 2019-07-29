@@ -36,7 +36,14 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
         {
             var bay = this.baysProvider.GetByIpAddress(this.Context.GetHttpContext().Connection.RemoteIpAddress);
 
-            this.Context.Items[BayIdEntry] = bay.Id;
+            if (this.Context.Items.ContainsKey(BayIdEntry))
+            {
+                this.Context.Items[BayIdEntry] = bay.Id;
+            }
+            else
+            {
+                this.Context.Items.Add(BayIdEntry, bay.Id);
+            }
 
             await base.OnConnectedAsync();
         }

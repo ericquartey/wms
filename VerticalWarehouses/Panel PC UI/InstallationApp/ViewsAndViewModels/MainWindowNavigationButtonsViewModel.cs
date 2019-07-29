@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private IUnityContainer container;
 
-        private IInstallationStatusService installationStatusService;
+        private IInstallationStatusMachineService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
         public async Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
-            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
+            this.installationStatusService = this.container.Resolve<IInstallationStatusMachineService>();
             await this.UpdateButtonsEnableStateAsync();
         }
 

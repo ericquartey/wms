@@ -5,7 +5,6 @@ using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
@@ -84,7 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private string repositionLenght;
 
-        private IResolutionCalibrationService resolutionCalibrationService;
+        private IResolutionCalibrationMachineService resolutionCalibrationService;
 
         private ResolutionCalibrationSteps resolutionCalibrationSteps;
 
@@ -92,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private IStatusMessageService statusMessageService;
 
-        private ITestService testService;
+        private ITestMachineService testService;
 
         private ICommand updateResolutionCommand;
 
@@ -304,8 +303,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.resolutionCalibrationService = container.Resolve<IResolutionCalibrationService>();
-            this.testService = container.Resolve<ITestService>();
+            this.resolutionCalibrationService = container.Resolve<IResolutionCalibrationMachineService>();
+            this.testService = container.Resolve<ITestMachineService>();
             this.statusMessageService = container.Resolve<IStatusMessageService>();
         }
 
