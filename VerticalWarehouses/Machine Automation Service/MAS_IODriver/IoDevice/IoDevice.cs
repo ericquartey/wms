@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IoIndex index;
+
         private readonly BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue;
 
         private readonly Task ioReceiveTask;
@@ -37,9 +39,15 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private readonly IoSHDStatus ioSHDStatus;
 
+        private readonly IPAddress ipAddress;
+
         private readonly ILogger logger;
 
+        private readonly int port;
+
         private readonly ISHDTransport shdTransport;
+
+        private readonly CancellationToken stoppingToken;
 
         private IIoStateMachine currentStateMachine;
 
@@ -47,15 +55,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private bool forceIoStatusPublish;
 
-        private IoIndex index;
-
-        private IPAddress ipAddress;
-
         private Timer pollIoTimer;
-
-        private int port;
-
-        private CancellationToken stoppingToken;
 
         private byte[] ReceiveBuffer;
 
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
             do
             {
-                if(!this.shdTransport.IsConnected)
+                if (!this.shdTransport.IsConnected)
                 {
                     try
                     {
@@ -196,15 +196,15 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     continue;
                 }
                 var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
-                if(this.ReceiveBuffer.Length > 0)
+                if (this.ReceiveBuffer.Length > 0)
                 {
                     this.logger.LogWarning($" extracted: count {ExtractedMessages.Count}: left bytes {this.ReceiveBuffer.Length}");
                 }
 
                 foreach (var extractedMessage in ExtractedMessages)
                 {
-                    if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release   
-                        || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release 
+                    if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release
+                        || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release
                         )
                     {
                         // message error
@@ -216,7 +216,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     }
                     try
                     {
-
                         this.ParsingDataBytes(
                             extractedMessage,
                             out nBytesReceived,
@@ -296,7 +295,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             break;
                     }
                 }
-
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -352,7 +350,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             break;
                     }
                 }
-                catch(IoDriverException ex)
+                catch (IoDriverException ex)
                 {
                     // connection error
                     this.logger.LogError($"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
@@ -396,7 +394,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             {
                 await this.shdTransport.ConnectAsync();
             }
-            catch(IoDriverException ex)
+            catch (IoDriverException ex)
             {
                 this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
 
@@ -468,6 +466,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             this.disposed = true;
         }
 
-#endregion
+        #endregion
     }
 }

@@ -4,10 +4,10 @@
              xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
     <Grid Width="1024"
           Height="608">
@@ -50,7 +50,7 @@
                                             VerticalAlignment="Top"
                                             ContentText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.Resolution}" />
-        
+
         <Button Grid.Column="0"
                 Margin="250,450,0,0"
                 HorizontalAlignment="Left"

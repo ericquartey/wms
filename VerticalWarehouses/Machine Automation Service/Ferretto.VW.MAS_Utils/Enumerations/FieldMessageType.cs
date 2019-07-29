@@ -42,6 +42,8 @@
 
         IoDriverException,
 
-        SetConfigurationIO
+        SetConfigurationIO,
+
+        StartSimulator,
     }
 }

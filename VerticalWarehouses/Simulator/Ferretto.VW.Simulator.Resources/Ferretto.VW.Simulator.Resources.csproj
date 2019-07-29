@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net471</TargetFramework>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Update="Errors.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Errors.resx</DependentUpon>
+        </Compile>
+        <Compile Update="General.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>General.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Errors.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="General.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>General.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+</Project>
