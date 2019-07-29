@@ -8,7 +8,6 @@ using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -62,8 +61,6 @@ namespace Ferretto.VW.App.Installation
 
         private ICommand openClosePopupCommand;
 
-        private readonly IOSensorsStatus ioSensorsStatus;
-
         private bool securityFunctionActive;
 
         private IUpdateSensorsService updateSensorsService;
@@ -88,7 +85,6 @@ namespace Ferretto.VW.App.Installation
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.idleViewModel = idleViewModel as IdleViewModel;
             this.ContentRegionCurrentViewModel = this.idleViewModel;
-            this.ioSensorsStatus = new IOSensorsStatus();
             this.SecurityFunctionActive = false;
             this.InitializeEvents();
 
@@ -228,9 +224,6 @@ namespace Ferretto.VW.App.Installation
 
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
-            this.ioSensorsStatus.UpdateInputStates(message);
-
-            this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
         }
 
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
