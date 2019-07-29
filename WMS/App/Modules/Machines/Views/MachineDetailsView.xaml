@@ -104,23 +104,29 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <Grid Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <wms:ActionBar Grid.Column="1"
-                           Grid.ColumnSpan="2"
-                           MinWidth="100"
-                           Margin="0,10,10,0"
-                           HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding RefreshCommand}"
-                                   Content="{x:Static res:General.Refresh}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
+                <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+                <wms:ActionBar Grid.Column="1"
+                               MinWidth="100"
+                               Margin="0,10,10,0"
+                               HorizontalAlignment="Right"
+                               Style="{DynamicResource ActionBarNotCustomizable}">
+                    <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                       Content="{x:Static res:General.Refresh}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
+                                       GlyphSize="Custom" />
+                </wms:ActionBar>
+            </Grid>
 
             <TextBlock Grid.Row="1"
-                       Grid.ColumnSpan="2"
+                       Grid.ColumnSpan="3"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Top"
@@ -128,7 +134,6 @@
                        Text="{Binding Model.Error}"
                        TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
-
         </Grid>
 
         <ScrollViewer Grid.Row="1"
