@@ -20,10 +20,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #endregion
 
-        // TODO: use IConfiguration injection instead
-
         #region Constructors
 
+        // TODO: use IConfiguration injection instead
         public DataLayerContext()
         {
         }
@@ -36,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #endregion
 
         #region Properties
+
+        public DbSet<Bay> Bays { get; set; }
 
         public DbSet<Cell> Cells { get; set; }
 
@@ -53,9 +54,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
 
-        public DbSet<RuntimeValue> RuntimeValues { get; set; }
-
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         #endregion
 
@@ -94,18 +95,15 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-
+            modelBuilder.ApplyConfiguration(new BaysConfiguration());
+            modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
-
             modelBuilder.ApplyConfiguration(new ErrorConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
-
-            modelBuilder.ApplyConfiguration(new CellsConfiguration());
-
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
+            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
 
         #endregion

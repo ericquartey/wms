@@ -85,7 +85,7 @@
 
 
 
-        <custom:CustomInputFieldControlFocusable Grid.Row="1"
+        <vwIcon:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
                                                  Margin="80,370,0,0"
                                                  HorizontalAlignment="Left"
@@ -94,7 +94,7 @@
                                                  LabelText="{x:Static res:VWApp.UserLogin_UserName}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <custom:CustomInputFieldControlFocusable Grid.Row="1"
+        <vwIcon:CustomInputFieldControlFocusable Grid.Row="1"
                                                  Width="200"
                                                  Margin="80,430,0,0"
                                                  HorizontalAlignment="Left"

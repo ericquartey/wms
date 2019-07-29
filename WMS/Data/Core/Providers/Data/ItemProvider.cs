@@ -52,28 +52,38 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var validationError = model.ValidateBusinessModel(this.DataContext.Items);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<ItemDetails>(
+                    validationError,
+                    model);
+            }
+
             var entry = await this.DataContext.Items.AddAsync(
                 this.mapper.Map<Common.DataModels.Item>(model));
-
-            this.NotificationService.PushCreate(model);
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-                if (changedEntitiesCount > 0)
+                if (changedEntitiesCount <= 0)
                 {
-                    var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
-                    if (!result.Success)
-                    {
-                        return result;
-                    }
+                    return new CreationErrorOperationResult<ItemDetails>();
+                }
+
+                var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
+                if (!result.Success)
+                {
+                    return result;
                 }
 
                 scope.Complete();
+
+                this.NotificationService.PushCreate(model);
             }
 
-            var createdItem = await this.GetByIdAsync(entry.Entity.Id);
-            return new SuccessOperationResult<ItemDetails>(createdItem);
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+            return new SuccessOperationResult<ItemDetails>(createdModel);
         }
 
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)

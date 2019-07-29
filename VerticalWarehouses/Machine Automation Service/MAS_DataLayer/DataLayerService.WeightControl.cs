@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IWeightControl
+    public partial class DataLayerService : IWeightControlDataLayer
     {
         #region Properties
 

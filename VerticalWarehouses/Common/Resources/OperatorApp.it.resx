@@ -898,10 +898,10 @@
     <value>Inutilizzabile</value>
   </data>
   <data name="WmsServicesOffline" xml:space="preserve">
-    <value>Servizi WMS non raggiungibili</value>
+    <value>Non raggiungibile</value>
   </data>
   <data name="WmsServicesOnline" xml:space="preserve">
-    <value>Servizi WMS in linea</value>
+    <value>In linea</value>
   </data>
   <data name="MachineServiceStatus_Expired" xml:space="preserve">
     <value>Scaduto</value>

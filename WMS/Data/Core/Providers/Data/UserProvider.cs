@@ -9,34 +9,38 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class UserProvider : IUserProvider
     {
+        #region Methods
+
         public UserClaims Authenticate(string userName, string password)
         {
-            if (userName.ToUpper() == "OPERATOR"
-                ||
-                password == "password")
+            switch (userName.ToUpper())
             {
-                return new UserClaims
-                {
-                    Name = userName,
-                    AccessLevel = UserAccessLevel.User,
-                };
-            }
+                case "OPERATOR":
 
-            if (userName.ToUpper() == "INSTALLER"
-               ||
-               password == "password")
-            {
-                return new UserClaims
-                {
-                    Name = userName,
-                    AccessLevel = UserAccessLevel.SuperUser,
-                };
-            }
+                    return new UserClaims
+                    {
+                        Name = userName,
+                        AccessLevel = UserAccessLevel.User,
+                    };
 
-            return null;
+                case "ADMIN":
+                    return new UserClaims
+                    {
+                        Name = userName,
+                        AccessLevel = UserAccessLevel.Admin,
+                    };
+
+                case "INSTALLER":
+                    return new UserClaims
+                    {
+                        Name = userName,
+                        AccessLevel = UserAccessLevel.SuperUser,
+                    };
+
+                default:
+                    return null;
+            }
         }
-
-        #region Methods
 
         public Task<IEnumerable<User>> GetAllAsync()
         {
@@ -51,11 +55,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public Task<User> GetByIdAsync(int id)
         {
             return Task.FromResult<User>(null);
-        }
-
-        public Task<bool> IsValidAsync(User user)
-        {
-            return Task.FromResult(true);
         }
 
         #endregion

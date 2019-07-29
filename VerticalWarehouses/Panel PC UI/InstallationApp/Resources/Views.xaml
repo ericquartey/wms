@@ -3,9 +3,9 @@
                     xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState"
                     xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements"
-                    xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
                     xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
+                    xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
                     xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
     <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
         <local:SSNavigationButtonsView />

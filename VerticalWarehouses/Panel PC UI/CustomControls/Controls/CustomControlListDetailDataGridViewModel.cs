@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
 
@@ -8,7 +8,7 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        private ObservableCollection<DataGridListDetail> lists;
+        private IEnumerable<DataGridListDetail> lists;
 
         private DataGridListDetail selectedList;
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Properties
 
-        public ObservableCollection<DataGridListDetail> Lists { get => this.lists; set => this.SetProperty(ref this.lists, value); }
+        public IEnumerable<DataGridListDetail> Lists { get => this.lists; set => this.SetProperty(ref this.lists, value); }
 
         public DataGridListDetail SelectedList { get => this.selectedList; set => this.SetProperty(ref this.selectedList, value); }
 

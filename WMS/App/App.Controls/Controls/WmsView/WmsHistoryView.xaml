@@ -15,7 +15,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"
                                           MinWidth="8" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <wms:ActionBar x:Name="actionBarHistoryView"
@@ -35,6 +35,9 @@
                                Margin="7,15,0,0"
                                FontSize="{DynamicResource FontSizeMedium}"
                                Text="{Binding SubTitle}"
+                               TextTrimming="CharacterEllipsis"
+                               TextWrapping="NoWrap"
+                               ToolTip="{Binding SubTitle}"
                                Visibility="{Binding SubTitleVisibility}" />
                 </Grid>
                 <ContentPresenter />

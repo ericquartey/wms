@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;

@@ -1,21 +1,22 @@
-﻿using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.IO;
-using Ferretto.VW.MAS.IODriver.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 {
-    public class MachineSensorsStatus
+    public class MachineSensorsStatus : IMachineSensorsStatus
     {
         #region Fields
 
-        private const int TOTAL_INPUTS = 64;
+        private const int INVERTER_INPUTS = 64;
 
-        private readonly IOSensorsStatus ioSensorsStatus;
+        private const int REMOTEIO_INPUTS = 16;
 
-        readonly private bool[] rawInvertersInputs;
+        //private readonly IOSensorsStatus ioSensorsStatus;
 
-        readonly private bool[] rawRemoteIOsInputs;
+        private readonly bool[] sensorStatus;
 
         #endregion
 
@@ -23,139 +24,93 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public MachineSensorsStatus()
         {
-            this.rawRemoteIOsInputs = new bool[TOTAL_INPUTS]; //TEMP RemoteIO input source
-            this.rawInvertersInputs = new bool[TOTAL_INPUTS]; //TEMP Inverter input source
-
-            this.ioSensorsStatus = new IOSensorsStatus(); //TEMP IO sensors status being displayed
+            //INFO hp: the sensorStatus array contains the Remote IO sensor status between index 0 and 47
+            // followed by the Inverter sensor between index 48 and 111
+            this.sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS];
         }
 
         #endregion
 
         #region Properties
 
-        public bool[] DisplayedInputs => this.ioSensorsStatus?.Inputs;
+        public bool[] DisplayedInputs => this.sensorStatus;
 
-        public bool DrawerIsCompletelyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerCompletelyOffCradle => !this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && !this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
-        public bool DrawerIsPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSide] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSide];
+        public bool IsDrawerCompletelyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+
+        public bool IsDrawerInBay1Up => this.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerPartiallyOnCradle => this.DisplayedInputs[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+
+        public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool MachineIsInEmergencyState => !this.DisplayedInputs[(int)IOMachineSensors.NormalState];
+        public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalStateBay1];
 
-        public bool[] RawInvertersInputs => this.rawInvertersInputs;
+        public bool IsSensorZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawl];
 
-        public bool[] RawRemoteIOsInputs => this.rawRemoteIOsInputs;
-
-        public bool SensorInZeroOnCradle => this.DisplayedInputs[(int)IOMachineSensors.ZeroPawl];
-
-        public bool SensorInZeroOnElevator => this.DisplayedInputs[(int)IOMachineSensors.ZeroVertical];
+        public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVertical];
 
         #endregion
 
         #region Methods
 
-        public bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor)
+        //INFO Inputs from the inverter
+        public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)
         {
-            var requiredUpdateIoInverters = false;
+            var requiredUpdate = false;
+            var updateDone = false;
 
-            if (newRawInputs == null)
+            if (newSensorStatus == null)
             {
-                return requiredUpdateIoInverters;
+                return updateDone;
             }
-
-            if (messageActor == FieldMessageActor.InverterDriver)
-            {
-                for (var index = 0; index < newRawInputs.Length; index++)
-                {
-                    if (this.rawInvertersInputs[index] != newRawInputs[index])
-                    {
-                        this.rawInvertersInputs[index] = newRawInputs[index];
-                        requiredUpdateIoInverters = true;
-                    }
-                }
-            }
-
-            var requiredUpdateRemoteIos = false;
 
             if (messageActor == FieldMessageActor.IoDriver)
             {
-                if (ioIndex < 0)
+                if (ioIndex < 0 || ioIndex > 2)
                 {
-                    return requiredUpdateRemoteIos;
-                }
-                if (ioIndex > 2)
-                {
-                    return requiredUpdateRemoteIos;
+                    return false;
                 }
 
-                for (var index = 0; index < newRawInputs.Length; index++)
+                for (var index = 0; index < REMOTEIO_INPUTS; index++)
                 {
-                    if (this.rawRemoteIOsInputs[(ioIndex * 16) + index] != newRawInputs[index])
+                    if (this.sensorStatus[(ioIndex * 16) + index] != newSensorStatus[index])
                     {
-                        this.rawRemoteIOsInputs[(ioIndex * 16) + index] = newRawInputs[index];
-                        requiredUpdateRemoteIos = true;
+                        requiredUpdate = true;
+                        break;
                     }
                 }
+
+                if (requiredUpdate)
+                {
+                    Array.Copy(newSensorStatus, 0, this.sensorStatus, 0, REMOTEIO_INPUTS);
+                    updateDone = true;
+                }
             }
 
-            if (requiredUpdateRemoteIos || requiredUpdateIoInverters)
+            requiredUpdate = false;
+
+            if (messageActor == FieldMessageActor.InverterDriver)
             {
-                this.updateIoSensorsStatus();
-                return true;
+                for (var index = 0; index < INVERTER_INPUTS; index++)
+                {
+                    if (this.sensorStatus[index + REMOTEIO_INPUTS] != newSensorStatus[index])
+                    {
+                        requiredUpdate = true;
+                        break;
+                    }
+                }
+
+                if (requiredUpdate)
+                {
+                    Array.Copy(newSensorStatus, 0, this.sensorStatus, REMOTEIO_INPUTS, INVERTER_INPUTS);
+                    updateDone = true;
+                }
             }
-            else
-            {
-                return false;
-            }
-        }
 
-        private void updateIoSensorsStatus()
-        {
-            const int N_TOT_CHANNELS = 32;
-
-            // TODO Rename the index of the rawInvertersInputs array.
-
-            // TODO Change the method to update the sensors status to be displayed in the UI
-            var newInputs = new bool[N_TOT_CHANNELS];
-
-            // Bay1
-            newInputs[(int)IOMachineSensors.NormalState] = this.rawRemoteIOsInputs[(int)IoPorts.NormalState];
-            newInputs[(int)IOMachineSensors.MushroomHeadButtonBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MushroomEmergency];
-            newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay];
-            newInputs[(int)IOMachineSensors.MicroCarterRightSideBay1] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay];
-            newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay1] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay];
-            newInputs[(int)IOMachineSensors.LUPresentInBay1] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay];
-            newInputs[(int)IOMachineSensors.HeightControlCheckBay1] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay];
-            newInputs[(int)IOMachineSensors.ElevatorMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.ElevatorMotorFeedback];
-            newInputs[(int)IOMachineSensors.CradleMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.CradleMotorFeedback];
-
-            newInputs[(int)IOMachineSensors.EmergencyEndRun] = this.rawInvertersInputs[0];
-
-            newInputs[(int)IOMachineSensors.ZeroVertical] = this.rawInvertersInputs[2];
-
-            newInputs[(int)IOMachineSensors.ElevatorMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.ElevatorMotorFeedback];
-            newInputs[(int)IOMachineSensors.CradleMotorSelected] = this.rawRemoteIOsInputs[(int)IoPorts.CradleMotorFeedback];
-
-            newInputs[(int)IOMachineSensors.LuPresentiInMachineSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInMachineSide];
-            newInputs[(int)IOMachineSensors.LuPresentInOperatorSide] = this.rawRemoteIOsInputs[(int)IoPorts.DrawerInOperatorSide];
-
-            // Bay2
-            newInputs[(int)IOMachineSensors.MushroomHeadButtonBay2] = this.rawRemoteIOsInputs[(int)IoPorts.MushroomEmergency + 16];
-            newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay2] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay + 16];
-            newInputs[(int)IOMachineSensors.MicroCarterRightSideBay2] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay + 16];
-            newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay2] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay + 16];
-            newInputs[(int)IOMachineSensors.LUPresentInBay2] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay + 16];
-            newInputs[(int)IOMachineSensors.HeightControlCheckBay2] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay + 16];
-
-            // Bay3
-            newInputs[(int)IOMachineSensors.MushroomHeadButtonBay3] = this.rawRemoteIOsInputs[(int)IoPorts.MushroomEmergency + 32];
-            newInputs[(int)IOMachineSensors.MicroCarterLeftSideBay3] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterLeftSideBay + 32];
-            newInputs[(int)IOMachineSensors.MicroCarterRightSideBay3] = this.rawRemoteIOsInputs[(int)IoPorts.MicroCarterRightSideBay + 32];
-            newInputs[(int)IOMachineSensors.AntiIntrusionShutterBay3] = this.rawRemoteIOsInputs[(int)IoPorts.AntiIntrusionShutterBay + 32];
-            newInputs[(int)IOMachineSensors.LUPresentInBay3] = this.rawRemoteIOsInputs[(int)IoPorts.LoadingUnitExistenceInBay + 32];
-            newInputs[(int)IOMachineSensors.HeightControlCheckBay3] = this.rawRemoteIOsInputs[(int)IoPorts.HeightControlCheckBay + 32];
-
-            this.ioSensorsStatus?.UpdateInputStates(newInputs);
+            return updateDone;
         }
 
         #endregion

@@ -4,24 +4,16 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public static class ConfigurationExtensions
     {
-        #region Fields
-
-        private const string WMSServiceAddress = "WMSServiceAddress";
-
-        private const string WMSServiceAddressHubsEndpoint = "WMSServiceAddressHubsEndpoint";
-
-        #endregion
-
         #region Methods
 
-        public static string GetDataServiceHubUrl(this IConfiguration configuration)
+        public static System.Uri GetDataServiceHubUrl(this IConfiguration configuration)
         {
-            return configuration.GetConnectionString(WMSServiceAddressHubsEndpoint);
+            return new System.Uri(configuration.GetConnectionString("WMSServiceAddressHubsEndpoint"));
         }
 
-        public static string GetDataServiceUrl(this IConfiguration configuration)
+        public static System.Uri GetDataServiceUrl(this IConfiguration configuration)
         {
-            return configuration.GetConnectionString(WMSServiceAddress);
+            return new System.Uri(configuration.GetConnectionString("WMSServiceAddress"));
         }
 
         public static bool UseInverterDriverMock(this IConfiguration configuration)
