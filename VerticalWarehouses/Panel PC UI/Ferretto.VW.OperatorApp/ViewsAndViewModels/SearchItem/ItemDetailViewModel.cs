@@ -3,10 +3,8 @@ using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.VW.App.Services;
-using Prism.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {

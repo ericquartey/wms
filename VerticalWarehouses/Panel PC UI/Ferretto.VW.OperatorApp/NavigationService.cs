@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
