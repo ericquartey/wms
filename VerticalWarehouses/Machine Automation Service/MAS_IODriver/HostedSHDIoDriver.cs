@@ -171,6 +171,11 @@ namespace Ferretto.VW.MAS.IODriver
                         this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
+                    case FieldMessageType.ResetSecurity:
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        break;
+
                     default:
                         break;
                 }

@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Installation
 
         private bool machineModeSelectionBool;
 
-        private bool machineOnMarchSelectionBool;
+        private readonly bool machineOnMarchSelectionBool;
 
         private BindableBase navigationRegionCurrentViewModel;
 
@@ -67,6 +67,8 @@ namespace Ferretto.VW.App.Installation
         private bool securityFunctionActive;
 
         private IUpdateSensorsService updateSensorsService;
+
+        private IMachineStatusService machineStatusService;
 
         #endregion
 
@@ -154,8 +156,8 @@ namespace Ferretto.VW.App.Installation
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
-        //public bool MachineOnMarchSelectionBool => this.SecurityFunctionActive;
+        //public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
+        public bool MachineOnMarchSelectionBool { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
@@ -209,10 +211,15 @@ namespace Ferretto.VW.App.Installation
                 ThreadOption.PublisherThread,
                 false);
 
+            this.machineStatusService = this.container.Resolve<IMachineStatusService>();
+
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
+            // TODO MachineOnMarch comes from the driver
             //MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
-            ClickedOnMachineOnMarchEventHandler += () => { };
+            ClickedOnMachineOnMarchEventHandler += () => {
+                this.machineStatusService.ExecuteResetSecurityAsync();
+            };
 
             this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
             this.updateSensorsService.ExecuteAsync();
