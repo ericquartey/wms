@@ -49,7 +49,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                throw new Exception();
                 return this.Ok(await this.usersDataService
                     .AuthenticateWithResourceOwnerPasswordAsync(userName, password));
             }

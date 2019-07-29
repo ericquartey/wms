@@ -3,6 +3,7 @@ using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -90,8 +91,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddHostedService<FiniteStateMachines.FiniteStateMachines>();
 
-            // TEMP: Emergency: do not include the MissionManager to the container
-            //services.AddHostedService<MissionsManagerService>();
+            services.AddHostedService<MissionsManagerService>();
 
             services.AddHostedService<AutomationService>();
         }
