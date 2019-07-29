@@ -103,6 +103,7 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
         }
 
         #endregion
