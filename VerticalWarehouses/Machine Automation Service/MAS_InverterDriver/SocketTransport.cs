@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     "Transport Stream not configured for reading data",
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
-
+            byte[] receivedData;
             try
             {
                 this.readStopwatch.Reset();
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (readBytes > 0)
                 {
-                    var receivedData = new byte[readBytes];
+                    receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
                 }
@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     ex);
             }
 
-            return this.receiveBuffer;
+            return receivedData;
         }
 
         /// <inheritdoc />

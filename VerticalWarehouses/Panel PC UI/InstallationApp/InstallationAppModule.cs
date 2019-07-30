@@ -148,6 +148,12 @@ namespace Ferretto.VW.App.Installation
 
             var testService = new TestMachineService(automationServiceUrl);
             this.container.RegisterInstance<ITestMachineService>(testService);
+
+            var machineStatusService = new MachineStatusMachineService(automationServiceUrl);
+            this.container.RegisterInstance<IMachineStatusMachineService>(machineStatusService);
+
+            var InverterStopService = new InverterStopMachineService(automationServiceUrl);
+            this.container.RegisterInstance<IInverterStopMachineService>(InverterStopService);
         }
 
         #endregion

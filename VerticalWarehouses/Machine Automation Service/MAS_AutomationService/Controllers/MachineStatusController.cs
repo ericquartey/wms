@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("Execute")]
+        [HttpGet("ExecuteResetSecurity")]
         public void ExecuteResetSecurity()
         {
             this.ExecuteResetSecurity_Method();

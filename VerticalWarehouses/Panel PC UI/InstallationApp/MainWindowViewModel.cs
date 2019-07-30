@@ -63,11 +63,11 @@ namespace Ferretto.VW.App.Installation
 
         private bool securityFunctionActive;
 
-        private IUpdateSensorsService updateSensorsService;
+        private IUpdateSensorsMachineService updateSensorsService;
 
-        private IMachineStatusService machineStatusService;
+        private IMachineStatusMachineService machineStatusService;
 
-        private IInverterStopService inverterStopService;
+        private IInverterStopMachineService inverterStopService;
 
         #endregion
 
@@ -209,9 +209,9 @@ namespace Ferretto.VW.App.Installation
                 ThreadOption.PublisherThread,
                 false);
 
-            this.machineStatusService = this.container.Resolve<IMachineStatusService>();
+            this.machineStatusService = this.container.Resolve<IMachineStatusMachineService>();
 
-            this.inverterStopService = this.container.Resolve<IInverterStopService>();
+            this.inverterStopService = this.container.Resolve<IInverterStopMachineService>();
 
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             // TODO MachineOnMarch comes from the driver
@@ -228,7 +228,7 @@ namespace Ferretto.VW.App.Installation
                 }
             };
 
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
+            this.updateSensorsService = this.container.Resolve<IUpdateSensorsMachineService>();
             this.updateSensorsService.ExecuteAsync();
 
         }
