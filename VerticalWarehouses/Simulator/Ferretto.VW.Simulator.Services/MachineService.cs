@@ -202,6 +202,7 @@ namespace Ferretto.VW.Simulator.Services
                         ioStatusMessageHeader[5] = message[5];
                         var payloadBytes = Encoding.ASCII.GetBytes(inputValues);
                         Array.Copy(payloadBytes,  0, ioStatusMessageHeader, 6, payloadBytes.Length);
+                        result = client.Client.Send(ioStatusMessageHeader);
                         break;
 
                     case InverterParameterId.HomingCreepSpeedParam:
