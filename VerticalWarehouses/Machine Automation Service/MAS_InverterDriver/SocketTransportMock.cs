@@ -261,6 +261,43 @@ namespace Ferretto.VW.MAS.InverterDriver
             throw new NotImplementedException();
         }
 
+        private byte[] BuildRawActualPositionShaftMessage()
+        {
+            byte systemIndex;
+            InverterParameterId parameterId;
+            byte dataSet;
+
+            lock (this.lastWriteMessage)
+            {
+                systemIndex = this.lastWriteMessage.SystemIndex;
+                parameterId = this.lastWriteMessage.ParameterId;
+                dataSet = this.lastWriteMessage.DataSetIndex;
+            }
+
+            //return (this.statusWord & 0x0002) > 0;
+            //this.statusWord |= 0x0002;
+
+            var rawMessage = new byte[10];
+
+            rawMessage[0] = 0x00;
+            rawMessage[1] = 0x06;
+            rawMessage[2] = systemIndex;
+            rawMessage[3] = dataSet;
+
+            var parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+
+            rawMessage[4] = parameterBytes[0];
+            rawMessage[5] = parameterBytes[1];
+
+            var payloadBytes = BitConverter.GetBytes(DateTime.Now.Ticks / 100);
+            rawMessage[6] = payloadBytes[0];
+            rawMessage[7] = payloadBytes[1];
+            rawMessage[8] = payloadBytes[2];
+            rawMessage[9] = payloadBytes[3];
+
+            return rawMessage;
+        }
+
         private byte[] BuildRawStatusMessage()
         {
             byte systemIndex;
@@ -340,6 +377,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case InverterParameterId.StatusWordParam:
                     returnValue = this.BuildRawStatusPowerOnMessage();
+                    break;
+
+                case InverterParameterId.ActualPositionShaft:
+                    returnValue = this.BuildRawActualPositionShaftMessage();
                     break;
 
                 default:
@@ -436,6 +477,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case InverterParameterId.DigitalInputsOutputs:
                     return await this.ProcessDigitalInputs(inverterMessage, stoppingToken);
 
+                case InverterParameterId.ActualPositionShaft:
+                    return await this.ProcessActualPositionShafts(inverterMessage, stoppingToken);
+
                 default:
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
@@ -488,6 +532,20 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             return inverterMessage.GetWriteMessage().Length;
+        }
+
+        private async Task<int> ProcessActualPositionShafts(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        {
+            await Task.Delay(5, stoppingToken);
+
+            lock (this.lastWriteMessage)
+            {
+                this.lastWriteMessage = inverterMessage;
+            }
+
+            this.readCompleteEventSlim.Set();
+
+            return inverterMessage.GetReadMessage().Length;
         }
 
         private async Task<int> ProcessControlWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)

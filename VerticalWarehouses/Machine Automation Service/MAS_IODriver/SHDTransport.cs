@@ -39,6 +39,7 @@ namespace Ferretto.VW.MAS.IODriver
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
+
         public bool IsReadingOk { get; set; }
 
         #endregion
@@ -170,12 +171,13 @@ namespace Ferretto.VW.MAS.IODriver
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            byte[] receivedData;
             try
             {
                 var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
                 if (readBytes > 0)
                 {
-                    var receivedData = new byte[readBytes];
+                    receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
                     this.IsReadingOk = true;
@@ -195,7 +197,7 @@ namespace Ferretto.VW.MAS.IODriver
                     ex);
             }
 
-            return this.receiveBuffer;
+            return receivedData;
         }
 
         /// <inheritdoc />
