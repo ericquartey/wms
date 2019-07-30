@@ -362,7 +362,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                         msg = new NotificationMessage(
                             ioExceptionMessage,
-                            "Inverter Exception",
+                            "Io Driver Exception",
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.IoDriverException,

@@ -240,9 +240,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IResetSecurityMessageData data)
+            //if (message.Data is IResetSecurityMessageData data)
             {
-                this.currentStateMachine = new ResetSecurityStateMachine(this.eventAggregator, data, this.logger);
+                this.currentStateMachine = new ResetSecurityStateMachine(this.eventAggregator, null, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 

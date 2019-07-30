@@ -62,6 +62,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                         break;
                 }
             }
+            else if (message.Type == FieldMessageType.IoDriverException)
+            {
+                this.ParentStateMachine.ChangeState(new ResetSecurityErrorState(this.ParentStateMachine, message, this.Logger));
+            }
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
