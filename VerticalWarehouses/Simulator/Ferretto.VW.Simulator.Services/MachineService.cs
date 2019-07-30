@@ -214,6 +214,11 @@ namespace Ferretto.VW.Simulator.Services
                         result = client.Client.Send(ioStatusMessageHeader);
                         break;
 
+                    case InverterParameterId.SetOperatingModeParam:
+                        inverter.OperationMode = (InverterOperationMode)ushortPayload;
+                        result = client.Client.Send(message);
+                        break;
+
                     case InverterParameterId.HomingCreepSpeedParam:
                     case InverterParameterId.HomingFastSpeedParam:
                     case InverterParameterId.HomingAcceleration:
@@ -221,7 +226,6 @@ namespace Ferretto.VW.Simulator.Services
                     case InverterParameterId.PositionDecelerationParam:
                     case InverterParameterId.PositionTargetPositionParam:
                     case InverterParameterId.PositionTargetSpeedParam:
-                    case InverterParameterId.SetOperatingModeParam:
                     case InverterParameterId.ShutterTargetVelocityParam:
                         result = client.Client.Send(message);
                         break;
