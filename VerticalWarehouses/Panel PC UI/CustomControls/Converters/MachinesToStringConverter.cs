@@ -13,7 +13,12 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is IEnumerable<MachinePick> machines)
+            if (value is IEnumerable<MachinePick> pickMachines)
+            {
+                return string.Join(", ", pickMachines.Select(m => m.Nickname).ToArray());
+            }
+
+            if (value is IEnumerable<Machine> machines)
             {
                 return string.Join(", ", machines.Select(m => m.Nickname).ToArray());
             }

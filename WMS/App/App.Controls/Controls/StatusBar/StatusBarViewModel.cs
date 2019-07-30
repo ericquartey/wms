@@ -23,11 +23,11 @@ namespace Ferretto.WMS.App.Controls
 
         private string message;
 
-        private string messageIconName;
-
         private string schedulerStatusDescription;
 
         private string schedulerStatusIconName;
+
+        private StatusType statusType;
 
         #endregion
 
@@ -42,6 +42,7 @@ namespace Ferretto.WMS.App.Controls
 
             this.eventService = eventService;
 
+            this.StatusType = StatusType.None;
             this.SchedulerStatusIconName = GetConnectionStatusIcon(notificationService.IsServiceHubConnected);
             this.SchedulerStatusDescription = GetConnectionStatusDescription(notificationService.IsServiceHubConnected);
             this.statusbarEventSubscription = this.eventService.Subscribe<StatusPubSubEvent>(this.OnStatusbarInfoChanged);
@@ -60,11 +61,7 @@ namespace Ferretto.WMS.App.Controls
             set => this.SetProperty(ref this.message, value);
         }
 
-        public string MessageIconName
-        {
-            get => this.messageIconName;
-            set => this.SetProperty(ref this.messageIconName, value);
-        }
+        public string MessageIconName => this.StatusType != StatusType.None ? $"{nameof(Services.StatusType)}{this.StatusType}" : string.Empty;
 
         public string SchedulerStatusDescription
         {
@@ -76,6 +73,18 @@ namespace Ferretto.WMS.App.Controls
         {
             get => this.schedulerStatusIconName;
             set => this.SetProperty(ref this.schedulerStatusIconName, value);
+        }
+
+        public StatusType StatusType
+        {
+            get => this.statusType;
+            set
+            {
+                if (this.SetProperty(ref this.statusType, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.MessageIconName));
+                }
+            }
         }
 
         #endregion
@@ -97,15 +106,10 @@ namespace Ferretto.WMS.App.Controls
             return isServiceHubConnected ? nameof(Icons.ServicesOnline) : nameof(Icons.ServicesOffline);
         }
 
-        private static string GetIconNameFromStatusType(StatusType status)
-        {
-            return $"{nameof(StatusType)}{status}";
-        }
-
         private void KeepInfoTimer_Tick(object sender, EventArgs e)
         {
+            this.StatusType = StatusType.None;
             this.Message = string.Empty;
-            this.MessageIconName = string.Empty;
             this.keepInfoTimer.Stop();
         }
 
@@ -121,15 +125,17 @@ namespace Ferretto.WMS.App.Controls
             }
 
             this.keepInfoTimer.Stop();
-            this.Message = eventArgs.Message;
-            this.MessageIconName = GetIconNameFromStatusType(eventArgs.Type);
             if (eventArgs.IsSchedulerOnline.HasValue)
             {
                 this.SchedulerStatusIconName = GetConnectionStatusIcon(eventArgs.IsSchedulerOnline.Value);
                 this.SchedulerStatusDescription = GetConnectionStatusDescription(eventArgs.IsSchedulerOnline.Value);
             }
-
-            this.keepInfoTimer.Start();
+            else
+            {
+                this.StatusType = eventArgs.Type;
+                this.Message = eventArgs.Message;
+                this.keepInfoTimer.Start();
+            }
         }
 
         #endregion

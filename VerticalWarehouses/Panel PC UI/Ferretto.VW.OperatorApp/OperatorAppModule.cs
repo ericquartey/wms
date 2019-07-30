@@ -4,8 +4,6 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Operator.HelpWindows;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ServiceUtilities;
-using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
@@ -65,23 +63,11 @@ namespace Ferretto.VW.App.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var operatorService = new OperatorService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IOperatorService>(operatorService);
-
-            var loadingUnitsService = new LoadingUnitsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ILoadingUnitsService>(loadingUnitsService);
-            var cellsService = new CellsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ICellsService>(cellsService);
-            var errorsService = new ErrorsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IErrorsService>(errorsService);
-
-            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
+            this.RegisterMachineAutomationServiceWebApis(containerRegistry);
 
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-            containerRegistry.RegisterSingleton<IBayManager, BayManager>();
             containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<INavigationService, NavigationService>();
 
@@ -119,11 +105,31 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
-            containerRegistry.Register<ICustomControlListDataGridViewModel, CustomControlListDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
+        }
+
+        private void RegisterMachineAutomationServiceWebApis(IContainerRegistry containerRegistry)
+        {
+            var missionOperationsService = new MissionOperationsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMissionOperationsService>(missionOperationsService);
+
+            var loadingUnitsService = new LoadingUnitsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ILoadingUnitsService>(loadingUnitsService);
+
+            var cellsService = new CellsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ICellsService>(cellsService);
+
+            var errorsService = new ErrorsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IErrorsService>(errorsService);
+
+            var baysService = new BaysService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IBaysService>(baysService);
+
+            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
         }
 
         #endregion

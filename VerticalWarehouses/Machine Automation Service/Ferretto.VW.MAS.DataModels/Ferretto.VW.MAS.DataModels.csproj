@@ -4,4 +4,8 @@
     <TargetFrameworks>netcoreapp2.2;net471</TargetFrameworks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
+  </ItemGroup>
+
 </Project>

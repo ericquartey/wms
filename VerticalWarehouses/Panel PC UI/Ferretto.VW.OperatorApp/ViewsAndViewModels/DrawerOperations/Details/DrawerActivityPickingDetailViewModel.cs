@@ -2,9 +2,8 @@
 using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
 using Prism.Events;
 using Unity;
 
@@ -52,15 +51,14 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details
 
         #region Constructors
 
-        public DrawerActivityPickingDetailViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityPickingDetailViewModel(IWmsImagesProvider wmsImagesProvider)
         {
-            if (eventAggregator == null)
+            if (wmsImagesProvider == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(wmsImagesProvider));
             }
 
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
+            this.wmsImagesProvider = wmsImagesProvider;
         }
 
         #endregion

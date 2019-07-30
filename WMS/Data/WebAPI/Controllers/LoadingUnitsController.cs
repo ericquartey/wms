@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class LoadingUnitsController :
         BaseController,
-        ICreateController<LoadingUnitCreating>,
+        ICreateController<LoadingUnitDetails>,
         IReadAllPagedController<LoadingUnit>,
         IReadSingleController<LoadingUnitDetails, int>,
         IUpdateController<LoadingUnitDetails, int>,
@@ -51,10 +51,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(typeof(LoadingUnitCreating), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(LoadingUnitDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
+        public async Task<ActionResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
         {
             var result = await this.loadingUnitProvider.CreateAsync(model);
             if (!result.Success)

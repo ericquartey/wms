@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<ItemArea>> CreateAsync(int id, int itemId);
+        Task<IOperationResult<ItemArea>> CreateAsync(ItemArea model);
 
         Task<IOperationResult<ItemArea>> DeleteAsync(int id, int itemId);
 

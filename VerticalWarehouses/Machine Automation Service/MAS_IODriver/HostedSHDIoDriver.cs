@@ -43,9 +43,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly ISHDTransport shdTransport;
-
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private bool disposed;
 
@@ -58,7 +56,7 @@ namespace Ferretto.VW.MAS.IODriver
         public HostedSHDIoDriver(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger,
             IConfiguration configuration)
         {

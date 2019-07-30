@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly byte[] data;
 
-        private readonly byte errorCode;
-
         private readonly SHDFormatDataOperation formatDataOperation;
 
         private readonly byte fwRelease;

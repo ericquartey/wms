@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public DateTime? LastServiceDate { get; set; }
 
-        public DateTime NextServiceDate { get; set; }
+        public DateTime? NextServiceDate { get; set; }
 
         public MachineServiceStatus ServiceStatus { get; set; } = MachineServiceStatus.Valid;
 

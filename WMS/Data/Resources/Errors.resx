@@ -238,4 +238,7 @@
   <data name="NoEntityExists" xml:space="preserve">
     <value>No entity with the specified id={0} exists.</value>
   </data>
+  <data name="TheValueForFieldIsAlreadyUsedByAnotherEntry" xml:space="preserve">
+    <value>The value '{0}' for field '{1}' is already used by another entry.</value>
+  </data>
 </root>
