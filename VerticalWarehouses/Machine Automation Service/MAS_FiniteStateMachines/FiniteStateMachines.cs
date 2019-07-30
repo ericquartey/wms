@@ -15,6 +15,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -51,6 +52,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task notificationReceiveTask;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         private readonly ISetupStatusDataLayer setupStatus;
 
         private readonly IVerticalAxisDataLayer verticalAxis;
@@ -81,8 +84,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IVertimagConfigurationDataLayer vertimagConfiguration,
             IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
             IVerticalAxisDataLayer verticalAxis,
-            IHorizontalAxisDataLayer horizontalAxis)
+            IHorizontalAxisDataLayer horizontalAxis,
+            IServiceScopeFactory serviceScopeFactory)
         {
+            if (serviceScopeFactory == null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
@@ -98,7 +107,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.verticalAxis = verticalAxis;
 
             this.horizontalAxis = horizontalAxis;
-
+            this.serviceScopeFactory = serviceScopeFactory;
             this.machineSensorsStatus = new MachineSensorsStatus();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();

@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -19,14 +20,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Constructors
 
-        protected StateMachineBase(IEventAggregator eventAggregator, ILogger logger)
+        protected StateMachineBase(
+            IEventAggregator eventAggregator,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
 
+            if (serviceScopeFactory == null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.Logger = logger;
+            this.ServiceScopeFactory = serviceScopeFactory;
             this.EventAggregator = eventAggregator;
         }
 
@@ -42,6 +52,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         #endregion
 
         #region Properties
+
+        public IServiceScopeFactory ServiceScopeFactory { get; }
 
         protected IState CurrentState { get; set; }
 

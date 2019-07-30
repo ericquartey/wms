@@ -54,6 +54,10 @@
 
         CheckCondition,
 
-        NewMissionOperationAvailable
+        NewMissionOperationAvailable,
+
+        ErrorStatusChanged,
+
+        ErrorCleared
     }
 }
