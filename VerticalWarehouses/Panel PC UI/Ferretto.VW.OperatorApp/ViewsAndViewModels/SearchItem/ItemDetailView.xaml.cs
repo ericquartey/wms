@@ -7,9 +7,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
     /// </summary>
     public partial class ItemDetailView : UserControl
     {
+        #region Constructors
+
         public ItemDetailView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

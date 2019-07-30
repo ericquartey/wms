@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -18,13 +17,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         //private readonly IOSensorsStatus ioSensorsStatus;
 
+        private readonly IUpdateSensorsMachineService updateSensorsService;
+
         private bool antiIntrusionShutterBay1;
 
         private bool antiIntrusionShutterBay2;
 
         private bool antiIntrusionShutterBay3;
-
-        private IUnityContainer container;
 
         private bool cradleEngineSelected;
 
@@ -50,17 +49,28 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private bool securityFunctionActive;
 
-        private IUpdateSensorsService updateSensorsService;
-
         private SubscriptionToken updateVariousInputsSensorsState;
 
         #endregion
 
         #region Constructors
 
-        public SSVariousInputsViewModel(IEventAggregator eventAggregator)
+        public SSVariousInputsViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.updateSensorsService = updateSensorsService;
             //this.ioSensorsStatus = new IOSensorsStatus();
             this.NavigationViewModel = null;
         }
@@ -110,20 +120,15 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             this.DisableVariousInputsSensorsState();
-            this.updateVariousInputsSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+            this.updateVariousInputsSensorsState = this.eventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
-                ThreadOption.PublisherThread,
-                false);
+                    message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
 
             await this.updateSensorsService.ExecuteAsync();
         }

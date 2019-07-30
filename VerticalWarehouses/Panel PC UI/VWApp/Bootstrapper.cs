@@ -34,9 +34,10 @@ namespace Ferretto.VW.App
             this.Container.RegisterInstance(ServiceFactory.Get<ISessionService>());
 
             // MAS Web API services
-            this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
-            this.Container.RegisterInstance<IUsersService>(new UsersService(automationServiceUrl));
-            this.Container.RegisterInstance<IMissionOperationsService>(new MissionOperationsService(automationServiceUrl));
+            this.Container.RegisterInstance<IIdentityMachineService>(new IdentityMachineService(automationServiceUrl));
+            this.Container.RegisterInstance<IUsersMachineService>(new UsersMachineService(automationServiceUrl));
+            this.Container.RegisterInstance<IErrorsMachineService>(new ErrorsMachineService(automationServiceUrl));
+            this.Container.RegisterInstance<IMissionOperationsMachineService>(new MissionOperationsMachineService(automationServiceUrl));
 
             this.Container.RegisterType<MainWindowViewModel>();
 
@@ -102,6 +103,7 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
         }
 
         #endregion

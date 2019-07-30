@@ -10,7 +10,7 @@ using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
-    public class SSNavigationButtonsViewModel : BindableBase, ISSNavigationButtonsViewModel, IViewModelRequiresContainer
+    public class SSNavigationButtonsViewModel : BindableBase, ISSNavigationButtonsViewModel
     {
         #region Fields
 
@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private ICommand baysButtonCommand;
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
         private ICommand variousButtonCommand;
 
@@ -28,9 +28,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         #region Constructors
 
-        public SSNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public SSNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IUnityContainer container) // TODO container should be removed from injection
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (container == null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.container = container;
             this.NavigationViewModel = null;
         }
 
@@ -101,11 +114,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
         }
 
         public Task OnEnterViewAsync()

@@ -132,7 +132,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
             this.InitializeMethodSubscriptions();
 
-            this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.OnWmsEntityChanged;
         }
 
@@ -265,7 +264,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     case MessageType.IoDriverException:
                     case MessageType.DLException:
                     case MessageType.WebApiException:
-                        this.ExceptionHandlerMethod(receivedMessage);
+                        this.NotifyExceptionsOnHub(receivedMessage);
                         break;
 
                     case MessageType.ResolutionCalibration:

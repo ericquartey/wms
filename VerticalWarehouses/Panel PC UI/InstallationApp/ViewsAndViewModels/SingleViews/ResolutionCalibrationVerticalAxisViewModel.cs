@@ -5,22 +5,26 @@ using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 using MessageStatus = Ferretto.VW.CommonUtils.Messages.Enumerations.MessageStatus;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IResolutionCalibrationVerticalAxisViewModel, IViewModelRequiresContainer
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IResolutionCalibrationVerticalAxisViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IResolutionCalibrationMachineService resolutionCalibrationService;
+
+        private readonly IStatusMessageService statusMessageService;
+
+        private readonly ITestMachineService testService;
 
         private ICommand acceptButtonCommand;
 
@@ -84,15 +88,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private string repositionLenght;
 
-        private IResolutionCalibrationService resolutionCalibrationService;
-
         private ResolutionCalibrationSteps resolutionCalibrationSteps;
 
         private ICommand setPositionButtonCommand;
-
-        private IStatusMessageService statusMessageService;
-
-        private ITestService testService;
 
         private ICommand updateResolutionCommand;
 
@@ -100,9 +98,36 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Constructors
 
-        public ResolutionCalibrationVerticalAxisViewModel(IEventAggregator eventAggregator)
+        public ResolutionCalibrationVerticalAxisViewModel(
+            IEventAggregator eventAggregator,
+            IResolutionCalibrationMachineService resolutionCalibrationService,
+            ITestMachineService testService,
+            IStatusMessageService statusMessageService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (resolutionCalibrationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(resolutionCalibrationService));
+            }
+
+            if (testService == null)
+            {
+                throw new System.ArgumentNullException(nameof(testService));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.resolutionCalibrationService = resolutionCalibrationService;
+            this.testService = testService;
+            this.statusMessageService = statusMessageService;
             this.NavigationViewModel = null;
         }
 
@@ -300,13 +325,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             {
                 // TODO
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.resolutionCalibrationService = container.Resolve<IResolutionCalibrationService>();
-            this.testService = container.Resolve<ITestService>();
-            this.statusMessageService = container.Resolve<IStatusMessageService>();
         }
 
         public async Task OnEnterViewAsync()

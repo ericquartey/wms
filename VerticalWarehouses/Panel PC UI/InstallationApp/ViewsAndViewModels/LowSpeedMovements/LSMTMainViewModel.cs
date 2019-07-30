@@ -2,31 +2,31 @@
 using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
-    public class LSMTMainViewModel : BindableBase, ILSMTMainViewModel, IViewModelRequiresContainer
+    public class LSMTMainViewModel : BindableBase, ILSMTMainViewModel
     {
         #region Fields
-
-        private IUnityContainer container;
 
         private readonly IEventAggregator eventAggregator;
 
         private BindableBase lSMTContentRegionCurrentViewModel;
 
-        private BindableBase lSMTNavigationRegionCurrentViewModel;
+        private ILSMTNavigationButtonsViewModel lSMTNavigationRegionCurrentViewModel;
 
         #endregion
 
         #region Constructors
 
-        public LSMTMainViewModel(IEventAggregator eventAggregator)
+        public LSMTMainViewModel(
+            IEventAggregator eventAggregator,
+            ILSMTNavigationButtonsViewModel navigationViewModel)
         {
             this.eventAggregator = eventAggregator;
+            this.LSMTNavigationRegionCurrentViewModel = navigationViewModel;
+
             this.LSMTContentRegionCurrentViewModel = null;
-            this.LSMTNavigationRegionCurrentViewModel = null;
             this.NavigationViewModel = null;
         }
 
@@ -36,7 +36,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         public BindableBase LSMTContentRegionCurrentViewModel { get => this.lSMTContentRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTContentRegionCurrentViewModel, value); }
 
-        public BindableBase LSMTNavigationRegionCurrentViewModel { get => this.lSMTNavigationRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTNavigationRegionCurrentViewModel, value); }
+        public ILSMTNavigationButtonsViewModel LSMTNavigationRegionCurrentViewModel
+        {
+            get => this.lSMTNavigationRegionCurrentViewModel;
+            set => this.SetProperty(ref this.lSMTNavigationRegionCurrentViewModel, value);
+        }
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -47,12 +51,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.LSMTNavigationRegionCurrentViewModel = (LSMTNavigationButtonsViewModel)this.container.Resolve<ILSMTNavigationButtonsViewModel>();
         }
 
         public Task OnEnterViewAsync()

@@ -1,32 +1,42 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.Utils.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
-    public class SSMainViewModel : BindableBase, ISSMainViewModel, IViewModelRequiresContainer
+    public class SSMainViewModel : BindableBase, ISSMainViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private IViewModel sSContentRegionCurrentViewModel;
 
-        private BindableBase sSContentRegionCurrentViewModel;
-
-        private BindableBase sSNavigationRegionCurrentViewModel;
+        private IViewModel sSNavigationRegionCurrentViewModel;
 
         #endregion
 
         #region Constructors
 
-        public SSMainViewModel(IEventAggregator eventAggregator)
+        public SSMainViewModel(
+            IEventAggregator eventAggregator,
+            ISSNavigationButtonsViewModel sSNavigationButtonsViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (sSNavigationButtonsViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(sSNavigationButtonsViewModel));
+            }
+
             this.eventAggregator = eventAggregator;
             this.SSContentRegionCurrentViewModel = null;
-            this.SSNavigationRegionCurrentViewModel = null;
+            this.SSNavigationRegionCurrentViewModel = sSNavigationButtonsViewModel;
             this.NavigationViewModel = null;
         }
 
@@ -36,9 +46,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public BindableBase SSContentRegionCurrentViewModel { get => this.sSContentRegionCurrentViewModel; set => this.SetProperty(ref this.sSContentRegionCurrentViewModel, value); }
+        public IViewModel SSContentRegionCurrentViewModel { get => this.sSContentRegionCurrentViewModel; set => this.SetProperty(ref this.sSContentRegionCurrentViewModel, value); }
 
-        public BindableBase SSNavigationRegionCurrentViewModel { get => this.sSNavigationRegionCurrentViewModel; set => this.SetProperty(ref this.sSNavigationRegionCurrentViewModel, value); }
+        public IViewModel SSNavigationRegionCurrentViewModel
+        {
+            get => this.sSNavigationRegionCurrentViewModel;
+            set => this.SetProperty(ref this.sSNavigationRegionCurrentViewModel, value);
+        }
 
         #endregion
 
@@ -47,12 +61,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.SSNavigationRegionCurrentViewModel = (SSNavigationButtonsViewModel)this.container.Resolve<ISSNavigationButtonsViewModel>();
         }
 
         public Task OnEnterViewAsync()
