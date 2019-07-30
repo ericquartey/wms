@@ -39,11 +39,16 @@ namespace Ferretto.VW.Simulator.Services
         {
             this.Inverters = new List<InverterModel>();
             this.Inverters.Add(new InverterModel() { Id = 0, InverterType = InverterType.Ang });
-            this.Inverters.Add(new InverterModel() { Id = 1, InverterType = InverterType.Ang });
+            //this.Inverters.Add(new InverterModel() { Id = 1, InverterType = InverterType.Ang });
             this.Inverters.Add(new InverterModel() { Id = 2, InverterType = InverterType.Agl });
             this.Inverters.Add(new InverterModel() { Id = 3, InverterType = InverterType.Acu });
             this.Inverters.Add(new InverterModel() { Id = 4, InverterType = InverterType.Agl });
-            this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu });
+            //this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu });
+
+            this.RemoteIOs = new List<IODeviceModel>();
+            this.RemoteIOs.Add(new IODeviceModel() { Id = 0 });
+            this.RemoteIOs.Add(new IODeviceModel() { Id = 1 });
+            this.RemoteIOs.Add(new IODeviceModel() { Id = 2 });
         }
 
         #endregion
@@ -53,6 +58,8 @@ namespace Ferretto.VW.Simulator.Services
         public bool IsStartedSimulator { get; private set; }
 
         public List<InverterModel> Inverters { get; set; }
+
+        public List<IODeviceModel> RemoteIOs { get; set; }
 
         #endregion
 
@@ -73,9 +80,9 @@ namespace Ferretto.VW.Simulator.Services
             this.listenerIoDriver3.Start();
 
             Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message)));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message)));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message)));
+            Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
+            //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
@@ -89,7 +96,7 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts.Cancel();
             this.listenerInverter.Stop();
-            //this.listenerIoDriver1.Stop();
+            this.listenerIoDriver1.Stop();
             //this.listenerIoDriver2.Stop();
             //this.listenerIoDriver3.Stop();
 
@@ -201,7 +208,7 @@ namespace Ferretto.VW.Simulator.Services
                         ioStatusMessageHeader[4] = message[4];
                         ioStatusMessageHeader[5] = message[5];
                         var payloadBytes = Encoding.ASCII.GetBytes(inputValues);
-                        Array.Copy(payloadBytes,  0, ioStatusMessageHeader, 6, payloadBytes.Length);
+                        Array.Copy(payloadBytes, 0, ioStatusMessageHeader, 6, payloadBytes.Length);
                         result = client.Client.Send(ioStatusMessageHeader);
                         break;
 
@@ -219,7 +226,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     case InverterParameterId.StatusWordParam:
                     case InverterParameterId.ActualPositionShaft:
-                    case InverterParameterId.StatusDigitalSignals:                    
+                    case InverterParameterId.StatusDigitalSignals:
                     case InverterParameterId.ShutterTargetPosition:
                         break;
 
@@ -233,11 +240,64 @@ namespace Ferretto.VW.Simulator.Services
                 }
 
             }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
-        private void ReplyIoDriver(TcpClient client, byte[] message)
+        private void ReplyIoDriver(TcpClient client, byte[] message, int index)
         {
+            const int headerLenght = 4;
+            const int NBYTES_RECEIVE = 15;
+            const int NBYTES_RECEIVE_CFG = 3;
 
+            var device = this.RemoteIOs.First(x => x.Id == index);
+
+            if (message.Length >= headerLenght)
+            {
+                var length = message[0];
+                var relProtocol = message[1];
+                var codeOperation = message[2];
+
+                byte[] responseMessage = null;
+                switch (codeOperation)
+                {
+                    case 0x00: // Data
+                        responseMessage = new byte[NBYTES_RECEIVE];
+                        responseMessage[0] = NBYTES_RECEIVE;            // nBytes
+                        responseMessage[1] = device.FirmwareVersion;    // fwRelease
+                        responseMessage[2] = 0x00;                      // Code op   0x00: data, 0x06: configuration
+                        responseMessage[3] = 0x00;                      // error code
+                        Array.Copy(message, 3, responseMessage, 4, 1);  // output values echo
+                        byte[] inputs = BitConverter.GetBytes(device.IOValue);
+                        responseMessage[5] = inputs[0];
+                        responseMessage[6] = inputs[1];
+                        break;
+
+                    case 0x01: // Config
+                        responseMessage = new byte[NBYTES_RECEIVE_CFG];
+                        responseMessage[0] = NBYTES_RECEIVE_CFG;        // nBytes
+                        responseMessage[1] = device.FirmwareVersion;    // fwRelease
+                        responseMessage[2] = 0x06;                      // Ack  0x00: data, 0x06: configuration
+                        break;
+
+                    case 0x02: // SetIP
+                        break;
+
+                    default:
+                        if (System.Diagnostics.Debugger.IsAttached)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+                        break;
+                }
+                var result = client.Client.Send(responseMessage);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
         #endregion
