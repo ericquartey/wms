@@ -101,8 +101,6 @@ namespace Ferretto.VW.App.Operator
             //    (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"] :
             //    (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"];
             this.RaiseFinishedMachineOnMarchChangeStateEvent();
-
-            // TODO MachineOnMarch send message to FiniteStateMachines to change machine on march state
         }
 
         private void UnsubscribeEvents()

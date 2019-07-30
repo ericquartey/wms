@@ -274,6 +274,7 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
+                        // TODO: remove next loop. the machine must not be on march when started
                         foreach (var ioDevice in this.ioDevices)
                         {
                             ioDevice.Value.ExecuteIoPowerUp();
