@@ -45,6 +45,17 @@ namespace Ferretto.VW.Simulator.Services.Models
         Bay3 = 7,
     }
 
+    public enum InverterOperationMode : ushort
+    {
+        Position = 0x0001,
+
+        Homing = 0x0006,
+
+        Velocity = 0x0002,
+
+        ProfileVelocity = 0x0003
+    }
+
     public enum InverterSensors
     {
         #region INFO ANG Inverter Inputs
@@ -213,6 +224,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             get { return this.inverterType; }
             set { this.inverterType = value; this.DigitalIO = new bool[value == InverterType.Ang ? 11 : value == InverterType.Agl ? 9 : 8]; }
         }
+
+        public InverterOperationMode OperationMode { get; set; }
 
         public int ControlWord { get; set; }
 
