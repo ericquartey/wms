@@ -171,6 +171,11 @@ namespace Ferretto.VW.MAS.IODriver
                         this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
+                    case FieldMessageType.ResetSecurity:
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        break;
+
                     default:
                         break;
                 }
@@ -269,6 +274,7 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
+                        // TODO: remove next loop. the machine must not be on march when started
                         foreach (var ioDevice in this.ioDevices)
                         {
                             ioDevice.Value.ExecuteIoPowerUp();

@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LoadingUnitsController : ControllerBase
     {

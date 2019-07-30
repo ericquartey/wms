@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Operator
     {
         #region Fields
 
-        private readonly IBaysService baysService;
+        private readonly IBaysMachineService baysService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Operator
             IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
             IIdleViewModel idleViewModel,
             IAuthenticationService authenticationService,
-            IBaysService baysService)
+            IBaysMachineService baysService)
         {
             if (eventAggregator == null)
             {
@@ -164,6 +164,7 @@ namespace Ferretto.VW.App.Operator
         private void InitializeEvents()
         {
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
+            // TODO MachineOnMarch comes from the driver
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };

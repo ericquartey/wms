@@ -145,7 +145,7 @@
                                         FieldName="Status">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
+                                    <Grid HorizontalAlignment="Stretch">
                                         <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                               VerticalAlignment="Center"
                                                               EnumType="{x:Type models:ItemListRowStatus}"
@@ -154,7 +154,7 @@
                                                               IconSize="8"
                                                               ShowText="True" />
 
-                                    </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>

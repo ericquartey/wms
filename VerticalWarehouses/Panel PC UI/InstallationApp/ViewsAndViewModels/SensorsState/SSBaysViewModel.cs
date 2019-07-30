@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -19,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private bool[] sensorStatus;
 
@@ -35,17 +34,29 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private bool shutterSensorBBay3;
 
-        private IUpdateSensorsService updateSensorsService;
-
         private SubscriptionToken updateSensorsStateToken;
 
         #endregion
 
         #region Constructors
 
-        public SSBaysViewModel(IEventAggregator eventAggregator)
+        public SSBaysViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.updateSensorsService = updateSensorsService;
+
             this.NavigationViewModel = null;
             this.sensorStatus = new bool[REMOTEIO_INPUTS + INVERTER_INPUTS];
         }
@@ -79,27 +90,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             //this.DisableSensorsState();
-            this.updateSensorsStateToken = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                 .Subscribe(
-                 message => this.UpdateSensorsStates(message.Data.SensorsStates),
-                 ThreadOption.PublisherThread,
-                 false);
+            this.updateSensorsStateToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message => this.UpdateSensorsStates(message.Data.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
 
             await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateSensorsStateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Unsubscribe(this.updateSensorsStateToken);
         }
 
         //private void DisableSensorsState()

@@ -1,50 +1,61 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListsInWaitView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:prism="http://prismlibrary.com/"
-             mc:Ignorable="d" >
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
 
-    <Grid  Width="1024" Height="608">
+    <Grid Width="1024"
+          Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0"
-                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.ListsInWaitHeader}" />
+        <TextBlock Margin="140,40,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.ListsInWaitHeader}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,130,20,0"
-                  Content="{x:Static Resources:OperatorApp.CommonUp}"
-                  Command="{Binding ButtonUp}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,130,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding UpDataGridButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonUp}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,195,20,0"
-                  Content="{x:Static Resources:OperatorApp.CommonDown}"
-                  Command="{Binding ButtonDown}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,195,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding DownDataGridButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"
-                  Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-                  Command="{Binding DetailListButtonCommand}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,370,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding ItemDetailButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-                  Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,0,20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding ListExecuteCommand}"
+                Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,510,0,0" MaxWidth="500"
-                                               ContentText="Lista non eseguibile nella macchina corrente"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
+        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+                                              Margin="140,510,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="Lista non eseguibile nella macchina corrente"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
-        <ContentControl HorizontalAlignment="Left"
-                        Height="400"
-                        Margin="140,90,0,0"
-                        VerticalAlignment="Top"
-                        Width="680"
-                        Content="{Binding DataGridViewModel}">
-        </ContentControl>
+        <Controls:CustomControlListDataGrid Width="680"
+                                            Height="400"
+                                            Margin="140,90,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top" />
 
     </Grid>
 </UserControl>

@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IErrorsService errorsService;
+        private readonly IErrorsMachineService errorsService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public ErrorsStatisticsViewModel(
             IStatusMessageService statusMessageService,
-            IErrorsService errorsService,
+            IErrorsMachineService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
             this.statusMessageService = statusMessageService;
@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
 
-        public ErrorStatisticsSummary Statistics { get => this.statistics; }
+        public ErrorStatisticsSummary Statistics => this.statistics;
 
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 

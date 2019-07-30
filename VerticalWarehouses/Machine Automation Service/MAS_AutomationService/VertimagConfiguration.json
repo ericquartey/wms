@@ -15,7 +15,7 @@
     "Model": "VRT EF 84 L 990-BID H4563",
     "Serial": "VM_190001",
     "Height": 4.563,
-    "MaxGrossWeight": 50.000,
+    "MaxGrossWeight": 50000,
     "DrawersQuantity": 15,
     "BaysQuantity": 2,
     "Bay1Type": 4,
