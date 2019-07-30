@@ -10,4 +10,6 @@
     <Color x:Key="VWAPP_DataGrid_CellStyle_HighlightTextBrushKey">#0A0A0A</Color>
     <Color x:Key="VWAPP_DataGrid_CellStyle_ControlTextBrushKey">#0A0A0A</Color>
     <Color x:Key="VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightTextBrushKey">#0A0A0A</Color>
+    <SolidColorBrush x:Key="VWAPP_DataGrid_CellStyle_HighlightMarkBrushKey"
+                     Color="#00CDE2" />
 </ResourceDictionary>

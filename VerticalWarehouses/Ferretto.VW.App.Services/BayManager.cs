@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -11,9 +12,9 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
 
-        private readonly IMissionOperationsService missionOperationsAutomationService;
+        private readonly IMissionOperationsMachineService missionOperationsAutomationService;
 
         private readonly IMissionOperationsDataService missionOperationsDataService;
 
@@ -31,9 +32,9 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IOperatorHubClient operatorHubClient,
-            IIdentityService identityService,
+            IIdentityMachineService identityService,
             IMissionOperationsDataService missionOperationsDataService,
-            IMissionOperationsService missionOperationsAutomationService,
+            IMissionOperationsMachineService missionOperationsAutomationService,
             IMissionsDataService missionsDataService,
             IStatusMessageService statusMessageService)
         {

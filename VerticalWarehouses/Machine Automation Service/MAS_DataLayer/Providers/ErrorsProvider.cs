@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.DataModels.Errors;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class ErrorStatisticsProvider : IErrorStatisticsProvider
+    internal class ErrorsProvider : IErrorsProvider
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public ErrorStatisticsProvider(DataLayerContext dataContext)
+        public ErrorsProvider(DataLayerContext dataContext)
         {
             if (dataContext == null)
             {
@@ -30,7 +30,16 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public ErrorStatisticsSummary GetErrorStatistics()
+        public Error GetCurrent()
+        {
+            return this.dataContext.Errors
+                .Where(e => !e.ResolutionDate.HasValue)
+                .OrderBy(e => e.Definition.Severity)
+                .ThenBy(e => e.OccurrenceDate)
+                .FirstOrDefault();
+        }
+
+        public ErrorStatisticsSummary GetStatistics()
         {
             var totalErrors = this.dataContext.ErrorStatistics.Sum(s => s.TotalErrors);
             var summary = new ErrorStatisticsSummary
@@ -59,6 +68,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             return summary;
+        }
+
+        public Error RecordNew(int code)
+        {
+            var newError = new Error
+            {
+                Code = code,
+                OccurrenceDate = System.DateTime.UtcNow,
+            };
+
+            this.dataContext.Errors.Add(newError);
+
+            this.dataContext.SaveChanges();
+
+            return newError;
         }
 
         #endregion

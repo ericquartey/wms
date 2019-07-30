@@ -17,8 +17,6 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         private ICommand cellsStatisticsButtonCommand;
 
-        private IUnityContainer container;
-
         private ICommand drawerSpaceSaturationButtonCommand;
 
         private ICommand errorsStatisticsButtonCommand;
@@ -70,15 +68,6 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
                 {
                     this.navigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
                 }));
-
-        #endregion
-
-        #region Methods
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-        }
 
         #endregion
     }

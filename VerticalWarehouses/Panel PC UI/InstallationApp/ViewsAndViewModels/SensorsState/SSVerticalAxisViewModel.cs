@@ -19,11 +19,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
         private bool[] sensorStatus;
 
-        private IUpdateSensorsService updateSensorsService;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
@@ -31,9 +31,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         #region Constructors
 
-        public SSVerticalAxisViewModel(IEventAggregator eventAggregator)
+        public SSVerticalAxisViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.updateSensorsService = updateSensorsService;
             this.NavigationViewModel = null;
             this.sensorStatus = new bool[REMOTEIO_INPUTS * 3 + INVERTER_INPUTS];
         }
@@ -53,12 +66,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public void ExitFromViewMethod()
         {
             this.UnSubscribeMethodFromEvent();
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
         public async Task OnEnterViewAsync()

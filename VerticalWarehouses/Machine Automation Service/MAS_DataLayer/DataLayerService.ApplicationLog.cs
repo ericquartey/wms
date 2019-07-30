@@ -57,9 +57,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     serializedData = JsonConvert.SerializeObject(message.Data);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    serializedData = "Data is not serializabel";
+                    serializedData = "Data is not serializable.";
                 }
 
                 var logEntry = new LogEntry();
@@ -140,9 +140,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     serializedData = JsonConvert.SerializeObject(message.Data);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    serializedData = "Data is not serializabel";
+                    serializedData = "Data is not serializable.";
                 }
 
                 var logEntry = new LogEntry();

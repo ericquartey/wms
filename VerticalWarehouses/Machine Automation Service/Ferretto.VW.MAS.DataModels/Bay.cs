@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.DataModels
                     return this.CurrentMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
                 }
 
-                return BayStatus.Unavailable;
+                return BayStatus.Disconnected;
             }
         }
 

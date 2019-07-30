@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 
         private readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
 
         private Brush machineServiceStatusBrush;
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
         #region Constructors
 
         public GeneralInfoViewModel(
-            IIdentityService identityService,
+            IIdentityMachineService identityService,
             Ferretto.WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient,
             IOtherNavigationViewModel otherNavigationViewModel)
         {

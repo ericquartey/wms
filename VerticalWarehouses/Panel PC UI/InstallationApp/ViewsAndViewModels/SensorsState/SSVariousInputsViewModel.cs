@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -33,8 +32,20 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         #region Constructors
 
-        public SSVariousInputsViewModel(IEventAggregator eventAggregator)
+        public SSVariousInputsViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
             this.sensorStatus = new bool[REMOTEIO_INPUTS * 3 + INVERTER_INPUTS];
@@ -59,19 +70,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             this.updateVariousInputsSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
-                ThreadOption.PublisherThread,
-                false);
+                    message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
 
             await this.updateSensorsService.ExecuteAsync();
         }

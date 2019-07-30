@@ -232,10 +232,10 @@
     <value>Operazione di prelievo.</value>
   </data>
   <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
-    <value>Q.ta' richiesta:</value>
+    <value>Q.tà richiesta:</value>
   </data>
   <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
-    <value>Q.ta' prelevata:</value>
+    <value>Q.tà prelevata:</value>
   </data>
   <data name="DrawerWaitPageHeader" xml:space="preserve">
     <value>In attesa arrivo nuovo cassetto.</value>
@@ -280,10 +280,10 @@
     <value>Cerca articolo</value>
   </data>
   <data name="ItemSearchQtyAvailable" xml:space="preserve">
-    <value>Quantita' disponibile:</value>
+    <value>Quantità' disponibile:</value>
   </data>
   <data name="ItemSearchQtyRequest" xml:space="preserve">
-    <value>Quantita' richiesta:</value>
+    <value>Quantità richiesta:</value>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
     <value>Dettaglio articolo</value>
@@ -466,7 +466,7 @@
     <value>Cassetti mossi senza errori:</value>
   </data>
   <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
-    <value>Indice di affidabilita':</value>
+    <value>Indice di affidabilità:</value>
   </data>
   <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
     <value>Descrizione errore:</value>
@@ -538,19 +538,19 @@
     <value>Operazione di versamento.</value>
   </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>Q.ta' da versare [pz.]:</value>
+    <value>Q.tà da versare [pz.]:</value>
   </data>
   <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>Q.ta' versata [pz.]:</value>
+    <value>Q.tà versata [pz.]:</value>
   </data>
   <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
-    <value>Aggiorna capacita' massima</value>
+    <value>Aggiorna capacità massima</value>
   </data>
   <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
     <value>Riga lista:</value>
   </data>
   <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
-    <value>Q.ta' richiesta [pz.]:</value>
+    <value>Q.tà richiesta [pz.]:</value>
   </data>
   <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
     <value>Dettaglio operazione di versamento.</value>
@@ -568,7 +568,7 @@
     <value>Data di produzione:</value>
   </data>
   <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
-    <value>Q.ta' da versare:</value>
+    <value>Q.tà da versare:</value>
   </data>
   <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
     <value>Riga lista:</value>
@@ -604,7 +604,7 @@
     <value>Operazione di inventario.</value>
   </data>
   <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
-    <value>Q.ta' in giacenza [pz.]:</value>
+    <value>Q.tà in giacenza [pz.]:</value>
   </data>
   <data name="CommonCompartmentPosition" xml:space="preserve">
     <value>Posizione:</value>
@@ -625,7 +625,7 @@
     <value>Classe A, B, C :</value>
   </data>
   <data name="ItemDetailMeasurementUnity" xml:space="preserve">
-    <value>Unita' di misura:</value>
+    <value>Unità di misura:</value>
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
     <value>Peso medio [gr.] :</value>
@@ -856,7 +856,7 @@
     <value>Elemento</value>
   </data>
   <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
-    <value>Quantita'</value>
+    <value>Quantità</value>
   </data>
   <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
     <value>Descrizione</value>
@@ -880,7 +880,7 @@
     <value>Macchina</value>
   </data>
   <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
-    <value>Quantita'</value>
+    <value>Quantità</value>
   </data>
   <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
     <value>Riga</value>
@@ -917,5 +917,26 @@
   </data>
   <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
     <value>Analisi spazio</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Non specificato</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Non specificato</value>
   </data>
 </root>

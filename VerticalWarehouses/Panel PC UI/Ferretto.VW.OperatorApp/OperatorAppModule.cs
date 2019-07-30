@@ -105,7 +105,6 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
-            containerRegistry.Register<ICustomControlListDataGridViewModel, CustomControlListDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
@@ -114,23 +113,23 @@ namespace Ferretto.VW.App.Operator
 
         private void RegisterMachineAutomationServiceWebApis(IContainerRegistry containerRegistry)
         {
-            var missionOperationsService = new MissionOperationsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IMissionOperationsService>(missionOperationsService);
+            var missionOperationsService = new MissionOperationsMachineService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IMissionOperationsMachineService>(missionOperationsService);
 
-            var loadingUnitsService = new LoadingUnitsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ILoadingUnitsService>(loadingUnitsService);
+            var loadingUnitsService = new LoadingUnitsMachineService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ILoadingUnitsMachineService>(loadingUnitsService);
 
-            var cellsService = new CellsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ICellsService>(cellsService);
+            var cellsService = new CellsMachineService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<ICellsMachineService>(cellsService);
 
-            var errorsService = new ErrorsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IErrorsService>(errorsService);
+            var errorsService = new ErrorsMachineService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IErrorsMachineService>(errorsService);
 
-            var baysService = new BaysService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IBaysService>(baysService);
+            var baysService = new BaysMachineService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IBaysMachineService>(baysService);
 
-            var machineStatisticsService = new MachineStatisticsService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IMachineStatisticsService>(machineStatisticsService);
+            var statisticsService = new StatisticsMachineService(this.automationServiceUrl);
+            containerRegistry.RegisterInstance<IStatisticsMachineService>(statisticsService);
         }
 
         #endregion
