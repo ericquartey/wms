@@ -63,11 +63,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
+        public bool IsReadingOk { get; set; }
+
         public InverterDiagnosticsData ReadWaitTimeData { get; }
 
         public InverterDiagnosticsData WriteRoundtripTimeData { get; }
-
-        public bool IsReadingOk {get; set;}
 
         #endregion
 
@@ -198,6 +198,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            byte[] receivedData;
             try
             {
                 this.readStopwatch.Reset();
@@ -210,7 +211,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (readBytes > 0)
                 {
-                    var receivedData = new byte[readBytes];
+                    receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
                     this.IsReadingOk = true;
@@ -234,7 +235,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     ex);
             }
 
-            return this.receiveBuffer;
+            return receivedData;
         }
 
         /// <inheritdoc />
