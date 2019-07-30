@@ -147,8 +147,23 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 {
                     case SHDFormatDataOperation.Data:
 
+                        //if (this.index == IoIndex.IoDevice1)
+                        //{
+                        //    this.logger.LogDebug($"Valori input: => 0: {inputData[0]}, this.SHDStatus.DataInputs={this.ioSHDStatus.NormalState}");
+                        //}
+
+                        if (this.index == IoIndex.IoDevice2)
+                        {
+                            var y = 0;
+                        }
+
                         if (this.ioSHDStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                         {
+                            //if (this.index == IoIndex.IoDevice1)
+                            //{
+                            //    this.logger.LogDebug($"Update valori input: => 0: {inputData[0]}");
+                            //}
+
                             var data = new SensorsChangedFieldMessageData();
                             data.SensorsStates = inputData;
                             var notificationMessage = new FieldNotificationMessage(

@@ -113,7 +113,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.sensorStopwatch.Stop();
                 this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
 
-                this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
+                //this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
+                this.logger.LogDebug($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
+
+                // Inserire ciclo (usare index di tipo integer, non inverterIndex di tipo InverterIndex
 
                 var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
 

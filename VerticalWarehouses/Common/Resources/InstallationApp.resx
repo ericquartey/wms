@@ -768,28 +768,28 @@
     <value>Height control bay 3</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorABay1" xml:space="preserve">
-    <value>Gate sensor A bay 1</value>
+  <data name="ShutterSensorABay1" xml:space="preserve">
+    <value>Sensor shutter A bay 1</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorBBay1" xml:space="preserve">
-    <value>Gate sensor B bay 1</value>
+  <data name="ShutterSensorBBay1" xml:space="preserve">
+    <value>Sensor shutter B bay 1</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorABay2" xml:space="preserve">
-    <value>Gate sensor A bay 2</value>
+  <data name="ShutterSensorABay2" xml:space="preserve">
+    <value>Sensor shutter A bay 2</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorBBay2" xml:space="preserve">
-    <value>Gate sensor B bay 2</value>
+  <data name="ShutterSensorBBay2" xml:space="preserve">
+    <value>Sensor shutter B bay 2</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorABay3" xml:space="preserve">
-    <value>Gate sensor A bay 3</value>
+  <data name="ShutterSensorABay3" xml:space="preserve">
+    <value>Sensor shutter A bay 3</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorBBay3" xml:space="preserve">
-    <value>Gate sensor B bay 3</value>
+  <data name="ShutterSensorBBay3" xml:space="preserve">
+    <value>Sensor shutter B bay 3</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton2" xml:space="preserve">
@@ -1162,5 +1162,14 @@
   <data name="UpdateResolution" xml:space="preserve">
     <value>Update Resolution</value>
     <comment>Update Resolution</comment>
+  </data>
+  <data name="LUPresentMiddleBottomBay1" xml:space="preserve">
+    <value>Second LU Present in Bay 1</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay2" xml:space="preserve">
+    <value>Second LU Present in Bay 2</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay3" xml:space="preserve">
+    <value>Second LU Present in Bay 3</value>
   </data>
 </root>
