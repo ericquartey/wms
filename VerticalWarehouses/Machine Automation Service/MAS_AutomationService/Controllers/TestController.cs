@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("Homing")]
-        public async void Homing()
+        public void Homing()
         {
             this.HomingMethod();
         }

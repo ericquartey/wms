@@ -36,6 +36,7 @@
                        Margin="10,15,0,0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
+                        RenderOptions.BitmapScalingMode="HighQuality"
                        Source="{DynamicResource Ferretto_Logo}"
                        Stretch="Uniform" />
             </Border>

@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
-    public interface IResolutionConversion
+    public interface IResolutionConversionDataLayer
     {
         #region Methods
 

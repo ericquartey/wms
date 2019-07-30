@@ -19,6 +19,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int ActiveSchedulerRequestsCount { get; set; }
 
+        [Unique]
         public string Code { get; set; }
 
         public DateTime CreationDate { get; set; }

@@ -1,16 +1,16 @@
-﻿using Ferretto.WMS.Data.WebAPI.Contracts;
-
-namespace Ferretto.VW.CommonUtils.Messages.Interfaces
+﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface IExecuteMissionMessageData : IMessageData
+    public interface INewMissionOperationAvailable
     {
         #region Properties
 
-        string BayConnectionId { get; set; }
+        int BayId { get; set; }
 
-        Mission Mission { get; set; }
+        int MissionId { get; set; }
 
-        int MissionsQuantity { get; set; }
+        int MissionOperationId { get; set; }
+
+        int PendingMissionsCount { get; set; }
 
         #endregion
     }

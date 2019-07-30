@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Controls.Utils
 
         public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
 
+        public int Id { get; set; }
+
         public string List { get => this.list; set => this.SetProperty(ref this.list, value); }
 
         public string Machines { get => this.machines; set => this.SetProperty(ref this.machines, value); }

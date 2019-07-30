@@ -17,6 +17,9 @@ namespace Ferretto.WMS.Data.Core.Maps
 
             this.CreateMap<Common.DataModels.ItemList, ItemList>();
             this.CreateMap<Common.DataModels.ItemListRow, ItemListRow>();
+
+            this.CreateMap<ItemListDetails, Common.DataModels.ItemList>();
+            this.CreateMap<ItemListRowDetails, Common.DataModels.ItemListRow>();
         }
 
         #endregion

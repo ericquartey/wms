@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IShutterHeightControl
+    public partial class DataLayerService : IShutterHeightControlDataLayer
     {
         #region Properties
 

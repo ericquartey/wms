@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IHorizontalMovementBackwardProfile
+    public partial class DataLayerService : IHorizontalMovementBackwardProfileDataLayer
     {
         #region Properties
 

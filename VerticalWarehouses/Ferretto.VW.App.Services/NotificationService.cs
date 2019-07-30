@@ -5,10 +5,10 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
+using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
+using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.MessageNotifiedEventArgs;
 
 namespace Ferretto.VW.App.Services
 {
@@ -20,32 +20,21 @@ namespace Ferretto.VW.App.Services
 
         private readonly IInstallationHubClient installationHubClient;
 
-        private readonly IOperatorHubClient operatorHubClient;
-
         #endregion
 
         #region Constructors
 
         public NotificationService(
             IEventAggregator eventAggregator,
-            IOperatorHubClient operatorHubClient,
             IInstallationHubClient installationHubClient)
         {
-            if (operatorHubClient == null)
-            {
-                throw new System.ArgumentNullException(nameof(operatorHubClient));
-            }
-
             if (installationHubClient == null)
             {
                 throw new System.ArgumentNullException(nameof(installationHubClient));
             }
 
             this.eventAggregator = eventAggregator;
-            this.operatorHubClient = operatorHubClient;
             this.installationHubClient = installationHubClient;
-
-            this.operatorHubClient.MessageNotified += this.OnMessageNotified;
             this.installationHubClient.MessageNotified += this.InstallationMessageNotifiedEventHandler;
         }
 
@@ -91,7 +80,7 @@ namespace Ferretto.VW.App.Services
 
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(message);
 
-            if (!dataSensors[(int)IOMachineSensors.NormalState])
+            if (!dataSensors[(int)IOMachineSensors.NormalStateBay1])
             {
                 this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
                     new MAS_EventMessage(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
@@ -183,19 +172,6 @@ namespace Ferretto.VW.App.Services
                             new MAS_EventMessage(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
                     }
                     break;
-            }
-        }
-
-        private void OnMessageNotified(object sender, MessageNotifiedEventArgs e)
-        {
-            if (e.NotificationMessage is NotificationMessageUI<ExecuteMissionMessageData> dop)
-            {
-                this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Publish(dop);
-            }
-
-            if (e.NotificationMessage is NotificationMessageUI<BayConnectedMessageData> bayMessage)
-            {
-                this.eventAggregator.GetEvent<NotificationEventUI<BayConnectedMessageData>>().Publish(bayMessage);
             }
         }
 

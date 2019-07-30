@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Interfaces;
-using Ferretto.VW.WmsCommunication.Source;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
+using System.Collections.Generic;
 using Unity;
 
 namespace Ferretto.VW.App.Operator
@@ -97,7 +98,6 @@ namespace Ferretto.VW.App.Operator
                 ??
                 this.container.Resolve<IMainWindowViewModel>();
 
-
             var viewModel = this.container.Resolve<I>();
 
             if (viewModel is T desiredViewModelWithNavView
@@ -124,7 +124,6 @@ namespace Ferretto.VW.App.Operator
                 this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 this.mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = this.footerViewModel as BindableBase;
             }
-
         }
 
         public async void NavigateToView<T, I>(object parameterObject)
@@ -133,7 +132,7 @@ namespace Ferretto.VW.App.Operator
         {
             this.mainWindowViewModel = this.mainWindowViewModel ?? this.container.Resolve<IMainWindowViewModel>();
 
-            if (parameterObject is DataGridItem item)
+            if (parameterObject is Item item)
             {
                 if (this.container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
                 {
@@ -141,7 +140,7 @@ namespace Ferretto.VW.App.Operator
                     {
                         this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
-                    desiredViewModel.Article = item;
+                    desiredViewModel.Item = item;
                     await desiredViewModel.OnEnterViewAsync();
                     this.mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                     this.mainWindowViewModel.NavigationRegionCurrentViewModel = null;
@@ -188,7 +187,7 @@ namespace Ferretto.VW.App.Operator
                 }
             }
 
-            if (parameterObject is DataGridList list)
+            if (parameterObject is ItemList list)
             {
                 if (this.container.Resolve<I>() is DetailListInWaitViewModel detailListViewModel)
                 {
@@ -196,7 +195,6 @@ namespace Ferretto.VW.App.Operator
                     {
                         this.navigationStack.Push(this.mainWindowViewModel.ContentRegionCurrentViewModel);
                     }
-                    detailListViewModel.List = list;
                     await detailListViewModel.OnEnterViewAsync();
                     this.mainWindowViewModel.ContentRegionCurrentViewModel = detailListViewModel;
                     this.mainWindowViewModel.NavigationRegionCurrentViewModel = detailListViewModel.NavigationViewModel;
