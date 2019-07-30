@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -10,11 +9,9 @@ using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
-using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.Utils.Interfaces;
@@ -45,6 +42,8 @@ namespace Ferretto.VW.App.Installation
 
         private readonly IdleViewModel idleViewModel;
 
+        private readonly bool machineOnMarchSelectionBool;
+
         private readonly IOperatorHubClient operatorHubClient;
 
         private IViewModel contentRegionCurrentViewModel;
@@ -65,7 +64,7 @@ namespace Ferretto.VW.App.Installation
 
         private bool machineModeSelectionBool;
 
-        private readonly bool machineOnMarchSelectionBool;
+        private IMachineStatusMachineService machineStatusService;
 
         private IViewModel navigationRegionCurrentViewModel;
 
@@ -75,13 +74,11 @@ namespace Ferretto.VW.App.Installation
 
         private IViewModel previousNavigationViewModel;
 
-        private ICommand showErrorDetailsCommand;
-
         private bool securityFunctionActive;
 
-        private IUpdateSensorsMachineService updateSensorsService;
+        private ICommand showErrorDetailsCommand;
 
-        private IMachineStatusMachineService machineStatusService;
+        private IUpdateSensorsMachineService updateSensorsService;
 
         #endregion
 
@@ -340,20 +337,12 @@ namespace Ferretto.VW.App.Installation
                 .Subscribe(
                 (message) =>
                 {
-                this.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+                    this.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
                     this.ExitViewButtonRegionCurrentViewModel = null;
                 },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Type == InstallationApp_EventMessageType.ExitView);
-
-            this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
-                (message) =>
-                {
-                    this.IsErrorViewButtonVisible = Visibility.Visible;
-                },
-                ThreadOption.PublisherThread,
-                false);
 
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
@@ -367,7 +356,8 @@ namespace Ferretto.VW.App.Installation
             // TODO MachineOnMarch comes from the driver
             //MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
-            ClickedOnMachineOnMarchEventHandler += () => {
+            ClickedOnMachineOnMarchEventHandler += () =>
+            {
                 if (!this.SecurityFunctionActive)
                 {
                     this.machineStatusService.ExecuteResetSecurityAsync();
@@ -377,11 +367,6 @@ namespace Ferretto.VW.App.Installation
 
             this.updateSensorsService = this.container.Resolve<IUpdateSensorsMachineService>();
             this.updateSensorsService.ExecuteAsync();
-
-        }
-
-        private void UpdateVariousInputsSensorsState(bool[] message)
-        {
         }
 
         private async Task OnMachineErrorStatusChanged(object sender,
@@ -400,6 +385,10 @@ namespace Ferretto.VW.App.Installation
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
 
         private void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
+
+        private void UpdateVariousInputsSensorsState(bool[] message)
+        {
+        }
 
         #endregion
     }

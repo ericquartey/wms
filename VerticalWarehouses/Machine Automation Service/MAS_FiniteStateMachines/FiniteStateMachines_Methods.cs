@@ -183,6 +183,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
+        private void ProcessInverterStopMessage()
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            // Send a field message to stop inverters to InverterDriver
+            var inverterDataMessage = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Stop Inverter",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStop);
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+        }
+
         private void ProcessPositioningMessage(CommandMessage message)
         {
             this.logger.LogTrace("1:Method Start");
@@ -200,6 +216,34 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 try
                 {
                     this.logger.LogDebug("Starting Positioning FSM");
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                }
+            }
+        }
+
+        private void ProcessResetSecurityMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            //if (message.Data is IResetSecurityMessageData data)
+            {
+                this.currentStateMachine = new ResetSecurityStateMachine(
+                    this.eventAggregator,
+                    null,
+                    this.logger,
+                    this.serviceScopeFactory);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+                try
+                {
+                    this.logger.LogDebug("Starting Reset Security FSM");
                     this.currentStateMachine.Start();
                 }
                 catch (Exception ex)
@@ -243,47 +287,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.forceInverterIoStatusPublish = true;
             this.forceRemoteIoStatusPublish = true;
-        }
-
-        private void ProcessResetSecurityMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            //if (message.Data is IResetSecurityMessageData data)
-            {
-                this.currentStateMachine = new ResetSecurityStateMachine(this.eventAggregator, null, this.logger);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.logger.LogDebug("Starting Reset Security FSM");
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
-            }
-        }
-
-        private void ProcessInverterStopMessage()
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            // Send a field message to stop inverters to InverterDriver
-            var inverterDataMessage = new InverterStopFieldMessageData(InverterIndex.MainInverter);
-
-            var inverterMessage = new FieldCommandMessage(
-                inverterDataMessage,
-                "Stop Inverter",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
-
         }
 
         private void ProcessShutterControlMessage(CommandMessage message)
