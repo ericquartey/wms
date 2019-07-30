@@ -138,6 +138,15 @@
                                                          TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>
+                                        <TextBlock.ToolTip>
+                                            <MultiBinding Converter="{StaticResource SFC}">
+                                                <Binding Source="{x:Static res:General.PositionFormat}" />
+                                                <Binding Path="Data.XPosition"
+                                                         TargetNullValue="" />
+                                                <Binding Path="Data.YPosition"
+                                                         TargetNullValue="" />
+                                            </MultiBinding>
+                                        </TextBlock.ToolTip>
                                     </TextBlock>
                                 </DataTemplate>
                             </dxg:GridColumn.CellDisplayTemplate>
@@ -146,8 +155,7 @@
                                         Header="{x:Static res:General.Dimension}">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock HorizontalAlignment="Right"
-                                               Style="{DynamicResource TextBlockCell}">
+                                    <TextBlock Style="{DynamicResource TextBlockCell}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.DimensionFormat}" />
@@ -157,6 +165,15 @@
                                                          TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>
+                                        <TextBlock.ToolTip>
+                                            <MultiBinding Converter="{StaticResource SFC}">
+                                                <Binding Source="{x:Static res:General.DimensionFormat}" />
+                                                <Binding Path="Data.Width"
+                                                         TargetNullValue="" />
+                                                <Binding Path="Data.Depth"
+                                                         TargetNullValue="" />
+                                            </MultiBinding>
+                                        </TextBlock.ToolTip>
                                     </TextBlock>
                                 </DataTemplate>
                             </dxg:GridColumn.CellDisplayTemplate>
@@ -177,8 +194,7 @@
                                         FieldName="Stock">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock HorizontalAlignment="Right"
-                                               VerticalAlignment="Center">
+                                    <TextBlock Style="{DynamicResource TextBlockCell}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -188,6 +204,15 @@
                                                          TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>
+                                        <TextBlock.ToolTip>
+                                            <MultiBinding Converter="{StaticResource SFC}">
+                                                <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                                                <Binding Path="Data.Stock"
+                                                         TargetNullValue="" />
+                                                <Binding Path="Data.ItemMeasureUnit"
+                                                         TargetNullValue="" />
+                                            </MultiBinding>
+                                        </TextBlock.ToolTip>
                                     </TextBlock>
                                 </DataTemplate>
                             </dxg:GridColumn.CellDisplayTemplate>
