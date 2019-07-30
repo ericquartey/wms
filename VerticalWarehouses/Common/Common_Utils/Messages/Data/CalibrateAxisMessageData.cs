@@ -8,12 +8,16 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public CalibrateAxisMessageData(Axis axisToCalibrate, int currentStep, int maxStep, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public CalibrateAxisMessageData(
+            Axis axisToCalibrate,
+            int currentStepCalibrate,
+            int maxStepCalibrate,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToCalibrate = axisToCalibrate;
             this.Verbosity = verbosity;
-            this.CurrentStepCalibrate = currentStep + 1;
-            this.MaxStepCalibrate = maxStep;
+            this.CurrentStepCalibrate = currentStepCalibrate;
+            this.MaxStepCalibrate = maxStepCalibrate;
         }
 
         #endregion

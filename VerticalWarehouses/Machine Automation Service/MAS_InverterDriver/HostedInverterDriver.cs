@@ -104,14 +104,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private InverterIndex inverterIndexToStop;
 
+        private byte[] ReceiveBuffer;
+
         private Timer sensorStatusUpdateTimer;
 
         // index of inverter to Stop
         private int shaftPositionUpdateNumberOfTimes;
 
         private CancellationToken stoppingToken;
-
-        private byte[] ReceiveBuffer;
 
         #endregion
 
@@ -752,7 +752,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.socketTransport.Disconnect();
                     continue;
                 }
-                if(this.ReceiveBuffer.Length < 2 || this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
+                if (this.ReceiveBuffer.Length < 2 || this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
                 {
                     // this is not an error: we try to recover from messages received in more pieces
                     this.logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
@@ -760,7 +760,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 4, 1, 2);
-                foreach( var extractedMessage in ExtractedMessages)
+                foreach (var extractedMessage in ExtractedMessages)
                 {
                     InverterMessage currentMessage;
                     try
@@ -838,16 +838,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.writeEnableEvent.Reset();
 
-                    switch (handleIndex)
-                    {
-                        case 0:
-                            await this.ProcessHeartbeat();
-                            break;
+                    //switch (handleIndex)
+                    //{
+                    //    case 0:
+                    //        await this.ProcessHeartbeat();
+                    //        break;
 
-                        case 1:
-                            await this.ProcessInverterCommand();
-                            break;
-                    }
+                    //    case 1:
+                    //        await this.ProcessInverterCommand();
+                    //        break;
+                    //}
                     if (this.socketTransport.IsConnected && this.socketTransport.IsReadingOk
                         )
                     {
