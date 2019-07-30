@@ -28,6 +28,10 @@
 
         ResolutionCalibration = 12,
 
+        ResetSecurity = 13,
+
+        InverterStop = 14,
+
         Stop = 99,
     }
 }

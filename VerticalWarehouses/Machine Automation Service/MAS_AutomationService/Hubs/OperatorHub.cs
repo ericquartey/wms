@@ -34,25 +34,25 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var bay = this.baysProvider.GetByIpAddress(this.Context.GetHttpContext().Connection.RemoteIpAddress);
+            //var bay = this.baysProvider.GetByIpAddress(this.Context.GetHttpContext().Connection.RemoteIpAddress);
 
-            if (this.Context.Items.ContainsKey(BayIdEntry))
-            {
-                this.Context.Items[BayIdEntry] = bay.Id;
-            }
-            else
-            {
-                this.Context.Items.Add(BayIdEntry, bay.Id);
-            }
+            //if (this.Context.Items.ContainsKey(BayIdEntry))
+            //{
+            //    this.Context.Items[BayIdEntry] = bay.Id;
+            //}
+            //else
+            //{
+            //    this.Context.Items.Add(BayIdEntry, bay.Id);
+            //}
 
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var bayId = (int)this.Context.Items[BayIdEntry];
+            //var bayId = (int)this.Context.Items[BayIdEntry];
 
-            this.baysProvider.Deactivate(bayId);
+            //this.baysProvider.Deactivate(bayId);
 
             await base.OnDisconnectedAsync(exception);
         }

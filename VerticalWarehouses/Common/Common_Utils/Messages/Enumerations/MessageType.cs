@@ -54,6 +54,11 @@
 
         CheckCondition,
 
-        NewMissionOperationAvailable
+        NewMissionOperationAvailable,
+
+        ResetSecurity,
+
+        InverterStop,
+
     }
 }
