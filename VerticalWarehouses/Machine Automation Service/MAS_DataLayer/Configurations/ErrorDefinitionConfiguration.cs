@@ -4,26 +4,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class ErrorConfiguration : IEntityTypeConfiguration<Error>
+    public class ErrorDefinitionConfiguration : IEntityTypeConfiguration<ErrorDefinition>
     {
         #region Methods
 
-        public void Configure(EntityTypeBuilder<Error> builder)
+        public void Configure(EntityTypeBuilder<ErrorDefinition> builder)
         {
             if (builder == null)
             {
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            builder.HasKey(e => e.Id);
+            builder.HasKey(m => m.Code);
 
-            builder.Property(m => m.OccurrenceDate)
+            builder.Property(m => m.Description)
                 .IsRequired();
 
             builder
-                .HasOne(e => e.Definition)
-                .WithMany(d => d.Occurrences)
-                .HasForeignKey(e => e.Code)
+                .HasOne(e => e.Statistics)
+                .WithOne(s => s.Error)
+                .HasForeignKey<ErrorStatistic>(s => s.Code)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasData(new ErrorDefinition { Code = 1001, Description = "Errore database", Severity = 5 },

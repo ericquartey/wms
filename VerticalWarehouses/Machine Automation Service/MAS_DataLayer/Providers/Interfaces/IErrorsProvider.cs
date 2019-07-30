@@ -2,11 +2,13 @@ using Ferretto.VW.MAS.DataModels.Errors;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {
-    public interface IErrorStatisticsProvider
+    public interface IErrorsProvider
     {
         #region Methods
 
-        ErrorStatisticsSummary GetErrorStatistics();
+        Error GetCurrent();
+
+        ErrorStatisticsSummary GetStatistics();
 
         #endregion
     }

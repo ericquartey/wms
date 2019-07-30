@@ -1,10 +1,8 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface IWebApiExceptionMessageData : IMessageData
+    public interface IWebApiExceptionMessageData : IExceptionMessageData, IMessageData
     {
         #region Properties
-
-        int ExceptionCode { get; }
 
         string ExceptionDescription { get; }
 
