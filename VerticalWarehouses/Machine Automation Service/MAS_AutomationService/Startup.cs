@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddHostedService<FiniteStateMachines.FiniteStateMachines>();
 
-            //services.AddHostedService<MissionsManagerService>();
+            services.AddHostedService<MissionsManagerService>();
 
             services.AddHostedService<AutomationService>();
         }

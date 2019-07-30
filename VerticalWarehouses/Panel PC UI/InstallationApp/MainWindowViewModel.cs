@@ -67,8 +67,6 @@ namespace Ferretto.VW.App.Installation
 
         private IMachineStatusMachineService machineStatusService;
 
-        private IInverterStopMachineService inverterStopService;
-
         #endregion
 
         #region Constructors
@@ -154,7 +152,6 @@ namespace Ferretto.VW.App.Installation
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        //public bool MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
         public bool MachineOnMarchSelectionBool { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
@@ -211,8 +208,6 @@ namespace Ferretto.VW.App.Installation
 
             this.machineStatusService = this.container.Resolve<IMachineStatusMachineService>();
 
-            this.inverterStopService = this.container.Resolve<IInverterStopMachineService>();
-
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             // TODO MachineOnMarch comes from the driver
             //MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
@@ -223,11 +218,6 @@ namespace Ferretto.VW.App.Installation
                     this.machineStatusService.ExecuteResetSecurityAsync();
                     this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
                 }
-                //else
-                //{
-                //    this.inverterStopService.ExecuteAsync();
-                //    this.securityFunctionActive = false;
-                //}
             };
 
             this.updateSensorsService = this.container.Resolve<IUpdateSensorsMachineService>();
