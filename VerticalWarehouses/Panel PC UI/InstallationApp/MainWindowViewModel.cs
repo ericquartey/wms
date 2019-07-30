@@ -219,9 +219,13 @@ namespace Ferretto.VW.App.Installation
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => {
                 if (!this.SecurityFunctionActive)
+                {
                     this.machineStatusService.ExecuteResetSecurityAsync();
+                }
                 else
+                {
                     this.inverterStopService.ExecuteAsync();
+                }
             };
 
             this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
