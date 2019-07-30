@@ -848,11 +848,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                             await this.ProcessInverterCommand();
                             break;
                     }
-                    if (this.socketTransport.IsConnected && this.socketTransport.IsReadingOk
-                        )
-                    {
-                        await this.ProcessInverterCommand();
-                    }
+
+                    //if (this.socketTransport.IsConnected &&
+                    //    this.socketTransport.IsReadingOk)
+                    //{
+                    //    await this.ProcessInverterCommand();
+                    //}
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);

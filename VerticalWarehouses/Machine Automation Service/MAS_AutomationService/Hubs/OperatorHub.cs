@@ -34,9 +34,9 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var bay = this.baysProvider.GetByIpAddress(this.Context.GetHttpContext().Connection.RemoteIpAddress);
+            //var bay = this.baysProvider.GetByIpAddress(this.Context.GetHttpContext().Connection.RemoteIpAddress);
 
-            this.Context.Items[BayIdEntry] = bay.Id;
+            //this.Context.Items[BayIdEntry] = bay.Id;
 
             await base.OnConnectedAsync();
         }
