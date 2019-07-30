@@ -19,7 +19,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"BayId:{this.BayId} MissionId:{this.MissionId}";
+            return $"MissionOperationId:{this.MissionOperationId} MissionId:{this.MissionId}";
         }
 
         #endregion
