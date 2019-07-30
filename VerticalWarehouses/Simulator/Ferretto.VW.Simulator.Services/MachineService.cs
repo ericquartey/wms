@@ -49,6 +49,8 @@ namespace Ferretto.VW.Simulator.Services
             this.RemoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 2 });
+
+            this.RemoteIOs[0].IOs[0] = true;
         }
 
         #endregion
