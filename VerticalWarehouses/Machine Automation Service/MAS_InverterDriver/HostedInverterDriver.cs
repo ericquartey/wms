@@ -680,6 +680,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
                         continue;
                     }
+                    this.writeEnableEvent.Set();
                 }
                 // socket connected
                 byte[] inverterData;
@@ -730,7 +731,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     // connection error
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                    this.writeEnableEvent.Set();
                     continue;
                 }
                 catch (Exception ex)
@@ -838,19 +838,18 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.writeEnableEvent.Reset();
 
-                    if (this.socketTransport.IsConnected &&
-                        this.socketTransport.IsReadingOk)
+                    if (this.socketTransport.IsConnected)
                     {
-                        switch (handleIndex)
-                        {
-                            case 0:
-                                await this.ProcessHeartbeat();
-                                break;
+                        //switch (handleIndex)
+                        //{
+                        //    case 0:
+                        //        await this.ProcessHeartbeat();
+                        //        break;
 
-                            case 1:
+                        //    case 1:
                                 await this.ProcessInverterCommand();
-                                break;
-                        }
+                        //        break;
+                        //}
                     }
                 }
             }

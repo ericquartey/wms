@@ -63,8 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
-        public bool IsReadingOk { get; set; }
-
         public InverterDiagnosticsData ReadWaitTimeData { get; }
 
         public InverterDiagnosticsData WriteRoundtripTimeData { get; }
@@ -214,7 +212,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
-                    this.IsReadingOk = true;
                 }
                 else
                 {

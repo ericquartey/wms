@@ -72,8 +72,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool IsConnected => true;
 
-        public bool IsReadingOk { get; set; }
-
         #endregion
 
         #region Methods
@@ -113,8 +111,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             await Task.Delay(5, stoppingToken);
-
-            this.IsReadingOk = true;
 
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
