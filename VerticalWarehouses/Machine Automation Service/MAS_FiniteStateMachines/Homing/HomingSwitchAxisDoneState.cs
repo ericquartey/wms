@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 switch (message.Status)
                 {
                     case MessageStatus.OperationExecuting:
-                        var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, this.currentStep, this.maxStep, MessageVerbosity.Info);
+                        var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, this.currentStep + 1, this.maxStep, MessageVerbosity.Info);
                         var notificationMessage = new NotificationMessage(
                             notificationMessageData,
                             $"{this.axisToCalibrate} axis calibration executing",
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.currentStep, this.maxStep, this.Logger));
+                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.currentStep + 1, this.maxStep, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, this.currentStep, this.maxStep, MessageVerbosity.Info);
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, this.currentStep + 1, this.maxStep, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 $"{this.axisToCalibrate} axis calibration started",
