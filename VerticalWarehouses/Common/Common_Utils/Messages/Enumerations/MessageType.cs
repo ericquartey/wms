@@ -58,6 +58,9 @@
 
         ErrorStatusChanged,
 
-        ErrorCleared
+        ResetSecurity,
+
+        InverterStop,
+
     }
 }

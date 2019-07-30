@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private const int IO_POLLING_INTERVAL = 50;
 
+        private const int IO_PUBLISH_INTERVAL = 1000;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IoIndex index;
@@ -54,6 +56,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         private bool forceIoStatusPublish;
 
         private Timer pollIoTimer;
+
+        private Timer publishIoTimer;
 
         #endregion
 
@@ -260,6 +264,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             this.ioCommandQueue.Enqueue(message);
         }
 
+        public void SendIoPublish(object state)
+        {
+            this.forceIoStatusPublish = true;
+        }
+
         public void SendMessage(IFieldMessageData messageData)
         {
             var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
@@ -324,6 +333,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             try
             {
                 this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
+
+                //this.publishIoTimer = new Timer(this.SendIoPublish, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_PUBLISH_INTERVAL));
             }
             catch (Exception ex)
             {

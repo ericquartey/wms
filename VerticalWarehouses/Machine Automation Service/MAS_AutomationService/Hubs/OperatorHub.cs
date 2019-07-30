@@ -72,9 +72,9 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var bayId = (int)this.Context.Items[BayIdEntry];
+            //var bayId = (int)this.Context.Items[BayIdEntry];
 
-            this.baysProvider.Deactivate(bayId);
+            //this.baysProvider.Deactivate(bayId);
 
             await base.OnDisconnectedAsync(exception);
         }

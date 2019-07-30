@@ -198,7 +198,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
+                if (this.currentStateMachine != null
+                    && receivedMessage.Type != MessageType.Stop
+                    && receivedMessage.Type != MessageType.SensorsChanged
+                    )
                 {
                     var errorNotification = new NotificationMessage(
                         null,
@@ -247,6 +250,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.DrawerOperation:
                         this.ProcessDrawerOperation(receivedMessage);
+                        break;
+
+                    case MessageType.ResetSecurity:
+                        this.ProcessResetSecurityMessage(receivedMessage);
+                        break;
+
+                    case MessageType.InverterStop:
+                        this.ProcessInverterStopMessage();
                         break;
                 }
             }
@@ -360,7 +371,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                         msg = new NotificationMessage(
                             ioExceptionMessage,
-                            "Inverter Exception",
+                            "Io Driver Exception",
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.IoDriverException,
@@ -369,6 +380,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
+
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             }
@@ -610,6 +622,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                     break;
 
                                 default:
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case MessageType.ResetSecurity:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
                                     break;
                             }
                         }
