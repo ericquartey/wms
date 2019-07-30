@@ -23,8 +23,7 @@
         <wms:StringFormatConverter x:Key="SFC" />
 
         <DataTemplate x:Key="CellDisplayTemplateStock">
-            <TextBlock HorizontalAlignment="Right"
-                       VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource TextBlockCell}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -34,12 +33,20 @@
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="RowData.Row.Stock"
+                                 TargetNullValue="" />
+                        <Binding Path="RowData.Row.ItemMeasureUnit"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.ToolTip>
             </TextBlock>
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateMaxCapacity">
-            <TextBlock HorizontalAlignment="Right"
-                       VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource TextBlockCell}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -49,6 +56,15 @@
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="RowData.Row.MaxCapacity"
+                                 TargetNullValue="" />
+                        <Binding Path="RowData.Row.ItemMeasureUnit"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.ToolTip>
             </TextBlock>
         </DataTemplate>
     </wms:WmsView.Resources>
@@ -349,6 +365,15 @@
                                                                  TargetNullValue="" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
+                                                <TextBlock.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:General.PositionFormat}" />
+                                                        <Binding Path="Data.XPosition"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="Data.YPosition"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.ToolTip>
                                             </TextBlock>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellDisplayTemplate>
@@ -367,6 +392,15 @@
                                                                  TargetNullValue="" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
+                                                <TextBlock.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:General.DimensionFormat}" />
+                                                        <Binding Path="Data.Width"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="Data.Depth"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.ToolTip>
                                             </TextBlock>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellDisplayTemplate>

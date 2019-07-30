@@ -502,7 +502,7 @@
                                                 FieldName="Stock">
                                     <dxg:GridColumn.CellDisplayTemplate>
                                         <DataTemplate>
-                                            <TextBlock VerticalAlignment="Center">
+                                            <TextBlock Style="{DynamicResource TextBlockCell}">
                                                 <TextBlock.Text>
                                                     <MultiBinding Converter="{StaticResource SFC}">
                                                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -512,6 +512,15 @@
                                                                  TargetNullValue="" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
+                                                <TextBlock.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                                                        <Binding Path="Data.Stock"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="Data.ItemMeasureUnit"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.ToolTip>
                                             </TextBlock>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellDisplayTemplate>

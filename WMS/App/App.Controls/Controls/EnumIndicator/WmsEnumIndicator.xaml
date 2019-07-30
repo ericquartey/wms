@@ -9,7 +9,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}" Orientation="Horizontal">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <Ellipse
             Width="{Binding Path=IconSize}"
             Height="{Binding Path=IconSize}"
@@ -23,8 +28,12 @@
             SymbolName="{Binding Path=SymbolName, Mode=OneWay}"
             Visibility="{Binding HideIcon, Converter={StaticResource BTVIC}}" />
         <TextBlock
+            Grid.Column="1"
             x:Name="textBlock"
             Margin="5,0,0,0"
-            VerticalAlignment="Center" />
-    </StackPanel>
+            TextTrimming="CharacterEllipsis"
+            TextWrapping="NoWrap"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"/>
+    </Grid>
 </UserControl>
