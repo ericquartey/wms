@@ -838,22 +838,20 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.writeEnableEvent.Reset();
 
-                    switch (handleIndex)
+                    if (this.socketTransport.IsConnected &&
+                        this.socketTransport.IsReadingOk)
                     {
-                        case 0:
-                            await this.ProcessHeartbeat();
-                            break;
+                        switch (handleIndex)
+                        {
+                            case 0:
+                                await this.ProcessHeartbeat();
+                                break;
 
-                        case 1:
-                            await this.ProcessInverterCommand();
-                            break;
+                            case 1:
+                                await this.ProcessInverterCommand();
+                                break;
+                        }
                     }
-
-                    //if (this.socketTransport.IsConnected &&
-                    //    this.socketTransport.IsReadingOk)
-                    //{
-                    //    await this.ProcessInverterCommand();
-                    //}
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
