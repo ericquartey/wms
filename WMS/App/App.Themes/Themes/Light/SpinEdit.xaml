@@ -15,7 +15,6 @@
                                       Property="{x:Static wms:SpinEdit.EditValueProperty}" />
 
     <Style x:Key="SpinEditBaseStyle" TargetType="wms:SpinEdit">
-        <Setter Property="ShowError" Value="False" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
         <Setter Property="AllowNullInput" Value="True" />
