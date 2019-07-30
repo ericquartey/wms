@@ -79,11 +79,11 @@ namespace Ferretto.VW.Simulator.Services
             this.listenerInverter.Start();
             this.listenerIoDriver1.Start();
             this.listenerIoDriver2.Start();
-            this.listenerIoDriver3.Start();
+            //this.listenerIoDriver3.Start();
 
             Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
             Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
+            Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
             //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
 
             await Task.Delay(100);
@@ -99,7 +99,7 @@ namespace Ferretto.VW.Simulator.Services
             this.cts.Cancel();
             this.listenerInverter.Stop();
             this.listenerIoDriver1.Stop();
-            //this.listenerIoDriver2.Stop();
+            this.listenerIoDriver2.Stop();
             //this.listenerIoDriver3.Stop();
 
             await Task.Delay(100);
