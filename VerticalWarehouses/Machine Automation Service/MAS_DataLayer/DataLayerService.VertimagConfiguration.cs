@@ -72,16 +72,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, (long)ConfigurationCategory.SetupNetwork);
+                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, ConfigurationCategory.SetupNetwork);
                     installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogTrace($"{ex.Message}");
+                    this.Logger.LogTrace($"{ex.Message}");
                 }
             }
 
@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    var ipAddress = this.GetIpAddressConfigurationValue(setupNetworkIoIndex, (long)ConfigurationCategory.SetupNetwork);
+                    var ipAddress = this.GetIpAddressConfigurationValue(setupNetworkIoIndex, ConfigurationCategory.SetupNetwork);
                     if (ipAddress != null)
                     {
                         installedIoDevices.Add(ioIndex);
@@ -124,11 +124,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.logger.LogTrace($"SetUp Network parameter not found: {setupNetworkIoIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"SetUp Network parameter not found: {setupNetworkIoIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogTrace($"{ex.Message}");
+                    this.Logger.LogTrace($"{ex.Message}");
                 }
             }
 

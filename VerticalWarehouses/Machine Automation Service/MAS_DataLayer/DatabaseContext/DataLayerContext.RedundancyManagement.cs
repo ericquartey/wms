@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -41,6 +43,11 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public override int SaveChanges()
         {
+            if (this.redundancyService == null)
+            {
+                return base.SaveChanges();
+            }
+
             var affectedRecordsCount = 0;
 
             if (this.Options == this.redundancyService.ActiveDbContextOptions)
@@ -74,6 +81,16 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             }
 
             return affectedRecordsCount;
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (this.redundancyService != null)
+            {
+                throw new NotSupportedException("Async save calls are not supported when redundancy is enabled.");
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         private void SaveToStandbyDb()

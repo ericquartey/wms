@@ -7,6 +7,7 @@
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

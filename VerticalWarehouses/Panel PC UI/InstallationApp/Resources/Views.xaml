@@ -8,8 +8,7 @@
                     xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
                     xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
-                    xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels"
-                    xmlns:common="clr-namespace:Ferretto.VW.App.Controls.Views.ErrorDetails;assembly=Ferretto.VW.App.Controls">
+                    xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
     <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
         <local:SSNavigationButtonsView />
     </DataTemplate>

@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public void ExecuteStepDown()
         {
             var stepValue = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)OffsetCalibration.StepValue, (long)ConfigurationCategory.OffsetCalibration);
+                (long)OffsetCalibration.StepValue, ConfigurationCategory.OffsetCalibration);
 
             this.ExecuteStep_Method(-stepValue);
         }
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public void ExecuteStepUp()
         {
             var stepValue = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)OffsetCalibration.StepValue, (long)ConfigurationCategory.OffsetCalibration);
+                (long)OffsetCalibration.StepValue, ConfigurationCategory.OffsetCalibration);
 
             this.ExecuteStep_Method(stepValue);
         }
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus, true);
+                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.VerticalOffsetDone, ConfigurationCategory.SetupStatus, true);
             }
             catch (Exception)
             {
@@ -141,18 +141,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private void ExecutePositioning_Method()
         {
             var referenceCell = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
-                (long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+                (long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
 
             var position = 10; //TODO Retrieve the position related to the cellReference value
 
             var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptySpeed, ConfigurationCategory.VerticalAxis);
             var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyAcceleration, ConfigurationCategory.VerticalAxis);
             var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyDeceleration, ConfigurationCategory.VerticalAxis);
             var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
+                (long)OffsetCalibration.FeedRate, ConfigurationCategory.OffsetCalibration);
 
             var speed = maxSpeed * feedRate;
 
@@ -179,13 +179,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private void ExecuteStep_Method(decimal displacement)
         {
             var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptySpeed, ConfigurationCategory.VerticalAxis);
             var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyAcceleration, ConfigurationCategory.VerticalAxis);
             var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyDeceleration, ConfigurationCategory.VerticalAxis);
             var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
+                (long)OffsetCalibration.FeedRate, ConfigurationCategory.OffsetCalibration);
 
             var speed = maxSpeed * feedRate;
 
@@ -209,9 +209,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
-        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
+            var category = (ConfigurationCategory)categoryId;
 
             switch (categoryId)
             {
@@ -225,7 +226,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                         try
                         {
-                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement
+                                .GetDecimalConfigurationValue(
+                                (long)verticalAxisParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -246,7 +250,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)offsetCalibrationParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)offsetCalibrationParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -267,10 +271,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return 0;
         }
 
-        private ActionResult<int> GetIntegerConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
             Enum.TryParse(typeof(OffsetCalibration), parameter, out var parameterId);
+
+            var category = (ConfigurationCategory)categoryId;
 
             if (parameterId != null)
             {
@@ -278,7 +284,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 try
                 {
-                    value = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)parameterId, (long)categoryId);
+                    value = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)parameterId, category);
                 }
                 catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {
@@ -301,7 +307,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             if (parameterId != null)
             {
                 LoadingUnitPosition value;
-                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
 
                 try
                 {
@@ -328,7 +334,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             if (parameterId != null)
             {
                 LoadingUnitPosition value;
-                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
 
                 try
                 {
@@ -353,7 +359,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis, newOffset);
+                this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue((long)VerticalAxis.Offset, ConfigurationCategory.VerticalAxis, newOffset);
             }
             catch (Exception)
             {

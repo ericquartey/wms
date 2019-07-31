@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
@@ -28,85 +27,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return serializedData;
-        }
-
-        private void ApplicationLogWriterTaskFunction()
-        {
-            //INFO Create WaitHandle array to wait for multiple events
-            var commandHandles = new[]
-            {
-                this.commandLogQueue.WaitHandle,
-                this.notificationLogQueue.WaitHandle
-            };
-
-            do
-            {
-                var handleIndex = WaitHandle.WaitAny(commandHandles);
-
-                this.logger.LogTrace($"1:handleIndex={handleIndex}");
-
-                switch (handleIndex)
-                {
-                    case 0:
-                        this.LogCommandMessage();
-                        break;
-
-                    case 1:
-                        this.LogNotificationMessage();
-                        break;
-                }
-            }
-            while (!this.StoppingToken.IsCancellationRequested);
-        }
-
-        private void LogCommandMessage()
-        {
-            this.Logger.LogTrace("1:Method Start");
-
-            while (this.commandLogQueue.Dequeue(out var message))
-            {
-                this.Logger.LogTrace($"2:message={message}");
-
-                var serializedData = SerializeMessageData(message.Data);
-
-                var logEntry = new LogEntry
-                {
-                    Data = serializedData,
-                    Description = message.Description,
-                    Destination = message.Destination.ToString(),
-                    Source = message.Source.ToString(),
-                    TimeStamp = DateTime.UtcNow,
-                    Type = message.Type.ToString(),
-                };
-
-                this.SaveEntryToDb(logEntry);
-            }
-        }
-
-        private void LogNotificationMessage()
-        {
-            this.Logger.LogTrace("1:Method Start");
-
-            while (this.notificationLogQueue.Dequeue(out var message))
-            {
-                this.Logger.LogTrace($"2:message={message}");
-
-                var serializedData = SerializeMessageData(message.Data);
-
-                var logEntry = new LogEntry
-                {
-                    Data = serializedData,
-                    Description = message.Description,
-                    Destination = message.Destination.ToString(),
-                    Source = message.Source.ToString(),
-                    TimeStamp = DateTime.UtcNow,
-                    Type = message.Type.ToString(),
-                    ErrorLevel = message.ErrorLevel.ToString(),
-                    Status = message.Status.ToString(),
-                };
-
-                this.SaveEntryToDb(logEntry);
-            }
         }
 
         private void SaveEntryToDb(LogEntry logEntry)

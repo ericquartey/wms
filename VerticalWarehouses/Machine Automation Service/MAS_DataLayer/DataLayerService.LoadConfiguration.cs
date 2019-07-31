@@ -236,28 +236,28 @@ namespace Ferretto.VW.MAS.DataLayer
                     case ConfigurationDataType.Boolean:
                         this.SetBoolConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<bool>());
                         break;
 
                     case ConfigurationDataType.Date:
                         this.SetDateTimeConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<DateTime>());
                         break;
 
                     case ConfigurationDataType.Integer:
                         this.SetIntegerConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<int>());
                         break;
 
                     case ConfigurationDataType.Float:
                         this.SetDecimalConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<decimal>());
                         break;
 
@@ -266,18 +266,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         if (IPAddress.TryParse(stringValue, out var configurationValue))
                         {
-                            this.SetIpAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
+                            this.SetIpAddressConfigurationValue(configurationData, elementCategory, configurationValue);
                         }
                         else
                         {
-                            this.SetStringConfigurationValue(configurationData, (long)elementCategory, stringValue);
+                            this.SetStringConfigurationValue(configurationData, elementCategory, stringValue);
                         }
                         break;
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+                this.Logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
 
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
                 this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty, 0));

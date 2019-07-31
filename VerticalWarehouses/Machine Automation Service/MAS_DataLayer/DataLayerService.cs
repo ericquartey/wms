@@ -6,13 +6,15 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -24,16 +26,6 @@ namespace Ferretto.VW.MAS.DataLayer
     public partial class DataLayerService : AutomationBackgroundService, IDataLayerService
     {
         #region Fields
-
-        private readonly Task applicationLogWriteTask;
-
-        private readonly BlockingConcurrentQueue<CommandMessage> commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-        private readonly DataLayerConfiguration dataLayerConfiguration;
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -51,11 +43,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (serviceScopeFactory == null)
             {
-                this.SendErrorMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(serviceScopeFactory))));
+                this.SendErrorMessage(
+                    new DLExceptionMessageData(
+                        new ArgumentNullException(nameof(serviceScopeFactory))));
             }
 
             this.serviceScopeFactory = serviceScopeFactory;
-            this.applicationLogWriteTask = new Task(this.ApplicationLogWriterTaskFunction);
 
             this.Logger.LogInformation("DataLayer service initialised.");
         }
@@ -71,49 +64,58 @@ namespace Ferretto.VW.MAS.DataLayer
             await base.StartAsync(cancellationToken);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override bool FilterCommand(CommandMessage command)
         {
-            await base.ExecuteAsync(stoppingToken);
+            return true;
+        }
 
-            try
-            {
-                this.applicationLogWriteTask.Start();
-            }
-            catch (Exception ex)
-            {
-                this.SendErrorMessage(new DLExceptionMessageData(ex, ex.Message, 0));
-            }
+        protected override bool FilterNotification(NotificationMessage notification)
+        {
+            return true;
         }
 
         protected override Task OnCommandReceivedAsync(CommandMessage command)
         {
-            this.CommitDbChanges();
+            this.Logger.LogTrace($"2:command={command}");
+
+            var serializedData = SerializeMessageData(command.Data);
+
+            var logEntry = new LogEntry
+            {
+                Data = serializedData,
+                Description = command.Description,
+                Destination = command.Destination.ToString(),
+                Source = command.Source.ToString(),
+                TimeStamp = DateTime.UtcNow,
+                Type = command.Type.ToString(),
+            };
+
+            this.SaveEntryToDb(logEntry);
 
             return Task.CompletedTask;
         }
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message)
         {
-            this.CommitDbChanges();
+            this.Logger.LogTrace($"2:message={message}");
+
+            var serializedData = SerializeMessageData(message.Data);
+
+            var logEntry = new LogEntry
+            {
+                Data = serializedData,
+                Description = message.Description,
+                Destination = message.Destination.ToString(),
+                Source = message.Source.ToString(),
+                TimeStamp = DateTime.UtcNow,
+                Type = message.Type.ToString(),
+                ErrorLevel = message.ErrorLevel.ToString(),
+                Status = message.Status.ToString(),
+            };
+
+            this.SaveEntryToDb(logEntry);
 
             return Task.CompletedTask;
-        }
-
-        private void CommitDbChanges()
-        {
-            try
-            {
-                using (var scope = this.serviceScopeFactory.CreateScope())
-                {
-                    scope.ServiceProvider
-                        .GetRequiredService<DataLayerContext>()
-                        .SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.SendErrorMessage(new DLExceptionMessageData(ex));
-            }
         }
 
         private void DataLayerInitialize()
@@ -137,49 +139,53 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError($"Exception: {ex.Message} while migating databases.");
+                    this.Logger.LogError(ex, "Error while migating databases.");
+                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    return;
+                }
+
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+                try
+                {
+                    this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
+                    //this.EnsureMachinestatusInitialization();
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while loading configuration values.");
                     this.SendErrorMessage(new DLExceptionMessageData(ex));
                     return;
                 }
             }
 
-            try
-            {
-                this.LoadConfigurationValuesInfo(this.dataLayerConfiguration.ConfigurationFilePath);
-                //this.EnsureMachinestatusInitialization();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogError($"Exception: {ex.Message} while loading configuration values");
-                this.SendErrorMessage(new DLExceptionMessageData(ex));
-                return;
-            }
-
-            var errorNotification = new NotificationMessage(
+            var message = new NotificationMessage(
                 null,
-                "DataLayer initialization complete",
+                "DataLayer initialization complete.",
                 MessageActor.Any,
                 MessageActor.DataLayer,
-                MessageType.DataLayerReady,
-                MessageStatus.NoStatus);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(errorNotification);
+                MessageType.DataLayerReady);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(message);
         }
 
         private void EnsureMachinestatusInitialization()
         {
             try
             {
-                this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, ConfigurationCategory.SetupStatus);
             }
             catch (Exception)
             {
-                this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus, false);
+                this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, ConfigurationCategory.SetupStatus, false);
             }
         }
 
         private void SendErrorMessage(IMessageData data)
         {
-            var msg = new NotificationMessage(
+            var message = new NotificationMessage(
                 data,
                 "DataLayer Error",
                 MessageActor.Any,
@@ -188,9 +194,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
 
-            this.eventAggregator
+            this.EventAggregator
                 .GetEvent<NotificationEvent>()
-                .Publish(msg);
+                .Publish(message);
         }
 
         #endregion

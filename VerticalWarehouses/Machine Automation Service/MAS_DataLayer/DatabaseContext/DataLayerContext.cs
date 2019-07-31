@@ -75,6 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             {
                 return;
             }
+
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(DEFAULT_APPLICATION_SETTINGS_FILE, optional: false, reloadOnChange: false)
