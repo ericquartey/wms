@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
     {
         #region Fields
 
-        private readonly Axis axisToStop;
+        private readonly IHomingOperation homingOperation;
 
         private readonly bool stopRequested;
 
@@ -26,13 +27,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public HomingEndState(
             IStateMachine parentMachine,
-            Axis axisToStop,
+            IHomingOperation homingOperation,
             ILogger logger,
             bool stopRequested = false)
             : base(parentMachine, logger)
         {
             this.stopRequested = stopRequested;
-            this.axisToStop = axisToStop;
+            this.homingOperation = homingOperation;
         }
 
         #endregion
@@ -68,7 +69,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToStop, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.homingOperation, message, this.Logger));
                             break;
                     }
                     break;
@@ -97,7 +98,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",

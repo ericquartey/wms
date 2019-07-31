@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Timer targetTimer;
 
+        private int axisPosition;
+
         private ushort controlWord;
 
         private bool disposed;
@@ -36,8 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private int targetTickCount;
 
         private bool targetTimerActive;
-
-        private int axisPosition;
 
         #endregion
 
@@ -460,10 +460,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.homingTickCount++;
 
-            if (this.homingTickCount > 10)
+            if (this.homingTickCount > 5)
             {
                 this.statusWord |= 0x1000;
                 this.homingTimerActive = false;
+                this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
         }
