@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -59,6 +60,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.Ok();
         }
 
+        [ProducesResponseType(200)]
+        [HttpGet("GetCurrentPositionAxis")]
+        public void GetCurrentPositionAxis()
+        {
+            this.ExecuteGetCurrentPosition_Method();
+        }
+
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
@@ -72,6 +80,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public void Stop()
         {
             this.Stop_Method();
+        }
+
+        private void ExecuteGetCurrentPosition_Method()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(
+                new CommandMessage(
+                    null,
+                    "Sensors changed Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.SensorsChanged));
         }
 
         private void ExecuteHoming_Method()

@@ -152,11 +152,12 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             try
             {
                 const string Category = "VerticalAxis";
-                this.currentPosition = "N.D."; // Reset current position label
+                this.CurrentPosition = "";
                 this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
                 this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
                 this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
                 this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
+                await this.homingService.GetCurrentPositionAxisAsync();
             }
             catch (SwaggerException)
             {
