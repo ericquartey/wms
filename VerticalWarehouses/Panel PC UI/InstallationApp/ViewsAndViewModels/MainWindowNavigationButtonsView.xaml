@@ -133,7 +133,7 @@
 
                 <Button Command="{Binding DataContext.ManualDrawerStoreRecallButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.ManualDrawerStoreRecallButton}"
-                        IsEnabled="{Binding IsManualDrawerStoreRecallButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsEnabled="{Binding IsManualDrawerStoreRecallButtonActive, Mode=OneWay}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
             </StackPanel>
