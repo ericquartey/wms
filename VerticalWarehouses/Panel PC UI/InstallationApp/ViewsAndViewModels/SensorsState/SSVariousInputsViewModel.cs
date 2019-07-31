@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
-//using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
@@ -15,8 +15,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
-
-        //private readonly IOSensorsStatus ioSensorsStatus;
 
         private bool antiIntrusionShutterBay1;
 
@@ -61,7 +59,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public SSVariousInputsViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            //this.ioSensorsStatus = new IOSensorsStatus();
             this.NavigationViewModel = null;
         }
 
@@ -155,9 +152,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
-            //this.ioSensorsStatus.UpdateInputStates(message);
-
-            //this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
+            this.SecurityFunctionActive = message[0];
 
             //this.MushroomHeadButtonBay1 = !this.ioSensorsStatus.MushroomHeadButtonBay1;
             //this.MicroCarterLeftSideBay1 = this.ioSensorsStatus.MicroCarterLeftSideBay1;
