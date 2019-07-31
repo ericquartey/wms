@@ -57,58 +57,69 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)
         {
-            var requiredUpdate = false;
-            var updateDone = false;
-
-            if (newSensorStatus == null)
+            try
             {
+                var requiredUpdate = false;
+                var updateDone = false;
+
+                if (newSensorStatus == null)
+                {
+                    return updateDone;
+                }
+
+                if (messageActor == FieldMessageActor.IoDriver)
+                {
+                    if (ioIndex < 0 || ioIndex > 2)
+                    {
+                        return false;
+                    }
+
+                    //INFO The mushroom signal must be inverted
+                    newSensorStatus[1] = !newSensorStatus[1];
+
+                    for (var index = 0; index < REMOTEIO_INPUTS; index++)
+                    {
+                        if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
+                        {
+                            requiredUpdate = true;
+                            break;
+                        }
+                    }
+
+                    if (requiredUpdate)
+                    {
+                        Array.Copy(newSensorStatus, 0, this.sensorStatus, 0, REMOTEIO_INPUTS);
+                        updateDone = true;
+                    }
+                }
+
+                requiredUpdate = false;
+
+                if (messageActor == FieldMessageActor.InverterDriver)
+                {
+                    for (var index = 0; index < INVERTER_INPUTS; index++)
+                    {
+                        if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
+                        {
+                            requiredUpdate = true;
+                            break;
+                        }
+                    }
+
+                    if (requiredUpdate)
+                    {
+                        Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
+                        updateDone = true;
+                    }
+                }
+
                 return updateDone;
             }
-
-            if (messageActor == FieldMessageActor.IoDriver)
+            catch (Exception exc)
             {
-                if (ioIndex < 0 || ioIndex > 2)
-                {
-                    return false;
-                }
-
-                for (var index = 0; index < REMOTEIO_INPUTS; index++)
-                {
-                    if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
-                    {
-                        requiredUpdate = true;
-                        break;
-                    }
-                }
-
-                if (requiredUpdate)
-                {
-                    Array.Copy(newSensorStatus, 0, this.sensorStatus, 0, REMOTEIO_INPUTS);
-                    updateDone = true;
-                }
+                Console.WriteLine($"{exc}");
+                return false;
             }
-
-            requiredUpdate = false;
-
-            if (messageActor == FieldMessageActor.InverterDriver)
-            {
-                for (var index = 0; index < INVERTER_INPUTS; index++)
-                {
-                    if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
-                    {
-                        requiredUpdate = true;
-                        break;
-                    }
-                }
-
-                if (requiredUpdate)
-                {
-                    Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
-                    updateDone = true;
-                }
-            }
-
-            return updateDone;
         }
 
         #endregion

@@ -17,13 +17,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private const int REMOTEIO_INPUTS = 16;
 
-        private readonly IEventAggregator eventAggregator;
-
         private readonly IUnityContainer container;
 
-        private bool[] sensorStatus;
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IUpdateSensorsMachineService updateSensorsService;
+
+        private bool[] sensorStatus;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 

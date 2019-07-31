@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -16,15 +17,15 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private const int REMOTEIO_INPUTS = 16;
 
+        private readonly IUnityContainer container;
+
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private bool securityFunctionActive;
 
         private bool[] sensorStatus;
-
-        private IUpdateSensorsService updateSensorsService;
 
         private SubscriptionToken updateVariousInputsSensorsState;
 
@@ -48,6 +49,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
+            this.updateSensorsService = updateSensorsService;
             this.sensorStatus = new bool[REMOTEIO_INPUTS * 3 + INVERTER_INPUTS];
         }
 

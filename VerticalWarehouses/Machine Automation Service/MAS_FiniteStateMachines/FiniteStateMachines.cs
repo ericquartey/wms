@@ -293,21 +293,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         {
                             var ioIndex = receivedMessage.DeviceIndex;
 
-                            //if (ioIndex == 0)
-                            //{
-                            //    this.logger.LogDebug($"Value from IODriver 0:{dataIOs.SensorsStates[0]}");
-                            //}
-
                             if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
 
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
-
-                                //if (ioIndex == 0)
-                                //{
-                                //    this.logger.LogDebug($"Value from machineSensorStatus 0:{this.machineSensorsStatus.DisplayedInputs[0]}");
-                                //}
 
                                 msg = new NotificationMessage(
                                     msgData,
@@ -381,7 +371,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
-
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             }
