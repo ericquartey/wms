@@ -1501,6 +1501,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Store/recall drawer.
+        /// </summary>
+        public static string ManualDrawerStoreRecallButton {
+            get {
+                return ResourceManager.GetString("ManualDrawerStoreRecallButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Measured initial position [mm]:.
         /// </summary>
         public static string MesuredInitialPosition {
@@ -2212,7 +2221,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Update Resolution.
+        ///   Looks up a localized string similar to Update Resolution.
         /// </summary>
         public static string UpdateResolution {
             get {
@@ -2221,7 +2230,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Upper bound [mm]:.
+        ///   Looks up a localized string similar to Upper bound [mm]:.
         /// </summary>
         public static string UpperBound {
             get {

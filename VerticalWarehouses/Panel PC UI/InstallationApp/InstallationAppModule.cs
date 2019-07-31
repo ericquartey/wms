@@ -116,6 +116,7 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<ICellsSideControlViewModel, CellsSideControlViewModel>();
             this.container.RegisterSingleton<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>();
             this.container.RegisterSingleton<ILSMTCarouselViewModel, LSMTCarouselViewModel>();
+            this.container.RegisterSingleton<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>();
 
             this.container.RegisterSingleton<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterSingleton<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
@@ -154,7 +155,6 @@ namespace Ferretto.VW.App.Installation
 
             var machineStatusService = new MachineStatusMachineService(automationServiceUrl);
             this.container.RegisterInstance<IMachineStatusMachineService>(machineStatusService);
-
         }
 
         #endregion
