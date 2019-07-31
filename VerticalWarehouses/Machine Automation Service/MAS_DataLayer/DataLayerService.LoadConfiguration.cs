@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataModels.Enumerations;
@@ -222,7 +223,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void SaveConfigurationData(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
+        private void SaveConfigurationData(
+            ConfigurationCategory elementCategory,
+            long configurationData,
+            JToken jsonDataValue)
         {
             if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
             {
@@ -263,8 +267,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     case ConfigurationDataType.String:
                         var stringValue = jsonDataValue.Value<string>();
-
-                        if (IPAddress.TryParse(stringValue, out var configurationValue))
+                        if (IPAddress.TryParse(stringValue, out var configurationValue)
+                            &&
+                            (stringValue.Count(c => c == ':') >= 2
+                            ||
+                            stringValue.Count(c => c == '.') == 3)
+                            )
                         {
                             this.SetIpAddressConfigurationValue(configurationData, elementCategory, configurationValue);
                         }
@@ -272,6 +280,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             this.SetStringConfigurationValue(configurationData, elementCategory, stringValue);
                         }
+
                         break;
                 }
             }

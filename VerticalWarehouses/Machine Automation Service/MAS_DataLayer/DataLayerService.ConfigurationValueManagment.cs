@@ -19,16 +19,15 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public bool GetBoolConfigurationValue<TEnum>(TEnum value, ConfigurationCategory category)
-            where TEnum : Enum
+        public bool GetBoolConfigurationValue(long value, ConfigurationCategory category)
         {
-            if (!this.CheckConfigurationDataType<TEnum>(value, category, ConfigurationDataType.Boolean))
+            if (!this.CheckConfigurationDataType(value, category, ConfigurationDataType.Boolean))
             {
                 this.Logger.LogCritical($"1:Exception: get Boolean for {value} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            if (value == SetupStatus.VerticalHomingDone)
+            if (value == (long)SetupStatus.VerticalHomingDone)
             {
                 return this.setupStatusVolatile.VerticalHomingDone;
             }
@@ -40,7 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (!bool.TryParse(configurationValue.VarValue, out returnBoolValue))
                 {
-                    this.Logger.LogCritical($"3:Exception: Parse failed for {value} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical(
+                        $"Unable to parse value '{configurationValue.VarValue}' as boolean for field '{category}.{value}'.", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
@@ -52,7 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else
                 {
-                    this.Logger.LogCritical($"4:Exception: value not found for {value} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                    this.Logger.LogCritical(
+                        $"No value is available in database for '{category}.{value}'.");
 
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
                 }
@@ -82,7 +83,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                this.Logger.LogCritical(
+                    $"Unable to parse value '{configurationValue.VarValue}' as DateTime for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -111,8 +113,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
-
+                this.Logger.LogCritical(
+                    $"Unable to parse value '{configurationValue.VarValue}' as Decimal for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -141,8 +143,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
-
+                this.Logger.LogCritical(
+                    $"Unable to parse value '{configurationValue.VarValue}' as Integer for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -167,7 +169,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical($"3:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                this.Logger.LogCritical(
+                    $"No value is available in database for '{category}.{configurationValueEnum}'.");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -193,8 +196,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                this.Logger.LogCritical($"3:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
-
+                this.Logger.LogCritical($"No value is available in database for '{category}.{configurationValueEnum}'.");
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 

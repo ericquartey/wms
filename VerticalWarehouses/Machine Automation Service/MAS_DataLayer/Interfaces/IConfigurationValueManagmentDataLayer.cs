@@ -17,8 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         /// <exception cref="DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID">Exception when the DataContext is valid</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.PARSE_VALUE">Exception when it is not possible parse a value</exception>
         /// <exception cref="DataLayerPersistentExceptionCode.VALUE_NOT_FOUND">Exception when is been requested a variable no in the DB</exception>
-        bool GetBoolConfigurationValue<TEnum>(long configurationValueEnum, ConfigurationCategory category)
-            where TEnum : Enum;
+        bool GetBoolConfigurationValue(long configurationValueEnum, ConfigurationCategory category);
 
         /// <summary>
         ///     Get a DateTime variable from the configuration table in the primary context
