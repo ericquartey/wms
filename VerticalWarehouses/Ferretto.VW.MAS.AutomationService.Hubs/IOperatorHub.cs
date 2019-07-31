@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task BayStatusChanged(IBayOperationalStatusChangedMessageData message);
 
+        Task ErrorRaised(int code);
+
         Task NewMissionOperationAvailable(INewMissionOperationAvailable message);
 
         Task SetBayDrawerOperationToInventory();

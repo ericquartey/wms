@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -10,19 +10,19 @@ namespace Ferretto.VW.App.Services
 
         private readonly IStatusMessageService statusMessageService;
 
-        private readonly IUsersDataService usersDataService;
+        private readonly IUsersMachineService usersService;
 
         #endregion
 
         #region Constructors
 
         public AuthenticationService(
-            IUsersDataService usersDataService,
+            IUsersMachineService usersService,
             IStatusMessageService statusMessageService)
         {
-            if (usersDataService == null)
+            if (usersService == null)
             {
-                throw new System.ArgumentNullException(nameof(usersDataService));
+                throw new System.ArgumentNullException(nameof(usersService));
             }
 
             if (statusMessageService == null)
@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Services
                 throw new System.ArgumentNullException(nameof(statusMessageService));
             }
 
-            this.usersDataService = usersDataService;
+            this.usersService = usersService;
             this.statusMessageService = statusMessageService;
         }
 
@@ -56,14 +56,14 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var userClaims = await this.usersDataService
+                var userClaims = await this.usersService
                     .AuthenticateWithResourceOwnerPasswordAsync(
                         userName,
                         password);
 
                 this.UserName = userName;
                 this.AccessLevel = userClaims.AccessLevel;
-                this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, userClaims.AccessLevel));
+                this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 
                 return userClaims;
             }

@@ -11,7 +11,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Operator/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MissionOperationsController : AutomationBaseController
     {

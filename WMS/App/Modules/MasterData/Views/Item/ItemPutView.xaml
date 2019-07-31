@@ -183,7 +183,7 @@
         </ScrollViewer>
 
         <wms:ActionBar Grid.Row="2"
-                       Margin="10,20,20,20"
+                       Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -203,6 +203,7 @@
 
         <TextBlock Grid.Row="2"
                    MaxWidth="500"
+                   Margin="15,0,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Bottom"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"

@@ -1,8 +1,10 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +18,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (receivedMessage.Data is ISwitchAxisFieldMessageData switchAxisMessageData)
+            if (this.currentStateMachine != null)
+            {
+                this.logger.LogInformation($"Io Driver already executing operation {this.currentStateMachine.GetType()}");
+
+                var ex = new Exception();
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+            }
+            else if (receivedMessage.Data is ISwitchAxisFieldMessageData switchAxisMessageData)
             {
                 switch (switchAxisMessageData.AxisToSwitchOn)
                 {

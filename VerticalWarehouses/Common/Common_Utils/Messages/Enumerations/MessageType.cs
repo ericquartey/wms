@@ -53,6 +53,12 @@
         WebApiException,
 
         CheckCondition,
-        NewMissionOperationAvailable
+
+        NewMissionOperationAvailable,
+
+        ResetSecurity,
+
+        InverterStop,
+
     }
 }

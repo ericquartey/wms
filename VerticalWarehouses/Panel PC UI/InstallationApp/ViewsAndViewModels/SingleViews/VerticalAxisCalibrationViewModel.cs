@@ -6,13 +6,11 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
@@ -22,9 +20,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
-        private IHomingService homingService;
+        private readonly IHomingMachineService homingService;
 
         private bool isStartButtonActive = true;
 
@@ -56,9 +52,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Constructors
 
-        public VerticalAxisCalibrationViewModel(IEventAggregator eventAggregator)
+        public VerticalAxisCalibrationViewModel(
+            IEventAggregator eventAggregator,
+            IHomingMachineService homingService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (homingService == null)
+            {
+                throw new ArgumentNullException(nameof(homingService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.homingService = homingService;
+
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
             this.NavigationViewModel = null;
         }
@@ -144,22 +154,16 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             try
             {
-                const string Category = "VerticalAxis";
-                this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
-                this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
-                this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
+                const string category = "VerticalAxis";
+                this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "UpperBound")).ToString();
+                this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "LowerBound")).ToString();
+                this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "Offset")).ToString();
+                this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "Resolution")).ToString("##.##");
             }
             catch (SwaggerException)
             {
                 this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.homingService = this.container.Resolve<IHomingService>();
         }
 
         public async Task OnEnterViewAsync()

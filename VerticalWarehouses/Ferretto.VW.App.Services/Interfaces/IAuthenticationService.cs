@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services.Interfaces
 {

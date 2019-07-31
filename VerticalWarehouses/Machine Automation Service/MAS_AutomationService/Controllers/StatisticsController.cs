@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class MachineStatisticsController : ControllerBase
+    public class StatisticsController : ControllerBase
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public MachineStatisticsController(
+        public StatisticsController(
             IMachineStatisticsDataLayer machineStatisticsDataLayer,
             IMachinesDataService machinesDataService)
         {

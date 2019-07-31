@@ -128,9 +128,12 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            control.textBlock.Text = control.EnumValue != null && control.EnumType != null && control.ShowText
+            var content = control.EnumValue != null && control.EnumType != null && control.ShowText
                 ? control.EnumValue.GetDisplayName(control.EnumType)
                 : null;
+
+            control.textBlock.Text = content;
+            control.textBlock.ToolTip = content;
         }
 
         #endregion

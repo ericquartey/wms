@@ -1,3 +1,5 @@
+using System;
+
 namespace Ferretto.VW.MAS.DataModels.Errors
 {
     public class Error
@@ -6,13 +8,13 @@ namespace Ferretto.VW.MAS.DataModels.Errors
 
         public int Code { get; set; }
 
-        public string Description { get; set; }
+        public ErrorDefinition Definition { get; set; }
 
-        public int Issue { get; set; }
+        public int Id { get; set; }
 
-        public string Reason { get; set; }
+        public DateTime OccurrenceDate { get; set; }
 
-        public ErrorStatistic Statistics { get; set; }
+        public DateTime? ResolutionDate { get; set; }
 
         #endregion
     }

@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
-//using Ferretto.VW.CommonUtils.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -16,9 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private readonly IEventAggregator eventAggregator;
 
-        //private readonly IOSensorsStatus ioSensorsStatus;
-
-        private IUnityContainer container;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private bool luPresentiInMachineSide;
 
@@ -26,18 +22,28 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private SubscriptionToken updateCradleSensorsState;
 
-        private IUpdateSensorsService updateSensorsService;
-
         private bool zeroPawlSensor;
 
         #endregion
 
         #region Constructors
 
-        public SSCradleViewModel(IEventAggregator eventAggregator)
+        public SSCradleViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
-            //this.ioSensorsStatus = new IOSensorsStatus();
+            this.updateSensorsService = updateSensorsService;
             this.NavigationViewModel = null;
         }
 
@@ -62,26 +68,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
-            this.updateCradleSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+            this.updateCradleSensorsState = this.eventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                message => this.UpdateCradleSensorsState(message.Data.SensorsStates),
-                ThreadOption.PublisherThread,
-                false);
+                    message => this.UpdateCradleSensorsState(message.Data.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
 
             await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateCradleSensorsState);
+            this.eventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Unsubscribe(this.updateCradleSensorsState);
         }
 
         private void UpdateCradleSensorsState(bool[] message)

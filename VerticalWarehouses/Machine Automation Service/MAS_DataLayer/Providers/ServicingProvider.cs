@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
     {
         #region Fields
 
-        private readonly DataLayerContext primaryDataContext;
+        private readonly DataLayerContext dataContext;
 
         #endregion
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 throw new ArgumentNullException(nameof(primaryDataContext));
             }
 
-            this.primaryDataContext = primaryDataContext;
+            this.dataContext = primaryDataContext;
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public ServicingInfo GetInfo()
         {
-            return this.primaryDataContext.ServicingInfo.FirstOrDefault();
+            return this.dataContext.ServicingInfo.FirstOrDefault();
         }
 
         #endregion

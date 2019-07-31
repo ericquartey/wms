@@ -1029,7 +1029,7 @@
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchGridItem" xml:space="preserve">
-    <value>ItemSearchGridItem</value>
+    <value>Item</value>
     <comment>Grid header</comment>
   </data>
   <data name="ItemSearchGridDescription" xml:space="preserve">
@@ -1177,5 +1177,33 @@
   <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
     <value>DrawerSpaceSaturazionWeightAnalisys</value>
     <comment>Button text</comment>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+    <comment>enum ItemManagementType</comment>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Volume</value>
+    <comment>enum ItemManagementType</comment>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Not specified</value>
+    <comment>enum ItemManagementType</comment>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Inventory</value>
+    <comment>enum ItemListType</comment>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Pick</value>
+    <comment>enum ItemListType</comment>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Put</value>
+    <comment>enum ItemListType</comment>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>NotSpecified</value>
+    <comment>enum ItemListType</comment>
   </data>
 </root>

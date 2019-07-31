@@ -4,31 +4,40 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ErrorsController : ControllerBase
     {
         #region Fields
 
-        private readonly IErrorStatisticsProvider errorStatistics;
+        private readonly IErrorsProvider errorsProvider;
 
         #endregion
 
         #region Constructors
 
-        public ErrorsController(IErrorStatisticsProvider errorStatistics)
+        public ErrorsController(IErrorsProvider errorsProvider)
         {
-            this.errorStatistics = errorStatistics;
+            this.errorsProvider = errorsProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("Statistics")]
+        [HttpGet("current")]
+        public ActionResult<ErrorDefinition> GetCurrent()
+        {
+            var currentError = this.errorsProvider.GetCurrent();
+
+            return this.Ok(currentError);
+        }
+
+        [HttpGet("statistics")]
         public ActionResult<ErrorStatisticsSummary> GetStatistics()
         {
-            var statistics = this.errorStatistics.GetErrorStatistics();
+            var statistics = this.errorsProvider.GetStatistics();
+
             return this.Ok(statistics);
         }
 

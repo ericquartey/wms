@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Cells;
 using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -12,35 +11,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : ICellManagmentDataLayer
     {
-        #region Methods
-
-        public CellStatisticsSummary GetCellStatistics()
-        {
-            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-            {
-                var totalCells = primaryDataContext.Cells.Count();
-                var cellStatusStatistics = primaryDataContext.Cells.GroupBy(c => c.Status).Select(g => new CellStatusStatistics
-                {
-                    Status = g.Key,
-                    TotalFrontCells = g.Count(c => c.Side == CellSide.Front),
-                    TotalBackCells = g.Count(c => c.Side == CellSide.Back),
-                    RatioFrontCells = g.Count(c => c.Side == CellSide.Front) / (double)totalCells,
-                    RatioBackCells = g.Count(c => c.Side == CellSide.Back) / (double)totalCells,
-                });
-
-                var cellStatistics = new CellStatisticsSummary()
-                {
-                    CellStatusStatistics = cellStatusStatistics,
-                    TotalCells = totalCells,
-                    TotalFrontCells = primaryDataContext.Cells.Count(c => c.Side == CellSide.Front),
-                    TotalBackCells = primaryDataContext.Cells.Count(c => c.Side == CellSide.Front),
-                    CellOccupationPercentage = primaryDataContext.Cells.Count(c => (c.Status == CellStatus.Occupied || c.Status == CellStatus.Unusable)) / (double)totalCells,
-                };
-
-                return cellStatistics;
-            }
-        }
-
         //// INFO Method used when a drawer backs in the magazine from bay (return mission).
         //public LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId)
         //{
@@ -87,6 +57,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         //    return returnLoadingUnitPosition;
         //}
+
+        #region Methods
 
         //// INFO The method returns to the machine manager the position to take a drawer for mission from the WMS
         public LoadingUnitPosition GetLoadingUnitPosition(int cellId)
