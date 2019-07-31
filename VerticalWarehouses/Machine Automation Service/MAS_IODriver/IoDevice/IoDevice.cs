@@ -156,7 +156,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.logger.LogError($"4:IO Driver message is null");
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                        this.shdTransport.Disconnect();
                         continue;
                     }
                 }

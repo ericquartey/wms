@@ -695,7 +695,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // connection error
                         this.logger.LogError($"2:Inverter message is null");
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-                        this.socketTransport.Disconnect();
                         continue;
                     }
                     this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(inverterData, inverterData.Length);
@@ -709,13 +708,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.ReadWaitTimeData.AddValue(this.readWaitStopwatch.ElapsedTicks);
                     this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
 
-                    this.writeEnableEvent.Set();
                 }
                 catch (OperationCanceledException)
                 {
                     this.logger.LogDebug("2:Method End - operation cancelled");
 
-                    this.writeEnableEvent.Set();
                     return;
                 }
                 catch (InverterDriverException ex)
@@ -724,7 +721,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
 
-                    this.writeEnableEvent.Set();
                     throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 2", ex);
                 }
                 catch (InvalidOperationException ex)
@@ -739,7 +735,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
-                    this.writeEnableEvent.Set();
                     throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 3", ex);
                 }
 
@@ -760,6 +755,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 4, 1, 2);
+                if(ExtractedMessages != null)
+                {
+                    this.writeEnableEvent.Set();
+                }
                 foreach (var extractedMessage in ExtractedMessages)
                 {
                     InverterMessage currentMessage;

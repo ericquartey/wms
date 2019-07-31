@@ -252,6 +252,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new InverterDriverException(
+                    "Error writing data to Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 this.roundTripStopwatch.Reset();
@@ -286,6 +292,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new InverterDriverException(
+                    "Error writing data to Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 if (delay > 0)
