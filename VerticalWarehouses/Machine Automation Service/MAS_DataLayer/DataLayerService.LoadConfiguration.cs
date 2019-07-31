@@ -2,10 +2,8 @@
 using System.IO;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -15,14 +13,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
-        #region Fields
-
-        private DbContextOptions<DataLayerContext> primaryContextOptions;
-
-        private DbContextOptions<DataLayerContext> secondaryContextOptions;
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -290,7 +280,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
 
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
         }
 

@@ -41,6 +41,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="DatabaseContext/DataLayerContext.*.cs">
+      <DependentUpon>DataLayerContext.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

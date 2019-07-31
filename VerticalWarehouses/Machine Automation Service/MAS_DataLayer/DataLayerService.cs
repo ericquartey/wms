@@ -8,11 +8,12 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -20,159 +21,126 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : BackgroundService, IDataLayer
+    public partial class DataLayerService : AutomationBackgroundService, IDataLayerService
     {
         #region Fields
 
         private readonly Task applicationLogWriteTask;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandLogQueue;
-
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
-
-        private readonly Task commandReceiveTask;
+        private readonly BlockingConcurrentQueue<CommandMessage> commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
 
         private readonly DataLayerConfiguration dataLayerConfiguration;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationLogQueue;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
-
-        private readonly Task notificationReceiveTask;
-
-        private readonly SetupStatusVolatile setupStatusVolatile;
-
-        private CancellationToken stoppingToken;
-
-        private bool suppressSecondary;
+        private readonly SetupStatusVolatile setupStatusVolatile = new SetupStatusVolatile();
 
         #endregion
 
         #region Constructors
 
         public DataLayerService(
-            DataLayerConfiguration dataLayerConfiguration,
             IEventAggregator eventAggregator,
-            IApplicationLifetime applicationLifetime,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<DataLayerService> logger)
+            : base(eventAggregator, logger)
         {
-            if (dataLayerConfiguration == null)
+            if (serviceScopeFactory == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(dataLayerConfiguration)), string.Empty, 0));
-                return;
+                this.SendErrorMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(serviceScopeFactory))));
             }
 
-            if (eventAggregator == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(eventAggregator)), string.Empty, 0));
-                return;
-            }
-
-            if (applicationLifetime == null)
-            {
-                throw new ArgumentNullException(nameof(applicationLifetime));
-            }
-
-            if (logger == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(logger)), string.Empty, 0));
-                return;
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.ApplicationLifetime = applicationLifetime;
-            this.logger = logger;
-
-            this.dataLayerConfiguration = dataLayerConfiguration;
-
-            this.primaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.PrimaryConnectionString).Options;
-
-            this.secondaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options;
-
-            this.dataLayerConfiguration = dataLayerConfiguration;
-
-            this.suppressSecondary = false;
-
-            this.setupStatusVolatile = new SetupStatusVolatile();
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandReceiveTask = new Task(this.ReceiveCommandTaskFunction);
-            this.notificationReceiveTask = new Task(this.ReceiveNotificationTaskFunction);
+            this.serviceScopeFactory = serviceScopeFactory;
             this.applicationLogWriteTask = new Task(this.ApplicationLogWriterTaskFunction);
 
-            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandLogEvent.Subscribe(
-                commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
-                ThreadOption.PublisherThread,
-                false);
-
-            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationLogEvent.Subscribe(
-                notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false);
-
-            this.logger?.LogInformation("DataLayer Constructor");
+            this.Logger.LogInformation("DataLayer service initialised.");
         }
-
-        #endregion
-
-        #region Properties
-
-        public IApplicationLifetime ApplicationLifetime { get; }
 
         #endregion
 
         #region Methods
 
-        public void SwitchDBContext()
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            var switchContextOptions = this.primaryContextOptions;
-            this.primaryContextOptions = this.secondaryContextOptions;
-            this.secondaryContextOptions = switchContextOptions;
+            this.DataLayerInitialize();
 
-            this.suppressSecondary = true;
+            await base.StartAsync(cancellationToken);
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            this.stoppingToken = stoppingToken;
+            await base.ExecuteAsync(stoppingToken);
 
             try
             {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
                 this.applicationLogWriteTask.Start();
             }
             catch (Exception ex)
             {
-                this.SendMessage(new DLExceptionMessageData(ex, ex.Message, 0));
+                this.SendErrorMessage(new DLExceptionMessageData(ex, ex.Message, 0));
             }
+        }
+
+        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        {
+            this.CommitDbChanges();
 
             return Task.CompletedTask;
         }
 
+        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
+        {
+            this.CommitDbChanges();
+
+            return Task.CompletedTask;
+        }
+
+        private void CommitDbChanges()
+        {
+            try
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    scope.ServiceProvider
+                        .GetRequiredService<DataLayerContext>()
+                        .SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.SendErrorMessage(new DLExceptionMessageData(ex));
+            }
+        }
+
         private void DataLayerInitialize()
         {
-            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                primaryDataContext.Database.Migrate();
-            }
+                var redundancyService = scope.ServiceProvider
+                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
 
-            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-            {
-                secondaryDataContext.Database.Migrate();
+                try
+                {
+                    using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
+                    {
+                        activeDbContext.Database.Migrate();
+                    }
+
+                    using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
+                    {
+                        standbyDbContext.Database.Migrate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError($"Exception: {ex.Message} while migating databases.");
+                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    return;
+                }
             }
 
             try
@@ -182,8 +150,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             catch (Exception ex)
             {
-                this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                this.Logger.LogError($"Exception: {ex.Message} while loading configuration values");
+                this.SendErrorMessage(new DLExceptionMessageData(ex));
                 return;
             }
 
@@ -194,7 +162,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.DataLayer,
                 MessageType.DataLayerReady,
                 MessageStatus.NoStatus);
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(errorNotification);
         }
 
         private void EnsureMachinestatusInitialization()
@@ -209,133 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void ReceiveCommandTaskFunction()
-        {
-            this.DataLayerInitialize();
-
-            do
-            {
-                CommandMessage receivedMessage;
-                try
-                {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-
-                switch (receivedMessage.Type)
-                {
-                    case MessageType.NoType:
-                        break;
-
-                    case MessageType.Homing:
-                        break;
-
-                    case MessageType.Stop:
-                        break;
-
-                    case MessageType.SensorsChanged:
-                        break;
-
-                    case MessageType.DataLayerReady:
-                        break;
-
-                    case MessageType.SwitchAxis:
-                        break;
-
-                    case MessageType.CalibrateAxis:
-                        break;
-
-                    case MessageType.ShutterControl:
-                        break;
-
-                    case MessageType.NewMissionAvailable:
-                        break;
-
-                    case MessageType.CreateMission:
-                        break;
-
-                    case MessageType.Positioning:
-                        break;
-                }
-
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryDataContext.SaveChanges();
-                }
-
-                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                {
-                    secondaryDataContext.SaveChanges();
-                }
-            } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void ReceiveNotificationTaskFunction()
-        {
-            do
-            {
-                NotificationMessage receivedMessage;
-                try
-                {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-
-                switch (receivedMessage.Type)
-                {
-                    case MessageType.NoType:
-                        break;
-
-                    case MessageType.Homing:
-                        break;
-
-                    case MessageType.Stop:
-                        break;
-
-                    case MessageType.SensorsChanged:
-                        break;
-
-                    case MessageType.DataLayerReady:
-                        break;
-
-                    case MessageType.SwitchAxis:
-                        break;
-
-                    case MessageType.CalibrateAxis:
-                        break;
-
-                    case MessageType.ShutterControl:
-                        break;
-
-                    case MessageType.NewMissionAvailable:
-                        break;
-
-                    case MessageType.CreateMission:
-                        break;
-
-                    case MessageType.Positioning:
-                        break;
-                }
-
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryDataContext.SaveChanges();
-                }
-                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                {
-                    secondaryDataContext.SaveChanges();
-                }
-            }
-            while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void SendMessage(IMessageData data)
+        private void SendErrorMessage(IMessageData data)
         {
             var msg = new NotificationMessage(
                 data,
@@ -345,7 +187,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageType.DLException,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+            this.eventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(msg);
         }
 
         #endregion

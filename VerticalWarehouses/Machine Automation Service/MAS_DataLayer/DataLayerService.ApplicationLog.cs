@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -13,6 +13,22 @@ namespace Ferretto.VW.MAS.DataLayer
     public partial class DataLayerService
     {
         #region Methods
+
+        private static string SerializeMessageData(IMessageData messageData)
+        {
+            var serializedData = "Message data could not be serialized.";
+
+            try
+            {
+                serializedData = JsonConvert.SerializeObject(messageData);
+            }
+            catch (Exception)
+            {
+                // do nothing
+            }
+
+            return serializedData;
+        }
 
         private void ApplicationLogWriterTaskFunction()
         {
@@ -40,173 +56,76 @@ namespace Ferretto.VW.MAS.DataLayer
                         break;
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested);
+            while (!this.StoppingToken.IsCancellationRequested);
         }
 
         private void LogCommandMessage()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             while (this.commandLogQueue.Dequeue(out var message))
             {
-                this.logger.LogTrace($"2:message={message}");
+                this.Logger.LogTrace($"2:message={message}");
 
-                var serializedData = "Data Not Serializable";
+                var serializedData = SerializeMessageData(message.Data);
 
-                try
+                var logEntry = new LogEntry
                 {
-                    serializedData = JsonConvert.SerializeObject(message.Data);
-                }
-                catch (Exception)
-                {
-                    serializedData = "Data is not serializable.";
-                }
+                    Data = serializedData,
+                    Description = message.Description,
+                    Destination = message.Destination.ToString(),
+                    Source = message.Source.ToString(),
+                    TimeStamp = DateTime.UtcNow,
+                    Type = message.Type.ToString(),
+                };
 
-                var logEntry = new LogEntry();
-
-                logEntry.Data = serializedData;
-                logEntry.Description = message.Description;
-                logEntry.Destination = message.Destination.ToString();
-                logEntry.Source = message.Source.ToString();
-                logEntry.TimeStamp = DateTime.Now;
-                logEntry.Type = message.Type.ToString();
-
-                var primaryPartitionError = false;
-                var secondaryPartitionError = false;
-
-                try
-                {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryDataContext.LogEntries.Add(logEntry);
-                        primaryDataContext.SaveChanges();
-                    }
-                }
-                catch
-                {
-                    primaryPartitionError = true;
-                }
-
-                if (!this.suppressSecondary)
-                {
-                    try
-                    {
-                        using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                        {
-                            secondaryDataContext.LogEntries.Add(logEntry);
-                            secondaryDataContext.SaveChanges();
-                        }
-                    }
-                    catch
-                    {
-                        secondaryPartitionError = true;
-                    }
-                }
-
-                if (primaryPartitionError && secondaryPartitionError)
-                {
-                    this.logger.LogCritical($"3:Exception: failed to write application log entry in the primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
-
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
-                }
-
-                if (primaryPartitionError)
-                {
-                    this.logger.LogCritical($"4:Exception: failed to write application log entry in the primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
-
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
-                }
-
-                if (secondaryPartitionError)
-                {
-                    this.logger.LogCritical($"5:Exception: failed to write application log entry in the secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
-
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
-                }
+                this.SaveEntryToDb(logEntry);
             }
         }
 
         private void LogNotificationMessage()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             while (this.notificationLogQueue.Dequeue(out var message))
             {
-                this.logger.LogTrace($"2:message={message}");
+                this.Logger.LogTrace($"2:message={message}");
 
-                var serializedData = "Data Not Serializable";
+                var serializedData = SerializeMessageData(message.Data);
+
+                var logEntry = new LogEntry
+                {
+                    Data = serializedData,
+                    Description = message.Description,
+                    Destination = message.Destination.ToString(),
+                    Source = message.Source.ToString(),
+                    TimeStamp = DateTime.UtcNow,
+                    Type = message.Type.ToString(),
+                    ErrorLevel = message.ErrorLevel.ToString(),
+                    Status = message.Status.ToString(),
+                };
+
+                this.SaveEntryToDb(logEntry);
+            }
+        }
+
+        private void SaveEntryToDb(LogEntry logEntry)
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
+                dbContext.LogEntries.Add(logEntry);
 
                 try
                 {
-                    serializedData = JsonConvert.SerializeObject(message.Data);
+                    dbContext.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    serializedData = "Data is not serializable.";
-                }
+                    this.Logger.LogCritical($"4:Exception: failed to write application log entry into database.");
 
-                var logEntry = new LogEntry();
-
-                logEntry.Data = serializedData;
-                logEntry.Description = message.Description;
-                logEntry.Destination = message.Destination.ToString();
-                logEntry.ErrorLevel = message.ErrorLevel.ToString();
-                logEntry.Source = message.Source.ToString();
-                logEntry.Status = message.Status.ToString();
-                logEntry.TimeStamp = DateTime.Now;
-                logEntry.Type = message.Type.ToString();
-
-                var primaryPartitionError = false;
-                var secondaryPartitionError = false;
-
-                try
-                {
-                    using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                    {
-                        primaryDataContext.LogEntries.Add(logEntry);
-                        primaryDataContext.SaveChanges();
-                    }
-                }
-                catch
-                {
-                    primaryPartitionError = true;
-                }
-
-                if (!this.suppressSecondary)
-                {
-                    try
-                    {
-                        using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                        {
-                            secondaryDataContext.LogEntries.Add(logEntry);
-                            secondaryDataContext.SaveChanges();
-                        }
-                    }
-                    catch
-                    {
-                        secondaryPartitionError = true;
-                    }
-                }
-
-                if (primaryPartitionError && secondaryPartitionError)
-                {
-                    this.logger.LogCritical($"3:Exception: failed to write application log entry in the primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
-
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
-                }
-
-                if (primaryPartitionError)
-                {
-                    this.logger.LogCritical($"4:Exception: failed to write application log entry in the primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
-
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
-                }
-
-                if (secondaryPartitionError)
-                {
-                    this.logger.LogCritical($"5:Exception: failed to write application log entry in the secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
-
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
+                    throw;
                 }
             }
         }
