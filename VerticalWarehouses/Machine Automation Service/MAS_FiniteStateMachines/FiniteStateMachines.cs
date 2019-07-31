@@ -380,7 +380,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
-
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             }
@@ -479,7 +478,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                         // update the installation status homing flag in the dataLayer
                                         this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue(
                                             (long)SetupStatus.VerticalHomingDone,
-                                            (long)ConfigurationCategory.SetupStatus,
+                                            ConfigurationCategory.SetupStatus,
                                             true);
                                     }
                                     catch (Exception ex)

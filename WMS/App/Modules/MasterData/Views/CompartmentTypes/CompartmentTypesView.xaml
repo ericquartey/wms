@@ -129,7 +129,7 @@
                 </Grid.RowDefinitions>
                 <wms:TileBar HorizontalAlignment="Right"
                              ItemsSource="{Binding Filters}"
-                             SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
+                             SelectedItem="{Binding SelectedFilter, Mode=TwoWay}" />
                 <dxa:AccordionControl Grid.Row="1"
                                       Background="Transparent"
                                       BorderThickness="0"
@@ -144,7 +144,7 @@
                                 BorderThickness="1">
                             <wms:WmsFilterControl MinWidth="250"
                                                   Filter="{Binding CustomFilter, Mode=OneWayToSource}"
-                                                  FilteringContext="{Binding Path=FilteringContext, ElementName=MainGridControl}" />
+                                                  FilteringContext="{Binding Path=FilteredComponent, ElementName=MainGridControl}" />
                         </Border>
                     </wms:AccordionItem>
                 </dxa:AccordionControl>
@@ -159,7 +159,6 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
@@ -201,7 +200,7 @@
                                        GlyphSize="Custom" />
                 </wms:ActionBar>
 
-                <dxe:TextEdit Grid.Column="2"
+                <dxe:TextEdit Grid.Column="1"
                               Margin="8"
                               EditValue="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, Delay=200}"
                               NullText="{x:Static res:General.Search}"
@@ -209,7 +208,7 @@
 
                 <wms:WmsGridControl x:Name="MainGridControl"
                                     Grid.Row="1"
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="2"
                                     MaxWidth="1000"
                                     MaxHeight="5000"
                                     Margin="3"

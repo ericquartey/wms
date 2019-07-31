@@ -97,6 +97,15 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply Filter.
+        /// </summary>
+        public static string ApplyFilter {
+            get {
+                return ResourceManager.GetString("ApplyFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -273,15 +282,6 @@ namespace Ferretto.WMS.App.Resources {
         public static string File {
             get {
                 return ResourceManager.GetString("File", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filter.
-        /// </summary>
-        public static string Filter {
-            get {
-                return ResourceManager.GetString("Filter", resourceCulture);
             }
         }
         
