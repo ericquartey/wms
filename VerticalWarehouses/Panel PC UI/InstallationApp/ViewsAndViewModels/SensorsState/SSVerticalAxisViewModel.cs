@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -20,7 +19,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private bool cradleEngineSelected;
 
@@ -34,8 +33,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private bool[] sensorStatus;
 
-        private IUpdateSensorsService updateSensorsService;
-
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
         private bool zeroPawlSensor;
@@ -46,9 +43,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         #region Constructors
 
-        public SSVerticalAxisViewModel(IEventAggregator eventAggregator)
+        public SSVerticalAxisViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.updateSensorsService = updateSensorsService;
             this.NavigationViewModel = null;
             this.sensorStatus = new bool[REMOTEIO_INPUTS + INVERTER_INPUTS];
         }
@@ -82,12 +92,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public void ExitFromViewMethod()
         {
             this.UnSubscribeMethodFromEvent();
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
         }
 
         public async Task OnEnterViewAsync()

@@ -17,7 +17,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         #region Constructors
 
-        public StateBase(IStateMachine parentStateMachine, ILogger logger)
+        public StateBase(
+            IStateMachine parentStateMachine,
+            ILogger logger)
         {
             if (logger == null)
             {
@@ -26,7 +28,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             this.ParentStateMachine = parentStateMachine;
             this.Logger = logger;
-
             this.Logger.LogTrace($"State '{this.GetType().Name}' initialised.");
         }
 

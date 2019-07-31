@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Services.Models;
@@ -9,13 +8,12 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 {
@@ -26,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
         private readonly IEventAggregator eventAggregator;
 
         private string completedCycles;
-
-        private IUnityContainer container;
 
         private string delayBetweenCycles;
 
@@ -41,23 +37,52 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         private string requiredCycles;
 
-        private BindableBase sensorRegion;
+        private IViewModel sensorRegion;
 
-        private IShutterService shutterService;
+        private readonly IShutterMachineService shutterService;
 
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
 
-        private ITestService testService;
+        private readonly ITestMachineService testService;
+
+        private readonly ICustomShutterControlSensorsTwoPositionsViewModel customShutterControlSensorsTwoPositionsViewModel;
 
         #endregion
 
         #region Constructors
 
-        public Shutter1ControlViewModel(IEventAggregator eventAggregator)
+        public Shutter1ControlViewModel(
+            IEventAggregator eventAggregator,
+            ITestMachineService testService,
+            IShutterMachineService shutterService,
+            ICustomShutterControlSensorsTwoPositionsViewModel customShutterControlSensorsTwoPositionsViewModel)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (testService == null)
+            {
+                throw new System.ArgumentNullException(nameof(testService));
+            }
+
+            if (shutterService == null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterService));
+            }
+
+            if (customShutterControlSensorsTwoPositionsViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(customShutterControlSensorsTwoPositionsViewModel));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.testService = testService;
+            this.shutterService = shutterService;
+            this.customShutterControlSensorsTwoPositionsViewModel = customShutterControlSensorsTwoPositionsViewModel;
             this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
             this.NavigationViewModel = null;
         }
@@ -114,7 +139,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
             }
         }
 
-        public BindableBase SensorRegion
+        public IViewModel SensorRegion
         {
             get => this.sensorRegion;
             set => this.SetProperty(ref this.sensorRegion, value);
@@ -161,13 +186,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 #endif
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.shutterService = this.container.Resolve<IShutterService>();
-            this.testService = this.container.Resolve<ITestService>();
-        }
-
         public Task OnEnterViewAsync()
         {
             if (false /* Bay with three positions */) // TODO
@@ -176,26 +194,29 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
             }
             else
             {
-                this.sensorRegion = (CustomShutterControlSensorsTwoPositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsTwoPositionsViewModel>();
+                this.sensorRegion = this.customShutterControlSensorsTwoPositionsViewModel;
             }
 
-            this.receivedActionUpdateCompletedToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>()
+            this.receivedActionUpdateCompletedToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<ShutterControlMessageData>>()
                 .Subscribe(
-                message =>
-                {
-                    this.UpdateCompletedCycles(new MessageNotifiedEventArgs(message));
-                },
-                ThreadOption.PublisherThread,
-                false);
+                    message =>
+                    {
+                        this.UpdateCompletedCycles(new MessageNotifiedEventArgs(message));
+                    },
+                    ThreadOption.PublisherThread,
+                    false);
 
-            this.receivedActionUpdateErrorToken = this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
-                msg => this.UpdateError(),
-                ThreadOption.PublisherThread,
-                false,
-                message =>
-                message.NotificationType == NotificationType.Error &&
-                message.ActionType == ActionType.ShutterControl &&
-                message.ActionStatus == ActionStatus.Error);
+            this.receivedActionUpdateErrorToken = this.eventAggregator
+                .GetEvent<MAS_ErrorEvent>()
+                .Subscribe(
+                    msg => this.UpdateError(),
+                    ThreadOption.PublisherThread,
+                    false,
+                    message =>
+                    message.NotificationType == NotificationType.Error &&
+                    message.ActionType == ActionType.ShutterControl &&
+                    message.ActionStatus == ActionStatus.Error);
 
             return Task.CompletedTask;
         }

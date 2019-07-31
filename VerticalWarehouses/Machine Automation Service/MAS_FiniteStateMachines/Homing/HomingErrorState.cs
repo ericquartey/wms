@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -14,9 +15,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
     {
         #region Fields
 
-        private readonly Axis currentAxis;
-
         private readonly FieldNotificationMessage errorMessage;
+
+        private readonly IHomingOperation homingOperation;
 
         private bool disposed;
 
@@ -26,12 +27,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         public HomingErrorState(
             IStateMachine parentMachine,
-            Axis currentAxis,
+            IHomingOperation homingOperation,
             FieldNotificationMessage errorMessage,
             ILogger logger)
             : base(parentMachine, logger)
         {
-            this.currentAxis = currentAxis;
+            this.homingOperation = homingOperation;
             this.errorMessage = errorMessage;
         }
 
@@ -59,7 +60,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -97,7 +98,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             var stopMessage = new FieldCommandMessage(
                 null,
-                $"Reset Inverter Axis {this.currentAxis}",
+                $"Reset Inverter Axis {this.homingOperation.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop);
@@ -106,7 +107,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.homingOperation.AxisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",

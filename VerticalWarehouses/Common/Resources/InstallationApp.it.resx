@@ -827,7 +827,7 @@
     <value>Movimenti giostra.</value>
   </data>
   <data name="SaveRestoreConfigButton" xml:space="preserve">
-    <value>Salva e riprsitina</value>
+    <value>Salva e ripristina</value>
   </data>
   <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
     <value>Salva file di configurazione.</value>
@@ -907,5 +907,8 @@
   <data name="UpdateResolution" xml:space="preserve">
     <value>Aggiorna Risoluzione</value>
     <comment>Aggiorna Risoluzione</comment>
+  </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Carica/richiama cassetto</value>
   </data>
 </root>

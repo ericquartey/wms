@@ -4,7 +4,6 @@ using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
@@ -17,8 +16,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         private int acceptableWeightTolerance;
 
         private ICommand beginButtonCommand;
-
-        private IUnityContainer container;
 
         private ICommand exitFromViewCommand;
 
@@ -44,6 +41,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public WeightControlViewModel(IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
         }
@@ -83,11 +85,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public void ExitFromViewMethod()
         {
             this.UnSubscribeMethodFromEvent();
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
         }
 
         public Task OnEnterViewAsync()

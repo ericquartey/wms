@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -59,6 +60,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.Ok();
         }
 
+        [ProducesResponseType(200)]
+        [HttpGet("GetCurrentPositionAxis")]
+        public void GetCurrentPositionAxis()
+        {
+            this.ExecuteGetCurrentPosition_Method();
+        }
+
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
@@ -74,6 +82,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.Stop_Method();
         }
 
+        private void ExecuteGetCurrentPosition_Method()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(
+                new CommandMessage(
+                    null,
+                    "Sensors changed Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.SensorsChanged));
+        }
+
         private void ExecuteHoming_Method()
         {
             IHomingMessageData homingData = new HomingMessageData(Axis.Both);
@@ -86,11 +105,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageType.Homing));
         }
 
-        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
 
-            switch (categoryId)
+            var category = (ConfigurationCategory)categoryId;
+            switch (category)
             {
                 case ConfigurationCategory.VerticalAxis:
 
@@ -102,7 +122,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                         try
                         {
-                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -124,7 +144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -144,7 +164,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value3 = 0;
                         try
                         {
-                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
+                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {

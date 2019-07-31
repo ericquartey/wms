@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IMachineStatisticsService machineStatisticsService;
+        private readonly IStatisticsMachineService statisticsService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -23,12 +23,12 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public StatisticsGeneralDataViewModel(
             IStatisticsNavigationViewModel statisticsNavigationViewModel,
-            IMachineStatisticsService machineStatisticsService,
+            IStatisticsMachineService statisticsService,
             IStatusMessageService statusMessageService)
         {
-            if (machineStatisticsService == null)
+            if (statisticsService == null)
             {
-                throw new System.ArgumentNullException(nameof(machineStatisticsService));
+                throw new System.ArgumentNullException(nameof(statisticsService));
             }
 
             if (statusMessageService == null)
@@ -42,7 +42,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
             }
 
             this.NavigationViewModel = statisticsNavigationViewModel as BindableBase;
-            this.machineStatisticsService = machineStatisticsService;
+            this.statisticsService = statisticsService;
             this.statusMessageService = statusMessageService;
         }
 
@@ -64,7 +64,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
         {
             try
             {
-                this.Model = await this.machineStatisticsService.GetAsync();
+                this.Model = await this.statisticsService.GetAsync();
 
                 await base.OnEnterViewAsync();
             }

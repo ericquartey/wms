@@ -6,22 +6,33 @@ namespace Ferretto.VW.App.Controls.Controls
 {
     public class BaseViewModel : BindableBase, IViewModel
     {
+        #region Properties
+
         public BindableBase NavigationViewModel { get; set; }
 
-        virtual public void ExitFromViewMethod()
+        #endregion
+
+        #region Methods
+
+        public virtual void ExitFromViewMethod()
         {
-            // do nothing
+            // do nothing.
+            // derived classes can customize the behaviour of this method.
         }
 
-        virtual public Task OnEnterViewAsync()
+        public virtual Task OnEnterViewAsync()
         {
-            // do nothing
+            // do nothing.
+            // derived classes can customize the behaviour of this method.
             return Task.CompletedTask;
         }
 
-        virtual public void UnSubscribeMethodFromEvent()
+        public virtual void UnSubscribeMethodFromEvent()
         {
-            // do nothing
+            // do nothing.
+            // derived classes can customize the behaviour of this method.
         }
+
+        #endregion
     }
 }

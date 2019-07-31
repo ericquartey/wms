@@ -358,6 +358,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to -.
+        /// </summary>
+        public static string TargetNullValue {
+            get {
+                return ResourceManager.GetString("TargetNullValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to k.
         /// </summary>
         public static string ThousandsSymbol {

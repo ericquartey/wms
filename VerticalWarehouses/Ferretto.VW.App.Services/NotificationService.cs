@@ -172,6 +172,26 @@ namespace Ferretto.VW.App.Services
                             new MAS_EventMessage(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
                     }
                     break;
+
+                case NotificationMessageUI<ResetSecurityMessageData> sc:
+                    this.eventAggregator.GetEvent<NotificationEventUI<ResetSecurityMessageData>>().Publish(sc);
+
+                    if (sc.Status == MessageStatus.OperationError)
+                    {
+                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
+                            new MAS_EventMessage(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
+                    }
+                    break;
+
+                case NotificationMessageUI<InverterStopMessageData> sc:
+                    this.eventAggregator.GetEvent<NotificationEventUI<InverterStopMessageData>>().Publish(sc);
+
+                    if (sc.Status == MessageStatus.OperationError)
+                    {
+                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
+                            new MAS_EventMessage(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
+                    }
+                    break;
             }
         }
 

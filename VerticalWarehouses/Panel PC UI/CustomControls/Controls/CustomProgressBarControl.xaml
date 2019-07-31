@@ -17,18 +17,21 @@
         <TextBlock Margin="0,0,0,0"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <!--  Text="Stringa di prova molto molto lunga:"  -->
 
-        <TextBlock Name="Valore" Width="30"
+
+        <TextBlock Name="Valore"
+                   Width="30"
                    Margin="150,20,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Background="Transparent" TextAlignment="Right"
+                   Background="Transparent"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                   Text="{Binding ProgressionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <!--  Text="80"  -->
+                   Text="{Binding ProgressionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   TextAlignment="Right" />
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="182,20,0,0"
+        <TextBlock Margin="182,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
                    Background="Transparent"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                    Text="%" />

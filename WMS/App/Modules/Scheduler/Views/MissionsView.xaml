@@ -19,7 +19,7 @@
         <wms:StringFormatConverter x:Key="SFC" />
 
         <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource TextBlockCell}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -29,11 +29,20 @@
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.RequestedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemMeasureUnitDescription"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.ToolTip>
             </TextBlock>
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource TextBlockCell}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -43,6 +52,15 @@
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.DispatchedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemMeasureUnitDescription"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.ToolTip>
             </TextBlock>
         </DataTemplate>
 
@@ -73,8 +91,7 @@
 
                 <wms:TileBar HorizontalAlignment="Right"
                              ItemsSource="{Binding Filters}"
-                             SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
-
+                             SelectedItem="{Binding SelectedFilter, Mode=TwoWay}" />
 
             </Grid>
         </wms:Expander>
@@ -86,7 +103,6 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
@@ -114,7 +130,7 @@
 
                 <wms:WmsGridControl x:Name="MainGridControl"
                                     Grid.Row="1"
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="2"
                                     MaxWidth="2000"
                                     MaxHeight="5000"
                                     ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
@@ -135,7 +151,7 @@
                                                         FieldName="Status">
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
+                                                    <Grid HorizontalAlignment="Stretch">
                                                         <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                                               VerticalAlignment="Center"
                                                                               EnumType="{x:Type models:MissionOperationStatus}"
@@ -143,7 +159,7 @@
                                                                               HideIcon="True"
                                                                               IconSize="8"
                                                                               ShowText="True" />
-                                                    </StackPanel>
+                                                    </Grid>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                         </dxg:GridColumn>
@@ -302,7 +318,7 @@
                                         FieldName="Status">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
+                                    <Grid HorizontalAlignment="Stretch">
                                         <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                               VerticalAlignment="Center"
                                                               EnumType="{x:Type models:MissionStatus}"
@@ -310,8 +326,7 @@
                                                               HideIcon="True"
                                                               IconSize="8"
                                                               ShowText="True" />
-
-                                    </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
