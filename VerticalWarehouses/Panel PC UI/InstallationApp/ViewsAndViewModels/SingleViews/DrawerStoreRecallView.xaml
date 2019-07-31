@@ -7,9 +7,49 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
-    
+
     <Grid   Width="1024"
             Height="608">
-            
+
+        <TextBlock Grid.Row="0"
+                   Margin="250,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="Drawer Store - Recall" />
+
+        <Button Grid.Column="0"
+                Margin="407,369,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding StopButtonCommand}"
+                Content="{x:Static res:InstallationApp.Stop}"
+                IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button Grid.Column="0"
+            Margin="407,123,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding StartStoreButtonCommand}"
+            Content="Start store bay to cell"
+            IsEnabled="{Binding IsStartStoreButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button Grid.Column="0"
+            Margin="407,240,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding StartRecallButtonCommand}"
+            Content="Start recall cell to bay"
+            IsEnabled="{Binding IsStartRecallButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <custom:CustomLabelTextBlockControl Margin="250,504,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.Output}" />
+
     </Grid>
 </UserControl>
