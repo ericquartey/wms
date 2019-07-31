@@ -14,9 +14,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
         ///     Returns Socket Transport connection status
         /// </summary>
         bool IsConnected { get; }
-        // writing on socket doesn't fail in case of no connection
-        // we write only after a correct reading on socket
-        bool IsReadingOk { get; set; }
 
         #endregion
 

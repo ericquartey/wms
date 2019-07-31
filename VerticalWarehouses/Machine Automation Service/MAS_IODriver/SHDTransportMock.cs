@@ -36,7 +36,6 @@ namespace Ferretto.VW.MAS.IODriver
         #region Properties
 
         public bool IsConnected => true;
-        public bool IsReadingOk { get; set; }
 
         #endregion
 
@@ -63,7 +62,6 @@ namespace Ferretto.VW.MAS.IODriver
         {
             await Task.Delay(3, stoppingToken);
 
-            this.IsReadingOk = true;
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
                 lock (this.responseMessage)

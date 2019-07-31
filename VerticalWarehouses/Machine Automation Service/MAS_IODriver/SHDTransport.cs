@@ -180,7 +180,6 @@ namespace Ferretto.VW.MAS.IODriver
                     receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
-                    this.IsReadingOk = true;
                 }
                 else
                 {
