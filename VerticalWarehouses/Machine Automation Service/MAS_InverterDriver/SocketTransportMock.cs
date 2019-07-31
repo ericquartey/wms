@@ -276,7 +276,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             var rawMessage = new byte[10];
 
             rawMessage[0] = 0x00;
-            rawMessage[1] = 0x06;
+            rawMessage[1] = 0x08;
             rawMessage[2] = systemIndex;
             rawMessage[3] = dataSet;
 
