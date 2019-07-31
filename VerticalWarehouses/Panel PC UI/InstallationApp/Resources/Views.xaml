@@ -133,6 +133,4 @@
         <common:ErrorDetailsView />
     </DataTemplate>
 
-    <converter:BoolToVisibilityConverter x:Key="BTVC" />
-
 </ResourceDictionary>
