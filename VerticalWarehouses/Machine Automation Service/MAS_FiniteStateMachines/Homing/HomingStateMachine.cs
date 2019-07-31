@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 this.CurrentState = new HomingStartState(
                     this,
-                    this.currentAxis,
+                    this.homingOperation,
                     this.logger);
 
                 this.CurrentState.Start();
