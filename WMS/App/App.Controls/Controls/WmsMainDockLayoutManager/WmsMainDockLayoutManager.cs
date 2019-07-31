@@ -237,6 +237,7 @@ namespace Ferretto.WMS.App.Controls
                 var docLayoutGroup = this.CreateLayoutGroup();
                 var docGroup = this.CreateDocumentGroup();
                 docGroup.DestroyOnClosingChildren = true;
+                docGroup.ClosePageButtonShowMode = ClosePageButtonShowMode.NoWhere;
                 docLayoutGroup.Add(docGroup);
                 if (parentLayoutGroup.Items.IndexOf(item) == 0)
                 {

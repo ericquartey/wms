@@ -827,7 +827,7 @@
     <value>Movimenti giostra.</value>
   </data>
   <data name="SaveRestoreConfigButton" xml:space="preserve">
-    <value>Salva e riprsitina</value>
+    <value>Salva e ripristina</value>
   </data>
   <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
     <value>Salva file di configurazione.</value>
@@ -916,5 +916,8 @@
   </data>
   <data name="LUPresentMiddleBottomBay3" xml:space="preserve">
     <value>Seconda UDC presente in baia 3</value>
+  </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Carica/richiama cassetto</value>
   </data>
 </root>

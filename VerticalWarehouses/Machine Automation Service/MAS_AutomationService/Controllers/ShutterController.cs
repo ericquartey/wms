@@ -71,7 +71,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             // TEMP Retrieve the max speed rate from the database
             var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)ShutterHeightControl.FeedRate, (long)ConfigurationCategory.ShutterHeightControl);
+                (long)ShutterHeightControl.FeedRate,
+                ConfigurationCategory.ShutterHeightControl);
 
             var shutterControlMessageData = new ShutterControlMessageData(
                 bayNumber,
@@ -93,23 +94,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             switch (data.ShutterType)
             {
                 case ShutterType.NoType:
-                    this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
-                        (long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                    this.dataLayerConfigurationValueManagement
+                        .GetIntegerConfigurationValue(
+                            (long)GeneralInfo.Shutter1Type,
+                            ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter2Type:
-                    this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
-                        (long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
+                    this.dataLayerConfigurationValueManagement
+                        .GetIntegerConfigurationValue(
+                            (long)GeneralInfo.Shutter2Type,
+                            ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter3Type:
-                    this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
-                        (long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
+                    this.dataLayerConfigurationValueManagement
+                        .GetIntegerConfigurationValue(
+                            (long)GeneralInfo.Shutter3Type,
+                            ConfigurationCategory.GeneralInfo);
                     break;
             }
 
-            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)ShutterHeightControl.FeedRate, (long)ConfigurationCategory.ShutterHeightControl);
+            var maxSpeed = this.dataLayerConfigurationValueManagement
+                .GetDecimalConfigurationValue(
+                (long)ShutterHeightControl.FeedRate,
+                ConfigurationCategory.ShutterHeightControl);
 
             //TEMP Speed rate parameter need to be multiply by 100
             //TEMP var speedRate = (Convert.ToDouble(maxSpeed) * 0.1) * 100;
@@ -130,10 +139,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageType.ShutterPositioning));
         }
 
-        private ActionResult<int> GetIntegerConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
             Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
+            var category = (ConfigurationCategory)categoryId;
 
             if (parameterId != null)
             {
@@ -141,7 +151,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 try
                 {
-                    value = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)parameterId, (long)categoryId);
+                    value = this.dataLayerConfigurationValueManagement
+                        .GetIntegerConfigurationValue(
+                        (long)parameterId,
+                        category);
                 }
                 catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {

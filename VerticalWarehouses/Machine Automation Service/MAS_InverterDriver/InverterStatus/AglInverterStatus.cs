@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool[] aglInverterInputs;
 
-        private const int TOTAL_SENSOR_INPUTS = 9;
+        private const int TOTAL_SENSOR_INPUTS = 8;
 
         private readonly ShutterType shutterType;
 
@@ -52,13 +52,12 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool AGL_HardwareSensorSS1 => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSS1] ?? false;
 
-        public bool AGL_HardwareSensorSTOA => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOA] ?? false;
-
-        public bool AGL_HardwareSensorSTOB => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOB] ?? false;
+        public bool AGL_HardwareSensorSTO => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTO] ?? false;
 
         public bool AGL_ShutterSensorA => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorA] ?? false;
 
         public bool AGL_ShutterSensorB => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorB] ?? false;
+        //public bool AGL_HardwareSensorSTOB => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOB] ?? false;
 
         public ShutterPosition CurrentShutterPosition
         {

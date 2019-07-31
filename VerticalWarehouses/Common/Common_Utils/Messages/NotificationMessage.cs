@@ -22,7 +22,7 @@ namespace Ferretto.VW.CommonUtils.Messages
             MessageActor destination,
             MessageActor source,
             MessageType type,
-            MessageStatus status,
+            MessageStatus status = MessageStatus.NoStatus,
             ErrorLevel level = ErrorLevel.NoError,
             MessageVerbosity verbosity = MessageVerbosity.Info)
         {

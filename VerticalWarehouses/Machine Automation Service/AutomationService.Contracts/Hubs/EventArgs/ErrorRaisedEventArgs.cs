@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs
 {
-    public class ErrorRaisedEventArgs : System.EventArgs
+    public class ErrorStatusChangedEventArgs : System.EventArgs
     {
         #region Constructors
 
-        public ErrorRaisedEventArgs(int code)
+        public ErrorStatusChangedEventArgs(int? code)
         {
             this.Code = code;
         }
@@ -13,7 +13,7 @@
 
         #region Properties
 
-        public int Code { get; }
+        public int? Code { get; }
 
         #endregion
     }

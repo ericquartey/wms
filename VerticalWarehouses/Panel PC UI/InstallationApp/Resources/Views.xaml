@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="clr-namespace:Ferretto.VW.App.Controls.Views.ErrorDetails;assembly=Ferretto.VW.App.Controls"
+                    xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
                     xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState"
                     xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements"
@@ -115,12 +117,19 @@
     <DataTemplate DataType="{x:Type singleViews:SaveRestoreConfigViewModel}">
         <singleViews:SaveRestoreConfigView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type singleViews:DrawerStoreRecallViewModel}">
+        <singleViews:DrawerStoreRecallView />
+    </DataTemplate>
 
     <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsThreePositionsViewModel}">
         <custom:CustomShutterControlSensorsThreePositions />
     </DataTemplate>
     <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsTwoPositionsViewModel}">
         <custom:CustomShutterControlSensorsTwoPositions />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type common:ErrorDetailsViewModel}">
+        <common:ErrorDetailsView />
     </DataTemplate>
 
 </ResourceDictionary>

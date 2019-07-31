@@ -1,7 +1,13 @@
-﻿namespace Ferretto.VW.App.Installation.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.App.Installation.Interfaces
 {
     public interface IMainWindowViewModel
     {
-        string LoggedUser { get; set; }
+        #region Methods
+
+        Task OnEnterViewAsync();
+
+        #endregion
     }
 }

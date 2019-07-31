@@ -24,8 +24,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static void Main(string[] args)
         {
-            var webHost = CreateWebHostBuilder(args).Build();
-            webHost.Run();
+            CreateWebHostBuilder(args)
+                .Build()
+                .Run();
         }
 
         #endregion

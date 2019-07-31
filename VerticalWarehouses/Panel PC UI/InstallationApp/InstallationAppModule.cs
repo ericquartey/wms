@@ -2,6 +2,7 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Views.ErrorDetails;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
@@ -56,8 +57,9 @@ namespace Ferretto.VW.App.Installation
 
             var mainWindow = (MainWindow)containerProvider.Resolve<IMainWindow>();
             var mainWindowViewModel = containerProvider.Resolve<IMainWindowViewModel>();
-            mainWindowViewModel.LoggedUser = "Installer";
+
             mainWindow.DataContext = mainWindowViewModel;
+            mainWindowViewModel.OnEnterViewAsync();
 
             var mainWindowProperty = Application.Current.GetType().GetProperty("InstallationAppMainWindowInstance");
             mainWindowProperty.SetValue(Application.Current, mainWindow);
@@ -77,6 +79,7 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<INotificationService, NotificationService>();
 
             this.container.RegisterSingleton<IFooterViewModel, FooterViewModel>();
+            this.container.RegisterSingleton<ErrorDetailsViewModel>();
 
             this.container.RegisterSingleton<IBeltBurnishingViewModel, BeltBurnishingViewModel>();
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
@@ -113,6 +116,7 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<ICellsSideControlViewModel, CellsSideControlViewModel>();
             this.container.RegisterSingleton<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>();
             this.container.RegisterSingleton<ILSMTCarouselViewModel, LSMTCarouselViewModel>();
+            this.container.RegisterSingleton<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>();
 
             this.container.RegisterSingleton<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterSingleton<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
@@ -151,7 +155,6 @@ namespace Ferretto.VW.App.Installation
 
             var machineStatusService = new MachineStatusMachineService(automationServiceUrl);
             this.container.RegisterInstance<IMachineStatusMachineService>(machineStatusService);
-
         }
 
         #endregion

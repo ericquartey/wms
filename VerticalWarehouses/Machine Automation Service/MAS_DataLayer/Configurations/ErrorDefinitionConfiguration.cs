@@ -1,3 +1,5 @@
+using System.Linq;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.DataModels.Errors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,23 +28,22 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasForeignKey<ErrorStatistic>(s => s.Code)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasData(new ErrorDefinition { Code = 1001, Description = "Errore database", Severity = 5 },
-                            new ErrorDefinition { Code = 1002, Description = "Errore caricamento configurazione", Severity = 5 },
-                            new ErrorDefinition { Code = 1003, Description = "Errore inizializzazione dati", Severity = 5 },
-                            new ErrorDefinition { Code = 1004, Description = "Errore salvataggio dati", Severity = 5 },
-                            new ErrorDefinition { Code = 1005, Description = "Errore rientro cassetto", Severity = 5 },
-                            new ErrorDefinition { Code = 1006, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1007, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1008, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1009, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1010, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1011, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1012, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1013, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1014, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1015, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1016, Description = "Errore rientro baia", Severity = 5 },
-                            new ErrorDefinition { Code = 1017, Description = "Errore posizionamento", Severity = 5 });
+            foreach (var enumValue in typeof(MachineErrors).GetFields())
+            {
+                var attribute = enumValue.GetCustomAttributes(typeof(ErrorDescriptionAttribute), false).FirstOrDefault()
+                    as ErrorDescriptionAttribute;
+
+                if (attribute != null)
+                {
+                    builder.HasData(new ErrorDefinition
+                    {
+                        Code = (int)enumValue.GetValue(null),
+                        Description = attribute.Description,
+                        Reason = attribute.Reason,
+                        Severity = attribute.Severity
+                    });
+                }
+            }
         }
 
         #endregion

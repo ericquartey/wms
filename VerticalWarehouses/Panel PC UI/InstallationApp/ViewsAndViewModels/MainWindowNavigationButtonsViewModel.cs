@@ -43,6 +43,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private bool isLowSpeedMovementsTestButtonActive = true;
 
+        private bool isManualDrawerStoreRecallButtonActive;
+
         private bool isOriginVerticalAxisButtonActive = true;
 
         private bool isSaveRestoreConfigButtonActive = true;
@@ -127,6 +129,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         public bool IsLowSpeedMovementsTestButtonActive { get => this.isLowSpeedMovementsTestButtonActive; set => this.SetProperty(ref this.isLowSpeedMovementsTestButtonActive, value); }
 
+        public bool IsManualDrawerStoreRecallButtonActive { get => this.isManualDrawerStoreRecallButtonActive; set => this.SetProperty(ref this.isManualDrawerStoreRecallButtonActive, value); }
+
         public bool IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
 
         public bool IsSaveRestoreConfigButtonActive { get => this.isSaveRestoreConfigButtonActive; set => this.SetProperty(ref this.isSaveRestoreConfigButtonActive, value); }
@@ -210,6 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             this.IsLoadFirstDrawerButtonActive = checkHomingDone;
             this.IsLoadingDrawersButtonActive = checkHomingDone;
             this.IsSaveRestoreConfigButtonActive = true;
+            this.IsManualDrawerStoreRecallButtonActive = checkHomingDone;
         }
 
         #endregion

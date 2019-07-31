@@ -56,34 +56,6 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void NotifyExceptionsOnHub(NotificationMessage receivedMessage)
-        {
-            try
-            {
-                this.logger.LogTrace($"25:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ExceptionNotify(messageToUI);
-
-                if (receivedMessage.Data is IExceptionMessageData exceptionMessageData)
-                {
-                    this.operatorHub.Clients.All.ErrorRaised(exceptionMessageData.ExceptionCode);
-                }
-
-                this.logger.LogTrace($"26:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-            }
-            catch (ArgumentNullException exNull)
-            {
-                this.logger.LogTrace($"27:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogTrace($"28:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-            }
-        }
-
         private void OnBayConnected(IBayOperationalStatusChangedMessageData messageData)
         {
             if (messageData == null)
@@ -93,6 +65,26 @@ namespace Ferretto.VW.MAS.AutomationService
 
             this.operatorHub.Clients.All
                 .BayStatusChanged(messageData);
+        }
+
+        private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
+        {
+            if (machineErrorMessageData == null)
+            {
+                throw new ArgumentNullException(nameof(machineErrorMessageData));
+            }
+
+            try
+            {
+                this.operatorHub.Clients.All.ErrorStatusChanged(
+                    machineErrorMessageData.ErrorId);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogTrace($"28:Exception {ex.Message} while sending SignalR Machine Error Message");
+
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
         }
 
         private async Task OnNewMissionOperationAvailable(INewMissionOperationAvailable e)

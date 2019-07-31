@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -16,8 +15,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         private const int INVERTER_INPUTS = 64;
 
         private const int REMOTEIO_INPUTS = 16;
-
-        private readonly IUnityContainer container;
 
         private readonly IEventAggregator eventAggregator;
 
