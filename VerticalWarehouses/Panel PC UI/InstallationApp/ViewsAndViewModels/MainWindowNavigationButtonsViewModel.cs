@@ -6,7 +6,6 @@ using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 {
@@ -16,9 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
-        private IInstallationStatusService installationStatusService;
+        private readonly IInstallationStatusMachineService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -46,6 +43,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private bool isLowSpeedMovementsTestButtonActive = true;
 
+        private bool isManualDrawerStoreRecallButtonActive;
+
         private bool isOriginVerticalAxisButtonActive = true;
 
         private bool isSaveRestoreConfigButtonActive = true;
@@ -66,9 +65,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public MainWindowNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IInstallationStatusMachineService installationStatusService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (installationStatusService == null)
+            {
+                throw new System.ArgumentNullException(nameof(installationStatusService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.installationStatusService = installationStatusService;
+
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) => { this.SetAllNavigationButtonDisabled(); },
                 ThreadOption.PublisherThread,
@@ -116,6 +129,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         public bool IsLowSpeedMovementsTestButtonActive { get => this.isLowSpeedMovementsTestButtonActive; set => this.SetProperty(ref this.isLowSpeedMovementsTestButtonActive, value); }
 
+        public bool IsManualDrawerStoreRecallButtonActive { get => this.isManualDrawerStoreRecallButtonActive; set => this.SetProperty(ref this.isManualDrawerStoreRecallButtonActive, value); }
+
         public bool IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
 
         public bool IsSaveRestoreConfigButtonActive { get => this.isSaveRestoreConfigButtonActive; set => this.SetProperty(ref this.isSaveRestoreConfigButtonActive, value); }
@@ -145,16 +160,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             // TODO
         }
 
-        public async Task InitializeViewModelAsync(IUnityContainer container)
+        public async Task OnEnterViewAsync()
         {
-            this.container = container;
-            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
             await this.UpdateButtonsEnableStateAsync();
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            return Task.CompletedTask;
         }
 
         public void SetAllNavigationButtonDisabled()
@@ -206,6 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             this.IsLoadFirstDrawerButtonActive = checkHomingDone;
             this.IsLoadingDrawersButtonActive = checkHomingDone;
             this.IsSaveRestoreConfigButtonActive = true;
+            this.IsManualDrawerStoreRecallButtonActive = checkHomingDone;
         }
 
         #endregion

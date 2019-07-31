@@ -313,6 +313,7 @@ namespace Ferretto.WMS.App.Controls
                 }
 
                 await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
+                this.SelectedFilter = this.Filters.FirstOrDefault();
             }
             catch (Exception ex)
             {

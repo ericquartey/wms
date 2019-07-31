@@ -111,7 +111,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             (mainWindowViewModel.NavigationRegionCurrentViewModel as IViewModel)?.ExitFromViewMethod();
 
             mainWindowViewModel.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-            mainWindowViewModel.ContentRegionCurrentViewModel = this.container.Resolve<IIdleViewModel>() as BindableBase;
+            mainWindowViewModel.ContentRegionCurrentViewModel = this.container.Resolve<IIdleViewModel>();
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(
                 new InstallationApp_EventMessage(InstallationApp_EventMessageType.ExitView));

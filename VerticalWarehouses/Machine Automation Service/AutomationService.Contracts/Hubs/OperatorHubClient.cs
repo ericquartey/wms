@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
@@ -20,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
+        public event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;
+
         public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
@@ -33,6 +36,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<IBayOperationalStatusChangedMessageData>(
                 nameof(IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
+
+            connection.On<int>(
+                nameof(IOperatorHub.ErrorStatusChanged), this.OnErrorStatusChanged);
         }
 
         private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)
@@ -45,6 +51,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                     e.BayStatus,
                     e.PendingMissionsCount,
                     e.CurrentMissionOperationId));
+        }
+
+        private void OnErrorStatusChanged(int code)
+        {
+            this.ErrorStatusChanged?.Invoke(this, new ErrorStatusChangedEventArgs(code));
         }
 
         private void OnMissionOperationAvailable(INewMissionOperationAvailable e)

@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -28,8 +29,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         #region Constructors
 
-        public HomingStateMachine(IEventAggregator eventAggregator, IHomingMessageData calibrateMessageData, ILogger logger)
-            : base(eventAggregator, logger)
+        public HomingStateMachine(
+            IEventAggregator eventAggregator,
+            IHomingMessageData calibrateMessageData,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             logger.LogTrace("1:Method Start");
             this.logger = logger;
@@ -141,8 +146,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new HomingStartState(this, this.homingOperation, this.logger);
-                this.CurrentState?.Start();
+                this.CurrentState = new HomingStartState(
+                    this,
+                    this.currentAxis,
+                    this.logger);
+
+                this.CurrentState.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

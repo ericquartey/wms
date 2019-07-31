@@ -8,34 +8,47 @@
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
-    <Grid Width="1024" Height="608">
+    <Grid Width="1024"
+          Height="608">
 
-        <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,30,0,0" 
+        <TextBlock Margin="200,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.CellsSideControlDescription}" />
-        
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,170,0,0"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="429,170,0,0"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
+        <Controls:CustomInputFieldControlFocusable Margin="200,170,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Top"
+                                                   InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="660,170,0,0"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
+        <Controls:CustomInputFieldControlFocusable Margin="429,170,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Top"
+                                                   InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <Controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,310,0,0"
-                                                 ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}"  />
+        <Controls:CustomInputFieldControlFocusable Margin="660,170,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Top"
+                                                   InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="660,310,0,0"
-                    Content="{x:Static res:InstallationApp.Correct}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Controls:CustomLabelTextBlockControl Margin="200,310,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}" />
+
+        <Button Margin="660,310,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="{x:Static res:InstallationApp.Correct}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
     </Grid>
 </UserControl>

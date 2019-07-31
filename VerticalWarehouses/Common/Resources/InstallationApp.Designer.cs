@@ -1501,6 +1501,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Store/recall drawer.
+        /// </summary>
+        public static string ManualDrawerStoreRecallButton {
+            get {
+                return ResourceManager.GetString("ManualDrawerStoreRecallButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Measured initial position [mm]:.
         /// </summary>
         public static string MesuredInitialPosition {

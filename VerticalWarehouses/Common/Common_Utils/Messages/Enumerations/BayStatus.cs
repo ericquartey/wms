@@ -2,10 +2,12 @@
 {
     public enum BayStatus
     {
-        Unavailable = 0,
+        Disconnected,
 
-        Idle = 1,
+        Idle,
 
-        Busy = 2,
+        Busy,
+
+        Errored,
     }
 }

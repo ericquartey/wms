@@ -7,11 +7,11 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IBayPositionControlDataLayer
     {
-		#region Properties
+        #region Properties
 
-		public decimal FeedRateBP => this.GetDecimalConfigurationValue((long)BayPositionControl.FeedRate, (long)ConfigurationCategory.BayPositionControl);
+        public decimal FeedRateBP => this.GetDecimalConfigurationValue((long)BayPositionControl.FeedRate, ConfigurationCategory.BayPositionControl);
 
-		public decimal StepValueBP => this.GetDecimalConfigurationValue((long)BayPositionControl.StepValue, (long)ConfigurationCategory.BayPositionControl);
+        public decimal StepValueBP => this.GetDecimalConfigurationValue((long)BayPositionControl.StepValue, ConfigurationCategory.BayPositionControl);
 
         #endregion
     }

@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Operator
     {
         #region Fields
 
-        private readonly IBaysService baysService;
+        private readonly IBaysMachineService baysService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Operator
             IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
             IIdleViewModel idleViewModel,
             IAuthenticationService authenticationService,
-            IBaysService baysService)
+            IBaysMachineService baysService)
         {
             if (eventAggregator == null)
             {
@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Operator
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)idleViewModel;
 
-            authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
+            authenticationService.UserAuthenticated += this.OnUserAuthenticated;
             this.LoggedUser = authenticationService.UserName;
 
             this.InitializeEvents();
@@ -156,17 +156,18 @@ namespace Ferretto.VW.App.Operator
 
         private static void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
 
-        private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
-        {
-            this.LoggedUser = e.UserName;
-        }
-
         private void InitializeEvents()
         {
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
+            // TODO MachineOnMarch comes from the driver
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
+        }
+
+        private void OnUserAuthenticated(object sender, UserAuthenticatedEventArgs e)
+        {
+            this.LoggedUser = e.UserName;
         }
 
         #endregion

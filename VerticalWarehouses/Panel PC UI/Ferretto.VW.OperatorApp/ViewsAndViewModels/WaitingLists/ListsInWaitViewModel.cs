@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 
         private readonly IAreasDataService areasDataService;
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 
         public ListsInWaitViewModel(
             IStatusMessageService statusMessageService,
-            IIdentityService identityService,
+            IIdentityMachineService identityService,
             INavigationService navigationService,
             IItemListsDataService itemListsDataService,
             IAreasDataService areasDataService
@@ -106,9 +106,12 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
             },
             this.CanShowDetails));
 
-        public ICommand ListExecuteCommand => this.listExecuteCommand ?? (this.listExecuteCommand = new DelegateCommand(() => this.ExecuteListAsync(), this.CanExecuteList));
+        public ICommand ListExecuteCommand =>
+            this.listExecuteCommand
+            ??
+            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
 
-        public IList<ItemList> Lists { get => new List<ItemList>(this.lists); }
+        public IList<ItemList> Lists => new List<ItemList>(this.lists);
 
         public ItemList SelectedList
         {

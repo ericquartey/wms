@@ -53,8 +53,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 bay.IsActive = true;
 
                 this.Update(bay);
-
-                this.NotifyBayStatusChanged(bay);
             }
 
             return bay;
@@ -69,8 +67,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 bay.CurrentMissionOperationId = missionOperationId;
 
                 this.Update(bay);
-
-                this.NotifyBayStatusChanged(bay);
             }
 
             return bay;
@@ -124,30 +120,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
-        private void NotifyBayStatusChanged(Bay bay)
-        {
-            var message = new NotificationMessage(
-             new BayOperationalStatusChangedMessageData
-             {
-                 BayId = bay.Id,
-                 BayStatus = bay.Status,
-             },
-             $"Bay #{bay.Id} status changed to {bay.Status}",
-             MessageActor.MissionsManager,
-             MessageActor.WebApi,
-             MessageType.BayOperationalStatusChanged,
-             MessageStatus.NoStatus);
-
-            this.notificationEvent.Publish(message);
-        }
-
         private Bay Update(Bay bay)
         {
             var entry = this.dataContext.Bays.Update(bay);
 
             this.dataContext.SaveChanges();
 
-            this.NotifyBayStatusChanged(bay);
+            this.notificationEvent.Publish(
+                new NotificationMessage(
+                    new BayOperationalStatusChangedMessageData
+                    {
+                        BayId = bay.Id,
+                        BayStatus = bay.Status,
+                    },
+                    $"Bay #{bay.Id} status changed to {bay.Status}",
+                    MessageActor.MissionsManager,
+                    MessageActor.WebApi,
+                    MessageType.BayOperationalStatusChanged,
+                    MessageStatus.NoStatus));
 
             return entry.Entity;
         }

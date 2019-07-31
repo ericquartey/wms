@@ -8,7 +8,7 @@ using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
-    public class LSMTNavigationButtonsViewModel : BindableBase, ILSMTNavigationButtonsViewModel, IViewModelRequiresContainer
+    public class LSMTNavigationButtonsViewModel : BindableBase, ILSMTNavigationButtonsViewModel
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private ICommand carouselButtonCommand;
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
         private ICommand horizontalEngineButtonCommand;
 
@@ -28,9 +28,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         #region Constructors
 
-        public LSMTNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public LSMTNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IUnityContainer container) // TODO remove container injection
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (container == null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.container = container;
             this.NavigationViewModel = null;
         }
 
@@ -79,11 +92,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
         }
 
         public Task OnEnterViewAsync()

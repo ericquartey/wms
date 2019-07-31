@@ -1163,4 +1163,8 @@
     <value>Update Resolution</value>
     <comment>Update Resolution</comment>
   </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Store/recall drawer</value>
+    <comment>Button text</comment>
+  </data>
 </root>

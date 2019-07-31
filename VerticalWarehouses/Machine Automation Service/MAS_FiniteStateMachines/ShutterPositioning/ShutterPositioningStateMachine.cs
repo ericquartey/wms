@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -22,8 +23,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public ShutterPositioningStateMachine(
             IEventAggregator eventAggregator,
             IShutterPositioningMessageData shutterPositioningMessageData,
-            ILogger logger)
-            : base(eventAggregator, logger)
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
 

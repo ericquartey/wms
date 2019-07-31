@@ -44,6 +44,6 @@
 
         SetConfigurationIO,
 
-        StartSimulator,
+        ResetSecurity,
     }
 }

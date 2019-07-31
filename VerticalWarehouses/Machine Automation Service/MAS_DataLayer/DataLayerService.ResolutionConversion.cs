@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer
             if (milliMeters == 0)
             {
                 var errorMessage = "Displacement to convert zero";
-                this.logger.LogDebug(errorMessage);
+                this.Logger.LogDebug(errorMessage);
                 throw new ArgumentException(errorMessage);
             }
 
@@ -27,15 +27,15 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    resolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    resolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
                     break;
 
                 default:
-                    this.logger.LogCritical($"Wrong selected axis {configurationCategory} to get resolution");
+                    this.Logger.LogCritical($"Wrong selected axis {configurationCategory} to get resolution");
 
                     throw new DataLayerException(DataLayerExceptionCode.WrongAxisException);
             }
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer
             if (pulses == 0)
             {
                 var errorMessage = "Zero pulses to convert";
-                this.logger.LogDebug(errorMessage);
+                this.Logger.LogDebug(errorMessage);
                 throw new ArgumentException(errorMessage);
             }
 
@@ -60,15 +60,15 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationCategory)
             {
                 case ConfigurationCategory.VerticalAxis:
-                    resolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
                     break;
 
                 case ConfigurationCategory.HorizontalAxis:
-                    resolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+                    resolution = this.GetDecimalConfigurationValue((long)HorizontalAxis.Resolution, ConfigurationCategory.HorizontalAxis);
                     break;
 
                 default:
-                    this.logger.LogDebug($"Wrong selected axis {configurationCategory} to get resolution");
+                    this.Logger.LogDebug($"Wrong selected axis {configurationCategory} to get resolution");
 
                     throw new DataLayerException(DataLayerExceptionCode.WrongAxisException);
             }
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var resolutionAxis = configurationCategory == ConfigurationCategory.VerticalAxis ? "Vertical" : "Horizontal";
                 var errorMessage = $"Conversion impossible, resolution for {resolutionAxis} Axis zero";
 
-                this.logger.LogDebug(errorMessage);
+                this.Logger.LogDebug(errorMessage);
 
                 throw new DataLayerException(errorMessage, DataLayerExceptionCode.DivideByZeroException, ex);
             }
