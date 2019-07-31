@@ -12,6 +12,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
+using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
@@ -24,8 +25,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         private readonly IHomingMachineService homingService;
 
         private string currentPosition;
-
-        private IHomingService homingService;
 
         private bool isStartButtonActive = true;
 
