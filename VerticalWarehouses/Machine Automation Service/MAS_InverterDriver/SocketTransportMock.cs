@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private bool targetTimerActive;
 
+        private int axisPosition;
+
         #endregion
 
         #region Constructors
@@ -55,6 +57,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
 
             this.targetTimerActive = false;
+
+            this.axisPosition = 0;
         }
 
         #endregion
@@ -233,6 +237,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.homingTimer.Change(0, 1000);
                     this.homingTimerActive = true;
+                    this.axisPosition = 0;
                 }
             }
             else
@@ -285,7 +290,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             rawMessage[4] = parameterBytes[0];
             rawMessage[5] = parameterBytes[1];
 
-            var payloadBytes = BitConverter.GetBytes(DateTime.Now.Ticks / 100);
+            var payloadBytes = BitConverter.GetBytes(++this.axisPosition);
             rawMessage[6] = payloadBytes[0];
             rawMessage[7] = payloadBytes[1];
             rawMessage[8] = payloadBytes[2];
