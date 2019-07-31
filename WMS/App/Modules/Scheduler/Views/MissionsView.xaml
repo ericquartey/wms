@@ -91,8 +91,7 @@
 
                 <wms:TileBar HorizontalAlignment="Right"
                              ItemsSource="{Binding Filters}"
-                             SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
-
+                             SelectedItem="{Binding SelectedFilter, Mode=TwoWay}" />
 
             </Grid>
         </wms:Expander>
