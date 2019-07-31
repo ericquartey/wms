@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -15,19 +15,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachinesDataService machinesDataService;
 
-        private readonly IMachineStatisticsDataLayer machineStatisticsDataLayer;
+        private readonly IMachineStatisticsProvider machineStatisticsProvider;
 
         #endregion
 
         #region Constructors
 
         public StatisticsController(
-            IMachineStatisticsDataLayer machineStatisticsDataLayer,
+            IMachineStatisticsProvider machineStatisticsProvider,
             IMachinesDataService machinesDataService)
         {
-            if (machineStatisticsDataLayer == null)
+            if (machineStatisticsProvider == null)
             {
-                throw new ArgumentNullException(nameof(machineStatisticsDataLayer));
+                throw new ArgumentNullException(nameof(machineStatisticsProvider));
             }
 
             if (machinesDataService == null)
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(machinesDataService));
             }
 
-            this.machineStatisticsDataLayer = machineStatisticsDataLayer;
+            this.machineStatisticsProvider = machineStatisticsProvider;
             this.machinesDataService = machinesDataService;
         }
 
@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public async Task<ActionResult<MachineStatistics>> GetAsync()
         {
-            var statics = this.machineStatisticsDataLayer.GetMachineStatistics();
+            var statics = this.machineStatisticsProvider.GetMachineStatistics();
 
             try
             {

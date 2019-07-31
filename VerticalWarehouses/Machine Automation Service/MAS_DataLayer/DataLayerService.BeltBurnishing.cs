@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Properties
 
         /// <inheritdoc/>
-        public int CycleQuantity => this.GetIntegerConfigurationValue((long)BeltBurnishing.CycleQuantity, (long)ConfigurationCategory.BeltBurnishing);
+        public int CycleQuantity => this.GetIntegerConfigurationValue((long)BeltBurnishing.CycleQuantity, ConfigurationCategory.BeltBurnishing);
 
         #endregion
     }

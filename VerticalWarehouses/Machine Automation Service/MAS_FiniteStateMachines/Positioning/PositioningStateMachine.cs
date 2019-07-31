@@ -4,6 +4,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -26,11 +28,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator,
+        public PositioningStateMachine(
+            IEventAggregator eventAggregator,
             IPositioningMessageData positioningMessageData,
             ILogger logger,
-            MachineSensorsStatus machineSensorsStatus)
-            : base(eventAggregator, logger)
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.logger = logger;
 

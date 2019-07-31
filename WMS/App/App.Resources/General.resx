@@ -226,8 +226,8 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filter</value>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply Filter</value>
     <comment>Command - Filter the Data</comment>
   </data>
   <data name="Yes" xml:space="preserve">

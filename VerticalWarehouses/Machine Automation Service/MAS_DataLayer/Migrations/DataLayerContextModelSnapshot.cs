@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 768m,
                             Priority = 20,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 768m,
                             Priority = 21,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 818m,
                             Priority = 22,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -265,7 +265,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 818m,
                             Priority = 23,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 868m,
                             Priority = 24,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 868m,
                             Priority = 25,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -292,7 +292,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 918m,
                             Priority = 26,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -301,7 +301,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 918m,
                             Priority = 27,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -310,7 +310,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 968m,
                             Priority = 28,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -319,7 +319,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 968m,
                             Priority = 29,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1018m,
                             Priority = 30,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -337,7 +337,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1018m,
                             Priority = 31,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -346,7 +346,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1068m,
                             Priority = 32,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -355,7 +355,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1068m,
                             Priority = 33,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -364,7 +364,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1118m,
                             Priority = 34,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -373,7 +373,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1118m,
                             Priority = 35,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -382,7 +382,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1168m,
                             Priority = 36,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -391,7 +391,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1168m,
                             Priority = 37,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1218m,
                             Priority = 38,
                             Side = 1,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -409,7 +409,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1218m,
                             Priority = 39,
                             Side = 0,
-                            Status = 3,
+                            Status = 2,
                             WorkingStatus = 0
                         },
                         new
@@ -418,7 +418,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1268m,
                             Priority = 40,
                             Side = 1,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -427,7 +427,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1268m,
                             Priority = 41,
                             Side = 0,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -436,7 +436,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1318m,
                             Priority = 42,
                             Side = 1,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -445,7 +445,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1318m,
                             Priority = 43,
                             Side = 0,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1368m,
                             Priority = 44,
                             Side = 1,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -463,7 +463,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1368m,
                             Priority = 45,
                             Side = 0,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -472,7 +472,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1418m,
                             Priority = 46,
                             Side = 1,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -481,7 +481,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1418m,
                             Priority = 47,
                             Side = 0,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -490,7 +490,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1468m,
                             Priority = 48,
                             Side = 1,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -499,7 +499,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Coord = 1468m,
                             Priority = 49,
                             Side = 0,
-                            Status = 1,
+                            Status = 3,
                             WorkingStatus = 0
                         },
                         new
@@ -3543,105 +3543,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Code = 1001,
-                            Description = "Errore database",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1002,
-                            Description = "Errore caricamento configurazione",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1003,
-                            Description = "Errore inizializzazione dati",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1004,
-                            Description = "Errore salvataggio dati",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1005,
-                            Description = "Errore rientro cassetto",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1006,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1007,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1008,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1009,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1010,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1011,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1012,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1013,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1014,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1015,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1016,
-                            Description = "Errore rientro baia",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            Code = 1017,
-                            Description = "Errore posizionamento",
-                            Severity = 5
+                            Code = 100032,
+                            Description = "Cassetto non caricato completamente",
+                            Reason = "Il cassetto potrebbe essersi incastrato.",
+                            Severity = 0
                         });
                 });
 
@@ -3658,82 +3563,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Code = 1001,
-                            TotalErrors = 11
-                        },
-                        new
-                        {
-                            Code = 1002,
-                            TotalErrors = 7
-                        },
-                        new
-                        {
-                            Code = 1003,
-                            TotalErrors = 5
-                        },
-                        new
-                        {
-                            Code = 1004,
-                            TotalErrors = 3
-                        },
-                        new
-                        {
-                            Code = 1005,
-                            TotalErrors = 2
-                        },
-                        new
-                        {
-                            Code = 1006,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1007,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1008,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1009,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1010,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1011,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1012,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1013,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1014,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1015,
-                            TotalErrors = 1
-                        },
-                        new
-                        {
-                            Code = 1016,
+                            Code = 100032,
                             TotalErrors = 0
                         });
                 });
@@ -3774,10 +3604,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 1,
                             CellId = 1,
                             Code = "01001",
-                            GrossWeight = 300m,
-                            Height = 330m,
+                            GrossWeight = 360m,
+                            Height = 349m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 18,
+                            MissionsCount = 31,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3786,10 +3616,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 2,
                             CellId = 2,
                             Code = "01002",
-                            GrossWeight = 253m,
-                            Height = 151m,
+                            GrossWeight = 358m,
+                            Height = 284m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 19,
+                            MissionsCount = 6,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3798,10 +3628,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 3,
                             CellId = 3,
                             Code = "01003",
-                            GrossWeight = 282m,
-                            Height = 310m,
+                            GrossWeight = 263m,
+                            Height = 212m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 18,
+                            MissionsCount = 38,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -3810,10 +3640,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 4,
                             CellId = 4,
                             Code = "01004",
-                            GrossWeight = 258m,
-                            Height = 328m,
+                            GrossWeight = 305m,
+                            Height = 305m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 12,
+                            MissionsCount = 7,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3822,10 +3652,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 5,
                             CellId = 5,
                             Code = "01005",
-                            GrossWeight = 342m,
-                            Height = 111m,
+                            GrossWeight = 371m,
+                            Height = 152m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 4,
+                            MissionsCount = 7,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3834,10 +3664,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 6,
                             CellId = 6,
                             Code = "01006",
-                            GrossWeight = 215m,
-                            Height = 139m,
+                            GrossWeight = 390m,
+                            Height = 262m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 11,
+                            MissionsCount = 33,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3846,10 +3676,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 7,
                             CellId = 7,
                             Code = "01007",
-                            GrossWeight = 272m,
-                            Height = 141m,
+                            GrossWeight = 278m,
+                            Height = 108m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 48,
+                            MissionsCount = 14,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3858,10 +3688,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 8,
                             CellId = 8,
                             Code = "01008",
-                            GrossWeight = 332m,
-                            Height = 316m,
+                            GrossWeight = 262m,
+                            Height = 51m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 46,
+                            MissionsCount = 28,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3870,10 +3700,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 9,
                             CellId = 9,
                             Code = "01009",
-                            GrossWeight = 334m,
-                            Height = 229m,
+                            GrossWeight = 305m,
+                            Height = 81m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 17,
+                            MissionsCount = 43,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3882,10 +3712,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 10,
                             CellId = 10,
                             Code = "01010",
-                            GrossWeight = 202m,
-                            Height = 123m,
+                            GrossWeight = 246m,
+                            Height = 142m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 28,
+                            MissionsCount = 9,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3894,10 +3724,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 11,
                             CellId = 11,
                             Code = "01011",
-                            GrossWeight = 329m,
-                            Height = 131m,
+                            GrossWeight = 226m,
+                            Height = 66m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 29,
+                            MissionsCount = 42,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3906,10 +3736,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 12,
                             CellId = 12,
                             Code = "01012",
-                            GrossWeight = 388m,
-                            Height = 159m,
+                            GrossWeight = 286m,
+                            Height = 84m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 45,
+                            MissionsCount = 14,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -3918,10 +3748,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 13,
                             CellId = 13,
                             Code = "01013",
-                            GrossWeight = 226m,
-                            Height = 94m,
+                            GrossWeight = 360m,
+                            Height = 281m,
                             MaxNetWeight = 750m,
-                            MissionsCount = 18,
+                            MissionsCount = 5,
                             Status = 3L,
                             Tare = 65m
                         },
@@ -3930,10 +3760,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 14,
                             CellId = 14,
                             Code = "01014",
-                            GrossWeight = 289m,
-                            Height = 244m,
+                            GrossWeight = 353m,
+                            Height = 187m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 42,
+                            MissionsCount = 18,
                             Status = 3L,
                             Tare = 50m
                         },
@@ -3942,10 +3772,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 15,
                             CellId = 15,
                             Code = "01015",
-                            GrossWeight = 272m,
-                            Height = 154m,
+                            GrossWeight = 377m,
+                            Height = 144m,
                             MaxNetWeight = 500m,
-                            MissionsCount = 37,
+                            MissionsCount = 13,
                             Status = 3L,
                             Tare = 50m
                         });
@@ -3953,7 +3783,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogEntry", b =>
                 {
-                    b.Property<int>("LogEntryID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Data");
@@ -3980,7 +3810,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Type");
 
-                    b.HasKey("LogEntryID");
+                    b.HasKey("Id");
 
                     b.ToTable("LogEntries");
                 });
@@ -4064,7 +3894,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 9, 29, 15, 40, 54, 827, DateTimeKind.Local).AddTicks(6650),
+                            InstallationDate = new DateTime(2016, 9, 30, 14, 38, 5, 41, DateTimeKind.Local).AddTicks(9987),
                             ServiceStatus = 86
                         });
                 });

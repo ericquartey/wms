@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("current")]
-        public ActionResult<ErrorDefinition> GetCurrent()
+        public ActionResult<Error> GetCurrent()
         {
             var currentError = this.errorsProvider.GetCurrent();
 
@@ -39,6 +39,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var statistics = this.errorsProvider.GetStatistics();
 
             return this.Ok(statistics);
+        }
+
+#if DEBUG
+
+        [HttpPost]
+        public ActionResult<Error> Create(MachineErrors code)
+        {
+            var newError = this.errorsProvider.RecordNew(code);
+
+            return this.Ok(newError);
+        }
+
+#endif
+
+        [HttpPost("{id}/resolve")]
+        public ActionResult<Error> Resolve(int id)
+        {
+            var resolvedError = this.errorsProvider.Resolve(id);
+
+            if (resolvedError == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(resolvedError);
         }
 
         #endregion

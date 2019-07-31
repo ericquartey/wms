@@ -1,9 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -16,23 +15,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         private readonly Axis calibrateAxis;
 
-        private Axis currentAxis;
+        private readonly Axis currentAxis;
 
         private bool disposed;
 
-        private int nMaxSteps;
+        private readonly int nMaxSteps;
 
-        private int numberOfExecutedSteps;
+        private readonly int numberOfExecutedSteps;
 
         #endregion
 
         #region Constructors
 
-        public ResetSecurityStateMachine(IEventAggregator eventAggregator, IResetSecurityMessageData calibrateMessageData, ILogger logger)
-            : base(eventAggregator, logger)
+        public ResetSecurityStateMachine(
+            IEventAggregator eventAggregator,
+            IResetSecurityMessageData calibrateMessageData,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
-
         }
 
         #endregion
@@ -72,7 +74,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         /// <inheritdoc/>
         public override void Start()
         {
-
             lock (this.CurrentState)
             {
                 this.CurrentState = new ResetSecurityStartState(this, this.Logger);

@@ -1,6 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -27,8 +29,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             IEventAggregator eventAggregator,
             IShutterPositioningMessageData shutterPositioningMessageData,
             ILogger logger,
-            MachineSensorsStatus machineSensorsStatus)
-            : base(eventAggregator, logger)
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
 
