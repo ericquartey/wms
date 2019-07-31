@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -29,8 +30,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         #region Constructors
 
-        public ShutterControlStateMachine(IEventAggregator eventAggregator, IShutterControlMessageData shutterControlMessageData, ILogger logger)
-            : base(eventAggregator, logger)
+        public ShutterControlStateMachine(
+            IEventAggregator eventAggregator,
+            IShutterControlMessageData shutterControlMessageData,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.logger = logger;
 
