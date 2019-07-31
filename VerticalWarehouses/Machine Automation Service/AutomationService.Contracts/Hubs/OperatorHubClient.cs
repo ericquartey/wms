@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
-        public event EventHandler<ErrorRaisedEventArgs> ErrorRaised;
+        public event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;
 
         public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 nameof(IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
 
             connection.On<int>(
-                nameof(IOperatorHub.ErrorRaised), this.OnErrorRaised);
+                nameof(IOperatorHub.ErrorStatusChanged), this.OnErrorStatusChanged);
         }
 
         private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)
@@ -53,9 +53,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                     e.CurrentMissionOperationId));
         }
 
-        private void OnErrorRaised(int code)
+        private void OnErrorStatusChanged(int code)
         {
-            this.ErrorRaised?.Invoke(this, new ErrorRaisedEventArgs(code));
+            this.ErrorStatusChanged?.Invoke(this, new ErrorStatusChangedEventArgs(code));
         }
 
         private void OnMissionOperationAvailable(INewMissionOperationAvailable e)

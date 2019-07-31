@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.App.Resources {
+namespace Ferretto.VW.MAS.DataModels.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Ferretto.VW.App.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class VWApp {
+    public class ErrorReasons {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal VWApp() {
+        internal ErrorReasons() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.VWApp", typeof(VWApp).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.MAS.DataModels.Resources.ErrorReasons", typeof(ErrorReasons).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +61,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error Code.
+        ///   Looks up a localized string similar to Il cassetto potrebbe essersi incastrato..
         /// </summary>
-        public static string ErrorCode {
+        public static string CradleNotCompletelyLoaded {
             get {
-                return ResourceManager.GetString("ErrorCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error Description.
-        /// </summary>
-        public static string ErrorDescription {
-            get {
-                return ResourceManager.GetString("ErrorDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error Reason.
-        /// </summary>
-        public static string ErrorReason {
-            get {
-                return ResourceManager.GetString("ErrorReason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error recovery.
-        /// </summary>
-        public static string ErrorRecoveryProcedure {
-            get {
-                return ResourceManager.GetString("ErrorRecoveryProcedure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ok.
-        /// </summary>
-        public static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Switch Off.
-        /// </summary>
-        public static string SwitchOff {
-            get {
-                return ResourceManager.GetString("SwitchOff", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string UserLogin_Password {
-            get {
-                return ResourceManager.GetString("UserLogin_Password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Name.
-        /// </summary>
-        public static string UserLogin_UserName {
-            get {
-                return ResourceManager.GetString("UserLogin_UserName", resourceCulture);
+                return ResourceManager.GetString("CradleNotCompletelyLoaded", resourceCulture);
             }
         }
     }

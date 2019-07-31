@@ -56,6 +56,8 @@
 
         NewMissionOperationAvailable,
 
+        ErrorStatusChanged,
+
         ResetSecurity,
 
         InverterStop,

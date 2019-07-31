@@ -117,30 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorCode" xml:space="preserve">
-    <value>Error Code</value>
-  </data>
-  <data name="ErrorDescription" xml:space="preserve">
-    <value>Error Description</value>
-  </data>
-  <data name="ErrorReason" xml:space="preserve">
-    <value>Error Reason</value>
-  </data>
-  <data name="ErrorRecoveryProcedure" xml:space="preserve">
-    <value>Error recovery</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-    <comment>Button - Label text</comment>
-  </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Switch Off</value>
-    <comment>Button - Label text</comment>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="UserLogin_UserName" xml:space="preserve">
-    <value>User Name</value>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Cassetto non caricato completamente</value>
   </data>
 </root>

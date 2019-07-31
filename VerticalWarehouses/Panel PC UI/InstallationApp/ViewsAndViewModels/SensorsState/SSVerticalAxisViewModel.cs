@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -20,7 +19,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IUnityContainer container;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private bool cradleEngineSelected;
 
@@ -33,8 +32,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         private bool luPresentInOperatorSide;
 
         private bool[] sensorStatus;
-
-        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
