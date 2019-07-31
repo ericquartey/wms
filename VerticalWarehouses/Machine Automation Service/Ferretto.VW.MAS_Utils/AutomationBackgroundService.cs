@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.Utils
                     false,
                     command => this.FilterCommand(command));
 
-            this.Logger.LogInformation("Subscribed to command events.");
+            this.Logger.LogTrace("Subscribed to command events.");
 
             this.notificationEventSubscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEvent>()
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.Utils
                     false,
                     notification => this.FilterNotification(notification));
 
-            this.Logger.LogInformation("Subscribed to notification events.");
+            this.Logger.LogTrace("Subscribed to notification events.");
         }
 
         #endregion
