@@ -132,10 +132,4 @@
         <common:ErrorDetailsView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type common:ErrorDetailsViewModel}">
-        <common:ErrorDetailsView />
-    </DataTemplate>
-
-    <converter:BoolToVisibilityConverter x:Key="BTVC" />
-
 </ResourceDictionary>

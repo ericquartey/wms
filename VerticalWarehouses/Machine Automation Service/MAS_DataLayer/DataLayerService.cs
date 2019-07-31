@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -50,7 +52,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.serviceScopeFactory = serviceScopeFactory;
 
-            this.Logger.LogInformation("DataLayer service initialised.");
+            this.Logger.LogTrace("DataLayer service initialised.");
         }
 
         #endregion
@@ -129,12 +131,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
-                        activeDbContext.Database.Migrate();
+                        if (activeDbContext.Database.GetPendingMigrations().Any())
+                        {
+                            this.Logger.LogInformation("Applying migrations to active database ...");
+                            activeDbContext.Database.Migrate();
+                        }
                     }
 
                     using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
-                        standbyDbContext.Database.Migrate();
+                        if (standbyDbContext.Database.GetPendingMigrations().Any())
+                        {
+                            this.Logger.LogInformation("Applying migrations to standby database ...");
+                            standbyDbContext.Database.Migrate();
+                        }
                     }
                 }
                 catch (Exception ex)
