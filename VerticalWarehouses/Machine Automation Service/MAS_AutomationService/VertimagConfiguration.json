@@ -64,46 +64,47 @@
     //  "PPC3SlaveIPAddress": "::3"
     //},
 
+    // --- Simulatore ---
+    //"SetupNetwork": {
+    //    "MachineNumber": 1,
+    //    "WMS_ON": true,
+    //    "Inverter1": "127.0.0.1",
+    //    "Inverter1Port": 17221,
+    //    "InverterIndexMaster": 0,
+    //    "InverterIndexShutter1": 2,
+    //    "InverterIndexBay1": 3,
+    //    "InverterIndexShutter2": 4,
+    //    "IOExpansion1": "127.0.0.1",
+    //    "IOExpansion1Port": 19550,
+    //    "IOExpansion2": "127.0.0.1",
+    //    "IOExpansion2Port": 19551,
+    //    "SQLServerIPAddress": "172.16.199.100",
+    //    "SQLServerPort": 6000,
+    //    "PPC1MasterIPAddress": "::1",
+    //    "PPC2SlaveIPAddress": "198.168.0.2",
+    //    "PPC3SlaveIPAddress": "198.168.0.3"
+    //},
+
+    // *****    PROTOTIPO   *****
     "SetupNetwork": {
         "MachineNumber": 1,
         "WMS_ON": true,
-        "Inverter1": "127.0.0.1",
+        "Inverter1": "198.168.0.100",
         "Inverter1Port": 17221,
         "InverterIndexMaster": 0,
         "InverterIndexShutter1": 2,
         "InverterIndexBay1": 3,
         "InverterIndexShutter2": 4,
-        "IOExpansion1": "127.0.0.1",
+        "IOExpansion1": "198.168.0.1",
         "IOExpansion1Port": 19550,
-        "IOExpansion2": "127.0.0.1",
-        "IOExpansion2Port": 19551,
+        "IOExpansion2": "198.168.0.2",
+        "IOExpansion2Port": 19550,
         "SQLServerIPAddress": "172.16.199.100",
         "SQLServerPort": 6000,
         "PPC1MasterIPAddress": "::1",
         "PPC2SlaveIPAddress": "198.168.0.2",
         "PPC3SlaveIPAddress": "198.168.0.3"
     },
-
-    // --- Produzione ---
-    //"SetupNetwork": {
-    //  "MachineNumber": 1,
-    //  "WMS_ON": true,
-    //  "Inverter1": "198.168.0.100",
-    //  "Inverter1Port": 17221,
-    //  "InverterIndexMaster": 0,
-    //  "InverterIndexShutter1": 2,
-    //  "InverterIndexBay1": 3,
-    //  "InverterIndexShutter2": 4,
-    //  "IOExpansion1": "198.168.0.1",
-    //  "IOExpansion1Port": 19550,
-    //  "IOExpansion2": "198.168.0.2",
-    //  "IOExpansion2Port": 19550,
-    //  "SQLServerIPAddress": "172.16.199.100",
-    //  "SQLServerPort": 6000,
-    //  "PPC1MasterIPAddress": "::1",
-    //  "PPC2SlaveIPAddress": "198.168.0.2",
-    //  "PPC3SlaveIPAddress": "198.168.0.3"
-    //},
 
     //TEMP To remove but temporary commented, until the test won't be ok
     //"SetupStatus": {

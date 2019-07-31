@@ -17,4 +17,9 @@
     <ProjectReference Include="..\MAS_IODriver\Ferretto.VW.MAS.IODriver.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Homing\Interfaces\" />
+    <Folder Include="Homing\Models\" />
+  </ItemGroup>
+
 </Project>
