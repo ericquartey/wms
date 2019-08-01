@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
@@ -101,6 +101,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new BaysConfiguration());
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
+            modelBuilder.ApplyConfiguration(new DatabaseRoleConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
