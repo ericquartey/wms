@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Properties
 
-        public string AreaDescription { get; set; }
+        public string AreaName { get; set; }
 
         public string BayDescription { get; set; }
 
@@ -24,21 +24,19 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string ItemDescription { get; set; }
 
-        public string ItemUnitMeasure { get; set; }
-
         public DateTime LastModificationDate { get; set; }
 
         public string ListDescription { get; set; }
 
-        public string ListRowDescription { get; set; }
+        public string ListRowCode { get; set; }
 
-        public string LoadingUnitDescription { get; set; }
-
-        public string LoadingUnitTypeDescription { get; set; }
+        public string LoadingUnitCode { get; set; }
 
         public string Lot { get; set; }
 
         public string MaterialStatusDescription { get; set; }
+
+        public string MeasureUnitDescription { get; set; }
 
         public OperationType OperationType { get; set; }
 

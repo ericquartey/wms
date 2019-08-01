@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Tests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,13 +17,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
     {
         #region Fields
 
-        private Common.DataModels.Bay bayA;
+        private Bay bayA;
 
-        private Common.DataModels.Bay bayB;
+        private Bay bayB;
 
-        private Common.DataModels.Compartment compartmentInMachineA;
+        private Compartment compartmentInMachineA;
 
-        private Common.DataModels.Compartment compartmentInMachineB;
+        private Compartment compartmentInMachineB;
 
         private ICompartmentOperationProvider provider;
 
@@ -74,9 +75,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var compartment1 = new Common.DataModels.Compartment
+            var compartment1 = new Compartment
             {
-                Id = 100
+                Id = GetNewId(),
             };
 
             using (var context = this.CreateContext())
@@ -90,7 +91,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var wrongCompartmentId = 10;
+            var wrongCompartmentId = GetNewId();
 
             var updatedCompartment = await this.provider.GetByIdForStockUpdateAsync(wrongCompartmentId);
 
@@ -135,9 +136,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var filteredCompartments = compartments.Where(compartmentsInBayFunction);
 
                 Assert.AreEqual(filteredCompartments.Single().Id, this.compartmentInMachineA.Id);
-
-                #endregion
             }
+
+            #endregion
         }
 
         [TestMethod]
@@ -149,7 +150,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var compartments = new List<Common.DataModels.Compartment>
             {
                 this.compartmentInMachineA,
-                this.compartmentInMachineB
+                this.compartmentInMachineB,
             }.AsQueryable();
 
             int? bayId = null;
@@ -213,12 +214,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 CompartmentTypeId = compartmentType.Id,
                 ItemId = 1,
-                MaxCapacity = 10
+                MaxCapacity = 10,
             };
 
             this.compartmentInMachineA = new Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = loadingUnitA.Id,
                 IsItemPairingFixed = true,
                 ItemId = itemCompartmentType.ItemId,
@@ -226,15 +227,15 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedForPick = 5,
                 ReservedToPut = 6,
                 Stock = 47,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = compartmentType.Id,
             };
 
             this.compartmentInMachineB = new Common.DataModels.Compartment
             {
-                Id = 2,
+                Id = GetNewId(),
                 ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = loadingUnitB.Id,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = compartmentType.Id,
             };
 
             using (var context = this.CreateContext())
@@ -261,10 +262,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Insertion, 2, 3, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Withdrawal, 3, 2, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Insertion, 4, 1, 2, 3)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Withdrawal, 3, 1, 2, 4)]
+        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Put, 2, 3, 4, 1)]
+        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Pick, 3, 2, 4, 1)]
+        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Put, 4, 1, 2, 3)]
+        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Pick, 3, 1, 2, 4)]
         public void OrderCompartmentsByManagementType_Compartments(
             Core.Models.ItemManagementType managementType,
             Core.Models.OperationType operationType,
@@ -283,29 +284,29 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    Id = 1,
                    FifoStartDate = now.AddDays(-0.5),
                    Stock = 90,
-                   MaxCapacity = 200
+                   MaxCapacity = 200,
                },
                new Core.Models.CandidateCompartment
                {
                    Id = 2,
                    FifoStartDate = now.AddDays(-3),
                    Stock = 100,
-                   MaxCapacity = 400
+                   MaxCapacity = 400,
                },
                new Core.Models.CandidateCompartment
                {
                    Id = 3,
                    FifoStartDate = now.AddDays(-3),
                    Stock = 50,
-                   MaxCapacity = 400
+                   MaxCapacity = 400,
                },
                new Core.Models.CandidateCompartment
                {
                    Id = 4,
                    FifoStartDate = now.AddDays(-2),
                    Stock = 400,
-                   MaxCapacity = 500
-               }
+                   MaxCapacity = 500,
+               },
             }.AsQueryable();
 
             #endregion
@@ -329,10 +330,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Insertion, 3, 2, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Withdrawal, 3, 2, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Insertion, 4, 3, 2, 1)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Withdrawal, 4, 1, 3, 2)]
+        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Put, 3, 2, 4, 1)]
+        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Pick, 3, 2, 4, 1)]
+        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Put, 4, 3, 2, 1)]
+        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Pick, 4, 1, 3, 2)]
         public void OrderCompartmentsByManagementType_CompartmentSets(
            Core.Models.ItemManagementType managementType,
            Core.Models.OperationType operationType,
@@ -351,29 +352,29 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                    FifoStartDate = now.AddDays(-2),
                    Availability = 100,
                    RemainingCapacity = 300,
-                   Size = 1
+                   Size = 1,
                },
                new Core.Models.CompartmentSet
                {
                    FifoStartDate = now.AddDays(-3),
                    Availability = 300,
                    RemainingCapacity = 500,
-                   Size = 2
+                   Size = 2,
                },
                new Core.Models.CompartmentSet
                {
                    FifoStartDate = now.AddDays(-3),
                    Availability = 303,
                    RemainingCapacity = 500,
-                   Size = 3
+                   Size = 3,
                },
                new Core.Models.CompartmentSet
                {
                    FifoStartDate = now.AddDays(-2),
                    Availability = 300,
                    RemainingCapacity = 500,
-                   Size = 4
-               }
+                   Size = 4,
+               },
             }.AsQueryable();
 
             #endregion

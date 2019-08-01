@@ -9,7 +9,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Layout
+namespace Ferretto.WMS.App.Modules.Layout
 {
     public class LoginViewModel : BaseServiceNavigationViewModel
     {
@@ -35,7 +35,12 @@ namespace Ferretto.WMS.Modules.Layout
 
         public LoginViewModel()
         {
+#if DEBUG
+            this.User = new User { Login = "admin" };
+#else
             this.User = new User();
+#endif
+
             this.LoginCheck = App.Resources.Layout.Access;
             this.IsBusy = false;
             this.IsEnabled = true;

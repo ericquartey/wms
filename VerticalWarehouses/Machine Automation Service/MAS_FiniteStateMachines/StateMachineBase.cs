@@ -1,19 +1,18 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.FiniteStateMachines
 {
     public abstract class StateMachineBase : IStateMachine
     {
         #region Fields
-
-        protected readonly ILogger Logger;
 
         private bool disposed;
 
@@ -21,9 +20,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        protected StateMachineBase(IEventAggregator eventAggregator, ILogger logger)
+        protected StateMachineBase(
+            IEventAggregator eventAggregator,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory == null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.Logger = logger;
+            this.ServiceScopeFactory = serviceScopeFactory;
             this.EventAggregator = eventAggregator;
         }
 
@@ -40,9 +53,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Properties
 
+        public IServiceScopeFactory ServiceScopeFactory { get; }
+
         protected IState CurrentState { get; set; }
 
         protected IEventAggregator EventAggregator { get; }
+
+        protected ILogger Logger { get; }
 
         #endregion
 
@@ -51,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-            lock (CurrentState)
+            lock (this.CurrentState)
             {
                 this.CurrentState = newState;
                 this.CurrentState.Start();

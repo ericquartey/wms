@@ -17,6 +17,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public int? AverageWeight { get; set; }
 
+        [Unique]
         public string Code { get; set; }
 
         public int CompartmentsCount { get; set; }
@@ -68,7 +69,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MeasureUnitId { get; set; }
 
-        public int MissionsCount { get; set; }
+        public int MissionOperationsCount { get; set; }
 
         public string Note { get; set; }
 

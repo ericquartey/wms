@@ -6,6 +6,6 @@ namespace Ferretto.WMS.Data.Hubs.Models
 
         Updated,
 
-        Deleted
+        Deleted,
     }
 }

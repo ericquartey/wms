@@ -1,8 +1,8 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
-namespace Ferretto.VW.MAS_Utils.Messages.FieldData
+namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterExceptionFieldMessageData : IInverterExceptionFieldMessageData
     {

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomControlMainWindowUserComboBoxItem.xaml
@@ -12,9 +12,16 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty CustomCommandProperty = DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(CustomControlMainWindowUserComboBoxItem));
+        public static readonly DependencyProperty CustomCommandProperty = DependencyProperty.Register(
+            "CustomCommand",
+            typeof(ICommand),
+            typeof(CustomControlMainWindowUserComboBoxItem));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomControlMainWindowUserComboBoxItem), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+            "LabelText",
+            typeof(string),
+            typeof(CustomControlMainWindowUserComboBoxItem),
+            new PropertyMetadata(string.Empty));
 
         #endregion
 

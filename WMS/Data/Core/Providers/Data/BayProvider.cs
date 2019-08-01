@@ -19,9 +19,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             Id = b.Id,
             LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
             LoadingUnitsBufferUsage = b.Missions.Count(
-                       m => m.Status != Common.DataModels.MissionStatus.Completed
+                       m => m.Operations.Any(o =>
+                       o.Status != Common.DataModels.MissionOperationStatus.Completed
                        &&
-                       m.Status != Common.DataModels.MissionStatus.Incomplete)
+                       o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
         };
 
         #endregion

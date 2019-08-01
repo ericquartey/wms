@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<bool> IsValidAsync(User user);
+        UserClaims Authenticate(string userName, string password);
 
         #endregion
     }

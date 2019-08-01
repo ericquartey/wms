@@ -1,4 +1,7 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using System;
+using CommonServiceLocator;
+using DevExpress.Mvvm.Native;
+using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.WMS.App.Controls.Services
 {
@@ -12,38 +15,59 @@ namespace Ferretto.WMS.App.Controls.Services
 
         Warning,
 
-        Success
+        Success,
     }
 
     public class StatusPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent
     {
+        #region Fields
+
+        private readonly INotificationDialogService notificationDialogService = ServiceLocator.Current.GetInstance<INotificationDialogService>();
+
+        #endregion
+
         #region Constructors
 
-        public StatusPubSubEvent(string message = null, StatusType type = StatusType.Info)
+        public StatusPubSubEvent(
+            string message = null,
+            StatusType type = StatusType.Info,
+            NotificationFlowDirection flowDirection = NotificationFlowDirection.RightBottom)
         {
             this.Type = type;
             this.Message = message?
-                .Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .ConcatStringsWithDelimiter(" ");
+            if (!string.IsNullOrEmpty(message))
+            {
+                this.ShowNotification(type, message, flowDirection);
+            }
         }
 
-        public StatusPubSubEvent(System.Exception exception, StatusType type = StatusType.Error)
+        public StatusPubSubEvent(
+            string title,
+            string description,
+            StatusType type = StatusType.Info,
+            NotificationFlowDirection flowDirection = NotificationFlowDirection.RightBottom)
+                : this(
+                    description != null ? $"{title}{Environment.NewLine}{description}" : title,
+                    type,
+                    flowDirection)
         {
-            if (exception == null)
-            {
-                throw new System.ArgumentNullException(nameof(exception));
-            }
+        }
 
-            this.Exception = exception;
+        public StatusPubSubEvent(Exception exception, StatusType type = StatusType.Error)
+        {
+            this.Exception = exception ?? throw new ArgumentNullException(nameof(exception));
             this.Type = type;
             this.Message = exception.Message
-                .Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)[0];
         }
 
         #endregion
 
         #region Properties
 
-        public System.Exception Exception { get; }
+        public Exception Exception { get; }
 
         public bool? IsSchedulerOnline { get; set; }
 
@@ -52,6 +76,23 @@ namespace Ferretto.WMS.App.Controls.Services
         public string Token { get; }
 
         public StatusType Type { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        private void ShowNotification(StatusType statusType, string message, NotificationFlowDirection notificationFlowDirection)
+        {
+            var notificationConfiguration = NotificationConfiguration.DefaultConfiguration;
+            notificationConfiguration.NotificationFlowDirection = notificationFlowDirection;
+            var newNotification = new Notification
+            {
+                Message = message,
+                Mode = statusType,
+            };
+
+            this.notificationDialogService.ShowNotificationWindow(newNotification, notificationConfiguration);
+        }
 
         #endregion
     }

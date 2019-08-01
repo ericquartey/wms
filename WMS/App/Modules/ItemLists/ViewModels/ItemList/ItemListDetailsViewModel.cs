@@ -13,7 +13,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.ItemLists
+namespace Ferretto.WMS.App.Modules.ItemLists
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemList))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow), false)]
@@ -172,9 +172,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(
-                    Errors.UnableToSaveChanges,
-                    StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
         }
 
@@ -189,7 +191,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             return result.Success;
@@ -230,9 +236,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(
-                    Errors.UnableToSaveChanges,
-                    StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -346,7 +354,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
-                        Id = this.Model.Id
+                        Id = this.Model.Id,
                     });
 
                 this.IsBusy = false;
@@ -368,7 +376,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
-                        Id = this.SelectedItemListRow.Id
+                        Id = this.SelectedItemListRow.Id,
                     });
 
                 this.IsBusy = false;

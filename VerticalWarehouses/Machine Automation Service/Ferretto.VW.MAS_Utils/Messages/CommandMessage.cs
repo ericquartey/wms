@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS_Utils.Messages
+namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class CommandMessage
     {

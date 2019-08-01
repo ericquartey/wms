@@ -14,7 +14,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
@@ -235,7 +235,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             return result.Success;
@@ -274,7 +278,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -358,7 +366,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             this.IsAddAreaShown = false;
@@ -395,7 +407,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = true;
@@ -464,7 +480,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPICK,
                 new
                 {
-                    Id = this.Model.Id
+                    Id = this.Model.Id,
                 });
         }
 
@@ -481,7 +497,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPUT,
                 new
                 {
-                    Id = this.Model.Id
+                    Id = this.Model.Id,
                 });
         }
 

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.CommonUtils.DTOs;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     public partial class TestController
     {
@@ -17,69 +17,30 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private void BayNowServiceableMethod()
         {
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.OperationEnd));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionOperationCompleted, MessageStatus.OperationEnd));
         }
 
         private async Task ExecuteHomingMethod()
         {
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                            .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                null,
+                "Homing Started",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing,
+                MessageStatus.OperationStart));
+
             await Task.Delay(2000);
 
-            return;
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                null,
+                "Switching Engine Started",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.SwitchAxis,
+                MessageStatus.OperationEnd));
 
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
             await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(2000);
-
-            //TEMP this.eventAggregator.GetEvent<NotificationEvent>()
-            //TEMP     .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
-            //TEMP await Task.Delay(2000);
-
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(4000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(4000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
         }
 
         private async Task ExecuteResolutionCalibrationMethod(decimal readInitialPosition, decimal readFinalPosition)
@@ -89,33 +50,50 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             await Task.Delay(2000);
             resolutionCalibrationMessageData.Resolution = 1.0001m;
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(resolutionCalibrationMessageData,
-                "Resolution Calibration Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationEnd));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                resolutionCalibrationMessageData,
+                "Resolution Calibration Ended",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.ResolutionCalibration,
+                MessageStatus.OperationEnd));
         }
 
         private async Task ExecuteShutterPositioningMovementMethod()
         {
             var speedRate = 1.2m;
-            var dto = new ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection.Up, 1);
+            var dto = new ShutterPositioningMovementMessageDataDto(ShutterMovementDirection.Up, 1);
             dto.ShutterType = ShutterType.NoType;
             var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate);
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
-                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                dataInterface,
+                "Shutter Positioning Started",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.ShutterPositioning,
                 MessageStatus.OperationStart));
 
             await Task.Delay(2000);
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                dataInterface,
+                "Shutter Positioning Completed",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.ShutterPositioning,
                 MessageStatus.OperationEnd));
         }
 
         private void ExecuteStopHomingMethod()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                            MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
-                            MessageVerbosity.Info));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(
+                null,
+                "Stop Homing",
+                MessageActor.FiniteStateMachines,
+                MessageActor.AutomationService,
+                MessageType.Stop,
+                MessageVerbosity.Info));
         }
 
         private ActionResult<decimal> GetDecimalConfigurationParameterMethod(string parameter)
@@ -182,7 +160,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     }
             }
 
-            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync(longParameter, longCategory);
+            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValue(longParameter, longCategory);
 
             return this.Ok(returnValue);
         }
@@ -207,28 +185,45 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var bayNumber = 2; var speed = 100;
             var dataInterface = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                dataInterface,
                 "Simulated Shutter Error",
-                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+                 MessageActor.AutomationService,
+                 MessageActor.FiniteStateMachines,
+                 MessageType.ShutterControl,
                  MessageStatus.OperationError));
         }
 
         private async Task StartShutterControlMethod()
         {
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Started",
-                             MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
-                            MessageStatus.OperationStart));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                null,
+                "Shutter Started",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.ShutterControl,
+                MessageStatus.OperationStart));
+
             await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
+                null,
+                "Shutter Completed",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.ShutterControl,
                 MessageStatus.OperationEnd));
         }
 
         private void StopFiniteStateMachineMethod()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
-                            MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
-                            MessageVerbosity.Info));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(
+                null,
+                "Stop Homing",
+                MessageActor.FiniteStateMachines,
+                MessageActor.AutomationService,
+                MessageType.Stop,
+                MessageVerbosity.Info));
         }
 
         private async Task UpdateCurrentPositionTestMethod()
@@ -238,30 +233,37 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(50m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(100m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(150m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(200m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(250m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(300m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
             await Task.Delay(1000);
+
             positionData = new CurrentPositionMessageData(350m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));

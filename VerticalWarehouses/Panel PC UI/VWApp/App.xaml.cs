@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows;
-using NLog;
+﻿using NLog;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.App
 {
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         #region Fields
 
@@ -24,43 +22,33 @@ namespace Ferretto.VW.VWApp
 
         #region Properties
 
-        public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
+        public System.Windows.Window InstallationAppMainWindowInstance { get; set; }
 
-        public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
+        public Prism.Mvvm.BindableBase InstallationAppMainWindowViewModel { get; set; }
 
         public bool MachineOk { get; set; }
 
-        public OperatorApp.MainWindow OperatorAppMainWindowInstance { get; set; }
-
-        public Skin Skin { get; set; } = Skin.Dark;
+        public System.Windows.Window OperatorAppMainWindowInstance { get; set; }
 
         #endregion
 
         #region Methods
 
-        public void ChangeSkin()
-        {
-            (Current as App).Resources.MergedDictionaries.Clear();
-            var skinDictionary = new ResourceDictionary();
-            if ((Current as App).Skin == Skin.Light)
-            {
-                (Current as App).Skin = Skin.Dark;
-                skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/DarkSkin.xaml", UriKind.Relative);
-            }
-            else
-            {
-                (Current as App).Skin = Skin.Light;
-                skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml", UriKind.Relative);
-            }
-            (Current as App).Resources.MergedDictionaries.Add(skinDictionary);
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            this.ForceItalianLanguage();
+
             var bootstrapper = new Bootstrapper();
 
             bootstrapper.Run();
+        }
+
+        private void ForceItalianLanguage()
+        {
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
         }
 
         private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
@@ -71,8 +59,3 @@ namespace Ferretto.VW.VWApp
         #endregion
     }
 }
-
-
-
-
-public enum Skin { Light, Dark, Medium }

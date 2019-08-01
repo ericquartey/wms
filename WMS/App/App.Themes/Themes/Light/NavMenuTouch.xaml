@@ -3,12 +3,12 @@
                     xmlns:ctrls="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-                    xmlns:dxcop="clr-namespace:DevExpress.Xpf.Controls.Primitives;assembly=DevExpress.Xpf.Controls.v18.2"
+                    xmlns:dxcop="clr-namespace:DevExpress.Xpf.Controls.Primitives;assembly=DevExpress.Xpf.Controls.v19.1"
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxei="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
                     xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
-                    xmlns:dxnavi="clr-namespace:DevExpress.Xpf.Navigation.Internal;assembly=DevExpress.Xpf.Controls.v18.2"
+                    xmlns:dxnavi="clr-namespace:DevExpress.Xpf.Navigation.Internal;assembly=DevExpress.Xpf.Controls.v19.1"
                     xmlns:dxwuit="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys"
                     xmlns:themeKeys="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys">
 
@@ -26,130 +26,131 @@
                             <dxei:IndicatorDirectionToVisibilityConverter x:Key="IndicatorDirectionToVisibilityConverter" />
                         </dxcop:FlyoutAdornerContentControl.Resources>
                         <Canvas x:Name="PART_Canvas">
-                            <ContentControl x:Name="PART_cc"
+                            <ctrls:NavMenuFlyoutContentControl x:Name="PART_cc"
                                             Focusable="False">
-                                <Grid x:Name="PART_RenderGrid"
-                                      Margin="0,0,0,0"
-                                      FlowDirection="LeftToRight">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border x:Name="PART_Container"
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Stretch"
-                                            Background="{DynamicResource CommonSecondaryMedium}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}">
-                                        <dxe:FlyoutContainerControl Margin="{TemplateBinding Padding}"
-                                                                    Content="{TemplateBinding Content}"
-                                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                    FlowDirection="{TemplateBinding FlowDirection}"
-                                                                    Focusable="False"
-                                                                    Style="{TemplateBinding ContainerStyle}" />
-                                    </Border>
-                                    <Grid x:Name="LeftIndicator"
-                                          Grid.RowSpan="3"
-                                          Grid.Column="0"
-                                          Margin="0,4"
-                                          VerticalAlignment="Top"
-                                          Visibility="{Binding Path=IndicatorDirection, Converter={StaticResource IndicatorDirectionToVisibilityConverter}, ConverterParameter=Left, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Path Width="13"
-                                              Height="26"
-                                              Data="F1 M 13,0L 0,13L 13,26L 13,0 Z "
-                                              Fill="{Binding PlacementTarget.BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                              Stretch="Fill" />
-                                        <Path Width="13"
-                                              Height="26"
-                                              Data="F1 M 13,0L 0,13L 13,26L 13,0 Z "
-                                              Fill="{Binding PlacementTarget.BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                              Stretch="Fill" />
-                                        <Path Width="13"
-                                              Height="26"
-                                              Margin="1,0,-1,0"
-                                              Data="F1 M 13,0L 0,13L 13,26L 13,0 Z "
-                                              Fill="{Binding PlacementTarget.BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                              Stretch="Fill" />
-                                    </Grid>
-                                    <Grid x:Name="TopIndicator"
-                                          Grid.Row="0"
-                                          Grid.ColumnSpan="3"
-                                          Margin="4,0"
-                                          HorizontalAlignment="Left"
-                                          Visibility="Collapsed">
+                                <Grid Focusable="False">
+                                    <Grid x:Name="PART_RenderGrid" Visibility="Hidden" />
+                                    <Grid FlowDirection="LeftToRight">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border x:Name="PART_Container"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Stretch"
+                                                Background="{DynamicResource CommonSecondaryMedium}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <dxe:FlyoutContainerControl Margin="{TemplateBinding Padding}"
+                                                                        Content="{TemplateBinding Content}"
+                                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                        FlowDirection="{TemplateBinding FlowDirection}"
+                                                                        Focusable="False"
+                                                                        Style="{TemplateBinding ContainerStyle}" />
+                                        </Border>
+                                        <Grid x:Name="LeftIndicator"
+                                              Grid.RowSpan="3"
+                                              Grid.Column="0"
+                                              Margin="0,4"
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding Path=IndicatorDirection, Converter={StaticResource IndicatorDirectionToVisibilityConverter}, ConverterParameter=Left, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Path Width="13"
+                                                  Height="26"
+                                                  Data="F1 M 13,0L 0,13L 13,26L 13,0 Z "
+                                                  Fill="{Binding PlacementTarget.BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Stretch="Fill" />
+                                            <Path Width="13"
+                                                  Height="26"
+                                                  Data="F1 M 13,0L 0,13L 13,26L 13,0 Z "
+                                                  Fill="{Binding PlacementTarget.BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Stretch="Fill" />
+                                            <Path Width="13"
+                                                  Height="26"
+                                                  Margin="1,0,-1,0"
+                                                  Data="F1 M 13,0L 0,13L 13,26L 13,0 Z "
+                                                  Fill="{Binding PlacementTarget.BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Stretch="Fill" />
+                                        </Grid>
+                                        <Grid x:Name="TopIndicator"
+                                              Grid.Row="0"
+                                              Grid.ColumnSpan="3"
+                                              Margin="4,0"
+                                              HorizontalAlignment="Left"
+                                              Visibility="Collapsed">
 
-                                        <Path Width="26"
-                                              Height="13"
-                                              Data="F1 M 26,13L 13,0L 1.23978e-005,13L 26,13 Z "
-                                              Fill="DarkRed"
-                                              Stretch="Fill" />
-                                        <Path Width="26"
-                                              Height="13"
-                                              Data="F1 M 26,13L 13,0L 1.23978e-005,13L 26,13 Z "
-                                              Fill="DarkRed"
-                                              Stretch="Fill" />
-                                        <Path Width="26"
-                                              Height="13"
-                                              Margin="0,1,0,-1"
-                                              Data="F1 M 26,13L 13,0L 1.23978e-005,13L 26,13 Z "
-                                              Fill="Red"
-                                              Stretch="Fill" />
-                                    </Grid>
-                                    <Grid x:Name="RightIndicator"
-                                          Grid.RowSpan="3"
-                                          Grid.Column="2"
-                                          Margin="0,4"
-                                          VerticalAlignment="Top"
-                                          Visibility="{Binding Path=IndicatorDirection, Converter={StaticResource IndicatorDirectionToVisibilityConverter}, ConverterParameter=Right, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Path Width="13"
-                                              Height="26"
-                                              Data="F1 M 1.90735e-006,26.0001L 13,13.0001L 1.90735e-006,6.10352e-005L 1.90735e-006,26.0001 Z "
-                                              Fill="DarkRed"
-                                              Stretch="Fill" />
-                                        <Path Width="13"
-                                              Height="26"
-                                              Data="F1 M 1.90735e-006,26.0001L 13,13.0001L 1.90735e-006,6.10352e-005L 1.90735e-006,26.0001 Z "
-                                              Fill="DarkRed"
-                                              Stretch="Fill" />
-                                        <Path Width="13"
-                                              Height="26"
-                                              Margin="-1,0,1,0"
-                                              Data="F1 M 1.90735e-006,26.0001L 13,13.0001L 1.90735e-006,6.10352e-005L 1.90735e-006,26.0001 Z "
-                                              Fill="Red"
-                                              Stretch="Fill" />
-                                    </Grid>
-                                    <Grid x:Name="BottomIndicator"
-                                          Grid.Row="2"
-                                          Grid.ColumnSpan="3"
-                                          Margin="4,0"
-                                          HorizontalAlignment="Left"
-                                          Visibility="{Binding Path=IndicatorDirection, Converter={StaticResource IndicatorDirectionToVisibilityConverter}, ConverterParameter=Bottom, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Path Width="26"
-                                              Height="13"
-                                              Data="F1 M -1.04904e-005,0L 13,13L 26,0L -1.04904e-005,0 Z "
-                                              Fill="DarkRed"
-                                              Stretch="Fill" />
-                                        <Path Width="26"
-                                              Height="13"
-                                              Data="F1 M -1.04904e-005,0L 13,13L 26,0L -1.04904e-005,0 Z "
-                                              Fill="DarkRed"
-                                              Stretch="Fill" />
-                                        <Path Width="26"
-                                              Height="13"
-                                              Margin="0,-1,0,1"
-                                              Data="F1 M -1.04904e-005,0L 13,13L 26,0L -1.04904e-005,0 Z "
-                                              Fill="Red"
-                                              Stretch="Fill" />
+                                            <Path Width="26"
+                                                  Height="13"
+                                                  Data="F1 M 26,13L 13,0L 1.23978e-005,13L 26,13 Z "
+                                                  Fill="DarkRed"
+                                                  Stretch="Fill" />
+                                            <Path Width="26"
+                                                  Height="13"
+                                                  Data="F1 M 26,13L 13,0L 1.23978e-005,13L 26,13 Z "
+                                                  Fill="DarkRed"
+                                                  Stretch="Fill" />
+                                            <Path Width="26"
+                                                  Height="13"
+                                                  Margin="0,1,0,-1"
+                                                  Data="F1 M 26,13L 13,0L 1.23978e-005,13L 26,13 Z "
+                                                  Fill="Red"
+                                                  Stretch="Fill" />
+                                        </Grid>
+                                        <Grid x:Name="RightIndicator"
+                                              Grid.RowSpan="3"
+                                              Grid.Column="2"
+                                              Margin="0,4"
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding Path=IndicatorDirection, Converter={StaticResource IndicatorDirectionToVisibilityConverter}, ConverterParameter=Right, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Path Width="13"
+                                                  Height="26"
+                                                  Data="F1 M 1.90735e-006,26.0001L 13,13.0001L 1.90735e-006,6.10352e-005L 1.90735e-006,26.0001 Z "
+                                                  Fill="DarkRed"
+                                                  Stretch="Fill" />
+                                            <Path Width="13"
+                                                  Height="26"
+                                                  Data="F1 M 1.90735e-006,26.0001L 13,13.0001L 1.90735e-006,6.10352e-005L 1.90735e-006,26.0001 Z "
+                                                  Fill="DarkRed"
+                                                  Stretch="Fill" />
+                                            <Path Width="13"
+                                                  Height="26"
+                                                  Margin="-1,0,1,0"
+                                                  Data="F1 M 1.90735e-006,26.0001L 13,13.0001L 1.90735e-006,6.10352e-005L 1.90735e-006,26.0001 Z "
+                                                  Fill="Red"
+                                                  Stretch="Fill" />
+                                        </Grid>
+                                        <Grid x:Name="BottomIndicator"
+                                              Grid.Row="2"
+                                              Grid.ColumnSpan="3"
+                                              Margin="4,0"
+                                              HorizontalAlignment="Left"
+                                              Visibility="{Binding Path=IndicatorDirection, Converter={StaticResource IndicatorDirectionToVisibilityConverter}, ConverterParameter=Bottom, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Path Width="26"
+                                                  Height="13"
+                                                  Data="F1 M -1.04904e-005,0L 13,13L 26,0L -1.04904e-005,0 Z "
+                                                  Fill="DarkRed"
+                                                  Stretch="Fill" />
+                                            <Path Width="26"
+                                                  Height="13"
+                                                  Data="F1 M -1.04904e-005,0L 13,13L 26,0L -1.04904e-005,0 Z "
+                                                  Fill="DarkRed"
+                                                  Stretch="Fill" />
+                                            <Path Width="26"
+                                                  Height="13"
+                                                  Margin="0,-1,0,1"
+                                                  Data="F1 M -1.04904e-005,0L 13,13L 26,0L -1.04904e-005,0 Z "
+                                                  Fill="Red"
+                                                  Stretch="Fill" />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </ContentControl>
+                            </ctrls:NavMenuFlyoutContentControl>
                         </Canvas>
                     </dxcop:FlyoutAdornerContentControl>
                 </ControlTemplate>

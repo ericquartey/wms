@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_IODriver
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.IODriver
 {
-    public partial class  HostedSHDIoDriver : BackgroundService
+    public class HostedSHDIoDriver : BackgroundService
     {
         #region Fields
 
@@ -26,11 +29,11 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfiguration configuration;
+
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
-
-        private readonly IVertimagConfiguration vertimagConfiguration;
 
         private readonly Dictionary<IoIndex, IIoDevice> ioDevices;
 
@@ -40,6 +43,8 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task notificationReceiveTask;
 
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
+
         private bool disposed;
 
         private CancellationToken stoppingToken;
@@ -48,10 +53,12 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedSHDIoDriver(IEventAggregator eventAggregator,
-            IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration,
-            ILogger<HostedSHDIoDriver> logger)
+        public HostedSHDIoDriver(
+            IEventAggregator eventAggregator,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
+            ILogger<HostedSHDIoDriver> logger,
+            IConfiguration configuration)
         {
             logger.LogTrace("1:Method Start");
 
@@ -59,6 +66,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.vertimagConfiguration = vertimagConfiguration;
+            this.configuration = configuration;
 
             this.ioDevices = new Dictionary<IoIndex, IIoDevice>();
 
@@ -93,7 +101,7 @@ namespace Ferretto.VW.MAS_IODriver
 
             if (disposing)
             {
-                base.Dispose();
+                this.Dispose();
             }
 
             this.disposed = true;
@@ -147,6 +155,7 @@ namespace Ferretto.VW.MAS_IODriver
                             case (byte)IoIndex.IoDevice1:
                                 this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
                                 break;
+
                             default:
                                 break;
                         }
@@ -162,10 +171,63 @@ namespace Ferretto.VW.MAS_IODriver
                         this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
+                    case FieldMessageType.ResetSecurity:
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        break;
+
                     default:
                         break;
                 }
-            }while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private void InitializeIoDevice()
+        {
+            var ioDevicesList = this.vertimagConfiguration.GetInstalledIoList();
+            IIoDevice ioDevice = null;
+
+            var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
+
+            foreach (var ioIndex in ioDevicesList)
+            {
+                ISHDTransport transport;
+                if (!useMockedTransport)
+                {
+                    transport = new SHDTransport();
+                }
+                else
+                {
+                    transport = new SHDTransportMock();
+                }
+
+                switch (ioIndex)
+                {
+                    case IoIndex.IoDevice1:
+                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
+
+                        break;
+
+                    case IoIndex.IoDevice2:
+                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
+
+                        break;
+
+                    case IoIndex.IoDevice3:
+                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
+                        var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
+                        ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
+
+                        break;
+                }
+
+                this.ioDevices.Add(ioIndex, ioDevice);
+            }
         }
 
         private void InitializeMethodSubscriptions()
@@ -173,7 +235,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogTrace("1:Commands Subscription");
 
             var commandEvent = this.eventAggregator.GetEvent<FieldCommandEvent>();
-            commandEvent.Subscribe(commandMessage => { this.commandQueue.Enqueue(commandMessage); },
+            commandEvent.Subscribe(
+                commandMessage => { this.commandQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
                 false,
                 commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any);
@@ -181,7 +244,8 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogTrace("1:Notifications Subscription");
 
             var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
-            notificationEvent.Subscribe(notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
+            notificationEvent.Subscribe(
+                notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
                 false,
                 notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
@@ -207,10 +271,14 @@ namespace Ferretto.VW.MAS_IODriver
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
-                        await this.InitializeIoDevice();
+                        this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
-                        this.ioDevices[IoIndex.IoDevice1].ExecuteIoPowerUp();
-                        this.ioDevices[IoIndex.IoDevice2].ExecuteIoPowerUp();
+
+                        // TODO: remove next loop. the machine must not be on march when started
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
                         break;
 
@@ -224,15 +292,8 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private async Task StartHardwareCommunications()
-        {
-            foreach (var device in this.ioDevices.Values)
-            {
-                device.StartHardwareCommunications();
             }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void SendMessage(IFieldMessageData messageData)
@@ -249,35 +310,11 @@ namespace Ferretto.VW.MAS_IODriver
             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
         }
 
-        private async Task InitializeIoDevice()
+        private async Task StartHardwareCommunications()
         {
-            var ioDevicesList = await this.vertimagConfiguration.GetInstalledIoListAsync();
-            IIoDevice ioDevice = null;
-
-            foreach (var ioIndex in ioDevicesList )
+            foreach (var device in this.ioDevices.Values)
             {
-                switch (ioIndex)
-                {
-                    case IoIndex.IoDevice1:
-                        var ipAddressDevice1 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice1 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
-                        break;
-
-                    case IoIndex.IoDevice2:
-                        var ipAddressDevice2 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice2 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
-                        break;
-
-                    case IoIndex.IoDevice3:
-                        var ipAddressDevice3 = await this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice3 = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
-                        ioDevice = new IoDevice(this.eventAggregator, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
-                        break;
-                }
-
-                this.ioDevices.Add(ioIndex, ioDevice);
+                await device.StartHardwareCommunications();
             }
         }
 

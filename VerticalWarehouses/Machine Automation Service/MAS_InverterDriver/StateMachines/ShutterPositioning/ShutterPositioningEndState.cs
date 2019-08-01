@@ -1,37 +1,35 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningEndState : InverterStateBase
     {
         #region Fields
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private bool disposed;
+        private readonly bool stopRequested;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
+        public ShutterPositioningEndState(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            IInverterShutterPositioningFieldMessageData shutterPositionData,
+            ILogger logger,
+            bool stopRequested = false)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
             this.shutterPositionData = shutterPositionData;
+            this.stopRequested = stopRequested;
         }
 
         #endregion
@@ -47,49 +45,44 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        public override void Release()
+        {
+        }
+
         public override void Start()
         {
-            var endNotification = new FieldNotificationMessage(this.shutterPositionData,
+            var endNotification = new FieldNotificationMessage(
+                this.shutterPositionData,
                 "Shutter Positioning complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver, // Any
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.ShutterPositioning,
-                MessageStatus.OperationEnd);
+                (this.stopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

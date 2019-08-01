@@ -9,9 +9,8 @@ using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
-using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
@@ -34,7 +33,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Constructors
 
         public ItemsViewModel(IDataSourceService dataSourceService)
-            : base(dataSourceService)
+                    : base(dataSourceService)
         {
         }
 
@@ -43,7 +42,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand PickItemCommand => this.pickItemCommand ??
-            (this.pickItemCommand = new DelegateCommand(
+            (this.pickItemCommand = new Prism.Commands.DelegateCommand(
                     this.PickItem,
                     this.CanPickItem)
                 .ObservesProperty(() => this.CurrentItem));
@@ -55,7 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand PutItemCommand => this.putItemCommand ??
-                    (this.putItemCommand = new DelegateCommand(
+                    (this.putItemCommand = new Prism.Commands.DelegateCommand(
                     this.PutItem,
                     this.CanPutItem)
                 .ObservesProperty(() => this.CurrentItem));
@@ -103,7 +102,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
         }
 
@@ -130,7 +133,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPICK,
                 new
                 {
-                    Id = this.CurrentItem.Id
+                    Id = this.CurrentItem.Id,
                 });
         }
 
@@ -147,7 +150,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMPUT,
                 new
                 {
-                    Id = this.CurrentItem.Id
+                    Id = this.CurrentItem.Id,
                 });
         }
 

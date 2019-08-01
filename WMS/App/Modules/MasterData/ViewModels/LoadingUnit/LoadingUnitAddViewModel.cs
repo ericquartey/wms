@@ -6,7 +6,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class LoadingUnitAddViewModel : CreateViewModel<LoadingUnitDetails>
     {
@@ -43,7 +43,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        resultCreate.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = false;

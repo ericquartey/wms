@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class IoSHDWriteMessage
     {
@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS_IODriver
         private readonly byte[] configurationData;
 
         private readonly byte debounceInput = 0x32;
-
-        private readonly string ipAddress;
 
         private readonly bool[] outputs;
 
@@ -75,7 +73,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.outputs = new bool[TOTAL_OUTPUTS];
 
             // TODO Check arguments
-
             this.comTout = comTout;
             this.useSetupOutputLines = useSetupOutputLines;
             this.setupOutputLines = setupOutputLines;
@@ -83,9 +80,12 @@ namespace Ferretto.VW.MAS_IODriver
 
             var bytes = BitConverter.GetBytes(this.comTout);
             if (!BitConverter.IsLittleEndian)
+            {
                 Array.Reverse(bytes);
+            }
+
             Array.Copy(bytes, 0, this.configurationData, 0, sizeof(short));
-            this.configurationData[2] = (this.useSetupOutputLines) ? (byte)0x00 : (byte)0x01;
+            this.configurationData[2] = this.useSetupOutputLines ? (byte)0x01 : (byte)0x00;
             this.configurationData[3] = this.setupOutputLines;
             this.configurationData[4] = this.debounceInput;
         }
@@ -153,25 +153,27 @@ namespace Ferretto.VW.MAS_IODriver
 
             // nBytes
             telegram[0] = (byte)nBytesToSend;
+
             // Fw release
             telegram[1] = RELEASE_PROTOCOL_01;
+
             // Code op
             switch (this.codeOperation)
             {
                 case SHDCodeOperation.Data:
-                    telegram[2] = (byte)0x00;
+                    telegram[2] = 0x00;
                     break;
 
                 case SHDCodeOperation.Configuration:
-                    telegram[2] = (byte)0x01;
+                    telegram[2] = 0x01;
                     break;
 
                 case SHDCodeOperation.SetIP:
-                    telegram[2] = (byte)0x02;
+                    telegram[2] = 0x02;
                     break;
 
                 default:
-                    telegram[2] = (byte)0x00;
+                    telegram[2] = 0x00;
                     break;
             }
 
@@ -182,7 +184,7 @@ namespace Ferretto.VW.MAS_IODriver
                     telegram[3] = this.BoolArrayToByte(this.outputs);
 
                     // Configuration data
-                    Array.Copy(telegram, 4, this.configurationData, 0, this.configurationData.Length);
+                    Array.Copy(this.configurationData, 0, telegram, 4, this.configurationData.Length);
 
                     break;
 
@@ -195,7 +197,7 @@ namespace Ferretto.VW.MAS_IODriver
                     telegram[4] = this.BoolArrayToByte(this.outputs);
 
                     // Configuration data
-                    Array.Copy(telegram, 5, this.configurationData, 0, this.configurationData.Length);
+                    Array.Copy(this.configurationData, 0, telegram, 5, this.configurationData.Length);
 
                     break;
 
@@ -204,7 +206,7 @@ namespace Ferretto.VW.MAS_IODriver
                     telegram[3] = this.BoolArrayToByte(this.outputs);
 
                     // Configuration data
-                    Array.Copy(telegram, 4, this.configurationData, 0, this.configurationData.Length);
+                    Array.Copy(this.configurationData, 0, telegram, 4, this.configurationData.Length);
                     break;
             }
 
@@ -295,7 +297,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 if (el)
                 {
-                    value |= (byte)(1 << (index));
+                    value |= (byte)(1 << index);
                 }
                 index++;
             }

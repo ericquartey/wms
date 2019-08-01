@@ -1,14 +1,14 @@
 ﻿using System.Threading;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
     public class SwitchAxisStateMachine : IoStateMachineBase
     {
@@ -32,17 +32,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #region Constructors
 
-        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(
+            Axis axisToSwitchOn,
+            bool switchOffOtherAxis,
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.EventAggregator = eventAggregator;
             this.pulseOneTime = false;
-            this.Logger = logger;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion

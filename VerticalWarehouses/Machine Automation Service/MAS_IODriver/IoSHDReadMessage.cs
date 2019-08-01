@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class IoSHDReadMessage
     {
@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS_IODriver
         private const int TOTAL_OUTPUTS = 8;
 
         private readonly byte[] data;
-
-        private readonly byte errorCode;
 
         private readonly SHDFormatDataOperation formatDataOperation;
 

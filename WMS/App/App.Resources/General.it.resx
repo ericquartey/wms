@@ -210,8 +210,8 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filtra</value>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Applica Filtro</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Sì</value>

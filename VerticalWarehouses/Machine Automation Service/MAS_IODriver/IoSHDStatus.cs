@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS.IODriver.Enumerations;
 
-namespace Ferretto.VW.MAS_IODriver
+namespace Ferretto.VW.MAS.IODriver
 {
     public class IoSHDStatus
     {
@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const short COMTOUT_DEFAULT = 20000;
 
-        private const byte DEBOUNCE_INPUT_DEFAULT = 0x32;
+        private const byte DEBOUNCE_INPUT_DEFAULT = 0x23; // 35 ms
 
         private const byte RELEASE_FW_10 = 0x10;
 
@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS_IODriver
         private const int TOTAL_INPUTS = 16;
 
         private const int TOTAL_OUTPUTS = 8;
-
-        private readonly byte errorCode;
 
         private readonly bool[] inputs;
 
@@ -57,7 +55,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.setupOutputLines = SETUP_OUTPUTLINES_DEFAULT;
             this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
             this.useSetupOutputLines = false;
-            this.ipAddress = "";
+            this.ipAddress = string.Empty;
         }
 
         #endregion
@@ -99,11 +97,11 @@ namespace Ferretto.VW.MAS_IODriver
 
         public bool MushroomEmergency => this.inputs?[(int)IoPorts.MushroomEmergency] ?? false;
 
+        public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
+
         public bool[] OutputData => this.outputs;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
-
-        public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
 

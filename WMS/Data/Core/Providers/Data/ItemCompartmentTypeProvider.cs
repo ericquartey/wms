@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +15,21 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class ItemCompartmentTypeProvider : BaseProvider, IItemCompartmentTypeProvider
     {
+        #region Fields
+
+        private readonly IMapper mapper;
+
+        #endregion
+
         #region Constructors
 
-        public ItemCompartmentTypeProvider(DatabaseContext dataContext, INotificationService notificationService)
+        public ItemCompartmentTypeProvider(
+            DatabaseContext dataContext,
+            IMapper mapper,
+            INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
         }
 
         #endregion
@@ -48,14 +60,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.DataContext.ItemsCompartmentTypes.Add(
-                new Common.DataModels.ItemCompartmentType
-                {
-                    CompartmentTypeId = model.CompartmentTypeId,
-                    ItemId = model.ItemId,
-                    MaxCapacity = model.MaxCapacity
-                });
+                this.mapper.Map<Common.DataModels.ItemCompartmentType>(model));
 
-            if (await this.DataContext.SaveChangesAsync() <= 0)
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount <= 0)
             {
                 return new CreationErrorOperationResult<ItemCompartmentType>();
             }
@@ -138,7 +146,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Depth = ic.Depth,
                         Width = ic.Width,
                         CompartmentsCount = ic.Compartments.Count(),
-                        EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))
+                        EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0)),
                     })
                     .ToArrayAsync();
 
@@ -197,7 +205,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     CompartmentTypeId = ct.CompartmentTypeId,
                     ItemId = ct.ItemId,
-                    MaxCapacity = ct.MaxCapacity
+                    MaxCapacity = ct.MaxCapacity,
                 });
         }
 

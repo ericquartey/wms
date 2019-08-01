@@ -74,15 +74,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(this.Bay1.Id);
 
             #endregion
 
             #region Assert
 
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
-            var resultBay = (Bay)((OkObjectResult)actionResult.Result).Value;
-            Assert.AreEqual(1, resultBay.Id);
+
+            var bay = ((OkObjectResult)actionResult.Result).Value as Bay;
+            Assert.AreEqual(this.Bay1.Id, bay.Id);
 
             #endregion
         }
@@ -120,15 +121,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             #region Act
 
-            var actionResult = await controller.GetMachineByIdAsync(1);
+            var actionResult = await controller.GetMachineByIdAsync(this.Bay1.Id);
 
             #endregion
 
             #region Assert
 
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
-            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
-            Assert.AreEqual(1, resultMachine.Id);
+
+            var machine = ((OkObjectResult)actionResult.Result).Value as Machine;
+            Assert.AreEqual(this.Machine1.Id, machine.Id);
 
             #endregion
         }

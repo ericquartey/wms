@@ -1,47 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Ferretto.VW.CustomControls;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-using System.Net;
-using System.IO;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using System.Windows.Media;
-using System.Drawing;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
-    public class ItemDetailViewModel : BindableBase, IItemDetailViewModel
+    public class ItemDetailViewModel : BaseViewModel, IItemDetailViewModel
     {
         #region Fields
 
-        private TestArticle article;
-
-        private string articleCode;
-
-        private string articleDescription;
-
-        private IUnityContainer container;
-
-        private IEventAggregator eventAggregator;
+        private readonly IWmsImagesProvider wmsImagesProvider;
 
         private Image image;
 
-        private IWmsImagesProvider wmsImagesProvider;
+        private Item item;
 
         #endregion
 
         #region Constructors
 
-        public ItemDetailViewModel(IEventAggregator eventAggregator)
+        public ItemDetailViewModel(
+            IWmsImagesProvider wmsImagesProvider)
         {
-            this.eventAggregator = eventAggregator;
+            if (wmsImagesProvider == null)
+            {
+                throw new System.ArgumentNullException(nameof(wmsImagesProvider));
+            }
+
+            this.wmsImagesProvider = wmsImagesProvider;
+
             this.NavigationViewModel = null;
         }
 
@@ -49,59 +39,44 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #region Properties
 
-        public TestArticle Article
-        {
-            get => this.article;
-            set
-            {
-                this.article = value;
-                this.articleCode = this.article.Article;
-                this.articleDescription = this.article.Description;
-            }
-        }
-
-        public string ArticleCode { get => this.articleCode; set => this.SetProperty(ref this.articleCode, value); }
-
-        public string ArticleDescription { get => this.articleDescription; set => this.SetProperty(ref this.articleDescription, value); }
-
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
+        public Item Item
+        {
+            get => this.item;
+            set
+            {
+                this.item = value;
+            }
+        }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override void ExitFromViewMethod()
         {
-            this.image?.Dispose();
             this.Image?.Dispose();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public override async Task OnEnterViewAsync()
         {
-            this.container = container;
-            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
+            var searchViewModel = ServiceLocator.Current.GetInstance<IItemSearchViewModel>();
+
+            if (searchViewModel != null &&
+                searchViewModel.SelectedItem != null)
+            {
+                this.Item = searchViewModel.SelectedItem;
+                await this.LoadImage(this.item.Code);
+            }
         }
 
-        public async Task OnEnterViewAsync()
+        private async Task LoadImage(string code)
         {
-            this.image?.Dispose();
             this.Image?.Dispose();
-            this.image = null;
             this.Image = null;
-            var stream = await this.wmsImagesProvider.GetImageAsync(this.Article.ImageCode);
+            var stream = await this.wmsImagesProvider.GetImageAsync(code);
             this.Image = Image.FromStream(stream);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

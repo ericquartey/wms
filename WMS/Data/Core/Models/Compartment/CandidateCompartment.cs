@@ -1,8 +1,10 @@
 using System;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Compartment))]
     public class CandidateCompartment : BaseModel<int>, IOrderableCompartment
     {
         #region Properties
@@ -53,6 +55,14 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Sub2 { get; set; }
 
+        [PositiveOrZero]
+        public int OtherMissionOperationCount { get; set; }
+
+        [PositiveOrZero]
+        public int PickMissionOperationCount { get; set; }
+
+        [PositiveOrZero]
+        public int PutMissionOperationCount { get; set; }
         #endregion
     }
 }

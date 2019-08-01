@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
@@ -16,6 +18,8 @@ namespace Ferretto.WMS.Data.Core.Providers
     internal partial class CompartmentProvider : BaseProvider, ICompartmentProvider
     {
         #region Fields
+
+        private readonly IMapper mapper;
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
@@ -29,12 +33,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public CompartmentProvider(
             DatabaseContext dataContext,
+            IMapper mapper,
             ICompartmentTypeProvider compartmentTypeProvider,
             ILoadingUnitProvider loadingUnitProvider,
             IGlobalSettingsProvider globalSettingsProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.loadingUnitProvider = loadingUnitProvider;
             this.globalSettingsProvider = globalSettingsProvider;
@@ -60,6 +66,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Resources.Errors.CompartmentPositionAndSizeMustBeSpecified);
             }
 
+            var validationError = model.ValidateBusinessModel(this.DataContext.Compartments);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<CompartmentDetails>(
+                    validationError,
+                    model);
+            }
+
             var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
             if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
             {
@@ -68,14 +82,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
-            var existingCompartents = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
+            var existingCompartments = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
             var errors = model.GetValidationMessages();
             if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
 
-            if (!model.CanAddToLoadingUnit(existingCompartents, loadingUnit))
+            if (!model.CanAddToLoadingUnit(existingCompartments, loadingUnit))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(
                     Resources.Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
@@ -87,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     new CompartmentType
                     {
                         Width = model.Width,
-                        Depth = model.Depth
+                        Depth = model.Depth,
                     },
                     model.ItemId,
                     model.MaxCapacity);
@@ -99,54 +113,39 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 var filteredModel = CleanCompartmentItemDetails(model);
-                var compartment = new Common.DataModels.Compartment
-                {
-                    XPosition = filteredModel.XPosition.Value,
-                    YPosition = filteredModel.YPosition.Value,
-                    LoadingUnitId = filteredModel.LoadingUnitId,
-                    CompartmentTypeId = createCompartmentTypeResult.Entity.Id,
-                    IsItemPairingFixed = filteredModel.IsItemPairingFixed,
-                    Stock = filteredModel.Stock,
-                    ReservedForPick = filteredModel.ReservedForPick,
-                    ReservedToPut = filteredModel.ReservedToPut,
-                    ItemId = filteredModel.ItemId,
-                    MaterialStatusId = filteredModel.MaterialStatusId,
-                    Sub1 = filteredModel.Sub1,
-                    Sub2 = filteredModel.Sub2,
-                    PackageTypeId = filteredModel.PackageTypeId,
-                    Lot = filteredModel.Lot,
-                    RegistrationNumber = filteredModel.RegistrationNumber,
-                };
 
-                var entry = await this.DataContext.Compartments.AddAsync(compartment);
-                if (await this.DataContext.SaveChangesAsync() > 0)
+                var entry = await this.DataContext.Compartments.AddAsync(
+                    this.mapper.Map<Common.DataModels.Compartment>(filteredModel));
+                if (await this.DataContext.SaveChangesAsync() <= 0)
                 {
-                    model.Id = entry.Entity.Id;
+                    return new CreationErrorOperationResult<CompartmentDetails>();
+                }
 
-                    this.NotificationService.PushCreate(model);
-                    this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
-                    if (model.ItemId != null)
-                    {
-                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
-                    }
+                var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+
+                this.NotificationService.PushCreate(createdModel);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = createdModel.LoadingUnitId });
+                if (createdModel.ItemId != null)
+                {
+                    this.NotificationService.PushUpdate(new Item { Id = createdModel.ItemId.Value });
                 }
 
                 scope.Complete();
-                return new SuccessOperationResult<CompartmentDetails>(model);
+                return new SuccessOperationResult<CompartmentDetails>(createdModel);
             }
         }
 
         public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> CreateRangeAsync(
-            IEnumerable<CompartmentDetails> compartments)
+            IEnumerable<CompartmentDetails> models)
         {
-            if (compartments == null)
+            if (models == null)
             {
-                throw new ArgumentNullException(nameof(compartments));
+                throw new ArgumentNullException(nameof(models));
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                foreach (var compartment in compartments)
+                foreach (var compartment in models)
                 {
                     var result = await this.CreateAsync(compartment);
                     if (!result.Success)
@@ -159,8 +158,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 scope.Complete();
-                return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(compartments);
             }
+
+            return new SuccessOperationResult<IEnumerable<CompartmentDetails>>(models);
         }
 
         public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)
@@ -248,6 +248,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
 
+            var validationError = model.ValidateBusinessModel(this.DataContext.Compartments);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<CompartmentDetails>(
+                    validationError,
+                    model);
+            }
+
             var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
@@ -283,7 +291,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     new CompartmentType
                     {
                         Width = model.Width,
-                        Depth = model.Depth
+                        Depth = model.Depth,
                     },
                     model.ItemId,
                     model.MaxCapacity);
@@ -382,6 +390,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Depth : j.cmp.CompartmentType.Width,
                     XPosition = j.cmp.XPosition,
                     YPosition = j.cmp.YPosition,
+                    OtherMissionOperationCount = j.cmp.OtherMissionOperationCount,
+                    PickMissionOperationCount = j.cmp.PickMissionOperationCount,
+                    PutMissionOperationCount = j.cmp.PutMissionOperationCount,
                 });
         }
 

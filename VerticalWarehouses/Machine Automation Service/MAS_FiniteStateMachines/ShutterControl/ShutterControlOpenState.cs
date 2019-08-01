@@ -1,19 +1,17 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
+namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 {
     public class ShutterControlOpenState : StateBase
     {
         #region Fields
-
-        private readonly ILogger logger;
 
         private readonly IShutterControlMessageData shutterControlMessageData;
 
@@ -23,12 +21,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Constructors
 
-        public ShutterControlOpenState(IStateMachine parentMachine, IShutterControlMessageData shutterControlMessageData, ILogger logger, bool stopRequested = false)
+        public ShutterControlOpenState(
+            IStateMachine parentMachine,
+            IShutterControlMessageData shutterControlMessageData,
+            ILogger logger,
+            bool stopRequested = false)
+            : base(parentMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentMachine;
             this.shutterControlMessageData = shutterControlMessageData;
         }
 
@@ -48,13 +47,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.ShutterPositioning)
             {
@@ -70,11 +69,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                             switch (s.ShutterPosition)
                             {
                                 case ShutterPosition.Half:
-                                    this.ParentStateMachine.ChangeState(new ShutterControlHalfOpenState(this.ParentStateMachine, this.shutterControlMessageData, ShutterMovementDirection.Down, this.logger));
+                                    this.ParentStateMachine.ChangeState(new ShutterControlHalfOpenState(this.ParentStateMachine, this.shutterControlMessageData, ShutterMovementDirection.Down, this.Logger));
                                     break;
 
                                 case ShutterPosition.Closed:
-                                    this.ParentStateMachine.ChangeState(new ShutterControlCloseState(this.ParentStateMachine, this.shutterControlMessageData, this.logger));
+                                    this.ParentStateMachine.ChangeState(new ShutterControlCloseState(this.ParentStateMachine, this.shutterControlMessageData, this.Logger));
                                     break;
 
                                 case ShutterPosition.Opened:
@@ -86,7 +85,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                                         FieldMessageActor.InverterDriver,
                                         FieldMessageType.ShutterPositioning,
                                         MessageStatus.OperationError);
-                                    this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, errorMessage, this.logger));
+                                    this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, errorMessage, this.Logger));
                                     break;
 
                                 case ShutterPosition.None:
@@ -96,7 +95,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, message, this.Logger));
                         break;
                 }
             }
@@ -105,7 +104,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
@@ -114,7 +113,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             //TEMP Send a command to move shutter to:
             // - Close position, if shutter is of type Shutter2Type
             // - Half-open position, if shutter is of type Shutter3Type
-
             var shutterPositionTarget = ShutterPosition.None;
             switch (this.shutterControlMessageData.ShutterType)
             {
@@ -132,7 +130,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
-                Common_Utils.Messages.Enumerations.ShutterMovementDirection.Down,
+                CommonUtils.Messages.Enumerations.ShutterMovementDirection.Down,
                 this.shutterControlMessageData.ShutterType,
                 this.shutterControlMessageData.SpeedRate);
 
@@ -143,7 +141,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ShutterPositioning);
 
-            this.logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
@@ -155,7 +153,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                 MessageType.ShutterControl,
                 MessageStatus.OperationExecuting);
 
-            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
@@ -163,9 +161,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new ShutterControlEndState(this.ParentStateMachine, this.shutterControlMessageData, this.logger, true));
+            this.ParentStateMachine.ChangeState(new ShutterControlEndState(this.ParentStateMachine, this.shutterControlMessageData, this.Logger, true));
         }
 
         protected override void Dispose(bool disposing)

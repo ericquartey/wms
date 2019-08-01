@@ -1,13 +1,17 @@
-﻿using System.Windows;
-using Ferretto.VW.InstallationApp;
-using Ferretto.VW.OperatorApp.Resources;
-using Prism.Events;
+﻿using System.Configuration;
+using System.Windows;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
 using Unity;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.App
 {
     internal class Bootstrapper : UnityBootstrapper
     {
@@ -18,42 +22,88 @@ namespace Ferretto.VW.VWApp
             ViewModelLocationProvider.Register(typeof(TView).ToString(), () => this.Container.Resolve<TViewModel>());
         }
 
-        protected override void ConfigureModuleCatalog()
+        protected override void ConfigureContainer()
         {
-            var catalog = (ModuleCatalog)this.ModuleCatalog;
-            catalog.AddModule(typeof(VWAppModule));
-            catalog.AddModule(typeof(InstallationAppModule));
-            catalog.AddModule(typeof(OperatorAppModule));
+            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+
+            // UI services
+            this.Container.RegisterSingleton<IAuthenticationService, AuthenticationService>();
+            this.Container.RegisterSingleton<IStatusMessageService, StatusMessageService>();
+            this.Container.RegisterSingleton<IBayManager, BayManager>();
+            this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
+            this.Container.RegisterInstance(ServiceFactory.Get<ISessionService>());
+
+            // MAS Web API services
+            this.Container.RegisterInstance<IIdentityMachineService>(new IdentityMachineService(automationServiceUrl));
+            this.Container.RegisterInstance<IUsersMachineService>(new UsersMachineService(automationServiceUrl));
+            this.Container.RegisterInstance<IErrorsMachineService>(new ErrorsMachineService(automationServiceUrl));
+            this.Container.RegisterInstance<IMissionOperationsMachineService>(new MissionOperationsMachineService(automationServiceUrl));
+
+            this.Container.RegisterType<MainWindowViewModel>();
+
+            this.Container.RegisterSingleton<IMainWindow, MainWindow>();
+
+            RegisterHubs(this.Container);
+
+            RegisterWmsProviders(this.Container);
+
+            base.ConfigureContainer();
         }
 
-        protected override void ConfigureViewModelLocator()
+        protected override IModuleCatalog CreateModuleCatalog()
         {
-            this.BindViewModelToView<InstallationApp.IMainWindowViewModel, InstallationApp.MainWindow>();
-
-            this.BindViewModelToView<OperatorApp.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();
+            return new ConfigurationModuleCatalog();
         }
 
         protected override DependencyObject CreateShell()
         {
-            this.InitializeMainWindow();
-
-            return (MainWindow)this.Container.Resolve<IMainWindow>();
+            return this.Container.Resolve<IMainWindow>() as DependencyObject;
         }
 
         protected override void InitializeShell()
         {
-            ((MainWindowViewModel)((App)Application.Current).MainWindow.DataContext).Container = this.Container;
-            Application.Current.MainWindow.Show();
+            var mainWindowViewModel = this.Container.Resolve<MainWindowViewModel>();
+            mainWindowViewModel.InitializeViewModelAsync(this.Container);
+
+            var application = Application.Current as App;
+            application.MainWindow.DataContext = mainWindowViewModel;
+
+            application.MainWindow.Show();
         }
 
-        private void InitializeMainWindow()
+        private static void RegisterHubs(IUnityContainer container)
         {
-            var MainWindowVInstance = new MainWindow();
-            var MainWindowVMInstance = new MainWindowViewModel(this.Container.Resolve<IEventAggregator>());
+            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
-            MainWindowVMInstance.InitializeViewModel(this.Container);
-            MainWindowVInstance.DataContext = MainWindowVMInstance;
-            this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
+            var operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
+            var operatorHubUrl = new System.Uri(new System.Uri(automationServiceUrl), operatorHubPath);
+            var operatorHubClient = new OperatorHubClient(operatorHubUrl);
+            container.RegisterInstance<IOperatorHubClient>(operatorHubClient);
+
+            var installationHubPath = ConfigurationManager.AppSettings.Get("InstallationHubEndpoint");
+            var installationHubClient = new InstallationHubClient(automationServiceUrl, installationHubPath);
+            container.RegisterInstance<IInstallationHubClient>(installationHubClient);
+
+            var wmsHubPath = ConfigurationManager.AppSettings.Get("WMSServiceAddressHubsEndpoint");
+            var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new System.Uri(wmsHubPath));
+            container.RegisterInstance(wmsHub);
+        }
+
+        private static void RegisterWmsProviders(IUnityContainer container)
+        {
+            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMSServiceAddress"));
+
+            container.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
+            container.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
+
+            container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IMissionsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
         }
 
         #endregion

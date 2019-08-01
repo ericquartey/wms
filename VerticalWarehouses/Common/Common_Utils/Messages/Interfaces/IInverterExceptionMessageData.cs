@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface IInverterExceptionMessageData : IMessageData
+    public interface IInverterExceptionMessageData : IExceptionMessageData, IMessageData
     {
         #region Properties
-
-        int ExceptionCode { get; }
 
         string ExceptionDescription { get; }
 

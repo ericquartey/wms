@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.VW.CustomControls
+namespace Ferretto.VW.App.Controls.Utils
 {
-    public interface ILinqTree<T>
+    public interface ILinqTree<out T>
     {
         #region Properties
 

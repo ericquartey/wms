@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver.Enumerations
+﻿namespace Ferretto.VW.MAS.InverterDriver.Enumerations
 {
     public enum InverterIoPorts
     {

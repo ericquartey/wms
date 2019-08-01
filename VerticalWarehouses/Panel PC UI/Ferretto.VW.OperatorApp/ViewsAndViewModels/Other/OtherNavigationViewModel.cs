@@ -1,35 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-using Unity;
+﻿using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
-    public class OtherNavigationViewModel : BindableBase, IOtherNavigationViewModel
+    public class OtherNavigationViewModel : BaseViewModel, IOtherNavigationViewModel
     {
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly INavigationService navigationService;
+
         private ICommand drawerCompactingButtonCommand;
+
         private ICommand immediateDrawerCallButtonCommand;
+
         private ICommand maintenanceMainPageButtonCommand;
+
         private ICommand statisticsButtonCommand;
-        private IUnityContainer container;
 
         #endregion
 
         #region Constructors
 
-        public OtherNavigationViewModel(IEventAggregator eventAggregator)
+        public OtherNavigationViewModel(
+            IEventAggregator eventAggregator,
+            INavigationService navigationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
+
             this.NavigationViewModel = null;
         }
 
@@ -37,57 +51,29 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         #region Properties
 
-        public ICommand DrawerCompactingButtonCommand => this.drawerCompactingButtonCommand ?? (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>();
-        }));
+        public ICommand DrawerCompactingButtonCommand =>
+            this.drawerCompactingButtonCommand
+            ??
+            (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+                this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
 
-        public ICommand ImmediateDrawerCallButtonCommand => this.immediateDrawerCallButtonCommand ?? (this.immediateDrawerCallButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<ImmediateDrawerCallViewModel, IImmediateDrawerCallViewModel>();
-        }));
+        public ICommand ImmediateDrawerCallButtonCommand =>
+            this.immediateDrawerCallButtonCommand
+            ??
+            (this.immediateDrawerCallButtonCommand = new DelegateCommand(() =>
+                this.navigationService.NavigateToView<ImmediateDrawerCallViewModel, IImmediateDrawerCallViewModel>()));
 
-        public ICommand MaintenanceMainPageButtonCommand => this.maintenanceMainPageButtonCommand ?? (this.maintenanceMainPageButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<MaintenanceMainPageViewModel, IMaintenanceMainPageViewModel>();
-        }));
+        public ICommand MaintenanceMainPageButtonCommand =>
+            this.maintenanceMainPageButtonCommand
+            ??
+            (this.maintenanceMainPageButtonCommand = new DelegateCommand(() =>
+                this.navigationService.NavigateToView<MaintenanceMainPageViewModel, IMaintenanceMainPageViewModel>()));
 
-        public ICommand StatisticsButtonCommand => this.statisticsButtonCommand ?? (this.statisticsButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<StatisticsGeneralDataViewModel, IStatisticsGeneralDataViewModel>();
-        }));
-
-
-        public BindableBase NavigationViewModel { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
+        public ICommand StatisticsButtonCommand =>
+            this.statisticsButtonCommand
+            ??
+            (this.statisticsButtonCommand = new DelegateCommand(() =>
+                this.navigationService.NavigateToView<StatisticsGeneralDataViewModel, IStatisticsGeneralDataViewModel>()));
 
         #endregion
     }

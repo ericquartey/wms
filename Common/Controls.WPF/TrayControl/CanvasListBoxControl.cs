@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls.WPF
             typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
-                    nameof(DimensionHeight),
+            nameof(DimensionHeight),
             typeof(double),
             typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0, OnDimensionHeightChanged));
@@ -144,7 +144,9 @@ namespace Ferretto.Common.Controls.WPF
             typeof(double),
             typeof(CanvasListBoxControl));
 
-        private const double PixelOffset = 1;
+        private const double HALF_MARK = 0.5;
+
+        private const double ROUND_DIMENSION = 0.001;
 
         #endregion
 
@@ -311,7 +313,7 @@ namespace Ferretto.Common.Controls.WPF
 
             if (originHorizontal == OriginHorizontal.Left && originVertical == OriginVertical.Bottom)
             {
-                ret.Y = (int)dimensionHeight - compartmentOrigin.Y - depthCompartment;
+                ret.Y = dimensionHeight - compartmentOrigin.Y - depthCompartment;
             }
             else if (originHorizontal == OriginHorizontal.Right && originVertical == OriginVertical.Top)
             {
@@ -324,45 +326,6 @@ namespace Ferretto.Common.Controls.WPF
             }
 
             return ret;
-        }
-
-        public static void DrawSnappedLinesBetweenPoints(DrawingContext context, Pen pen, double lineThickness, params Point[] points)
-        {
-            if (points == null || context == null)
-            {
-                return;
-            }
-
-            var guidelineSet = new GuidelineSet();
-            foreach (var point in points)
-            {
-                guidelineSet.GuidelinesX.Add(point.X);
-                guidelineSet.GuidelinesY.Add(point.Y);
-            }
-
-            var half = lineThickness / 2;
-            var adjustedPoints = points.Select(p => new Point(p.X + half, p.Y + half)).ToArray();
-            context.PushGuidelineSet(guidelineSet);
-
-            for (var i = 0; i < adjustedPoints.Length - 1; i = i + 2)
-            {
-                context.DrawLine(pen, points[i], points[i + 1]);
-            }
-
-            context.Pop();
-        }
-
-        public void ResizeCompartments()
-        {
-            if (this.Items == null)
-            {
-                return;
-            }
-
-            foreach (var compartment in this.Items.AsCompartmentViewModel())
-            {
-                this.ResizeCompartment(compartment);
-            }
         }
 
         public void SetBackground()
@@ -405,15 +368,15 @@ namespace Ferretto.Common.Controls.WPF
                 heightNewCalculated = heightConverted;
             }
 
-            this.Height = heightNewCalculated;
-            this.Width = widthNewCalculated;
-
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;
 
-            this.ResizeCompartments();
+            this.UpdateCompartments();
             this.SetSelectedItem();
             this.SetBackground();
+
+            this.Width = (int)(widthNewCalculated + ROUND_DIMENSION);
+            this.Height = (int)(heightNewCalculated + ROUND_DIMENSION);
         }
 
         public void SetSize(double heightNewCalculated, double widthNewCalculated)
@@ -443,7 +406,7 @@ namespace Ferretto.Common.Controls.WPF
                     Top = compartment.YPosition ?? 0,
                     ColorFill = this.GetColorFilter(compartment),
                     IsReadOnly = this.IsReadOnly,
-                    IsSelectable = this.IsCompartmentSelectable
+                    IsSelectable = this.IsCompartmentSelectable,
                 };
                 newItems.Add(newCompartment);
                 this.ResizeCompartment(newCompartment);
@@ -466,61 +429,11 @@ namespace Ferretto.Common.Controls.WPF
             }
         }
 
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-
-            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-        }
-
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-            var penSize = this.GetSizeOfPen();
-            var points = new List<Point>();
-            var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
-            var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.TrayHeight;
-            while (posY > 1 && posY <= this.TrayHeight)
-            {
-                points.Add(new Point(PixelOffset, posY));
-                points.Add(new Point(this.TrayWidth, posY));
-                if (this.OriginVertical == OriginVertical.Top)
-                {
-                    posY += stepYPixel;
-                }
-                else
-                {
-                    posY -= stepYPixel;
-                }
-            }
-
-            var extraOffset = this.ShowRuler ? PixelOffset / 2 : PixelOffset;
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel + PixelOffset : this.TrayWidth;
-            while (posX > 1 && posX <= this.TrayWidth)
-            {
-                points.Add(new Point(posX, extraOffset));
-                points.Add(new Point(posX, this.TrayHeight - PixelOffset));
-                if (this.OriginHorizontal == OriginHorizontal.Left)
-                {
-                    posX += stepXPixel;
-                }
-                else
-                {
-                    posX -= stepXPixel;
-                }
-            }
-
-            var penLines = new Pen
-            {
-                DashCap = PenLineCap.Square,
-                Thickness = penSize,
-                StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
-            };
-            penLines.Brush = this.GridLinesColor;
-            DrawSnappedLinesBetweenPoints(drawingContext, penLines, penSize, points.ToArray());
+            this.DrawGridLines(drawingContext);
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
@@ -542,7 +455,7 @@ namespace Ferretto.Common.Controls.WPF
         {
             if (d is CanvasListBoxControl canvasListBox)
             {
-                canvasListBox.UpdateCompartments();
+                canvasListBox.SetControlSize();
             }
         }
 
@@ -634,15 +547,138 @@ namespace Ferretto.Common.Controls.WPF
             }
         }
 
-        private string GetColorFilter(IDrawableCompartment compartment)
+        private void DrawGridLines(DrawingContext drawingContext)
+        {
+            if (!this.ShowBackground)
+            {
+                return;
+            }
+
+            var penSize = this.GetSizeOfPen();
+            var points = new List<Point>();
+            var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
+            var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
+
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.TrayHeight;
+            while (posY > 1 && posY <= this.TrayHeight)
+            {
+                points.Add(new Point(1, posY));
+                points.Add(new Point(this.TrayWidth, posY));
+                if (this.OriginVertical == OriginVertical.Top)
+                {
+                    posY += stepYPixel;
+                }
+                else
+                {
+                    posY -= stepYPixel;
+                }
+            }
+
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.TrayWidth;
+            posX += HALF_MARK;
+            while (posX > 1 && posX <= this.TrayWidth)
+            {
+                points.Add(new Point(posX, this.GetCorrectedMarginOffset()));
+                points.Add(new Point(posX, this.TrayHeight));
+                if (this.OriginHorizontal == OriginHorizontal.Left)
+                {
+                    posX += stepXPixel;
+                }
+                else
+                {
+                    posX -= stepXPixel;
+                }
+            }
+
+            var penLines = new Pen
+            {
+                DashCap = PenLineCap.Square,
+                Thickness = penSize,
+                StartLineCap = PenLineCap.Square,
+                EndLineCap = PenLineCap.Square,
+            };
+
+            penLines.Brush = this.GridLinesColor;
+
+            this.DrawSnappedLinesBetweenPoints(drawingContext, penSize, this.GridLinesColor, points.ToArray());
+        }
+
+        private void DrawSnappedLineBetweenPoints(DrawingContext dc, Point pointStart, Point pointEnd, Brush color)
+        {
+            var pen = new Pen
+            {
+                DashCap = PenLineCap.Square,
+                Brush = color,
+                Thickness = this.GetSizeOfPen(),
+                StartLineCap = PenLineCap.Square,
+                EndLineCap = PenLineCap.Square,
+            };
+            var guidelineSet = new GuidelineSet();
+            guidelineSet.GuidelinesX.Add(pointStart.X);
+            guidelineSet.GuidelinesY.Add(pointStart.Y);
+            guidelineSet.GuidelinesX.Add(pointEnd.X);
+            guidelineSet.GuidelinesY.Add(pointEnd.Y);
+            dc.PushGuidelineSet(guidelineSet);
+            var points = new Point[2];
+            points[0] = new Point(pointStart.X, pointStart.Y);
+            points[1] = new Point(pointEnd.X, pointEnd.Y);
+            dc.DrawLine(pen, points[0], points[1]);
+            dc.Pop();
+        }
+
+        private void DrawSnappedLinesBetweenPoints(DrawingContext context, double lineThickness, Brush color, params Point[] points)
+        {
+            if (points == null || context == null)
+            {
+                return;
+            }
+
+            var guidelineSet = new GuidelineSet();
+            foreach (var point in points)
+            {
+                guidelineSet.GuidelinesX.Add(point.X);
+                guidelineSet.GuidelinesY.Add(point.Y);
+            }
+
+            var half = lineThickness / 2;
+            var adjustedPoints = points.Select(p => new Point(p.X + half, p.Y + half)).ToArray();
+            context.PushGuidelineSet(guidelineSet);
+
+            for (var i = 0; i < adjustedPoints.Length - 1; i = i + 2)
+            {
+                this.DrawSnappedLineBetweenPoints(context, points[i], points[i + 1], color);
+            }
+
+            context.Pop();
+        }
+
+        private string GetColorFilter(IDrawableCompartment compartment, IDrawableCompartment compartmentDetails = null)
         {
             if (this.IsReadOnly == false &&
                 this.SelectedColorFilterFunc != null)
             {
-                return this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+                if (compartmentDetails != null)
+                {
+                    return this.SelectedColorFilterFunc.Invoke(compartmentDetails, compartment);
+                }
+                else
+                {
+                    return this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+                }
             }
 
             return this.DefaultCompartmentColor;
+        }
+
+        private double GetCorrectedMarginOffset()
+        {
+            var ma = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+            if (ma.M11 >= 2)
+            {
+                return ((int)ma.M11 + HALF_MARK) - ma.M11;
+            }
+
+            return 2 - ma.M11;
         }
 
         private double GetSizeOfPen()
@@ -667,7 +703,7 @@ namespace Ferretto.Common.Controls.WPF
             var compartmentOrigin = new Point
             {
                 X = compartment.CompartmentDetails.XPosition.Value,
-                Y = compartment.CompartmentDetails.YPosition.Value
+                Y = compartment.CompartmentDetails.YPosition.Value,
             };
 
             var convertedCompartmentOrigin = ConvertWithStandardOrigin(
@@ -683,21 +719,23 @@ namespace Ferretto.Common.Controls.WPF
                 convertedCompartmentOrigin.Y,
                 this.TrayHeight,
                 this.DimensionHeight);
+
             compartment.Left = ConvertMillimetersToPixel(
                 convertedCompartmentOrigin.X,
                 this.TrayWidth,
                 this.DimensionWidth);
 
-            var height = ConvertMillimetersToPixel(
-            (double)compartment.CompartmentDetails.Depth,
-             this.TrayHeight,
-             this.DimensionHeight);
-            var width = ConvertMillimetersToPixel(
-            (double)compartment.CompartmentDetails.Width,
-             this.TrayWidth,
-             this.DimensionWidth);
+            var depth = ConvertMillimetersToPixel(
+                (double)compartment.CompartmentDetails.Depth,
+                this.TrayHeight,
+                this.DimensionHeight);
 
-            compartment.Depth = height;
+            var width = ConvertMillimetersToPixel(
+                (double)compartment.CompartmentDetails.Width,
+                this.TrayWidth,
+                this.DimensionWidth);
+
+            compartment.Depth = depth;
             compartment.Width = width;
         }
 
@@ -728,7 +766,6 @@ namespace Ferretto.Common.Controls.WPF
 
             this.SelectedItem = compartment;
             this.UpdateColorCompartments();
-            this.ResizeCompartment(this.SelectedItem as CompartmentViewModel);
         }
 
         private void UpdateColorCompartments()
@@ -740,7 +777,7 @@ namespace Ferretto.Common.Controls.WPF
 
             foreach (var item in this.Items.AsCompartmentViewModel())
             {
-                item.ColorFill = this.SelectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? this.DefaultCompartmentColor;
+                item.ColorFill = this.GetColorFilter(this.SelectedCompartment, item.CompartmentDetails);
             }
         }
 

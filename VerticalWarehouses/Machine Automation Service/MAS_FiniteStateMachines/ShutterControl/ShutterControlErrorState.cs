@@ -1,22 +1,20 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
+namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 {
     public class ShutterControlErrorState : StateBase
     {
         #region Fields
 
         private readonly FieldNotificationMessage errorMessage;
-
-        private readonly ILogger logger;
 
         private readonly IShutterControlMessageData shutterControlMessageData;
 
@@ -28,12 +26,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Constructors
 
-        public ShutterControlErrorState(IStateMachine parentMachine, IShutterControlMessageData shutterControlMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public ShutterControlErrorState(
+            IStateMachine parentMachine,
+            IShutterControlMessageData shutterControlMessageData,
+            FieldNotificationMessage errorMessage,
+            ILogger logger)
+            : base(parentMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentMachine;
             this.errorMessage = errorMessage;
             this.shutterControlMessageData = shutterControlMessageData;
         }
@@ -54,13 +53,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.InverterStop)
             {
@@ -98,7 +97,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         /// <inheritdoc/>
@@ -113,7 +112,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop);
 
-            this.logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
+            this.Logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
         }
@@ -121,7 +120,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Stop()
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

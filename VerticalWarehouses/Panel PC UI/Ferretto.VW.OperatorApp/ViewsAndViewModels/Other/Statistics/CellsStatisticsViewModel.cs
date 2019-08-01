@@ -1,32 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Unity;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class CellsStatisticsViewModel : BindableBase, ICellsStatisticsViewModel
+    public class CellsStatisticsViewModel : BaseViewModel, ICellsStatisticsViewModel
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly ICellsMachineService cellsService;
+
+        private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
+
+        private readonly INavigationService navigationService;
+
+        private readonly IStatusMessageService statusMessageService;
+
+        private ObservableCollection<CellStatusStatistics> cells;
+
+        private CellStatisticsSummary cellStatistics;
+
+        private BindableBase dataGridViewModel;
 
         private ICommand drawerCompactingButtonCommand;
 
-        private IUnityContainer container;
+        private CellStatusStatistics selectedCell;
 
         #endregion
 
         #region Constructors
 
-        public CellsStatisticsViewModel(IEventAggregator eventAggregator)
+        public CellsStatisticsViewModel(
+            INavigationService navigationService,
+            ICellsMachineService cellsService,
+            IStatusMessageService statusMessageService,
+            ICustomControlCellStatisticsDataGridViewModel cellStatisticsDataGridViewModel)
         {
-            this.eventAggregator = eventAggregator;
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
+            if (cellsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(cellsService));
+            }
+
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
+            this.navigationService = navigationService;
+            this.cellsService = cellsService;
+            this.statusMessageService = statusMessageService;
+            this.dataGridViewModelRef = cellStatisticsDataGridViewModel as CustomControlCellStatisticsDataGridViewModel;
+
             this.NavigationViewModel = null;
         }
 
@@ -34,37 +71,57 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Properties
 
-        public ICommand DrawerCompactingButtonCommand => this.drawerCompactingButtonCommand ?? (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+        public ObservableCollection<CellStatusStatistics> Cells
         {
-            NavigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>();
-        }));
+            get => this.cells;
+            set => this.SetProperty(ref this.cells, value);
+        }
 
+        public CellStatisticsSummary CellStatistics
+        {
+            get => this.cellStatistics;
+            set => this.SetProperty(ref this.cellStatistics, value);
+        }
 
+        public BindableBase DataGridViewModel
+        {
+            get => this.dataGridViewModel;
+            set => this.SetProperty(ref this.dataGridViewModel, value);
+        }
 
-        public BindableBase NavigationViewModel { get; set; }
+        public ICommand DrawerCompactingButtonCommand =>
+            this.drawerCompactingButtonCommand
+            ??
+            (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+                this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
+
+        public CellStatusStatistics SelectedCell
+        {
+            get => this.selectedCell;
+            set => this.SetProperty(ref this.selectedCell, value);
+        }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override async Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            try
+            {
+                this.CellStatistics = await this.cellsService.GetStatisticsAsync();
 
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
+                this.SelectedCell = this.CellStatistics.CellStatusStatistics.FirstOrDefault();
 
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
+                this.dataGridViewModelRef.Cells = this.CellStatistics.CellStatusStatistics;
+                this.dataGridViewModelRef.SelectedCell = this.SelectedCell;
 
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+                this.DataGridViewModel = this.dataGridViewModelRef;
+            }
+            catch (SwaggerException ex)
+            {
+                this.statusMessageService.Notify(ex);
+            }
         }
 
         #endregion

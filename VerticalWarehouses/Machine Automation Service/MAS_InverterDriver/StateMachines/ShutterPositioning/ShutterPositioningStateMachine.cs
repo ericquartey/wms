@@ -1,10 +1,10 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 {
     public class ShutterPositioningStateMachine : InverterStateMachineBase
     {
@@ -20,15 +20,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IInverterShutterPositioningFieldMessageData shutterPositionData, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus,
-              IEventAggregator eventAggregator, ILogger logger) : base(logger)
+        public ShutterPositioningStateMachine(
+            IInverterShutterPositioningFieldMessageData shutterPositionData,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IInverterStatusBase inverterStatus,
+              IEventAggregator eventAggregator,
+              ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.InverterCommandQueue = inverterCommandQueue;
             this.shutterPositionData = shutterPositionData;
             this.inverterStatus = inverterStatus;
-            this.EventAggregator = eventAggregator;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -51,6 +54,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.CurrentState = new ShutterPositioningStartState(this, this.inverterStatus, this.shutterPositionData, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
         }
 
         /// <inheritdoc/>

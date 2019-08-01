@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class BeltBurnishingViewModel : BindableBase, IBeltBurnishingViewModel
     {
         #region Fields
 
+        private readonly IBeltBurnishingMachineService beltBurnishingService;
+
         private readonly IEventAggregator eventAggregator;
 
-        private IBeltBurnishingService beltBurnishingService;
-
         private string completedCycles;
-
-        private IUnityContainer container;
 
         private string currentPosition;
 
@@ -50,9 +48,23 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public BeltBurnishingViewModel(IEventAggregator eventAggregator)
+        public BeltBurnishingViewModel(
+            IEventAggregator eventAggregator,
+            IBeltBurnishingMachineService beltBurnishingService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (beltBurnishingService == null)
+            {
+                throw new ArgumentNullException(nameof(beltBurnishingService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.beltBurnishingService = beltBurnishingService;
+
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
             this.NavigationViewModel = null;
         }
@@ -140,36 +152,31 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                var Category = "VerticalAxis";
-                this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                var category = "VerticalAxis";
+                this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(category, "UpperBound")).ToString();
+                this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(category, "LowerBound")).ToString();
 
-                Category = "BeltBurnishing";
-                this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
+                category = "BeltBurnishing";
+                this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(category, "CycleQuantity")).ToString();
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.beltBurnishingService = this.container.Resolve<IBeltBurnishingService>();
         }
 
         public async Task OnEnterViewAsync()
         {
             await this.GetParameterValuesAsync();
 
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                message =>
-                {
-                    this.UpdateUI(new MessageNotifiedEventArgs(message));
-                },
-                ThreadOption.PublisherThread,
-                false);
+            this.receivedActionUpdateToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(async
+                    message =>
+                    {
+                        await this.UpdateCompletion(new MessageNotifiedEventArgs(message));
+                    },
+                    ThreadOption.PublisherThread,
+                    false);
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -207,6 +214,7 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (Exception)
             {
+                // do nothing
             }
         }
 
@@ -220,10 +228,11 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (Exception)
             {
+                // do nothing
             }
         }
 
-        private void UpdateUI(MessageNotifiedEventArgs messageUI)
+        private async Task UpdateCompletion(MessageNotifiedEventArgs messageUI)
         {
             if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
             {
@@ -242,6 +251,8 @@ namespace Ferretto.VW.InstallationApp
                         this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
+
+                        await this.beltBurnishingService.SetBeltBurnishingCompletionAsync();
                         break;
 
                     case MessageStatus.OperationError:
@@ -252,9 +263,6 @@ namespace Ferretto.VW.InstallationApp
                     case MessageStatus.OperationExecuting:
                         this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
                         this.CurrentPosition = cp.Data.CurrentPosition.ToString();
-                        break;
-
-                    default:
                         break;
                 }
             }

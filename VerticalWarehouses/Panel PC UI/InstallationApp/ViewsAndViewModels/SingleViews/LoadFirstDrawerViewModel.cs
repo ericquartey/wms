@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.Interfaces;
+using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     internal class LoadFirstDrawerViewModel : BindableBase, ILoadFirstDrawerViewModel
     {
@@ -19,9 +19,9 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

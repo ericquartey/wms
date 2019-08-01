@@ -101,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentSets = this.GetCompartmentSetsForRequest(item, itemOptions);
 
             compartmentSets = this.compartmentOperationProvider
-               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Insertion);
+               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Put);
 
             var selectedSets = SelectMinimumCompartmentSets(compartmentSets, itemOptions.RequestedQuantity);
             if (selectedSets.Sum(s => s.RemainingCapacity) < itemOptions.RequestedQuantity)
@@ -119,6 +119,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     await this.CompileRequestDataAsync(itemOptions, row, previousRowRequestPriority, compartmentSet, qualifiedRequest);
 
                     qualifiedRequest.RequestedQuantity = Math.Min(compartmentSet.RemainingCapacity, itemOptions.RequestedQuantity);
+
+                    System.Diagnostics.Debug.Assert(
+                        qualifiedRequest.RequestedQuantity > 0,
+                        "The requested quantity should always be positive");
+
                     itemOptions.RequestedQuantity -= qualifiedRequest.RequestedQuantity;
 
                     qualifiedRequests.Add(qualifiedRequest);
@@ -183,7 +188,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var compartmentSet in compartmentSets)
             {
-                if (selectedSets.Sum(s => s.RemainingCapacity) < requestedQuantity)
+                if (selectedSets.Sum(s => s.RemainingCapacity) < requestedQuantity
+                    && compartmentSet.RemainingCapacity > 0)
                 {
                     selectedSets.Add(compartmentSet);
                 }
@@ -245,21 +251,21 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentIsInBayFunction = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPutOptions.BayId);
 
             var compartmentIsInBayWithMaxCapacity =
-                this.DataContext.ItemsCompartmentTypes
-                      .Where(ict => ict.ItemId == item.Id)
-                      .Join(
-                    this.DataContext.Compartments.Where(compartmentIsInBayFunction),
-                          ict => ict.CompartmentTypeId,
-                          c => c.CompartmentTypeId,
-                          (ict, c) => new
-                          {
-                              c,
-                              ict.ItemId,
-                              ict.MaxCapacity,
-                          });
+                this.DataContext.Compartments
+                    .Where(compartmentIsInBayFunction)
+                    .Join(
+                        this.DataContext.ItemsCompartmentTypes.Where(ict => ict.ItemId == item.Id),
+                        c => c.CompartmentTypeId,
+                        ict => ict.CompartmentTypeId,
+                        (c, ict) => new
+                        {
+                            c,
+                            ict.MaxCapacity,
+                            Availability = c.Stock - c.ReservedForPick + c.ReservedToPut,
+                        });
 
-            var aggregatedCompartments = compartmentIsInBayWithMaxCapacity
-                .Where(j => j.c.ItemId == j.ItemId || j.c.ItemId == null)
+            var candidateCompartments = compartmentIsInBayWithMaxCapacity
+                .Where(j => j.c.ItemId == item.Id || j.c.ItemId == null)
                 .Where(j => j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId)
                 .Where(j => // Get all good compartments to PUT, split them in two cases:
                     (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
@@ -269,7 +275,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         &&
                         j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
                         &&
-                        j.c.Stock < j.MaxCapacity // get all compartment not full
+                        j.c.Stock < j.MaxCapacity // only non-full compartments
                         &&
                         (!item.FifoTimePut.HasValue || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value) // if item is type by FIFO, evaluate date with time
                         &&
@@ -281,14 +287,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                         &&
                         (!itemPutOptions.PackageTypeId.HasValue || j.c.PackageTypeId == itemPutOptions.PackageTypeId) // check filter input data from user
                         &&
-                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId))) // check filter input data from user
+                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId))); // check filter input data from user
+
+            var candidateCompartmentSets = candidateCompartments
                 .GroupBy( // grouping all compartments with same properties
                     j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
                     (key, compartments) => new
                     {
                         Key = key,
                         RemainingCapacity = compartments.Sum(
-                            j => j.MaxCapacity - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut), // calculated the amount of free remaining capacity of grouping of compartments
+                            j => j.MaxCapacity - j.Availability), // calculated the amount of free remaining capacity of grouping of compartments
                         CompartmentsCount = compartments.Count(),
                         Sub1 = key.Sub1,
                         Sub2 = key.Sub2,
@@ -296,13 +304,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                         PackageTypeId = key.PackageTypeId,
                         MaterialStatusId = key.MaterialStatusId,
                         RegistrationNumber = key.RegistrationNumber,
-                        FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now)
+                        FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now),
                     });
+
+            System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): A total of {candidateCompartmentSets.Count()} compartment sets match the request.");
 
             var aggregatedRequests = this.DataContext.SchedulerRequests
                 .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
 
-            return aggregatedCompartments
+            System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): There are {aggregatedRequests.Count()} accepted requests for the same item.");
+
+            var compartmentSets = candidateCompartmentSets
             .GroupJoin(
                 aggregatedRequests,
                 c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
@@ -310,12 +322,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 (c, r) => new
                 {
                     c,
-                    requests = r.DefaultIfEmpty()
+                    requests = r.DefaultIfEmpty(),
                 })
             .Select(g => new CompartmentSet
             {
                 RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
-                    r => (r.OperationType == Common.DataModels.OperationType.Insertion ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+                    r => (r.OperationType == Common.DataModels.OperationType.Put ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
                 Size = g.c.CompartmentsCount,
                 Sub1 = g.c.Sub1,
                 Sub2 = g.c.Sub2,
@@ -323,8 +335,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                 PackageTypeId = g.c.PackageTypeId,
                 MaterialStatusId = g.c.MaterialStatusId,
                 RegistrationNumber = g.c.RegistrationNumber,
-                FifoStartDate = g.c.FifoStartDate
+                FifoStartDate = g.c.FifoStartDate,
             });
+
+            System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): There is a total of {compartmentSets.Sum(c => c.Availability)} availability in the identified sets.");
+            System.Diagnostics.Debug.WriteLine(
+                string.Join(
+                    Environment.NewLine,
+                    compartmentSets.Select(
+                        c => string.Format(
+                                "Availability={0}, Sub1='{1}', Sub2='{2}', Lot='{3}', PackageTypeId={4}, MaterialStatusId={5}, RegistrationNumber='{6}'",
+                                c.Availability,
+                                c.Sub1,
+                                c.Sub2,
+                                c.Lot,
+                                c.PackageTypeId,
+                                c.MaterialStatusId,
+                                c.RegistrationNumber))));
+
+            return compartmentSets;
         }
 
         #endregion

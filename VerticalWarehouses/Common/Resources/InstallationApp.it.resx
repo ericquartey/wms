@@ -166,10 +166,10 @@
     <value>Movimenti motore serranda</value>
   </data>
   <data name="LSMTHorizontalEngineButton" xml:space="preserve">
-    <value>Asse orizzontale</value>
+    <value>Asse Orizzontale</value>
   </data>
   <data name="LSMTHorizontalEngineTitle" xml:space="preserve">
-    <value>Movimenti asse orizzontale</value>
+    <value>Movimenti Asse Orizzontale</value>
   </data>
   <data name="LSMTVerticalEngineButton" xml:space="preserve">
     <value>Asse verticale</value>
@@ -533,7 +533,7 @@
     <value>Serranda baia 3</value>
   </data>
   <data name="HorizontalAxisHomedDone" xml:space="preserve">
-    <value>Origine asse orizzontale</value>
+    <value>Origine Asse Orizzontale</value>
   </data>
   <data name="Laser1Done" xml:space="preserve">
     <value>Puntatore laser 1</value>
@@ -860,7 +860,7 @@
     <value>Errore calibrazione asse verticale</value>
   </data>
   <data name="HorizontalHomingError" xml:space="preserve">
-    <value>Errore calibrazione asse orizzontale</value>
+    <value>Errore calibrazione Asse Orizzontale</value>
   </data>
   <data name="SwitchEngineError" xml:space="preserve">
     <value>Errore scambio assi</value>
@@ -875,13 +875,13 @@
     <value>Start calibrazione</value>
   </data>
   <data name="HorizontalHomingCompleted" xml:space="preserve">
-    <value>Calibrazione asse orizzontale completata</value>
+    <value>Calibrazione Asse Orizzontale completata</value>
   </data>
   <data name="HorizontalHomingExecuting" xml:space="preserve">
-    <value>Calibrazione asse orizzontale in esecuzione</value>
+    <value>Calibrazione Asse Orizzontale in esecuzione</value>
   </data>
   <data name="HorizontalHomingStarted" xml:space="preserve">
-    <value>Start calibrazione asse orizzontale </value>
+    <value>Start calibrazione Asse Orizzontale </value>
   </data>
   <data name="VerticalHomingCompleted" xml:space="preserve">
     <value>Calibrazione asse verrticale completata</value>
@@ -903,5 +903,9 @@
   </data>
   <data name="ValueNotValid" xml:space="preserve">
     <value>Valore inserito non valido</value>
+  </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Aggiorna Risoluzione</value>
+    <comment>Aggiorna Risoluzione</comment>
   </data>
 </root>

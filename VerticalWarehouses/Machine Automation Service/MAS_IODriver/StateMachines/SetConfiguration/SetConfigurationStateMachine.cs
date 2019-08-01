@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationStateMachine : IoStateMachineBase
     {
@@ -19,14 +16,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         #region Constructors
 
-        public SetConfigurationStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public SetConfigurationStateMachine(
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.Logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.EventAggregator = eventAggregator;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion

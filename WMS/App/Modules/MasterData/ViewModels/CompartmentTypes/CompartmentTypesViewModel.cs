@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.CompartmentType), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
@@ -101,9 +101,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        protected override async Task LoadDataAsync()
+        protected override async Task LoadDataAsync(ModelChangedPubSubEvent e)
         {
-            await base.LoadDataAsync();
+            await base.LoadDataAsync(e);
             this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 

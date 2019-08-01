@@ -1,17 +1,23 @@
-﻿<Window x:Class="Ferretto.VW.OperatorApp.HelpMainWindow"
+﻿<Window x:Class="Ferretto.VW.App.Operator.HelpWindows.HelpMainWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.HelpWindows"
-             xmlns:viewmodels="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
-             xmlns:viewmodelsdraweroperation="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations"
-             xmlns:viewmodelsdraweroperationdetails="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details"
-             xmlns:viewmodelswaitinglists="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
-             xmlns:viewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
-             xmlns:viewmodelssearchitem="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
-             xmlns:viewmodelsother="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other"
-             xmlns:viewmodelsotherstatistics="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics"
+             xmlns:local="clr-namespace:Ferretto.VW.App.Operator.HelpWindows"
+             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels"
+             xmlns:viewmodelswaitinglists="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists"
+             xmlns:viewmodelssearchitem="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem"
+             xmlns:viewmodelsother="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.Other"
+             xmlns:viewmodelsotherstatistics="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics"
+             xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels"
+             xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Operator.HelpWindows"
+             xmlns:viewmodelsdraweroperation="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations"
+             xmlns:viewmodelsdraweroperationdetails="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details"
+             xmlns:viewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail"
+             xmlns:waitingLists="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists"
+             xmlns:searchItem="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem"
+             xmlns:other="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.Other"
+             xmlns:statistics="clr-namespace:Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics"
              Width="1024"
              Height="768"
              mc:Ignorable="d"
@@ -20,76 +26,118 @@
              WindowStyle="None">
     <Window.Resources>
 
-        <DataTemplate DataType="{x:Type viewmodels:IdleViewModel}">
-            <local:HelpInitialPage></local:HelpInitialPage>
+        <DataTemplate DataType="{x:Type viewsAndViewModels:IdleViewModel}">
+            <helpWindows:HelpInitialPage></helpWindows:HelpInitialPage>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerWaitViewModel}">
-            <local:HelpDrawerWait></local:HelpDrawerWait>
+            <helpWindows:HelpDrawerWait></helpWindows:HelpDrawerWait>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityPickingViewModel}">
-            <local:HelpDrawerActivityPicking></local:HelpDrawerActivityPicking>
+            <helpWindows:HelpDrawerActivityPicking></helpWindows:HelpDrawerActivityPicking>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityPickingDetailViewModel}">
-            <local:HelpDrawerActivityPickingDetail></local:HelpDrawerActivityPickingDetail>
+            <helpWindows:HelpDrawerActivityPickingDetail></helpWindows:HelpDrawerActivityPickingDetail>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityRefillingDetailViewModel}">
-            <local:HelpDrawerActivityRefillingDetail></local:HelpDrawerActivityRefillingDetail>
+            <helpWindows:HelpDrawerActivityRefillingDetail></helpWindows:HelpDrawerActivityRefillingDetail>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityInventoryDetailViewModel}">
+            <helpWindows:HelpDrawerActivityInventoryDetail></helpWindows:HelpDrawerActivityInventoryDetail>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityRefillingViewModel}">
-            <local:HelpDrawerActivityRefilling></local:HelpDrawerActivityRefilling>
+            <helpWindows:HelpDrawerActivityRefilling></helpWindows:HelpDrawerActivityRefilling>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityInventoryViewModel}">
+            <helpWindows:HelpDrawerActivityInventory></helpWindows:HelpDrawerActivityInventory>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelswaitinglistslistdetail:DetailListInWaitViewModel}">
-            <local:HelpDetailListInWait></local:HelpDetailListInWait>
+            <helpWindows:HelpDetailListInWait></helpWindows:HelpDetailListInWait>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelswaitinglists:ListsInWaitViewModel}">
-            <local:HelpListsInWait></local:HelpListsInWait>
+        <DataTemplate DataType="{x:Type waitingLists:ListsInWaitViewModel}">
+            <helpWindows:HelpListsInWait></helpWindows:HelpListsInWait>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelssearchitem:ItemSearchViewModel}">
-            <local:HelpItemSearch></local:HelpItemSearch>
+        <DataTemplate DataType="{x:Type searchItem:ItemSearchViewModel}">
+            <helpWindows:HelpItemSearch></helpWindows:HelpItemSearch>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelssearchitem:ItemDetailViewModel}">
-            <local:HelpItemSearchDetail></local:HelpItemSearchDetail>
+        <DataTemplate DataType="{x:Type searchItem:ItemDetailViewModel}">
+            <helpWindows:HelpItemSearchDetail></helpWindows:HelpItemSearchDetail>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsother:ImmediateDrawerCallViewModel}">
-            <local:HelpImmediateDrawerCall></local:HelpImmediateDrawerCall>
+        <DataTemplate DataType="{x:Type other:ImmediateDrawerCallViewModel}">
+            <helpWindows:HelpImmediateDrawerCall></helpWindows:HelpImmediateDrawerCall>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsother:DrawerCompactingViewModel}">
-            <local:HelpDrawerCompacting></local:HelpDrawerCompacting>
+        <DataTemplate DataType="{x:Type other:DrawerCompactingViewModel}">
+            <helpWindows:HelpDrawerCompacting></helpWindows:HelpDrawerCompacting>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:DrawerSpaceSaturationViewModel}">
-            <local:HelpDrawerSpaceSaturation></local:HelpDrawerSpaceSaturation>
+        <DataTemplate DataType="{x:Type other:DrawerCompactingDetailViewModel}">
+            <helpWindows:HelpDrawerCompactingDetail></helpWindows:HelpDrawerCompactingDetail>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:DrawerWeightSaturationViewModel}">
-            <local:HelpDrawerWeightSaturation></local:HelpDrawerWeightSaturation>
+        <DataTemplate DataType="{x:Type statistics:DrawerSpaceSaturationViewModel}">
+            <helpWindows:HelpDrawerSpaceSaturation></helpWindows:HelpDrawerSpaceSaturation>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type statistics:DrawerWeightSaturationViewModel}">
+            <helpWindows:HelpDrawerWeightSaturation></helpWindows:HelpDrawerWeightSaturation>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type statistics:MachineStatisticsViewModel}">
+            <helpWindows:HelpMachineStatistics></helpWindows:HelpMachineStatistics>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type statistics:StatisticsGeneralDataViewModel}">
+            <helpWindows:HelpStatisticsGeneralData></helpWindows:HelpStatisticsGeneralData>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type statistics:CellsStatisticsViewModel}">
+            <helpWindows:HelpCellsStatistics></helpWindows:HelpCellsStatistics>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type statistics:ErrorsStatisticsViewModel}">
+            <helpWindows:HelpErrorsStatistics></helpWindows:HelpErrorsStatistics>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type other:MaintenanceMainPageViewModel}">
+            <helpWindows:HelpMaintenanceMainPage></helpWindows:HelpMaintenanceMainPage>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type other:MaintenanceDetailViewModel}">
+            <helpWindows:HelpMaintenanceDetail></helpWindows:HelpMaintenanceDetail>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type other:GeneralInfoViewModel}">
+            <helpWindows:HelpGeneralInfo></helpWindows:HelpGeneralInfo>
         </DataTemplate>
 
     </Window.Resources>
 
-    <Grid Width="1024"
-          Height="768"
+    <Grid Width="1024" Height="768"
           Background="{DynamicResource VWAPP_BACKGROUND}">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="688"></RowDefinition>
             <RowDefinition Height="80"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <ContentPresenter Name="HelpContentRegion" Grid.Row="0"
                           Height="688"
                           Width="1024"
                           Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </ContentPresenter>
+        
         <Button Grid.Row="1"
                 Content="Back"
                 HorizontalAlignment="Right"

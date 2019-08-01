@@ -1,9 +1,11 @@
+using System;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Filters
 {
@@ -11,15 +13,20 @@ namespace Ferretto.WMS.Data.WebAPI.Filters
     {
         #region Fields
 
+        private readonly ILogger<SendNotificationsFilter> logger;
+
         private readonly INotificationService notificationService;
 
         #endregion
 
         #region Constructors
 
-        public SendNotificationsFilter(INotificationService notificationService)
+        public SendNotificationsFilter(
+            INotificationService notificationService,
+            ILogger<SendNotificationsFilter> logger)
         {
             this.notificationService = notificationService;
+            this.logger = logger;
         }
 
         #endregion
@@ -41,6 +48,12 @@ namespace Ferretto.WMS.Data.WebAPI.Filters
             }
             else
             {
+                if (resultContext.Result is ObjectResult objectResult
+                    && objectResult.Value is ProblemDetails problemDetails)
+                {
+                    this.logger.LogInformation(problemDetails.Detail);
+                }
+
                 this.notificationService.Clear();
             }
         }

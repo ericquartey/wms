@@ -1,23 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
-using Ferretto.VW.WmsCommunication.Source;
-using Prism.Events;
-using Prism.Mvvm;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Operator.Interfaces;
+using Unity;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details
 {
-    public class DrawerActivityInventoryDetailViewModel : BindableBase, IDrawerActivityInventoryDetailViewModel
+    public class DrawerActivityInventoryDetailViewModel : BaseViewModel, IDrawerActivityInventoryDetailViewModel
     {
         #region Fields
 
+        private readonly IUnityContainer container;
+
+        private readonly IWmsImagesProvider wmsImagesProvider;
+
         private string batch;
 
-        private IEventAggregator eventAggregator;
+        private Image image;
 
         private string itemCode;
 
@@ -43,10 +44,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Constructors
 
-        public DrawerActivityInventoryDetailViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityInventoryDetailViewModel(IWmsImagesProvider wmsImagesProvider)
         {
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
+            if (wmsImagesProvider == null)
+            {
+                throw new ArgumentNullException(nameof(wmsImagesProvider));
+            }
+
+            this.wmsImagesProvider = wmsImagesProvider;
         }
 
         #endregion
@@ -54,6 +59,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
         #region Properties
 
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
+
+        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -69,8 +76,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         public string MaterialStatus { get => this.materialStatus; set => this.SetProperty(ref this.materialStatus, value); }
 
-        public BindableBase NavigationViewModel { get; set; }
-
         public string PackagingType { get => this.packagingType; set => this.SetProperty(ref this.packagingType, value); }
 
         public string Position { get => this.position; set => this.SetProperty(ref this.position, value); }
@@ -83,12 +88,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
@@ -101,16 +101,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            var imageStram = await this.wmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
+            this.Image = Image.FromStream(imageStram);
         }
 
         #endregion

@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Prism.Events;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation
 {
     public delegate void FinishedMachineModeChangeStateEvent();
 
@@ -28,7 +29,9 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator = eventAggregator;
             this.InitializeComponent();
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { this.HideAndUnsubscribe(); }, ThreadOption.PublisherThread, false,
+                (message) => { this.HideAndUnsubscribe(); },
+                ThreadOption.PublisherThread,
+                false,
                 message => message.Type == InstallationApp_EventMessageType.BackToVWApp);
             FinishedMachineModeChangeStateEventHandler += () => { };
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
@@ -75,23 +78,25 @@ namespace Ferretto.VW.InstallationApp
             this.MachineModeControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, ca);
             await Task.Delay(3000);
             this.MachineModeControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
-            this.MachineModeControl.RectangleBrush = (!this.MachineModeControl.MachineModeState) ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Auto"] : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Manual"];
+            this.MachineModeControl.RectangleBrush = (!this.MachineModeControl.MachineModeState)
+                ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Auto"]
+                : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Manual"];
             this.RaiseFinishedMachineModeChangeStateEvent();
         }
 
         private async void SetMachineOn()
         {
-            var ca = new ColorAnimation();
-            ca.From = ((SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"]).Color;
-            ca.To = ((SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"]).Color;
-            ca.Duration = new Duration(TimeSpan.FromSeconds(.5));
-            ca.RepeatBehavior = RepeatBehavior.Forever;
-            this.MachineOnMarchControl.RectangleBrush = new SolidColorBrush(this.MachineOnMarchControl.RectangleBrush.Color);
-            this.MachineOnMarchControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, ca);
-            await Task.Delay(3000);
-            this.MachineOnMarchControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
-            this.MachineOnMarchControl.RectangleBrush = (!this.MachineOnMarchControl.MachineOnMarchState) ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"] : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"];
-            this.RaiseFinishedMachineOnMarchChangeStateEvent();
+            //var ca = new ColorAnimation();
+            //ca.From = ((SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"]).Color;
+            //ca.To = ((SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"]).Color;
+            //ca.Duration = new Duration(TimeSpan.FromSeconds(.5));
+            //ca.RepeatBehavior = RepeatBehavior.Forever;
+            //this.MachineOnMarchControl.RectangleBrush = new SolidColorBrush(this.MachineOnMarchControl.RectangleBrush.Color);
+            //this.MachineOnMarchControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, ca);
+            //await Task.Delay(3000);
+            //this.MachineOnMarchControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
+            //this.MachineOnMarchControl.RectangleBrush = (!this.MachineOnMarchControl.MachineOnMarchState) ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"] : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"];
+            //this.RaiseFinishedMachineOnMarchChangeStateEvent();
         }
 
         private void UnsubscribeEvents()

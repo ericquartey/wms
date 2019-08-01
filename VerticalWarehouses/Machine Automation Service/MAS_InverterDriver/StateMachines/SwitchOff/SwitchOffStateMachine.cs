@@ -1,13 +1,12 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     public class SwitchOffStateMachine : InverterStateMachineBase
     {
@@ -23,15 +22,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 
         #region Constructors
 
-        public SwitchOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger, FieldCommandMessage nextCommandMessage = null)
-            : base(logger)
+        public SwitchOffStateMachine(
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger,
+            FieldCommandMessage nextCommandMessage = null)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
             this.nextCommandMessage = nextCommandMessage;
+            this.inverterStatus = inverterStatus;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -61,6 +63,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
         {
             this.CurrentState = new SwitchOffStartState(this, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
         }
 
         protected override void Dispose(bool disposing)

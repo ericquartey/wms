@@ -1,27 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
-using Prism.Mvvm;
+using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class ErrorsStatisticsViewModel : BindableBase, IErrorsStatisticsViewModel
+    public class ErrorsStatisticsViewModel : BaseViewModel, IErrorsStatisticsViewModel
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IErrorsMachineService errorsService;
+
+        private readonly IStatusMessageService statusMessageService;
+
+        private int currentItemIndex;
+
+        private ICustomControlErrorsDataGridViewModel dataGridViewModelRef;
+
+        private ICommand downDataGridButtonCommand;
+
+        private ErrorStatisticsSummary statistics;
+
+        private ICommand upDataGridButtonCommand;
 
         #endregion
 
         #region Constructors
 
-        public ErrorsStatisticsViewModel(IEventAggregator eventAggregator)
+        public ErrorsStatisticsViewModel(
+            IStatusMessageService statusMessageService,
+            IErrorsMachineService errorsService,
+            ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
-            this.eventAggregator = eventAggregator;
+            this.statusMessageService = statusMessageService;
+            this.errorsService = errorsService;
+            this.dataGridViewModelRef = errorsDataGridViewModel;
+            this.DataGridViewModel = this.dataGridViewModelRef;
             this.NavigationViewModel = null;
         }
 
@@ -29,30 +49,61 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Properties
 
-        public BindableBase NavigationViewModel { get; set; }
+        public ICustomControlErrorsDataGridViewModel DataGridViewModel { get => this.dataGridViewModelRef; set => this.SetProperty(ref this.dataGridViewModelRef, value); }
+
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
+        public ErrorStatisticsSummary Statistics => this.statistics;
+
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public void ChangeSelectedItemAsync(bool isUp)
         {
-            // TODO
+            if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
+            {
+                return;
+            }
+
+            var count = gridData.Cells.Count();
+            if (gridData.Cells != null && count != 0)
+            {
+                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= count)
+                {
+                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : count - 1;
+                }
+
+                gridData.SelectedCell = gridData.Cells.ToList()[this.currentItemIndex];
+            }
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            if (!(this.dataGridViewModelRef is CustomControlErrorsDataGridViewModel gridData))
+            {
+                return;
+            }
 
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
+            try
+            {
+                this.statistics = await this.errorsService.GetStatisticsAsync();
+                var selectedError = Enumerable.FirstOrDefault(this.statistics.Errors);
 
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+                gridData.Cells = Enumerable.OrderByDescending(this.statistics.Errors, e => e.Total);
+                gridData.SelectedCell = selectedError;
+                this.currentItemIndex = 0;
+
+                this.RaisePropertyChanged(nameof(this.DataGridViewModel));
+                this.RaisePropertyChanged(nameof(this.Statistics));
+            }
+            catch (Exception ex)
+            {
+                this.statusMessageService.Notify(ex, $"Cannot load data.");
+            }
         }
 
         #endregion

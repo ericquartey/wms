@@ -106,13 +106,13 @@ namespace Ferretto.Common.Controls.WPF
 
         private const string DefaultBackground = "CommonSecondaryMedium";
 
+        private const double HALF_MARK = 0.5;
+
         private const int LittleMarksCount = 10;
 
         private const int MIDDLE_INTERVALMARKS = 2;
 
         private const int OFFSET_BORDER = 2;
-
-        private const double OFFSET_MARGIN = 1;
 
         private const double TEXT_OFFSET_FACTOR = 20;
 
@@ -128,9 +128,6 @@ namespace Ferretto.Common.Controls.WPF
 
         public RulerControl()
         {
-            this.SnapsToDevicePixels = false;
-            var target = this;
-            RenderOptions.SetEdgeMode(target, EdgeMode.Aliased);
             this.LoadStyle();
         }
 
@@ -338,9 +335,9 @@ namespace Ferretto.Common.Controls.WPF
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(this.FontFamily.ToString()),
-                                 fontSize,
-                                 this.ForegroundText,
-                                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                    fontSize,
+                    this.ForegroundText,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
             return pixelSize > (ft.Width + margin);
         }
 
@@ -404,7 +401,7 @@ namespace Ferretto.Common.Controls.WPF
             return position;
         }
 
-        private(Point littleMarkStart, Point littleMarkEnd) CreateLittleMark(double basePixelStart, double littlePixelStep, int j)
+        private (Point littleMarkStart, Point littleMarkEnd) CreateLittleMark(double basePixelStart, double littlePixelStep, int j)
         {
             var littleMarkStart = new Point(0, 0);
             var littleMarkEnd = new Point(0, 0);
@@ -441,30 +438,31 @@ namespace Ferretto.Common.Controls.WPF
             if (this.Orientation == Orientation.Horizontal)
             {
                 pointStart.X = 0;
-                pointEnd.X = this.TrayWidth;
+                pointEnd.X = this.TrayWidth + this.GetOffset();
                 if (this.HideAllMarkers)
                 {
-                    pointStart.X = -OFFSET_MARGIN;
-                    pointStart.Y = this.ActualHeight - OFFSET_MARGIN;
+                    pointStart.X = HALF_MARK;
+                    pointStart.Y = this.GetOffset();
                 }
                 else
                 {
-                    pointStart.Y = this.TrayHeight - this.penHalfSize;
+                    pointStart.Y = this.TrayHeight;
                 }
 
                 pointEnd.Y = pointStart.Y;
             }
             else
             {
-                pointStart.Y = -OFFSET_MARGIN;
+                pointStart.Y = 0;
                 pointEnd.Y = this.TrayHeight;
                 if (this.HideAllMarkers)
                 {
-                    pointStart.X = this.ActualWidth - OFFSET_MARGIN;
+                    pointStart.X = this.GetOffset();
+                    pointStart.Y = HALF_MARK;
                 }
                 else
                 {
-                    pointStart.X = this.TrayWidth - this.penHalfSize;
+                    pointStart.X = this.TrayWidth;
                 }
 
                 pointEnd.X = pointStart.X;
@@ -516,15 +514,16 @@ namespace Ferretto.Common.Controls.WPF
         {
             var littleMarkStart = new Point(0, 0);
             var littleMarkEnd = new Point(0, 0);
-            var sizeOfPen = this.GetSizeOfPen();
+
             if (this.Orientation == Orientation.Horizontal)
             {
                 littleMarkStart.X = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayWidth, this.DimensionWidth);
-                littleMarkStart.Y = this.penHalfSize;
-                littleMarkEnd.Y = this.ActualHeight - sizeOfPen;
+                littleMarkStart.X += HALF_MARK;
+                littleMarkStart.Y = WIDTH_MARK;
+                littleMarkEnd.Y = this.TrayHeight;
                 if (this.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    littleMarkStart.X = this.TrayWidth - littleMarkStart.X - this.GetPixelOffest();
+                    littleMarkStart.X = this.TrayWidth - littleMarkStart.X;
                 }
 
                 littleMarkEnd.X = littleMarkStart.X;
@@ -532,11 +531,11 @@ namespace Ferretto.Common.Controls.WPF
             else
             {
                 littleMarkStart.Y = ConvertMillimetersToPixel(this.Step * currentStep, this.TrayHeight, this.DimensionHeight);
-                littleMarkStart.X = this.penHalfSize;
-                littleMarkEnd.X = this.ActualWidth - sizeOfPen;
+                littleMarkStart.X = WIDTH_MARK;
+                littleMarkEnd.X = this.TrayWidth;
                 if (this.OriginVertical == OriginVertical.Bottom)
                 {
-                    littleMarkStart.Y = this.TrayHeight - littleMarkStart.Y - this.GetPixelOffest();
+                    littleMarkStart.Y = this.TrayHeight - littleMarkStart.Y;
                 }
 
                 littleMarkEnd.Y = littleMarkStart.Y;
@@ -633,8 +632,8 @@ namespace Ferretto.Common.Controls.WPF
             guidelineSet.GuidelinesY.Add(pointEnd.Y);
             dc.PushGuidelineSet(guidelineSet);
             var points = new Point[2];
-            points[0] = new Point(pointStart.X + this.penHalfSize, pointStart.Y + this.penHalfSize);
-            points[1] = new Point(pointEnd.X + this.penHalfSize, pointEnd.Y + this.penHalfSize);
+            points[0] = new Point(pointStart.X, pointStart.Y);
+            points[1] = new Point(pointEnd.X, pointEnd.Y);
             dc.DrawLine(this.pen, points[0], points[1]);
             dc.Pop();
         }
@@ -646,9 +645,9 @@ namespace Ferretto.Common.Controls.WPF
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(this.FontFamily.ToString()),
-                                 fontSize,
-                                 this.ForegroundText,
-                                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                    fontSize,
+                    this.ForegroundText,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
             var position = this.ComputeTextPosition(ft.Width, currentStep);
             if (position != null)
@@ -708,14 +707,16 @@ namespace Ferretto.Common.Controls.WPF
             return this.GetSizeOfPen() / 2.0;
         }
 
-        private double GetPixelOffest()
+        private double GetOffset()
         {
-            if (this.GetSizeOfPen().Equals(1.0))
+            var ma = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+
+            if (ma.M11 >= 2)
             {
-                return WIDTH_MARK;
+                return ((int)ma.M11 + HALF_MARK) - ma.M11;
             }
 
-            return WIDTH_MARK / 2;
+            return 2 - ma.M11;
         }
 
         private double GetSizeOfPen()
@@ -741,7 +742,7 @@ namespace Ferretto.Common.Controls.WPF
                 Brush = this.Foreground,
                 Thickness = this.GetSizeOfPen(),
                 StartLineCap = PenLineCap.Square,
-                EndLineCap = PenLineCap.Square
+                EndLineCap = PenLineCap.Square,
             };
         }
 

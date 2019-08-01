@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Ferretto.VW.CommonUtils.Enumerations;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
     public partial class CustomSensorControl : UserControl, INotifyPropertyChanged
     {
@@ -11,7 +12,13 @@ namespace Ferretto.VW.CustomControls.Controls
 
         public static readonly DependencyProperty BulletColorProperty = DependencyProperty.Register("BulletColor", typeof(SolidColorBrush), typeof(CustomSensorControl));
 
+        public static readonly DependencyProperty IoMachineSensorProperty = DependencyProperty.Register("IoMachineSensor", typeof(IOMachineSensors), typeof(CustomSensorControl));
+
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomSensorControl), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty SensorPortProperty = DependencyProperty.Register("SensorPort", typeof(IOMachineSensors), typeof(CustomSensorControl), new FrameworkPropertyMetadata(IOMachineSensors.NoValue, OnSensorPortChanged));
+
+        public static readonly DependencyProperty SensorsProperty = DependencyProperty.Register("Sensors", typeof(bool[]), typeof(CustomSensorControl), new FrameworkPropertyMetadata(null, OnSensorsChanged));
 
         public static readonly DependencyProperty SensorStateProperty = DependencyProperty.Register("SensorState", typeof(bool), typeof(CustomSensorControl));
 
@@ -56,6 +63,26 @@ namespace Ferretto.VW.CustomControls.Controls
             }
         }
 
+        public IOMachineSensors SensorPort
+        {
+            get => (IOMachineSensors)this.GetValue(SensorPortProperty);
+            set
+            {
+                this.SetValue(SensorPortProperty, value);
+                this.RaisePropertyChanged(nameof(this.SensorPort));
+            }
+        }
+
+        public bool[] Sensors
+        {
+            get => (bool[])this.GetValue(SensorsProperty);
+            set
+            {
+                this.SetValue(SensorsProperty, value);
+                this.RaisePropertyChanged(nameof(this.Sensors));
+            }
+        }
+
         public bool SensorState
         {
             get => (bool)this.GetValue(SensorStateProperty);
@@ -69,6 +96,33 @@ namespace Ferretto.VW.CustomControls.Controls
         #endregion
 
         #region Methods
+
+        public void UpdateSensorState()
+        {
+            if (this.Sensors != null && this.SensorPort != IOMachineSensors.NoValue)
+            {
+                this.SensorState = this.Sensors[(int)this.SensorPort];
+                return;
+            }
+
+            this.SensorState = false;
+        }
+
+        private static void OnSensorPortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CustomSensorControl control && e.NewValue is IOMachineSensors sensorStatus)
+            {
+                control.UpdateSensorState();
+            }
+        }
+
+        private static void OnSensorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CustomSensorControl control && e.NewValue is bool[] sensors)
+            {
+                control.UpdateSensorState();
+            }
+        }
 
         private void RaisePropertyChanged(string propertyName)
         {

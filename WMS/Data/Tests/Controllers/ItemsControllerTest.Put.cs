@@ -26,21 +26,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
             var item1 = new DataModels.Item
             {
-                Id = 1,
+                Id = GetNewId(),
                 Code = "Item #1",
                 ManagementType = DataModels.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new DataModels.CompartmentType
             {
-                Id = 1,
+                Id = GetNewId(),
                 Depth = 10,
                 Width = 10,
             };
 
             var compartment1 = new DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var itemArea1 = new DataModels.ItemArea
             {
                 AreaId = this.Area1.Id,
-                ItemId = item1.Id
+                ItemId = item1.Id,
             };
 
             using (var context = this.CreateContext())

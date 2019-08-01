@@ -1,7 +1,7 @@
 ﻿using System;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
+namespace Ferretto.VW.MAS.InverterDriver.Interface.StateMachines
 {
     public interface IInverterStateMachine : IDisposable
     {
@@ -26,9 +26,19 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
 
         /// <summary>
+        /// Release all resources.
+        /// </summary>
+        void Release();
+
+        /// <summary>
         /// Start states machine.
         /// </summary>
         void Start();
+
+        /// <summary>
+        /// Stop states machine.
+        /// </summary>
+        void Stop();
 
         /// <summary>
         /// Process a given message.

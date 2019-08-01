@@ -1,12 +1,11 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 {
     public class SwitchOnStateMachine : InverterStateMachineBase
     {
@@ -22,15 +21,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
         #region Constructors
 
-        public SwitchOnStateMachine(Axis axisToSwitchOn, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base( logger )
+        public SwitchOnStateMachine(
+            Axis axisToSwitchOn,
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogDebug( "1:Method Start" );
-
             this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
             this.axisToSwitchOn = axisToSwitchOn;
+
+            this.Logger.LogDebug("1:Method Start");
         }
 
         #endregion
@@ -39,7 +41,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
         ~SwitchOnStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -49,8 +51,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new SwitchOnStartState( this, this.axisToSwitchOn, this.inverterStatus, this.Logger );
+            this.CurrentState = new SwitchOnStartState(this, this.axisToSwitchOn, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
         }
 
         protected override void Dispose(bool disposing)
@@ -66,7 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

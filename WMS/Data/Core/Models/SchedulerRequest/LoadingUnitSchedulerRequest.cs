@@ -17,9 +17,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitId { get; set; }
 
-        public int LoadingUnitTypeId { get; set; }
-
-        public OperationType OperationType { get; } = Models.OperationType.Withdrawal;
+        public OperationType OperationType { get; } = Models.OperationType.Pick;
 
         public int? Priority { get; set; }
 
@@ -36,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Models
             return new LoadingUnitSchedulerRequest
             {
                 IsInstant = true,
-                LoadingUnitId = loadingUnitId
+                LoadingUnitId = loadingUnitId,
             };
         }
 

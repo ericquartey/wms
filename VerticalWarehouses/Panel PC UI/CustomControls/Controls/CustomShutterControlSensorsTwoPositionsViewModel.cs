@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.App.Controls.Interfaces;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.CustomControls.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
     public class CustomShutterControlSensorsTwoPositionsViewModel : BindableBase, ICustomShutterControlSensorsTwoPositionsViewModel
     {
@@ -33,7 +33,8 @@ namespace Ferretto.VW.CustomControls.Controls
 
         public Task OnEnterViewAsync()
         {
-            return null;
+            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

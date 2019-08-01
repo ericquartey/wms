@@ -7,7 +7,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.ItemLists
+namespace Ferretto.WMS.App.Modules.ItemLists
 {
     public class ItemListRowAddViewModel : CreateViewModel<ItemListRowDetails>
     {
@@ -58,7 +58,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        resultCreate.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = false;

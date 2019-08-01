@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace Ferretto.VW.CustomControls
+namespace Ferretto.VW.App.Controls.Utils
 {
     public static class TreeExtensions
     {

@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Interfaces;
 
-namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages
+namespace Ferretto.VW.CommonUtils.Messages.MAStoUIMessages
 {
     public class ActionUpdateData : IActionUpdateData
     {

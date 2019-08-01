@@ -1,29 +1,31 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Utilities;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels.Errors;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService : BackgroundService
     {
         #region Fields
 
-        private readonly IBaysManager baysManager;
+        private readonly IBaysDataService baysDataService;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
@@ -47,7 +49,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
-        private bool disposed;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private CancellationToken stoppingToken;
 
@@ -62,19 +64,65 @@ namespace Ferretto.VW.MAS_AutomationService
             IDataHubClient dataHubClient,
             IMachinesDataService machinesDataService,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
+            IBaysDataService baysDataService,
             IMissionsDataService missionDataService,
-            IBaysManager baysManager
-            )
+            IServiceScopeFactory serviceScopeFactory)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (serviceScopeFactory == null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             logger.LogTrace("1:Method Start");
+
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (installationHub == null)
+            {
+                throw new ArgumentNullException(nameof(installationHub));
+            }
+
+            if (dataHubClient == null)
+            {
+                throw new ArgumentNullException(nameof(dataHubClient));
+            }
+
+            if (machinesDataService == null)
+            {
+                throw new ArgumentNullException(nameof(machinesDataService));
+            }
+
+            if (operatorHub == null)
+            {
+                throw new ArgumentNullException(nameof(operatorHub));
+            }
+
+            if (baysDataService == null)
+            {
+                throw new ArgumentNullException(nameof(baysDataService));
+            }
+
+            if (missionDataService == null)
+            {
+                throw new ArgumentNullException(nameof(missionDataService));
+            }
+
             this.eventAggregator = eventAggregator;
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
             this.machinesDataService = machinesDataService;
             this.operatorHub = operatorHub;
+            this.baysDataService = baysDataService;
             this.missionDataService = missionDataService;
-            this.baysManager = baysManager;
-
+            this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -84,37 +132,19 @@ namespace Ferretto.VW.MAS_AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-            this.dataHubClient.ConnectAsync();
 
-            this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
-            this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~AutomationService()
-        {
-            this.Dispose(false);
+            this.dataHubClient.EntityChanged += this.OnWmsEntityChanged;
         }
 
         #endregion
 
         #region Methods
 
-        public void Dispose(bool disposing)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            if (this.disposed)
-            {
-                return;
-            }
+            await base.StartAsync(cancellationToken);
 
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
+            await this.dataHubClient.ConnectAsync();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -125,10 +155,21 @@ namespace Ferretto.VW.MAS_AutomationService
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
+
+#if DEBUG
+                // simulate error
+                await Task.Delay(20 * 1000);
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                    errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
+                }
+#endif
             }
             catch (Exception ex)
             {
-                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads", ex);
+                throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
             }
         }
 
@@ -136,22 +177,21 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             do
             {
-                CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                     this.logger.LogTrace($"2:Waiting for process:{this.commandQueue.Count}");
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException)
                 {
                     this.logger.LogTrace("3:Method End - Operation Canceled");
                     return;
                 }
-                switch (receivedMessage.Type)
-                {
-                }
-            } while (!this.stoppingToken.IsCancellationRequested);
+
+                // TODO add here a switch block on receivedMessage.Type
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
@@ -186,14 +226,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 NotificationMessage receivedMessage;
                 try
                 {
-                    if (this.notificationQueue.Count == 0)
-                    {
-                        this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    }
-                    else
-                    {
-                        this.notificationQueue.Dequeue(out receivedMessage);
-                    }
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
                     this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
@@ -241,7 +274,7 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.IoDriverException:
                     case MessageType.DLException:
                     case MessageType.WebApiException:
-                        this.ExceptionHandlerMethod(receivedMessage);
+
                         break;
 
                     case MessageType.ResolutionCalibration:
@@ -249,27 +282,45 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.ExecuteMission:
-                        if (receivedMessage.Data is IExecuteMissionMessageData data)
+                        if (receivedMessage.Data is INewMissionOperationAvailable data)
                         {
-                            await this.ExecuteMissionMethod(receivedMessage);
-                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.MissionsQuantity}");
+                            await this.OnNewMissionOperationAvailable(data);
+                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.MissionId}, mission quantity: {data.PendingMissionsCount}");
                         }
                         break;
 
-                    case MessageType.BayConnected:
+                    case MessageType.BayOperationalStatusChanged:
                         this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
-                        this.BayConnectedMethod(receivedMessage);
+                        this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
                         break;
 
-                    // Adds other Notification Message and send it via SignalR controller
+                    case MessageType.DataLayerReady:
+                        this.OnDataLayerReady();
+                        break;
+
+                    case MessageType.ErrorStatusChanged:
+                        this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
+                        break;
+
                     default:
                         break;
                 }
-            } while (!this.stoppingToken.IsCancellationRequested);
+            }
+            while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("9:Method End");
 
             return;
+        }
+
+        private void OnDataLayerReady()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var baysConfigurationProvider = scope.ServiceProvider.GetRequiredService<IBaysConfigurationProvider>();
+
+                baysConfigurationProvider.LoadFromConfiguration();
+            }
         }
 
         #endregion

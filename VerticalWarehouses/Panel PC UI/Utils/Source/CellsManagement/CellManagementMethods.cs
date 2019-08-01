@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using Ferretto.VW.MAS.DataModels.Cells;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement
@@ -25,14 +26,17 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         public static void CompactCells(CellsManager cm)
         {
+            throw new NotImplementedException();
         }
 
-        public static void CompactCells(CellsManager cm, Side side)
+        public static void CompactCells(CellsManager cm, CellSide side)
         {
+            throw new NotImplementedException();
         }
 
         public static void CompactCells(CellsManager cm, int heightMillimiters)
         {
+            throw new NotImplementedException();
         }
 
         public static bool CreateBay(CellsManager cm, int firstCellID, int lastCellID)
@@ -41,14 +45,17 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             {
                 return false;
             }
+
             if (cm.BayCounter > 3)
             {
                 return false;
             }
+
             for (var id = firstCellID; id <= lastCellID; id += 2)
             {
-                ChangeCellStatus(cm, id - 1, Status.Disabled);
+                ChangeCellStatus(cm, id - 1, CellStatus.Disabled);
             }
+
             cm.Bays.Add(new Bay(++cm.BayCounter, ((lastCellID - firstCellID) / AISLE_SIDES_COUNT) * CELL_HEIGHT_MILLIMETERS, firstCellID));
             return true;
         }
@@ -69,6 +76,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
                     index = tmp;
                 }
             }
+
             for (var index = 1; index < cm.Cells.Count; index += 2)//even ID cell's index
             {
                 if (cm.Cells[index].Status == 0)
@@ -80,6 +88,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
                     index = tmp;
                 }
             }
+
             UpdateBlocksFile(cm);
             return true;
         }
@@ -92,6 +101,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
                 var c = new Cell(id);
                 cm.Cells.Add(c);
             }
+
             UpdateCellsFile(cm);
         }
 
@@ -101,10 +111,12 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             {
                 return false;
             }
+
             if (cm.Drawers.Find(x => x.Id == drawerID) == null)
             {
                 return false;
             }
+
             cm.Bays[destinationBayID - 1].Occupied = true;
             cm.Bays[destinationBayID - 1].DrawerID = drawerID;
             var d = (from ret_d in cm.Drawers where ret_d.Id == drawerID select ret_d).First();
@@ -120,7 +132,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             return cm.Blocks.Sum(x => x.FinalIDCell - x.InitialIDCell);
         }
 
-        public static int GetFreeCellQuantity(CellsManager cm, Side side)
+        public static int GetFreeCellQuantity(CellsManager cm, CellSide side)
         {
             return cm.Blocks.Where(x => x.Side == side).Sum(x => x.FinalIDCell - x.InitialIDCell);
         }
@@ -150,11 +162,11 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
 
         public static bool InsertUnusableCell(CellsManager cm, int cellID)
         {
-            if (cm.Cells[cellID - 1].Status != Status.Free)
+            if (cm.Cells[cellID - 1].Status != CellStatus.Free)
             {
                 return false;
             }
-            ChangeCellStatus(cm, cellID - 1, Status.Unusable);
+            ChangeCellStatus(cm, cellID - 1, CellStatus.Unusable);
             CreateBlocks(cm);
             UpdateCellsFile(cm);
             UpdateBlocksFile(cm);
@@ -204,7 +216,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             return cells * AISLE_SIDES_COUNT;
         }
 
-        private static void ChangeCellStatus(CellsManager cm, int cellIndex, Status newStatus)
+        private static void ChangeCellStatus(CellsManager cm, int cellIndex, CellStatus newStatus)
         {
             if (cellIndex >= cm.Cells.Count || cellIndex < 0)
             {
@@ -240,7 +252,9 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             for (var index = cellIndex + 2; index < cm.Cells.Count; index += 2)
             {
-                if (cm.Cells[index].Status != Status.Disabled && cm.Cells[index].Status != Status.Occupied)
+                if (cm.Cells[index].Status != CellStatus.Disabled
+                    &&
+                    cm.Cells[index].Status != CellStatus.Occupied)
                 {
                 }
                 else
@@ -256,7 +270,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             var cellsToOccupy = (drawerHeightMillimiters / CELL_HEIGHT_MILLIMETERS) + 1;
             for (var index = firstCellindex; index <= firstCellindex + (cellsToOccupy * AISLE_SIDES_COUNT); index += 2)
             {
-                ChangeCellStatus(cm, index, Status.Occupied);
+                ChangeCellStatus(cm, index, CellStatus.Occupied);
             }
         }
 

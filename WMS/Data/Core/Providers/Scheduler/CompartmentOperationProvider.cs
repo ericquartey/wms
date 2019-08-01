@@ -61,6 +61,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusId = j.c.MaterialStatusId,
                     PackageTypeId = j.c.PackageTypeId,
                     RegistrationNumber = j.c.RegistrationNumber,
+                    OtherMissionOperationCount = j.c.OtherMissionOperationCount,
+                    PickMissionOperationCount = j.c.PickMissionOperationCount,
+                    PutMissionOperationCount = j.c.PutMissionOperationCount,
                 })
                 .SingleOrDefaultAsync();
         }
@@ -98,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             IQueryable<CandidateCompartment> candidateCompartments;
             switch (request.OperationType)
             {
-                case OperationType.Withdrawal:
+                case OperationType.Pick:
                     candidateCompartments = filteredCompartments
                         .Where(c => c.ItemId == request.ItemId)
                         .Select(c => new CandidateCompartment
@@ -120,12 +123,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Sub1 = c.Sub1,
                             Sub2 = c.Sub2,
                             IsItemPairingFixed = c.IsItemPairingFixed,
+                            OtherMissionOperationCount = c.OtherMissionOperationCount,
+                            PickMissionOperationCount = c.PickMissionOperationCount,
+                            PutMissionOperationCount = c.PutMissionOperationCount,
                         })
                         .Where(c => c.Availability > 0);
 
                     break;
 
-                case OperationType.Insertion:
+                case OperationType.Put:
 
                     var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
@@ -173,7 +179,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public Expression<Func<Compartment, bool>> GetCompartmentIsInBayFunction(
                             int? bayId,
-            bool isVertimag = true)
+                            bool isVertimag = true)
         {
             if (!bayId.HasValue)
             {
@@ -256,7 +262,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 Expression<Func<T, double>> remainingCapacitySetSelector = c => c.RemainingCapacity / ((IOrderableCompartmentSet)c).Size;
 
-                return operationType == OperationType.Withdrawal ? availabilitySetSelector : remainingCapacitySetSelector;
+                return operationType == OperationType.Pick ? availabilitySetSelector : remainingCapacitySetSelector;
             }
             else
             {
@@ -264,7 +270,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
 
-                return operationType == OperationType.Withdrawal ? availabilitySelector : remainingCapacitySelector;
+                return operationType == OperationType.Pick ? availabilitySelector : remainingCapacitySelector;
             }
         }
 

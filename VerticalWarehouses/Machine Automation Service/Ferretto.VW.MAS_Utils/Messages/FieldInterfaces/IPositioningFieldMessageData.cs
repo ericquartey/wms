@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
+namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
     public interface IPositioningFieldMessageData : IFieldMessageData
     {
@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
         MovementType MovementType { get; set; }
 
         int NumberCycles { get; }
-
-        decimal Resolution { get; }
 
         decimal TargetAcceleration { get; set; }
 

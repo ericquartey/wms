@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 namespace Ferretto.WMS.Data.Core.Models
 {
     [Resource(nameof(ItemList))]
-    public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
+    public class ItemList : BaseModel<int>, IItemListPolicy, IItemListDeletePolicy
     {
         #region Properties
 
+        [Unique]
         public string Code { get; set; }
 
         [PositiveOrZero]
@@ -52,6 +53,10 @@ namespace Ferretto.WMS.Data.Core.Models
         [JsonIgnore]
         [PositiveOrZero]
         public int ReadyRowsCount { get; set; }
+
+        public string ShipmentUnitCode { get; set; }
+
+        public string ShipmentUnitDescription { get; set; }
 
         public ItemListStatus Status => GetStatus(
             this.ItemListRowsCount,

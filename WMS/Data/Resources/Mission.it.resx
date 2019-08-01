@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OnlyLoadingUnitMissionsCanBeAborted" xml:space="preserve">
+    <value>Solo missioni relative a unità di carico possono essere abortite.</value>
+  </data>
+  <data name="OnlyLoadingUnitMissionsCanBeCompleted" xml:space="preserve">
+    <value>Solo missioni relative a unità di carico possono essere completate.</value>
+  </data>
+  <data name="OnlyLoadingUnitMissionsCanBeExecuted" xml:space="preserve">
+    <value>Solo missioni relative a unità di carico possono essere eseguite.</value>
+  </data>
+  <data name="UnableToAbortTheMissionBecauseItHasNoAssociatedOperations" xml:space="preserve">
+    <value>Impossibile abortire la missione perché non ha operazioni associate.</value>
+  </data>
   <data name="UnableToAbortTheMissionBecauseOfItsCurrentState" xml:space="preserve">
     <value>Impossibile abortire la missione a causa del suo stato.</value>
   </data>

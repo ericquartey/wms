@@ -38,6 +38,33 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpPost("authenticate")]
+        public ActionResult<UserClaims> AuthenticateWithResourceOwnerPassword(
+           string userName,
+           string password)
+        {
+            if (userName == null)
+            {
+                return this.BadRequest(new ProblemDetails { Title = "User name was not provided." });
+            }
+
+            if (password == null)
+            {
+                return this.BadRequest(new ProblemDetails { Title = "Password was not provided." });
+            }
+
+            var userClaims = this.userProvider.Authenticate(userName, password);
+            if (userClaims != null)
+            {
+                return this.Ok(userClaims);
+            }
+
+            return this.BadRequest(new ProblemDetails { Title = "Invalid credentials." });
+        }
+
         [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllAsync()
@@ -65,18 +92,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
             return this.Ok(result);
-        }
-
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [HttpGet("is-valid")]
-        public async Task<ActionResult<bool>> IsValidAsync(User user)
-        {
-            return this.Ok(await this.userProvider.IsValidAsync(user));
         }
 
         #endregion

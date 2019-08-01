@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -22,6 +23,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IGlobalSettingsProvider globalSettingsProvider;
 
+        private readonly IMapper mapper;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion
@@ -30,11 +33,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public CompartmentTypeProvider(
             DatabaseContext dataContext,
+            IMapper mapper,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             IGlobalSettingsProvider globalSettingsProvider,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.globalSettingsProvider = globalSettingsProvider;
         }
@@ -60,6 +65,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var validationError = model.ValidateBusinessModel(this.DataContext.CompartmentTypes);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<CompartmentType>(
+                    validationError,
+                    model);
+            }
+
             var globalSettings = await this.globalSettingsProvider.GetGlobalSettingsAsync();
             if (!model.ApplyCorrection(globalSettings.MinStepCompartment))
             {
@@ -79,18 +92,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (existingCompartmentType == null)
                 {
                     var entry = await this.DataContext.CompartmentTypes.AddAsync(
-                                    new Common.DataModels.CompartmentType
-                                    {
-                                        Depth = model.Depth.Value,
-                                        Width = model.Width.Value
-                                    });
+                        this.mapper.Map<Common.DataModels.CompartmentType>(model));
 
                     if (await this.DataContext.SaveChangesAsync() <= 0)
                     {
                         return new CreationErrorOperationResult<CompartmentType>();
                     }
 
-                    existingCompartmentType = entry.Entity;
                     model.Id = entry.Entity.Id;
 
                     this.NotificationService.PushCreate(model);
@@ -105,7 +113,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     var result = await this.CreateOrUpdateItemCompartmentTypeAsync(
                                      itemId.Value,
                                      maxCapacity.Value,
-                                     existingCompartmentType.Id);
+                                     model.Id);
 
                     if (!result.Success)
                     {
@@ -167,10 +175,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<CompartmentType>> GetAllAsync(
                     int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null,
-            string whereString = null,
-            string searchString = null)
+                    int take,
+                    IEnumerable<SortOption> orderBySortOptions = null,
+                    string whereString = null,
+                    string searchString = null)
         {
             var models = await this.GetAllBase()
                 .ToArrayAsync<CompartmentType, Common.DataModels.CompartmentType>(
@@ -246,8 +254,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
                     int itemId,
-            double maxCapacity,
-            int compartmentTypeId)
+                    double maxCapacity,
+                    int compartmentTypeId)
         {
             var existingIcTModel =
                 await this.DataContext.ItemsCompartmentTypes
@@ -264,7 +272,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         ItemId = existingIcTModel.ItemId,
                         MaxCapacity = maxCapacity,
-                        CompartmentTypeId = existingIcTModel.CompartmentTypeId
+                        CompartmentTypeId = existingIcTModel.CompartmentTypeId,
                     });
 
                 return updateResult;
@@ -275,7 +283,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     ItemId = itemId,
                     MaxCapacity = maxCapacity,
-                    CompartmentTypeId = compartmentTypeId
+                    CompartmentTypeId = compartmentTypeId,
                 });
 
             this.NotificationService.PushCreate(typeof(ItemCompartmentType));

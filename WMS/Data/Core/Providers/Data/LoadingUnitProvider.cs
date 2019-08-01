@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -17,53 +18,60 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class LoadingUnitProvider : BaseProvider, ILoadingUnitProvider
     {
+        #region Fields
+
+        private readonly IMapper mapper;
+
+        #endregion
+
         #region Constructors
 
-        public LoadingUnitProvider(DatabaseContext dataContext, INotificationService notificationService)
+        public LoadingUnitProvider(
+            DatabaseContext dataContext,
+            IMapper mapper,
+            INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<IOperationResult<LoadingUnitCreating>> CreateAsync(LoadingUnitCreating model)
+        public async Task<IOperationResult<LoadingUnitDetails>> CreateAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.DataContext.LoadingUnits.AddAsync(new Common.DataModels.LoadingUnit
+            var validationError = model.ValidateBusinessModel(this.DataContext.LoadingUnits);
+            if (!string.IsNullOrEmpty(validationError))
             {
-                AbcClassId = model.AbcClassId,
-                CellId = model.CellId,
-                CellPositionId = model.CellPositionId,
-                Code = model.Code,
-                HandlingParametersCorrection = model.HandlingParametersCorrection,
-                Height = model.Height,
-                IsCellPairingFixed = model.IsCellPairingFixed,
-                LoadingUnitStatusId = model.LoadingUnitStatusId,
-                LoadingUnitTypeId = model.LoadingUnitTypeId,
-                Note = model.Note,
-                ReferenceType = (Common.DataModels.ReferenceType)model.ReferenceType,
-                Weight = model.Weight,
-            });
-
-            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
-            {
-                model.Id = entry.Entity.Id;
-
-                this.NotificationService.PushCreate(model);
-                if (model.CellId != null)
-                {
-                    this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
-                }
+                return new BadRequestOperationResult<LoadingUnitDetails>(
+                    validationError,
+                    model);
             }
 
-            return new SuccessOperationResult<LoadingUnitCreating>(model);
+            var entry = await this.DataContext.LoadingUnits.AddAsync(
+                this.mapper.Map<Common.DataModels.LoadingUnit>(model));
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount <= 0)
+            {
+                return new CreationErrorOperationResult<LoadingUnitDetails>();
+            }
+
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+
+            this.NotificationService.PushCreate(createdModel);
+            if (createdModel.CellId != null)
+            {
+                this.NotificationService.PushUpdate(new Cell { Id = createdModel.CellId.Value });
+            }
+
+            return new SuccessOperationResult<LoadingUnitDetails>(createdModel);
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> DeleteAsync(int id)
@@ -212,7 +220,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(l => new LoadingUnitOperation
                 {
                     Id = l.Id,
-                    LastPickDate = l.LastPickDate
+                    LastPickDate = l.LastPickDate,
                 })
                 .SingleOrDefaultAsync(l => l.Id == id);
         }
@@ -242,6 +250,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IEnumerable<LoadingUnitDetails>> GetAllByMachineIdAsync(int machineId)
+        {
+            var models = await this.GetAllDetailsBase()
+                .Where(l => l.MachineId == machineId)
+                .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
+        }
+
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
             if (model == null || !this.IsValidRelationshipBetweenTypeAisle(model))
@@ -263,10 +285,50 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IOperationResult<LoadingUnitDetails>> UpdateMissionsCountAsync(int id)
+        {
+            var model = await this.GetByIdAsync(id);
+            model.MissionsCount++;
+
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
+                model,
+                this.DataContext.LoadingUnits,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
+        }
+
+        public async Task<IOperationResult<LoadingUnitOperationalInfoUpdate>> UpdateOperationalInfoAsync(LoadingUnitOperationalInfoUpdate model)
+        {
+            if (model == null)
+            {
+                return new BadRequestOperationResult<LoadingUnitOperationalInfoUpdate>(model);
+            }
+
+            try
+            {
+                var existingDataModel = this.DataContext.LoadingUnits.Find(model.Id);
+
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+                await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId });
+
+                return new SuccessOperationResult<LoadingUnitOperationalInfoUpdate>(null);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<LoadingUnitOperationalInfoUpdate>(ex);
+            }
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S4058:Overloads with a \"StringComparison\" parameter should be used",
-            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
+                    "Major Code Smell",
+                    "S4058:Overloads with a \"StringComparison\" parameter should be used",
+                    Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -340,8 +402,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CompartmentsCount = l.Compartments.Count(),
                     HasCompartments = l.LoadingUnitType.HasCompartments,
                     ActiveMissionsCount = l.Missions.Count(
-                        m => m.Status != Common.DataModels.MissionStatus.Completed
-                            && m.Status != Common.DataModels.MissionStatus.Incomplete),
+                        m => m.Operations.Any(o =>
+                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            &&
+                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Depth)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
@@ -349,10 +413,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     WeightFillRate = loadingUnitsMachines.Any(wl => wl.l.Id == l.Id &&
                                                                     wl.m.TotalMaxWeight.HasValue &&
                                                                     wl.m.TotalMaxWeight.Value > 0) ? loadingUnitsMachines.Select(lm => new
-                                                            {
-                                                                WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
-                                                                LoadingUnitId = lm.l.Id
-                                                            }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : (double?)0,
+                                                                    {
+                                                                        WeightFillRate = (double?)(lm.l.Weight / lm.m.TotalMaxWeight.Value),
+                                                                        LoadingUnitId = lm.l.Id,
+                                                                    }).FirstOrDefault(wl => wl.LoadingUnitId == l.Id).WeightFillRate : 0,
                 });
         }
 
@@ -386,10 +450,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     InventoryDate = l.InventoryDate,
                     LastPickDate = l.LastPickDate,
                     LastPutDate = l.LastPutDate,
-                    InMissionCount = l.InMissionCount,
-                    OutMissionCount = l.OutMissionCount,
-                    OtherMissionCount = l.OtherMissionCount,
+                    MissionsCount = l.MissionsCount,
                     CellId = l.CellId,
+                    MachineId = l.Cell.Aisle.Machines.FirstOrDefault().Id,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
@@ -398,9 +461,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Depth),
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                    ActiveMissionsCount = l.Missions.Count(
-                        m => m.Status != Common.DataModels.MissionStatus.Completed
-                            && m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    ActiveMissionsCount = l.Missions.Count(m =>
+                        m.Operations.Any(o =>
+                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            &&
+                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
                 });
         }
 

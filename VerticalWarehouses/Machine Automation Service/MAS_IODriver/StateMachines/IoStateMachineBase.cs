@@ -1,25 +1,33 @@
 ﻿using System;
-using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
     public abstract class IoStateMachineBase : IIoStateMachine
     {
         #region Fields
 
-        protected IEventAggregator EventAggregator;
-
         protected BlockingConcurrentQueue<IoSHDWriteMessage> IoCommandQueue;
 
-        protected ILogger Logger;
-
         private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public IoStateMachineBase(
+            IEventAggregator eventAggregator,
+            ILogger logger)
+        {
+            this.EventAggregator = eventAggregator;
+            this.Logger = logger;
+        }
 
         #endregion
 
@@ -35,6 +43,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
         #region Properties
 
         protected IIoState CurrentState { get; set; }
+
+        protected IEventAggregator EventAggregator { get; }
+
+        protected ILogger Logger { get; }
 
         #endregion
 

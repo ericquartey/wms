@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Ferretto.VW.MAS_Utils.Utilities
+namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public class BlockingConcurrentQueue<T> : ConcurrentQueue<T>
     {
@@ -48,6 +48,11 @@ namespace Ferretto.VW.MAS_Utils.Utilities
         {
             try
             {
+                if (this.Count > 0)
+                {
+                    return this.Dequeue(out result);
+                }
+
                 if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
                 {
                     this.dataReady.Reset();

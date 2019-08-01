@@ -1,15 +1,16 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Unity;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
-    public class SSNavigationButtonsViewModel : BindableBase, ISSNavigationButtonsViewModel, IViewModelRequiresContainer
+    public class SSNavigationButtonsViewModel : BindableBase, ISSNavigationButtonsViewModel
     {
         #region Fields
 
@@ -17,7 +18,7 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand baysButtonCommand;
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
         private ICommand variousButtonCommand;
 
@@ -27,9 +28,22 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public SSNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public SSNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IUnityContainer container) // TODO container should be removed from injection
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (container == null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.container = container;
             this.NavigationViewModel = null;
         }
 
@@ -39,16 +53,22 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand BaysButtonCommand => this.baysButtonCommand ?? (this.baysButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).OnEnterViewAsync(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.EnterView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).UnSubscribeMethodFromEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.ExitView);
+            this.eventAggregator
+                .GetEvent<InstallationApp_Event>()
+                .Subscribe(
+                    async (message) => { await ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).OnEnterViewAsync(); },
+                    ThreadOption.PublisherThread,
+                    false,
+                    message => message.Type == InstallationApp_EventMessageType.EnterView);
+
+            this.eventAggregator
+                .GetEvent<InstallationApp_Event>()
+                .Subscribe(
+                    (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).UnSubscribeMethodFromEvent(); },
+                    ThreadOption.PublisherThread,
+                    false,
+                    message => message.Type == InstallationApp_EventMessageType.ExitView);
+
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>());
         }));
@@ -96,14 +116,9 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public Task OnEnterViewAsync()
         {
-            this.container = container;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

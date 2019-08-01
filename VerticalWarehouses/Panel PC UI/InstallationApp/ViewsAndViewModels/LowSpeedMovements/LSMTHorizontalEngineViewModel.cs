@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
     public class LSMTHorizontalEngineViewModel : BindableBase, ILSMTHorizontalEngineViewModel
     {
@@ -16,7 +16,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IPositioningMachineService positioningService;
 
         private string currentPosition;
 
@@ -28,8 +28,6 @@ namespace Ferretto.VW.InstallationApp
 
         private DelegateCommand moveForwardButtonCommand;
 
-        private IPositioningService positioningService;
-
         private DelegateCommand stopButtonCommand;
 
         private SubscriptionToken updateCurrentPositionToken;
@@ -38,9 +36,22 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public LSMTHorizontalEngineViewModel(IEventAggregator eventAggregator)
+        public LSMTHorizontalEngineViewModel(
+            IEventAggregator eventAggregator,
+            IPositioningMachineService positioningService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (positioningService == null)
+            {
+                throw new System.ArgumentNullException(nameof(positioningService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.positioningService = positioningService;
             this.NavigationViewModel = null;
         }
 
@@ -73,13 +84,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.positioningService = this.container.Resolve<IPositioningService>();
-        }
-
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.IsButtonBackEnabled = true;
             this.IsButtonForwardEnabled = true;
@@ -89,6 +94,8 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -105,14 +112,14 @@ namespace Ferretto.VW.InstallationApp
         {
             this.IsButtonForwardEnabled = false;
 
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 
         private async Task MoveForwardHorizontalAxisHandlerAsync()
         {
             this.IsButtonBackEnabled = false;
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Horizontal, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.DataModels.LoadingUnits;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
@@ -20,9 +20,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerCellManagment dataLayerCellsManagement;
+        private readonly ICellManagmentDataLayer dataLayerCellsManagement;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -35,8 +35,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public OffsetCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.dataLayerCellsManagement = services.GetService(typeof(IDataLayerCellManagment)) as IDataLayerCellManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
+            this.dataLayerCellsManagement = services.GetService(typeof(ICellManagmentDataLayer)) as ICellManagmentDataLayer;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
@@ -45,74 +45,74 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #region Methods
 
         [HttpPost("ExecuteCompleted")]
-        public async Task<bool> ExecuteCompletedAsync()
+        public bool ExecuteCompleted()
         {
-            return await this.ExecuteCompleted_MethodAsync();
+            return this.ExecuteCompleted_Method();
         }
 
         [HttpGet("ExecutePositioning")]
-        public async Task ExecutePositioningAsync()
+        public void ExecutePositioning()
         {
-            await this.ExecutePositioning_MethodAsync();
+            this.ExecutePositioning_Method();
         }
 
         [HttpGet("ExecuteStepDown")]
-        public async Task ExecuteStepDownAsync()
+        public void ExecuteStepDown()
         {
-            var stepValue = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var stepValue = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)OffsetCalibration.StepValue, (long)ConfigurationCategory.OffsetCalibration);
 
-            await this.ExecuteStep_MethodAsync(-stepValue);
+            this.ExecuteStep_Method(-stepValue);
         }
 
         [HttpGet("ExecuteStepUp")]
-        public async Task ExecuteStepUpAsync()
+        public void ExecuteStepUp()
         {
-            var stepValue = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var stepValue = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)OffsetCalibration.StepValue, (long)ConfigurationCategory.OffsetCalibration);
 
-            await this.ExecuteStep_MethodAsync(stepValue);
+            this.ExecuteStep_Method(stepValue);
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
+        public ActionResult<decimal> GetDecimalConfigurationParameter(string category, string parameter)
         {
-            return await this.GetDecimalConfigurationParameter_MethodAsync(category, parameter);
+            return this.GetDecimalConfigurationParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
-        public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
+        public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
         {
-            return await this.GetIntegerConfigurationParameter_MethodAsync(category, parameter);
+            return this.GetIntegerConfigurationParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
         [HttpGet("GetLoadingUnitPositionParameter/{category}/{parameter}")]
-        public async Task<ActionResult<decimal>> GetLoadingUnitPositionParameterAsync(string category, string parameter)
+        public ActionResult<decimal> GetLoadingUnitPositionParameter(string category, string parameter)
         {
-            return await this.GetLoadingUnitPositionParameter_MethodAsync(category, parameter);
+            return this.GetLoadingUnitPositionParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(404)]
         [HttpGet("GetLoadingUnitSideParameter/{category}/{parameter}")]
-        public async Task<ActionResult<int>> GetLoadingUnitSideParameterAsync(string category, string parameter)
+        public ActionResult<int> GetLoadingUnitSideParameter(string category, string parameter)
         {
-            return await this.GetLoadingUnitSideParameter_MethodAsync(category, parameter);
+            return this.GetLoadingUnitSideParameter_Method(category, parameter);
         }
 
         [ProducesResponseType(200)]
         [ProducesResponseType(422)]
         [ProducesResponseType(400)]
         [HttpPost("SetOffsetParameter/{newOffset}/")]
-        public async Task<bool> SetOffsetParameterAsync(decimal newOffset)
+        public bool SetOffsetParameter(decimal newOffset)
         {
-            return await this.SetOffsetParameter_MethodAsync(newOffset);
+            return this.SetOffsetParameter_Method(newOffset);
         }
 
         [ProducesResponseType(200)]
@@ -122,15 +122,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.Stop_Method();
         }
 
-        private async Task<bool> ExecuteCompleted_MethodAsync()
+        private bool ExecuteCompleted_Method()
         {
             var completionPersist = true;
 
             try
             {
-                await this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus, true);
+                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.VerticalOffsetDone, (long)ConfigurationCategory.SetupStatus, true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 completionPersist = false;
             }
@@ -138,23 +138,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return completionPersist;
         }
 
-        private async Task ExecutePositioning_MethodAsync()
+        private void ExecutePositioning_Method()
         {
-            var referenceCell = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+            var referenceCell = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue(
                 (long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
 
             var position = 10; //TODO Retrieve the position related to the cellReference value
 
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
-            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
-            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
@@ -167,8 +165,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 maxDeceleration,
                 0,
                 0,
-                0,
-                resolution);
+                0);
 
             var commandMessage = new CommandMessage(
                 messageData,
@@ -179,18 +176,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
-        private async Task ExecuteStep_MethodAsync(decimal displacement)
+        private void ExecuteStep_Method(decimal displacement)
         {
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
-            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
-            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
                 (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
@@ -203,8 +198,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 maxDeceleration,
                 0,
                 0,
-                0,
-                resolution);
+                0);
 
             var commandMessage = new CommandMessage(
                 messageData,
@@ -215,7 +209,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
-        private async Task<ActionResult<decimal>> GetDecimalConfigurationParameter_MethodAsync(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
@@ -231,10 +225,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                         try
                         {
-                            value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-
                         {
                             return this.NotFound("Parameter not found");
                         }
@@ -245,7 +238,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-                    break;
 
                 case ConfigurationCategory.OffsetCalibration:
                     Enum.TryParse(typeof(OffsetCalibration), parameter, out var offsetCalibrationParameterId);
@@ -254,7 +246,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)offsetCalibrationParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)offsetCalibrationParameterId, (long)categoryId);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -267,7 +259,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-                    break;
 
                 default:
                     break;
@@ -276,7 +267,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return 0;
         }
 
-        private async Task<ActionResult<int>> GetIntegerConfigurationParameter_MethodAsync(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
             Enum.TryParse(typeof(OffsetCalibration), parameter, out var parameterId);
@@ -287,7 +278,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)parameterId, (long)categoryId);
+                    value = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)parameterId, (long)categoryId);
                 }
                 catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {
@@ -302,7 +293,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
-        private async Task<ActionResult<decimal>> GetLoadingUnitPositionParameter_MethodAsync(string category, string parameter)
+        private ActionResult<decimal> GetLoadingUnitPositionParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
             Enum.TryParse(typeof(OffsetCalibration), parameter, out var parameterId);
@@ -310,7 +301,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             if (parameterId != null)
             {
                 LoadingUnitPosition value;
-                var cellId = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
 
                 try
                 {
@@ -329,7 +320,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
-        private async Task<ActionResult<int>> GetLoadingUnitSideParameter_MethodAsync(string category, string parameter)
+        private ActionResult<int> GetLoadingUnitSideParameter_Method(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
             Enum.TryParse(typeof(OffsetCalibration), parameter, out var parameterId);
@@ -337,7 +328,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             if (parameterId != null)
             {
                 LoadingUnitPosition value;
-                var cellId = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
 
                 try
                 {
@@ -356,15 +347,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
-        private async Task<bool> SetOffsetParameter_MethodAsync(decimal newOffset)
+        private bool SetOffsetParameter_Method(decimal newOffset)
         {
             var resultAssignment = true;
 
             try
             {
-                await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis, newOffset);
+                this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis, newOffset);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 resultAssignment = false;
             }

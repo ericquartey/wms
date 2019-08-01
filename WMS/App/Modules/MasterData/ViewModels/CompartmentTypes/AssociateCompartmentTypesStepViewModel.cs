@@ -5,7 +5,7 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class AssociateCompartmentTypesStepViewModel : WmsWizardStepViewModel
     {
@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
-        public override(string moduleName, string viewName, object data) GetNextView()
+        public override (string moduleName, string viewName, object data) GetNextView()
         {
             if (this.selectedOption == null)
             {

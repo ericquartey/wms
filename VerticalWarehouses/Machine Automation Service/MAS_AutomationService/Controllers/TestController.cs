@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.MAS_AutomationService.Hubs;
-using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.CommonUtils.DTOs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Test/[controller]")]
     [ApiController]
@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagment = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.installationHub = hub;
             this.dataHubClient = dataHubClient;
             this.operatorHub = operatorHub;
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDto data)
         {
             await this.ExecuteShutterPositioningMovementMethod();
         }
@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpGet("Homing")]
-        public async void Homing()
+        public void Homing()
         {
             this.HomingMethod();
         }

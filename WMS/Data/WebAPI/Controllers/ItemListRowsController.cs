@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
-        private readonly ISchedulerService schedulerService;
+        private readonly IItemListSchedulerService schedulerService;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            ISchedulerService schedulerService,
+            IItemListSchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
         {
             this.logger = logger;
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Status = StatusCodes.Status404NotFound,
-                    Detail = message
+                    Detail = message,
                 });
             }
 

@@ -16,7 +16,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class CompartmentEditViewModel : SidePanelDetailsViewModel<CompartmentDetails>
     {
@@ -60,7 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsHeaderVisible = true;
             this.IsErrorsVisible = true;
-            this.isItemLookUpEnabled = true;
+            this.IsItemLookUpEnabled = true;
         }
 
         #endregion

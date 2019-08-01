@@ -6,12 +6,13 @@ using Newtonsoft.Json;
 namespace Ferretto.WMS.Data.Core.Models
 {
     [Resource(nameof(ItemList))]
-    public class ItemListDetails : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
+    public class ItemListDetails : BaseModel<int>, IItemListPolicy, IItemListDeletePolicy
     {
         #region Properties
 
         public string AreaName { get; set; }
 
+        [Unique]
         public string Code { get; set; }
 
         [JsonIgnore]

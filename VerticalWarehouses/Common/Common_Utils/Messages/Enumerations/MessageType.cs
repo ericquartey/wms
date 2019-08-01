@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum MessageType
     {
@@ -24,7 +24,7 @@
 
         ShutterControl,
 
-        MissionAdded,
+        NewMissionAvailable,
 
         CreateMission,
 
@@ -44,14 +44,23 @@
 
         IoDriverException,
 
-        MissionCompleted,
+        MissionOperationCompleted,
 
         MissionManagerInitialized,
 
-        BayConnected,
+        BayOperationalStatusChanged,
 
         WebApiException,
 
-        CheckCondition
+        CheckCondition,
+
+        NewMissionOperationAvailable,
+
+        ErrorStatusChanged,
+
+        ResetSecurity,
+
+        InverterStop,
+
     }
 }

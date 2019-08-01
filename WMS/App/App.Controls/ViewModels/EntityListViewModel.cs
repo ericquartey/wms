@@ -142,7 +142,9 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedFilterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
+                    this.SelectedFilterDataSource = value != null
+                        ? this.FilterDataSources.Single(d => d.Key == value.Key)
+                        : null;
                 }
             }
         }
@@ -297,7 +299,7 @@ namespace Ferretto.WMS.App.Controls
                 this.Filters = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
                 {
                     Key = filterDataSource.Key,
-                    Name = filterDataSource.Name
+                    Name = filterDataSource.Name,
                 }).ToList());
 
                 this.IsBusy = true;
@@ -311,6 +313,7 @@ namespace Ferretto.WMS.App.Controls
                 }
 
                 await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
+                this.SelectedFilter = this.Filters.FirstOrDefault();
             }
             catch (Exception ex)
             {

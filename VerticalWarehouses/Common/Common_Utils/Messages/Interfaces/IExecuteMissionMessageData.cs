@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface IExecuteMissionMessageData : IMessageData
+    public interface INewMissionOperationAvailable
     {
         #region Properties
 
-        string BayConnectionId { get; set; }
+        int BayId { get; set; }
 
-        Mission Mission { get; set; }
+        int MissionId { get; set; }
 
-        int MissionsQuantity { get; set; }
+        int MissionOperationId { get; set; }
+
+        int PendingMissionsCount { get; set; }
 
         #endregion
     }

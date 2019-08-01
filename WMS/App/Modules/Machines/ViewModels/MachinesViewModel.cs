@@ -8,9 +8,10 @@ using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
     public class MachinesViewModel : EntityListViewModel<Machine, int>
     {
@@ -36,7 +37,7 @@ namespace Ferretto.WMS.Modules.Machines
 
         #region Methods
 
-        protected override async Task LoadDataAsync()
+        protected override async Task LoadDataAsync(ModelChangedPubSubEvent e)
         {
             if (this.SelectedFilterDataSource is DataSourceCollection<Machine, int> enumerableSource)
             {

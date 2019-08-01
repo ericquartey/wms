@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.Common_Utils.Messages.Data
+namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
     {
@@ -11,8 +11,13 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         {
         }
 
-        public ShutterPositioningMessageData(ShutterPosition shutterPosition, ShutterMovementDirection shutterMovementDirection, ShutterType shutterType, int bayNumber,
-            decimal speedRate, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningMessageData(
+            ShutterPosition shutterPosition,
+            ShutterMovementDirection shutterMovementDirection,
+            ShutterType shutterType,
+            int bayNumber,
+            decimal speedRate,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ShutterPosition = shutterPosition;
             this.ShutterMovementDirection = shutterMovementDirection;
@@ -24,6 +29,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public ShutterPositioningMessageData(IShutterPositioningMessageData shutterpositioningMessageData)
         {
+            if (shutterpositioningMessageData == null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterpositioningMessageData));
+            }
+
             this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
             this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
             this.ShutterType = shutterpositioningMessageData.ShutterType;

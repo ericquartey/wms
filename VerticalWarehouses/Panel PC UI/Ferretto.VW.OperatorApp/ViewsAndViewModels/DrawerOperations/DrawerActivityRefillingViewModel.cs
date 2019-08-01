@@ -1,233 +1,89 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
-using Unity;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.Common.Controls.WPF;
-using System;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.Utils.Source;
-using System.Collections.ObjectModel;
-using Ferretto.VW.Utils.Source.Filters;
-using System.Linq;
-using Ferretto.VW.OperatorApp.ServiceUtilities;
-using Ferretto.VW.WmsCommunication.Source;
-using Ferretto.VW.WmsCommunication.Interfaces;
-using System.Drawing;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityRefillingViewModel : BindableBase, IDrawerActivityRefillingViewModel, IDrawerActivityViewModel
+    public class DrawerActivityRefillingViewModel : DrawerOperationBaseViewModel, IDrawerActivityRefillingViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
-        private string compartmentPosition;
-
         private ICommand confirmCommand;
 
-        private IUnityContainer container;
-
         private ICommand drawerActivityRefillingDetailsButtonCommand;
-
-        private string evadedQuantity;
-
-        private Func<IDrawableCompartment, IDrawableCompartment, string> filterColorFunc;
-
-        private Image image;
-
-        private string itemCode;
-
-        private string itemDescription;
-
-        private string listCode;
-
-        private string listDescription;
-
-        private IOperatorService operatorService;
-
-        private string requestedQuantity;
-
-        private TrayControlCompartment selectedCompartment;
-
-        private ObservableCollection<TrayControlCompartment> viewCompartments;
-
-        private IWmsDataProvider wmsDataProvider;
-
-        private IWmsImagesProvider wmsImagesProvider;
 
         #endregion
 
         #region Constructors
 
-        public DrawerActivityRefillingViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityRefillingViewModel(
+            IEventAggregator eventAggregator,
+            INavigationService navigationService,
+            IStatusMessageService statusMessageService,
+            IMainWindowViewModel mainWindowViewModel,
+            IWmsDataProvider wmsDataProvider,
+            IWmsImagesProvider wmsImagesProvider,
+            IMissionOperationsMachineService missionOperationsService,
+            IBayManager bayManager)
+            : base(eventAggregator,
+                    navigationService,
+                    statusMessageService,
+                    mainWindowViewModel,
+                    wmsDataProvider,
+                    wmsImagesProvider,
+                    missionOperationsService,
+                    bayManager)
         {
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
-            this.filterColorFunc = new EditFilter().ColorFunc;
         }
 
         #endregion
 
         #region Properties
 
-        public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
+        public ICommand ConfirmCommand =>
+            this.confirmCommand
+            ??
+            (this.confirmCommand = new DelegateCommand(async () => await this.ExecuteConfirmCommand()));
 
-        public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
-
-        public ICommand DrawerActivityRefillingDetailsButtonCommand => this.drawerActivityRefillingDetailsButtonCommand ?? (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
-            async () => await this.DrawerDetailsButtonMethod()));
-
-        public string EvadedQuantity { get => this.evadedQuantity; set => this.SetProperty(ref this.evadedQuantity, value); }
-
-        public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
-        {
-            get { return this.filterColorFunc; }
-            set { this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value); }
-        }
-
-        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
-
-        public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
-
-        public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
-
-        public string ListCode { get => this.listCode; set => this.SetProperty(ref this.listCode, value); }
-
-        public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
-
-        public BindableBase NavigationViewModel { get; set; }
-
-        public string RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
-
-        public TrayControlCompartment SelectedCompartment { get => this.selectedCompartment; set => this.SetProperty(ref this.selectedCompartment, value); }
-
-        public ObservableCollection<TrayControlCompartment> ViewCompartments { get => this.viewCompartments; set => this.SetProperty(ref this.viewCompartments, value); }
+        public ICommand DrawerActivityRefillingDetailsButtonCommand =>
+            this.drawerActivityRefillingDetailsButtonCommand
+            ??
+            (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
+                async () => await this.DrawerDetailsButtonMethod()));
 
         #endregion
 
         #region Methods
 
-        public async void ConfirmMethod()
+        public override async Task OnEnterViewAsync()
         {
-            int quantity;
-            if (int.TryParse(this.EvadedQuantity, out quantity) && quantity >= 0)
-            {
-                var bay = this.container.Resolve<IBayManager>();
-                await this.operatorService.RefillAsync(bay.BayId, bay.CurrentMission.Id, quantity);
-                this.container.Resolve<IBayManager>().CurrentMission = null;
-                this.UpdateView();
-                this.EvadedQuantity = string.Empty;
-            }
+            this.StatusMessageService.Notify($"Current mission ID: {this.BayManager.CurrentMission.Id}");
+            await this.GetViewDataAsync(this.BayManager);
+            await this.GetTrayControlDataAsync(this.BayManager);
         }
 
-        public void ExitFromViewMethod()
+        private Task DrawerDetailsButtonMethod()
         {
-            // TODO
-        }
+            this.NavigationService.NavigateToView<DrawerActivityRefillingDetailViewModel, IDrawerActivityRefillingDetailViewModel>();
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.operatorService = this.container.Resolve<IOperatorService>();
-            this.wmsDataProvider = this.container.Resolve<IWmsDataProvider>();
-            this.wmsImagesProvider = this.container.Resolve<IWmsImagesProvider>();
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            var bayManager = this.container.Resolve<IBayManager>();
-            this.container.Resolve<IFeedbackNotifier>().Notify($"Current mission ID: {this.container.Resolve<IBayManager>().CurrentMission.Id}");
-            await this.GetViewDataAsync(bayManager);
-            await this.GetTrayControlDataAsync(bayManager);
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
-
-        public void UpdateView()
-        {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
-            if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
-                mainWindowContentVM is DrawerActivityPickingViewModel ||
-                mainWindowContentVM is DrawerActivityRefillingViewModel ||
-                mainWindowContentVM is DrawerWaitViewModel)
-            {
-                if (mission != null)
-                {
-                    switch (mission.Type)
-                    {
-                        case MissionType.Inventory:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
-                            break;
-
-                        case MissionType.Pick:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
-                            break;
-
-                        case MissionType.Put:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
-                            break;
-                    }
-                }
-                else
-                {
-                    NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
-                }
-            }
-        }
-
-        private async Task DrawerDetailsButtonMethod()
-        {
-            var bayManager = this.container.Resolve<IBayManager>();
-            var itemDetailObject = await this.wmsDataProvider.GetDrawerActivityItemDetailAsync(bayManager.CurrentMission);
-
-            NavigationService.NavigateToView<DrawerActivityRefillingDetailViewModel, IDrawerActivityRefillingDetailViewModel>(itemDetailObject);
-        }
-
-        private async Task GetTrayControlDataAsync(IBayManager bayManager)
-        {
-            try
-            {
-                this.ViewCompartments = await this.wmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
-                this.SelectedCompartment = await this.wmsDataProvider.GetTrayControlSelectedCompartment(this.ViewCompartments, bayManager.CurrentMission);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException(ex.Message);
-            }
+            return Task.CompletedTask;
         }
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            this.Image?.Dispose();
-            this.image?.Dispose();
-            this.Image = null;
-            this.image = null;
-            this.ListCode = bayManager.CurrentMission.ItemListId.ToString(); // TODO Check if it's the desired value (which is list's Id)
-            this.ItemCode = bayManager.CurrentMission.ItemId.ToString();
-            this.CompartmentPosition = await this.wmsDataProvider.GetCompartmentPosition(bayManager.CurrentMission);
-            this.ListDescription = bayManager.CurrentMission.ItemListDescription;
-            this.ItemDescription = bayManager.CurrentMission.ItemDescription;
-            this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
-            var imageCode = await this.wmsDataProvider.GetItemImageCodeAsync((int)bayManager.CurrentMission.ItemId);
-            var imageStram = await this.wmsImagesProvider.GetImageAsync(imageCode);
-            this.Image = Image.FromStream(imageStram);
+            this.ItemImage = null;
+
+            if (this.BayManager.CurrentMissionOperation != null)
+            {
+                //TODO   var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
+                //TODO    this.ItemImage = Image.FromStream(imageStram);
+            }
         }
 
         #endregion

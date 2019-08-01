@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum ShutterType
     {
@@ -6,6 +6,6 @@
 
         Shutter2Type = 1,
 
-        Shutter3Type =2
+        Shutter3Type = 2
     }
 }

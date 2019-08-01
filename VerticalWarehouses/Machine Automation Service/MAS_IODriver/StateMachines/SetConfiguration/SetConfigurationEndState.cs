@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.IODriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
+namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     public class SetConfigurationEndState : IoStateBase
     {
         #region Fields
-
-        private readonly ILogger logger;
 
         private readonly IoSHDStatus status;
 
@@ -23,13 +18,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         #region Constructors
 
-        public SetConfigurationEndState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public SetConfigurationEndState(
+            IIoStateMachine parentStateMachine,
+            IoSHDStatus status,
+            ILogger logger)
+            : base(parentStateMachine, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.logger = logger;
-            this.ParentStateMachine = parentStateMachine;
             this.status = status;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -47,19 +44,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogDebug($"1: Received Message = {message.ToString()}");
+            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
 
             if (this.status.MatchOutputs(message.Outputs))
             {
-                var endNotification = new FieldNotificationMessage(null, "Set configuration IO complete", FieldMessageActor.Any,
-                    FieldMessageActor.IoDriver, FieldMessageType.SetConfigurationIO, MessageStatus.OperationEnd);
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "Set configuration IO complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.SetConfigurationIO,
+                    MessageStatus.OperationEnd);
 
-                this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+                this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                 this.ParentStateMachine.PublishNotificationEvent(endNotification);
             }
@@ -75,7 +77,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SetConfiguration
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
             }
 
-            this.logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
         }

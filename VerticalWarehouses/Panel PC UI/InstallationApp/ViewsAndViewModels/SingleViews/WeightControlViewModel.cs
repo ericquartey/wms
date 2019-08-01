@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Unity;
+using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class WeightControlViewModel : BindableBase, IWeightControlViewModel
     {
@@ -16,8 +16,6 @@ namespace Ferretto.VW.InstallationApp
         private int acceptableWeightTolerance;
 
         private ICommand beginButtonCommand;
-
-        private IUnityContainer container;
 
         private ICommand exitFromViewCommand;
 
@@ -31,7 +29,7 @@ namespace Ferretto.VW.InstallationApp
 
         private int mesuredWeight;
 
-        private string noteText = VW.Resources.InstallationApp.WeightControl;
+        private string noteText = VW.App.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 
@@ -43,6 +41,11 @@ namespace Ferretto.VW.InstallationApp
 
         public WeightControlViewModel(IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
         }
@@ -84,14 +87,9 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public Task OnEnterViewAsync()
         {
-            this.container = container;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

@@ -56,9 +56,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
                 ReservedQuantity = 0,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                Type = Common.DataModels.SchedulerRequestType.Item
+                Type = Common.DataModels.SchedulerRequestType.Item,
             };
 
             using (var context = this.CreateContext())
@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var options = new ItemOptions
             {
                 AreaId = this.Area1.Id,
-                RequestedQuantity = 1
+                RequestedQuantity = 1,
             };
 
             #endregion
@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
@@ -174,7 +174,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 BayId = OtherBayId,
-                RequestedQuantity = 1
+                RequestedQuantity = 1,
             };
 
             #endregion
@@ -224,7 +224,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -244,7 +244,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1Aisle1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             #endregion
@@ -285,7 +285,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = subX,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -316,7 +316,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 20,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
@@ -352,40 +352,40 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 new Common.DataModels.Compartment
                 {
-                    Id = 1,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddDays(-0.5)
+                    FifoStartDate = System.DateTime.Now.AddDays(-0.5),
                 },
                 new Common.DataModels.Compartment
                 {
-                    Id = 2,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddDays(-3)
+                    FifoStartDate = System.DateTime.Now.AddDays(-3),
                 },
                 new Common.DataModels.Compartment
                 {
-                    Id = 3,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddDays(-2)
+                    FifoStartDate = System.DateTime.Now.AddDays(-2),
                 },
                 new Common.DataModels.Compartment
                 {
-                    Id = 4,
+                    Id = GetNewId(),
                     ItemId = this.ItemFifo.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddDays(-4)
-                }
+                    FifoStartDate = System.DateTime.Now.AddDays(-4),
+                },
             };
 
             using (var context = this.CreateContext())
@@ -400,7 +400,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             #endregion
@@ -444,7 +444,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = "S1",
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -467,7 +467,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
@@ -502,7 +502,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -511,14 +511,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 3,
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -538,7 +538,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
@@ -573,7 +573,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
@@ -582,14 +582,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -601,7 +601,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -622,7 +622,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
@@ -662,7 +662,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-0.5)
+                    FifoStartDate = now.AddDays(-0.5),
                 },
                 new Common.DataModels.Compartment
                 {
@@ -671,7 +671,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-3)
+                    FifoStartDate = now.AddDays(-3),
                 },
                 new Common.DataModels.Compartment
                 {
@@ -680,7 +680,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-0.5)
+                    FifoStartDate = now.AddDays(-0.5),
                 },
                 new Common.DataModels.Compartment
                 {
@@ -689,7 +689,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 1,
-                    FifoStartDate = now.AddDays(-0.5)
+                    FifoStartDate = now.AddDays(-0.5),
                 },
                 new Common.DataModels.Compartment
                 {
@@ -698,7 +698,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 1,
-                    FifoStartDate = now.AddDays(-2)
+                    FifoStartDate = now.AddDays(-2),
                 },
             };
 
@@ -718,7 +718,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 1,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemVolume.Id, options);
@@ -783,7 +783,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -795,7 +795,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -815,7 +815,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = 2,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
@@ -862,14 +862,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             var request1 = new Common.DataModels.SchedulerRequest
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
                 ReservedQuantity = 0,
                 Status = Common.DataModels.SchedulerRequestStatus.New,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -880,7 +880,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 RequestedQuantity = compartment2.Stock / 2,
                 ReservedQuantity = 0,
                 Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                OperationType = Common.DataModels.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -902,7 +902,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 AreaId = this.Area1.Id,
                 RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value,
-                RunImmediately = true
+                RunImmediately = true,
             };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);

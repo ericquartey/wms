@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -18,11 +19,21 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class ItemListProvider : BaseProvider, IItemListProvider
     {
+        #region Fields
+
+        private readonly IMapper mapper;
+
+        #endregion
+
         #region Constructors
 
-        public ItemListProvider(DatabaseContext dataContext, INotificationService notificationService)
+        public ItemListProvider(
+            DatabaseContext dataContext,
+            IMapper mapper,
+            INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
         }
 
         #endregion
@@ -31,10 +42,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public static void SetPolicies(BaseModel<int> model)
         {
-            model.AddPolicy((model as IPolicyItemList).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as IItemListDeletePolicy).ComputeDeletePolicy());
-            model.AddPolicy((model as IPolicyItemList).ComputeExecutePolicy());
-            model.AddPolicy((model as IPolicyItemList).ComputeAddRowPolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeExecutePolicy());
+            model.AddPolicy((model as IItemListPolicy).ComputeAddRowPolicy());
         }
 
         public async Task<IOperationResult<ItemListDetails>> CreateAsync(ItemListDetails model)
@@ -44,33 +55,28 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.DataContext.ItemLists.AddAsync(new Common.DataModels.ItemList
+            var validationError = model.ValidateBusinessModel(this.DataContext.ItemLists);
+            if (!string.IsNullOrEmpty(validationError))
             {
-                Code = model.Code,
-                CustomerOrderCode = model.CustomerOrderCode,
-                CustomerOrderDescription = model.CustomerOrderDescription,
-                Description = model.Description,
-                ItemListType = (Common.DataModels.ItemListType)model.ItemListType,
-                Job = model.Job,
-                Priority = model.Priority,
-                ShipmentUnitAssociated = model.ShipmentUnitAssociated,
-                ShipmentUnitCode = model.ShipmentUnitCode,
-                ShipmentUnitDescription = model.ShipmentUnitDescription
-            });
-
-            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
-            {
-                model.Id = entry.Entity.Id;
-                model.CreationDate = entry.Entity.CreationDate;
-                model.LastModificationDate = entry.Entity.LastModificationDate;
-                model.ExecutionEndDate = entry.Entity.ExecutionEndDate;
-                model.FirstExecutionDate = entry.Entity.FirstExecutionDate;
-
-                this.NotificationService.PushCreate(model);
+                return new BadRequestOperationResult<ItemListDetails>(
+                    validationError,
+                    model);
             }
 
-            return new SuccessOperationResult<ItemListDetails>(model);
+            var entry = await this.DataContext.ItemLists.AddAsync(
+                this.mapper.Map<Common.DataModels.ItemList>(model));
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount <= 0)
+            {
+                return new CreationErrorOperationResult<ItemListDetails>();
+            }
+
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+
+            this.NotificationService.PushCreate(createdModel);
+
+            return new SuccessOperationResult<ItemListDetails>(createdModel);
         }
 
         public async Task<IOperationResult<ItemListDetails>> DeleteAsync(int id)
@@ -211,6 +217,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
+                    ShipmentUnitCode = i.ShipmentUnitCode,
+                    ShipmentUnitDescription = i.ShipmentUnitDescription,
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
                     ErrorRowsCount =
@@ -232,7 +240,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         r.Status != Common.DataModels.ItemListRowStatus.New),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    CreationDate = i.CreationDate
+                    CreationDate = i.CreationDate,
                 });
         }
 
@@ -275,7 +283,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ShipmentUnitDescription = i.ShipmentUnitDescription,
                     LastModificationDate = i.LastModificationDate,
                     FirstExecutionDate = i.FirstExecutionDate,
-                    ExecutionEndDate = i.ExecutionEndDate
+                    ExecutionEndDate = i.ExecutionEndDate,
                 });
         }
 
@@ -321,7 +329,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         .Select(x => new
                         {
                             Id = x.Id,
-                            ActualWeight = x.ActualWeight,
                             ErrorTime = x.ErrorTime,
                             Image = x.Image,
                             Model = x.Model,
@@ -330,12 +337,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         .Select(m1 => new Machine
                         {
                             Id = m1.Id,
-                            ActualWeight = m1.ActualWeight,
                             ErrorTime = m1.ErrorTime,
                             Image = m1.Image,
                             Model = m1.Model,
                             Nickname = m1.Nickname,
-                        })
+                        }),
                 });
         }
 

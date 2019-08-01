@@ -26,43 +26,46 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionOperationProvider = this.GetService<IMissionOperationProvider>();
 
             var compartmentOperationProvider = this.GetService<ICompartmentOperationProvider>();
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 1 };
-
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
-                CompartmentTypeId = compartmentType.Id,
+                CompartmentTypeId = this.CompartmentType.Id,
                 ItemId = this.Item1.Id,
-                MaxCapacity = 100
+                MaxCapacity = 100,
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
+                Id = GetNewId(),
                 ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 10,
                 IsItemPairingFixed = isPairingFixed,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = this.CompartmentType.Id,
+            };
+
+            var missionOperation1 = new Common.DataModels.MissionOperation
+            {
+                Id = GetNewId(),
+                Status = Common.DataModels.MissionOperationStatus.Executing,
+                CompartmentId = compartment1.Id,
+                ItemId = itemCompartmentType.ItemId,
+                Type = Common.DataModels.MissionOperationType.Pick,
+                RequestedQuantity = 10,
             };
 
             var mission = new Common.DataModels.Mission
             {
-                Id = 1,
-                CompartmentId = compartment1.Id,
-                ItemId = compartment1.ItemId,
-                Status = Common.DataModels.MissionStatus.Executing,
-                Type = Common.DataModels.MissionType.Pick,
-                RequestedQuantity = 10
+                Id = GetNewId(),
+                Operations = new[] { missionOperation1 },
             };
 
             using (var context = this.CreateContext())
             {
-                context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission);
@@ -74,7 +77,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
             #region Act
 
-            var result = await missionExecutionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+            var result = await missionOperationProvider.CompleteAsync(missionOperation1.Id, missionOperation1.RequestedQuantity);
 
             #endregion
 
@@ -83,9 +86,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsTrue(result.Success);
 
             Assert.AreEqual(
-                MissionStatus.Completed,
+                MissionOperationStatus.Completed,
                 result.Entity.Status,
-                $"The status of the mission should be '{MissionStatus.Completed}'.");
+                $"The status of the mission should be '{MissionOperationStatus.Completed}'.");
 
             var updatedCompartment = await compartmentOperationProvider.GetByIdForStockUpdateAsync(compartment1.Id);
 
@@ -121,7 +124,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         [TestCategory("Nominal Case")]
         [TestProperty(
             "Description",
-           @"GIVEN a pick mission on a compartment \
+            @"GIVEN a pick mission on a compartment \
                 AND the mission is executing \
                 AND the compartment has stock of 10 items \
                 AND the mission requires 7 items \
@@ -133,44 +136,49 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionOperationProvider = this.GetService<IMissionOperationProvider>();
             var compartmentOperationProvider = this.GetService<ICompartmentOperationProvider>();
             var loadingUnitProvider = this.GetService<ILoadingUnitProvider>();
             var itemProvider = this.GetService<IItemProvider>();
 
-            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Depth = 1, Width = 1 };
+            var item = this.Item1;
 
             var itemCompartmentType = new Common.DataModels.ItemCompartmentType
             {
-                CompartmentTypeId = compartmentType.Id,
-                ItemId = this.Item1.Id,
+                CompartmentTypeId = this.CompartmentType.Id,
+                ItemId = item.Id,
                 MaxCapacity = 100,
             };
 
             var compartment1 = new Common.DataModels.Compartment
             {
-                Id = 1,
-                ItemId = this.Item1.Id,
+                Id = GetNewId(),
+                ItemId = item.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 7,
                 LastPickDate = null,
-                CompartmentTypeId = compartmentType.Id
+                CompartmentTypeId = this.CompartmentType.Id,
+            };
+
+            var missionOperation1 = new Common.DataModels.MissionOperation
+            {
+                Id = GetNewId(),
+                Status = Common.DataModels.MissionOperationStatus.Executing,
+                CompartmentId = compartment1.Id,
+                ItemId = item.Id,
+                Type = Common.DataModels.MissionOperationType.Pick,
+                RequestedQuantity = 7,
             };
 
             var mission = new Common.DataModels.Mission
             {
-                Id = 1,
-                CompartmentId = compartment1.Id,
-                ItemId = compartment1.ItemId,
-                Status = Common.DataModels.MissionStatus.Executing,
-                Type = Common.DataModels.MissionType.Pick,
-                RequestedQuantity = 7
+                Id = GetNewId(),
+                Operations = new[] { missionOperation1 },
             };
 
             using (var context = this.CreateContext())
             {
-                context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission);
@@ -184,7 +192,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 #region Act
 
-                var result = await missionExecutionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+                var result = await missionOperationProvider.CompleteAsync(missionOperation1.Id, missionOperation1.RequestedQuantity);
 
                 #endregion
 
@@ -193,9 +201,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Assert.IsTrue(result.Success);
 
                 Assert.AreEqual(
-                    MissionStatus.Completed,
+                    MissionOperationStatus.Completed,
                     result.Entity.Status,
-                    $"The status of the mission should be '{MissionStatus.Completed}'.");
+                    $"The status of the mission should be '{MissionOperationStatus.Completed}'.");
 
                 var updatedCompartment = await compartmentOperationProvider.GetByIdForStockUpdateAsync(compartment1.Id);
 
@@ -213,7 +221,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
                 Assert.IsNotNull(
                     updatedCompartment.ItemId,
-                 $"The item pairing is not removed.");
+                    $"The item pairing is not removed.");
 
                 Assert.IsTrue(updatedCompartment.LastPickDate.HasValue);
 

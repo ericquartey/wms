@@ -1,13 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     public class CalibrateAxisErrorState : InverterStateBase
     {
@@ -15,23 +15,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
-        private readonly IInverterStatusBase inverterStatus;
-
-        private readonly ILogger logger;
-
-        private bool disposed;
-
         #endregion
 
         #region Constructors
 
-        public CalibrateAxisErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
+        public CalibrateAxisErrorState(
+            IInverterStateMachine parentStateMachine,
+            Axis axisToCalibrate,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-            this.logger = logger;
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
             this.axisToCalibrate = axisToCalibrate;
         }
 
@@ -48,11 +42,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Release()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Start()
         {
             var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
 
-            var errorNotification = new FieldNotificationMessage(messageData,
+            var errorNotification = new FieldNotificationMessage(
+                messageData,
                 "Inverter operation error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -60,40 +60,30 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
-            this.logger.LogTrace($"1:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+            this.Logger.LogTrace($"1:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(errorNotification);
         }
 
         /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
+        }
+
+        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -1,15 +1,16 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
-    /// <summary>
-    /// Interaction logic for IdleView.xaml
-    /// </summary>
     public partial class IdleView : UserControl
     {
+        #region Constructors
+
         public IdleView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

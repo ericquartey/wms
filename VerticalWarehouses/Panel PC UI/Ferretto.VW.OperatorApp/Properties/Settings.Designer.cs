@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.OperatorApp.Properties
+namespace Ferretto.VW.App.Operator.Properties
 {
 
 

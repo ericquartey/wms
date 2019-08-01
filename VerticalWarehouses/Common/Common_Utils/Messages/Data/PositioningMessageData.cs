@@ -1,9 +1,8 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.Common_Utils.Messages.Data
+namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class PositioningMessageData : IPositioningMessageData
     {
@@ -13,8 +12,20 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         {
         }
 
-        public PositioningMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration,
-            decimal deceleration, int numberCycles, decimal lowerBound, decimal upperBound, decimal resolution,
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S107:Methods should not have too many parameters",
+            Justification = "Check if we really need this constructor.")]
+        public PositioningMessageData(
+            Axis axisMovement,
+            MovementType movementType,
+            decimal target,
+            decimal speed,
+            decimal acceleration,
+            decimal deceleration,
+            int numberCycles,
+            decimal lowerBound,
+            decimal upperBound,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -27,7 +38,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
-            this.Resolution = resolution;
         }
 
         #endregion
@@ -48,8 +58,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public int NumberCycles { get; set; }
 
-        public decimal Resolution { get; set; }
-
         public decimal TargetAcceleration { get; set; }
 
         public decimal TargetDeceleration { get; set; }
@@ -60,7 +68,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public decimal UpperBound { get; set; }
 
-        public MessageVerbosity Verbosity { get; set; }
+        public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         #endregion
     }

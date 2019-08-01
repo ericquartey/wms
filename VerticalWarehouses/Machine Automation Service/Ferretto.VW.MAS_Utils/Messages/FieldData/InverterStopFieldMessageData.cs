@@ -1,9 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_Utils.Messages.FieldData
+namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
     public class InverterStopFieldMessageData : IInverterStopFieldMessageData
     {

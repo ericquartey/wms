@@ -1,14 +1,14 @@
-﻿using System.Windows.Input;
-using Unity;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Installation.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.Utils.Interfaces;
-using System.Threading.Tasks;
+using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
-    public class LSMTNavigationButtonsViewModel : BindableBase, ILSMTNavigationButtonsViewModel, IViewModelRequiresContainer
+    public class LSMTNavigationButtonsViewModel : BindableBase, ILSMTNavigationButtonsViewModel
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand carouselButtonCommand;
 
-        private IUnityContainer container;
+        private readonly IUnityContainer container;
 
         private ICommand horizontalEngineButtonCommand;
 
@@ -28,9 +28,22 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public LSMTNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public LSMTNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IUnityContainer container) // TODO remove container injection
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (container == null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.container = container;
             this.NavigationViewModel = null;
         }
 
@@ -81,14 +94,9 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
+        public Task OnEnterViewAsync()
         {
-            this.container = container;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

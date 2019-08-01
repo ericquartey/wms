@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Enumerations;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.CommonUtils.DTOs;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS_AutomationService.Controllers
+namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
@@ -19,21 +17,36 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
+
+        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+
         private readonly ILogger logger;
+
+        private readonly ISetupStatusDataLayer setupStatus;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
+
+        private readonly IVerticalManualMovementsDataLayer verticalManualMovements;
 
         #endregion
 
         #region Constructors
 
-        public PositioningController(IEventAggregator eventAggregator, IServiceProvider services)
+        public PositioningController(IEventAggregator eventAggregator, IServiceProvider services, ILogger<PositioningController> logger)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
+            this.verticalAxis = services.GetService(typeof(IVerticalAxisDataLayer)) as IVerticalAxisDataLayer;
+            this.verticalManualMovements = services.GetService(typeof(IVerticalManualMovementsDataLayer)) as IVerticalManualMovementsDataLayer;
+            this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;
+            this.horizontalManualMovements = services.GetService(typeof(IHorizontalManualMovementsDataLayer)) as IHorizontalManualMovementsDataLayer;
+            this.setupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
+            this.logger = logger;
         }
 
         #endregion
@@ -41,9 +54,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #region Methods
 
         [HttpPost("Execute")]
-        public async Task ExecuteAsync([FromBody]MovementMessageDataDTO data)
+        public void ExecuteAsync([FromBody]MovementMessageDataDto data)
         {
-            await this.ExecutePositioning_MethodAsync(data);
+            this.ExecutePositioning_Method(data);
         }
 
         [ProducesResponseType(200)]
@@ -53,80 +66,59 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.Stop_Method();
         }
 
-        private async Task ExecutePositioning_MethodAsync(MovementMessageDataDTO data)
+        private void ExecutePositioning_Method(MovementMessageDataDto data)
         {
             decimal maxSpeed = 0;
             decimal maxAcceleration = 0;
             decimal maxDeceleration = 0;
             decimal feedRate = 0;
             decimal initialTargetPosition = 0;
-            decimal resolution = 0;
 
             try
             {
-                var machineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync(
-                    (long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                var machineDone = this.setupStatus.MachineDone;
 
                 switch (data.Axis)
                 {
                     // INFO Vertical LSM
                     case Axis.Vertical:
-                        maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
-                        maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
-                        maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-                        feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
+                        maxSpeed = this.verticalAxis.MaxEmptySpeed;
+                        maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
+                        maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+                        feedRate = this.verticalManualMovements.FeedRateVM;
 
                         if (machineDone)
                         {
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                                (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                            initialTargetPosition = this.verticalManualMovements.RecoveryTargetPositionVM;
                         }
                         else
                         {
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                                (long)VerticalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                            initialTargetPosition = this.verticalManualMovements.InitialTargetPositionVM;
                         }
 
                         // INFO +1 for Up, -1 for Down
                         initialTargetPosition *= data.Displacement;
-                        resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
                         break;
 
                     // INFO Horizontal LSM
                     case Axis.Horizontal:
-                        maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.MaxSpeed, (long)ConfigurationCategory.HorizontalAxis);
-                        maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.MaxAcceleration, (long)ConfigurationCategory.HorizontalAxis);
-                        maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.MaxDeceleration, (long)ConfigurationCategory.HorizontalAxis);
-                        feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalManualMovements.FeedRate, (long)ConfigurationCategory.HorizontalManualMovements);
+                        maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
+                        maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
+                        maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
+                        feedRate = this.horizontalManualMovements.FeedRateHM;
 
                         if (machineDone)
                         {
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                                (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                            initialTargetPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
                         }
                         else
                         {
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                                (long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                            initialTargetPosition = this.horizontalManualMovements.InitialTargetPositionHM;
                         }
-
-                        initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
 
                         // INFO +1 for Forward, -1 for Back
                         initialTargetPosition *= data.Displacement;
-                        resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                            (long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
 
                         break;
                 }
@@ -142,8 +134,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     maxDeceleration,
                     0,
                     0,
-                    0,
-                    resolution);
+                    0);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(
                     new CommandMessage(
                         messageData,
@@ -151,10 +142,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         MessageActor.FiniteStateMachines,
                         MessageActor.WebApi,
                         MessageType.Positioning));
+
+                this.logger.LogDebug($"Starting positioning on Axis {data.Axis}, type {data.MovementType}, target position {initialTargetPosition}");
             }
             catch (Exception ex)
             {
-                // TODO
+                throw ex;
             }
         }
 

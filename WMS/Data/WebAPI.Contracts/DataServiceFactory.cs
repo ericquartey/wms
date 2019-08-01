@@ -1,12 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    [SuppressMessage(
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Microsoft.Maintainability",
         "CA1502",
-        Justification = "OK")]
+        Justification = "This is a service factory")]
     public static class DataServiceFactory
     {
         #region Methods
@@ -23,12 +22,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
             switch (typeof(T))
             {
-                case var service when service == typeof(ILocalizationService):
-                    return new LocalizationService(client) as T;
-
-                case var service when service == typeof(IDataHubClient):
-                    return new DataHubClient(baseUrl) as T;
-
                 case var service when service == typeof(IItemsDataService):
                     return new ItemsDataService(baseUrl.AbsoluteUri, client) as T;
 
@@ -46,6 +39,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
                 case var service when service == typeof(IMissionsDataService):
                     return new MissionsDataService(baseUrl.AbsoluteUri, client) as T;
+
+                case var service when service == typeof(IMissionOperationsDataService):
+                    return new MissionOperationsDataService(baseUrl.AbsoluteUri, client) as T;
 
                 case var service when service == typeof(ISchedulerRequestsDataService):
                     return new SchedulerRequestsDataService(baseUrl.AbsoluteUri, client) as T;
@@ -109,9 +105,24 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
                 case var service when service == typeof(IPackageTypesDataService):
                     return new PackageTypesDataService(baseUrl.AbsoluteUri, client) as T;
+            }
+
+            return GetOtherService<T>(baseUrl, httpClient);
+        }
+
+        private static T GetOtherService<T>(System.Uri baseUrl, HttpClient httpClient)
+            where T : class
+        {
+            switch (typeof(T))
+            {
+                case var service when service == typeof(ILocalizationDataService):
+                    return new LocalizationDataService(httpClient) as T;
+
+                case var service when service == typeof(IDataHubClient):
+                    return new DataHubClient(baseUrl) as T;
 
                 case var service when service == typeof(IGlobalSettingsDataService):
-                    return new GlobalSettingsDataService(baseUrl.AbsoluteUri, client) as T;
+                    return new GlobalSettingsDataService(baseUrl.AbsoluteUri, httpClient) as T;
             }
 
             return null;

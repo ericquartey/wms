@@ -1,6 +1,8 @@
-﻿namespace Ferretto.VW.Utils.Source.CellsManagement
+﻿using Ferretto.VW.MAS.DataModels.Cells;
+
+namespace Ferretto.VW.Utils.Source.CellsManagement
 {
-    public class Cell
+    public sealed class Cell
     {
         #region Constructors
 
@@ -8,18 +10,24 @@
         {
             this.IdCell = id;
             this.Priority = id;
-            if (id % 2 == 0) // if id is even
+            if (id % 2 == 0)
             {
-                this.Coord = (id == 2) ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * (id / CellManagementMethods.AISLE_SIDES_COUNT);
-                this.Side = Side.FrontEven;
+                this.Coord = (id == 2)
+                    ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS
+                    : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * (id / CellManagementMethods.AISLE_SIDES_COUNT);
+
+                this.Side = CellSide.Front;
             }
-            else // if id is odd
+            else
             {
-                this.Coord = (id == 1) ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * ((id / CellManagementMethods.AISLE_SIDES_COUNT) + 1);
-                this.Side = Side.BackOdd;
+                this.Coord = (id == 1)
+                    ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS
+                    : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * ((id / CellManagementMethods.AISLE_SIDES_COUNT) + 1);
+
+                this.Side = CellSide.Back;
             }
 
-            this.Status = Status.Free;
+            this.Status = CellStatus.Free;
         }
 
         #endregion
@@ -27,14 +35,15 @@
         #region Properties
 
         public int Coord { get; set; }
-        public int IdCell { get; set; }
-        public int Priority { get; set; }
-        public Side Side { get; set; }
 
-        public Status Status { get; set; }
+        public int IdCell { get; set; }
+
+        public int Priority { get; set; }
+
+        public CellSide Side { get; set; }
+
+        public CellStatus Status { get; set; }
 
         #endregion
-
-        // status code: 0 = free; 1 = disabled; 2 = occupied; 3 = unusable
     }
 }

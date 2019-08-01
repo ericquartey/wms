@@ -1,27 +1,26 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Prism.Events;
-using Prism.Mvvm;
-using System.Windows.Input;
-using Prism.Commands;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Unity;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+﻿using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using Prism.Events;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
-    public class MainWindowNavigationButtonsViewModel : BindableBase, IMainWindowNavigationButtonsViewModel
+    public class MainWindowNavigationButtonsViewModel : BaseViewModel, IMainWindowNavigationButtonsViewModel
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly INavigationService navigationService;
 
         private ICommand drawerActivityButtonCommand;
 
@@ -35,9 +34,30 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public MainWindowNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            INavigationService navigationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (bayManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManager));
+            }
+
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
+            this.bayManager = bayManager;
+
             this.NavigationViewModel = null;
         }
 
@@ -52,69 +72,47 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
+            this.navigationService.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
         }));
 
         public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
+            this.navigationService.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
         }));
-
-        public BindableBase NavigationViewModel { get; set; }
 
         public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() =>
                 {
-                    NavigationService.NavigateToView<GeneralInfoViewModel, IGeneralInfoViewModel>();
+                    this.navigationService.NavigateToView<GeneralInfoViewModel, IGeneralInfoViewModel>();
                 }));
 
         #endregion
 
         #region Methods
 
-        public async void DrawerActivityButtonMethod()
+        public void DrawerActivityButtonMethod()
         {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            if (mission != null)
+            var missionOperation = this.bayManager.CurrentMissionOperation;
+            if (missionOperation != null)
             {
-                switch (mission.Type)
+                switch (missionOperation.Type)
                 {
-                    case MissionType.Inventory:
-                        NavigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                    case MissionOperationType.Inventory:
+                        this.navigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                         break;
 
-                    case MissionType.Pick:
-                        NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                    case MissionOperationType.Pick:
+                        this.navigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                         break;
 
-                    case MissionType.Put:
-                        NavigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                    case MissionOperationType.Put:
+                        this.navigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                         break;
                 }
             }
             else
             {
-                NavigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                this.navigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
             }
-        }
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
         }
 
         #endregion

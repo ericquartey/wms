@@ -73,7 +73,7 @@ namespace Ferretto.WMS.App.Controls
         }
 
         public ICommand DeleteCommand => this.deleteCommand ??
-                            (this.deleteCommand = new DelegateCommand(
+            (this.deleteCommand = new DelegateCommand(
                 async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public string DeleteReason
@@ -175,9 +175,9 @@ namespace Ferretto.WMS.App.Controls
                     DesktopApp.AreYouSureToLeaveThePage,
                     DesktopApp.ConfirmOperation,
                     DialogType.Exclamation,
-                    DialogButtons.OKCancel);
+                    DialogButtons.YesNo);
 
-                if (result == DialogResult.Cancel)
+                if (result == DialogResult.No)
                 {
                     return false;
                 }

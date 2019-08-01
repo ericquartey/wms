@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS.Utils.Enumerations
 {
     public enum DataLayerExceptionCode
     {
@@ -21,6 +21,12 @@
         UndefinedTypeException = 105,
 
         UnknownInfoFileException = 106,
+
+        LoadingUnitNotFoundException = 107,
+
+        DivideByZeroException = 108,
+
+        WrongAxisException = 109,
 
         SaveData = 1001
     }

@@ -25,25 +25,21 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string code;
 
+        private double depth;
+
         private int? handlingParametersCorrection;
 
         private double? height;
 
-        private int inMissionCount;
-
         private bool isCellPairingFixed;
-
-        private double depth;
 
         private string loadingUnitStatusId;
 
         private int? loadingUnitTypeId;
 
+        private int missionsCount;
+
         private string note;
-
-        private int otherMissionCount;
-
-        private int outMissionCount;
 
         private ReferenceType? referenceType;
 
@@ -54,8 +50,6 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
-
-        public BindingList<IDrawableCompartment> Compartments { get; } = new BindingList<IDrawableCompartment>();
 
         public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
@@ -117,14 +111,23 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.code, value);
         }
 
+        public BindingList<IDrawableCompartment> Compartments { get; } = new BindingList<IDrawableCompartment>();
+
         public int CompartmentsCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
+        public double Depth
+        {
+            get => this.depth;
+            set => this.SetProperty(ref this.depth, value);
+        }
+
         [Display(
-            Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
-            ResourceType = typeof(BusinessObjects))]
+                    Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+                    ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
             get => this.handlingParametersCorrection;
@@ -137,14 +140,6 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.height;
             set => this.SetProperty(ref this.height, value);
-        }
-
-        [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitInMissionCount), ResourceType = typeof(BusinessObjects))]
-        public int InMissionCount
-        {
-            get => this.inMissionCount;
-            set => this.SetProperty(ref this.inMissionCount, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LastInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -165,13 +160,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.LastPutDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPutDate { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.Depth), ResourceType = typeof(BusinessObjects))]
-        public double Depth
-        {
-            get => this.depth;
-            set => this.SetProperty(ref this.depth, value);
-        }
 
         public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }
 
@@ -201,27 +189,19 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.loadingUnitTypeId, value);
         }
 
+        [Required]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitMissionsCount), ResourceType = typeof(BusinessObjects))]
+        public int MissionsCount
+        {
+            get => this.missionsCount;
+            set => this.SetProperty(ref this.missionsCount, value);
+        }
+
         [Display(Name = nameof(BusinessObjects.Notes), ResourceType = typeof(BusinessObjects))]
         public string Note
         {
             get => this.note;
             set => this.SetProperty(ref this.note, value);
-        }
-
-        [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitOtherMissionCount), ResourceType = typeof(BusinessObjects))]
-        public int OtherMissionCount
-        {
-            get => this.otherMissionCount;
-            set => this.SetProperty(ref this.otherMissionCount, value);
-        }
-
-        [Required]
-        [Display(Name = nameof(BusinessObjects.LoadingUnitOutMissionCount), ResourceType = typeof(BusinessObjects))]
-        public int OutMissionCount
-        {
-            get => this.outMissionCount;
-            set => this.SetProperty(ref this.outMissionCount, value);
         }
 
         [Required]

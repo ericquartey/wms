@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Ferretto.VW.CustomControls.Controls.CustomLabelTextBlockControl"
+﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.CustomLabelTextBlockControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 HorizontalAlignment="Left"
@@ -14,7 +14,7 @@
         <TextBlock Margin="0,1,5,1"
                    Background="Transparent"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                   Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
                    TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>

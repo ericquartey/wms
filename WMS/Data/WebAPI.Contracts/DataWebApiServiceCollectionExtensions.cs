@@ -23,38 +23,37 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException(nameof(serviceCollection));
             }
 
-            var httpClient = new HttpClient();
-            serviceCollection.AddSingleton(httpClient);
+            serviceCollection.AddSingleton(new HttpClient());
 
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAbcClassesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAislesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAreasDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IBaysDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellPositionsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellStatusesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellTypesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentStatusesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentTypesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IImagesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemCategoriesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListRowsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitTypesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMachinesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMaterialStatusesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMeasureUnitsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IPackageTypesDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ISchedulerRequestsDataService>(baseUrl, httpClient));
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IUsersDataService>(baseUrl, httpClient));
-
-            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILocalizationService>(baseUrl, httpClient));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAbcClassesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAislesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAreasDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IBaysDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellPositionsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellStatusesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellTypesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICellsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentStatusesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentTypesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IImagesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemCategoriesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListRowsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemListsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitTypesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILoadingUnitsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMachinesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMaterialStatusesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMeasureUnitsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionOperationsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMissionsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IPackageTypesDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ISchedulerRequestsDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IUsersDataService>(baseUrl, s.GetService<HttpClient>()));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<ILocalizationDataService>(baseUrl, s.GetService<HttpClient>()));
 
             return serviceCollection;
         }

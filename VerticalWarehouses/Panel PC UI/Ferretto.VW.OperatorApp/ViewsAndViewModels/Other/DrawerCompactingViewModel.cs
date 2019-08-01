@@ -1,59 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
+﻿//Header test C#
+
+using System;
+using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
+using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
 {
-    public class DrawerCompactingViewModel : BindableBase, IDrawerCompactingViewModel
+    public class DrawerCompactingViewModel : BaseViewModel, IDrawerCompactingViewModel
     {
-        #region Fields
+        #region Private Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly INavigationService navigationService;
+
+        private ICommand drawerCompactingDetailButtonCommand;
 
         #endregion
 
-        #region Constructors
+        #region Public Constructors
 
-        public DrawerCompactingViewModel(IEventAggregator eventAggregator)
+        public DrawerCompactingViewModel(IEventAggregator eventAggregator, INavigationService navigationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.navigationService = navigationService;
             this.NavigationViewModel = null;
         }
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
+        public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() =>
         {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
+            this.navigationService.NavigateToView<DrawerCompactingDetailViewModel, IDrawerCompactingDetailViewModel>();
+        }));
 
         #endregion
     }

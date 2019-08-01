@@ -189,12 +189,6 @@
   <data name="AbortionIsNotSupportedForMissionType" xml:space="preserve">
     <value>La cancellazione non è supportata per il tipo missione '{0}'.</value>
   </data>
-  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment" xml:space="preserve">
-    <value>Impossibile completare la missione specificata perché non ha uno scomparto associato.</value>
-  </data>
-  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem" xml:space="preserve">
-    <value>Impossibile completare la missione specificata perché non ha un articolo associato.</value>
-  </data>
   <data name="ActualPickedQuantityCannotBeGreaterThanTheRemainingQuantityToDispatch" xml:space="preserve">
     <value>La quantità prelevata ({0}) non può essere maggiore della rimanente quantità da evadere ({1}).</value>
   </data>
@@ -263,5 +257,8 @@
   </data>
   <data name="NoEntityExists" xml:space="preserve">
     <value>Nessuna entità con l'ID specifico {0} esiste.</value>
+  </data>
+    <data name="TheValueForFieldIsAlreadyUsedByAnotherEntry" xml:space="preserve">
+    <value>Il valore '{0}' per il campo '{1}' è già usato da un'altro elemento.</value>
   </data>
 </root>

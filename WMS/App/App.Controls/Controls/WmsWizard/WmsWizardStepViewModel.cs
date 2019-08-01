@@ -5,13 +5,21 @@ namespace Ferretto.WMS.App.Controls
 {
     public class WmsWizardStepViewModel : BaseServiceNavigationViewModel, IWmsWizardStepViewModel
     {
+        #region Fields
+
         private string title;
+
+        #endregion
+
+        #region Properties
 
         public string Title
         {
             get => this.title;
             set => this.SetProperty(ref this.title, value);
         }
+
+        #endregion
 
         #region Methods
 
@@ -25,14 +33,14 @@ namespace Ferretto.WMS.App.Controls
             return false;
         }
 
-        public virtual(string moduleName, string viewName, object data) GetNextView()
-        {
-            return (null, null, null);
-        }
-
         public virtual string GetError()
         {
             return null;
+        }
+
+        public virtual (string moduleName, string viewName, object data) GetNextView()
+        {
+            return (null, null, null);
         }
 
         public virtual async Task<bool> SaveAsync() => await new Task<bool>(() => false);

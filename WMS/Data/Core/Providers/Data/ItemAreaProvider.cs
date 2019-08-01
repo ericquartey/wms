@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -14,42 +15,50 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal class ItemAreaProvider : BaseProvider, IItemAreaProvider
     {
+        #region Fields
+
+        private readonly IMapper mapper;
+
+        #endregion
+
         #region Constructors
 
         public ItemAreaProvider(
             DatabaseContext dataContext,
+            IMapper mapper,
             INotificationService notificationService)
             : base(dataContext, notificationService)
         {
+            this.mapper = mapper;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<IOperationResult<ItemArea>> CreateAsync(int id, int itemId)
+        public async Task<IOperationResult<ItemArea>> CreateAsync(ItemArea model)
         {
             try
             {
-                var entry = await this.DataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
+                if (model == null)
                 {
-                    AreaId = id,
-                    ItemId = itemId
-                });
-
-                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-                if (changedEntitiesCount > 0)
-                {
-                    var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
-
-                    this.NotificationService.PushCreate(model);
-                    this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
-                    this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-
-                    return new SuccessOperationResult<ItemArea>(model);
+                    throw new ArgumentNullException(nameof(model));
                 }
 
-                return new CreationErrorOperationResult<ItemArea>();
+                await this.DataContext.ItemsAreas.AddAsync(
+                    this.mapper.Map<Common.DataModels.ItemArea>(model));
+
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount <= 0)
+                {
+                    return new CreationErrorOperationResult<ItemArea>();
+                }
+
+                this.NotificationService.PushCreate(model);
+                this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+                return new SuccessOperationResult<ItemArea>(model);
             }
             catch (Exception ex)
             {
@@ -81,7 +90,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var model = new ItemArea
                 {
                     AreaId = id,
-                    ItemId = itemId
+                    ItemId = itemId,
                 };
 
                 this.NotificationService.PushDelete(existingModel);
@@ -136,7 +145,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Id = x.Id,
                     Name = x.Name,
                     TotalStock = x.TotalStock,
-                    IsItemInArea = areasWithItem.Any(a => a.AreaId == x.Id)
+                    IsItemInArea = areasWithItem.Any(a => a.AreaId == x.Id),
                 })
                 .ToArrayAsync();
 

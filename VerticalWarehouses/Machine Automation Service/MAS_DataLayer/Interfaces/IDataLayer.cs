@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
+﻿namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface IDataLayer
     {
@@ -7,7 +7,7 @@
         /// <summary>
         ///     Exchange method between primary and secondary context.
         /// </summary>
-        void switchDBContext();
+        void SwitchDBContext();
 
         #endregion
     }

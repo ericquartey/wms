@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
+using System.Windows.Input;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 {
     /// <summary>
     /// Interaction logic for MainWindowNavigationButtonsView.xaml
@@ -54,6 +54,7 @@ namespace Ferretto.VW.InstallationApp
         private void UpScroll_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationButtonScrollViewer.LineUp();
+
             //TODO: scroll up and down nav button height
         }
 

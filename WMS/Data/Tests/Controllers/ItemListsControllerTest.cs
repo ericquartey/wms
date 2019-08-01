@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -124,15 +124,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.Volume };
-            var itemArea1 = new DataModels.ItemArea { ItemId = 1, AreaId = this.Area1.Id };
+            var item1 = new DataModels.Item { Id = GetNewId(), Code = "Item #1", ManagementType = DataModels.ItemManagementType.Volume };
+            var itemArea1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
             var compartment1 = new DataModels.Compartment
-            { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
-            var list1Id = 1;
+            {
+                Id = GetNewId(),
+                LoadingUnitId = this.LoadingUnit1.Id,
+                ItemId = item1.Id,
+                Stock = 10,
+            };
+
+            var list1Id = GetNewId();
 
             var row1 = new Common.DataModels.ItemListRow
             {
-                Id = 1, // InMemoryDatabase does not handle autoincrement fields
+                Id = GetNewId(),
                 ItemId = item1.Id,
                 RequestedQuantity = 10,
                 ItemListId = list1Id,
@@ -143,7 +149,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -177,10 +183,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.Volume };
-            var itemArea1 = new DataModels.ItemArea { ItemId = 1, AreaId = this.Area1.Id };
+            var item1 = new DataModels.Item { Id = GetNewId(), Code = "Item #1", ManagementType = DataModels.ItemManagementType.Volume };
+            var itemArea1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+
             var compartment1 = new DataModels.Compartment
-            { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
+            {
+                Id = GetNewId(),
+                LoadingUnitId = this.LoadingUnit1.Id,
+                ItemId = item1.Id,
+                Stock = 10,
+            };
+
             var list1Id = 1;
 
             var row1 = new Common.DataModels.ItemListRow
@@ -196,7 +209,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = list1Id,
                 ItemListType = DataModels.ItemListType.Pick,
-                ItemListRows = new[] { row1 }
+                ItemListRows = new[] { row1 },
             };
 
             using (var context = this.CreateContext())
@@ -235,9 +248,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var controller = new ItemListsController(
                 this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider,
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService)
+                this.ServiceProvider.GetService(typeof(IItemListSchedulerService)) as IItemListSchedulerService)
             {
-                ControllerContext = new Mock<ControllerContext>().Object
+                ControllerContext = new Mock<ControllerContext>().Object,
             };
 
             return controller;

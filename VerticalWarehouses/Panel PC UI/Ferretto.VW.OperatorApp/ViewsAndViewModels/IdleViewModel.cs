@@ -1,52 +1,10 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.Interfaces;
+﻿using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Operator.Interfaces;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
-    public class IdleViewModel : BindableBase, IIdleViewModel
+    public class IdleViewModel : BaseViewModel, IIdleViewModel
     {
-        #region Fields
-
-        private IEventAggregator eventAggregator;
-
-        #endregion
-
-        #region Constructors
-
-        public IdleViewModel(IEventAggregator eventAggregator)
-        {
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public BindableBase NavigationViewModel { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
-
-        #endregion
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
     public class LSMTVerticalEngineViewModel : BindableBase, ILSMTVerticalEngineViewModel
     {
@@ -16,7 +16,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
+        private readonly IPositioningMachineService positioningService;
 
         private string currentPosition;
 
@@ -28,8 +28,6 @@ namespace Ferretto.VW.InstallationApp
 
         private DelegateCommand moveUpButtonCommand;
 
-        private IPositioningService positioningService;
-
         private DelegateCommand stopButtonCommand;
 
         private SubscriptionToken updateCurrentPositionToken;
@@ -38,9 +36,22 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public LSMTVerticalEngineViewModel(IEventAggregator eventAggregator)
+        public LSMTVerticalEngineViewModel(
+            IEventAggregator eventAggregator,
+            IPositioningMachineService positioningService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (positioningService == null)
+            {
+                throw new System.ArgumentNullException(nameof(positioningService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.positioningService = positioningService;
             this.NavigationViewModel = null;
         }
 
@@ -71,27 +82,21 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.positioningService = this.container.Resolve<IPositioningService>();
-        }
-
         public async Task MoveDownVerticalAxisAsync()
         {
             this.IsButtonUpEnabled = false;
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
             this.IsButtonDownEnabled = false;
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
+            var messageData = new MovementMessageDataDto { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
             await this.positioningService.ExecuteAsync(messageData);
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
@@ -101,6 +106,8 @@ namespace Ferretto.VW.InstallationApp
 
             this.IsButtonUpEnabled = true;
             this.IsButtonDownEnabled = true;
+
+            return Task.CompletedTask;
         }
 
         public async Task StopVerticalAxisAsync()

@@ -106,6 +106,8 @@ namespace Ferretto.Common.EF
 
         public virtual DbSet<MeasureUnit> MeasureUnits { get; set; }
 
+        public virtual DbSet<MissionOperation> MissionOperations { get; set; }
+
         public virtual DbSet<Mission> Missions { get; set; }
 
         public virtual DbSet<PackageType> PackageTypes { get; set; }
@@ -178,6 +180,7 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new MaterialStatusConfiguration());
             modelBuilder.ApplyConfiguration(new MeasureUnitConfiguration());
             modelBuilder.ApplyConfiguration(new MissionConfiguration());
+            modelBuilder.ApplyConfiguration(new MissionOperationConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerRequestConfiguration());
         }
@@ -186,9 +189,9 @@ namespace Ferretto.Common.EF
         {
             var entries = this.ChangeTracker.Entries()
                 .Where(x =>
-                           x.Entity is ITimestamped
-                           &&
-                           (x.State == EntityState.Added || x.State == EntityState.Modified));
+                    x.Entity is ITimestamped
+                    &&
+                    (x.State == EntityState.Added || x.State == EntityState.Modified));
 
             var timeNow = System.DateTime.UtcNow;
 
@@ -196,12 +199,10 @@ namespace Ferretto.Common.EF
             {
                 if (entry.State == EntityState.Added)
                 {
-                    var creationDate = new { CreationDate = timeNow };
-                    entry.CurrentValues.SetValues(creationDate);
+                    entry.CurrentValues.SetValues(new { CreationDate = timeNow });
                 }
 
-                var lastModDate = new { LastModificationDate = timeNow };
-                entry.CurrentValues.SetValues(lastModDate);
+                entry.CurrentValues.SetValues(new { LastModificationDate = timeNow });
             }
         }
 

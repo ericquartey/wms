@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class VerticalOffsetCalibrationViewModel : BindableBase, IVerticalOffsetCalibrationViewModel
     {
@@ -20,9 +20,9 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand acceptOffsetButtonCommand;
+        private readonly IOffsetCalibrationMachineService offsetCalibrationService;
 
-        private IUnityContainer container;
+        private ICommand acceptOffsetButtonCommand;
 
         private string correctOffset;
 
@@ -44,9 +44,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStepUpButtonActive = true;
 
-        private string noteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
-
-        private IOffsetCalibrationService offsetCalibrationService;
+        private string noteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
         private SubscriptionToken receivePositioningUpdateToken;
 
@@ -66,10 +64,24 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
+        public VerticalOffsetCalibrationViewModel(
+            IEventAggregator eventAggregator,
+            IOffsetCalibrationMachineService offsetCalibrationService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (offsetCalibrationService == null)
+            {
+                throw new ArgumentNullException(nameof(offsetCalibrationService));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.NoteString = VW.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.offsetCalibrationService = offsetCalibrationService;
+
+            this.NoteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
             this.NavigationViewModel = null;
         }
 
@@ -159,21 +171,15 @@ namespace Ferretto.VW.InstallationApp
             {
                 const string Category = "OffsetCalibration";
                 this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
+
                 //TEMP temporary commented because there is not a cell map
                 //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
                 this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
-                this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+                this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.offsetCalibrationService = container.Resolve<IOffsetCalibrationService>();
-            this.container = container;
-            this.offsetCalibrationService = this.container.Resolve<IOffsetCalibrationService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -201,7 +207,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 await this.offsetCalibrationService.ExecutePositioningAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.NoteString = "Couldn't get response from this http request.";
                 throw; // TEMP Define a better throw exception
@@ -230,15 +236,15 @@ namespace Ferretto.VW.InstallationApp
                 switch (p.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.GoToInitialPosition;
+                        this.NoteString = VW.App.Resources.InstallationApp.GoToInitialPosition;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.GoToInitialPosition;
+                        this.NoteString = VW.App.Resources.InstallationApp.GoToInitialPosition;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.Error;
+                        this.NoteString = VW.App.Resources.InstallationApp.Error;
                         break;
 
                     default:

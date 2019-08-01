@@ -1,12 +1,12 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.DTOs
+namespace Ferretto.VW.CommonUtils.DTOs
 {
-    public class MovementMessageDataDTO
+    public class MovementMessageDataDto
     {
         #region Constructors
 
-        public MovementMessageDataDTO(Axis axis, MovementType movementType, uint speedPercentage, decimal displacement)
+        public MovementMessageDataDto(Axis axis, MovementType movementType, uint speedPercentage, decimal displacement)
         {
             this.Displacement = displacement;
             this.Axis = axis;

@@ -2,8 +2,10 @@
 {
     public enum PolicyType
     {
+        NotSpecified,
+
         Operation,
 
-        Property
+        Property,
     }
 }

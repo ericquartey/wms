@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
-                "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Insertion# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
+                "StartsWith([BayDescription], 'Bay') And [OperationType] = ##ToString#Put# Or [BayDescription] <> 'Bay #2' And [RequestedQuantity] = 2");
 
             #endregion
 
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AbcClassId = this.AbcClass1.Id,
                 Code = "Item #1 Code",
                 Description = "Item #1 Description",
-                Id = 1,
+                Id = GetNewId(),
                 ManagementType = ItemManagementType.FIFO,
             };
             this.SchedulerRequest1 = new Common.DataModels.SchedulerRequest
@@ -67,10 +67,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 ReservedQuantity = 0,
-                Id = 1,
+                Id = GetNewId(),
                 IsInstant = false,
                 ItemId = this.Item1.Id,
-                OperationType = Common.DataModels.OperationType.Withdrawal,
+                OperationType = Common.DataModels.OperationType.Pick,
                 RequestedQuantity = 1,
             };
             this.SchedulerRequest2 = new Common.DataModels.SchedulerRequest
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = 2,
                 IsInstant = false,
                 ItemId = this.Item1.Id,
-                OperationType = Common.DataModels.OperationType.Insertion,
+                OperationType = Common.DataModels.OperationType.Put,
                 RequestedQuantity = 2,
             };
 
@@ -108,12 +108,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var actionResult1 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
-                $"StartsWith([BayDescription], 'Bay') And StartsWith([AreaDescription], 'Area')");
+                $"StartsWith([BayDescription], 'Bay') And StartsWith([AreaName], 'Area')");
 
             var actionResult2 = await schedulerRequestsController.GetAllAsync(
                 0,
                 int.MaxValue,
-                "StartsWith([BayDescription], 'Bay') And StartsWith([AreaDescription], 'NOT PRESENT')");
+                "StartsWith([BayDescription], 'Bay') And StartsWith([AreaName], 'NOT PRESENT')");
 
             #endregion
 

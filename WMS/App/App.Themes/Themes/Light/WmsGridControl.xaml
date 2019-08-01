@@ -5,15 +5,17 @@
                     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                     xmlns:dxght="http://schemas.devexpress.com/winfx/2008/xaml/grid/internal"
-                    xmlns:dxgn="clr-namespace:DevExpress.Xpf.Grid.Native;assembly=DevExpress.Xpf.Grid.v18.2"
+                    xmlns:dxgn="clr-namespace:DevExpress.Xpf.Grid.Native;assembly=DevExpress.Xpf.Grid.v19.1"
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
                     xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+                    xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     mc:Ignorable="cs">
 
     <dx:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <dx:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
+    <dx:ObjectToBooleanConverter x:Key="ObjectToBooleanConverter" />
 
     <!--  FixedTotalSummaryContainerControl style  -->
     <Style TargetType="{x:Type dxg:FixedTotalSummaryContainerControl}">
@@ -238,20 +240,25 @@
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommonBackground}" />
         <Setter Property="ShowFilterButtonOnHover" Value="False" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding View.DataControl.OwnerDetailDescriptor, Converter={StaticResource ObjectToBooleanConverter}}" Value="True">
+                <Setter Property="Background" Value="{DynamicResource CommonSecondaryLight}" />
+                <Setter Property="Foreground" Value="{DynamicResource OnCommonSecondaryMedium}" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="FontSize" Value="{DynamicResource GridDetailFontSize}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
-
-    <!--  focused row style  -->
-    <ControlTemplate x:Key="{dxgt:GridControlThemeKey ResourceKey=FocusedRowBorderTemplate, ThemeName=Office2016White}">
-        <Rectangle cs:Name="Rectangle_0003"
-                   SnapsToDevicePixels="True"
-                   Stroke="{DynamicResource CommonSecondaryDark}"
-                   StrokeThickness="2" />
-    </ControlTemplate>
 
     <Style x:Key="AutoHeightRowControlStyle"
            TargetType="{x:Type dxg:RowControl}">
         <Setter Property="Height" Value="Auto" />
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding View.DataControl.OwnerDetailDescriptor, Converter={StaticResource ObjectToBooleanConverter}}" Value="True">
+                <Setter Property="FontSize" Value="{DynamicResource GridDetailFontSize}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style BasedOn="{StaticResource AutoHeightRowControlStyle}"
@@ -277,7 +284,6 @@
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
-
             <DataTrigger Binding="{Binding AlternateRow}"
                          Value="True">
                 <Setter TargetName="Background" Property="Background" Value="{Binding Path=View.ActualAlternateRowBackground}" />
@@ -308,14 +314,78 @@
         <Setter Property="ShowSearchPanelMode" Value="Never" />
         <Setter Property="ShowVerticalLines" Value="False" />
         <Setter Property="SearchPanelNullText" Value="{x:Static res:General.Search}" />
+        <Setter Property="FocusedRowBorderTemplate" Value="{x:Null}" />
     </Style>
 
     <Style TargetType="dxg:CardView">
         <Setter Property="SearchPanelNullText" Value="{x:Static res:General.Search}" />
     </Style>
 
+    <!--  DetailIndentControl style  -->
+    <ControlTemplate TargetType="{x:Type dxg:BackgroundBorderControl}" x:Key="MyBackgroundBorderControlTemplate">
+        <Border Background="{DynamicResource CommonSecondaryLight}" x:Name="PART_DetailButtonBorder" HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <ContentPresenter
+                dx:FrameworkElementHelper.IsVisible="{Binding Path=(dxg:GridDetailExpandButtonContainer.IsDetailButtonVisible), RelativeSource={RelativeSource TemplatedParent}}" />
+        </Border>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type dxg:DetailIndentControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <dxg:BackgroundBorderControl Template="{StaticResource MyBackgroundBorderControlTemplate}"
+                                                     IsDetailMargin="{Binding Path=IsDetailMargin}"
+                                                     IsMasterRowExpanded="{Binding Path=(dx:DataObjectBase.DataObject).IsMasterRowExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                                     ItemLevel="{Binding Path=Level}"
+                                                     LineLevel="{Binding Path=(dx:DataObjectBase.DataObject).LineLevel, RelativeSource={RelativeSource TemplatedParent}}"
+                                                     RowLevel="{Binding Path=(dx:DataObjectBase.DataObject).DetailLevel, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Border x:Name="detailLeftLine"
+                                BorderBrush="{DynamicResource CommonBackground}"
+                                BorderThickness="1,0,0,0"
+                                dxg:DetailRowsIndentControl.IsSummaryDetailLevel="{Binding Path=(dxg:DetailRowsIndentControl.IsSummaryDetailLevel), RelativeSource={RelativeSource TemplatedParent}}"
+                                HorizontalAlignment="Right" />
+                        <Border x:Name="detailBottomLine"
+                                BorderBrush="{DynamicResource {dxgt:GridRowThemeKey ResourceKey=GridDataRowDelimiterBrush}}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsDetailMargin}" Value="True">
+                            <Setter Property="BorderBrush" TargetName="detailLeftLine"
+                                    Value="{DynamicResource {dxgt:GridColumnHeaderThemeKey ResourceKey=BorderBrush}}" />
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition
+                                    Binding="{Binding Path=ShowLastDetailMargin, RelativeSource={RelativeSource FindAncestor, AncestorType=dxg:DetailRowsIndentControl}}"
+                                    Value="False" />
+                                <Condition Binding="{Binding Path=IsLast}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="detailLeftLine" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition
+                                    Binding="{Binding Path=ShowBottomLine, RelativeSource={RelativeSource FindAncestor, AncestorType=dxg:DetailRowsIndentControl}}"
+                                    Value="True" />
+                                <Condition Binding="{Binding Path=IsLast}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="BorderThickness" TargetName="detailBottomLine" Value="0,0,0,1" />
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  FitColumnHeader style  -->
     <Style TargetType="{x:Type dxg:FitColumnHeader}">
+        <Setter Property="Background" Value="{DynamicResource CommonSecondaryMedium}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CommonBackground}" />
+    </Style>
+
+    <!--  ExpandButtonColumnHeader style  -->
+    <Style TargetType="{x:Type dxg:ExpandButtonColumnHeader}">
         <Setter Property="Background" Value="{DynamicResource CommonSecondaryMedium}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommonBackground}" />
     </Style>

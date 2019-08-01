@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 
 namespace Ferretto.VW.SignalRClientConsole
 {
@@ -43,7 +43,7 @@ namespace Ferretto.VW.SignalRClientConsole
                     case 'I':
                         if (!bInitialized)
                         {
-                            var initializeTask = new Task(() => Initialize());
+                            var initializeTask = new Task(async () => await Initialize());
                             initializeTask.Start();
                             Console.WriteLine();
                             Console.WriteLine("> Hub initialized");
@@ -115,7 +115,6 @@ namespace Ferretto.VW.SignalRClientConsole
             //    szMsg = string.Format("{0} - {1}", DateTime.Now.ToString(), $"Received NotificationMessageUI<CurrentPositionMessageData>. Object values =>  {cp.Data.BeltBurnishingPosition.ToString()}, {cp.Data.CurrentPosition.ToString()}, {cp.Data.ExecutedCycles.ToString()}");
             //    Console.WriteLine(szMsg);
             //}
-
             if (e.NotificationMessage is NotificationMessageUI<PositioningMessageData> vp)
             {
                 Console.ForegroundColor = ConsoleColor.Green;

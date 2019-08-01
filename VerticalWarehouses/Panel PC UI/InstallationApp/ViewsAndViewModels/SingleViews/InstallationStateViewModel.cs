@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class InstallationStateViewModel : BindableBase, IInstallationStateViewModel
     {
@@ -12,9 +13,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
-        private IInstallationStatusService installationStatusService;
+        private readonly IInstallationStatusMachineService installationStatusService;
 
         private bool isBeltBurnishingDone;
 
@@ -58,15 +57,24 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public InstallationStateViewModel(IEventAggregator eventAggregator)
+        public InstallationStateViewModel(
+            IEventAggregator eventAggregator,
+            IInstallationStatusMachineService installationStatusService)
         {
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
-        }
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
 
-        public InstallationStateViewModel()
-        {
-            // TODO
+            if (installationStatusService == null)
+            {
+                throw new System.ArgumentNullException(nameof(installationStatusService));
+            }
+
+            this.eventAggregator = eventAggregator;
+            this.installationStatusService = installationStatusService;
+
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -122,12 +130,6 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             await this.GetInstallationStateAsync();
@@ -140,34 +142,35 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task GetInstallationStateAsync()
         {
-            var installationStatus = await this.installationStatusService.GetStatusAsync();
-
-            this.IsVerticalHomingDone = installationStatus[0];
-            this.IsHorizontalHomingDone = installationStatus[1];
-            this.IsBeltBurnishingDone = installationStatus[2];
-            this.IsVerticalResolutionDone = installationStatus[3];
-            this.IsVerticalOffsetVerifyDone = installationStatus[4];
-            this.IsCellPositionVerifyDone = installationStatus[5];
-            this.IsShutter1InstallationProcedureDone = installationStatus[11];
-            this.IsShutter2InstallationProcedureDone = installationStatus[12];
-            this.IsShutter3InstallationProcedureDone = installationStatus[13];
-            this.IsShapeShutter1Done = installationStatus[7];
-            this.IsShapeShutter2Done = installationStatus[8];
-            this.IsShapeShutter3Done = installationStatus[9];
-            this.IsLaserShutter1Done = installationStatus[19];
-            this.IsLaserShutter2Done = installationStatus[20];
-            this.IsLaserShutter3Done = installationStatus[21];
-            this.IsFirstDrawerLoadedDone = installationStatus[17];
-            this.IsEmptyDrawersLoadedDone = installationStatus[18];
-            this.IsCheckPanelsVerifyDone = installationStatus[6];
-
-            var checkMachineDone = true;
-            foreach (var itemState in installationStatus)
+            try
             {
-                checkMachineDone = itemState && checkMachineDone;
-            }
+                var installationStatus = (await this.installationStatusService.GetStatusAsync()).ToArray();
 
-            this.IsMachineDone = checkMachineDone;
+                this.IsVerticalHomingDone = installationStatus[0];
+                this.IsHorizontalHomingDone = installationStatus[1];
+                this.IsBeltBurnishingDone = installationStatus[2];
+                this.IsVerticalResolutionDone = installationStatus[3];
+                this.IsVerticalOffsetVerifyDone = installationStatus[4];
+                this.IsCellPositionVerifyDone = installationStatus[5];
+                this.IsShutter1InstallationProcedureDone = installationStatus[11];
+                this.IsShutter2InstallationProcedureDone = installationStatus[12];
+                this.IsShutter3InstallationProcedureDone = installationStatus[13];
+                this.IsShapeShutter1Done = installationStatus[7];
+                this.IsShapeShutter2Done = installationStatus[8];
+                this.IsShapeShutter3Done = installationStatus[9];
+                this.IsLaserShutter1Done = installationStatus[19];
+                this.IsLaserShutter2Done = installationStatus[20];
+                this.IsLaserShutter3Done = installationStatus[21];
+                this.IsFirstDrawerLoadedDone = installationStatus[17];
+                this.IsEmptyDrawersLoadedDone = installationStatus[18];
+                this.IsCheckPanelsVerifyDone = installationStatus[6];
+
+                this.IsMachineDone = installationStatus.All(status => status == true);
+            }
+            catch
+            {
+                // TODO
+            }
         }
 
         #endregion

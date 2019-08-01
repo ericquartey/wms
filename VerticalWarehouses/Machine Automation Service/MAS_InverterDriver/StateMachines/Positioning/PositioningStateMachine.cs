@@ -1,12 +1,11 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningStateMachine : InverterStateMachineBase
     {
@@ -22,17 +21,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IInverterPositioningFieldMessageData data, IInverterStatusBase inverterStatus,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base(logger)
+        public PositioningStateMachine(
+            IInverterPositioningFieldMessageData data,
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
-
             this.data = data;
+            this.inverterStatus = inverterStatus;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -53,6 +53,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         {
             this.CurrentState = new PositioningStartState(this, this.data, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
         }
 
         protected override void Dispose(bool disposing)

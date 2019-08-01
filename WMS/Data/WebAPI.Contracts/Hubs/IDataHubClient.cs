@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         int MaxReconnectTimeoutMilliseconds { get; set; }
 
+        bool IsConnected { get; }
+
         #endregion
 
         #region Methods

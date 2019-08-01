@@ -8,7 +8,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.WMS.Modules.Layout
+namespace Ferretto.WMS.App.Modules.Layout
 {
     [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<MenuView, MenuViewModel>();
             navigationService.Register<LoginView, LoginViewModel>();
 
-            var localisationService = ServiceLocator.Current.GetService(typeof(ILocalizationService)) as ILocalizationService;
+            var localisationService = ServiceLocator.Current.GetService(typeof(ILocalizationDataService)) as ILocalizationDataService;
             localisationService.SetAcceptedLanguage(System.Globalization.CultureInfo.CurrentUICulture.ToString());
         }
 

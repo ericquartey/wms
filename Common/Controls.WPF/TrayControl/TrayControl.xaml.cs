@@ -307,7 +307,7 @@ namespace Ferretto.Common.Controls.WPF
                 Source = source,
                 Path = new PropertyPath(path: bindingName),
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             };
             BindingOperations.SetBinding(this, depPropertyName, binding);
         }
@@ -324,6 +324,7 @@ namespace Ferretto.Common.Controls.WPF
         private void TrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 2, e.NewSize.Width - 2);
+            this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
 
         #endregion

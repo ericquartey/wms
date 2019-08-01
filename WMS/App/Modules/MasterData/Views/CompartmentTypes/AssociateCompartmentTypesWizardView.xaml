@@ -1,4 +1,4 @@
-﻿<wms:WmsWizardView x:Class="Ferretto.WMS.Modules.MasterData.AssociateCompartmentTypesWizardView"
+﻿<wms:WmsWizardView x:Class="Ferretto.WMS.App.Modules.MasterData.AssociateCompartmentTypesWizardView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -40,21 +40,23 @@
                           MaxHeight="50"
                           Margin="10,10,10,0"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Bottom"
                           Focusable="False"
                           IsTabStop="True">
 
                 <TextBlock MaxWidth="400"
                            Margin="10,0,10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
                            Style="{DynamicResource TextBlockErrorMessageStyle}"
                            Text="{Binding Error}" />
             </ScrollViewer>
 
             <wms:ActionBar Grid.Column="1"
-                           Margin="20,20,20,20"
+                           Margin="10,10,10,0"
                            HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-
 
                 <wms:ActionBarItem Command="{Binding GoToPreviousCommand}"
                                    Content="{x:Static res:General.Previous}"

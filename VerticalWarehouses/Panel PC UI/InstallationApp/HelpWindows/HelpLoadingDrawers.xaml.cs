@@ -1,15 +1,16 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.HelpWindows
+namespace Ferretto.VW.App.Installation.HelpWindows
 {
-    /// <summary>
-    /// Logica di interazione per HelpLoadingDrawers.xaml
-    /// </summary>
     public partial class HelpLoadingDrawers : UserControl
     {
+        #region Constructors
+
         public HelpLoadingDrawers()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations
+﻿namespace Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations
 {
     public enum ActionType
     {
@@ -27,6 +27,10 @@
         SwitchAxis = 11,
 
         ResolutionCalibration = 12,
+
+        ResetSecurity = 13,
+
+        InverterStop = 14,
 
         Stop = 99,
     }

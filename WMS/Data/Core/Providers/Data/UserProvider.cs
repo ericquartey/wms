@@ -11,6 +11,37 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Methods
 
+        public UserClaims Authenticate(string userName, string password)
+        {
+            switch (userName.ToUpper())
+            {
+                case "OPERATOR":
+
+                    return new UserClaims
+                    {
+                        Name = userName,
+                        AccessLevel = UserAccessLevel.User,
+                    };
+
+                case "ADMIN":
+                    return new UserClaims
+                    {
+                        Name = userName,
+                        AccessLevel = UserAccessLevel.Admin,
+                    };
+
+                case "INSTALLER":
+                    return new UserClaims
+                    {
+                        Name = userName,
+                        AccessLevel = UserAccessLevel.SuperUser,
+                    };
+
+                default:
+                    return null;
+            }
+        }
+
         public Task<IEnumerable<User>> GetAllAsync()
         {
             return Task.FromResult(Array.Empty<User>().AsEnumerable());
@@ -24,11 +55,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         public Task<User> GetByIdAsync(int id)
         {
             return Task.FromResult<User>(null);
-        }
-
-        public Task<bool> IsValidAsync(User user)
-        {
-            return Task.FromResult(true);
         }
 
         #endregion

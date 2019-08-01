@@ -1,36 +1,31 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+﻿using System.Threading;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     public class PositioningStartMovingState : InverterStateBase
     {
         #region Fields
 
-        private readonly IInverterStatusBase inverterStatus;
+        private const int STATUS_WORD_REQUEST_INTERVAL = 100;
 
-        private readonly ILogger logger;
-
-        private bool disposed;
-
-        private bool positioningReachedReset;
+        private Timer requestStatusWordMessageTimer;
 
         #endregion
 
         #region Constructors
 
-        public PositioningStartMovingState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public PositioningStartMovingState(
+            IInverterStateMachine parentStateMachine,
+            IInverterStatusBase inverterStatus,
+            ILogger logger)
+            : base(parentStateMachine, inverterStatus, logger)
         {
-            logger.LogTrace("1:Method Start");
-
-            this.ParentStateMachine = parentStateMachine;
-            this.inverterStatus = inverterStatus;
-            this.logger = logger;
         }
 
         #endregion
@@ -46,26 +41,56 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        public override void Release()
+        {
+            //TEMP Stop the timer
+            this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
+        }
+
         /// <inheritdoc />
         public override void Start()
         {
-            if (this.inverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
                 currentStatus.PositionControlWord.NewSetPoint = true;
             }
             //TODO complete type failure check
+            this.Logger.LogDebug("Set New Setpoint");
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
+            //TEMP Create the timer
+            this.requestStatusWordMessageTimer?.Dispose();
+            this.requestStatusWordMessageTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
 
-            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.InverterStatus).PositionControlWord.Value);
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
 
         /// <inheritdoc />
+        public override void Stop()
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            //TEMP Stop the timer
+            this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
+
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.InverterStatus, this.Logger, true));
+        }
+
+        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+
+            if (message.ParameterId == InverterParameterId.ControlWordParam)
+            {
+                //TEMP Start the timer
+                this.requestStatusWordMessageTimer.Change(STATUS_WORD_REQUEST_INTERVAL, STATUS_WORD_REQUEST_INTERVAL);
+
+                return false;
+            }
 
             return true;
         }
@@ -73,50 +98,48 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
-            var returnValue = false;
+            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
 
-            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
+            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus is AngInverterStatus currentStatus)
+            if (this.InverterStatus is AngInverterStatus currentStatus)
             {
-                if (!currentStatus.PositionStatusWord.PositioningAttained)
+                if (currentStatus.PositionStatusWord.PositioningAttained)
                 {
-                    this.positioningReachedReset = true;
-                }
+                    //TEMP Stop the timer
+                    this.requestStatusWordMessageTimer.Change(-1, Timeout.Infinite);
 
-                if (this.positioningReachedReset && currentStatus.PositionStatusWord.PositioningAttained)
+                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.Logger.LogDebug("Position Reached !");
+                }
+                else
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
-                    returnValue = true;
+                    this.Logger.LogDebug("Position Not Reached");
                 }
             }
 
-            this.logger.LogDebug($"2:Method End with return value {returnValue}");
-
-            return returnValue;
+            //INFO Next status word request handled by timer
+            return true;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void OnDisposing()
         {
-            if (this.disposed)
-            {
-                return;
-            }
+            this.requestStatusWordMessageTimer?.Dispose();
+            this.requestStatusWordMessageTimer = null;
+        }
 
-            if (disposing)
-            {
-            }
+        private void RequestStatusWordMessage(object state)
+        {
+            var readStatusWordMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.StatusWordParam);
 
-            this.disposed = true;
+            this.Logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
 
-            base.Dispose(disposing);
+            this.ParentStateMachine.EnqueueMessage(readStatusWordMessage);
         }
 
         #endregion

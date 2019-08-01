@@ -14,7 +14,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.CompartmentType))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
@@ -132,7 +132,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
 
             return result.Success;
@@ -145,7 +149,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRevertCommandAsync()
         {
-            throw new System.NotImplementedException();
+            throw new System.NotSupportedException();
         }
 
         protected override async Task LoadDataAsync()
@@ -217,7 +221,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        resultCreate.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -262,7 +270,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        resultDelete.Description,
+                        StatusType.Error));
             }
 
             this.IsBusy = false;

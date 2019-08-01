@@ -1,8 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 {
     /// <summary>
     /// Interaction logic for MainWindowNavigationButtonView.xaml
@@ -56,7 +54,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         //    this.NavigationButtonScrollViewer.LineUp();
         //    //TODO: scroll up and down nav button height
         //}
-
         #endregion
     }
 }

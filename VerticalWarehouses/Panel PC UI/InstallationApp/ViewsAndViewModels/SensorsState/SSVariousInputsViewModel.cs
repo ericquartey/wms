@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.IO;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+//using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
     public class SSVariousInputsViewModel : BindableBase, ISSVariousInputsViewModel
     {
@@ -15,19 +15,19 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        //private readonly IOSensorsStatus ioSensorsStatus;
+
+        private readonly IUpdateSensorsMachineService updateSensorsService;
+
         private bool antiIntrusionShutterBay1;
 
         private bool antiIntrusionShutterBay2;
 
         private bool antiIntrusionShutterBay3;
 
-        private IUnityContainer container;
-
         private bool cradleEngineSelected;
 
         private bool elevatorEngineSelected;
-
-        private IOSensorsStatus ioSensorsStatus;
 
         private bool microCarterLeftSideBay1;
 
@@ -49,18 +49,29 @@ namespace Ferretto.VW.InstallationApp
 
         private bool securityFunctionActive;
 
-        private IUpdateSensorsService updateSensorsService;
-
         private SubscriptionToken updateVariousInputsSensorsState;
 
         #endregion
 
         #region Constructors
 
-        public SSVariousInputsViewModel(IEventAggregator eventAggregator)
+        public SSVariousInputsViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.ioSensorsStatus = new IOSensorsStatus();
+            this.updateSensorsService = updateSensorsService;
+            //this.ioSensorsStatus = new IOSensorsStatus();
             this.NavigationViewModel = null;
         }
 
@@ -109,20 +120,15 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
             this.DisableVariousInputsSensorsState();
-            this.updateVariousInputsSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+            this.updateVariousInputsSensorsState = this.eventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
-                ThreadOption.PublisherThread,
-                false);
+                    message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
 
             await this.updateSensorsService.ExecuteAsync();
         }
@@ -130,28 +136,6 @@ namespace Ferretto.VW.InstallationApp
         public void UnSubscribeMethodFromEvent()
         {
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVariousInputsSensorsState);
-        }
-
-        private void UpdateVariousInputsSensorsState(bool[] message)
-        {
-            this.ioSensorsStatus.UpdateInputStates(message);
-
-            this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
-
-            this.MushroomHeadButtonBay1 = !this.ioSensorsStatus.MushroomHeadButtonBay1;
-            this.MicroCarterLeftSideBay1 = this.ioSensorsStatus.MicroCarterLeftSideBay1;
-            this.MicroCarterRightSideBay1 = this.ioSensorsStatus.MicroCarterRightSideBay1;
-            this.AntiIntrusionShutterBay1 = !this.ioSensorsStatus.AntiIntrusionShutterBay1;
-
-            this.MushroomHeadButtonBay2 = !this.ioSensorsStatus.MushroomHeadButtonBay2;
-            this.MicroCarterLeftSideBay2 = this.ioSensorsStatus.MicroCarterLeftSideBay2;
-            this.MicroCarterRightSideBay2 = this.ioSensorsStatus.MicroCarterRightSideBay2;
-            this.AntiIntrusionShutterBay2 = !this.ioSensorsStatus.AntiIntrusionShutterBay2;
-
-            this.MushroomHeadButtonBay3 = !this.ioSensorsStatus.MushroomHeadButtonBay3;
-            this.MicroCarterLeftSideBay3 = this.ioSensorsStatus.MicroCarterLeftSideBay3;
-            this.MicroCarterRightSideBay3 = this.ioSensorsStatus.MicroCarterRightSideBay3;
-            this.AntiIntrusionShutterBay3 = !this.ioSensorsStatus.AntiIntrusionShutterBay3;
         }
 
         private void DisableVariousInputsSensorsState()
@@ -172,6 +156,28 @@ namespace Ferretto.VW.InstallationApp
             this.MicroCarterLeftSideBay3 = false;
             this.MicroCarterRightSideBay3 = false;
             this.AntiIntrusionShutterBay3 = false;
+        }
+
+        private void UpdateVariousInputsSensorsState(bool[] message)
+        {
+            //this.ioSensorsStatus.UpdateInputStates(message);
+
+            //this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
+
+            //this.MushroomHeadButtonBay1 = !this.ioSensorsStatus.MushroomHeadButtonBay1;
+            //this.MicroCarterLeftSideBay1 = this.ioSensorsStatus.MicroCarterLeftSideBay1;
+            //this.MicroCarterRightSideBay1 = this.ioSensorsStatus.MicroCarterRightSideBay1;
+            //this.AntiIntrusionShutterBay1 = !this.ioSensorsStatus.AntiIntrusionShutterBay1;
+
+            //this.MushroomHeadButtonBay2 = !this.ioSensorsStatus.MushroomHeadButtonBay2;
+            //this.MicroCarterLeftSideBay2 = this.ioSensorsStatus.MicroCarterLeftSideBay2;
+            //this.MicroCarterRightSideBay2 = this.ioSensorsStatus.MicroCarterRightSideBay2;
+            //this.AntiIntrusionShutterBay2 = !this.ioSensorsStatus.AntiIntrusionShutterBay2;
+
+            //this.MushroomHeadButtonBay3 = !this.ioSensorsStatus.MushroomHeadButtonBay3;
+            //this.MicroCarterLeftSideBay3 = this.ioSensorsStatus.MicroCarterLeftSideBay3;
+            //this.MicroCarterRightSideBay3 = this.ioSensorsStatus.MicroCarterRightSideBay3;
+            //this.AntiIntrusionShutterBay3 = !this.ioSensorsStatus.AntiIntrusionShutterBay3;
         }
 
         #endregion

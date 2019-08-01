@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-namespace Ferretto.VW.MAS_AutomationService
+namespace Ferretto.VW.MAS.AutomationService
 {
     public class Program
     {
@@ -24,8 +24,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
         public static void Main(string[] args)
         {
-            var webHost = CreateWebHostBuilder(args).Build();
-            webHost.Run();
+            CreateWebHostBuilder(args)
+                .Build()
+                .Run();
         }
 
         #endregion

@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly ISchedulerService schedulerService;
+        private readonly IItemSchedulerService schedulerService;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ILoadingUnitProvider loadingUnitProvider,
-            ISchedulerService schedulerService)
+            IItemSchedulerService schedulerService)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
@@ -70,10 +70,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(ItemArea), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("{id}/allowed-areas/{areaid}")]
-        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
+        [HttpPost("{id}/allowed-areas/{areaId}")]
+        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaId)
         {
-            var result = await this.itemAreaProvider.CreateAsync(areaid, id);
+            var result = await this.itemAreaProvider.CreateAsync(new ItemArea { AreaId = areaId, ItemId = id });
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
@@ -105,10 +105,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpDelete("{id}/allowed-areas/{areaid}")]
-        public async Task<ActionResult> DeleteAllowedAreaAsync(int id, int areaid)
+        [HttpDelete("{id}/allowed-areas/{areaId}")]
+        public async Task<ActionResult> DeleteAllowedAreaAsync(int id, int areaId)
         {
-            var result = await this.itemAreaProvider.DeleteAsync(areaid, id);
+            var result = await this.itemAreaProvider.DeleteAsync(areaId, id);
 
             if (!result.Success)
             {
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -226,7 +226,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     return this.NotFound(new ProblemDetails
                     {
                         Detail = message,
-                        Status = StatusCodes.Status404NotFound
+                        Status = StatusCodes.Status404NotFound,
                     });
                 }
 
@@ -250,7 +250,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
@@ -277,7 +277,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NotFound(new ProblemDetails
                 {
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 

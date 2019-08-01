@@ -1,4 +1,4 @@
-﻿<ctrls:WmsView x:Class="Ferretto.WMS.Modules.Layout.LayoutView"
+﻿<ctrls:WmsView x:Class="Ferretto.WMS.App.Modules.Layout.LayoutView"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:ctrls="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
@@ -41,6 +41,7 @@
                                           Orientation="Horizontal">
                             <dxdo:DocumentGroup Name="MainDocumentGroup"
                                                 DestroyOnClosingChildren="False"
+                                                ClosePageButtonShowMode="NoWhere"
                                                 MDIStyle="Tabbed" />
                         </dxdo:LayoutGroup>
                     </dxdo:LayoutGroup>

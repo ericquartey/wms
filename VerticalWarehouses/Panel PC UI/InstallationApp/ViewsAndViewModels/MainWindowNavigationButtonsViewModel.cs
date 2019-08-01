@@ -1,12 +1,13 @@
-﻿using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Ferretto.VW.MAS_AutomationService.Contracts;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Resources;
+using Ferretto.VW.App.Installation.Resources.Enumerables;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 {
     public class MainWindowNavigationButtonsViewModel : BindableBase, IMainWindowNavigationButtonsViewModel
     {
@@ -14,9 +15,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
-        private IInstallationStatusService installationStatusService;
+        private readonly IInstallationStatusMachineService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -58,13 +57,29 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isWeightControlButtonActive;
 
+        private BindableBase navigationViewModel;
+
         #endregion
 
         #region Constructors
 
-        public MainWindowNavigationButtonsViewModel(IEventAggregator eventAggregator)
+        public MainWindowNavigationButtonsViewModel(
+            IEventAggregator eventAggregator,
+            IInstallationStatusMachineService installationStatusService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (installationStatusService == null)
+            {
+                throw new System.ArgumentNullException(nameof(installationStatusService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.installationStatusService = installationStatusService;
+
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) => { this.SetAllNavigationButtonDisabled(); },
                 ThreadOption.PublisherThread,
@@ -126,7 +141,11 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
 
-        public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public BindableBase NavigationViewModel
+        {
+            get => this.navigationViewModel;
+            set => this.SetProperty(ref this.navigationViewModel, value);
+        }
 
         #endregion
 
@@ -137,16 +156,9 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task InitializeViewModel(IUnityContainer container)
+        public async Task OnEnterViewAsync()
         {
-            this.container = container;
-            this.installationStatusService = this.container.Resolve<IInstallationStatusService>();
             await this.UpdateButtonsEnableStateAsync();
-        }
-
-        public Task OnEnterViewAsync()
-        {
-            return Task.CompletedTask;
         }
 
         public void SetAllNavigationButtonDisabled()
@@ -175,7 +187,7 @@ namespace Ferretto.VW.InstallationApp
         private async Task UpdateButtonsEnableStateAsync()
         {
             var installationStatus = await this.installationStatusService.GetStatusAsync();
-            var checkHomingDone = installationStatus[0];
+            var checkHomingDone = installationStatus.FirstOrDefault();
 
             this.IsInstallationStateButtonActive = true;
             this.IsUpScrollButtonActive = true;

@@ -169,12 +169,6 @@
   <data name="AbortionIsNotSupportedForMissionType" xml:space="preserve">
     <value>Abortion is not supported for mission type '{0}'.</value>
   </data>
-  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedCompartment" xml:space="preserve">
-    <value>Unable to complete the specified mission because it has no associated compartment.</value>
-  </data>
-  <data name="UnableToCompleteTheSpecifiedMissionBecauseItHasNoAssociatedItem" xml:space="preserve">
-    <value>Unable to complete the specified mission because it has no associated item.</value>
-  </data>
   <data name="ActualPickedQuantityCannotBeGreaterThanTheRemainingQuantityToDispatch" xml:space="preserve">
     <value>Actual picked quantity ({0}) cannot be greater than the remaining quantity to dispatch ({1}).</value>
   </data>
@@ -243,5 +237,8 @@
   </data>
   <data name="NoEntityExists" xml:space="preserve">
     <value>No entity with the specified id={0} exists.</value>
+  </data>
+  <data name="TheValueForFieldIsAlreadyUsedByAnotherEntry" xml:space="preserve">
+    <value>The value '{0}' for field '{1}' is already used by another entry.</value>
   </data>
 </root>

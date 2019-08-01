@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.Data.Hubs.Models;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.App.Modules.MasterData
 {
     public class ChooseCompartmentTypesStepViewModel : WmsWizardStepViewModel
     {
@@ -123,7 +123,6 @@ namespace Ferretto.WMS.Modules.MasterData
             else
             {
                 this.SetValidation(true);
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
                 this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
             }
 
@@ -146,17 +145,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<ItemCompartmentType> CreateBulk()
         {
-            var newItemComaratmentTypes = new List<ItemCompartmentType>();
+            var newItemComparatmentTypes = new List<ItemCompartmentType>();
 
             var filtered = this.UnassociatedItemCompartmentTypesDataSource.Where(uct => uct.IsActive);
 
             foreach (var itemCompartmentType in filtered)
             {
                 itemCompartmentType.ItemId = ((IModel<int>)this.Data).Id;
-                newItemComaratmentTypes.Add(itemCompartmentType);
+                newItemComparatmentTypes.Add(itemCompartmentType);
             }
 
-            return newItemComaratmentTypes;
+            return newItemComparatmentTypes;
         }
 
         private bool IsValid()

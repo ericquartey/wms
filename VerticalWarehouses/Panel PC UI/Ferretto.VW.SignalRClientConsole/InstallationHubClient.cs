@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.SignalRClientConsole
@@ -38,7 +38,7 @@ namespace Ferretto.VW.SignalRClientConsole
                 "ShutterControlNotify", this.OnShutterControlNotify);
 
             this.hubConnection.On<NotificationMessageUI<PositioningMessageData>>(
-                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
+                "PositioningNotify", this.OnPositioningNotify);
 
             this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
                 "HomingNotify", this.OnHomingNotify);
@@ -91,7 +91,16 @@ namespace Ferretto.VW.SignalRClientConsole
         }
 
         /// <summary>
-        /// Handler for VerticalPositioning event.
+        /// Handler for Positioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for Positioning event.
         /// </summary>
         /// <param name="message"></param>
         private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
@@ -131,15 +140,6 @@ namespace Ferretto.VW.SignalRClientConsole
         /// </summary>
         /// <param name="message"></param>
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        /// <summary>
-        /// Handler for VerticalPositioning event.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnVerticalPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

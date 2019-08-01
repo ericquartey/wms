@@ -6,6 +6,6 @@
 
         Update,
 
-        Delete
+        Delete,
     }
 }

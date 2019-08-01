@@ -62,23 +62,23 @@ namespace Ferretto.WMS.App.Modules.BLL
                     Resources.MasterData.CellAll,
                     cellProvider),
 
-                 new PagedDataSource<Cell, int>(
+                new PagedDataSource<Cell, int>(
                     "CellStatusEmpty",
                     Resources.MasterData.CellStatusEmpty,
                     cellProvider,
                     "[Status] == 'Empty'"),
 
-                 new PagedDataSource<Cell, int>(
+                new PagedDataSource<Cell, int>(
                     "CellStatusFull",
                     Resources.MasterData.CellStatusFull,
                     cellProvider,
                     "[Status] == 'Full'"),
 
-                 new PagedDataSource<Cell, int>(
+                new PagedDataSource<Cell, int>(
                     "CellClassA",
                     Resources.MasterData.CellClassA,
-                   cellProvider,
-                    "[AbcClassDescription] == 'A Class'")
+                    cellProvider,
+                    "[AbcClassDescription] == 'A Class'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -243,7 +243,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemsViewFIFO",
                     Resources.MasterData.ItemFIFO,
                     itemsProvider,
-                    $"[ManagementType] == '{ItemManagementType.FIFO}'")
+                    $"[ManagementType] == '{ItemManagementType.FIFO}'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -287,7 +287,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "LoadingUnitsViewStatusUsed",
                     Resources.MasterData.LoadingUnitStatusUsed,
                     loadingUnitProvider,
-                    "[LoadingUnitStatusDescription] == 'Used'")
+                    "[LoadingUnitStatusDescription] == 'Used'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -304,44 +304,42 @@ namespace Ferretto.WMS.App.Modules.BLL
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewAll",
                     Resources.Machines.MachineAll,
-                    async () => await machineProvider.GetAllAsync(0, int.MaxValue)),
+                    async () => await machineProvider.GetAllAsync(0, 0)),
 
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagXS",
                     Resources.Machines.MachineVertimagXS,
-                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagXSFilter)),
+                    async () => await machineProvider.GetAllAsync(0, 0, null, vertimagXSFilter)),
 
                 new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagM",
                     Resources.Machines.MachineVertimagM,
-                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagMFilter))
+                    async () => await machineProvider.GetAllAsync(0, 0, null, vertimagMFilter)),
             }.Cast<IDataSource<TModel, TKey>>();
         }
 
-        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
+        private static IEnumerable<IDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
             where TModel : IModel<TKey>
         {
             var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
 
-            return new List<PagedDataSource<Mission, int>>
+            return new List<DataSourceCollection<Mission, int>>
             {
-                new PagedDataSource<Mission, int>(
+                new DataSourceCollection<Mission, int>(
                     "MissionViewAll",
                     Resources.Scheduler.MissionAll,
-                    missionProvider),
+                    async () => await missionProvider.GetAllAsync(0, 0)),
 
-                new PagedDataSource<Mission, int>(
+                new DataSourceCollection<Mission, int>(
                     "MissionViewStatusCompleted",
                     Resources.Scheduler.MissionStatusCompleted,
-                    missionProvider,
-                    $"[Status] == '{MissionStatus.Completed}'"),
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.Completed}'")),
 
-                new PagedDataSource<Mission, int>(
+                new DataSourceCollection<Mission, int>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
-                    missionProvider,
-                    $"[Status] == '{MissionStatus.New}'")
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.New}'")),
+            }.Cast<IDataSource<TModel, TKey>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetSchedulerRequestDataSources<TModel, TKey>()
@@ -357,16 +355,16 @@ namespace Ferretto.WMS.App.Modules.BLL
                             schedulerRequestProvider),
 
                         new PagedDataSource<SchedulerRequest, int>(
-                            "SchedulerRequestOperationInsert",
-                            Resources.Scheduler.SchedulerRequestOperationInsert,
+                            "SchedulerRequestOperationPut",
+                            Resources.BusinessObjects.Put,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Insertion}'"),
+                            $"[OperationType] == '{OperationType.Put}'"),
 
                         new PagedDataSource<SchedulerRequest, int>(
-                            "SchedulerRequestOperationWithdraw",
+                            "SchedulerRequestOperationPick",
                             Resources.BusinessObjects.Pick,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Withdrawal}'")
+                            $"[OperationType] == '{OperationType.Pick}'"),
                     }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 

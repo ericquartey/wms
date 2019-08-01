@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.VW.Resources {
+namespace Ferretto.VW.App.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ferretto.VW.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.Resources.HelpDescriptions", typeof(HelpDescriptions).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.VW.App.Resources.HelpDescriptions", typeof(HelpDescriptions).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -331,6 +331,105 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsButtonOther.
+        /// </summary>
+        public static string HelpCellsStatisticsButtonOther {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsButtonOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsCellsAnt.
+        /// </summary>
+        public static string HelpCellsStatisticsCellsAnt {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsCellsAnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsCellsPost.
+        /// </summary>
+        public static string HelpCellsStatisticsCellsPost {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsCellsPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsCellsTot.
+        /// </summary>
+        public static string HelpCellsStatisticsCellsTot {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsCellsTot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsDescription.
+        /// </summary>
+        public static string HelpCellsStatisticsDescription {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridPercTotAnt.
+        /// </summary>
+        public static string HelpCellsStatisticsGridPercTotAnt {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridPercTotAnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridPercTotPost.
+        /// </summary>
+        public static string HelpCellsStatisticsGridPercTotPost {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridPercTotPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridStatus.
+        /// </summary>
+        public static string HelpCellsStatisticsGridStatus {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridTotAnt.
+        /// </summary>
+        public static string HelpCellsStatisticsGridTotAnt {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridTotAnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridTotPost.
+        /// </summary>
+        public static string HelpCellsStatisticsGridTotPost {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridTotPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsTotalOccupiedCells.
+        /// </summary>
+        public static string HelpCellsStatisticsTotalOccupiedCells {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsTotalOccupiedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCommonConfirm.
         /// </summary>
         public static string HelpCommonConfirm {
@@ -399,6 +498,15 @@ namespace Ferretto.VW.Resources {
         public static string HelpCommonListDescription {
             get {
                 return ResourceManager.GetString("HelpCommonListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonListType.
+        /// </summary>
+        public static string HelpCommonListType {
+            get {
+                return ResourceManager.GetString("HelpCommonListType", resourceCulture);
             }
         }
         
@@ -637,6 +745,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDescription.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailDescription.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailLotto.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailLotto {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailLotto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailMaterialStatus.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailMaterialStatus {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailMaterialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailPackaging.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailPackaging {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailPackaging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailProductionDate.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailProductionDate {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailProductionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryQtyStored.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryQtyStored {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryQtyStored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDescription.
         /// </summary>
         public static string HelpDrawerActivityPickingDescription {
@@ -867,6 +1038,96 @@ namespace Ferretto.VW.Resources {
         public static string HelpDrawerCompactingDescription {
             get {
                 return ResourceManager.GetString("HelpDrawerCompactingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailCurrentStep.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailCurrentStep {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailCurrentStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailDescription.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailDestinationCell.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailDestinationCell {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailDrawer.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailDrawer {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailFragmentRemaining.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailFragmentRemaining {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailFragmentRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailOrizzontalPosition.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailOrizzontalPosition {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailOrizzontalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailRecoveredSpace.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailRecoveredSpace {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailRecoveredSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailSourceCell.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailSourceCell {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailSourceCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailSpaceToRecover.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailSpaceToRecover {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailSpaceToRecover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDetailVerticalPosition.
+        /// </summary>
+        public static string HelpDrawerCompactingDetailVerticalPosition {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDetailVerticalPosition", resourceCulture);
             }
         }
         
@@ -1141,6 +1402,87 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsDescription.
+        /// </summary>
+        public static string HelpErrorsStatisticsDescription {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsErrorDescription.
+        /// </summary>
+        public static string HelpErrorsStatisticsErrorDescription {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsGridError.
+        /// </summary>
+        public static string HelpErrorsStatisticsGridError {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsGridError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsGridPercTotal.
+        /// </summary>
+        public static string HelpErrorsStatisticsGridPercTotal {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsGridPercTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsGridTotal.
+        /// </summary>
+        public static string HelpErrorsStatisticsGridTotal {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsGridTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsReliability.
+        /// </summary>
+        public static string HelpErrorsStatisticsReliability {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsReliability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsTotalDrawersMoved.
+        /// </summary>
+        public static string HelpErrorsStatisticsTotalDrawersMoved {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsTotalDrawersMoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsTotalDrawersNoError.
+        /// </summary>
+        public static string HelpErrorsStatisticsTotalDrawersNoError {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsTotalDrawersNoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsTotaleErrors.
+        /// </summary>
+        public static string HelpErrorsStatisticsTotaleErrors {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsTotaleErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGCCompleted.
         /// </summary>
         public static string HelpGCCompleted {
@@ -1209,6 +1551,132 @@ namespace Ferretto.VW.Resources {
         public static string HelpGCStopButton {
             get {
                 return ResourceManager.GetString("HelpGCStopButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonCompacting.
+        /// </summary>
+        public static string HelpGeneralInfoButtonCompacting {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonCompacting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonDrawerCall.
+        /// </summary>
+        public static string HelpGeneralInfoButtonDrawerCall {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonDrawerCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonMaintenance.
+        /// </summary>
+        public static string HelpGeneralInfoButtonMaintenance {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonStastistics.
+        /// </summary>
+        public static string HelpGeneralInfoButtonStastistics {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonStastistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoDescription.
+        /// </summary>
+        public static string HelpGeneralInfoDescription {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoInstallationDate.
+        /// </summary>
+        public static string HelpGeneralInfoInstallationDate {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoInstallationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoLastMaintenanceDate.
+        /// </summary>
+        public static string HelpGeneralInfoLastMaintenanceDate {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoLastMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoMachineStatus.
+        /// </summary>
+        public static string HelpGeneralInfoMachineStatus {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoMachineStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoModel.
+        /// </summary>
+        public static string HelpGeneralInfoModel {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoNextMaintenanceDate.
+        /// </summary>
+        public static string HelpGeneralInfoNextMaintenanceDate {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoNextMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoSerial.
+        /// </summary>
+        public static string HelpGeneralInfoSerial {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoSerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoSwRelease.
+        /// </summary>
+        public static string HelpGeneralInfoSwRelease {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoSwRelease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoTotalDrawers.
+        /// </summary>
+        public static string HelpGeneralInfoTotalDrawers {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoWmsStatus.
+        /// </summary>
+        public static string HelpGeneralInfoWmsStatus {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoWmsStatus", resourceCulture);
             }
         }
         
@@ -1807,6 +2275,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitGridType.
+        /// </summary>
+        public static string HelpListsInWaitGridType {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitGridType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpListsInWaitListsDetail.
         /// </summary>
         public static string HelpListsInWaitListsDetail {
@@ -1875,6 +2352,294 @@ namespace Ferretto.VW.Resources {
         public static string HelpLSMTTitle {
             get {
                 return ResourceManager.GetString("HelpLSMTTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsBay1.
+        /// </summary>
+        public static string HelpMachineStatisticsBay1 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsBay2.
+        /// </summary>
+        public static string HelpMachineStatisticsBay2 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsBay3.
+        /// </summary>
+        public static string HelpMachineStatisticsBay3 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsDescription.
+        /// </summary>
+        public static string HelpMachineStatisticsDescription {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsHorizontalCycles.
+        /// </summary>
+        public static string HelpMachineStatisticsHorizontalCycles {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsHorizontalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsShutter1.
+        /// </summary>
+        public static string HelpMachineStatisticsShutter1 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsShutter1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsShutter2.
+        /// </summary>
+        public static string HelpMachineStatisticsShutter2 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsShutter2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsShutter3.
+        /// </summary>
+        public static string HelpMachineStatisticsShutter3 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsShutter3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsVerticalCycles.
+        /// </summary>
+        public static string HelpMachineStatisticsVerticalCycles {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsVerticalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsVerticalKm.
+        /// </summary>
+        public static string HelpMachineStatisticsVerticalKm {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsVerticalKm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailCyclesBetweenTwoMaint.
+        /// </summary>
+        public static string HelpMaintenanceDetailCyclesBetweenTwoMaint {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailCyclesBetweenTwoMaint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailCyclesFromLastMaint.
+        /// </summary>
+        public static string HelpMaintenanceDetailCyclesFromLastMaint {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailCyclesFromLastMaint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailCyclesTotal.
+        /// </summary>
+        public static string HelpMaintenanceDetailCyclesTotal {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailCyclesTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailDescription.
+        /// </summary>
+        public static string HelpMaintenanceDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailElementStatus.
+        /// </summary>
+        public static string HelpMaintenanceDetailElementStatus {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailElementStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailGridDescription.
+        /// </summary>
+        public static string HelpMaintenanceDetailGridDescription {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailGridDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailGridElement.
+        /// </summary>
+        public static string HelpMaintenanceDetailGridElement {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailGridElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailGridQuantity.
+        /// </summary>
+        public static string HelpMaintenanceDetailGridQuantity {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailGridQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailHoursRequired.
+        /// </summary>
+        public static string HelpMaintenanceDetailHoursRequired {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailHoursRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailPlatformRequired.
+        /// </summary>
+        public static string HelpMaintenanceDetailPlatformRequired {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailPlatformRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceDetailSendRequestContact.
+        /// </summary>
+        public static string HelpMaintenanceDetailSendRequestContact {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceDetailSendRequestContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageDescription.
+        /// </summary>
+        public static string HelpMaintenanceMainPageDescription {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageGridDescription.
+        /// </summary>
+        public static string HelpMaintenanceMainPageGridDescription {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageGridDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageGridKit.
+        /// </summary>
+        public static string HelpMaintenanceMainPageGridKit {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageGridKit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageGridRequest.
+        /// </summary>
+        public static string HelpMaintenanceMainPageGridRequest {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageGridRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageGridState.
+        /// </summary>
+        public static string HelpMaintenanceMainPageGridState {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageGridState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageInstallation.
+        /// </summary>
+        public static string HelpMaintenanceMainPageInstallation {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageInstallation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageLastMaintenance.
+        /// </summary>
+        public static string HelpMaintenanceMainPageLastMaintenance {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageLastMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageMachineStatus.
+        /// </summary>
+        public static string HelpMaintenanceMainPageMachineStatus {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageMachineStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageModel.
+        /// </summary>
+        public static string HelpMaintenanceMainPageModel {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageNextMaintenance.
+        /// </summary>
+        public static string HelpMaintenanceMainPageNextMaintenance {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageNextMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMaintenanceMainPageSerial.
+        /// </summary>
+        public static string HelpMaintenanceMainPageSerial {
+            get {
+                return ResourceManager.GetString("HelpMaintenanceMainPageSerial", resourceCulture);
             }
         }
         
@@ -2154,6 +2919,105 @@ namespace Ferretto.VW.Resources {
         public static string HelpSSTitle {
             get {
                 return ResourceManager.GetString("HelpSSTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataAutomaticTotalTime.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataAutomaticTotalTime {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataAutomaticTotalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonCellsStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonCellsStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonCellsStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonDrawersStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonDrawersStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonDrawersStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonErrorsStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonErrorsStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonErrorsStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonMachineStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonMachineStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonMachineStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataDescription.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataDescription {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataLoadedWeight.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataLoadedWeight {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataLoadedWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataMovedDrawers.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataMovedDrawers {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataMovedDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataOccupiedArea.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataOccupiedArea {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataOccupiedArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataPowerOnTotalTime.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataPowerOnTotalTime {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataPowerOnTotalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataUseRatio.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataUseRatio {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataUseRatio", resourceCulture);
             }
         }
         

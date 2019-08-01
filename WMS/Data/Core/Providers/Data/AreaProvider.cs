@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(a => new Area
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
                 })
                 .ToArrayAsync();
         }
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(a => new Area
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
                 })
                 .SingleOrDefaultAsync(a => a.Id == id);
         }
@@ -79,10 +79,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Id = b.Id,
                         LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
                         LoadingUnitsBufferUsage = b.Missions.Count(
-                            m => m.Status != Common.DataModels.MissionStatus.Completed
+                            m => m.Operations.Any(o =>
+                                o.Status != Common.DataModels.MissionOperationStatus.Completed
                                 &&
-                                m.Status != Common.DataModels.MissionStatus.Incomplete)
-                    })
+                                o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
+                    }),
                 })
                 .SingleAsync(a => a.Id == id);
         }
@@ -99,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(a => new Area
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
                 })
                 .ToArrayAsync();
         }
@@ -116,10 +117,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Name = c.LoadingUnit.Cell.Aisle.Area.Name,
                 })
                 .Distinct()
-                .Select(a => new Area
+                .GroupJoin(
+                    this.DataContext.Bays,
+                    area => area.Id,
+                    bay => bay.AreaId,
+                    (area, bays) => new { Area = area, Bays = bays })
+                .Select(join => new Area
                 {
-                    Id = a.Id,
-                    Name = a.Name,
+                    Id = join.Area.Id,
+                    Name = join.Area.Name,
+                    Bays = join.Bays.Select(b => new Bay
+                    {
+                        Id = b.Id,
+                        Description = b.Description,
+                    }),
                 })
                 .ToArrayAsync();
         }

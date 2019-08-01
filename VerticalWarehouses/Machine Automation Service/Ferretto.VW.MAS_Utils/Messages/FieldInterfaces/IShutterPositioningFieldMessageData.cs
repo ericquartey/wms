@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
+namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
     public interface IShutterPositioningFieldMessageData : IFieldMessageData
     {

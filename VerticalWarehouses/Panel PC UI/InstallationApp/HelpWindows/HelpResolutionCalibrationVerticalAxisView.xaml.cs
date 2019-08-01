@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.HelpWindows
+namespace Ferretto.VW.App.Installation.HelpWindows
 {
     /// <summary>
     /// Logica di interazione per ResolutionCalibrationVerticalAxisHelpView.xaml

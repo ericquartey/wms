@@ -11,7 +11,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.ItemLists
+namespace Ferretto.WMS.App.Modules.ItemLists
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemList), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow), false)]
@@ -82,7 +82,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        result.Description,
+                        StatusType.Error));
             }
         }
 
@@ -100,7 +104,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                     Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
-                        Id = this.CurrentItem.Id
+                        Id = this.CurrentItem.Id,
                     });
             }
             else

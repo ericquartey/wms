@@ -98,6 +98,9 @@ namespace Ferretto.WMS.App.Core.Providers
                         Width = compartment.Width.Value,
                         XPosition = compartment.XPosition.Value,
                         YPosition = compartment.YPosition.Value,
+                        OtherMissionOperationCount = compartment.OtherMissionOperationCount,
+                        PickMissionOperationCount = compartment.PickMissionOperationCount,
+                        PutMissionOperationCount = compartment.PutMissionOperationCount,
                     });
                 }
 
@@ -142,6 +145,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     Width = model.Width.Value,
                     XPosition = model.XPosition.Value,
                     YPosition = model.YPosition.Value,
+                    OtherMissionOperationCount = model.OtherMissionOperationCount,
+                    PickMissionOperationCount = model.PickMissionOperationCount,
+                    PutMissionOperationCount = model.PutMissionOperationCount,
                 });
 
                 model.Id = compartment.Id;
@@ -287,6 +293,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     XPosition = compartment.XPosition,
                     YPosition = compartment.YPosition,
                     Policies = compartment.GetPolicies(),
+                    OtherMissionOperationCount = compartment.OtherMissionOperationCount,
+                    PickMissionOperationCount = compartment.PickMissionOperationCount,
+                    PutMissionOperationCount = compartment.PutMissionOperationCount,
                 };
             }
             catch
@@ -368,6 +377,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     Policies = c.GetPolicies(),
+                    OtherMissionOperationCount = c.OtherMissionOperationCount,
+                    PickMissionOperationCount = c.PickMissionOperationCount,
+                    PutMissionOperationCount = c.PutMissionOperationCount,
                 });
 
                 return new OperationResult<IEnumerable<CompartmentDetails>>(true, compartments);
@@ -409,7 +421,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentStatusChoices = compartmentStatus,
                     CompartmentTypeChoices = compartmentType,
                     MaterialStatusChoices = materialStatus,
-                    PackageTypeChoices = packageType
+                    PackageTypeChoices = packageType,
                 };
 
                 return new OperationResult<CompartmentDetails>(true, compartmentDetails);
@@ -475,6 +487,9 @@ namespace Ferretto.WMS.App.Core.Providers
                         Width = model.Width.Value,
                         XPosition = model.XPosition.Value,
                         YPosition = model.YPosition.Value,
+                        OtherMissionOperationCount = model.OtherMissionOperationCount,
+                        PickMissionOperationCount = model.PickMissionOperationCount,
+                        PutMissionOperationCount = model.PutMissionOperationCount,
                     },
                     model.Id);
 

@@ -67,7 +67,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var loadingUnit = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitCreating
+                var loadingUnit = await this.loadingUnitsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitDetails
                 {
                     Id = model.Id,
                     Code = model.Code,
@@ -237,7 +237,6 @@ namespace Ferretto.WMS.App.Core.Providers
                         HandlingParametersCorrection = l.HandlingParametersCorrection,
                         Height = l.Height,
                         Id = l.Id,
-                        InMissionCount = l.InMissionCount,
                         InventoryDate = l.InventoryDate,
                         IsCellPairingFixed = l.IsCellPairingFixed,
                         LastHandlingDate = l.LastHandlingDate,
@@ -250,12 +249,11 @@ namespace Ferretto.WMS.App.Core.Providers
                         LoadingUnitTypeHasCompartments = l.LoadingUnitTypeHasCompartments,
                         LoadingUnitTypeId = l.LoadingUnitTypeId,
                         Note = l.Note,
-                        OtherMissionCount = l.OtherMissionCount,
-                        OutMissionCount = l.OutMissionCount,
+                        MissionsCount = l.MissionsCount,
                         Policies = l.GetPolicies(),
                         ReferenceType = (ReferenceType)l.ReferenceType,
                         Weight = l.Weight,
-                        Width = l.Width
+                        Width = l.Width,
                     });
 
                 return new OperationResult<IEnumerable<LoadingUnitDetails>>(true, result);
@@ -301,7 +299,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
                     Height = loadingUnit.Height,
                     Id = loadingUnit.Id,
-                    InMissionCount = loadingUnit.InMissionCount,
+                    MissionsCount = loadingUnit.MissionsCount,
                     InventoryDate = loadingUnit.InventoryDate,
                     IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
                     LastHandlingDate = loadingUnit.LastHandlingDate,
@@ -316,8 +314,6 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
                     LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
                     Note = loadingUnit.Note,
-                    OtherMissionCount = loadingUnit.OtherMissionCount,
-                    OutMissionCount = loadingUnit.OutMissionCount,
                     Policies = loadingUnit.GetPolicies(),
                     ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
                     Weight = loadingUnit.Weight,
@@ -447,13 +443,11 @@ namespace Ferretto.WMS.App.Core.Providers
                         InventoryDate = model.InventoryDate,
                         LastPickDate = model.LastPickDate,
                         LastPutDate = model.LastPutDate,
-                        InMissionCount = model.InMissionCount,
-                        OutMissionCount = model.OutMissionCount,
-                        OtherMissionCount = model.OtherMissionCount,
+                        MissionsCount = model.MissionsCount,
                         CellId = model.CellId,
                         AisleId = model.AisleId,
                         AreaId = model.AreaId,
-                        CompartmentsCount = model.CompartmentsCount
+                        CompartmentsCount = model.CompartmentsCount,
                     },
                     model.Id);
 

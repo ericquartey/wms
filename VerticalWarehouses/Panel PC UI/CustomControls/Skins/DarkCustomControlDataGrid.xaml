@@ -1,0 +1,15 @@
+﻿<ResourceDictionary x:Class="Ferretto.VW.App.Controls.Skins.DarkCustomControlDataGrid"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <Color x:Key="VWAPP_DataGrid_CellStyle_HighlightBrushKey">#707173</Color>
+    <Color x:Key="VWAPP_DataGrid_CellStyle_ControlBrushKey">#707173</Color>
+    <Color x:Key="VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightBrushKey">#707173</Color>
+    <Color x:Key="VWAPP_DataGrid_CellStyle_HighlightTextBrushKey">#ffffff</Color>
+    <Color x:Key="VWAPP_DataGrid_CellStyle_ControlTextBrushKey">#ffffff</Color>
+    <Color x:Key="VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightTextBrushKey">#ffffff</Color>
+    <SolidColorBrush x:Key="VWAPP_DataGrid_CellStyle_HighlightMarkBrushKey"
+                     Color="#00CDE2" />
+</ResourceDictionary>

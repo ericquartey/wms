@@ -4,14 +4,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS_InverterDriver.Diagnostics;
-using Ferretto.VW.MAS_InverterDriver.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
+using Ferretto.VW.MAS.InverterDriver.Interface;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public class SocketTransport : ISocketTransport, IDisposable
     {
@@ -83,13 +83,15 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.inverterAddress == null)
             {
-                throw new ArgumentNullException(nameof(this.inverterAddress),
+                throw new ArgumentNullException(
+                    nameof(this.inverterAddress),
                     $"{nameof(this.inverterAddress)} can't be null");
             }
 
             if (this.inverterAddress.AddressFamily != AddressFamily.InterNetwork)
             {
-                throw new ArgumentException("Inverter Address is not a valid IPV4 address",
+                throw new ArgumentException(
+                    "Inverter Address is not a valid IPV4 address",
                     nameof(this.inverterAddress));
             }
 
@@ -100,13 +102,15 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (this.sendPort < 1024 || this.sendPort > 65535)
             {
-                throw new ArgumentOutOfRangeException(nameof(this.sendPort),
+                throw new ArgumentOutOfRangeException(
+                    nameof(this.sendPort),
                     $"{nameof(this.sendPort)} value must be between 1204 and 65535");
             }
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                throw new InverterDriverException("Socket Transport is already open",
+                throw new InverterDriverException(
+                    "Socket Transport is already open",
                     InverterDriverExceptionCode.SocketOpen);
             }
 
@@ -116,8 +120,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Failed to create Transport Socket client",
-                    InverterDriverExceptionCode.TcpClientCreationFailed, ex);
+                throw new InverterDriverException(
+                    "Failed to create Transport Socket client",
+                    InverterDriverExceptionCode.TcpClientCreationFailed,
+                    ex);
             }
 
             try
@@ -128,8 +134,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.transportClient?.Dispose();
                 this.transportClient = null;
-                throw new InverterDriverException("Failed to connect to Inverter Hardware",
-                    InverterDriverExceptionCode.TcpInverterConnectionFailed, ex);
+                throw new InverterDriverException(
+                    "Failed to connect to Inverter Hardware",
+                    InverterDriverExceptionCode.TcpInverterConnectionFailed,
+                    ex);
             }
 
             try
@@ -140,8 +148,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.transportClient?.Dispose();
                 this.transportClient = null;
-                throw new InverterDriverException("Failed to retrieve socket communication stream",
-                    InverterDriverExceptionCode.GetNetworkStreamFailed, ex);
+                throw new InverterDriverException(
+                    "Failed to retrieve socket communication stream",
+                    InverterDriverExceptionCode.GetNetworkStreamFailed,
+                    ex);
             }
         }
 
@@ -170,16 +180,18 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.transportStream == null)
             {
-                throw new InverterDriverException("Transport Stream is null",
+                throw new InverterDriverException(
+                    "Transport Stream is null",
                     InverterDriverExceptionCode.UninitializedNetworkStream);
             }
 
             if (!this.transportStream.CanRead)
             {
-                throw new InverterDriverException("Transport Stream not configured for reading data",
+                throw new InverterDriverException(
+                    "Transport Stream not configured for reading data",
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
-
+            byte[] receivedData;
             try
             {
                 this.readStopwatch.Reset();
@@ -192,7 +204,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (readBytes > 0)
                 {
-                    var receivedData = new byte[readBytes];
+                    receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
                 }
@@ -203,11 +215,13 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error reading data from Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamReadFailure, ex);
+                throw new InverterDriverException(
+                    "Error reading data from Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamReadFailure,
+                    ex);
             }
 
-            return this.receiveBuffer;
+            return receivedData;
         }
 
         /// <inheritdoc />
@@ -215,13 +229,15 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.transportStream == null)
             {
-                throw new InverterDriverException("Transport Stream is null",
+                throw new InverterDriverException(
+                    "Transport Stream is null",
                     InverterDriverExceptionCode.UninitializedNetworkStream);
             }
 
             if (!this.transportStream.CanWrite)
             {
-                throw new InverterDriverException("Transport Stream not configured for sending data",
+                throw new InverterDriverException(
+                    "Transport Stream not configured for sending data",
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
@@ -233,7 +249,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new InverterDriverException(
+                    "Error writing data to Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure,
+                    ex);
             }
 
             return 0;
@@ -243,13 +262,15 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.transportStream == null)
             {
-                throw new InverterDriverException("Transport Stream is null",
+                throw new InverterDriverException(
+                    "Transport Stream is null",
                     InverterDriverExceptionCode.UninitializedNetworkStream);
             }
 
             if (!this.transportStream.CanWrite)
             {
-                throw new InverterDriverException("Transport Stream not configured for sending data",
+                throw new InverterDriverException(
+                    "Transport Stream not configured for sending data",
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
@@ -265,7 +286,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new InverterDriverException(
+                    "Error writing data to Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure,
+                    ex);
             }
 
             return 0;

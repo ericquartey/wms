@@ -1,13 +1,13 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Utilities;
+﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     public class PowerOnStateMachine : InverterStateMachineBase
     {
@@ -23,15 +23,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         #region Constructors
 
-        public PowerOnStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger, FieldCommandMessage nextCommandMessage = null)
-            : base(logger)
+        public PowerOnStateMachine(
+            IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator,
+            ILogger logger,
+            FieldCommandMessage nextCommandMessage = null)
+            : base(logger, eventAggregator, inverterCommandQueue)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.inverterStatus = inverterStatus;
-            this.InverterCommandQueue = inverterCommandQueue;
-            this.EventAggregator = eventAggregator;
             this.nextCommandMessage = nextCommandMessage;
+            this.inverterStatus = inverterStatus;
+
+            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
@@ -51,7 +54,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         {
             if (this.CurrentState is PowerOnEndState)
             {
-                ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+                if (this.nextCommandMessage.Type != FieldMessageType.InverterPowerOn)
+                {
+                    ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+                }
             }
             base.PublishNotificationEvent(notificationMessage);
         }
@@ -61,6 +67,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         {
             this.CurrentState = new PowerOnStartState(this, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
+        }
+
+        /// <inheritdoc />
+        public override void Stop()
+        {
+            this.CurrentState?.Stop();
         }
 
         protected override void Dispose(bool disposing)

@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
-namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
+namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
     public interface IInverterSwitchOnFieldMessageData : IFieldMessageData
     {

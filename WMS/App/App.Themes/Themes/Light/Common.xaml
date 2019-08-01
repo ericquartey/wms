@@ -2,34 +2,38 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <!--  int  -->
+    <!-- int -->
     <system:Int32 x:Key="MinWidthDetailsView">700</system:Int32>
 
-    <!--  boolean  -->
+    <!-- boolean -->
     <system:Boolean x:Key="True">True</system:Boolean>
     <system:Boolean x:Key="False">False</system:Boolean>
 
-    <!--  colors  -->
-    <Color x:Key="LightBlack">#FF3C3C3C</Color>
+    <!-- colors -->
+    <Color x:Key="LightBlack">#3C3C3C</Color>
     <Color x:Key="WhiteGrey">#e6e6e6</Color>
     <Color x:Key="LightGrey">#c5c7c4</Color>
     <Color x:Key="MediumGrey">#707173</Color>
     <Color x:Key="DarkGrey">#293133</Color>
-    <Color x:Key="MediumRed">#DC000C</Color>
     <Color x:Key="Red">#e2001a</Color>
+    <Color x:Key="MediumRed">#DC000C</Color>
+    <Color x:Key="LightRed">#F44336</Color>
+    <Color x:Key="LightOrange">#FF9800</Color>
     <Color x:Key="Black">#0A0A0A</Color>
     <Color x:Key="Green">#57A639</Color>
+    <Color x:Key="LightGreen">#00C853</Color>
+    <Color x:Key="LightBlue">#2979FF</Color>
     <Color x:Key="PureWhite">#ffffff</Color>
 
-    <!--  font app  -->
+    <!-- font app -->
     <SolidColorBrush x:Key="FontColor"
-                     Color="{StaticResource LightBlack}" />
+                    Color="{StaticResource LightBlack}" />
 
-    <!--  primary color brush  -->
+    <!-- primary color brush -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />
 
-    <!--  secondary color brush  -->
+    <!-- secondary color brush -->
     <SolidColorBrush x:Key="CommonSecondaryUltralight"
                      Color="{StaticResource WhiteGrey}" />
     <SolidColorBrush x:Key="CommonSecondaryLight"
@@ -39,11 +43,11 @@
     <SolidColorBrush x:Key="CommonSecondaryDark"
                      Color="{StaticResource DarkGrey}" />
 
-    <!--  background color brush  -->
-    <SolidColorBrush x:Key="CommonBackground"
+    <!-- background color brush -->
+   <SolidColorBrush x:Key="CommonBackground"
                      Color="{StaticResource PureWhite}" />
 
-    <!--  text color brush  -->
+    <!-- text color brush -->
     <SolidColorBrush x:Key="OnCommonPrimary"
                      Color="{StaticResource PureWhite}" />
 
@@ -59,7 +63,7 @@
     <SolidColorBrush x:Key="OnCommonBackground"
                      Color="{StaticResource Black}" />
 
-    <!--  hover color brush  -->
+    <!-- hover color brush -->
     <SolidColorBrush x:Key="HoverCommonSecondaryUltralight"
                      Color="{StaticResource WhiteGrey}" />
     <SolidColorBrush x:Key="HoverCommonSecondaryLight"
@@ -69,13 +73,13 @@
     <SolidColorBrush x:Key="HoverCommonSecondaryDark"
                      Color="{StaticResource WhiteGrey}" />
 
-    <!--  progress bar color brush  -->
+    <!-- progress bar color brush -->
     <SolidColorBrush x:Key="ProgressBarForeground"
                      Color="{StaticResource Green}" />
     <SolidColorBrush x:Key="ProgressBarBackground"
                      Color="{StaticResource LightGrey}" />
 
-    <!--  messages  -->
+    <!-- messages -->
     <SolidColorBrush x:Key="ErrorMessageColorBrush"
                      Color="{StaticResource Red}" />
     <SolidColorBrush x:Key="ErrorMessageBackgroundColor"
@@ -83,35 +87,40 @@
     <SolidColorBrush x:Key="ErrorMessageTextToolTipForegroundColor"
                      Color="{StaticResource PureWhite}" />
 
-    <!--  fonts  -->
+    <!-- notification status -->
+    <SolidColorBrush x:Key="InfoNotificationStatus" Color="{StaticResource LightBlue}" />
+    <SolidColorBrush x:Key="ErrorNotificationStatus" Color="{StaticResource LightRed}" />
+    <SolidColorBrush x:Key="WarningNotificationStatus" Color="{StaticResource LightOrange}" />
+    <SolidColorBrush x:Key="SuccessNotificationStatus" Color="{StaticResource LightGreen}" />
+
+    <!-- fonts -->
     <system:Double x:Key="WindowTitleFontSize">14</system:Double>
     <system:Double x:Key="MenuFontSize">14</system:Double>
     <system:Double x:Key="GridFontSize">14</system:Double>
+    <system:Double x:Key="GridDetailFontSize">12</system:Double>
 
     <FontFamily x:Key="FontSmall">./#Segoe UI</FontFamily>
     <system:Double x:Key="FontSizeSmall">12</system:Double>
     <system:Double x:Key="FontSizeMedium">18</system:Double>
 
-    <!--  Input controls default Height  -->
+    <!-- Input controls default Height -->
     <system:Double x:Key="InputControlHeight">22</system:Double>
 
-    <!--  Ruler default font size  -->
+    <!-- Ruler default font size -->
     <system:Int32 x:Key="RulerFontSize">8</system:Int32>
 
-    <!--  StatusBar  -->
+    <!-- StatusBar -->
     <system:Double x:Key="StatusBarHeight">20</system:Double>
 
-    <!--  menu layout  -->
+    <!-- menu layout -->
     <system:Double x:Key="MenuTileHeight">55</system:Double>
     <system:Double x:Key="MenuTileWidth">140</system:Double>
 
-    <!--  icon required  -->
-    <Color x:Key="RedMode">#F44336</Color>
-    <Color x:Key="BlueMode">#039BE5</Color>
+    <!-- required field icon -->
     <SolidColorBrush x:Key="CreateMode"
-                     Color="{StaticResource RedMode}" />
+                     Color="{StaticResource LightRed}" />
     <SolidColorBrush x:Key="EditMode"
-                     Color="{StaticResource BlueMode}" />
+                     Color="{StaticResource LightBlue}" />
     <SolidColorBrush x:Key="Default"
                      Color="{StaticResource Black}" />
 

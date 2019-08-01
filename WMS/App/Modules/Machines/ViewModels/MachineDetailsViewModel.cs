@@ -13,7 +13,7 @@ using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Modules.Machines
 
         protected override Task ExecuteRevertCommandAsync()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         protected override async Task LoadDataAsync()
@@ -152,10 +152,7 @@ namespace Ferretto.WMS.Modules.Machines
                 Bays = this.Model.Bays,
                 Id = this.Model.Id,
                 Status = this.Model.Status,
-                NetWeight = this.Model.NetWeight,
-                GrossWeight = this.Model.GrossWeight,
             };
-            this.MachineLive.CalculateWeightFillRate();
         }
 
         private void OnMachineStatusChanged(MachineStatusPubSubEvent e)

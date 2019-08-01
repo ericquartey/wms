@@ -1,167 +1,312 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.VWApp.Interfaces;
+using Ferretto.VW.App.Models;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
+using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.ConnectionStatusChangedEventArgs;
+using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IOperatorHubClient;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.App
 {
-    internal class MainWindowViewModel : BindableBase, IDataErrorInfo
+    internal class MainWindowViewModel : BindableBase
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private IUnityContainer container;
 
-        private ICommand changeSkin;
+        private readonly IAuthenticationService authenticationService;
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
-        private bool isLoginButtonWorking = false;
+        private readonly ISessionService sessionService;
 
-        private ICommand loginButtonCommand;
+        private readonly IBayManager bayManager;
 
-        private string loginErrorMessage;
+        private readonly IIdentityMachineService identityService;
 
-        private string machineModel;
+        private readonly IThemeService themeService;
 
-        private string passwordLogin;
+        private readonly IModuleManager moduleManager;
 
-        private string serialNumber;
+        private bool isBusy;
+
+        private ICommand loginCommand;
+
+        private string errorMessage;
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Installer";
+        private ICommand toggleThemeCommand;
 
         #endregion
 
         #region Constructors
 
-        public MainWindowViewModel(IEventAggregator eventAggregator)
+        public MainWindowViewModel(
+            IEventAggregator eventAggregator,
+            IAuthenticationService authenticationService,
+            IThemeService themeService,
+            IModuleManager moduleManager,
+            ISessionService sessionService,
+            IBayManager bayManager,
+            IIdentityMachineService identityService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (authenticationService == null)
+            {
+                throw new ArgumentNullException(nameof(authenticationService));
+            }
+
+            if (themeService == null)
+            {
+                throw new ArgumentNullException(nameof(themeService));
+            }
+
+            if (moduleManager == null)
+            {
+                throw new ArgumentNullException(nameof(moduleManager));
+            }
+
+            if (sessionService == null)
+            {
+                throw new ArgumentNullException(nameof(sessionService));
+            }
+
+            if (bayManager == null)
+            {
+                throw new ArgumentNullException(nameof(bayManager));
+            }
+
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.themeService = themeService;
+            this.moduleManager = moduleManager;
+            this.authenticationService = authenticationService;
+            this.sessionService = sessionService;
+            this.bayManager = bayManager;
+            this.identityService = identityService;
+
+#if DEBUG
+            this.UserLogin = new UserLogin
+            {
+                UserName = "installer",
+                Password = "password",
+            };
+#else
+            this.UserLogin = new UserLogin();
+#endif
+        }
+
+        private async Task OnHubConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            if (!e.IsConnected)
+            {
+                this.ErrorMessage = "Connection to Machine Automation Service lost.";
+            }
+            else
+            {
+                try
+                {
+                    await this.bayManager.InitializeAsync();
+                    this.Machine = this.bayManager.Identity;
+
+                    this.ErrorMessage = null;
+                }
+                catch
+                {
+                    this.ErrorMessage = "Unable to retrieve machine info.";
+                }
+            }
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => (Application.Current as App).ChangeSkin()));
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
 
-        public string Error => null;
+        public bool IsDarkThemeActive => this.themeService.ActiveTheme == ApplicationTheme.Dark;
 
-        public bool IsLoginButtonWorking { get => this.isLoginButtonWorking; set => this.SetProperty(ref this.isLoginButtonWorking, value); }
+        public ICommand LoginCommand =>
+            this.loginCommand
+            ??
+            (this.loginCommand = new DelegateCommand(async () => await this.ExecuteLoginCommandAsync()));
 
-        public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(async () => await this.ExecuteLoginButtonCommand()));
+        public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
 
-        public string LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
+        public ICommand SwitchOffCommand =>
+            this.switchOffCommand
+            ??
+            (this.switchOffCommand = new DelegateCommand(() => this.ExecuteSwitchOffCommand()));
 
-        public string MachineModel { get => this.machineModel; set => this.SetProperty(ref this.machineModel, value); }
+        public ICommand ToggleThemeCommand =>
+            this.toggleThemeCommand
+            ??
+            (this.toggleThemeCommand = new DelegateCommand(() => this.ToggleTheme()));
 
-        public string PasswordLogin { get => this.passwordLogin; set => this.SetProperty(ref this.passwordLogin, value); }
+        public UserLogin UserLogin { get; }
 
-        public string SerialNumber { get => this.serialNumber; set => this.SetProperty(ref this.serialNumber, value); }
+        public MachineIdentity Machine
+        {
+            get => this.machineInfo;
+            set
+            {
+                if (this.SetProperty(ref this.machineInfo, value))
+                {
+                    this.IsMachineIdentityAvailable = value != null;
+                }
+            }
+        }
 
-        public ICommand SwitchOffCommand => this.switchOffCommand ?? (this.switchOffCommand = new DelegateCommand(() => { Application.Current.Shutdown(); }));
+        public IOperatorHubClient operatorHubClient;
 
-        public string UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
+        private MachineIdentity machineInfo;
 
-        #endregion
-
-        #region Indexers
-
-        public string this[string columnName] => this.Validate(columnName);
+        private bool isMachineIdentityAvailable;
 
         #endregion
 
         #region Methods
 
-        public void InitializeViewModel(IUnityContainer container)
+        public Task InitializeViewModelAsync(IUnityContainer container)
         {
-            this.Container = container;
+            this.container = container;
+
+            return Task.CompletedTask;
         }
 
-        private bool CheckInputCorrectness(string user, string password)
+        public void HACK_InitialiseHubOperator()
         {
-            //TODO implement correct input procedure once the user login structure is defined
-            return true;
+            this.operatorHubClient = this.container.Resolve<IOperatorHubClient>();
+
+            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionStatusChanged(sender, e);
         }
 
-        private async Task ExecuteLoginButtonCommand()
+        public bool IsMachineIdentityAvailable
         {
-            if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
+            get => this.isMachineIdentityAvailable;
+            set => this.SetProperty(ref this.isMachineIdentityAvailable, value);
+        }
+
+        private async Task ExecuteLoginCommandAsync()
+        {
+            this.ErrorMessage = null;
+
+            this.UserLogin.IsValidationEnabled = true;
+            if (!string.IsNullOrEmpty(this.UserLogin.Error))
             {
-                switch (this.UserLogin)
-                {
-                    case "Installer":
-                        try
-                        {
-                            this.IsLoginButtonWorking = true;
-                            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
-                            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
-                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
-                            this.IsLoginButtonWorking = false;
-                            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
-                        }
-                        catch (Exception ex)
-                        {
-                            this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
-                        }
-                        finally
-                        {
-                            this.IsLoginButtonWorking = false;
-                        }
-                        break;
+                this.ErrorMessage = this.UserLogin.Error;
+                return;
+            }
 
-                    case "Operator":
-                        try
-                        {
-                            this.IsLoginButtonWorking = true;
-                            ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
-                            ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
-                            this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
-                            await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
-                            ((App)Application.Current).OperatorAppMainWindowInstance.Show();
-                        }
-                        catch (Exception ex)
-                        {
-                            this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
-                        }
-                        finally
-                        {
-                            this.IsLoginButtonWorking = false;
-                        }
-                        break;
+            this.IsBusy = true;
+
+            var claims = await this.authenticationService.LogInAsync(
+               this.UserLogin.UserName,
+               this.UserLogin.Password);
+
+            if (claims != null)
+            {
+                if (claims.AccessLevel == UserAccessLevel.SuperUser)
+                {
+                    this.LoadInstallerModule();
+                }
+                else
+                {
+                    this.LoadOperatorModule();
                 }
             }
             else
             {
-                this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
+                this.ErrorMessage = Resources.Errors.UserLogin_InvalidCredentials;
+            }
+
+            this.IsBusy = false;
+        }
+
+        private void ExecuteSwitchOffCommand()
+        {
+            this.IsBusy = true;
+            var requestAccepted = this.sessionService.Shutdown();
+            if (requestAccepted)
+            {
+                this.ErrorMessage = "Shutting down ...";
             }
         }
 
-        private string Validate(string propertyName)
+        private void LoadInstallerModule()
         {
-            var validationMessage = string.Empty;
-            switch (propertyName)
-            {
-                case "UserLogin":
-                    if (string.IsNullOrEmpty(this.UserLogin))
-                    {
-                        validationMessage = "Error";
-                    }
+            this.IsBusy = true;
 
-                    break;
+            try
+            {
+                this.moduleManager.LoadModule("Installation");
+
+                this.IsBusy = false;
+
+                (Application.Current as App)?.InstallationAppMainWindowInstance.Show();
             }
-            return validationMessage;
+            catch (Exception ex)
+            {
+                this.ErrorMessage = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private void LoadOperatorModule()
+        {
+            this.IsBusy = true;
+
+            try
+            {
+                this.moduleManager.LoadModule("Operator");
+
+                this.IsBusy = false;
+
+                (Application.Current as App)?.OperatorAppMainWindowInstance.Show();
+            }
+            catch (Exception ex)
+            {
+                this.ErrorMessage = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private void ToggleTheme()
+        {
+            this.themeService.ApplyTheme(
+                this.themeService.ActiveTheme == ApplicationTheme.Light
+                    ? ApplicationTheme.Dark
+                    : ApplicationTheme.Light);
+
+            this.RaisePropertyChanged(nameof(this.IsDarkThemeActive));
         }
 
         #endregion

@@ -1,105 +1,119 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.Interfaces;
-using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Events;
-using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerWaitViewModel : BindableBase, IDrawerWaitViewModel, IDrawerActivityViewModel
+    public class DrawerWaitViewModel : BaseViewModel, IDrawerWaitViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IBayManager bayManager;
 
-        private IEventAggregator eventAggregator;
+        private readonly IMainWindowViewModel mainWindowViewModel;
 
-        private string waitingMissions;
+        private readonly INavigationService navigationService;
+
+        private int pendingMissionsCount;
 
         #endregion
 
         #region Constructors
 
-        public DrawerWaitViewModel(IEventAggregator eventAggregator)
+        public DrawerWaitViewModel(
+            IBayManager bayManager,
+            INavigationService navigationService,
+            IMainWindowViewModel mainWindowViewModel)
         {
-            this.eventAggregator = eventAggregator;
-            this.NavigationViewModel = null;
+            if (bayManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManager));
+            }
+
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
+            if (mainWindowViewModel == null)
+            {
+                throw new System.ArgumentNullException(nameof(mainWindowViewModel));
+            }
+
+            this.navigationService = navigationService;
+            this.bayManager = bayManager;
+            this.mainWindowViewModel = mainWindowViewModel;
         }
 
         #endregion
 
         #region Properties
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public string WaitingMissions { get => this.waitingMissions; set => this.SetProperty(ref this.waitingMissions, value); }
+        public int PendingMissionsCount
+        {
+            get => this.pendingMissionsCount;
+            set => this.SetProperty(ref this.pendingMissionsCount, value);
+        }
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
+        public override Task OnEnterViewAsync()
         {
-            // TODO
-        }
+            this.PendingMissionsCount = this.bayManager.PendingMissionsCount;
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-        }
+            this.bayManager.NewMissionOperationAvailable += this.OnMissionOperationAvailable;
+            this.UpdateView();
 
-        public async Task OnEnterViewAsync()
-        {
-            this.WaitingMissions = this.container.Resolve<IBayManager>().QueuedMissionsQuantity.ToString();
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UpdateView()
         {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
-            if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
-                mainWindowContentVM is DrawerActivityPickingViewModel ||
-                mainWindowContentVM is DrawerActivityRefillingViewModel ||
-                mainWindowContentVM is DrawerWaitViewModel)
+            this.PendingMissionsCount = this.bayManager.PendingMissionsCount;
+
+            var missionOperation = this.bayManager.CurrentMissionOperation;
+
+            var currentViewModel = this.mainWindowViewModel.ContentRegionCurrentViewModel;
+            if (currentViewModel is DrawerActivityInventoryViewModel ||
+                currentViewModel is DrawerActivityPickingViewModel ||
+                currentViewModel is DrawerActivityRefillingViewModel ||
+                currentViewModel is DrawerWaitViewModel)
             {
-                if (mission != null)
+                if (missionOperation != null)
                 {
-                    switch (mission.Type)
+                    switch (missionOperation.Type)
                     {
-                        case MissionType.Inventory:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                        case MissionOperationType.Inventory:
+                            this.navigationService
+                                .NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                             break;
 
-                        case MissionType.Pick:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                        case MissionOperationType.Pick:
+                            this.navigationService
+                                .NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
-                        case MissionType.Put:
-                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                        case MissionOperationType.Put:
+                            this.navigationService
+                                .NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                             break;
                     }
                 }
                 else
                 {
-                    NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                    this.navigationService
+                        .NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
                 }
             }
+        }
+
+        private void OnMissionOperationAvailable(object sender, object e)
+        {
+            this.UpdateView();
         }
 
         #endregion

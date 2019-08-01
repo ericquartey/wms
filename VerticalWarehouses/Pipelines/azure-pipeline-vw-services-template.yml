@@ -2,7 +2,7 @@ parameters:
   BuildConfiguration: 'debug'
   RestoreBuildProjects: '**/*.csproj'
   TestProjects: 'VerticalWarehouses/**/*Tests.csproj'
-  TargetFramework: 'netcoreapp2.1'
+  TargetFramework: 'netcoreapp2.2'
 
 
 steps:
@@ -24,14 +24,6 @@ steps:
   inputs:
     projects: ${{ parameters.RestoreBuildProjects }} 
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
-
-
-- task: DotNetCoreCLI@2
-  displayName: 'Test (netcore)'
-  inputs:
-    command: test
-    projects: ${{ parameters.TestProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} /p:CollectCoverage=true'
 
 
 - task: DotNetCoreCLI@2

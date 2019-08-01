@@ -1,16 +1,17 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-// TEMP To be removed
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
-using ShutterMovementDirection = Ferretto.VW.MAS_AutomationService.Contracts.ShutterMovementDirection;
+// TEMP To be removed
+using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
     public class LSMTShutterEngineViewModel : BindableBase, ILSMTShutterEngineViewModel
     {
@@ -20,19 +21,17 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private DelegateCommand closeButtonCommand;
+        private readonly IShutterMachineService shutterService;
 
-        private IUnityContainer container;
+        private readonly ITestMachineService testService;
+
+        private DelegateCommand closeButtonCommand;
 
         private string currentPosition;
 
         private DelegateCommand openButtonCommand;
 
-        private IShutterService shutterService;
-
         private DelegateCommand stopButtonCommand;
-
-        private ITestService testService;
 
         private SubscriptionToken updateShutterPositioningToken;
 
@@ -40,9 +39,22 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
+        public LSMTShutterEngineViewModel(
+            IEventAggregator eventAggregator,
+            IShutterMachineService shutterService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (shutterService == null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.shutterService = shutterService;
             this.NavigationViewModel = null;
             this.CurrentPosition = ShutterPosition.Closed.ToString();
         }
@@ -67,7 +79,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task DownShutterAsync()
         {
-            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
+            var messageData = new ShutterPositioningMovementMessageDataDto { BayNumber = 1, ShutterPositionMovement = 0 };
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 
@@ -76,19 +88,15 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.shutterService = this.container.Resolve<IShutterService>();
-        }
-
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
             this.updateShutterPositioningToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.ShutterPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            return Task.CompletedTask;
         }
 
         public async Task StopShutterAsync()
@@ -108,7 +116,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task UpShutterAsync()
         {
-            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
+            var messageData = new ShutterPositioningMovementMessageDataDto { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 

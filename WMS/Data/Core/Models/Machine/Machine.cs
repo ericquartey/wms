@@ -6,9 +6,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        [Positive]
-        public long? ActualWeight { get; set; }
-
         public int AisleId { get; set; }
 
         public string AisleName { get; set; }
@@ -37,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public long? ErrorTime { get; set; }
 
         [PositiveOrZero]
-        public int FillRate { get; set; }
+        public int AreaFillRate { get; set; }
 
         [PositiveOrZero]
         public long? GrossMaxWeight { get; set; }
@@ -90,6 +87,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? NextServiceDate { get; set; }
 
+        [Unique]
         public string Nickname { get; set; }
 
         [PositiveOrZero]
@@ -105,6 +103,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [PositiveOrZero]
         public long? TotalMaxWeight { get; set; }
+
+        public int WeightFillRate { get; set; }
 
         #endregion
     }

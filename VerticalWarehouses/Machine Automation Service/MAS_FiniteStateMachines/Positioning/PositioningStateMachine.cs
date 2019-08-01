@@ -1,12 +1,12 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages;
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-
-namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningStateMachine : StateMachineBase
     {
@@ -22,12 +22,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
-            : base(eventAggregator, logger)
+        public PositioningStateMachine(
+            IEventAggregator eventAggregator,
+            IPositioningMessageData positioningMessageData,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.logger = logger;
 
             this.logger.LogTrace("1:Method Start");
+
+            this.logger.LogTrace($"TargetPosition = {positioningMessageData.TargetPosition} - CurrentPosition = {positioningMessageData.CurrentPosition} - MovementType = {positioningMessageData.MovementType}");
 
             this.CurrentState = new EmptyState(logger);
 

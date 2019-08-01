@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
     public interface IAglInverterStatus : IInverterStatusBase
     {

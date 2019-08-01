@@ -15,8 +15,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class MissionsController :
         BaseController,
-        IReadAllPagedController<Mission>,
-        IReadSingleController<Mission, int>,
+        IReadAllPagedController<MissionInfo>,
+        IReadSingleController<MissionInfo, int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -48,40 +48,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("{id}/abort")]
-        public async Task<ActionResult<Mission>> AbortAsync(int id)
-        {
-            var result = await this.schedulerService.AbortMissionAsync(id);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            var updatedMission = await this.missionProvider.GetByIdAsync(id);
-            return this.Ok(updatedMission);
-        }
-
-        [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("{id}/complete/{quantity}")]
-        public async Task<ActionResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
-        {
-            var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            var updatedMission = await this.missionProvider.GetByIdAsync(id);
-            return this.Ok(updatedMission);
-        }
-
-        [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult<MissionExecution>> CompleteLoadingUnitAsync(int id)
+        public async Task<ActionResult<Mission>> CompleteLoadingUnitAsync(int id)
         {
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
             if (!result.Success)
@@ -93,13 +61,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/execute")]
-        public async Task<ActionResult<Mission>> ExecuteAsync(int id)
+        public async Task<ActionResult<Mission>> ExecuteLoadingUnitAsync(int id)
         {
-            var result = await this.schedulerService.ExecuteMissionAsync(id);
+            var result = await this.schedulerService.ExecuteLoadingUnitMissionAsync(id);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
@@ -109,10 +77,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<Mission>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<MissionInfo>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync(
+        public async Task<ActionResult<IEnumerable<MissionInfo>>> GetAllAsync(
             int skip = 0,
             int take = 0,
             string where = null,
@@ -155,12 +123,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionInfo), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetByIdAsync(int id)
+        public async Task<ActionResult<MissionInfo>> GetByIdAsync(int id)
         {
-            var result = await this.missionProvider.GetByIdAsync(id);
+            var result = await this.missionProvider.GetInfoByIdAsync(id);
             if (result == null)
             {
                 var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
@@ -168,18 +136,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
-                    Status = StatusCodes.Status404NotFound
+                    Status = StatusCodes.Status404NotFound,
                 });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(MissionDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionWithLoadingUnitDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{id}/details")]
-        public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
+        public async Task<ActionResult<MissionWithLoadingUnitDetails>> GetDetailsByIdAsync(int id)
         {
             var result = await this.missionProvider.GetDetailsByIdAsync(id);
             return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);

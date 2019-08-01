@@ -1,9 +1,9 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 
-namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AcuInverterStatus : InverterStatusBase, IAcuInverterStatus
     {
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         {
             this.SystemIndex = systemIndex;
             this.acuInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
-            this.InverterType = MAS_Utils.Enumerations.InverterType.Acu;
+            this.InverterType = InverterType.Acu;
         }
 
         #endregion

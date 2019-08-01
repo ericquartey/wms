@@ -1,12 +1,12 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.DTOs
+namespace Ferretto.VW.CommonUtils.DTOs
 {
-    public class ShutterPositioningMovementMessageDataDTO
+    public class ShutterPositioningMovementMessageDataDto
     {
         #region Constructors
 
-        public ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection shutterPositionMovement, int bayNumber)
+        public ShutterPositioningMovementMessageDataDto(ShutterMovementDirection shutterPositionMovement, int bayNumber)
         {
             this.ShutterPositionMovement = shutterPositionMovement;
             this.BayNumber = bayNumber;

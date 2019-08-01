@@ -1,10 +1,10 @@
 ﻿using System.Threading;
-using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
+// ReSharper disable ArrangeThisQualifier
+namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     public class ResetStateMachine : IoStateMachineBase
     {
@@ -24,15 +24,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         #region Constructors
 
-        public ResetStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
+        public ResetStateMachine(
+            BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
+            IoSHDStatus status,
+            IEventAggregator eventAggregator,
+            ILogger logger)
+            : base(eventAggregator, logger)
         {
-            logger.LogTrace("1:Method Start");
-
             this.IoCommandQueue = ioCommandQueue;
-            this.EventAggregator = eventAggregator;
             this.status = status;
-            this.Logger = logger;
-            this.pulseOneTime = false;
+
+            logger.LogTrace("1:Method Start");
         }
 
         #endregion

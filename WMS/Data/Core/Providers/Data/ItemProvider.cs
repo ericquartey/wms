@@ -52,28 +52,38 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var validationError = model.ValidateBusinessModel(this.DataContext.Items);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<ItemDetails>(
+                    validationError,
+                    model);
+            }
+
             var entry = await this.DataContext.Items.AddAsync(
                 this.mapper.Map<Common.DataModels.Item>(model));
-
-            this.NotificationService.PushCreate(model);
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
-                if (changedEntitiesCount > 0)
+                if (changedEntitiesCount <= 0)
                 {
-                    var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
-                    if (!result.Success)
-                    {
-                        return result;
-                    }
+                    return new CreationErrorOperationResult<ItemDetails>();
+                }
+
+                var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
+                if (!result.Success)
+                {
+                    return result;
                 }
 
                 scope.Complete();
+
+                this.NotificationService.PushCreate(model);
             }
 
-            var createdItem = await this.GetByIdAsync(entry.Entity.Id);
-            return new SuccessOperationResult<ItemDetails>(createdItem);
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+            return new SuccessOperationResult<ItemDetails>(createdModel);
         }
 
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
@@ -112,9 +122,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
                     int loadingUnitId,
-            int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null)
+                    int skip,
+                    int take,
+                    IEnumerable<SortOption> orderBySortOptions = null)
         {
             var models = await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
                 .ToArrayAsync<Item, Common.DataModels.Item>(
@@ -161,7 +171,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ItemId = j.Key,
                             TotalStock = j.Sum(x => x.Stock),
                             TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut),
                         }),
                     i => i.Item.Id,
                     c => c.ItemId,
@@ -169,7 +179,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Item = i.Item,
                         MaxCapacity = i.MaxCapacity,
-                        CompartmentsAggregation = c
+                        CompartmentsAggregation = c,
                     })
                 .SelectMany(
                     temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
@@ -245,7 +255,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync(
                     string whereString = null,
-            string searchString = null)
+                    string searchString = null)
         {
             return await this.GetAllBase()
                 .CountAsync<Item, Common.DataModels.Item>(
@@ -471,7 +481,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         private IQueryable<Item> GetAllBase(
-                    Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
             Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
             var actualWhereFunc = whereExpression ?? ((i) => true);
@@ -520,9 +530,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Quantity = j.Quantity,
                         })
                     .GroupBy(x => x.ItemId),
-                    i => i.Id,
-                    g => g.Key,
-                    (i, g) => new Item
+                i => i.Id,
+                g => g.Key,
+                (i, g) => new Item
                     {
                         AbcClassDescription = i.AbcClass.Description,
                         AbcClassId = i.AbcClassId,
@@ -561,7 +571,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                     AvailableQuantityItem = g2.Sum(x => x.Quantity),
                                 }).Distinct(),
                         CompartmentsCount = i.Compartments.Count(),
-                        MissionsCount = i.Missions.Count(),
+                        MissionOperationsCount = i.MissionOperations.Count(),
                         SchedulerRequestsCount = i.SchedulerRequests.Count(),
                         ItemListRowsCount = i.ItemListRows.Count(),
                         HasCompartmentTypes = i.ItemsCompartmentTypes.Any(),
@@ -569,7 +579,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         TotalStock = i.Compartments.Sum(cm => cm.Stock),
                         TotalReservedForPick = i.Compartments.Sum(cm => cm.ReservedForPick),
                         TotalReservedToPut = i.Compartments.Sum(cm => cm.ReservedToPut),
-                        TotalAvailable = i.Compartments.Sum(cm => cm.Stock + cm.ReservedToPut - cm.ReservedForPick)
+                        TotalAvailable = i.Compartments.Sum(cm => cm.Stock + cm.ReservedToPut - cm.ReservedForPick),
                     });
         }
 

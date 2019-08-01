@@ -1,9 +1,9 @@
-﻿using Prism.Events;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Installation.Interfaces;
+using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.Utils.Interfaces;
-using System.Threading.Tasks;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class IdleViewModel : BindableBase, IIdleViewModel
     {
@@ -36,9 +36,9 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task OnEnterViewAsync()
+        public Task OnEnterViewAsync()
         {
-            // TODO
+            return Task.CompletedTask;
         }
 
         public void UnSubscribeMethodFromEvent()

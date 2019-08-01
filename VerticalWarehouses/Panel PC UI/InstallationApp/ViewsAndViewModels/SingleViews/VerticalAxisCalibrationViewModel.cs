@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
     public class VerticalAxisCalibrationViewModel : BindableBase, IVerticalAxisCalibrationViewModel
     {
@@ -20,9 +20,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private IUnityContainer container;
-
-        private IHomingService homingService;
+        private readonly IHomingMachineService homingService;
 
         private bool isStartButtonActive = true;
 
@@ -30,13 +28,15 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private string noteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+        private string noteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
         private string offset;
 
         private SubscriptionToken receivedCalibrateAxisUpdateToken;
 
         private SubscriptionToken receivedSwitchAxisUpdateToken;
+
+        private SubscriptionToken receiveExceptionToken;
 
         private SubscriptionToken receiveHomingUpdateToken;
 
@@ -52,9 +52,23 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public VerticalAxisCalibrationViewModel(IEventAggregator eventAggregator)
+        public VerticalAxisCalibrationViewModel(
+            IEventAggregator eventAggregator,
+            IHomingMachineService homingService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (homingService == null)
+            {
+                throw new ArgumentNullException(nameof(homingService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.homingService = homingService;
+
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
             this.NavigationViewModel = null;
         }
@@ -140,22 +154,16 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                const string Category = "VerticalAxis";
-                this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
-                this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
-                this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
+                const string category = "VerticalAxis";
+                this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "UpperBound")).ToString();
+                this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "LowerBound")).ToString();
+                this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "Offset")).ToString();
+                this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(category, "Resolution")).ToString("##.##");
             }
-            catch (SwaggerException ex)
+            catch (SwaggerException)
             {
-                this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+                this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.homingService = this.container.Resolve<IHomingService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -181,6 +189,15 @@ namespace Ferretto.VW.InstallationApp
                 false);
 
             this.receiveHomingUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
+
+            this.receiveExceptionToken = this.eventAggregator.GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -236,7 +253,7 @@ namespace Ferretto.VW.InstallationApp
 
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
-                this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+                this.NoteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             }
             catch (Exception)
             {
@@ -252,20 +269,17 @@ namespace Ferretto.VW.InstallationApp
                 switch (s.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineStarted;
+                        this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineStarted;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
+                        this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineCompleted;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineError;
+                        this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -276,20 +290,17 @@ namespace Ferretto.VW.InstallationApp
                 switch (c.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.HomingStarted;
+                        this.NoteString = VW.App.Resources.InstallationApp.HomingStarted;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
+                        this.NoteString = VW.App.Resources.InstallationApp.HomingCompleted;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.HomingError;
+                        this.NoteString = VW.App.Resources.InstallationApp.HomingError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    default:
                         break;
                 }
             }
@@ -299,23 +310,33 @@ namespace Ferretto.VW.InstallationApp
                 switch (h.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingStarted;
+                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingStarted;
                         break;
 
                     case MessageStatus.OperationExecuting:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingExecuting;
+                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingExecuting;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingCompleted;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
                         break;
 
                     case MessageStatus.OperationError:
-                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingError;
+                        this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingError;
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
+                        break;
+                }
+            }
+
+            if (messageUI.NotificationMessage is NotificationMessageUI<InverterExceptionMessageData> f)
+            {
+                switch (f.Status)
+                {
+                    case MessageStatus.OperationError:
+                        this.NoteString = f.Description;
                         break;
 
                     default:
