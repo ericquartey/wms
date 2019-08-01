@@ -70,6 +70,15 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulator started.
+        /// </summary>
+        public static string SimulatorStarted {
+            get {
+                return ResourceManager.GetString("SimulatorStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start simulation.
         /// </summary>
         public static string StartSimulatorCommand {

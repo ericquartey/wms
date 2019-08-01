@@ -57,9 +57,11 @@ namespace Ferretto.VW.Simulator.Services
 
         #region Properties
 
-        public bool IsStartedSimulator { get; private set; }
+        public bool ForceSicurity { get; private set; }
 
         public List<InverterModel> Inverters { get; set; }
+
+        public bool IsStartedSimulator { get; private set; }
 
         public List<IODeviceModel> RemoteIOs { get; set; }
 
@@ -160,7 +162,6 @@ namespace Ferretto.VW.Simulator.Services
                 catch (SocketException)
                 {
                 }
-
             }
         }
 
@@ -236,7 +237,6 @@ namespace Ferretto.VW.Simulator.Services
                     case InverterParameterId.ShutterTargetPosition:
                         break;
 
-
                     default:
                         if (System.Diagnostics.Debugger.IsAttached)
                         {
@@ -244,7 +244,6 @@ namespace Ferretto.VW.Simulator.Services
                         }
                         break;
                 }
-
             }
             else
             {
