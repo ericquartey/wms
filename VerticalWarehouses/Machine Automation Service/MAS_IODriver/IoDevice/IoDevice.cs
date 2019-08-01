@@ -151,23 +151,15 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 {
                     case SHDFormatDataOperation.Data:
 
-                        //if (this.index == IoIndex.IoDevice1)
-                        //{
-                        //    this.logger.LogDebug($"Valori input: => 0: {inputData[0]}, this.SHDStatus.DataInputs={this.ioSHDStatus.NormalState}");
-                        //}
-
-                        if (this.index == IoIndex.IoDevice2)
-                        {
-                            var y = 0;
-                        }
+                        //INFO The mushroom signal must be inverted
+                        inputData[1] = !inputData[1];
+                        //INFO The sensor presence in bay must be inverted
+                        inputData[5] = !inputData[5];
+                        //INFO The sensor presence in lower bay must be inverted (NOT for BIG: to do)
+                        inputData[6] = !inputData[6];
 
                         if (this.ioSHDStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                         {
-                            //if (this.index == IoIndex.IoDevice1)
-                            //{
-                            //    this.logger.LogDebug($"Update valori input: => 0: {inputData[0]}");
-                            //}
-
                             var data = new SensorsChangedFieldMessageData();
                             data.SensorsStates = inputData;
                             var notificationMessage = new FieldNotificationMessage(

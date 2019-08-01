@@ -74,9 +74,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                         return false;
                     }
 
-                    //INFO The mushroom signal must be inverted
-                    newSensorStatus[1] = !newSensorStatus[1];
-
                     for (var index = 0; index < REMOTEIO_INPUTS; index++)
                     {
                         if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
@@ -88,7 +85,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                     if (requiredUpdate)
                     {
-                        Array.Copy(newSensorStatus, 0, this.sensorStatus, 0, REMOTEIO_INPUTS);
+                        Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
                         updateDone = true;
                     }
                 }

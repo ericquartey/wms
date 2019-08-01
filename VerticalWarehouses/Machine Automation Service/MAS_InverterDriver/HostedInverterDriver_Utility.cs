@@ -113,11 +113,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.sensorStopwatch.Stop();
                 this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
 
-                this.logger.LogDebug($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
-
-                // Inserire ciclo (usare index di tipo integer, non inverterIndex di tipo InverterIndex
-                //TEMP Changes begin
-                //var installedInverterList = this.vertimagConfiguration.GetInstalledInverterList();
+                this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var index = 0;
                 foreach (var installedInverter in this.inverterStatuses)
@@ -131,6 +127,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             case InverterType.Ang:
                                 if (inverterStatus is AngInverterStatus angInverter)
                                 {
+                                    // INFO The Overrun elevator must be inverted (WORKAROUND)
+                                    ioStatuses[6] = !ioStatuses[6];
+
                                     if (angInverter.UpdateANGInverterInputsStates(ioStatuses) || this.forceStatusPublish)
                                     {
                                         var notificationData = new InverterStatusUpdateFieldMessageData(angInverter.Inputs);

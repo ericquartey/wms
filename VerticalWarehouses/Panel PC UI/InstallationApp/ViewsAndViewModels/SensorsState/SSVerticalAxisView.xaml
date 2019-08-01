@@ -21,7 +21,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.PowerOnOff}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.ExtraRunElevator}"
                                     Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 

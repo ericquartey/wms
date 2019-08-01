@@ -24,9 +24,9 @@
 
         CradleEngineSelectedBay1 = 9,
 
-        LuPresentiInMachineSideBay1 = 10,
+        LuPresentInOperatorSideBay1 = 10,
 
-        LuPresentInOperatorSideBay1 = 11,
+        LuPresentiInMachineSideBay1 = 11,
 
         BarrierCalibrationBay1 = 12,
 
