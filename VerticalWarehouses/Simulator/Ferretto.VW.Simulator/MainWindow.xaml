@@ -188,16 +188,20 @@
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
                                             LabelText="Sicurezza"
-                                            SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SensorState="{Binding InverterService.EmergencyState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
             </Grid>
 
             <StackPanel Grid.Row="2"
                         Grid.ColumnSpan="3"
-                        Orientation="Horizontal">
-                <CheckBox Foreground="White">
-                    Force FLAG Securiry
+                        Margin="15">
+
+                <CheckBox x:Name="chkEnabledForce"
+                          Foreground="White"
+                          IsChecked="{Binding InverterService.EmergencyState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    Emergency State
                 </CheckBox>
+
             </StackPanel>
 
             <!--  IoDrive  -->

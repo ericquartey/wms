@@ -49,15 +49,19 @@ namespace Ferretto.VW.Simulator.Services
             this.RemoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 2 });
-
-            this.RemoteIOs[0].IOs[0] = true;
         }
 
         #endregion
 
+        //public bool EnabledForce { get; set; }
+
         #region Properties
 
-        public bool ForceSicurity { get; private set; }
+        public bool EmergencyState
+        {
+            get { return this.RemoteIOs[0].IOs[0]; }
+            set { this.RemoteIOs[0].IOs[0] = value; }
+        }
 
         public List<InverterModel> Inverters { get; set; }
 
@@ -123,6 +127,22 @@ namespace Ferretto.VW.Simulator.Services
             catch (SocketException)
             {
             }
+        }
+
+        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues)
+        {
+            int byteLength;
+            byte[] byteMessage;
+            byteLength = 0x04 + inputValues.Length;
+            byteMessage = new byte[byteLength + 2];
+            byteMessage[0] = 0x00;
+            byteMessage[1] = (byte)(byteLength);
+            byteMessage[2] = (byte)systemIndex;
+            byteMessage[3] = dataSetIndex;
+            byteMessage[4] = message[4];
+            byteMessage[5] = message[5];
+            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
+            return byteMessage;
         }
 
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
@@ -201,7 +221,7 @@ namespace Ferretto.VW.Simulator.Services
                         break;
 
                     case InverterParameterId.DigitalInputsOutputs:
-                        var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + x.Last().GetDigitalIO() >> 8).ToArray();
+                        var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
                         string inputValues = $" {string.Join(" ", values)} ";
                         var ioStatusMessage = this.FormatMessage(message, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
                         result = client.Client.Send(ioStatusMessage);
@@ -225,7 +245,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     case InverterParameterId.StatusWordParam:
                         //inverter.StatusWord = ushortPayload;
-                        switch(inverter.OperationMode)
+                        switch (inverter.OperationMode)
                         {
                             case InverterOperationMode.Homing:
                                 inverter.BuildHomingStatusWord();
@@ -270,28 +290,17 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private byte [] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte [] inputValues)
-        {
-            int byteLength;
-            byte[] byteMessage;
-            byteLength = 0x04 + inputValues.Length;
-            byteMessage = new byte[byteLength + 2];
-            byteMessage[0] = 0x00;
-            byteMessage[1] = (byte)(byteLength);
-            byteMessage[2] = (byte)systemIndex;
-            byteMessage[3] = dataSetIndex;
-            byteMessage[4] = message[4];
-            byteMessage[5] = message[5];
-            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
-            return byteMessage;
-        }
-
-
         private void ReplyIoDriver(TcpClient client, byte[] message, int index)
         {
             const int headerLenght = 4;
             const int NBYTES_RECEIVE = 15;
             const int NBYTES_RECEIVE_CFG = 3;
+
+            //if (this.EnabledForce)
+            //{
+            //    // Change state flag from set view
+            //    this.UpdateFlag();
+            //}
 
             var device = this.RemoteIOs.First(x => x.Id == index);
 
@@ -339,6 +348,11 @@ namespace Ferretto.VW.Simulator.Services
             {
                 throw new NotSupportedException();
             }
+        }
+
+        private void UpdateFlag()
+        {
+            //this.RemoteIOs[0].IOs[(int)Emegency] = this.ForceEmergencyEndRun;
         }
 
         #endregion

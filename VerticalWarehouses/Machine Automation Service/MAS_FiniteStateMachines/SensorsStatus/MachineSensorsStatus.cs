@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                 if (requiredUpdate)
                 {
-                    //Array.Copy(newSensorStatus, 0, this.sensorStatus, REMOTEIO_INPUTS, INVERTER_INPUTS);
+                    Array.Copy(newSensorStatus, 0, this.sensorStatus, REMOTEIO_INPUTS, INVERTER_INPUTS);
                     updateDone = true;
                 }
             }
