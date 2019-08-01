@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Utils.Interfaces;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.Interfaces
 {
@@ -7,7 +6,7 @@ namespace Ferretto.VW.App.Installation.Interfaces
     {
         #region Properties
 
-        BindableBase SSNavigationRegionCurrentViewModel { get; set; }
+        IViewModel SSNavigationRegionCurrentViewModel { get; set; }
 
         #endregion
     }

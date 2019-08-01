@@ -36,6 +36,7 @@
                        Margin="10,15,0,0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
+                       RenderOptions.BitmapScalingMode="HighQuality"
                        Source="{DynamicResource Ferretto_Logo}"
                        Stretch="Uniform" />
             </Border>
@@ -71,7 +72,7 @@
                     <custom:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
                                                              Margin="10,0,0,0"
                                                              CustomCommand="{Binding MachineOnMarchCustomCommand}"
-                                                             MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=OneWay}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
                     <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                         ContentText="Error"

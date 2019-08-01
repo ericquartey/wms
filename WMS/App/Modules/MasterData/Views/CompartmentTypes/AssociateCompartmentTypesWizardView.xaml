@@ -40,21 +40,23 @@
                           MaxHeight="50"
                           Margin="10,10,10,0"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Bottom"
                           Focusable="False"
                           IsTabStop="True">
 
                 <TextBlock MaxWidth="400"
                            Margin="10,0,10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
                            Style="{DynamicResource TextBlockErrorMessageStyle}"
                            Text="{Binding Error}" />
             </ScrollViewer>
 
             <wms:ActionBar Grid.Column="1"
-                           Margin="20,20,20,20"
+                           Margin="10,10,10,0"
                            HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-
 
                 <wms:ActionBarItem Command="{Binding GoToPreviousCommand}"
                                    Content="{x:Static res:General.Previous}"

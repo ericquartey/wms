@@ -8,7 +8,6 @@ using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.WmsCommunication.Interfaces;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
@@ -17,17 +16,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
 
-        private readonly ILoadingUnitsService loadingUnitService;
+        private readonly ILoadingUnitsMachineService loadingUnitService;
 
-        private readonly IMachineStatisticsService machineStatisticsService;
-
-        private readonly INavigationService navigationService;
+        private readonly IStatisticsMachineService machineStatisticsService;
 
         private readonly IStatusMessageService statusMessageService;
-
-        private readonly IWmsDataProvider wmsDataProvider;
 
         private int currentItemIndex;
 
@@ -50,16 +45,14 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerSpaceSaturationViewModel(
-            ILoadingUnitsService loadingUnitService,
-            IIdentityService identityService,
-            INavigationService navigationService,
-            IMachineStatisticsService machineStatisticsService,
+            ILoadingUnitsMachineService loadingUnitService,
+            IIdentityMachineService identityService,
+            IStatisticsMachineService machineStatisticsService,
             IStatusMessageService statusMessageService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
             this.loadingUnitService = loadingUnitService;
             this.identityService = identityService;
-            this.navigationService = navigationService;
             this.statusMessageService = statusMessageService;
             this.machineStatisticsService = machineStatisticsService;
             this.dataGridViewModel = drawerSaturationDataGridViewModel;
@@ -73,7 +66,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public string Dimension { get => this.dimension; set => this.SetProperty(ref this.dimension, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
 
         public double FillPercentage { get => this.fillPercentage; set => this.SetProperty(ref this.fillPercentage, value); }
 
@@ -81,13 +74,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(true)));
 
         #endregion
 
         #region Methods
 
-        public async void ChangeSelectedItemAsync(bool isUp)
+        public void ChangeSelectedItem(bool isUp)
         {
             if (!(this.dataGridViewModel is CustomControlDrawerSaturationDataGridViewModel gridData))
             {

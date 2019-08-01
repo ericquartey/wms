@@ -15,6 +15,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -39,6 +40,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task fieldNotificationReceiveTask;
 
+        private readonly IGeneralInfoConfigurationDataLayer generalInfoDataLayer;
+
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
+
         private readonly ILogger<FiniteStateMachines> logger;
 
         private readonly MachineSensorsStatus machineSensorsStatus;
@@ -47,7 +52,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         private readonly Task notificationReceiveTask;
 
-        private readonly IVertimagConfiguration vertimagConfiguration;
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private readonly ISetupStatusDataLayer setupStatus;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
+
+        private readonly IVertimagConfigurationDataLayer vertimagConfiguration;
 
         private IStateMachine currentStateMachine;
 
@@ -69,16 +80,34 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             IEventAggregator eventAggregator,
             ILogger<FiniteStateMachines> logger,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            IVertimagConfiguration vertimagConfiguration)
+            ISetupStatusDataLayer setupStatus,
+            IVertimagConfigurationDataLayer vertimagConfiguration,
+            IGeneralInfoConfigurationDataLayer generalInfoDataLayer,
+            IVerticalAxisDataLayer verticalAxis,
+            IHorizontalAxisDataLayer horizontalAxis,
+            IServiceScopeFactory serviceScopeFactory)
         {
+            if (serviceScopeFactory == null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
 
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
+            this.setupStatus = setupStatus;
+
             this.vertimagConfiguration = vertimagConfiguration;
 
+            this.generalInfoDataLayer = generalInfoDataLayer;
+
+            this.verticalAxis = verticalAxis;
+
+            this.horizontalAxis = horizontalAxis;
+            this.serviceScopeFactory = serviceScopeFactory;
             this.machineSensorsStatus = new MachineSensorsStatus();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
@@ -169,7 +198,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     return;
                 }
 
-                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
+                if (this.currentStateMachine != null
+                    && receivedMessage.Type != MessageType.Stop
+                    && receivedMessage.Type != MessageType.SensorsChanged
+                    )
                 {
                     var errorNotification = new NotificationMessage(
                         null,
@@ -214,6 +246,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.CheckCondition:
                         this.ProcessCheckConditionMessage(receivedMessage);
+                        break;
+
+                    case MessageType.DrawerOperation:
+                        this.ProcessDrawerOperation(receivedMessage);
+                        break;
+
+                    case MessageType.ResetSecurity:
+                        this.ProcessResetSecurityMessage(receivedMessage);
+                        break;
+
+                    case MessageType.InverterStop:
+                        this.ProcessInverterStopMessage();
                         break;
                 }
             }
@@ -327,7 +371,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                         msg = new NotificationMessage(
                             ioExceptionMessage,
-                            "Inverter Exception",
+                            "Io Driver Exception",
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
                             MessageType.IoDriverException,
@@ -434,7 +478,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                         // update the installation status homing flag in the dataLayer
                                         this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue(
                                             (long)SetupStatus.VerticalHomingDone,
-                                            (long)ConfigurationCategory.SetupStatus,
+                                            ConfigurationCategory.SetupStatus,
                                             true);
                                     }
                                     catch (Exception ex)
@@ -528,6 +572,61 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.ShutterControl:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case MessageType.DrawerOperation:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogDebug($"17:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"18:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case MessageType.ResetSecurity:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             switch (receivedMessage.Status)

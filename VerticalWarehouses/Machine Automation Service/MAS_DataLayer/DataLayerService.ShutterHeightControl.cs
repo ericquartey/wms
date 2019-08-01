@@ -5,13 +5,13 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IShutterHeightControl
+    public partial class DataLayerService : IShutterHeightControlDataLayer
     {
         #region Properties
 
-        public decimal FeedRateSH => this.GetDecimalConfigurationValue((long)ShutterHeightControl.FeedRate, (long)ConfigurationCategory.ShutterHeightControl);
+        public decimal FeedRateSH => this.GetDecimalConfigurationValue((long)ShutterHeightControl.FeedRate, ConfigurationCategory.ShutterHeightControl);
 
-        public decimal RequiredTolerance => this.GetDecimalConfigurationValue((long)ShutterHeightControl.RequiredTolerance, (long)ConfigurationCategory.ShutterHeightControl);
+        public decimal RequiredTolerance => this.GetDecimalConfigurationValue((long)ShutterHeightControl.RequiredTolerance, ConfigurationCategory.ShutterHeightControl);
 
         #endregion
     }

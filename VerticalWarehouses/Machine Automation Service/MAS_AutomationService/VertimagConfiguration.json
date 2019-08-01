@@ -15,7 +15,7 @@
     "Model": "VRT EF 84 L 990-BID H4563",
     "Serial": "VM_190001",
     "Height": 4.563,
-    "MaxGrossWeight": 50.000,
+    "MaxGrossWeight": 50000,
     "DrawersQuantity": 15,
     "BaysQuantity": 2,
     "Bay1Type": 4,
@@ -79,9 +79,9 @@
     "IOExpansion2Port": 19550,
     "SQLServerIPAddress": "172.16.199.100",
     "SQLServerPort": 6000,
-    "PPC1MasterIPAddress": "198.168.0.10",
-    "PPC2SlaveIPAddress": "198.168.0.20",
-    //"PPC3SlaveIPAddress": "::3"
+    "PPC1MasterIPAddress": "::1",
+    "PPC2SlaveIPAddress": "198.168.0.2",
+    "PPC3SlaveIPAddress": "198.168.0.3"
   },
 
   //TEMP To remove but temporary commented, until the test won't be ok

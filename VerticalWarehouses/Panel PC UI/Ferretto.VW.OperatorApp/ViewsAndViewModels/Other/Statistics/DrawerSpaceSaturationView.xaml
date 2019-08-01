@@ -4,7 +4,6 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Ferretto.VW.App.Operator"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -45,7 +44,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"
-                                           ProgressionValue="{Binding AreaFillPercentage}" />
+                                           ProgressionValue="{Binding FillPercentage, StringFormat={}{0:N1} %}" />
 
         <Button Margin="0,190,20,0"
                 HorizontalAlignment="Right"

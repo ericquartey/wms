@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -9,10 +8,10 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService : IConfigurationValueManagmentDataLayer
@@ -20,53 +19,41 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         /// <inheritdoc/>
-        public bool GetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum)
+        public bool GetBoolConfigurationValue(long value, ConfigurationCategory category)
         {
-            bool returnBoolValue;
-            ConfigurationValue primaryConfigurationValue;
-
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+            if (!this.CheckConfigurationDataType(value, category, ConfigurationDataType.Boolean))
             {
-                this.logger.LogCritical($"1:Exception: get Boolean for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Boolean for {value} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            if (configurationValueEnum == (long)SetupStatus.VerticalHomingDone)
+            if (value == (long)SetupStatus.VerticalHomingDone)
             {
-                return this.setupStatusVolatile?.VerticalHomingDone ?? false;
+                return this.setupStatusVolatile.VerticalHomingDone;
             }
 
-            try
+            bool returnBoolValue;
+
+            var configurationValue = this.RetrieveConfigurationValue(value, category);
+            if (configurationValue != null)
             {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                if (!bool.TryParse(configurationValue.VarValue, out returnBoolValue))
                 {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
-
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
-            }
-
-            if (primaryConfigurationValue != null)
-            {
-                if (!bool.TryParse(primaryConfigurationValue.VarValue, out returnBoolValue))
-                {
-                    this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical(
+                        $"Unable to parse value '{configurationValue.VarValue}' as boolean for field '{category}.{value}'.", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                if (categoryValueEnum == (long)ConfigurationCategory.SetupStatus)
+                if (category == ConfigurationCategory.SetupStatus)
                 {
                     returnBoolValue = false;
                 }
                 else
                 {
-                    this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                    this.Logger.LogCritical(
+                        $"No value is available in database for '{category}.{value}'.");
 
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
                 }
@@ -76,42 +63,28 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public DateTime GetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum)
+        public DateTime GetDateTimeConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
-            DateTime returnDateTimeValue;
-            ConfigurationValue primaryConfigurationValue;
-
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Date))
             {
-                this.logger.LogCritical($"1:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            try
+            DateTime returnDateTimeValue;
+            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            if (configurationValue != null)
             {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                if (!DateTime.TryParse(configurationValue.VarValue, out returnDateTimeValue))
                 {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
-
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
-            }
-
-            if (primaryConfigurationValue != null)
-            {
-                if (!DateTime.TryParse(primaryConfigurationValue.VarValue, out returnDateTimeValue))
-                {
-                    this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                this.Logger.LogCritical(
+                    $"Unable to parse value '{configurationValue.VarValue}' as DateTime for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -120,43 +93,28 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public decimal GetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum)
+        public decimal GetDecimalConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
-            decimal returnDecimalValue;
-            ConfigurationValue primaryConfigurationValue;
-
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Float))
             {
-                this.logger.LogCritical($"1:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            try
+            decimal returnDecimalValue;
+            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            if (configurationValue != null)
             {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+                if (!decimal.TryParse(configurationValue.VarValue, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out returnDecimalValue))
                 {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
-
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
-            }
-
-            if (primaryConfigurationValue != null)
-            {
-                if (!decimal.TryParse(primaryConfigurationValue.VarValue, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture.NumberFormat, out returnDecimalValue))
-                {
-                    this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
-
+                this.Logger.LogCritical(
+                    $"Unable to parse value '{configurationValue.VarValue}' as Decimal for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -164,43 +122,29 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public int GetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum)
+        public int GetIntegerConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
-            int returnIntegerValue;
-            ConfigurationValue primaryConfigurationValue;
-
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Integer))
             {
-                this.logger.LogCritical($"1:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            try
-            {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
+            int returnIntegerValue;
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
-            }
-
-            if (primaryConfigurationValue != null)
+            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            if (configurationValue != null)
             {
-                if (!int.TryParse(primaryConfigurationValue.VarValue, out returnIntegerValue))
+                if (!int.TryParse(configurationValue.VarValue, out returnIntegerValue))
                 {
-                    this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    this.Logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
-
+                this.Logger.LogCritical(
+                    $"Unable to parse value '{configurationValue.VarValue}' as Integer for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -208,38 +152,25 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public IPAddress GetIpAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum)
+        public IPAddress GetIpAddressConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
-            IPAddress returnIpAddressValue;
-            ConfigurationValue primaryConfigurationValue;
-
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.IPAddress))
             {
-                this.logger.LogCritical($"1:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            try
-            {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
+            IPAddress returnIpAddressValue;
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
-            }
-
-            if (primaryConfigurationValue != null)
+            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            if (configurationValue != null)
             {
-                returnIpAddressValue = IPAddress.Parse(primaryConfigurationValue.VarValue);
+                returnIpAddressValue = IPAddress.Parse(configurationValue.VarValue);
             }
             else
             {
-                this.logger.LogCritical($"3:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                this.Logger.LogCritical(
+                    $"No value is available in database for '{category}.{configurationValueEnum}'.");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -248,38 +179,24 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public string GetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum)
+        public string GetStringConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
         {
-            string returnStringValue;
-            ConfigurationValue primaryConfigurationValue;
-
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.String))
             {
-                this.logger.LogCritical($"1:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
-            try
-            {
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(s => s.VarName == configurationValueEnum && s.CategoryName == categoryValueEnum);
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
-            }
+            string returnStringValue;
 
-            if (primaryConfigurationValue != null)
+            var configurationValue = this.RetrieveConfigurationValue(configurationValueEnum, category);
+            if (configurationValue != null)
             {
-                returnStringValue = primaryConfigurationValue.VarValue;
+                returnStringValue = configurationValue.VarValue;
             }
             else
             {
-                this.logger.LogCritical($"3:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
-
+                this.Logger.LogCritical($"No value is available in database for '{category}.{configurationValueEnum}'.");
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -287,11 +204,11 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         /// <inheritdoc/>
-        public void SetBoolConfigurationValue(long configurationValueEnum, long categoryValueEnum, bool value)
+        public void SetBoolConfigurationValue(long configurationValueEnum, ConfigurationCategory category, bool value)
         {
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Boolean))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
@@ -306,185 +223,194 @@ namespace Ferretto.VW.MAS.DataLayer
                 return;
             }
 
-            var newConfigurationValue = new ConfigurationValue();
-            newConfigurationValue.CategoryName = categoryValueEnum;
-            newConfigurationValue.VarName = configurationValueEnum;
-            newConfigurationValue.VarType = ConfigurationDataType.Boolean;
-            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
+            var newConfigurationValue = new ConfigurationValue
+            {
+                CategoryName = (long)category,
+                VarName = configurationValueEnum,
+                VarType = ConfigurationDataType.Boolean,
+                VarValue = value.ToString(CultureInfo.InvariantCulture),
+            };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public void SetDateTimeConfigurationValue(long configurationValueEnum, long categoryValueEnum, DateTime value)
+        public void SetDateTimeConfigurationValue(
+            long configurationValueEnum,
+            ConfigurationCategory category,
+            DateTime value)
         {
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Date))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Date - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: wrong datatype during set Date - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            var newConfigurationValue = new ConfigurationValue();
-            newConfigurationValue.CategoryName = categoryValueEnum;
-            newConfigurationValue.VarName = configurationValueEnum;
-            newConfigurationValue.VarType = ConfigurationDataType.Date;
-            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
+            var newConfigurationValue = new ConfigurationValue
+            {
+                CategoryName = (long)category,
+                VarName = configurationValueEnum,
+                VarType = ConfigurationDataType.Date,
+                VarValue = value.ToString(CultureInfo.InvariantCulture),
+            };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public void SetDecimalConfigurationValue(long configurationValueEnum, long categoryValueEnum,
+        public void SetDecimalConfigurationValue(
+            long configurationValueEnum,
+            ConfigurationCategory category,
             decimal value)
         {
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Float))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Decimal - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: wrong datatype during set Decimal - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            var newConfigurationValue = new ConfigurationValue();
-            newConfigurationValue.CategoryName = categoryValueEnum;
-            newConfigurationValue.VarName = configurationValueEnum;
-            newConfigurationValue.VarType = ConfigurationDataType.Float;
-            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
+            var newConfigurationValue = new ConfigurationValue
+            {
+                CategoryName = (long)category,
+                VarName = configurationValueEnum,
+                VarType = ConfigurationDataType.Float,
+                VarValue = value.ToString(CultureInfo.InvariantCulture),
+            };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public void SetIntegerConfigurationValue(long configurationValueEnum, long categoryValueEnum, int value)
+        public void SetIntegerConfigurationValue(
+            long configurationValueEnum,
+            ConfigurationCategory category,
+            int value)
         {
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.Integer))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Integer - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: wrong datatype during set Integer - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            var newConfigurationValue = new ConfigurationValue();
-            newConfigurationValue.CategoryName = categoryValueEnum;
-            newConfigurationValue.VarName = configurationValueEnum;
-            newConfigurationValue.VarType = ConfigurationDataType.Integer;
-            newConfigurationValue.VarValue = value.ToString(CultureInfo.InvariantCulture);
+            var newConfigurationValue = new ConfigurationValue
+            {
+                CategoryName = (long)category,
+                VarName = configurationValueEnum,
+                VarType = ConfigurationDataType.Integer,
+                VarValue = value.ToString(CultureInfo.InvariantCulture),
+            };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
-        public void SetIpAddressConfigurationValue(long configurationValueEnum, long categoryValueEnum, IPAddress value)
+        public void SetIpAddressConfigurationValue(
+            long configurationValueEnum,
+            ConfigurationCategory category,
+            IPAddress value)
         {
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.IPAddress))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set IP Address - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: wrong datatype during set IP Address - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            var newConfigurationValue = new ConfigurationValue();
-            newConfigurationValue.CategoryName = categoryValueEnum;
-            newConfigurationValue.VarName = configurationValueEnum;
-            newConfigurationValue.VarType = ConfigurationDataType.IPAddress;
-            newConfigurationValue.VarValue = value.ToString();
+            var newConfigurationValue = new ConfigurationValue
+            {
+                CategoryName = (long)category,
+                VarName = configurationValueEnum,
+                VarType = ConfigurationDataType.IPAddress,
+                VarValue = value.ToString(),
+            };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);
         }
 
         /// <inheritdoc/>
-        public void SetStringConfigurationValue(long configurationValueEnum, long categoryValueEnum, string value)
+        public void SetStringConfigurationValue(
+            long configurationValueEnum,
+            ConfigurationCategory category,
+            string value)
         {
-            if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
+            if (!this.CheckConfigurationDataType(configurationValueEnum, category, ConfigurationDataType.String))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set String - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                this.Logger.LogCritical($"1:Exception: wrong datatype during set String - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
-            var newConfigurationValue = new ConfigurationValue();
-            newConfigurationValue.CategoryName = categoryValueEnum;
-            newConfigurationValue.VarName = configurationValueEnum;
-            newConfigurationValue.VarType = ConfigurationDataType.String;
-            newConfigurationValue.VarValue = value;
+            var newConfigurationValue = new ConfigurationValue
+            {
+                CategoryName = (long)category,
+                VarName = configurationValueEnum,
+                VarType = ConfigurationDataType.String,
+                VarValue = value
+            };
 
             this.SetUpdateConfigurationValueCommon(newConfigurationValue);
+        }
+
+        private ConfigurationValue RetrieveConfigurationValue(long configurationValueEnum, ConfigurationCategory category)
+        {
+            ConfigurationValue configurationValue;
+
+            try
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
+                    configurationValue = dbContext.ConfigurationValues
+                        .FirstOrDefault(s =>
+                            s.VarName == configurationValueEnum
+                            &&
+                            s.CategoryName == (long)category);
+                }
+            }
+            catch
+            {
+                this.Logger.LogCritical($"2:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
+
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
+            }
+
+            return configurationValue;
         }
 
         private void SetUpdateConfigurationValueCommon(ConfigurationValue newConfigurationValue)
         {
-            var primaryPartitionError = false;
-            var secondaryPartitionError = false;
-
-            Expression<Func<ConfigurationValue, bool>> queryString = s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName;
-
-            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                var primaryConfigurationValue = primaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
+                var configurationValue = dbContext.ConfigurationValues
+                    .FirstOrDefault(s =>
+                        s.VarName == newConfigurationValue.VarName
+                        &&
+                        s.CategoryName == newConfigurationValue.CategoryName);
+
+                if (configurationValue == null)
+                {
+                    dbContext.ConfigurationValues.Add(newConfigurationValue);
+                }
+                else
+                {
+                    configurationValue.VarValue = newConfigurationValue.VarValue;
+                }
 
                 try
                 {
-                    if (primaryConfigurationValue == null)
-                    {
-                        primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                    }
-                    else
-                    {
-                        primaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
-                    }
-
-                    primaryDataContext.SaveChanges();
+                    dbContext.SaveChanges();
                 }
-                catch
+                catch (Exception)
                 {
-                    primaryPartitionError = true;
+                    this.Logger.LogCritical($"4:Exception: failed to write application log entry into database.");
+
+                    throw;
                 }
-            }
-
-            if (!this.suppressSecondary)
-            {
-                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                {
-                    var secondaryConfigurationValue = secondaryDataContext.ConfigurationValues.FirstOrDefault(queryString);
-
-                    try
-                    {
-                        if (secondaryConfigurationValue == null)
-                        {
-                            secondaryDataContext.ConfigurationValues.Add(newConfigurationValue);
-                        }
-                        else
-                        {
-                            secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
-                        }
-
-                        secondaryDataContext.SaveChanges();
-                    }
-                    catch
-                    {
-                        secondaryPartitionError = true;
-                    }
-                }
-            }
-
-            if (primaryPartitionError && secondaryPartitionError)
-            {
-                this.logger.LogCritical($"1:Exception: impossible writing {newConfigurationValue.VarName} in the primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
-
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
-            }
-
-            if (primaryPartitionError && !secondaryPartitionError)
-            {
-                this.logger.LogCritical($"2:Exception: impossible writing {newConfigurationValue.VarName} in the primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
-
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
-            }
-
-            if (!primaryPartitionError && secondaryPartitionError)
-            {
-                this.logger.LogCritical($"3:Exception: impossible writing {newConfigurationValue.VarName} in the secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
-
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
             }
         }
 

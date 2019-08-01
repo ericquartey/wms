@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Utilities.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
@@ -17,85 +11,72 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Fields
 
-        private readonly IBaysManager baysManager;
+        private const string BayIdEntry = "bayId";
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IBaysProvider baysProvider;
 
-        private readonly ILogger<AutomationService> logger;
-
-        private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
+        private readonly ILogger<OperatorHub> logger;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OperatorHub"/> class.
-        ///  An instance of this class is created every time a client connects or disconnects
-        /// </summary>
-        public OperatorHub(ILogger<AutomationService> logger, IEventAggregator eventAggregator, IBaysManager baysManager, IHubContext<OperatorHub, IOperatorHub> operatorHub)
+        public OperatorHub(
+            IBaysProvider baysProvider,
+            ILogger<OperatorHub> logger)
         {
+            if (baysProvider == null)
+            {
+                throw new ArgumentNullException(nameof(baysProvider));
+            }
+
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            this.baysProvider = baysProvider;
             this.logger = logger;
-            this.eventAggregator = eventAggregator;
-            this.baysManager = baysManager;
-            this.operatorHub = operatorHub;
         }
 
         #endregion
 
         #region Methods
 
-        public override Task OnConnectedAsync()
+        public override async Task OnConnectedAsync()
         {
-            var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
-            var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
+            var ipAddress = this.Context.GetHttpContext().Connection.RemoteIpAddress;
+            var bay = this.baysProvider.GetByIpAddress(ipAddress);
 
-            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
+            if (bay != null)
             {
-                for (var i = 0; i < this.baysManager.Bays.Count; i++)
+                this.logger.LogInformation($"Client on bay {bay.Id} connected to signalR hub.");
+                if (this.Context.Items.ContainsKey(BayIdEntry))
                 {
-                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
-                    {
-                        this.baysManager.Bays[i].ConnectionId = this.Context.ConnectionId;
-                        this.baysManager.Bays[i].IsConnected = true;
-                        this.baysManager.Bays[i].Status = BayStatus.Available;
-                        this.baysManager.Bays[i].Id = 2;
-
-                        var messageData = new BayConnectedMessageData
-                        {
-                            Id = this.baysManager.Bays[i].Id,
-                            BayType = (int)this.baysManager.Bays[i].Type,
-                            MissionQuantity = this.baysManager.Bays[i].Missions == null ? 0 : this.baysManager.Bays[i].Missions.Count
-                        };
-                        var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                        this.logger.LogDebug($"AS-OH Bay connected id: {this.baysManager.Bays[i].Id}");
-                    }
+                    this.Context.Items[BayIdEntry] = bay.Id;
+                }
+                else
+                {
+                    this.Context.Items.Add(BayIdEntry, bay.Id);
                 }
             }
+            else
+            {
+                this.logger.LogWarning(
+                    $"The client with IP Address '{ipAddress}' connected to the signalR hub, "
+                    + "but no bay is configured to serve from the given address.");
+            }
 
-            return base.OnConnectedAsync();
+            await base.OnConnectedAsync();
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
-            var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
+            //var bayId = (int)this.Context.Items[BayIdEntry];
 
-            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
-            {
-                for (var i = 0; i < this.baysManager.Bays.Count; i++)
-                {
-                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
-                    {
-                        this.baysManager.Bays[i].ConnectionId = string.Empty;
-                        this.baysManager.Bays[i].IsConnected = false;
-                        this.baysManager.Bays[i].Status = BayStatus.Unavailable;
-                    }
-                }
-            }
+            //this.baysProvider.Deactivate(bayId);
 
-            return base.OnDisconnectedAsync(exception);
+            await base.OnDisconnectedAsync(exception);
         }
 
         #endregion

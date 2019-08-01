@@ -124,12 +124,24 @@
     <value>Ok</value>
   </data>
   <data name="PasswordLogin" xml:space="preserve">
-    <value>Password:</value>
+    <value>Password</value>
   </data>
   <data name="UserLogin" xml:space="preserve">
-    <value>Nome Utente:</value>
+    <value>Nome Utente</value>
   </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Spegni</value>
+  </data>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Ripristino errore</value>
+  </data>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Codice Errore</value>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Descrizione errore</value>
+  </data>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Possibili cause</value>
   </data>
 </root>

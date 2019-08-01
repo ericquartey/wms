@@ -86,11 +86,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageType.Homing));
         }
 
-        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
 
-            switch (categoryId)
+            var category = (ConfigurationCategory)categoryId;
+            switch (category)
             {
                 case ConfigurationCategory.VerticalAxis:
 
@@ -102,7 +103,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                         try
                         {
-                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -124,7 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -144,7 +145,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value3 = 0;
                         try
                         {
-                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
+                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {

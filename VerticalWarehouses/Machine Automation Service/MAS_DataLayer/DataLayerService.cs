@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,16 +8,16 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
+using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Cells;
 using Ferretto.VW.MAS.DataModels.Enumerations;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
+using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -24,309 +25,177 @@ using Prism.Events;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : BackgroundService, IDataLayer
+    public partial class DataLayerService : AutomationBackgroundService, IDataLayerService
     {
         #region Fields
 
-        private readonly Task applicationLogWriteTask;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandLogQueue;
-
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
-
-        private readonly Task commandReceiveTask;
-
-        private readonly DataLayerConfiguration dataLayerConfiguration;
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly ILogger logger;
-
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationLogQueue;
-
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
-
-        private readonly Task notificationReceiveTask;
-
-        private readonly SetupStatusVolatile setupStatusVolatile;
-
-        private CancellationToken stoppingToken;
-
-        private bool suppressSecondary;
+        private readonly SetupStatusVolatile setupStatusVolatile = new SetupStatusVolatile();
 
         #endregion
 
         #region Constructors
 
-        public DataLayerService(DataLayerConfiguration dataLayerConfiguration, IEventAggregator eventAggregator, ILogger<DataLayerService> logger)
+        public DataLayerService(
+            IEventAggregator eventAggregator,
+            IServiceScopeFactory serviceScopeFactory,
+            ILogger<DataLayerService> logger)
+            : base(eventAggregator, logger)
         {
-            if (dataLayerConfiguration == null)
+            if (serviceScopeFactory == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(dataLayerConfiguration)), string.Empty, 0));
-                return;
+                this.SendErrorMessage(
+                    new DLExceptionMessageData(
+                        new ArgumentNullException(nameof(serviceScopeFactory))));
             }
 
-            if (eventAggregator == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(eventAggregator)), string.Empty, 0));
-                return;
-            }
+            this.serviceScopeFactory = serviceScopeFactory;
 
-            if (logger == null)
-            {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(nameof(logger)), string.Empty, 0));
-                return;
-            }
-
-            this.eventAggregator = eventAggregator;
-
-            this.logger = logger;
-
-            this.dataLayerConfiguration = dataLayerConfiguration;
-
-            this.primaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.PrimaryConnectionString).Options;
-
-            this.secondaryContextOptions = new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options;
-
-            this.dataLayerConfiguration = dataLayerConfiguration;
-
-            this.suppressSecondary = false;
-
-            this.setupStatusVolatile = new SetupStatusVolatile();
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commandReceiveTask = new Task(this.ReceiveCommandTaskFunction);
-            this.notificationReceiveTask = new Task(this.ReceiveNotificationTaskFunction);
-            this.applicationLogWriteTask = new Task(this.ApplicationLogWriterTaskFunction);
-
-            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandLogEvent.Subscribe(
-                commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
-                ThreadOption.PublisherThread,
-                false);
-
-            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationLogEvent.Subscribe(
-                notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false);
-
-            this.logger?.LogInformation("DataLayer Constructor");
+            this.Logger.LogTrace("DataLayer service initialised.");
         }
 
         #endregion
 
         #region Methods
 
-        public void SwitchDBContext()
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            var switchContextOptions = this.primaryContextOptions;
-            this.primaryContextOptions = this.secondaryContextOptions;
-            this.secondaryContextOptions = switchContextOptions;
+            this.DataLayerInitialize();
 
-            this.suppressSecondary = true;
+            await base.StartAsync(cancellationToken);
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override bool FilterCommand(CommandMessage command)
         {
-            this.stoppingToken = stoppingToken;
+            return true;
+        }
 
-            try
+        protected override bool FilterNotification(NotificationMessage notification)
+        {
+            return true;
+        }
+
+        protected override Task OnCommandReceivedAsync(CommandMessage command)
+        {
+            this.Logger.LogTrace($"2:command={command}");
+
+            var serializedData = SerializeMessageData(command.Data);
+
+            var logEntry = new LogEntry
             {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
-                this.applicationLogWriteTask.Start();
-            }
-            catch (Exception ex)
+                Data = serializedData,
+                Description = command.Description,
+                Destination = command.Destination.ToString(),
+                Source = command.Source.ToString(),
+                TimeStamp = DateTime.UtcNow,
+                Type = command.Type.ToString(),
+            };
+
+            this.SaveEntryToDb(logEntry);
+
+            return Task.CompletedTask;
+        }
+
+        protected override Task OnNotificationReceivedAsync(NotificationMessage message)
+        {
+            this.Logger.LogTrace($"2:message={message}");
+
+            var serializedData = SerializeMessageData(message.Data);
+
+            var logEntry = new LogEntry
             {
-                this.SendMessage(new DLExceptionMessageData(ex, ex.Message, 0));
-            }
+                Data = serializedData,
+                Description = message.Description,
+                Destination = message.Destination.ToString(),
+                Source = message.Source.ToString(),
+                TimeStamp = DateTime.UtcNow,
+                Type = message.Type.ToString(),
+                ErrorLevel = message.ErrorLevel.ToString(),
+                Status = message.Status.ToString(),
+            };
+
+            this.SaveEntryToDb(logEntry);
 
             return Task.CompletedTask;
         }
 
         private void DataLayerInitialize()
         {
-            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                primaryDataContext.Database.Migrate();
+                var redundancyService = scope.ServiceProvider
+                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+                try
+                {
+                    using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
+                    {
+                        if (activeDbContext.Database.GetPendingMigrations().Any())
+                        {
+                            this.Logger.LogInformation("Applying migrations to active database ...");
+                            activeDbContext.Database.Migrate();
+                        }
+                    }
+
+                    using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
+                    {
+                        if (standbyDbContext.Database.GetPendingMigrations().Any())
+                        {
+                            this.Logger.LogInformation("Applying migrations to standby database ...");
+                            standbyDbContext.Database.Migrate();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while migating databases.");
+                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    return;
+                }
+
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+                try
+                {
+                    this.LoadConfigurationValuesInfo(configuration.GetDataLayerConfigurationFile());
+                    //this.EnsureMachinestatusInitialization();
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while loading configuration values.");
+                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    return;
+                }
             }
 
-            using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-            {
-                secondaryDataContext.Database.Migrate();
-            }
-
-            try
-            {
-                this.LoadConfigurationValuesInfo(this.dataLayerConfiguration.ConfigurationFilePath);
-                //this.EnsureMachinestatusInitialization();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
-                return;
-            }
-
-            var errorNotification = new NotificationMessage(
+            var message = new NotificationMessage(
                 null,
-                                                            "DataLayer initialization complete",
-                                                            MessageActor.Any,
-                                                            MessageActor.DataLayer,
-                                                            MessageType.DataLayerReady,
-                                                            MessageStatus.NoStatus);
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+                "DataLayer initialization complete.",
+                MessageActor.Any,
+                MessageActor.DataLayer,
+                MessageType.DataLayerReady);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(message);
         }
 
         private void EnsureMachinestatusInitialization()
         {
             try
             {
-                this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                this.GetBoolConfigurationValue((long)SetupStatus.MachineDone, ConfigurationCategory.SetupStatus);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus, false);
+                this.SetBoolConfigurationValue((long)SetupStatus.MachineDone, ConfigurationCategory.SetupStatus, false);
             }
         }
 
-        private void ReceiveCommandTaskFunction()
+        private void SendErrorMessage(IMessageData data)
         {
-            this.DataLayerInitialize();
-
-            do
-            {
-                CommandMessage receivedMessage;
-                try
-                {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-
-                switch (receivedMessage.Type)
-                {
-                    case MessageType.NoType:
-                        break;
-
-                    case MessageType.Homing:
-                        break;
-
-                    case MessageType.Stop:
-                        break;
-
-                    case MessageType.SensorsChanged:
-                        break;
-
-                    case MessageType.DataLayerReady:
-                        break;
-
-                    case MessageType.SwitchAxis:
-                        break;
-
-                    case MessageType.CalibrateAxis:
-                        break;
-
-                    case MessageType.ShutterControl:
-                        break;
-
-                    case MessageType.MissionAdded:
-                        break;
-
-                    case MessageType.CreateMission:
-                        break;
-
-                    case MessageType.Positioning:
-                        break;
-                }
-
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryDataContext.SaveChanges();
-                }
-
-                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                {
-                    secondaryDataContext.SaveChanges();
-                }
-            } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void ReceiveNotificationTaskFunction()
-        {
-            do
-            {
-                NotificationMessage receivedMessage;
-                try
-                {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-
-                switch (receivedMessage.Type)
-                {
-                    case MessageType.NoType:
-                        break;
-
-                    case MessageType.Homing:
-                        break;
-
-                    case MessageType.Stop:
-                        break;
-
-                    case MessageType.SensorsChanged:
-                        break;
-
-                    case MessageType.DataLayerReady:
-                        break;
-
-                    case MessageType.SwitchAxis:
-                        break;
-
-                    case MessageType.CalibrateAxis:
-                        break;
-
-                    case MessageType.ShutterControl:
-                        break;
-
-                    case MessageType.MissionAdded:
-                        break;
-
-                    case MessageType.CreateMission:
-                        break;
-
-                    case MessageType.Positioning:
-                        break;
-                }
-
-                using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
-                {
-                    primaryDataContext.SaveChanges();
-                }
-                using (var secondaryDataContext = new DataLayerContext(this.secondaryContextOptions))
-                {
-                    secondaryDataContext.SaveChanges();
-                }
-            }
-            while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void SendMessage(IMessageData data)
-        {
-            var msg = new NotificationMessage(
+            var message = new NotificationMessage(
                 data,
                 "DataLayer Error",
                 MessageActor.Any,
@@ -334,7 +203,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageType.DLException,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(message);
         }
 
         #endregion

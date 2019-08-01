@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -15,14 +14,6 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
     {
-        #region Fields
-
-        private DbContextOptions<DataLayerContext> primaryContextOptions;
-
-        private DbContextOptions<DataLayerContext> secondaryContextOptions;
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -232,7 +223,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void SaveConfigurationData(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
+        private void SaveConfigurationData(
+            ConfigurationCategory elementCategory,
+            long configurationData,
+            JToken jsonDataValue)
         {
             if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
             {
@@ -246,58 +240,56 @@ namespace Ferretto.VW.MAS.DataLayer
                     case ConfigurationDataType.Boolean:
                         this.SetBoolConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<bool>());
                         break;
 
                     case ConfigurationDataType.Date:
                         this.SetDateTimeConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<DateTime>());
                         break;
 
                     case ConfigurationDataType.Integer:
                         this.SetIntegerConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<int>());
                         break;
 
                     case ConfigurationDataType.Float:
                         this.SetDecimalConfigurationValue(
                             configurationData,
-                            (long)elementCategory,
+                            elementCategory,
                             jsonDataValue.Value<decimal>());
                         break;
 
                     case ConfigurationDataType.String:
                         var stringValue = jsonDataValue.Value<string>();
-                        var splitDot = stringValue.Split('.');
-                        var ipAddress = false;
-
-                        if (splitDot.Length == 4)
+                        if (IPAddress.TryParse(stringValue, out var configurationValue)
+                            &&
+                            (stringValue.Count(c => c == ':') >= 2
+                            ||
+                            stringValue.Count(c => c == '.') == 3)
+                            )
                         {
-                            ipAddress = true;
-                        }
-
-                        if (ipAddress && IPAddress.TryParse(stringValue, out var configurationValue))
-                        {
-                            this.SetIpAddressConfigurationValue(configurationData, (long)elementCategory, configurationValue);
+                            this.SetIpAddressConfigurationValue(configurationData, elementCategory, configurationValue);
                         }
                         else
                         {
-                            this.SetStringConfigurationValue(configurationData, (long)elementCategory, stringValue);
+                            this.SetStringConfigurationValue(configurationData, elementCategory, stringValue);
                         }
+
                         break;
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+                this.Logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
 
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
-                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
         }
 

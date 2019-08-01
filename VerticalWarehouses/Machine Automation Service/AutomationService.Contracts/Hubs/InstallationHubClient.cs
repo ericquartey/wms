@@ -53,6 +53,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
                 "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
+
+            connection.On<NotificationMessageUI<ResetSecurityMessageData>>(
+                "ResetSecurityNotify", this.OnResetSecurityNotify);
+
+            connection.On<NotificationMessageUI<InverterStopMessageData>>(
+                "InverterStopNotify", this.OnInverterStopNotify);
         }
 
         /// <summary>
@@ -64,12 +70,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnExceptionNotify(NotificationMessageUI<InverterExceptionMessageData> message)
+        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -124,6 +130,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         /// </summary>
         /// <param name="message"></param>
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the ResetSecurity event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnResetSecurityNotify(NotificationMessageUI<ResetSecurityMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the InverterStop event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnInverterStopNotify(NotificationMessageUI<InverterStopMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

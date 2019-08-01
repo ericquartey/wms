@@ -46,7 +46,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entityEntry = await this.DataContext.Missions.AddAsync(
+            var validationError = model.ValidateBusinessModel(this.DataContext.Missions);
+            if (!string.IsNullOrEmpty(validationError))
+            {
+                return new BadRequestOperationResult<Mission>(
+                    validationError,
+                    model);
+            }
+
+            var entry = await this.DataContext.Missions.AddAsync(
                 this.mapper.Map<Common.DataModels.Mission>(model));
 
             this.NotificationService.PushCreate(model);
@@ -57,9 +65,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new CreationErrorOperationResult<Mission>();
             }
 
-            model.Id = entityEntry.Entity.Id;
-
-            return new SuccessOperationResult<Mission>(model);
+            var createdModel = await this.GetByIdAsync(entry.Entity.Id);
+            return new SuccessOperationResult<Mission>(createdModel);
         }
 
         public async Task<IOperationResult<IEnumerable<Mission>>> CreateRangeAsync(IEnumerable<Mission> models)

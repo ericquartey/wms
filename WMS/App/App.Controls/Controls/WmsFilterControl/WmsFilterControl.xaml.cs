@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
+using DevExpress.Xpf.Editors.Filtering;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
@@ -14,12 +15,14 @@ namespace Ferretto.WMS.App.Controls
         #region Fields
 
         public static readonly DependencyProperty FilteringContextProperty = DependencyProperty.Register(
-                  nameof(FilteringContext), typeof(FilteringUIContext), typeof(WmsFilterControl));
+                  nameof(FilteringContext), typeof(IFilteredComponent), typeof(WmsFilterControl));
 
         public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
                  nameof(Filter), typeof(CriteriaOperator), typeof(WmsFilterControl));
 
         private ICommand clearFilterCommand;
+
+        private ICommand filterCommand;
 
         #endregion
 
@@ -37,6 +40,10 @@ namespace Ferretto.WMS.App.Controls
         public ICommand ClearFilterCommand => this.clearFilterCommand ??
            (this.clearFilterCommand = new DelegateCommand(
                this.ExecuteClearFilterCommand));
+
+        public ICommand FilterCommand => this.filterCommand ??
+           (this.filterCommand = new DelegateCommand(
+               this.ExecuteFilterCommand));
 
         public CriteriaOperator Filter
         {
@@ -63,27 +70,13 @@ namespace Ferretto.WMS.App.Controls
 
         private void ExecuteClearFilterCommand()
         {
-            if (this.FilterEditorContainer.Content is FilterEditorControl filterEditorControl)
-            {
-                filterEditorControl.FilterChanged -= this.FilterEditor_FilterChanged;
-            }
-
-            var filterControl = new FilterEditorControl();
-
-            filterControl.SetBinding(
-                FilterEditorControl.ContextProperty,
-                new Binding("FilteringContext"));
-
-            filterControl.FilterChanged += this.FilterEditor_FilterChanged;
-
-            this.Filter = null;
-            this.FilterEditorContainer.Content = filterControl;
+            this.filterEditor.FilterCriteria = null;
         }
 
-        private void FilterEditor_FilterChanged(object sender, FilterChangedEventArgs e)
+        private void ExecuteFilterCommand()
         {
-            this.Filter = e.Filter;
-            e.Handled = true;
+            this.FilterEditorContainer.Focus();
+            this.filterEditor.ApplyFilter();
         }
 
         #endregion

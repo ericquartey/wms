@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
-using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -14,23 +12,15 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
     {
         #region Fields
 
+        private const int INVERTER_INPUTS = 64;
+
+        private const int REMOTEIO_INPUTS = 48;
+
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IOSensorsStatus ioSensorsStatus;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
-        private IUnityContainer container;
-
-        private bool heightControlCheckBay1;
-
-        private bool heightControlCheckBay2;
-
-        private bool heightControlCheckBay3;
-
-        private bool luPresentInBay1;
-
-        private bool luPresentInBay2;
-
-        private bool luPresentInBay3;
+        private bool[] sensorStatus;
 
         private bool shutterSensorABay1;
 
@@ -44,38 +34,40 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private bool shutterSensorBBay3;
 
-        private IUpdateSensorsService updateSensorsService;
-
         private SubscriptionToken updateSensorsStateToken;
 
         #endregion
 
         #region Constructors
 
-        public SSBaysViewModel(IEventAggregator eventAggregator)
+        public SSBaysViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.ioSensorsStatus = new IOSensorsStatus();
+            this.updateSensorsService = updateSensorsService;
+
             this.NavigationViewModel = null;
+            this.sensorStatus = new bool[REMOTEIO_INPUTS + INVERTER_INPUTS];
         }
 
         #endregion
 
         #region Properties
 
-        public bool HeightControlCheckBay1 { get => this.heightControlCheckBay1; set => this.SetProperty(ref this.heightControlCheckBay1, value); }
-
-        public bool HeightControlCheckBay2 { get => this.heightControlCheckBay2; set => this.SetProperty(ref this.heightControlCheckBay2, value); }
-
-        public bool HeightControlCheckBay3 { get => this.heightControlCheckBay3; set => this.SetProperty(ref this.heightControlCheckBay3, value); }
-
-        public bool LuPresentInBay1 { get => this.luPresentInBay1; set => this.SetProperty(ref this.luPresentInBay1, value); }
-
-        public bool LuPresentInBay2 { get => this.luPresentInBay2; set => this.SetProperty(ref this.luPresentInBay2, value); }
-
-        public bool LuPresentInBay3 { get => this.luPresentInBay3; set => this.SetProperty(ref this.luPresentInBay3, value); }
-
         public BindableBase NavigationViewModel { get; set; }
+
+        public bool[] SensorStatus { get => this.sensorStatus; set => this.SetProperty(ref this.sensorStatus, value); }
 
         public bool ShutterSensorABay1 { get => this.shutterSensorABay1; set => this.SetProperty(ref this.shutterSensorABay1, value); }
 
@@ -98,65 +90,46 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
-            this.DisableSensorsState();
-            this.updateSensorsStateToken = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                 .Subscribe(
-                 message => this.UpdateSensorsStates(message.Data.SensorsStates),
-                 ThreadOption.PublisherThread,
-                 false);
+            //this.DisableSensorsState();
+            this.updateSensorsStateToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Subscribe(
+                    message => this.UpdateSensorsStates(message.Data.SensorsStates),
+                    ThreadOption.PublisherThread,
+                    false);
 
             await this.updateSensorsService.ExecuteAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateSensorsStateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                .Unsubscribe(this.updateSensorsStateToken);
         }
 
-        private void DisableSensorsState()
-        {
-            this.LuPresentInBay1 = false;
-            this.HeightControlCheckBay1 = false;
-            this.ShutterSensorABay1 = false;
-            this.ShutterSensorBBay1 = false;
+        //private void DisableSensorsState()
+        //{
+        //    this.LuPresentInBay1 = false;
+        //    this.HeightControlCheckBay1 = false;
+        //    this.ShutterSensorABay1 = false;
+        //    this.ShutterSensorBBay1 = false;
 
-            this.LuPresentInBay2 = false;
-            this.HeightControlCheckBay2 = false;
-            this.ShutterSensorABay2 = false;
-            this.ShutterSensorBBay2 = false;
+        //    this.LuPresentInBay2 = false;
+        //    this.HeightControlCheckBay2 = false;
+        //    this.ShutterSensorABay2 = false;
+        //    this.ShutterSensorBBay2 = false;
 
-            this.LuPresentInBay3 = false;
-            this.HeightControlCheckBay3 = false;
-            this.ShutterSensorABay3 = false;
-            this.ShutterSensorBBay3 = false;
-        }
+        //    this.LuPresentInBay3 = false;
+        //    this.HeightControlCheckBay3 = false;
+        //    this.ShutterSensorABay3 = false;
+        //    this.ShutterSensorBBay3 = false;
+        //}
 
         private void UpdateSensorsStates(bool[] message)
         {
-            this.ioSensorsStatus.UpdateInputStates(message);
-
-            this.LuPresentInBay1 = this.ioSensorsStatus.LuPresentInBay1;
-            this.HeightControlCheckBay1 = this.ioSensorsStatus.HeightControlCheckBay1;
-            this.ShutterSensorABay1 = this.ioSensorsStatus.ShutterSensorABay1;
-            this.ShutterSensorBBay1 = this.ioSensorsStatus.ShutterSensorBBay1;
-
-            this.LuPresentInBay2 = this.ioSensorsStatus.LuPresentInBay2;
-            this.HeightControlCheckBay2 = this.ioSensorsStatus.HeightControlCheckBay2;
-            this.ShutterSensorABay2 = this.ioSensorsStatus.ShutterSensorABay2;
-            this.ShutterSensorBBay2 = this.ioSensorsStatus.ShutterSensorBBay2;
-
-            this.LuPresentInBay3 = this.ioSensorsStatus.LuPresentInBay3;
-            this.HeightControlCheckBay3 = this.ioSensorsStatus.HeightControlCheckBay3;
-            this.ShutterSensorABay3 = this.ioSensorsStatus.ShutterSensorABay3;
-            this.ShutterSensorBBay3 = this.ioSensorsStatus.ShutterSensorBBay3;
+            this.SensorStatus = message;
         }
 
         #endregion

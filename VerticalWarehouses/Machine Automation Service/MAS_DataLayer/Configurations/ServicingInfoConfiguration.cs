@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class ServicingInfoConfiguration : IEntityTypeConfiguration<ServicingInfo>
+    internal class ServicingInfoConfiguration : IEntityTypeConfiguration<ServicingInfo>
     {
         #region Methods
 
@@ -17,12 +17,13 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder.HasKey(s => s.Id);
 
+            var installationDate = System.DateTime.Now.AddMonths(-34);
             builder.HasData(new ServicingInfo
             {
                 Id = 1,
-                InstallationDate = System.DateTime.Now.AddMonths(-34),
-                LastServiceDate = System.DateTime.Now.AddMonths(-3),
-                NextServiceDate = System.DateTime.Now.AddMonths(12),
+                InstallationDate = installationDate,
+                LastServiceDate = null,
+                NextServiceDate = null,
             });
         }
 

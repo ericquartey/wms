@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class CellsConfiguration : IEntityTypeConfiguration<Cell>
+    internal class CellsConfiguration : IEntityTypeConfiguration<Cell>
     {
         #region Methods
 
@@ -27,11 +27,11 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             for (var i = 1; i <= 378; i++)
             {
                 var status = CellStatus.Free;
-                if (i < 20)
+                if (i < 40)
                 {
                     status = CellStatus.Occupied;
                 }
-                else if (i < 40)
+                else if (i < 50)
                 {
                     status = CellStatus.Unusable;
                 }
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                   {
                       Id = i,
                       Priority = i,
-                      Side = i % 2 == 0? CellSide.Back : CellSide.Front,
+                      Side = i % 2 == 0 ? CellSide.Back : CellSide.Front,
                       Status = status,
                       Coord = 268 + (i - i % 2) * 25
                   });

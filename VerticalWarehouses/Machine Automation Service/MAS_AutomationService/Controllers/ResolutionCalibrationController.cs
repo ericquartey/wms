@@ -93,7 +93,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus, true);
+                this.dataLayerConfigurationValueManagement
+                    .SetBoolConfigurationValue(
+                        (long)SetupStatus.VerticalResolutionDone,
+                        ConfigurationCategory.SetupStatus,
+                        true);
             }
             catch (Exception)
             {
@@ -107,7 +111,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             string message;
 
-            var homingDone = this.dataLayerConfigurationValueManagement.GetBoolConfigurationValue((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
+            var homingDone = this.dataLayerConfigurationValueManagement
+                .GetBoolConfigurationValue(
+                    (long)SetupStatus.VerticalHomingDone,
+                    ConfigurationCategory.SetupStatus);
 
             if (homingDone)
             {
@@ -133,13 +140,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptySpeed, ConfigurationCategory.VerticalAxis);
                     var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptyAcceleration, ConfigurationCategory.VerticalAxis);
                     var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                        (long)VerticalAxis.MaxEmptyDeceleration, ConfigurationCategory.VerticalAxis);
                     var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
+                        (long)ResolutionCalibration.FeedRate, ConfigurationCategory.ResolutionCalibration);
 
                     var speed = maxSpeed * feedRate;
                     var messageData = new PositioningMessageData(
@@ -204,9 +211,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return newResolution;
         }
 
-        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
+            var category = (ConfigurationCategory)categoryId;
 
             switch (categoryId)
             {
@@ -220,7 +228,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                         try
                         {
-                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement
+                                .GetDecimalConfigurationValue(
+                                (long)verticalAxisParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -242,7 +253,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value2 = 0;
                         try
                         {
-                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement
+                                .GetDecimalConfigurationValue(
+                                (long)horizontalAxisParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -262,7 +276,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value3 = 0;
                         try
                         {
-                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
+                            value3 = this.dataLayerConfigurationValueManagement
+                                .GetDecimalConfigurationValue
+                                ((long)resolutionCalibrationParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -289,7 +306,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newResolution);
+                this.dataLayerConfigurationValueManagement
+                    .SetDecimalConfigurationValue(
+                        (long)VerticalAxis.Resolution,
+                        ConfigurationCategory.VerticalAxis,
+                        newResolution);
             }
             catch (Exception)
             {

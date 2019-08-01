@@ -14,11 +14,11 @@
 
         public System.DateTime? LastServiceDate { get; set; }
 
-        public decimal MaxGrossWeight { get; set; }
+        public double MaxGrossWeight { get; set; }
 
         public string ModelName { get; set; }
 
-        public System.DateTime NextServiceDate { get; set; }
+        public System.DateTime? NextServiceDate { get; set; }
 
         public string SerialNumber { get; set; }
 

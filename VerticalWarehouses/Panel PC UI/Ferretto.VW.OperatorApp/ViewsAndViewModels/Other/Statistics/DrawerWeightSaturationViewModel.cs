@@ -15,11 +15,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly CustomControlDrawerWeightSaturationDataGridViewModel dataGridViewModelRef;
+        private readonly IIdentityMachineService identityService;
 
-        private readonly IIdentityService identityService;
-
-        private readonly ILoadingUnitsService loadingUnitService;
+        private readonly ILoadingUnitsMachineService loadingUnitService;
 
         private readonly INavigationService navigationService;
 
@@ -35,7 +33,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         private decimal grossWeight;
 
-        private decimal maxGrossWeight;
+        private double maxGrossWeight;
 
         private decimal maxNetWeight;
 
@@ -52,8 +50,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerWeightSaturationViewModel(
-            ILoadingUnitsService loadingUnitService,
-            IIdentityService identityService,
+            ILoadingUnitsMachineService loadingUnitService,
+            IIdentityMachineService identityService,
             IStatusMessageService statusMessageService,
             INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
@@ -71,7 +69,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public ICustomControlDrawerWeightSaturationDataGridViewModel DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
 
         public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
@@ -80,7 +78,11 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public decimal GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 
-        public decimal MaxGrossWeight { get => this.maxGrossWeight; set => this.SetProperty(ref this.maxGrossWeight, value); }
+        public double MaxGrossWeight
+        {
+            get => this.maxGrossWeight;
+            set => this.SetProperty(ref this.maxGrossWeight, value);
+        }
 
         public decimal MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
 
@@ -90,13 +92,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(true)));
 
         #endregion
 
         #region Methods
 
-        public async void ChangeSelectedItemAsync(bool isUp)
+        public void ChangeSelectedItem(bool isUp)
         {
             if (!(this.dataGridViewModel is CustomControlDrawerWeightSaturationDataGridViewModel gridData))
             {
@@ -134,10 +136,10 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.MaxGrossWeight = machine.MaxGrossWeight;
-                this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
+                this.MaxNetWeight = (decimal)machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
                 this.NetWeight = loadingUnits.Sum(l => l.GrossWeight) - loadingUnits.Sum(l => l.Tare);
-                this.NetWeightPercent = this.NetWeight / this.MaxNetWeight;
+                this.NetWeightPercent = this.NetWeight * 100 / this.MaxNetWeight;
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }

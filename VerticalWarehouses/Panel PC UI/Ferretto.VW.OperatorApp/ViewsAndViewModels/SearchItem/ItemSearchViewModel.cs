@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ServiceUtilities.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 {
@@ -26,7 +25,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IBayManager bayManager;
 
-        private readonly IMachineProvider machineProvider;
+        private readonly IIdentityMachineService identityService;
 
         private readonly INavigationService navigationService;
 
@@ -67,8 +66,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
             INavigationService navigationService,
-            IMachineProvider machineProvider
-            )
+            IIdentityMachineService identityService)
         {
             if (statusMessageService == null)
             {
@@ -91,7 +89,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             }
 
             this.StatusMessageService = statusMessageService;
-            this.machineProvider = machineProvider;
+            this.identityService = identityService;
             this.wmsDataProvider = wmsDataProvider;
             this.bayManager = bayManager;
             this.navigationService = navigationService;
@@ -124,7 +122,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
                 },
                 this.CanShowDetails));
 
-        public BindingList<Item> Items { get => new BindingList<Item>(this.items); }
+        public BindingList<Item> Items => new BindingList<Item>(this.items);
 
         public string RequestedQuantity
         {
@@ -207,7 +205,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
                 return;
             }
 
-            if (!int.TryParse(this.requestedQuantity, out int qty))
+            if (!int.TryParse(this.requestedQuantity, out var qty))
             {
                 return;
             }
@@ -236,10 +234,16 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         public override async Task OnEnterViewAsync()
         {
+            if (this.items != null &&
+                this.selectedItem != null)
+            {
+                return;
+            }
+
             this.currentItemIndex = 0;
             this.RequestedQuantity = "0";
             this.items = new List<Item>();
-            var machineIdentity = await this.machineProvider.GetIdentityAsync();
+            var machineIdentity = await this.identityService.GetAsync();
             this.areaId = machineIdentity.AreaId;
             this.tokenSource = new CancellationTokenSource();
             await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
@@ -290,7 +294,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
                 return false;
             }
 
-            if (int.TryParse(this.requestedQuantity, out int qty))
+            if (int.TryParse(this.requestedQuantity, out var qty))
             {
                 if (qty <= 0)
                 {

@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerService
@@ -53,7 +52,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 case GeneralInfo.Bay3Position1:
                 case GeneralInfo.Bay3Position2:
                 case GeneralInfo.Height:
-                case GeneralInfo.MaxGrossWeight:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
@@ -68,6 +66,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case GeneralInfo.Barrier1Height:
                 case GeneralInfo.Barrier2Height:
                 case GeneralInfo.Barrier3Height:
+                case GeneralInfo.MaxGrossWeight:
                     returnValue = ConfigurationDataType.Integer;
                     break;
 
@@ -416,106 +415,106 @@ namespace Ferretto.VW.MAS.DataLayer
             return ConfigurationDataType.Float;
         }
 
-        private bool CheckConfigurationDataType(long parameter, long category, ConfigurationDataType type)
+        private bool CheckConfigurationDataType(long parameter, ConfigurationCategory category, ConfigurationDataType type)
         {
             ConfigurationDataType actualParameterType;
             switch (category)
             {
-                case (long)ConfigurationCategory.Undefined:
+                case ConfigurationCategory.Undefined:
                     {
                         throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
                     }
-                case (long)ConfigurationCategory.GeneralInfo:
+                case ConfigurationCategory.GeneralInfo:
                     {
                         actualParameterType = this.CheckConfigurationValueType((GeneralInfo)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.SetupNetwork:
+                case ConfigurationCategory.SetupNetwork:
                     {
                         actualParameterType = this.CheckConfigurationValueType((SetupNetwork)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.SetupStatus:
+                case ConfigurationCategory.SetupStatus:
                     {
                         actualParameterType = this.CheckConfigurationValueType((SetupStatus)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.VerticalAxis:
+                case ConfigurationCategory.VerticalAxis:
                     {
                         actualParameterType = this.CheckConfigurationValueType((VerticalAxis)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.HorizontalAxis:
+                case ConfigurationCategory.HorizontalAxis:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalAxis)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.HorizontalMovementForwardProfile:
+                case ConfigurationCategory.HorizontalMovementForwardProfile:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalMovementForwardProfile)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.HorizontalMovementBackwardProfile:
+                case ConfigurationCategory.HorizontalMovementBackwardProfile:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalMovementBackwardProfile)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.VerticalManualMovements:
+                case ConfigurationCategory.VerticalManualMovements:
                     {
                         actualParameterType = this.CheckConfigurationValueType((VerticalManualMovements)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.HorizontalManualMovements:
+                case ConfigurationCategory.HorizontalManualMovements:
                     {
                         actualParameterType = this.CheckConfigurationValueType((HorizontalManualMovements)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.BeltBurnishing:
+                case ConfigurationCategory.BeltBurnishing:
                     {
                         actualParameterType = this.CheckConfigurationValueType((BeltBurnishing)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.ResolutionCalibration:
+                case ConfigurationCategory.ResolutionCalibration:
                     {
                         actualParameterType = this.CheckConfigurationValueType((ResolutionCalibration)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.OffsetCalibration:
+                case ConfigurationCategory.OffsetCalibration:
                     {
                         actualParameterType = this.CheckConfigurationValueType((OffsetCalibration)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.CellControl:
+                case ConfigurationCategory.CellControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((CellControl)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.PanelControl:
+                case ConfigurationCategory.PanelControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((PanelControl)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.ShutterHeightControl:
+                case ConfigurationCategory.ShutterHeightControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((ShutterHeightControl)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.WeightControl:
+                case ConfigurationCategory.WeightControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((WeightControl)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.BayPositionControl:
+                case ConfigurationCategory.BayPositionControl:
                     {
                         actualParameterType = this.CheckConfigurationValueType((BayPositionControl)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.LoadFirstDrawer:
+                case ConfigurationCategory.LoadFirstDrawer:
                     {
                         actualParameterType = this.CheckConfigurationValueType((LoadFirstDrawer)parameter);
                         break;
                     }
-                case (long)ConfigurationCategory.ShutterManualMovements:
+                case ConfigurationCategory.ShutterManualMovements:
                     {
                         actualParameterType = this.CheckConfigurationValueType((ShutterManualMovements)parameter);
                         break;

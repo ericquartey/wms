@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
-    public class DataLayerContext : DbContext
+    public partial class DataLayerContext : DbContext
     {
         #region Fields
 
@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         private const string DEFAULT_APPLICATION_SETTINGS_FILE = "appsettings.json";
 
         #endregion
-
-        // TODO: use IConfiguration injection instead
 
         #region Constructors
 
@@ -31,15 +29,20 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DataLayerContext(DbContextOptions<DataLayerContext> options)
             : base(options)
         {
+            this.Options = options;
         }
 
         #endregion
 
         #region Properties
 
+        public DbSet<Bay> Bays { get; set; }
+
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
+
+        public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
 
         public DbSet<Error> Errors { get; set; }
 
@@ -53,9 +56,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
 
-        public DbSet<RuntimeValue> RuntimeValues { get; set; }
-
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         #endregion
 
@@ -72,6 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             {
                 return;
             }
+
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(DEFAULT_APPLICATION_SETTINGS_FILE, optional: false, reloadOnChange: false)
@@ -94,18 +98,15 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
-            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
-
-            modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new RuntimeValuesConfiguration());
-
-            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
-
+            modelBuilder.ApplyConfiguration(new BaysConfiguration());
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
-
+            modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
+            modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new ServicingInfoConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConfiguration());
         }
 
         #endregion

@@ -84,11 +84,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private void ExecuteBeltBurnishing_Method(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
             var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptySpeed, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptySpeed, ConfigurationCategory.VerticalAxis);
             var acceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyAcceleration, ConfigurationCategory.VerticalAxis);
             var deceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                (long)VerticalAxis.MaxEmptyDeceleration, ConfigurationCategory.VerticalAxis);
 
             var positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
@@ -111,23 +111,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageType.Positioning));
         }
 
-        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<decimal> GetDecimalConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
+            var category = (ConfigurationCategory)categoryId;
 
-            switch (categoryId)
+            switch (category)
             {
                 case ConfigurationCategory.VerticalAxis:
 
-                    Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
+                    var parseSuccess = Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
 
-                    if (verticalAxisParameterId != null)
+                    if (parseSuccess)
                     {
                         decimal value1;
 
                         try
                         {
-                            value1 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)verticalAxisParameterId, (long)categoryId);
+                            value1 = this.dataLayerConfigurationValueManagement
+                                .GetDecimalConfigurationValue(
+                                (long)verticalAxisParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -149,7 +153,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value2;
                         try
                         {
-                            value2 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)horizontalAxisParameterId, (long)categoryId);
+                            value2 = this.dataLayerConfigurationValueManagement
+                                .GetDecimalConfigurationValue(
+                                (long)horizontalAxisParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -169,7 +176,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         decimal value3;
                         try
                         {
-                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue((long)resolutionCalibrationParameterId, (long)categoryId);
+                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
+                                (long)resolutionCalibrationParameterId,
+                                category);
                         }
                         catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                         {
@@ -187,10 +196,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return 0;
         }
 
-        private ActionResult<int> GetIntegerConfigurationParameter_Method(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameter_Method(string categoryString, string parameter)
         {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
             Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
+            var category = (ConfigurationCategory)categoryId;
 
             if (parameterId != null)
             {
@@ -198,7 +208,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 try
                 {
-                    value = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)parameterId, (long)categoryId);
+                    value = this.dataLayerConfigurationValueManagement
+                        .GetIntegerConfigurationValue(
+                        (long)parameterId,
+                        category);
                 }
                 catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {
@@ -219,7 +232,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.BeltBurnishingDone, (long)ConfigurationCategory.SetupStatus, true);
+                this.dataLayerConfigurationValueManagement
+                    .SetBoolConfigurationValue(
+                    (long)SetupStatus.BeltBurnishingDone,
+                    ConfigurationCategory.SetupStatus,
+                    true);
             }
             catch
             {

@@ -4,11 +4,11 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : ILoadFirstDrawer
+    public partial class DataLayerService : ILoadFirstDrawerDataLayer
     {
         #region Properties
 
-        public decimal FeedRateLFD => this.GetDecimalConfigurationValue((long)LoadFirstDrawer.FeedRate, (long)ConfigurationCategory.LoadFirstDrawer);
+        public decimal FeedRateLFD => this.GetDecimalConfigurationValue((long)LoadFirstDrawer.FeedRate, ConfigurationCategory.LoadFirstDrawer);
 
         #endregion
     }

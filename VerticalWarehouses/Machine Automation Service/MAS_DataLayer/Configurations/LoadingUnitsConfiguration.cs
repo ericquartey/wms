@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class LoadingUnitsConfiguration : IEntityTypeConfiguration<LoadingUnit>
+    internal class LoadingUnitsConfiguration : IEntityTypeConfiguration<LoadingUnit>
     {
         #region Methods
 

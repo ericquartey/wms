@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Utils;
+﻿using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Operator.Interfaces;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
-using Ferretto.VW.WmsCommunication.Interfaces;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 {
@@ -18,39 +17,52 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
     {
         #region Fields
 
-        private readonly CustomControlListDataGridViewModel dataGridViewModelRef;
+        private readonly IAreasDataService areasDataService;
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IIdentityMachineService identityService;
+
+        private readonly IItemListsDataService itemListsDataService;
 
         private readonly INavigationService navigationService;
 
-        private readonly IWmsDataProvider wmsDataProvider;
+        private int areaId;
 
-        private ICommand buttonDown;
+        private int currentItemIndex;
 
-        private ICommand buttonUp;
+        private ICommand downDataGridButtonCommand;
 
-        private int currentSelectedItem;
+        private ICommand itemDetailButtonCommand;
 
-        private BindableBase dataGridViewModel;
+        private ICommand listExecuteCommand;
 
-        private ICommand detailListButtonCommand;
+        private IList<ItemList> lists;
 
-        private ObservableCollection<DataGridList> lists;
+        private int machineId;
+
+        private ItemList selectedList;
+
+        private ICommand upDataGridButtonCommand;
 
         #endregion
 
         #region Constructors
 
         public ListsInWaitViewModel(
-            IEventAggregator eventAggregator,
+            IStatusMessageService statusMessageService,
+            IIdentityMachineService identityService,
             INavigationService navigationService,
-            ICustomControlListDataGridViewModel listDataGridViewModel,
-            IWmsDataProvider wmsDataProvider)
+            IItemListsDataService itemListsDataService,
+            IAreasDataService areasDataService
+            )
         {
-            if (eventAggregator == null)
+            if (statusMessageService == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(statusMessageService));
+            }
+
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
             }
 
             if (navigationService == null)
@@ -58,17 +70,21 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            if (wmsDataProvider == null)
+            if (itemListsDataService == null)
             {
-                throw new ArgumentNullException(nameof(wmsDataProvider));
+                throw new ArgumentNullException(nameof(itemListsDataService));
             }
 
-            this.eventAggregator = eventAggregator;
-            this.navigationService = navigationService;
-            this.wmsDataProvider = wmsDataProvider;
-            this.ListDataGridViewModel = listDataGridViewModel;
-            this.dataGridViewModelRef = listDataGridViewModel as CustomControlListDataGridViewModel;
+            if (areasDataService == null)
+            {
+                throw new ArgumentNullException(nameof(areasDataService));
+            }
 
+            this.StatusMessageService = statusMessageService;
+            this.identityService = identityService;
+            this.navigationService = navigationService;
+            this.itemListsDataService = itemListsDataService;
+            this.areasDataService = areasDataService;
             this.NavigationViewModel = null;
         }
 
@@ -76,65 +92,124 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 
         #region Properties
 
-        public ICommand ButtonDown => this.buttonDown ?? (this.buttonDown = new DelegateCommand(() => this.ChangeSelectedItem(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
 
-        public ICommand ButtonUp => this.buttonUp ?? (this.buttonUp = new DelegateCommand(() => this.ChangeSelectedItem(true)));
+        public ICommand ItemDetailButtonCommand =>
+            this.itemDetailButtonCommand
+            ??
+            (this.itemDetailButtonCommand = new DelegateCommand(() =>
+            {
+                if (this.SelectedList != null)
+                {
+                    this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.selectedList);
+                }
+            },
+            this.CanShowDetails));
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+        public ICommand ListExecuteCommand =>
+            this.listExecuteCommand
+            ??
+            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
 
-        public ICommand DetailListButtonCommand => this.detailListButtonCommand ?? (this.detailListButtonCommand = new DelegateCommand(
-            () => this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.lists[this.currentSelectedItem])));
+        public IList<ItemList> Lists => new List<ItemList>(this.lists);
 
-        public ICustomControlListDataGridViewModel ListDataGridViewModel { get; }
+        public ItemList SelectedList
+        {
+            get => this.selectedList;
+            set
+            {
+                if (this.SetProperty(ref this.selectedList, value))
+                {
+                    ((DelegateCommand)this.ListExecuteCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)this.ItemDetailButtonCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public IStatusMessageService StatusMessageService { get; }
+
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
 
         #endregion
 
         #region Methods
 
+        public void ChangeSelectedListAsync(bool isUp)
+        {
+            if (this.lists == null)
+            {
+                return;
+            }
+
+            if (this.lists.Count() != 0)
+            {
+                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.lists.Count())
+                {
+                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : this.lists.Count() - 1;
+                }
+
+                this.SelectedList = this.lists[this.currentItemIndex];
+            }
+        }
+
+        public async Task ExecuteListAsync()
+        {
+            try
+            {
+                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId);
+                await this.LoadListsAsync();
+            }
+            catch (Exception ex)
+            {
+                this.StatusMessageService.Notify(ex, $"Cannot execute List.");
+            }
+        }
+
         public override async Task OnEnterViewAsync()
         {
-            var listsFromWms = await this.wmsDataProvider.GetItemLists();
-
-            this.lists = new ObservableCollection<DataGridList>();
-            for (var i = 0; i < listsFromWms.Count; i++)
+            if (this.selectedList != null)
             {
-                this.lists.Add(new DataGridList
-                {
-                    Type = listsFromWms[i].ItemListType.ToString(),
-                    List = listsFromWms[i].Id.ToString(),
-                    Description = listsFromWms[i].Description,
-                    Machines = (listsFromWms[i].Machines == null) ? "---" : listsFromWms[i].Machines.ToString()
-                }
-                );
+                return;
             }
 
-            this.dataGridViewModelRef.Lists = this.lists;
-            this.dataGridViewModelRef.SelectedList = this.lists[this.currentSelectedItem];
-            this.DataGridViewModel = this.dataGridViewModelRef;
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
-        }
-
-        private void ChangeSelectedItem(bool isUp)
-        {
-            this.currentSelectedItem = (isUp) ? --this.currentSelectedItem : ++this.currentSelectedItem;
-            if (this.currentSelectedItem < 0)
+            var identityService = await this.identityService.GetAsync();
+            if (identityService == null)
             {
-                this.currentSelectedItem = 0;
+                return;
             }
-            if (this.currentSelectedItem >= this.lists.Count)
+
+            this.machineId = identityService.Id;
+            this.areaId = identityService.AreaId;
+            await this.LoadListsAsync();
+        }
+
+        private bool CanExecuteList()
+        {
+            if (this.selectedList == null)
             {
-                this.currentSelectedItem = this.lists.Count - 1;
+                return false;
             }
-            (this.dataGridViewModel as CustomControlListDataGridViewModel).SelectedList = this.lists[this.currentSelectedItem];
+
+            if (this.selectedList.Machines.Any(m => m.Id == this.machineId))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CanShowDetails()
+        {
+            return this.SelectedList != null;
+        }
+
+        private async Task LoadListsAsync()
+        {
+            this.lists = await this.areasDataService.GetItemListsAsync(this.areaId);
+            this.RaisePropertyChanged(nameof(this.Lists));
+            this.currentItemIndex = 0;
+            this.SelectedList = this.lists.FirstOrDefault();
         }
 
         #endregion

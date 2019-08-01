@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private void BayNowServiceableMethod()
         {
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.OperationEnd));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionOperationCompleted, MessageStatus.OperationEnd));
         }
 
         private async Task ExecuteHomingMethod()
@@ -41,67 +41,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageStatus.OperationEnd));
 
             await Task.Delay(2000);
-
-            return;
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(
-                null,
-                "Homing Started",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.Homing,
-                MessageStatus.OperationStart));
-
-            await Task.Delay(2000);
-
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(2000);
-
-            //TEMP this.eventAggregator.GetEvent<NotificationEvent>()
-            //TEMP     .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
-            //TEMP await Task.Delay(2000);
-
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(4000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Vertical Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.VerticalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationStart));
-            await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Switching Engine Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
-            await Task.Delay(2000);
-
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationStart));
-            //await Task.Delay(2000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
-            //await Task.Delay(4000);
-            //this.eventAggregator.GetEvent<NotificationEvent>()
-            //    .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
-            //await Task.Delay(2000);
-            this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
         }
 
         private async Task ExecuteResolutionCalibrationMethod(decimal readInitialPosition, decimal readFinalPosition)
@@ -198,18 +137,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        private ActionResult<int> GetIntegerConfigurationParameterMethod(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameterMethod(string categoryString, string parameter)
         {
-            var categoryEnum = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), category);
+            var category = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), categoryString);
 
             long longParameter;
             long longCategory;
 
-            switch (categoryEnum)
+            switch (category)
             {
                 case ConfigurationCategory.GeneralInfo:
                     {
-                        longCategory = (long)categoryEnum;
+                        longCategory = (long)category;
                         longParameter = (long)Enum.Parse(typeof(GeneralInfo), parameter);
                         break;
                     }
@@ -221,7 +160,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
             }
 
-            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValue(longParameter, longCategory);
+            var returnValue = this.dataLayerConfigurationValueManagment
+                .GetIntegerConfigurationValue(longParameter, category);
 
             return this.Ok(returnValue);
         }

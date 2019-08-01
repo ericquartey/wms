@@ -5,15 +5,15 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService : IResolutionCalibration
+    public partial class DataLayerService : IResolutionCalibrationDataLayer
     {
         #region Properties
 
-        public decimal FeedRate => this.GetDecimalConfigurationValue((long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
+        public decimal FeedRate => this.GetDecimalConfigurationValue((long)ResolutionCalibration.FeedRate, ConfigurationCategory.ResolutionCalibration);
 
-        public decimal FinalPosition => this.GetDecimalConfigurationValue((long)ResolutionCalibration.FinalPosition, (long)ConfigurationCategory.ResolutionCalibration);
+        public decimal FinalPosition => this.GetDecimalConfigurationValue((long)ResolutionCalibration.FinalPosition, ConfigurationCategory.ResolutionCalibration);
 
-        public decimal InitialPosition => this.GetDecimalConfigurationValue((long)ResolutionCalibration.InitialPosition, (long)ConfigurationCategory.ResolutionCalibration);
+        public decimal InitialPosition => this.GetDecimalConfigurationValue((long)ResolutionCalibration.InitialPosition, ConfigurationCategory.ResolutionCalibration);
 
         #endregion
     }

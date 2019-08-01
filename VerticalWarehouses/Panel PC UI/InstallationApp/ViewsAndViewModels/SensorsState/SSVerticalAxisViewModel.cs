@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
-using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -14,11 +12,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
     {
         #region Fields
 
+        private const int INVERTER_INPUTS = 64;
+
+        private const int REMOTEIO_INPUTS = 48;
+
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IOSensorsStatus ioSensorsStatus;
-
-        private IUnityContainer container;
+        private readonly IUpdateSensorsMachineService updateSensorsService;
 
         private bool cradleEngineSelected;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private bool luPresentInOperatorSide;
 
-        private IUpdateSensorsService updateSensorsService;
+        private bool[] sensorStatus;
 
         private SubscriptionToken updateVerticalandCradleSensorsState;
 
@@ -42,11 +42,24 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         #region Constructors
 
-        public SSVerticalAxisViewModel(IEventAggregator eventAggregator)
+        public SSVerticalAxisViewModel(
+            IEventAggregator eventAggregator,
+            IUpdateSensorsMachineService updateSensorsService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (updateSensorsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(updateSensorsService));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.ioSensorsStatus = new IOSensorsStatus();
+            this.updateSensorsService = updateSensorsService;
             this.NavigationViewModel = null;
+            this.sensorStatus = new bool[REMOTEIO_INPUTS + INVERTER_INPUTS];
         }
 
         #endregion
@@ -65,6 +78,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         public BindableBase NavigationViewModel { get; set; }
 
+        public bool[] SensorStatus { get => this.sensorStatus; set => this.SetProperty(ref this.sensorStatus, value); }
+
         public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
 
         public bool ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
@@ -78,15 +93,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsService>();
-        }
-
         public async Task OnEnterViewAsync()
         {
-            this.DisableVerticalandCradleSensorsState();
+            //this.DisableVerticalandCradleSensorsState();
             this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                 message => this.UpdateVerticalandCradleSensorsState(message.Data.SensorsStates),
@@ -101,28 +110,30 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVerticalandCradleSensorsState);
         }
 
-        private void DisableVerticalandCradleSensorsState()
-        {
-            this.EmergencyEndRun = false;
-            this.ZeroVerticalSensor = false;
-            this.ElevatorEngineSelected = false;
-            this.CradleEngineSelected = false;
-            this.ZeroPawlSensor = false;
-            this.LuPresentInMachineSide = false;
-            this.LuPresentInOperatorSide = false;
-        }
+        //private void DisableVerticalandCradleSensorsState()
+        //{
+        //    this.EmergencyEndRun = false;
+        //    this.ZeroVerticalSensor = false;
+        //    this.ElevatorEngineSelected = false;
+        //    this.CradleEngineSelected = false;
+        //    this.ZeroPawlSensor = false;
+        //    this.LuPresentInMachineSide = false;
+        //    this.LuPresentInOperatorSide = false;
+        //}
 
         private void UpdateVerticalandCradleSensorsState(bool[] message)
         {
-            this.ioSensorsStatus.UpdateInputStates(message);
+            this.SensorStatus = message;
 
-            this.EmergencyEndRun = this.ioSensorsStatus.EmergencyEndRun;
-            this.ZeroVerticalSensor = this.ioSensorsStatus.ZeroVertical;
-            this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
-            this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
-            this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
-            this.LuPresentInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
-            this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
+            //this.ioSensorsStatus.UpdateInputStates(message);
+
+            //this.EmergencyEndRun = this.ioSensorsStatus.EmergencyEndRun;
+            //this.ZeroVerticalSensor = this.ioSensorsStatus.ZeroVertical;
+            //this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
+            //this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
+            //this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
+            //this.LuPresentInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
+            //this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
         }
 
         #endregion
