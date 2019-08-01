@@ -1,6 +1,6 @@
-﻿#if DEBUG
+﻿using Ferretto.VW.App.Services.Interfaces;
+#if DEBUG
 using System.Windows;
-using Ferretto.VW.App.Services.Interfaces;
 
 #else
 using System.Diagnostics;

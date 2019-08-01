@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class ErrorConfiguration : IEntityTypeConfiguration<Error>
+    internal class ErrorConfiguration : IEntityTypeConfiguration<Error>
     {
         #region Methods
 

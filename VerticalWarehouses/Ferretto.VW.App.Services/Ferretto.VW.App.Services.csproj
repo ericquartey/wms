@@ -18,7 +18,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\Panel PC UI\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
