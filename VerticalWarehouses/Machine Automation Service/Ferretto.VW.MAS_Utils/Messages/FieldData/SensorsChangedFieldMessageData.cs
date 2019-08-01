@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
                 var sb = new StringBuilder();
                 foreach (var b in this.SensorsStates)
                 {
-                    sb.AppendFormat("{0:x2}", b);
+                    sb.AppendFormat("{0:x2};", b);
                 }
                 sensorsStates = sb.ToString();
             }
