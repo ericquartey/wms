@@ -48,8 +48,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 return base.SaveChanges();
             }
 
-            var affectedRecordsCount = 0;
-
             if (this.Options == this.redundancyService.ActiveDbContextOptions)
             {
                 if (this.redundancyService.IsActiveDbInhibited)
@@ -61,6 +59,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 this.SaveToStandbyDb();
             }
 
+            var affectedRecordsCount = 0;
+
             try
             {
                 lock (this.redundancyService)
@@ -70,20 +70,15 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             }
             catch
             {
-                if (this.Options == this.redundancyService.ActiveDbContextOptions)
-                {
-                    this.redundancyService.SwapContexts();
-                }
-                else
-                {
-                    this.redundancyService.InhibitStanbyDb();
-                }
+                // Do nothing.
+                // Errors are handled in diagnostic interceptor:
+                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             }
 
             return affectedRecordsCount;
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             if (this.redundancyService != null)
             {
@@ -91,6 +86,25 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             }
 
             return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private static void MirrorEntryToStandbyDb(DataLayerContext standbyDbContext, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entry)
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+
+                    standbyDbContext.Add(entry.Entity);
+                    break;
+
+                case EntityState.Deleted:
+                    standbyDbContext.Remove(entry.Entity);
+                    break;
+
+                case EntityState.Modified:
+                    standbyDbContext.Update(entry.Entity);
+                    break;
+            }
         }
 
         private void SaveToStandbyDb()
@@ -110,20 +124,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             {
                 foreach (var entry in this.ChangeTracker.Entries())
                 {
-                    switch (entry.State)
-                    {
-                        case EntityState.Added:
-                            standbyDbContext.Add(entry.Entity);
-                            break;
-
-                        case EntityState.Deleted:
-                            standbyDbContext.Remove(entry.Entity);
-                            break;
-
-                        case EntityState.Modified:
-                            standbyDbContext.Update(entry.Entity);
-                            break;
-                    }
+                    MirrorEntryToStandbyDb(standbyDbContext, entry);
                 }
 
                 lock (this.redundancyService)
@@ -133,7 +134,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             }
             catch
             {
-                this.redundancyService.InhibitStanbyDb();
+                // Do nothing.
+                // Errors are handled in diagnostic interceptor:
+                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             }
         }
 

@@ -13,12 +13,12 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
+using Ferretto.VW.CommonUtils;
 
 namespace Ferretto.VW.App.Installation
 {
