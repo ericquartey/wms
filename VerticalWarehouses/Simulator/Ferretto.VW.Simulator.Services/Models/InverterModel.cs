@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -214,6 +215,28 @@ namespace Ferretto.VW.Simulator.Services.Models
     public class InverterModel
     {
         private InverterType inverterType;
+        private readonly Timer homingTimer;
+        private readonly Timer targetTimer;
+        private readonly bool[] defaultInputValues;
+
+        public InverterModel()
+        {
+            this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
+
+            this.homingTimerActive = false;
+            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
+
+            this.targetTimerActive = false;
+
+            this.OperationMode = InverterOperationMode.Velocity;
+
+            this.DigitalIO = new bool[8];
+
+            //this.defaultInputValues = new bool[] {
+            //    true, false, false, false,
+            //    false, false, true, true,
+            //    3, 1, 1};
+        }
 
         public int Id { get; set; }
 
@@ -222,7 +245,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public InverterType InverterType
         {
             get { return this.inverterType; }
-            set { this.inverterType = value; this.DigitalIO = new bool[value == InverterType.Ang ? 11 : value == InverterType.Agl ? 9 : 8]; }
+            set { this.inverterType = value; }
         }
 
         public InverterOperationMode OperationMode { get; set; }
@@ -233,20 +256,187 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool[] DigitalIO { get; set; }
 
-        public string DigitalIOString
+        public int GetDigitalIO()
         {
-            get
+            int result = 0;
+            for (int i = 0; i < this.DigitalIO.Length; i++)
             {
-                int result = 0;
-                for (int i = 0; i < this.DigitalIO.Length; i++)
+                if (this.DigitalIO[i])
                 {
-                    if (this.DigitalIO[i])
-                    {
-                        result += (int)Math.Pow(2, i);
-                    }
+                    result += (int)Math.Pow(2, i);
                 }
-                return result.ToString();
+            }
+            return result;
+        }
+
+        public int AxisPosition { get; set; }
+
+        private int homingTickCount { get; set; }
+
+        private bool homingTimerActive { get; set; }
+
+        private int targetTickCount { get; set; }
+
+        private bool targetTimerActive { get; set; }
+
+
+        public void BuildHomingStatusWord()
+        {
+            //SwitchON
+            if ((this.ControlWord & 0x0001) > 0)
+            {
+                this.StatusWord |= 0x0002;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFD;
+            }
+
+            //EnableVoltage
+            if ((this.ControlWord & 0x0002) > 0)
+            {
+                this.StatusWord |= 0x0001;
+                this.StatusWord |= 0x0010;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFE;
+                this.StatusWord &= 0xFFEF;
+            }
+
+            //QuickStop
+            if ((this.ControlWord & 0x0004) > 0)
+            {
+                this.StatusWord |= 0x0020;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFDF;
+            }
+
+            //EnableOperation
+            if ((this.ControlWord & 0x0008) > 0)
+            {
+                this.StatusWord |= 0x0004;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFB;
+            }
+
+            //StartHoming
+            if ((this.ControlWord & 0x0010) > 0)
+            {
+                if (!this.homingTimerActive)
+                {
+                    this.homingTimer.Change(0, 1000);
+                    this.homingTimerActive = true;
+                    this.AxisPosition = 0;
+                }
+            }
+            else
+            {
+                this.StatusWord &= 0xEFFF;
+            }
+
+            //Fault Reset
+            if ((this.ControlWord & 0x0080) > 0)
+            {
+                this.StatusWord &= 0xFFBF;
+            }
+
+            //Halt
+            if ((this.ControlWord & 0x0100) > 0)
+            {
             }
         }
+
+        public void BuildVelocityStatusWord()
+        {
+            //SwitchON
+            if ((this.ControlWord & 0x0001) > 0)
+            {
+                this.StatusWord |= 0x0002;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFD;
+            }
+
+            //EnableVoltage
+            if ((this.ControlWord & 0x0002) > 0)
+            {
+                this.StatusWord |= 0x0001;
+                this.StatusWord |= 0x0010;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFE;
+                this.StatusWord &= 0xFFEF;
+            }
+
+            //QuickStop
+            if ((this.ControlWord & 0x0004) > 0)
+            {
+                this.StatusWord |= 0x0020;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFDF;
+            }
+
+            //EnableOperation
+            if ((this.ControlWord & 0x0008) > 0)
+            {
+                this.StatusWord |= 0x0004;
+                if (!this.targetTimerActive)
+                {
+                    this.targetTimer.Change(0, 1000);
+                    this.targetTimerActive = true;
+                }
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFB;
+            }
+
+            //Fault Reset
+            if ((this.ControlWord & 0x0080) > 0)
+            {
+                this.StatusWord &= 0xFFBF;
+            }
+
+            //Halt
+            if ((this.ControlWord & 0x0100) > 0)
+            {
+            }
+        }
+
+        public void HomingTick(object state)
+        {
+            this.homingTickCount++;
+
+            if (this.homingTickCount > 10)
+            {
+                this.StatusWord |= 0x1000;
+                this.homingTimerActive = false;
+                this.homingTimer.Change(-1, Timeout.Infinite);
+            }
+        }
+
+        private void TargetTick(object state)
+        {
+            this.targetTickCount++;
+
+            if (this.targetTickCount > 10)
+            {
+                this.StatusWord |= 0x0400;
+                this.targetTimerActive = false;
+                this.targetTimer.Change(-1, Timeout.Infinite);
+                // Reset contatore
+                this.targetTickCount = 0;
+            }
+        }
+
     }
 }

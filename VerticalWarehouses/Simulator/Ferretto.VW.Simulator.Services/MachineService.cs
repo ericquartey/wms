@@ -201,18 +201,10 @@ namespace Ferretto.VW.Simulator.Services
                         break;
 
                     case InverterParameterId.DigitalInputsOutputs:
-                        string inputValues = $" {string.Join(" ", this.Inverters.Select(x => x.DigitalIOString).ToArray())} ";
-                        int byteLength = 0x04 + inputValues.Length;
-                        byte[] ioStatusMessageHeader = new byte[byteLength + 2];
-                        ioStatusMessageHeader[0] = 0x00;
-                        ioStatusMessageHeader[1] = (byte)(byteLength);
-                        ioStatusMessageHeader[2] = (byte)systemIndex;
-                        ioStatusMessageHeader[3] = dataSetIndex;
-                        ioStatusMessageHeader[4] = message[4];
-                        ioStatusMessageHeader[5] = message[5];
-                        var payloadBytes = Encoding.ASCII.GetBytes(inputValues);
-                        Array.Copy(payloadBytes, 0, ioStatusMessageHeader, 6, payloadBytes.Length);
-                        result = client.Client.Send(ioStatusMessageHeader);
+                        var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + x.Last().GetDigitalIO() >> 8).ToArray();
+                        string inputValues = $" {string.Join(" ", values)} ";
+                        var ioStatusMessage = this.FormatMessage(message, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
+                        result = client.Client.Send(ioStatusMessage);
                         break;
 
                     case InverterParameterId.SetOperatingModeParam:
@@ -232,7 +224,34 @@ namespace Ferretto.VW.Simulator.Services
                         break;
 
                     case InverterParameterId.StatusWordParam:
+                        //inverter.StatusWord = ushortPayload;
+                        switch(inverter.OperationMode)
+                        {
+                            case InverterOperationMode.Homing:
+                                inverter.BuildHomingStatusWord();
+                                break;
+
+                            case InverterOperationMode.Velocity:
+                            case InverterOperationMode.ProfileVelocity:
+                                inverter.BuildVelocityStatusWord();
+                                break;
+
+                            default:
+                                if (System.Diagnostics.Debugger.IsAttached)
+                                {
+                                    System.Diagnostics.Debugger.Break();
+                                }
+                                break;
+                        }
+                        var statusWordMessage = this.FormatMessage(message, systemIndex, dataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
+                        result = client.Client.Send(statusWordMessage);
+                        break;
+
                     case InverterParameterId.ActualPositionShaft:
+                        var actualPositionMessage = this.FormatMessage(message, systemIndex, dataSetIndex, BitConverter.GetBytes(++inverter.AxisPosition));
+                        result = client.Client.Send(actualPositionMessage);
+                        break;
+
                     case InverterParameterId.StatusDigitalSignals:
                     case InverterParameterId.ShutterTargetPosition:
                         break;
@@ -250,6 +269,23 @@ namespace Ferretto.VW.Simulator.Services
                 throw new NotSupportedException();
             }
         }
+
+        private byte [] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte [] inputValues)
+        {
+            int byteLength;
+            byte[] byteMessage;
+            byteLength = 0x04 + inputValues.Length;
+            byteMessage = new byte[byteLength + 2];
+            byteMessage[0] = 0x00;
+            byteMessage[1] = (byte)(byteLength);
+            byteMessage[2] = (byte)systemIndex;
+            byteMessage[3] = dataSetIndex;
+            byteMessage[4] = message[4];
+            byteMessage[5] = message[5];
+            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
+            return byteMessage;
+        }
+
 
         private void ReplyIoDriver(TcpClient client, byte[] message, int index)
         {

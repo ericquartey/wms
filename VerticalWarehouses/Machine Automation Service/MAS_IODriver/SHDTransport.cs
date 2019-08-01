@@ -216,6 +216,10 @@ namespace Ferretto.VW.MAS.IODriver
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
@@ -246,6 +250,10 @@ namespace Ferretto.VW.MAS.IODriver
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 if (delay > 0)
