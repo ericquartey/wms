@@ -101,7 +101,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new BaysConfiguration());
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new DatabaseRoleConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
