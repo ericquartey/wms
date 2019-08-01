@@ -217,6 +217,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         private InverterType inverterType;
         private readonly Timer homingTimer;
         private readonly Timer targetTimer;
+        private readonly bool[] defaultInputValues;
 
         public InverterModel()
         {
@@ -229,6 +230,12 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.OperationMode = InverterOperationMode.Velocity;
 
+            this.DigitalIO = new bool[8];
+
+            //this.defaultInputValues = new bool[] {
+            //    true, false, false, false,
+            //    false, false, true, true,
+            //    3, 1, 1};
         }
 
         public int Id { get; set; }
@@ -238,7 +245,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public InverterType InverterType
         {
             get { return this.inverterType; }
-            set { this.inverterType = value; this.DigitalIO = new bool[value == InverterType.Ang ? 11 : value == InverterType.Agl ? 9 : 8]; }
+            set { this.inverterType = value; }
         }
 
         public InverterOperationMode OperationMode { get; set; }
@@ -249,20 +256,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool[] DigitalIO { get; set; }
 
-        public string DigitalIOString
+        public int GetDigitalIO()
         {
-            get
+            int result = 0;
+            for (int i = 0; i < this.DigitalIO.Length; i++)
             {
-                int result = 0;
-                for (int i = 0; i < this.DigitalIO.Length; i++)
+                if (this.DigitalIO[i])
                 {
-                    if (this.DigitalIO[i])
-                    {
-                        result += (int)Math.Pow(2, i);
-                    }
+                    result += (int)Math.Pow(2, i);
                 }
-                return result.ToString();
             }
+            return result;
         }
 
         public int AxisPosition { get; set; }
