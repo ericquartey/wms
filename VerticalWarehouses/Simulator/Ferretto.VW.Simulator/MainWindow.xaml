@@ -37,6 +37,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -167,30 +168,40 @@
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
                     Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
 
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                <custom:CustomSensorControl Grid.Row="1"
-                                            Grid.Column="1"
+            <Grid Grid.Row="1"
+                  Grid.Column="1">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <custom:CustomSensorControl Grid.Column="0"
                                             Margin="0,0,10,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            LabelText="Simulation Started"
+                                            LabelText="{x:Static res:General.SimulatorStarted}"
                                             SensorState="{Binding InverterService.IsStartedSimulator}"
                                             Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
-                <custom:CustomSensorControl Grid.Row="1"
-                                            Grid.Column="1"
+                <custom:CustomSensorControl Grid.Column="1"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
                                             LabelText="Sicurezza"
                                             SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-            </StackPanel>
-            <!--  IoDrive  -->
+            </Grid>
+
             <StackPanel Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Orientation="Horizontal">
+                <CheckBox Foreground="White">
+                    Force FLAG Securiry
+                </CheckBox>
+            </StackPanel>
+
+            <!--  IoDrive  -->
+            <StackPanel Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         HorizontalAlignment="Stretch"
@@ -341,7 +352,7 @@
             </StackPanel>
 
             <!--  Inverter  -->
-            <StackPanel Grid.Row="3"
+            <StackPanel Grid.Row="4"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         HorizontalAlignment="Stretch"
