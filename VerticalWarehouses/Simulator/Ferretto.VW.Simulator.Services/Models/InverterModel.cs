@@ -217,7 +217,6 @@ namespace Ferretto.VW.Simulator.Services.Models
         private InverterType inverterType;
         private readonly Timer homingTimer;
         private readonly Timer targetTimer;
-        private readonly bool[] defaultInputValues;
 
         public InverterModel()
         {
@@ -231,11 +230,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.OperationMode = InverterOperationMode.Velocity;
 
             this.DigitalIO = new bool[8];
+            this.DigitalIO[0] = true;
 
-            //this.defaultInputValues = new bool[] {
-            //    true, false, false, false,
-            //    false, false, true, true,
-            //    3, 1, 1};
         }
 
         public int Id { get; set; }

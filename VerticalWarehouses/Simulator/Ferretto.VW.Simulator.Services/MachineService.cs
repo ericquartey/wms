@@ -200,7 +200,7 @@ namespace Ferretto.VW.Simulator.Services
                         break;
 
                     case InverterParameterId.DigitalInputsOutputs:
-                        var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + x.Last().GetDigitalIO() >> 8).ToArray();
+                        var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
                         string inputValues = $" {string.Join(" ", values)} ";
                         var ioStatusMessage = this.FormatMessage(message, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
                         result = client.Client.Send(ioStatusMessage);
