@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class ClearOutputsState : IoStateBase
+    public class PowerUpClearOutputsState : IoStateBase
     {
         #region Fields
 
@@ -19,56 +19,56 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         #region Constructors
 
-        public ClearOutputsState(
+        public PowerUpClearOutputsState(
             IIoStateMachine parentStateMachine,
             IoSHDStatus status,
             IoIndex index,
-            ILogger logger)
-            : base(parentStateMachine, logger)
+            ILogger logger )
+            : base( parentStateMachine, logger )
         {
             this.status = status;
             this.index = index;
 
-            logger.LogTrace("1:Method Start");
+            logger.LogTrace( "1:Method Start" );
         }
 
         #endregion
 
         #region Destructors
 
-        ~ClearOutputsState()
+        ~PowerUpClearOutputsState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessMessage(IoSHDMessage message)
+        public override void ProcessMessage( IoSHDMessage message )
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}" );
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
                 message.ValidOutputs &&
                 message.OutputsCleared)
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState( new PowerUpPulseResetState( this.ParentStateMachine, this.status, this.index, this.Logger ) );
             }
         }
 
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        public override void ProcessResponseMessage( IoSHDReadMessage message )
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}" );
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs &&
                 message.OutputsCleared;
 
             //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
-            if (this.status.MatchOutputs(message.Outputs))
+            if (this.status.MatchOutputs( message.Outputs ))
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState( new PowerUpPulseResetState( this.ParentStateMachine, this.status, this.index, this.Logger ) );
             }
         }
 
@@ -79,15 +79,15 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
             lock (this.status)
             {
-                this.status.UpdateOutputStates(clearIoMessage.Outputs);
+                this.status.UpdateOutputStates( clearIoMessage.Outputs );
             }
 
-            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogTrace( $"1:Clear IO={clearIoMessage}" );
 
-            this.ParentStateMachine.EnqueueMessage(clearIoMessage);
+            this.ParentStateMachine.EnqueueMessage( clearIoMessage );
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion
