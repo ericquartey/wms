@@ -58,16 +58,21 @@ namespace Ferretto.VW.Simulator.Services
 
         #endregion
 
+        //public bool EnabledForce { get; set; }
+
         #region Properties
 
-        public bool ForceSicurity { get; private set; }
+        public bool EmergencyState
+        {
+            get { return this.RemoteIOs[0].IOs[0]; }
+            set { this.RemoteIOs[0].IOs[0] = value; }
+        }
 
         public List<InverterModel> Inverters { get; set; }
 
         public bool IsStartedSimulator { get; private set; }
 
         public List<IODeviceModel> RemoteIOs { get; set; }
-
 
         #endregion
 
@@ -301,6 +306,12 @@ namespace Ferretto.VW.Simulator.Services
             const int NBYTES_RECEIVE = 15;
             const int NBYTES_RECEIVE_CFG = 3;
 
+            //if (this.EnabledForce)
+            //{
+            //    // Change state flag from set view
+            //    this.UpdateFlag();
+            //}
+
             var device = this.RemoteIOs.First(x => x.Id == index);
 
             device.Buffer = device.Buffer.AppendArrays(message, message.Length);
@@ -353,6 +364,11 @@ namespace Ferretto.VW.Simulator.Services
             {
                 throw new NotSupportedException();
             }
+        }
+
+        private void UpdateFlag()
+        {
+            //this.RemoteIOs[0].IOs[(int)Emegency] = this.ForceEmergencyEndRun;
         }
 
         #endregion
