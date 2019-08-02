@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -97,15 +96,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             lock (this.CurrentState)
             {
-                if (this.machineSensorsStatus.IsDrawerPartiallyOnCradle)
-                {
-                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, ShutterPosition.None, null, this.Logger);
-                }
-                else
-                {
-                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
-                }
-
+                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
                 this.CurrentState?.Start();
             }
 

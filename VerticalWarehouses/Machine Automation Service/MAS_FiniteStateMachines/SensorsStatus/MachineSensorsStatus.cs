@@ -37,7 +37,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsDrawerCompletelyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
+        public bool IsDrawerInBay1 => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+
         public bool IsDrawerInBay1Up => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
+
+        public bool IsDrawerInBay2 => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
+
+        public bool IsDrawerInBay3 => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
         public bool IsDrawerPartiallyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
