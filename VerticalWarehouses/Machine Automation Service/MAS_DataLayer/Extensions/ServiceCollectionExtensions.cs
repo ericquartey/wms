@@ -42,19 +42,23 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                    configuration.GetDataLayerSecondaryConnectionString(),
                    p.GetRequiredService<ILogger<DataLayerContext>>()));
 
-            services.AddTransient(p =>
+            var subscribed = false;
+            services.AddScoped(p =>
             {
                 var dbContext = new DataLayerContext(
-                   p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>().ActiveDbContextOptions,
+                   isActiveChannel: true,
                    p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>());
 
-                var listener = (DiagnosticListener)dbContext.GetService<DiagnosticSource>();
+                if (!subscribed)
+                {
+                    var listener = (DiagnosticListener)dbContext.GetService<DiagnosticSource>(); // TODO move this out of here
 
-                listener.SubscribeWithAdapter(
-                    new CommandListener(
-                        dbContext,
-                        p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
+                    listener.SubscribeWithAdapter(
+                        new CommandListener(
+                            p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
 
+                    subscribed = true;
+                }
                 return dbContext;
             });
 

@@ -75,12 +75,18 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #region Methods
 
-        public void HandleDbContextFault(TDbContext dbContext, Exception exception)
+        public void HandleDbContextFault(DbContextOptions<TDbContext> dbContextOptions, Exception exception)
         {
+            if (dbContextOptions == null)
+            {
+                throw new ArgumentNullException(nameof(dbContextOptions));
+            }
+
             if (exception != null)
             {
                 if (exception == this.lastSeenException)
                 {
+                    this.logger.LogWarning("Exception already seen, skipping ...");
                     return;
                 }
                 else
@@ -89,37 +95,48 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 }
             }
 
-            if (dbContext.Options == this.ActiveDbContextOptions)
+            if (dbContextOptions == this.ActiveDbContextOptions)
             {
-                this.SwapContexts();
-                this.logger.LogError(exception, "Operation failed on active database. Active database swapped with standby.");
+                this.SwapContexts(exception);
             }
-            else if (dbContext.Options == this.StandbyDbContextOptions)
+            else if (dbContextOptions == this.StandbyDbContextOptions)
             {
                 this.logger.LogError(exception, "Operation failed on standby database.");
                 if (!this.IsStandbyDbInhibited)
                 {
-                    this.InhibitStanbyDb();
-                    this.logger.LogError(exception, "Standby database inhibited.");
+                    this.InhibitStandbyDb();
+                    this.logger.LogError("Standby database inhibited.");
                 }
             }
+            else
+            {
+                throw new ArgumentException(
+                    "The specified database context options do not relate to the acrive nor to the standby database.",
+                    nameof(dbContextOptions));
+            }
+
             if (this.IsActiveDbInhibited)
             {
                 this.logger.LogCritical(exception, "Active database operations inhibited because of previous errors.");
             }
         }
 
-        private void InhibitStanbyDb()
+        public void InhibitStandbyDb()
         {
             this.isInhibited[this.StandbyDbContextOptions] = true;
         }
 
-        private void SwapContexts(bool inhibitActive = true)
+        private void SwapContexts(Exception exception)
         {
-            if (inhibitActive)
+            this.isInhibited[this.ActiveDbContextOptions] = true;
+
+            if (this.isInhibited[this.StandbyDbContextOptions])
             {
-                this.isInhibited[this.ActiveDbContextOptions] = true;
+                this.logger.LogCritical(exception, "Unable to swap active with standby, because standby is inhibited (not usable).");
+                return;
             }
+
+            this.logger.LogError(exception, "Operation failed on active database. Active database swapped with standby.");
 
             var newActiveDbContextOptions = this.StandbyDbContextOptions;
 
