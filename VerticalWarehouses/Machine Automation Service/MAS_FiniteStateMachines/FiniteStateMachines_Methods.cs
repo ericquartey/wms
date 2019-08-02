@@ -255,6 +255,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
+        private void ProcessPowerEnableMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IPowerEnableMessageData data)
+            {
+                var ioDataMessage = new PowerEnableFieldMessageData(data.Enable);
+                var ioMessage = new FieldCommandMessage(
+                    ioDataMessage,
+                    "Power Enable IO digital input",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.PowerEnable,
+                    (byte)this.ioIndexDeviceList[0]);
+
+                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
+            }
+        }
+
         private void ProcessSensorsChangedMessage()
         {
             this.logger.LogTrace("1:Method Start");

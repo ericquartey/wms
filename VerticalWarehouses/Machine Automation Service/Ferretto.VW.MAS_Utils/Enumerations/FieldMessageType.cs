@@ -45,5 +45,7 @@
         SetConfigurationIO,
 
         ResetSecurity,
+
+        PowerEnable
     }
 }
