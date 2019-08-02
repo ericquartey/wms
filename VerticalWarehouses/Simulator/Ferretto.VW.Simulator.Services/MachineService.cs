@@ -318,8 +318,12 @@ namespace Ferretto.VW.Simulator.Services
             if(device.Buffer.Length > 2 && device.Buffer.Length >= device.Buffer[0])
             {
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref device.Buffer, 3, 0, 0);
+                if (extractedMessages.Count > 1 && Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
 
-                foreach(var extractedMessage in extractedMessages)
+                foreach (var extractedMessage in extractedMessages)
                 {
                     var length = extractedMessage[0];
                     var relProtocol = extractedMessage[1];
