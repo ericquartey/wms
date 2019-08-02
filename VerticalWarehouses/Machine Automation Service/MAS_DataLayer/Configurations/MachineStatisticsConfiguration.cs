@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class MachineStatisticsConfiguration : IEntityTypeConfiguration<MachineStatistics>
+    internal class MachineStatisticsConfiguration : IEntityTypeConfiguration<MachineStatistics>
     {
         #region Methods
 

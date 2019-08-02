@@ -31,21 +31,25 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void SaveEntryToDb(LogEntry logEntry)
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            lock (this.serviceScopeFactory)
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-
-                dbContext.LogEntries.Add(logEntry);
-
-                try
+                this.Logger.LogDebug($"Saving log entry '{logEntry.Description}' (id={logEntry.Id})");
+                using (var scope = this.serviceScopeFactory.CreateScope())
                 {
-                    dbContext.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    this.Logger.LogCritical($"4:Exception: failed to write application log entry into database.");
+                    var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
 
-                    throw;
+                    dbContext.LogEntries.Add(logEntry);
+
+                    try
+                    {
+                        dbContext.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        this.Logger.LogCritical($"4:Exception: failed to write application log entry into database.");
+
+                        throw;
+                    }
                 }
             }
         }

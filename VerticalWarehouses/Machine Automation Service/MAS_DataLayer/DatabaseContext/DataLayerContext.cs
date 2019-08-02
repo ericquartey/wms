@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;

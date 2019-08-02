@@ -20,9 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         #region Methods
 
-        void InhibitStanbyDb();
-
-        void SwapContexts(bool inhibitActive = true);
+        void HandleDbContextFault(TDbContext dbContext, System.Exception exception);
 
         #endregion
     }

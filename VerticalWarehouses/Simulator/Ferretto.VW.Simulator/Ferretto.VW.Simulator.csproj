@@ -83,7 +83,6 @@
       <Content Include="Images\Divieto_Light.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj" />
       <ProjectReference Include="..\..\Panel PC UI\Utils\Ferretto.VW.Utils.csproj" />
       <ProjectReference Include="..\Ferretto.VW.Simulator.Controls\Ferretto.VW.Simulator.Controls.csproj" />
       <ProjectReference Include="..\Ferretto.VW.Simulator.Extensions\Ferretto.VW.Simulator.Extensions.csproj" />

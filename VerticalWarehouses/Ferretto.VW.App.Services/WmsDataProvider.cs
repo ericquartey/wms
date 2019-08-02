@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -82,46 +81,6 @@ namespace Ferretto.VW.App.Services
                 this.statusMessageService.Notify(ex);
             }
             return item.Image;
-        }
-
-        public async Task<IEnumerable<ItemList>> GetItemListsAsync()
-        {
-            try
-            {
-                return await this.itemListsDataService.GetAllAsync(take: 10);
-            }
-            catch (SwaggerException ex)
-            {
-                this.statusMessageService.Notify(ex);
-                return new List<ItemList>();
-            }
-        }
-
-        public async Task<IEnumerable<Item>> GetItemsAsync(int areaId, string searchCode, int skip, int take, CancellationToken cancellationToken)
-        {
-            try
-            {
-                return await this.areasDataService.GetItemsAsync(areaId, skip, take, null, null, searchCode, cancellationToken);
-            }
-            catch (SwaggerException ex)
-            {
-                this.statusMessageService.Notify(ex);
-
-                return new List<Item>();
-            }
-        }
-
-        public async Task<IEnumerable<ItemListRow>> GetListRowsAsync(int listId)
-        {
-            try
-            {
-                return await this.itemListsDataService.GetRowsAsync(listId);
-            }
-            catch (Exception ex)
-            {
-                this.statusMessageService.Notify(ex);
-                return new List<ItemListRow>();
-            }
         }
 
         public async Task<IEnumerable<TrayControlCompartment>> GetTrayControlCompartmentsAsync(MissionInfo mission)

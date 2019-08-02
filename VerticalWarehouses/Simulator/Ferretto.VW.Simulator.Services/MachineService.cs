@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
+using static Ferretto.VW.Simulator.Services.BufferUtility;
 using Microsoft.Extensions.Logging;
 using NLog;
 using Prism.Mvvm;
@@ -32,6 +33,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
+        public byte[] Buffer;
+
         #endregion
 
         #region Constructors
@@ -50,6 +53,8 @@ namespace Ferretto.VW.Simulator.Services
             this.RemoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 2 });
+
+            this.RemoteIOs[0].IOs[0] = true;
         }
 
         #endregion
@@ -132,22 +137,6 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues)
-        {
-            int byteLength;
-            byte[] byteMessage;
-            byteLength = 0x04 + inputValues.Length;
-            byteMessage = new byte[byteLength + 2];
-            byteMessage[0] = 0x00;
-            byteMessage[1] = (byte)(byteLength);
-            byteMessage[2] = (byte)systemIndex;
-            byteMessage[3] = dataSetIndex;
-            byteMessage[4] = message[4];
-            byteMessage[5] = message[5];
-            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
-            return byteMessage;
-        }
-
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
         {
             using (client)
@@ -160,7 +149,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         if (socket != null && socket.Connected)
                         {
-                            if (socket.Poll(0, SelectMode.SelectRead))
+                            if (socket.Poll(5000, SelectMode.SelectRead))
                             {
                                 var bytes = socket.Receive(buffer);
                                 if (bytes > 0)
@@ -179,7 +168,6 @@ namespace Ferretto.VW.Simulator.Services
                         {
                             break;
                         }
-                        Task.Delay(50);
                     }
                 }
                 catch (SocketException)
@@ -191,100 +179,106 @@ namespace Ferretto.VW.Simulator.Services
         private void ReplyInverter(TcpClient client, byte[] message)
         {
             const int headerLenght = 6;
-            if (message.Length >= headerLenght)
+            this.Buffer = this.Buffer.AppendArrays(message, message.Length);
+            if (this.Buffer.Length >= headerLenght && this.Buffer.Length >= this.Buffer[1]+2)
             {
-                var isWriteMessage = (message[0] & 0x80) > 0;
-                var isError = (message[0] & 0x40) > 0;
-                var payloadLength = message[1] - 4;
-                var systemIndex = (InverterRole)message[2];
-                var dataSetIndex = message[3];
-                var parameterId = BitConverter.ToInt16(message, 4);
+                var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.Buffer, 4, 1, 2);
 
-                var inverter = this.Inverters.First(x => x.InverterRole == systemIndex);
-
-                byte[] payload = null;
-                ushort ushortPayload = 0;
-                if (message.Length >= headerLenght + payloadLength)
+                foreach (var extractedMessage in extractedMessages)
                 {
-                    payload = new byte[payloadLength];
-                    Array.Copy(message, headerLenght, payload, 0, payloadLength);
+                    var isWriteMessage = (extractedMessage[0] & 0x80) > 0;
+                    var isError = (extractedMessage[0] & 0x40) > 0;
+                    var payloadLength = extractedMessage[1] - 4;
+                    var systemIndex = (InverterRole)extractedMessage[2];
+                    var dataSetIndex = extractedMessage[3];
+                    var parameterId = BitConverter.ToInt16(extractedMessage, 4);
 
-                    if (payload.Length == 2)
+                    var inverter = this.Inverters.First(x => x.InverterRole == systemIndex);
+
+                    byte[] payload = null;
+                    ushort ushortPayload = 0;
+                    if (extractedMessage.Length >= headerLenght + payloadLength)
                     {
-                        ushortPayload = BitConverter.ToUInt16(payload, 0);
+                        payload = new byte[payloadLength];
+                        Array.Copy(extractedMessage, headerLenght, payload, 0, payloadLength);
+
+                        if (payload.Length == 2)
+                        {
+                            ushortPayload = BitConverter.ToUInt16(payload, 0);
+                        }
                     }
-                }
 
-                int result = 0;
-                switch ((InverterParameterId)parameterId)
-                {
-                    case InverterParameterId.ControlWordParam:
-                        inverter.ControlWord = ushortPayload;
-                        result = client.Client.Send(message);
-                        break;
+                    int result = 0;
+                    switch ((InverterParameterId)parameterId)
+                    {
+                        case InverterParameterId.ControlWordParam:
+                            inverter.ControlWord = ushortPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
 
-                    case InverterParameterId.DigitalInputsOutputs:
-                        var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
-                        string inputValues = $" {string.Join(" ", values)} ";
-                        var ioStatusMessage = this.FormatMessage(message, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
-                        result = client.Client.Send(ioStatusMessage);
-                        break;
+                        case InverterParameterId.DigitalInputsOutputs:
+                            var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
+                            string inputValues = $" {string.Join(" ", values)} ";
+                            var ioStatusMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
+                            result = client.Client.Send(ioStatusMessage);
+                            break;
 
-                    case InverterParameterId.SetOperatingModeParam:
-                        inverter.OperationMode = (InverterOperationMode)ushortPayload;
-                        result = client.Client.Send(message);
-                        break;
+                        case InverterParameterId.SetOperatingModeParam:
+                            inverter.OperationMode = (InverterOperationMode)ushortPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
 
-                    case InverterParameterId.HomingCreepSpeedParam:
-                    case InverterParameterId.HomingFastSpeedParam:
-                    case InverterParameterId.HomingAcceleration:
-                    case InverterParameterId.PositionAccelerationParam:
-                    case InverterParameterId.PositionDecelerationParam:
-                    case InverterParameterId.PositionTargetPositionParam:
-                    case InverterParameterId.PositionTargetSpeedParam:
-                    case InverterParameterId.ShutterTargetVelocityParam:
-                        result = client.Client.Send(message);
-                        break;
+                        case InverterParameterId.HomingCreepSpeedParam:
+                        case InverterParameterId.HomingFastSpeedParam:
+                        case InverterParameterId.HomingAcceleration:
+                        case InverterParameterId.PositionAccelerationParam:
+                        case InverterParameterId.PositionDecelerationParam:
+                        case InverterParameterId.PositionTargetPositionParam:
+                        case InverterParameterId.PositionTargetSpeedParam:
+                        case InverterParameterId.ShutterTargetVelocityParam:
+                            result = client.Client.Send(extractedMessage);
+                            break;
 
-                    case InverterParameterId.StatusWordParam:
-                        //inverter.StatusWord = ushortPayload;
-                        switch (inverter.OperationMode)
-                        {
-                            case InverterOperationMode.Homing:
-                                inverter.BuildHomingStatusWord();
-                                break;
+                        case InverterParameterId.StatusWordParam:
+                            //inverter.StatusWord = ushortPayload;
+                            switch (inverter.OperationMode)
+                            {
+                                case InverterOperationMode.Homing:
+                                    inverter.BuildHomingStatusWord();
+                                    break;
 
-                            case InverterOperationMode.Velocity:
-                            case InverterOperationMode.ProfileVelocity:
-                                inverter.BuildVelocityStatusWord();
-                                break;
+                                case InverterOperationMode.Velocity:
+                                case InverterOperationMode.ProfileVelocity:
+                                    inverter.BuildVelocityStatusWord();
+                                    break;
 
-                            default:
-                                if (System.Diagnostics.Debugger.IsAttached)
-                                {
-                                    System.Diagnostics.Debugger.Break();
-                                }
-                                break;
-                        }
-                        var statusWordMessage = this.FormatMessage(message, systemIndex, dataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
-                        result = client.Client.Send(statusWordMessage);
-                        break;
+                                default:
+                                    if (System.Diagnostics.Debugger.IsAttached)
+                                    {
+                                        System.Diagnostics.Debugger.Break();
+                                    }
+                                    break;
+                            }
+                            var statusWordMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
+                            result = client.Client.Send(statusWordMessage);
+                            break;
 
-                    case InverterParameterId.ActualPositionShaft:
-                        var actualPositionMessage = this.FormatMessage(message, systemIndex, dataSetIndex, BitConverter.GetBytes(++inverter.AxisPosition));
-                        result = client.Client.Send(actualPositionMessage);
-                        break;
+                        case InverterParameterId.ActualPositionShaft:
+                            var actualPositionMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(++inverter.AxisPosition));
+                            result = client.Client.Send(actualPositionMessage);
+                            break;
 
-                    case InverterParameterId.StatusDigitalSignals:
-                    case InverterParameterId.ShutterTargetPosition:
-                        break;
+                        case InverterParameterId.StatusDigitalSignals:
+                        case InverterParameterId.ShutterTargetPosition:
+                            break;
 
-                    default:
-                        if (System.Diagnostics.Debugger.IsAttached)
-                        {
-                            System.Diagnostics.Debugger.Break();
-                        }
-                        break;
+                        default:
+                            if (System.Diagnostics.Debugger.IsAttached)
+                            {
+                                System.Diagnostics.Debugger.Break();
+                            }
+                            break;
+                    }
                 }
             }
             else
@@ -293,9 +287,25 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
+        private byte [] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte [] inputValues)
+        {
+            int byteLength;
+            byte[] byteMessage;
+            byteLength = 0x04 + inputValues.Length;
+            byteMessage = new byte[byteLength + 2];
+            byteMessage[0] = 0x00;
+            byteMessage[1] = (byte)(byteLength);
+            byteMessage[2] = (byte)systemIndex;
+            byteMessage[3] = dataSetIndex;
+            byteMessage[4] = message[4];
+            byteMessage[5] = message[5];
+            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
+            return byteMessage;
+        }
+
+
         private void ReplyIoDriver(TcpClient client, byte[] message, int index)
         {
-            const int headerLenght = 4;
             const int NBYTES_RECEIVE = 15;
             const int NBYTES_RECEIVE_CFG = 3;
 
@@ -307,45 +317,55 @@ namespace Ferretto.VW.Simulator.Services
 
             var device = this.RemoteIOs.First(x => x.Id == index);
 
-            if (message.Length >= headerLenght)
+            device.Buffer = device.Buffer.AppendArrays(message, message.Length);
+            if(device.Buffer.Length > 2 && device.Buffer.Length >= device.Buffer[0])
             {
-                var length = message[0];
-                var relProtocol = message[1];
-                var codeOperation = message[2];
-
-                byte[] responseMessage = null;
-                switch (codeOperation)
+                var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref device.Buffer, 3, 0, 0);
+                if (extractedMessages.Count > 1 && Debugger.IsAttached)
                 {
-                    case 0x00: // Data
-                        responseMessage = new byte[NBYTES_RECEIVE];
-                        responseMessage[0] = NBYTES_RECEIVE;            // nBytes
-                        responseMessage[1] = device.FirmwareVersion;    // fwRelease
-                        responseMessage[2] = 0x00;                      // Code op   0x00: data, 0x06: configuration
-                        responseMessage[3] = 0x00;                      // error code
-                        Array.Copy(message, 3, responseMessage, 4, 1);  // output values echo
-                        byte[] inputs = BitConverter.GetBytes(device.IOValue);
-                        responseMessage[5] = inputs[0];
-                        responseMessage[6] = inputs[1];
-                        break;
-
-                    case 0x01: // Config
-                        responseMessage = new byte[NBYTES_RECEIVE_CFG];
-                        responseMessage[0] = NBYTES_RECEIVE_CFG;        // nBytes
-                        responseMessage[1] = device.FirmwareVersion;    // fwRelease
-                        responseMessage[2] = 0x06;                      // Ack  0x00: data, 0x06: configuration
-                        break;
-
-                    case 0x02: // SetIP
-                        break;
-
-                    default:
-                        if (System.Diagnostics.Debugger.IsAttached)
-                        {
-                            System.Diagnostics.Debugger.Break();
-                        }
-                        break;
+                    Debugger.Break();
                 }
-                var result = client.Client.Send(responseMessage);
+
+                foreach (var extractedMessage in extractedMessages)
+                {
+                    var length = extractedMessage[0];
+                    var relProtocol = extractedMessage[1];
+                    var codeOperation = extractedMessage[2];
+
+                    byte[] responseMessage = null;
+                    switch (codeOperation)
+                    {
+                        case 0x00: // Data
+                            responseMessage = new byte[NBYTES_RECEIVE];
+                            responseMessage[0] = NBYTES_RECEIVE;            // nBytes
+                            responseMessage[1] = device.FirmwareVersion;    // fwRelease
+                            responseMessage[2] = 0x00;                      // Code op   0x00: data, 0x06: configuration
+                            responseMessage[3] = 0x00;                      // error code
+                            Array.Copy(extractedMessage, 3, responseMessage, 4, 1);  // output values echo
+                            byte[] inputs = BitConverter.GetBytes(device.IOValue);
+                            responseMessage[5] = inputs[0];
+                            responseMessage[6] = inputs[1];
+                            break;
+
+                        case 0x01: // Config
+                            responseMessage = new byte[NBYTES_RECEIVE_CFG];
+                            responseMessage[0] = NBYTES_RECEIVE_CFG;        // nBytes
+                            responseMessage[1] = device.FirmwareVersion;    // fwRelease
+                            responseMessage[2] = 0x06;                      // Ack  0x00: data, 0x06: configuration
+                            break;
+
+                        case 0x02: // SetIP
+                            break;
+
+                        default:
+                            if (System.Diagnostics.Debugger.IsAttached)
+                            {
+                                System.Diagnostics.Debugger.Break();
+                            }
+                            break;
+                    }
+                    var result = client.Client.Send(responseMessage);
+                }
             }
             else
             {

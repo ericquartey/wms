@@ -30,6 +30,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public byte[] Buffer;
 
     }
 }

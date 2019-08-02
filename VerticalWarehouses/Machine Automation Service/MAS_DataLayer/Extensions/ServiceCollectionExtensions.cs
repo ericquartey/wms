@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.Extensions
 {
@@ -33,15 +36,27 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
             services.AddSingleton(dataLayerConfiguration);
 
-            services.AddSingleton<IDbContextRedundancyService<DataLayerContext>>(
+            services.AddSingleton<IDbContextRedundancyService<DataLayerContext>>(p =>
                 new DbContextRedundancyService<DataLayerContext>(
                    configuration.GetDataLayerPrimaryConnectionString(),
-                   configuration.GetDataLayerSecondaryConnectionString()));
+                   configuration.GetDataLayerSecondaryConnectionString(),
+                   p.GetRequiredService<ILogger<DataLayerContext>>()));
 
             services.AddTransient(p =>
-                new DataLayerContext(
-                    p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>().ActiveDbContextOptions,
-                    p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
+            {
+                var dbContext = new DataLayerContext(
+                   p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>().ActiveDbContextOptions,
+                   p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>());
+
+                var listener = (DiagnosticListener)dbContext.GetService<DiagnosticSource>();
+
+                listener.SubscribeWithAdapter(
+                    new CommandListener(
+                        dbContext,
+                        p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
+
+                return dbContext;
+            });
 
             services.AddSingleton<IDataLayerService, DataLayerService>();
 

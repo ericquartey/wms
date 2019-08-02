@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool[] angInverterInputs;
 
-        private const int TOTAL_SENSOR_INPUTS = 11;
+        private const int TOTAL_SENSOR_INPUTS = 8;
 
         private int currentPositionAxisHorizontal;
 
@@ -38,30 +38,34 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         //INFO ANG Inputs
 
+        //public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
+
+        //public bool ANG_ElevatorMotorTemprature => this.angInverterInputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
+
         #region Properties
 
-        public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
+        public bool ANG_EncoderChannelACradle => this.angInverterInputs?[(int)InverterSensors.ANG_EncoderChannelACradle] ?? false;
 
-        public bool ANG_ElevatorMotorTemprature => this.angInverterInputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
+        public bool ANG_EncoderChannelBCradle => this.angInverterInputs?[(int)InverterSensors.ANG_EncoderChannelBCradle] ?? false;
+
+        public bool ANG_EncoderChannelZCradle => this.angInverterInputs?[(int)InverterSensors.ANG_EncoderChannelZCradle] ?? false;
 
         public bool ANG_HardwareSensorSS1 => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
 
-        public bool ANG_HardwareSensorSTOA => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOA] ?? false;
-
-        public bool ANG_HardwareSensorSTOB => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOB] ?? false;
-
-        public bool ANG_OpticalMeasuringBarrier => this.angInverterInputs?[(int)InverterSensors.ANG_OpticalMeasuringBarrier] ?? false;
+        public bool ANG_HardwareSensorSTO => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTO] ?? false;
 
         public bool ANG_OverrunElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_OverrunElevatorSensor] ?? false;
-
-        public bool ANG_PresenceDrawerOnCradleMachineSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDrawerOnCradleMachineSide] ?? false;
-
-        public bool ANG_PresenceDraweronCradleOperatoreSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDraweronCradleOperatoreSide] ?? false;
 
         public bool ANG_ZeroCradleSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
 
         public bool ANG_ZeroElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroElevatorSensor] ?? false;
+        //public bool ANG_HardwareSensorSTOB => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOB] ?? false;
 
+        //public bool ANG_OpticalMeasuringBarrier => this.angInverterInputs?[(int)InverterSensors.ANG_OpticalMeasuringBarrier] ?? false;
+
+        //public bool ANG_PresenceDrawerOnCradleMachineSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDrawerOnCradleMachineSide] ?? false;
+
+        //public bool ANG_PresenceDraweronCradleOperatoreSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDraweronCradleOperatoreSide] ?? false;
         public int CurrentPositionAxisHorizontal => this.currentPositionAxisHorizontal;
 
         public int CurrentPositionAxisVertical => this.currentPositionAxisVertical;
