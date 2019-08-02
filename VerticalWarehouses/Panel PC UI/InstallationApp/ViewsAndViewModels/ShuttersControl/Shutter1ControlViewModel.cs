@@ -9,11 +9,11 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.CommonUtils;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 {
