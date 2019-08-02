@@ -13,6 +13,7 @@
         <TextBlock Grid.Column="0"
                    Margin="20,0,0,0"
                    VerticalAlignment="Center"
+                   Foreground="{Binding NoteBrush}"
                    Style="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBlockStyle}"
                    Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel Grid.Column="1"
