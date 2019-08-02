@@ -62,5 +62,6 @@
 
         InverterStop,
 
+        ResetHardware
     }
 }
