@@ -329,7 +329,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator,
                     data,
                     this.logger,
-                    this.serviceScopeFactory);
+                    this.serviceScopeFactory,
+                    this.machineSensorsStatus);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
