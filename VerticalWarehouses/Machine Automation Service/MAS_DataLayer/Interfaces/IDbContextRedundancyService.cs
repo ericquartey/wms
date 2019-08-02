@@ -20,7 +20,11 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         #region Methods
 
-        void HandleDbContextFault(TDbContext dbContext, System.Exception exception);
+        void HandleDbContextFault(
+            DbContextOptions<TDbContext> dbContextOptions,
+            System.Exception exception);
+
+        void InhibitStandbyDb();
 
         #endregion
     }
