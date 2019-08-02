@@ -254,8 +254,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.ResetSecurity:
-                        //this.ProcessResetSecurityMessage(receivedMessage);
-                        this.ProcessPowerEnableMessage(receivedMessage);
+                        this.ProcessResetSecurityMessage(receivedMessage);
                         break;
 
                     case MessageType.PowerEnable:
