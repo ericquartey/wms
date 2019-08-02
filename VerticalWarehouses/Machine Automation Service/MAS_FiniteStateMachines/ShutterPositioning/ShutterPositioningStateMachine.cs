@@ -1,6 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,7 +15,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly MachineSensorsStatus machineSensorsStatus;
+        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
@@ -28,7 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             IShutterPositioningMessageData shutterPositioningMessageData,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory,
-            MachineSensorsStatus machineSensorsStatus)
+            IMachineSensorsStatus machineSensorsStatus)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
@@ -36,6 +38,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             this.machineSensorsStatus = machineSensorsStatus;
 
             this.shutterPositioningMessageData = shutterPositioningMessageData;
+
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -96,7 +100,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
+                if (this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1)
+                {
+                    this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, ShutterPosition.None, null, this.Logger);
+                }
+                else
+                {
+                    this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.Logger);
+                }
+
                 this.CurrentState?.Start();
             }
 
