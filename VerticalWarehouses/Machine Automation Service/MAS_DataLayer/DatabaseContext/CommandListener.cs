@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.Data.Sqlite;
@@ -10,14 +9,12 @@ using Microsoft.Extensions.DiagnosticAdapter;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
-    public class CommandListener
+    public class CommandListener<TDbContext>
+        where TDbContext : DbContext, IRedundancyDbContext<TDbContext>
     {
         #region Fields
 
-        private readonly IDictionary<DataLayerContext, bool> contexts
-            = new Dictionary<DataLayerContext, bool>();
-
-        private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
+        private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
         private bool writingOnStandby;
 
@@ -26,7 +23,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #region Constructors
 
         public CommandListener(
-            IDbContextRedundancyService<DataLayerContext> redundancyService)
+            IDbContextRedundancyService<TDbContext> redundancyService)
         {
             if (redundancyService == null)
             {
@@ -84,7 +81,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
                     var dbContext = new DataLayerContext(
                        isActiveChannel: false,
-                       this.redundancyService);
+                       this.redundancyService as IDbContextRedundancyService<DataLayerContext>);
 
                     var parametersArray = new SqliteParameter[command.Parameters.Count];
                     command.Parameters.CopyTo(parametersArray, 0);
@@ -101,11 +98,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                     this.writingOnStandby = false;
                 }
             }
-        }
-
-        internal void RegisterInstance(DataLayerContext dataLayerContext, bool isActiveChannel)
-        {
-            this.contexts.Add(dataLayerContext, isActiveChannel);
         }
 
         private static bool IsInsertOrUpdateCommand(DbCommand command)
