@@ -21,6 +21,8 @@ namespace Ferretto.VW.Simulator.Services
     {
         #region Fields
 
+        public byte[] Buffer;
+
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -31,9 +33,9 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
 
-        public byte[] Buffer;
+        private CancellationTokenSource cts = new CancellationTokenSource();
 
         #endregion
 
@@ -49,31 +51,26 @@ namespace Ferretto.VW.Simulator.Services
             this.Inverters.Add(new InverterModel() { Id = 4, InverterType = InverterType.Agl });
             //this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu });
 
-            this.RemoteIOs = new ObservableCollection<IODeviceModel>();
-            this.RemoteIOs.Add(new IODeviceModel() { Id = 0 });
-            this.RemoteIOs.Add(new IODeviceModel() { Id = 1 });
-            this.RemoteIOs.Add(new IODeviceModel() { Id = 2 });
+            this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
+            this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
+            this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false }); ;
 
-            this.RemoteIOs[0].IOs[0] = true;
+            this.RemoteIOs01.IOs[0].Value = true;
         }
 
         #endregion
 
-        //public bool EnabledForce { get; set; }
-
         #region Properties
-
-        public bool EmergencyState
-        {
-            get { return this.RemoteIOs[0].IOs[0]; }
-            set { this.RemoteIOs[0].IOs[0] = value; }
-        }
 
         public ObservableCollection<InverterModel> Inverters { get; set; }
 
         public bool IsStartedSimulator { get; private set; }
 
-        public ObservableCollection<IODeviceModel> RemoteIOs { get; set; }
+        public IODeviceModel RemoteIOs01 { get => this.remoteIOs[0]; set { var ios = this.remoteIOs[0]; this.SetProperty(ref ios, value); } }
+
+        public IODeviceModel RemoteIOs02 { get => this.remoteIOs[1]; set { var ios = this.remoteIOs[1]; this.SetProperty(ref ios, value); } }
+
+        public IODeviceModel RemoteIOs03 { get => this.remoteIOs[2]; set { var ios = this.remoteIOs[2]; this.SetProperty(ref ios, value); } }
 
         #endregion
 
@@ -101,8 +98,9 @@ namespace Ferretto.VW.Simulator.Services
             await Task.Delay(100);
             this.IsStartedSimulator = true;
 
-            this.RaisePropertyChanged(nameof(this.RemoteIOs));
-            this.RaisePropertyChanged(nameof(this.EmergencyState));
+            this.RaisePropertyChanged(nameof(this.RemoteIOs01));
+            this.RaisePropertyChanged(nameof(this.RemoteIOs02));
+            this.RaisePropertyChanged(nameof(this.RemoteIOs03));
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
         }
 
@@ -135,6 +133,22 @@ namespace Ferretto.VW.Simulator.Services
             catch (SocketException)
             {
             }
+        }
+
+        private byte[] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte[] inputValues)
+        {
+            int byteLength;
+            byte[] byteMessage;
+            byteLength = 0x04 + inputValues.Length;
+            byteMessage = new byte[byteLength + 2];
+            byteMessage[0] = 0x00;
+            byteMessage[1] = (byte)(byteLength);
+            byteMessage[2] = (byte)systemIndex;
+            byteMessage[3] = dataSetIndex;
+            byteMessage[4] = message[4];
+            byteMessage[5] = message[5];
+            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
+            return byteMessage;
         }
 
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
@@ -180,7 +194,7 @@ namespace Ferretto.VW.Simulator.Services
         {
             const int headerLenght = 6;
             this.Buffer = this.Buffer.AppendArrays(message, message.Length);
-            if (this.Buffer.Length >= headerLenght && this.Buffer.Length >= this.Buffer[1]+2)
+            if (this.Buffer.Length >= headerLenght && this.Buffer.Length >= this.Buffer[1] + 2)
             {
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.Buffer, 4, 1, 2);
 
@@ -287,23 +301,6 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
-        private byte [] FormatMessage(byte[] message, InverterRole systemIndex, byte dataSetIndex, byte [] inputValues)
-        {
-            int byteLength;
-            byte[] byteMessage;
-            byteLength = 0x04 + inputValues.Length;
-            byteMessage = new byte[byteLength + 2];
-            byteMessage[0] = 0x00;
-            byteMessage[1] = (byte)(byteLength);
-            byteMessage[2] = (byte)systemIndex;
-            byteMessage[3] = dataSetIndex;
-            byteMessage[4] = message[4];
-            byteMessage[5] = message[5];
-            Array.Copy(inputValues, 0, byteMessage, 6, inputValues.Length);
-            return byteMessage;
-        }
-
-
         private void ReplyIoDriver(TcpClient client, byte[] message, int index)
         {
             const int NBYTES_RECEIVE = 15;
@@ -315,10 +312,10 @@ namespace Ferretto.VW.Simulator.Services
             //    this.UpdateFlag();
             //}
 
-            var device = this.RemoteIOs.First(x => x.Id == index);
+            var device = this.remoteIOs.First(x => x.Id == index);
 
             device.Buffer = device.Buffer.AppendArrays(message, message.Length);
-            if(device.Buffer.Length > 2 && device.Buffer.Length >= device.Buffer[0])
+            if (device.Buffer.Length > 2 && device.Buffer.Length >= device.Buffer[0])
             {
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref device.Buffer, 3, 0, 0);
                 if (extractedMessages.Count > 1 && Debugger.IsAttached)

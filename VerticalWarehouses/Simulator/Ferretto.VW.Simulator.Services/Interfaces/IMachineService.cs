@@ -9,8 +9,6 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
     {
         #region Properties
 
-        bool EmergencyState { get; set; }
-
         bool IsStartedSimulator { get; }
 
         #endregion

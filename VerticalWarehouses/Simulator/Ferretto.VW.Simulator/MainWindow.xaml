@@ -190,46 +190,200 @@
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           LabelText="Sicurezza"
-                                          SensorState="{Binding InverterService.EmergencyState}"
+                                          SensorState="{Binding InverterService.RemoteIOs01.IOs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
             </Grid>
 
 
             <!--  IoDrive  -->
 
-            <StackPanel Grid.Row="3"
+            <WrapPanel Grid.Row="3"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       HorizontalAlignment="Stretch"
+                       Orientation="Horizontal">
+
+                <Border Width="300"
+                        Height="200"
+                        Margin="0,15,15,15"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                    <Grid DataContext="{Binding InverterService.RemoteIOs01}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0"
+                                    Margin="0">
+                            <TextBlock Margin="0"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="IoDriver01" />
+                            <TextBlock Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding IOValue, StringFormat='{}Io Value:{0}', FallbackValue='1'}" />
+                        </StackPanel>
+
+                        <ItemsControl Grid.Row="1"
+                                      ItemsSource="{Binding IOs}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ctrl:CustomSensorControl Margin="5"
+                                                              HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center"
+                                                              LabelText="{Binding Description}"
+                                                              SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+                    </Grid>
+                </Border>
+
+                <Border Width="300"
+                        Height="200"
+                        Margin="0,15,15,15"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                    <Grid DataContext="{Binding InverterService.RemoteIOs02}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0"
+                                    Margin="0">
+                            <TextBlock Margin="0"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="IoDriver02" />
+                            <TextBlock Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding IOValue, StringFormat='{}Io Value:{0}', FallbackValue='1'}" />
+                        </StackPanel>
+
+                        <ItemsControl Grid.Row="1"
+                                      ItemsSource="{Binding IOs}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ctrl:CustomSensorControl Margin="5"
+                                                              HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center"
+                                                              LabelText="{Binding Description}"
+                                                              SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+                    </Grid>
+                </Border>
+
+                <Border Width="300"
+                        Height="200"
+                        Margin="0,15,15,15"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                    <Grid DataContext="{Binding InverterService.RemoteIOs03}" IsEnabled="{Binding InverterService.RemoteIOs03.Enabled}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0"
+                                    Margin="0">
+                            <TextBlock Margin="0"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="IoDriver03" />
+                            <TextBlock Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding IOValue, StringFormat='{}Io Value:{0}', FallbackValue='1'}" />
+                        </StackPanel>
+
+                        <ItemsControl Grid.Row="1"
+                                      ItemsSource="{Binding IOs}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <ctrl:CustomSensorControl Margin="5"
+                                                              HorizontalAlignment="Left"
+                                                              VerticalAlignment="Center"
+                                                              LabelText="{Binding Description}"
+                                                              SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+                    </Grid>
+                </Border>
+
+            </WrapPanel>
+
+
+            <!--<StackPanel Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Width="250"
                         Height="250"
                         HorizontalAlignment="Stretch"
                         Orientation="Horizontal">
-                <!--<ScrollViewer Grid.Column="0"
-                              HorizontalScrollBarVisibility="Visible"
-                              VerticalScrollBarVisibility="Disabled">-->
-                <ItemsControl ItemsSource="{Binding InverterService.RemoteIOs}">
+
+
+                <ItemsControl ItemsSource="{Binding InverterService.RemoteIOs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel />
+                            <WrapPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type model:IODeviceModel}">
-                            <Border Width="250"
-                                        Height="250"
-                                        Margin="15"
-                                        BorderBrush="Gray"
-                                        BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Id}" />
-                                    <TextBlock Text="{Binding IOValue}" />
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ScrollViewer Grid.Column="0"
+                                          HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Auto">
+                                <StackPanel Width="250"
+                                            Height="250"
+                                            Background="LightGray">
+
+                                    <StackPanel Margin="0,0,0,10"
+                                                Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,10,0"
+                                                   Text="{Binding Id}" />
+                                        <TextBlock Text="{Binding IOValue}" />
+                                    </StackPanel>
+
+                                    <ItemsControl ItemsSource="{Binding IOs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ctrl:CustomSensorControl Grid.Column="1"
+                                                                          HorizontalAlignment="Left"
+                                                                          VerticalAlignment="Center"
+                                                                          LabelText="{Binding Description}"
+                                                                          SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                          Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
-                            </Border>
+                            </ScrollViewer>
                         </DataTemplate>
-                    </ItemsControl.Resources>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <!--</ScrollViewer>-->
-            </StackPanel>
+            </StackPanel>-->
 
 
 
