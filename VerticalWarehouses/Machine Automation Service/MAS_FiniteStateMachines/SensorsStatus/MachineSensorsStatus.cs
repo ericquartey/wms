@@ -10,11 +10,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
     {
         #region Fields
 
-        private const int INVERTER_INPUTS = 64;
+        private const int INVERTER_INPUTS = 8;
 
         private const int REMOTEIO_INPUTS = 16;
-
-        //private readonly IOSensorsStatus ioSensorsStatus;
 
         private readonly bool[] sensorStatus;
 
@@ -26,7 +24,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         {
             //INFO hp: the sensorStatus array contains the Remote IO sensor status between index 0 and 47
             // followed by the Inverter sensor between index 48 and 111
-            this.sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS];
+            this.sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
         }
 
         #endregion
@@ -46,11 +44,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] != this.DisplayedInputs[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalStateBay1];
+        public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalState];
 
-        public bool IsSensorZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawl];
+        public bool IsSensorZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor];
 
-        public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVertical];
+        public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
 
         #endregion
 
@@ -76,9 +74,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
                         return false;
                     }
 
-                    //INFO The mushroom signal must be inverted
-                    //newSensorStatus[1] = !newSensorStatus[1];
-
                     for (var index = 0; index < REMOTEIO_INPUTS; index++)
                     {
                         if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
@@ -90,7 +85,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
                     if (requiredUpdate)
                     {
-                        Array.Copy(newSensorStatus, 0, this.sensorStatus, 0, REMOTEIO_INPUTS);
+                        Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
                         updateDone = true;
                     }
                 }

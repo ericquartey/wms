@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class UsersConfiguration : IEntityTypeConfiguration<User>
+    internal class UsersConfiguration : IEntityTypeConfiguration<User>
     {
         #region Methods
 

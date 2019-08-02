@@ -119,76 +119,91 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
-                var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
-
-                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
+                var index = 0;
+                foreach (var installedInverter in this.inverterStatuses)
                 {
-                    switch (inverterStatus.InverterType)
+                    var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, index);
+
+                    if (this.inverterStatuses.TryGetValue(installedInverter.Key, out var inverterStatus))
                     {
-                        case InverterType.Ang:
-                            if (inverterStatus is AngInverterStatus angInverter)
-                            {
-                                if (angInverter.UpdateANGInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                        switch (inverterStatus.InverterType)
+                        {
+                            case InverterType.Ang:
+                                if (inverterStatus is AngInverterStatus angInverter)
                                 {
-                                    var notificationData = new InverterStatusUpdateFieldMessageData(angInverter.Inputs);
-                                    var msgNotification = new FieldNotificationMessage(
-                                        notificationData,
-                                        "Inverter Inputs update",
-                                        FieldMessageActor.FiniteStateMachines,
-                                        FieldMessageActor.InverterDriver,
-                                        FieldMessageType.InverterStatusUpdate,
-                                        MessageStatus.OperationExecuting);
+                                    // INFO The Overrun elevator must be inverted (WORKAROUND)
+                                    ioStatuses[6] = !ioStatuses[6];
 
-                                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                    if (angInverter.UpdateANGInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                    {
+                                        var notificationData = new InverterStatusUpdateFieldMessageData(angInverter.Inputs);
+                                        var msgNotification = new FieldNotificationMessage(
+                                            notificationData,
+                                            "Inverter Inputs update",
+                                            FieldMessageActor.FiniteStateMachines,
+                                            FieldMessageActor.InverterDriver,
+                                            FieldMessageType.InverterStatusUpdate,
+                                            MessageStatus.OperationExecuting,
+                                            ErrorLevel.NoError,
+                                            angInverter.SystemIndex);
 
-                                    this.forceStatusPublish = false;
+                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                                        this.forceStatusPublish = false;
+                                    }
                                 }
-                            }
-                            break;
+                                break;
 
-                        case InverterType.Acu:
-                            if (inverterStatus is AcuInverterStatus acuInverter)
-                            {
-                                if (acuInverter.UpdateACUInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                            case InverterType.Acu:
+                                if (inverterStatus is AcuInverterStatus acuInverter)
                                 {
-                                    var notificationData = new InverterStatusUpdateFieldMessageData(acuInverter.Inputs);
-                                    var msgNotification = new FieldNotificationMessage(
-                                        notificationData,
-                                        "Inverter Inputs update",
-                                        FieldMessageActor.FiniteStateMachines,
-                                        FieldMessageActor.InverterDriver,
-                                        FieldMessageType.InverterStatusUpdate,
-                                        MessageStatus.OperationExecuting);
+                                    if (acuInverter.UpdateACUInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                    {
+                                        var notificationData = new InverterStatusUpdateFieldMessageData(acuInverter.Inputs);
+                                        var msgNotification = new FieldNotificationMessage(
+                                            notificationData,
+                                            "Inverter Inputs update",
+                                            FieldMessageActor.FiniteStateMachines,
+                                            FieldMessageActor.InverterDriver,
+                                            FieldMessageType.InverterStatusUpdate,
+                                            MessageStatus.OperationExecuting,
+                                            ErrorLevel.NoError,
+                                            acuInverter.SystemIndex);
 
-                                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
-                                    this.forceStatusPublish = false;
+                                        this.forceStatusPublish = false;
+                                    }
                                 }
-                            }
-                            break;
+                                break;
 
-                        case InverterType.Agl:
-                            if (inverterStatus is AglInverterStatus aglInverter)
-                            {
-                                if (aglInverter.UpdateAGLInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                            case InverterType.Agl:
+                                if (inverterStatus is AglInverterStatus aglInverter)
                                 {
-                                    var notificationData = new InverterStatusUpdateFieldMessageData(aglInverter.Inputs);
-                                    var msgNotification = new FieldNotificationMessage(
-                                        notificationData,
-                                        "Inverter Inputs update",
-                                        FieldMessageActor.FiniteStateMachines,
-                                        FieldMessageActor.InverterDriver,
-                                        FieldMessageType.InverterStatusUpdate,
-                                        MessageStatus.OperationExecuting);
+                                    if (aglInverter.UpdateAGLInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                    {
+                                        var notificationData = new InverterStatusUpdateFieldMessageData(aglInverter.Inputs);
+                                        var msgNotification = new FieldNotificationMessage(
+                                            notificationData,
+                                            "Inverter Inputs update",
+                                            FieldMessageActor.FiniteStateMachines,
+                                            FieldMessageActor.InverterDriver,
+                                            FieldMessageType.InverterStatusUpdate,
+                                            MessageStatus.OperationExecuting,
+                                            ErrorLevel.NoError,
+                                            aglInverter.SystemIndex);
 
-                                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
-                                    this.forceStatusPublish = false;
+                                        this.forceStatusPublish = false;
+                                    }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
+                    index++;
                 }
+                //TEMP Changes end
 
                 //TODO retrieve current inverter Status and Update its I/O Status, removing general InverterIoStatus from hosted Inverter Driver.
                 //TODO e.g. MainInverter.UpdateANGInverterInputsStates(ioStatuses);
@@ -948,7 +963,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, InverterIndex inverterIndex)
+        private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, int inverterIndex)
         {
             //TEMP NOTE ==>
             // int i = Array.IndexOf(this.inverterStatuses.Keys.ToArray(), (ushort)inverterIndex);  // retrieve the first occurrence in the dictionary
@@ -961,13 +976,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                 var cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
                 var encodedValues = cleanString.Split(" ");
 
-                var encodedWord = encodedValues[(ushort)inverterIndex / 2];
+                var encodedWord = encodedValues[inverterIndex / 2];
 
                 if (!encodedWord.Equals("\0"))
                 {
                     var values = ushort.Parse(encodedWord);
 
-                    var dataByte = (ushort)inverterIndex % 2;
+                    var dataByte = inverterIndex % 2;
 
                     for (var index = 8 * dataByte; index < 8 + (8 * dataByte); index++)
                     {

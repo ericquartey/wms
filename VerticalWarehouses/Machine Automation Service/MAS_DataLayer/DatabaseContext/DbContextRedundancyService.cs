@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
@@ -12,26 +14,36 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         private readonly IDictionary<DbContextOptions<TDbContext>, bool> isInhibited
             = new Dictionary<DbContextOptions<TDbContext>, bool>();
 
+        private readonly ILogger logger;
+
+        private Exception lastSeenException;
+
         #endregion
 
         #region Constructors
 
         public DbContextRedundancyService(
            string activeDbConnectionString,
-           string standbyDbConnectionString)
+           string standbyDbConnectionString,
+           ILogger logger)
         {
             if (string.IsNullOrWhiteSpace(activeDbConnectionString))
             {
-                throw new System.ArgumentException(
+                throw new ArgumentException(
                     "Connection string cannot be null or whitespace.",
                     nameof(activeDbConnectionString));
             }
 
             if (string.IsNullOrWhiteSpace(standbyDbConnectionString))
             {
-                throw new System.ArgumentException(
+                throw new ArgumentException(
                     "Connection string cannot be null or whitespace.",
                     nameof(standbyDbConnectionString));
+            }
+
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
             }
 
             this.ActiveDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
@@ -44,6 +56,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
             this.isInhibited.Add(this.ActiveDbContextOptions, false);
             this.isInhibited.Add(this.StandbyDbContextOptions, false);
+            this.logger = logger;
         }
 
         #endregion
@@ -62,12 +75,46 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #region Methods
 
-        public void InhibitStanbyDb()
+        public void HandleDbContextFault(TDbContext dbContext, Exception exception)
+        {
+            if (exception != null)
+            {
+                if (exception == this.lastSeenException)
+                {
+                    return;
+                }
+                else
+                {
+                    this.lastSeenException = exception;
+                }
+            }
+
+            if (dbContext.Options == this.ActiveDbContextOptions)
+            {
+                this.SwapContexts();
+                this.logger.LogError(exception, "Operation failed on active database. Active database swapped with standby.");
+            }
+            else if (dbContext.Options == this.StandbyDbContextOptions)
+            {
+                this.logger.LogError(exception, "Operation failed on standby database.");
+                if (!this.IsStandbyDbInhibited)
+                {
+                    this.InhibitStanbyDb();
+                    this.logger.LogError(exception, "Standby database inhibited.");
+                }
+            }
+            if (this.IsActiveDbInhibited)
+            {
+                this.logger.LogCritical(exception, "Active database operations inhibited because of previous errors.");
+            }
+        }
+
+        private void InhibitStanbyDb()
         {
             this.isInhibited[this.StandbyDbContextOptions] = true;
         }
 
-        public void SwapContexts(bool inhibitActive = true)
+        private void SwapContexts(bool inhibitActive = true)
         {
             if (inhibitActive)
             {
