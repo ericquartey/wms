@@ -58,7 +58,8 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
                                        Style="{StaticResource VWSIM_CustomLabel_ContentInverseTextBlockStyle}"
-                                       Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}" />
+                                       Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
+                                       ToolTip="Id" />
                             <custom:VWIcon Grid.Column="1"
                                            Height="36"
                                            HorizontalAlignment="Right"
@@ -102,15 +103,22 @@
                             <StackPanel>
                                 <TextBlock VerticalAlignment="Top"
                                            Style="{StaticResource VWSIM_CustomLabel_ContentInverseTextBlockStyle}"
-                                           Text="{Binding InverterRole, StringFormat='INVERTER {0} '}" />
+                                           Text="{Binding InverterRole, StringFormat='INVERTER {0} '}"
+                                           ToolTip="Inverter Role" />
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Top"
                                                Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                               Text="{Binding InverterType, StringFormat='{}{0} '}" />
+                                               Text="{Binding InverterType, StringFormat='{}{0} '}"
+                                               ToolTip="Inverter Type" />
                                     <TextBlock VerticalAlignment="Top"
                                                Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                               Text="{Binding OperationMode, StringFormat='- {0}'}" />
+                                               Text="{Binding OperationMode, StringFormat='- {0} '}"
+                                               ToolTip="Operation Mode" />
+                                    <TextBlock VerticalAlignment="Top"
+                                               Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
+                                               Text="{Binding AxisPosition, StringFormat='- {0}'}"
+                                               ToolTip="Axis Position" />
                                 </StackPanel>
                             </StackPanel>
                             <custom:VWIcon Grid.Column="1"
@@ -146,13 +154,13 @@
 
                             <TextBlock Grid.Column="0"
                                        Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                       Text="{Binding ControlWord, StringFormat='{}ControlWord: {0}'}"
-                                       ToolTip="ControlWord" />
+                                       Text="{Binding ControlWord, StringFormat='{}CW: {0}'}"
+                                       ToolTip="Control Word" />
 
                             <TextBlock Grid.Column="1"
                                        Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                       Text="{Binding StatusWord, StringFormat='{}StatusWord: {0}'}"
-                                       ToolTip="StatusWord" />
+                                       Text="{Binding StatusWord, StringFormat='{}SW: {0}'}"
+                                       ToolTip="Status Word" />
                         </Grid>
                     </StackPanel>
                 </Border>

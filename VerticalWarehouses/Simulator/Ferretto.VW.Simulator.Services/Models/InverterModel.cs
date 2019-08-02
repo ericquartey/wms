@@ -266,11 +266,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private readonly Timer targetTimer;
 
+        private int axisPosition;
+
+        private int controlWord;
+
         private ObservableCollectionWithItemNotify<BitModel> digitalIO = new ObservableCollectionWithItemNotify<BitModel>();
 
         private bool enabled;
 
         private InverterType inverterType;
+
+        private int statusWord;
 
         #endregion
 
@@ -305,9 +311,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public int AxisPosition { get; set; }
+        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value, () => this.RaisePropertyChanged(nameof(this.AxisPosition))); }
 
-        public int ControlWord { get; set; }
+        public int ControlWord { get => this.controlWord; set => this.SetProperty(ref this.controlWord, value, () => this.RaisePropertyChanged(nameof(this.ControlWord))); }
 
         public ObservableCollectionWithItemNotify<BitModel> DigitalIO
         {
@@ -330,7 +336,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public InverterOperationMode OperationMode { get; set; }
 
-        public int StatusWord { get; set; }
+        public int StatusWord { get => this.statusWord; set => this.SetProperty(ref this.statusWord, value, () => this.RaisePropertyChanged(nameof(this.StatusWord))); }
 
         private int homingTickCount { get; set; }
 
@@ -493,10 +499,11 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             this.homingTickCount++;
 
-            if (this.homingTickCount > 10)
+            if (this.homingTickCount > 5)
             {
                 this.StatusWord |= 0x1000;
                 this.homingTimerActive = false;
+                this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
         }
