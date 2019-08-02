@@ -2,8 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,7 +31,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             IEventAggregator eventAggregator,
             IPositioningMessageData positioningMessageData,
             ILogger logger,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            MachineSensorsStatus machineSensorsStatus)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.logger = logger;
@@ -148,11 +148,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             bool checkHorizontalConditions;
 
-            checkHorizontalConditions = this.machineSensorsStatus.DrawerIsCompletelyOnCradle || this.machineSensorsStatus.DrawerIsPartiallyOnCradle ||
+            checkHorizontalConditions = this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 || this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
                                         //TEMP 7, 11  e 15
-                                        (this.machineSensorsStatus.RawRemoteIOsInputs[(int)IOMachineSensors.LUPresentInBay1] ||
-                                         this.machineSensorsStatus.RawRemoteIOsInputs[(int)IOMachineSensors.LUPresentInBay2] ||
-                                         this.machineSensorsStatus.RawRemoteIOsInputs[(int)IOMachineSensors.LUPresentInBay3]) && this.positioningMessageData.AxisMovement == Axis.Horizontal;
+                                        (this.machineSensorsStatus.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay1] ||
+                                         this.machineSensorsStatus.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay2] ||
+                                         this.machineSensorsStatus.DisplayedInputs[(int)IOMachineSensors.LUPresentInBay3]) && this.positioningMessageData.AxisMovement == Axis.Horizontal;
 
             return checkHorizontalConditions;
         }
@@ -161,8 +161,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             bool checkVerticalConditions;
 
-            checkVerticalConditions = this.machineSensorsStatus.DrawerIsCompletelyOnCradle || this.machineSensorsStatus.DrawerIsPartiallyOnCradle ||
-                                      !this.machineSensorsStatus.SensorInZeroOnCradle && this.positioningMessageData.AxisMovement == Axis.Vertical;
+            checkVerticalConditions = this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 || this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
+                                      !this.machineSensorsStatus.IsSensorZeroOnCradle && this.positioningMessageData.AxisMovement == Axis.Vertical;
 
             return checkVerticalConditions;
         }

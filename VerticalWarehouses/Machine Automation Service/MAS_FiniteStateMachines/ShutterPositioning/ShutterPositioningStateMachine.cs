@@ -1,10 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
-using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
-using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -29,7 +28,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
             IEventAggregator eventAggregator,
             IShutterPositioningMessageData shutterPositioningMessageData,
             ILogger logger,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            MachineSensorsStatus machineSensorsStatus)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             lock (this.CurrentState)
             {
-                if (this.machineSensorsStatus.DrawerIsPartiallyOnCradle)
+                if (this.machineSensorsStatus.IsDrawerPartiallyOnCradle)
                 {
                     this.CurrentState = new ShutterPositioningErrorState(this, this.shutterPositioningMessageData, ShutterPosition.None, null, this.Logger);
                 }
