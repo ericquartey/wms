@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataLayer.Extensions;
+﻿using Ferretto.VW.MAS.AutomationService.Filters;
+using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.IODriver;
@@ -69,7 +70,12 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             services.AddDataLayer();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+              .AddMvc(options =>
+              {
+                  options.Filters.Add(typeof(ReadinessFilter));
+              })
+              .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
 
