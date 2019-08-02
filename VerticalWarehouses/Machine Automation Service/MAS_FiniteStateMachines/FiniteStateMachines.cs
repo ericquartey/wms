@@ -305,7 +305,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                             if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
-
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
 
                                 msg = new NotificationMessage(

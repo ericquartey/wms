@@ -30,9 +30,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Properties
 
-        public bool ACU_EncoderCanalA => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderCanalA] ?? false;
+        public bool ACU_EncoderChannelA => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderChannelA] ?? false;
 
-        public bool ACU_EncoderCanalB => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderCanalB] ?? false;
+        public bool ACU_EncoderChannelB => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderChannelB] ?? false;
+
+        public bool ACU_EncoderChannelZ => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderChannelZ] ?? false;
 
         public bool ACU_FreeSensor1 => this.acuInverterInputs?[(int)InverterSensors.ACU_FreeSensor1] ?? false;
 
@@ -40,11 +42,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool ACU_HardwareSensorSS1 => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSS1] ?? false;
 
-        public bool ACU_HardwareSensorSTOA => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTOA] ?? false;
-
-        public bool ACU_HardwareSensorSTOB => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTOB] ?? false;
+        public bool ACU_HardwareSensorSTO => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTO] ?? false;
 
         public bool ACU_ZeroSensor => this.acuInverterInputs?[(int)InverterSensors.ACU_ZeroSensor] ?? false;
+        //public bool ACU_HardwareSensorSTOB => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTOB] ?? false;
 
         public bool[] Inputs => this.acuInverterInputs;
 
