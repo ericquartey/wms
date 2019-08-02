@@ -14,6 +14,7 @@ using static Ferretto.VW.Simulator.Services.BufferUtility;
 using Microsoft.Extensions.Logging;
 using NLog;
 using Prism.Mvvm;
+using Ferretto.VW.Simulator.Services.Helpers;
 
 namespace Ferretto.VW.Simulator.Services
 {
@@ -33,7 +34,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
+        private readonly ObservableCollectionWithItemNotify<IODeviceModel> remoteIOs = new ObservableCollectionWithItemNotify<IODeviceModel>();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -45,15 +46,17 @@ namespace Ferretto.VW.Simulator.Services
         {
             this.Inverters = new ObservableCollection<InverterModel>();
             this.Inverters.Add(new InverterModel() { Id = 0, InverterType = InverterType.Ang });
-            //this.Inverters.Add(new InverterModel() { Id = 1, InverterType = InverterType.Ang });
+            this.Inverters.Add(new InverterModel() { Id = 1, InverterType = InverterType.Ang, Enabled = false });
             this.Inverters.Add(new InverterModel() { Id = 2, InverterType = InverterType.Agl });
             this.Inverters.Add(new InverterModel() { Id = 3, InverterType = InverterType.Acu });
             this.Inverters.Add(new InverterModel() { Id = 4, InverterType = InverterType.Agl });
-            //this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu });
+            this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu, Enabled = false });
+            this.Inverters.Add(new InverterModel() { Id = 6, InverterType = InverterType.Acu, Enabled = false }); //da sistemare
+            this.Inverters.Add(new InverterModel() { Id = 7, InverterType = InverterType.Acu, Enabled = false }); //da sistemare
 
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
-            this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false }); ;
+            this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
 
             this.RemoteIOs01.IOs[0].Value = true;
         }
@@ -63,6 +66,22 @@ namespace Ferretto.VW.Simulator.Services
         #region Properties
 
         public ObservableCollection<InverterModel> Inverters { get; set; }
+
+        public InverterModel Inverters00 { get => this.Inverters[0]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters01 { get => this.Inverters[1]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters02 { get => this.Inverters[2]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters03 { get => this.Inverters[3]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters04 { get => this.Inverters[4]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters05 { get => this.Inverters[5]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters06 { get => this.Inverters[6]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+
+        public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
 
         public bool IsStartedSimulator { get; private set; }
 
@@ -86,21 +105,55 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts = new CancellationTokenSource();
             this.listenerInverter.Start();
-            this.listenerIoDriver1.Start();
-            this.listenerIoDriver2.Start();
-            //this.listenerIoDriver3.Start();
+            if (this.RemoteIOs01.Enabled)
+            {
+                this.listenerIoDriver1.Start();
+            }
+
+            if (this.RemoteIOs02.Enabled)
+            {
+                this.listenerIoDriver2.Start();
+            }
+
+            if (this.RemoteIOs03.Enabled)
+            {
+                this.listenerIoDriver3.Start();
+            }
 
             Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
-            Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
-            Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
-            //Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
+            if (this.RemoteIOs01.Enabled)
+            {
+                Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
+            }
+
+            if (this.RemoteIOs02.Enabled)
+            {
+                Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
+            }
+
+            if (this.RemoteIOs03.Enabled)
+            {
+                Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
+            }
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
 
-            this.RaisePropertyChanged(nameof(this.RemoteIOs01));
-            this.RaisePropertyChanged(nameof(this.RemoteIOs02));
-            this.RaisePropertyChanged(nameof(this.RemoteIOs03));
+            if (this.RemoteIOs01.Enabled)
+            {
+                this.RaisePropertyChanged(nameof(this.RemoteIOs01));
+            }
+
+            if (this.RemoteIOs02.Enabled)
+            {
+                this.RaisePropertyChanged(nameof(this.RemoteIOs02));
+            }
+
+            if (this.RemoteIOs03.Enabled)
+            {
+                this.RaisePropertyChanged(nameof(this.RemoteIOs03));
+            }
+
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
         }
 
@@ -110,9 +163,21 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts.Cancel();
             this.listenerInverter.Stop();
-            this.listenerIoDriver1.Stop();
-            this.listenerIoDriver2.Stop();
-            //this.listenerIoDriver3.Stop();
+
+            if (this.RemoteIOs01.Enabled)
+            {
+                this.listenerIoDriver1.Stop();
+            }
+
+            if (this.RemoteIOs02.Enabled)
+            {
+                this.listenerIoDriver2.Stop();
+            }
+
+            if (this.RemoteIOs03.Enabled)
+            {
+                this.listenerIoDriver3.Stop();
+            }
 
             await Task.Delay(100);
             this.IsStartedSimulator = false;
@@ -368,11 +433,6 @@ namespace Ferretto.VW.Simulator.Services
             {
                 throw new NotSupportedException();
             }
-        }
-
-        private void UpdateFlag()
-        {
-            //this.RemoteIOs[0].IOs[(int)Emegency] = this.ForceEmergencyEndRun;
         }
 
         #endregion

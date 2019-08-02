@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
-    public class IOsModel : BindableBase
+    public class BitModel : BindableBase
     {
         #region Fields
 
@@ -19,11 +19,11 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Constructors
 
-        public IOsModel()
+        public BitModel()
         {
         }
 
-        public IOsModel(string description, bool value)
+        public BitModel(string description, bool value)
         {
             this.Description = description;
             this.Value = value;
@@ -33,9 +33,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
+        public string Description
+        {
+            get => this.description;
+            set => this.SetProperty(ref this.description, value, () => this.RaisePropertyChanged(nameof(this.Description)));
+        }
 
-        public bool Value { get => this.value; set => this.SetProperty(ref this.value, value); }
+        public bool Value
+        {
+            get => this.value;
+            set => this.SetProperty(ref this.value, value, () => this.RaisePropertyChanged(nameof(this.Value)));
+        }
 
         #endregion
     }

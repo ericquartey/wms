@@ -4,48 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Simulator.Services.Helpers;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
-    public enum InverterType
-    {
-        Undefined,
-        Ang,
-        Agl,
-        Acu
-    }
-
-    public enum InverterParameterId : short
-    {
-        ControlWordParam = 410, //INFO:Writeonly
-        HomingCreepSpeedParam = 1133,
-        HomingFastSpeedParam = 1132,
-        HomingAcceleration = 1134,
-        PositionAccelerationParam = 1457,
-        PositionDecelerationParam = 1458,
-        PositionTargetPositionParam = 1455,
-        PositionTargetSpeedParam = 1456,
-        SetOperatingModeParam = 1454,
-        ShutterTargetVelocityParam = 480,
-        StatusWordParam = 411, //19B INFO:Readonly
-        ActualPositionShaft = 1108,
-        StatusDigitalSignals = 250,
-        DigitalInputsOutputs = 1411,
-        ShutterTargetPosition = 414 // 19E
-    }
-
-    public enum InverterRole
-    {
-        Main = 0,
-        Chain = 1,
-        Shutter1 = 2,
-        Bay1 = 3,
-        Shutter2 = 4,
-        Bay2 = 5,
-        Shutter3 = 6,
-        Bay3 = 7,
-    }
-
     public enum InverterOperationMode : ushort
     {
         Position = 0x0001,
@@ -55,6 +18,58 @@ namespace Ferretto.VW.Simulator.Services.Models
         Velocity = 0x0002,
 
         ProfileVelocity = 0x0003
+    }
+
+    public enum InverterParameterId : short
+    {
+        ControlWordParam = 410, //INFO:Writeonly
+
+        HomingCreepSpeedParam = 1133,
+
+        HomingFastSpeedParam = 1132,
+
+        HomingAcceleration = 1134,
+
+        PositionAccelerationParam = 1457,
+
+        PositionDecelerationParam = 1458,
+
+        PositionTargetPositionParam = 1455,
+
+        PositionTargetSpeedParam = 1456,
+
+        SetOperatingModeParam = 1454,
+
+        ShutterTargetVelocityParam = 480,
+
+        StatusWordParam = 411, //19B INFO:Readonly
+
+        ActualPositionShaft = 1108,
+
+        StatusDigitalSignals = 250,
+
+        DigitalInputsOutputs = 1411,
+
+        ShutterTargetPosition = 414 // 19E
+    }
+
+    public enum InverterRole
+    {
+        Main = 0,
+
+        Chain = 1,
+
+        Shutter1 = 2,
+
+        Bay1 = 3,
+
+        Shutter2 = 4,
+
+        Bay2 = 5,
+
+        Shutter3 = 6,
+
+        Bay3 = 7,
     }
 
     public enum InverterSensors
@@ -232,11 +247,34 @@ namespace Ferretto.VW.Simulator.Services.Models
         #endregion
     }
 
-    public class InverterModel
+    public enum InverterType
     {
-        private InverterType inverterType;
+        Undefined,
+
+        Ang,
+
+        Agl,
+
+        Acu
+    }
+
+    public class InverterModel : BindableBase
+    {
+        #region Fields
+
         private readonly Timer homingTimer;
+
         private readonly Timer targetTimer;
+
+        private ObservableCollectionWithItemNotify<BitModel> digitalIO = new ObservableCollectionWithItemNotify<BitModel>();
+
+        private bool enabled;
+
+        private InverterType inverterType;
+
+        #endregion
+
+        #region Constructors
 
         public InverterModel()
         {
@@ -249,11 +287,37 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.OperationMode = InverterOperationMode.Velocity;
 
-            this.DigitalIO = new bool[8];
-            this.DigitalIO[0] = true;
+            this.digitalIO.Add(new BitModel("Id:00", true));
+            this.digitalIO.Add(new BitModel("Id:01", false));
+            this.digitalIO.Add(new BitModel("Id:02", false));
+            this.digitalIO.Add(new BitModel("Id:03", false));
+            this.digitalIO.Add(new BitModel("Id:04", false));
+            this.digitalIO.Add(new BitModel("Id:05", false));
+            this.digitalIO.Add(new BitModel("Id:06", false));
+            this.digitalIO.Add(new BitModel("Id:07", false));
+            this.digitalIO.Add(new BitModel("Id:08", false));
 
+            //this.DigitalIO = new bool[8];
+            //this.DigitalIO[0] = true;
         }
 
+        #endregion
+
+        #region Properties
+
+        public int AxisPosition { get; set; }
+
+        public int ControlWord { get; set; }
+
+        public ObservableCollectionWithItemNotify<BitModel> DigitalIO
+        {
+            get => this.digitalIO;
+            set => this.SetProperty(ref this.digitalIO, value);
+        }
+
+        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
+
+        //public bool[] DigitalIO { get; set; }
         public int Id { get; set; }
 
         public InverterRole InverterRole => (InverterRole)this.Id;
@@ -266,26 +330,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public InverterOperationMode OperationMode { get; set; }
 
-        public int ControlWord { get; set; }
-
         public int StatusWord { get; set; }
-
-        public bool[] DigitalIO { get; set; }
-
-        public int GetDigitalIO()
-        {
-            int result = 0;
-            for (int i = 0; i < this.DigitalIO.Length; i++)
-            {
-                if (this.DigitalIO[i])
-                {
-                    result += (int)Math.Pow(2, i);
-                }
-            }
-            return result;
-        }
-
-        public int AxisPosition { get; set; }
 
         private int homingTickCount { get; set; }
 
@@ -295,6 +340,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool targetTimerActive { get; set; }
 
+        #endregion
+
+        #region Methods
 
         public void BuildHomingStatusWord()
         {
@@ -428,6 +476,19 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public int GetDigitalIO()
+        {
+            int result = 0;
+            for (int i = 0; i < this.DigitalIO.Count; i++)
+            {
+                if (this.DigitalIO[i].Value)
+                {
+                    result += (int)Math.Pow(2, i);
+                }
+            }
+            return result;
+        }
+
         public void HomingTick(object state)
         {
             this.homingTickCount++;
@@ -454,5 +515,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        #endregion
     }
 }

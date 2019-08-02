@@ -38,10 +38,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Controls\CustomSensorSmallControl.xaml" />
       <None Remove="Skins\DarkCustomControlSensor.xaml" />
+      <None Remove="Skins\DarkCustomLabelTextBlock.xaml" />
       <None Remove="Skins\DarkSkin.xaml" />
       <None Remove="Skins\LightCustomControlSensor.xaml" />
+      <None Remove="Skins\LightCustomLabelTextBlock.xaml" />
       <None Remove="Skins\LightSkin.xaml" />
+      <None Remove="Styles\CustomLabelTextBlockStyle.xaml" />
+      <None Remove="Templates\ActionButtonControlTemplate.xaml" />
     </ItemGroup>
 
     <ItemGroup>

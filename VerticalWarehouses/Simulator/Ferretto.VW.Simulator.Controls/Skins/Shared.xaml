@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Ferretto.VW.Simulator.Controls.Skins">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
@@ -12,6 +11,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ExpanderStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomControlArticleDataGridStyle.xaml" />
 
@@ -19,6 +19,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/NavigationButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/ActionButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Templates/ActionButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/RepeatButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineModeToggleButton_Template.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineOnMarchToggleButton_Template.xaml" />
