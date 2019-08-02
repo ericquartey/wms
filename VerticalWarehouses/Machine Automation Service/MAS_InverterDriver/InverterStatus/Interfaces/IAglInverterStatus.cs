@@ -17,9 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         bool AGL_HardwareSensorSS1 { get; }
 
-        bool AGL_HardwareSensorSTOA { get; }
-
-        bool AGL_HardwareSensorSTOB { get; }
+        bool AGL_HardwareSensorSTO { get; }
 
         bool AGL_ShutterSensorA { get; }
 

@@ -7,7 +7,7 @@
         /// <summary>
         /// S1IND-STO (hardware)
         /// </summary>
-        ANG_HardwareSensorSTOA = 0,
+        ANG_HardwareSensorSTO = 0,
 
         /// <summary>
         /// S2IND-SS1 (hardware)
@@ -20,44 +20,59 @@
         ANG_ZeroElevatorSensor = 2,
 
         /// <summary>
-        /// S4IND-Extracorsa elevatore
+        /// S4IND-Encoder canale B
         /// </summary>
-        ANG_OverrunElevatorSensor = 3,
+        ANG_EncoderChannelBCradle = 3,
+
+        /// <summary>
+        /// S5IND-Encoder canale A
+        /// </summary>
+        ANG_EncoderChannelACradle = 4,
+
+        /// <summary>
+        /// S6IND-Encoder canale Z
+        /// </summary>
+        ANG_EncoderChannelZCradle = 5,
+
+        /// <summary>
+        /// MF3IND-Extracorsa elevatore
+        /// </summary>
+        ANG_OverrunElevatorSensor = 6,
 
         /// <summary>
         /// S5IND-Taratura barriera
         /// </summary>
-        ANG_BarrierCalibration = 4,
+        //ANG_BarrierCalibration = 4,
 
         /// <summary>
-        /// S6IND-Sensore zero culla
+        /// MF2IND-Sensore zero culla
         /// </summary>
-        ANG_ZeroCradleSensor = 5,
+        ANG_ZeroCradleSensor = 7,
 
         /// <summary>
         /// S7IND-STO (hardware)
         /// </summary>
-        ANG_HardwareSensorSTOB = 6,
+        //ANG_HardwareSensorSTOB = 6,
 
         /// <summary>
         /// MFI1-Barriera ottica di misura
         /// </summary>
-        ANG_OpticalMeasuringBarrier = 7,
+        //ANG_OpticalMeasuringBarrier = 7,
 
         /// <summary>
         /// MF2-Presenza cassetto su culla lato macchina
         /// </summary>
-        ANG_PresenceDrawerOnCradleMachineSide = 8,
+        //ANG_PresenceDrawerOnCradleMachineSide = 8,
 
         /// <summary>
         /// MF3-Presenza cassetto su culla lato operatore
         /// </summary>
-        ANG_PresenceDraweronCradleOperatoreSide = 9,
+        //ANG_PresenceDraweronCradleOperatoreSide = 9,
 
         /// <summary>
         /// MF4-Temperatura motore elevatore
         /// </summary>
-        ANG_ElevatorMotorTemprature = 10,
+        //ANG_ElevatorMotorTemprature = 10,
 
         #endregion
 
@@ -66,7 +81,7 @@
         /// <summary>
         /// STO (hardware)
         /// </summary>
-        AGL_HardwareSensorSTOA = 0, //11,
+        AGL_HardwareSensorSTO = 0,
 
         /// <summary>
         /// IN1D-SS1 (hardware)
@@ -115,42 +130,47 @@
         /// <summary>
         /// S1IND-STO (hardware)
         /// </summary>
-        ACU_HardwareSensorSTOA = 20,
+        ACU_HardwareSensorSTO = 0,
 
         /// <summary>
         /// S2IND-SS1 (hardware)
         /// </summary>
-        ACU_HardwareSensorSS1 = 21,
+        ACU_HardwareSensorSS1 = 1,
 
         /// <summary>
         /// S3IND-Sensore zero
         /// </summary>
-        ACU_ZeroSensor = 22,
+        ACU_ZeroSensor = 2,
 
         /// <summary>
         /// S4IND-Encoder canale B
         /// </summary>
-        ACU_EncoderCanalB = 23,
+        ACU_EncoderChannelB = 3,
 
         /// <summary>
         /// S5IND-Encoder canale A
         /// </summary>
-        ACU_EncoderCanalA = 24,
+        ACU_EncoderChannelA = 4,
 
         /// <summary>
-        /// S6IND-Libero
+        /// S6IND-Encoder canale A
         /// </summary>
-        ACU_FreeSensor1 = 25,
+        ACU_EncoderChannelZ = 5,
+
+        /// <summary>
+        /// MF1IND-Libero
+        /// </summary>
+        ACU_FreeSensor1 = 6,
+
+        /// <summary>
+        /// EM-S1IND-Libero
+        /// </summary>
+        ACU_FreeSensor2 = 7,
 
         /// <summary>
         /// S7IND-STO (hardware)
         /// </summary>
-        ACU_HardwareSensorSTOB = 26,
-
-        /// <summary>
-        /// MF1-Libero
-        /// </summary>
-        ACU_FreeSensor2 = 27,
+        //ACU_HardwareSensorSTOB = 26,
 
         #endregion
     }

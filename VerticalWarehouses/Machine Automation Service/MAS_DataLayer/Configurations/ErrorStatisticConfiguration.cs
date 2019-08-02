@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class ErrorStatisticConfiguration : IEntityTypeConfiguration<ErrorStatistic>
+    internal class ErrorStatisticConfiguration : IEntityTypeConfiguration<ErrorStatistic>
     {
         #region Methods
 

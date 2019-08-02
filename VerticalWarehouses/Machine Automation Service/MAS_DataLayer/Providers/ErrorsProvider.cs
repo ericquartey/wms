@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -29,12 +30,12 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             if (eventAggregator == null)
             {
-                throw new System.ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(eventAggregator));
             }
 
             if (dataContext == null)
             {
-                throw new System.ArgumentNullException(nameof(dataContext));
+                throw new ArgumentNullException(nameof(dataContext));
             }
 
             this.dataContext = dataContext;
@@ -49,24 +50,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public Error GetCurrent()
         {
             return this.dataContext.Errors
-                .Where(e => !e.ResolutionDate.HasValue)
-                .OrderBy(e => e.Definition.Severity)
-                .ThenBy(e => e.OccurrenceDate)
-                .Select(e => new Error
+            .Where(e => !e.ResolutionDate.HasValue)
+            .OrderBy(e => e.Definition.Severity)
+            .ThenBy(e => e.OccurrenceDate)
+            .Select(e => new Error
+            {
+                Id = e.Id,
+                Code = e.Code,
+                OccurrenceDate = e.OccurrenceDate,
+                ResolutionDate = e.ResolutionDate,
+                Definition = new ErrorDefinition
                 {
-                    Id = e.Id,
                     Code = e.Code,
-                    OccurrenceDate = e.OccurrenceDate,
-                    ResolutionDate = e.ResolutionDate,
-                    Definition = new ErrorDefinition
-                    {
-                        Code = e.Code,
-                        Description = e.Definition.Description,
-                        Reason = e.Definition.Reason,
-                        Severity = e.Definition.Severity
-                    }
-                })
-                .FirstOrDefault();
+                    Description = e.Definition.Description,
+                    Reason = e.Definition.Reason,
+                    Severity = e.Definition.Severity
+                }
+            })
+            .FirstOrDefault();
         }
 
         public ErrorStatisticsSummary GetStatistics()
@@ -105,7 +106,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var newError = new Error
             {
                 Code = (int)code,
-                OccurrenceDate = System.DateTime.UtcNow,
+                OccurrenceDate = DateTime.UtcNow,
             };
 
             this.dataContext.Errors.Add(newError);
@@ -126,7 +127,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             var error = this.dataContext.Errors.SingleOrDefault(e => e.Id == id);
             if (error != null)
             {
-                error.ResolutionDate = System.DateTime.UtcNow;
+                error.ResolutionDate = DateTime.UtcNow;
 
                 this.dataContext.Errors.Update(error);
 

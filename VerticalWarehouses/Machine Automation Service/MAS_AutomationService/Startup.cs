@@ -47,6 +47,8 @@ namespace Ferretto.VW.MAS.AutomationService
             app.UseOpenApi();
             app.UseSwaggerUi3();
 
+            app.UseDataHub();
+
             app.UseMvc();
         }
 
