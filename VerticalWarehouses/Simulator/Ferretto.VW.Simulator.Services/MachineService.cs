@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -37,7 +38,7 @@ namespace Ferretto.VW.Simulator.Services
 
         public MachineService()
         {
-            this.Inverters = new List<InverterModel>();
+            this.Inverters = new ObservableCollection<InverterModel>();
             this.Inverters.Add(new InverterModel() { Id = 0, InverterType = InverterType.Ang });
             //this.Inverters.Add(new InverterModel() { Id = 1, InverterType = InverterType.Ang });
             this.Inverters.Add(new InverterModel() { Id = 2, InverterType = InverterType.Agl });
@@ -45,7 +46,7 @@ namespace Ferretto.VW.Simulator.Services
             this.Inverters.Add(new InverterModel() { Id = 4, InverterType = InverterType.Agl });
             //this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu });
 
-            this.RemoteIOs = new List<IODeviceModel>();
+            this.RemoteIOs = new ObservableCollection<IODeviceModel>();
             this.RemoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.RemoteIOs.Add(new IODeviceModel() { Id = 2 });
@@ -63,11 +64,11 @@ namespace Ferretto.VW.Simulator.Services
             set { this.RemoteIOs[0].IOs[0] = value; }
         }
 
-        public List<InverterModel> Inverters { get; set; }
+        public ObservableCollection<InverterModel> Inverters { get; set; }
 
         public bool IsStartedSimulator { get; private set; }
 
-        public List<IODeviceModel> RemoteIOs { get; set; }
+        public ObservableCollection<IODeviceModel> RemoteIOs { get; set; }
 
         #endregion
 
@@ -95,6 +96,8 @@ namespace Ferretto.VW.Simulator.Services
             await Task.Delay(100);
             this.IsStartedSimulator = true;
 
+            this.RaisePropertyChanged(nameof(this.RemoteIOs));
+            this.RaisePropertyChanged(nameof(this.EmergencyState));
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
         }
 

@@ -17,7 +17,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomMainWindowToggleButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomControlLoggedUser.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomControlDataGrid.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Shared.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/Shared.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

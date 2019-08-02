@@ -52,11 +52,23 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="Controls\CustomSensorControl.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="CustomSensorControlStyle.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
         <None Update="Fonts\Microsoft-sans-serif.ttf">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Fonts\RobotoCondensed-Regular.ttf">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Skins\Shared.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Styles\CustomSensorControlStyle.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </None>
     </ItemGroup>
 

@@ -2,10 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+        xmlns:ctrl="clr-namespace:Ferretto.VW.Simulator.Controls.Controls;assembly=Ferretto.VW.Simulator.Controls"
         xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Ferretto.VW.Simulator"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:model="clr-namespace:Ferretto.VW.Simulator.Services.Models;assembly=Ferretto.VW.Simulator.Services"
         xmlns:res="clr-namespace:Ferretto.VW.Simulator.Resources;assembly=Ferretto.VW.Simulator.Resources"
         Title="Simulator"
         Width="1024"
@@ -184,28 +186,54 @@
                                             SensorState="{Binding InverterService.IsStartedSimulator}"
                                             Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
-                <custom:CustomSensorControl Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            LabelText="Sicurezza"
-                                            SensorState="{Binding InverterService.EmergencyState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <ctrl:CustomSensorControl Grid.Column="1"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          LabelText="Sicurezza"
+                                          SensorState="{Binding InverterService.EmergencyState}"
+                                          Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
             </Grid>
 
-            <StackPanel Grid.Row="2"
-                        Grid.ColumnSpan="3"
-                        Margin="15">
-
-                <CheckBox x:Name="chkEnabledForce"
-                          Foreground="White"
-                          IsChecked="{Binding InverterService.EmergencyState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    Emergency State
-                </CheckBox>
-
-            </StackPanel>
 
             <!--  IoDrive  -->
+
             <StackPanel Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Width="250"
+                        Height="250"
+                        HorizontalAlignment="Stretch"
+                        Orientation="Horizontal">
+                <!--<ScrollViewer Grid.Column="0"
+                              HorizontalScrollBarVisibility="Visible"
+                              VerticalScrollBarVisibility="Disabled">-->
+                <ItemsControl ItemsSource="{Binding InverterService.RemoteIOs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Resources>
+                        <DataTemplate DataType="{x:Type model:IODeviceModel}">
+                            <Border Width="250"
+                                        Height="250"
+                                        Margin="15"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Id}" />
+                                    <TextBlock Text="{Binding IOValue}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+                <!--</ScrollViewer>-->
+            </StackPanel>
+
+
+
+            <!--<StackPanel Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         HorizontalAlignment="Stretch"
@@ -215,7 +243,6 @@
                         Margin="0,15,15,15"
                         BorderBrush="Gray"
                         BorderThickness="1">
-                    <!--    -->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -353,7 +380,7 @@
 
                     </Grid>
                 </Border>
-            </StackPanel>
+            </StackPanel>-->
 
             <!--  Inverter  -->
             <StackPanel Grid.Row="4"
