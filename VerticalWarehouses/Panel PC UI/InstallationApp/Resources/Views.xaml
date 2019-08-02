@@ -120,7 +120,7 @@
     <DataTemplate DataType="{x:Type singleViews:DrawerStoreRecallViewModel}">
         <singleViews:DrawerStoreRecallView />
     </DataTemplate>
-    
+
     <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsThreePositionsViewModel}">
         <custom:CustomShutterControlSensorsThreePositions />
     </DataTemplate>

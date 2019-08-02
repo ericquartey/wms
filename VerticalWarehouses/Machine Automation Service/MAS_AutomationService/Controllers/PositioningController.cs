@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
@@ -40,7 +38,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public PositioningController(IEventAggregator eventAggregator, IServiceProvider services, ILogger<PositioningController> logger)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
             this.verticalAxis = services.GetService(typeof(IVerticalAxisDataLayer)) as IVerticalAxisDataLayer;
             this.verticalManualMovements = services.GetService(typeof(IVerticalManualMovementsDataLayer)) as IVerticalManualMovementsDataLayer;
             this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;

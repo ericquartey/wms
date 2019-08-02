@@ -4,9 +4,11 @@
     {
         #region Properties
 
-        bool ACU_EncoderCanalA { get; }
+        bool ACU_EncoderChannelA { get; }
 
-        bool ACU_EncoderCanalB { get; }
+        bool ACU_EncoderChannelB { get; }
+
+        bool ACU_EncoderChannelZ { get; }
 
         bool ACU_FreeSensor1 { get; }
 
@@ -14,9 +16,7 @@
 
         bool ACU_HardwareSensorSS1 { get; }
 
-        bool ACU_HardwareSensorSTOA { get; }
-
-        bool ACU_HardwareSensorSTOB { get; }
+        bool ACU_HardwareSensorSTO { get; }
 
         bool ACU_ZeroSensor { get; }
 

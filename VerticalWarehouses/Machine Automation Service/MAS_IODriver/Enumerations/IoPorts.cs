@@ -14,6 +14,8 @@
 
         BayLight = 4,
 
+        FreeSensor1 = 5,
+
         EndMissionRobot = 6,
 
         ReadyWarehouseRobot = 7,
@@ -30,11 +32,13 @@
 
         MicroCarterRightSideBay = 3,
 
-        AntiIntrusionShutterBay = 4,
+        AntiIntrusionBarrierBay = 4,
 
-        LoadingUnitExistenceInBay = 5,
+        LoadingUnitInBay = 5,
 
-        DrawerInBaySecondaryPosition = 6,
+        LoadingUnitInLowerBay = 6,
+
+        FreeSensor = 7,
 
         ElevatorMotorFeedback = 8,
 
@@ -44,7 +48,7 @@
 
         DrawerInOperatorSide = 11,
 
-        HeightControlCheckBay = 12,
+        CalibrationBarrierLight = 12,
 
         HookTrolley = 14,
 
