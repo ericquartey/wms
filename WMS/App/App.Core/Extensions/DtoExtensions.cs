@@ -11,7 +11,7 @@ namespace Ferretto.WMS.App.Core.Extensions
     {
         #region Methods
 
-        public static IEnumerable<Policy> GetPolicies(this BaseModelOfInt32 dto)
+        public static IEnumerable<Policy> GetPolicies(this BasePolicyModel dto)
         {
             return dto?.Policies.Select(p =>
                 new Policy

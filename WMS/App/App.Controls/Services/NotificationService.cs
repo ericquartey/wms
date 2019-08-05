@@ -87,10 +87,17 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
         {
-            this.logger.Debug($"Message {e.EntityType}, operation {e.Operation} received from server");
+            this.logger.Debug($"EntityChangedEvent received from server: Operation={e.Operation}, " +
+                $"EntityType={e.EntityType}, Id={e.Id}, " +
+                $"SourceEntityType={e.SourceEntityType}, SourceId={e.SourceId}");
 
             this.eventService
-                .Invoke(new ModelChangedPubSubEvent(e.EntityType, e.Id, e.Operation));
+                .Invoke(new ModelChangedPubSubEvent(
+                    e.EntityType,
+                    e.Id,
+                    e.Operation,
+                    e.SourceEntityType,
+                    e.SourceId));
         }
 
         private void DataHubClient_MachineStatusUpdated(object sender, MachineStatusUpdatedEventArgs e)

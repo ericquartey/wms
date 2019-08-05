@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.Common.Utils;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
-using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
-using Prism.Commands;
 
 namespace Ferretto.WMS.App.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     public class CompartmentEditViewModel : SidePanelDetailsViewModel<CompartmentDetails>
     {
         #region Fields
@@ -27,10 +26,6 @@ namespace Ferretto.WMS.App.Modules.MasterData
         private readonly IGlobalSettingsProvider globalSettingsProvider = ServiceLocator.Current.GetInstance<IGlobalSettingsProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-
-        private ICommand createCommand;
-
-        private ICommand deleteCompartmentCommand;
 
         private GlobalSettings globalSettings;
 
@@ -77,14 +72,6 @@ namespace Ferretto.WMS.App.Modules.MasterData
         #endregion
 
         #region Properties
-
-        public ICommand CreateCommand => this.createCommand ??
-                                  (this.createCommand = new DelegateCommand(async () => await this.ExecuteCreateCommandAsync()));
-
-        public ICommand DeleteCompartmentCommand => this.deleteCompartmentCommand ??
-            (this.deleteCompartmentCommand = new DelegateCommand(
-                async () => await this.DeleteCompartmentAsync(),
-                this.CanDeleteCompartment));
 
         public GlobalSettings GlobalSettings { get => this.globalSettings; set => this.SetProperty(ref this.globalSettings, value); }
 
@@ -163,41 +150,6 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         #region Methods
 
-        public async Task<bool> ExecuteCreateCommandAsync()
-        {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
-            var result = await this.compartmentProvider.CreateAsync(this.Model);
-            if (result.Success)
-            {
-                this.TakeModelSnapshot();
-
-                this.EventService.Invoke(new StatusPubSubEvent(
-                   App.Resources.MasterData.LoadingUnitSavedSuccessfully,
-                   StatusType.Success));
-
-                this.CompleteOperation();
-            }
-            else
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
-            }
-
-            this.IsBusy = false;
-
-            return result.Success;
-        }
-
         public async Task InitializeDataAsync()
         {
             if (this.mode == AppearMode.Add)
@@ -219,53 +171,43 @@ namespace Ferretto.WMS.App.Modules.MasterData
             this.GlobalSettings = await this.globalSettingsProvider.GetAllAsync();
         }
 
-        protected override void EvaluateCanExecuteCommands()
-        {
-            base.EvaluateCanExecuteCommands();
-
-            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
-        }
-
         protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
-        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
+        protected override async Task ExecuteRevertCommandAsync()
+        {
+            await this.LoadDataAsync();
+        }
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
-            var result = await this.compartmentProvider.UpdateAsync(this.Model);
+            var result = this.IsAdd ?
+                await this.compartmentProvider.CreateAsync(this.Model) :
+                await this.compartmentProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    App.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                    StatusType.Success));
 
                 this.CompleteOperation();
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
             }
 
-            this.IsBusy = false;
-
-            return true;
+            return result.Success;
         }
 
-        protected override Task LoadDataAsync()
+        protected override async Task LoadDataAsync()
         {
-            return Task.CompletedTask;
+            this.IsBusy = true;
+
+            this.Model = await this.compartmentProvider.GetByIdAsync(this.Model.Id);
+
+            this.IsBusy = false;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -339,50 +281,27 @@ namespace Ferretto.WMS.App.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanDeleteCompartment()
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
-            return this.Model != null;
-        }
-
-        private async Task DeleteCompartmentAsync()
-        {
-            if (this.Model.CanDelete())
+            var loadingUnit = this.Model.LoadingUnit;
+            var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
             {
-                this.IsBusy = true;
+                loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
-                var userChoice = this.DialogService.ShowMessage(
-                    DesktopApp.AreYouSureToDeleteCompartment,
-                    DesktopApp.ConfirmOperation,
-                    DialogType.Question,
-                    DialogButtons.YesNo);
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
-                if (userChoice == DialogResult.Yes)
-                {
-                    var loadingUnit = this.Model.LoadingUnit;
-                    var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
-                    if (result.Success)
-                    {
-                        loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
-
-                        this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
-
-                        this.IsBusy = false;
-                        this.CompleteOperation();
-
-                        this.Model = null;
-                    }
-                    else
-                    {
-                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
-                    }
-                }
-
-                this.IsBusy = false;
+                this.CompleteOperation();
             }
             else
             {
-                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Errors.UnableToSaveChanges,
+                        StatusType.Error));
             }
+
+            return result.Success;
         }
 
         private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)

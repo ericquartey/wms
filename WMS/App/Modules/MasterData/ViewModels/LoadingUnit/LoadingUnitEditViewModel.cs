@@ -133,15 +133,11 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         #region Methods
 
-        protected override async Task ExecuteRefreshCommandAsync()
-        {
-            await this.LoadDataAsync();
-        }
+        protected override async Task ExecuteRefreshCommandAsync() => await this.LoadDataAsync();
 
-        protected override Task ExecuteRevertCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
+
+        protected override Task<bool> ExecuteSaveCommandAsync() => throw new NotSupportedException();
 
         protected override async Task LoadDataAsync()
         {

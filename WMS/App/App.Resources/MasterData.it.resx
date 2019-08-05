@@ -352,7 +352,7 @@
   <data name="AssociateArea" xml:space="preserve">
     <value>Associa</value>
   </data>
-  <data name="UnassociateArea" xml:space="preserve">
+  <data name="DisassociateArea" xml:space="preserve">
     <value>Disassocia</value>
   </data>
   <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
@@ -391,7 +391,7 @@
   <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
     <value>Rimuovi</value>
   </data>
-  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
+  <data name="CompartmentTypeDeletedSuccessfully" xml:space="preserve">
     <value>Tipo Scomparto rimosso con successo.</value>
   </data>
   <data name="CompartmentTypeAll" xml:space="preserve">
@@ -419,7 +419,7 @@
     <value>Liste di Inventario</value>
   </data>
   <data name="MinStep" xml:space="preserve">
-    <value>(Passo Min.: {0})</value>
+    <value>(Passo Min.: {0} mm)</value>
   </data>
   <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
     <value>Scegli l'unità di carico dove creare un nuovo tipo scomparto:</value>
@@ -430,7 +430,7 @@
   <data name="LayoutOverview" xml:space="preserve">
     <value>Panoramica della Disposizione</value>
   </data>
-  <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
+  <data name="CreateNewCompartmentDesiredCompartmentType" xml:space="preserve">
     <value>Crea un nuovo scomparto delle dimensioni del tipo scomparto desiderato:</value>
   </data>
 </root>
