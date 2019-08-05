@@ -533,7 +533,7 @@
     <value>Serranda baia 3</value>
   </data>
   <data name="HorizontalAxisHomedDone" xml:space="preserve">
-    <value>Origine Asse Orizzontale</value>
+    <value>Origine asse orizzontale</value>
   </data>
   <data name="Laser1Done" xml:space="preserve">
     <value>Puntatore laser 1</value>
@@ -857,10 +857,10 @@
     <value>Annulla caricamento</value>
   </data>
   <data name="VerticalHomingError" xml:space="preserve">
-    <value>Errore calibrazione asse verticale</value>
+    <value>Errore calibrazione asse verticale ({0} di {1})</value>
   </data>
   <data name="HorizontalHomingError" xml:space="preserve">
-    <value>Errore calibrazione Asse Orizzontale</value>
+    <value>Errore calibrazione asse orizzontale ({0} di {1})</value>
   </data>
   <data name="SwitchEngineError" xml:space="preserve">
     <value>Errore scambio assi</value>
@@ -875,19 +875,19 @@
     <value>Start calibrazione</value>
   </data>
   <data name="HorizontalHomingCompleted" xml:space="preserve">
-    <value>Calibrazione Asse Orizzontale completata</value>
+    <value>Calibrazione asse orizzontale completata</value>
   </data>
   <data name="HorizontalHomingExecuting" xml:space="preserve">
-    <value>Calibrazione Asse Orizzontale in esecuzione</value>
+    <value>Calibrazione asse orizzontale in esecuzione ({0} di {1})</value>
   </data>
   <data name="HorizontalHomingStarted" xml:space="preserve">
-    <value>Start calibrazione Asse Orizzontale </value>
+    <value>Start calibrazione asse orizzontale </value>
   </data>
   <data name="VerticalHomingCompleted" xml:space="preserve">
     <value>Calibrazione asse verticale completata</value>
   </data>
   <data name="VerticalHomingExecuting" xml:space="preserve">
-    <value>Calibrazione asse verticale in esecuzione</value>
+    <value>Calibrazione asse verticale in esecuzione ({0} di {1})</value>
   </data>
   <data name="VerticalHomingStarted" xml:space="preserve">
     <value>Start calibrazione asse verticale</value>

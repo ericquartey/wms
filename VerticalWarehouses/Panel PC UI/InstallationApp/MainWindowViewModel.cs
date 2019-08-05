@@ -190,8 +190,8 @@ namespace Ferretto.VW.App.Installation
                     this.eventAggregator
                         .GetEvent<InstallationApp_Event>()
                         .Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
-                    ClickedOnMachineModeEventHandler = null;
-                    ClickedOnMachineOnMarchEventHandler = null;
+                    //ClickedOnMachineModeEventHandler = null;
+                    //ClickedOnMachineOnMarchEventHandler = null;
                 }));
 
         public IViewModel ContentRegionCurrentViewModel
@@ -378,7 +378,7 @@ namespace Ferretto.VW.App.Installation
                 if (!this.SecurityFunctionActive)
                 {
                     this.machineStatusService.ExecuteResetSecurityAsync();
-                    this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
+                    //this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
                 }
             };
 
