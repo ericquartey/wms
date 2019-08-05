@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels.Cells
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class CellStatusStatistics
     {

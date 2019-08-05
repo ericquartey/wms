@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataModels.Resources;
 
-namespace Ferretto.VW.MAS.DataModels.Errors
+namespace Ferretto.VW.MAS.DataModels
 {
     public enum MachineErrors
     {

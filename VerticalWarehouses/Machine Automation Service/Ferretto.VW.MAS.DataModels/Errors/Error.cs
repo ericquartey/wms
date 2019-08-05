@@ -1,6 +1,6 @@
 using System;
 
-namespace Ferretto.VW.MAS.DataModels.Errors
+namespace Ferretto.VW.MAS.DataModels
 {
     public class Error
     {

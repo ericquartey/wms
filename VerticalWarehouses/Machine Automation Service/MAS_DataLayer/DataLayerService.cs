@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,6 +53,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.Logger.LogTrace("DataLayer service initialised.");
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsReady { get; private set; }
 
         #endregion
 
@@ -175,6 +180,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageActor.Any,
                 MessageActor.DataLayer,
                 MessageType.DataLayerReady);
+
+            this.IsReady = true;
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
