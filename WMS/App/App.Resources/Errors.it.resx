@@ -204,4 +204,7 @@
   <data name="CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed" xml:space="preserve">
     <value>La giacenza non può essere zero quando lo scomparto non è ad abbinamento fisso.</value>
   </data>
+    <data name="ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed" xml:space="preserve">
+    <value>Questo oggetto contiene modifiche non salvate, ma i dati sono cambiati e necessitano di essere aggiornati. Annullare le modifiche per ricaricare i dati e quindi riapplicarle.</value>
+  </data>
 </root>

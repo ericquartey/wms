@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushCreate(createdModel);
             if (createdModel.CellId != null)
             {
-                this.NotificationService.PushUpdate(new Cell { Id = createdModel.CellId.Value });
+                this.NotificationService.PushUpdate(new Cell { Id = createdModel.CellId.Value }, createdModel);
             }
 
             return new SuccessOperationResult<LoadingUnitDetails>(createdModel);
@@ -98,7 +98,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.NotificationService.PushDelete(existingModel);
                 if (existingModel.CellId != null)
                 {
-                    this.NotificationService.PushUpdate(new Cell { Id = existingModel.CellId.Value });
+                    this.NotificationService.PushUpdate(new Cell { Id = existingModel.CellId.Value }, existingModel);
                 }
 
                 return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
@@ -279,7 +279,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushUpdate(model);
             if (model.CellId != null)
             {
-                this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value }, model);
             }
 
             return result;
@@ -315,7 +315,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.DataContext.SaveChangesAsync();
 
                 this.NotificationService.PushUpdate(model);
-                this.NotificationService.PushUpdate(new Cell { Id = model.CellId });
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId }, model);
 
                 return new SuccessOperationResult<LoadingUnitOperationalInfoUpdate>(null);
             }
@@ -372,7 +372,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(l.CellNumber, searchAsInt)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as ILoadingUnitUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as ILoadingUnitDeletePolicy).ComputeDeletePolicy());
