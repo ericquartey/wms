@@ -411,23 +411,6 @@ namespace Ferretto.VW.Simulator.Services
                             responseMessage[0] = NBYTES_RECEIVE_CFG;        // nBytes
                             responseMessage[1] = device.FirmwareVersion;    // fwRelease
                             responseMessage[2] = 0x06;                      // Ack  0x00: data, 0x06: configuration
-
-                            if (outputs[(int)IoPorts.ResetSecurity])
-                            {
-                                // Set run status
-                                device.Inputs[(int)IoPorts.NormalState].Value = true;
-                                
-                                foreach (var remoteIO in this.remoteIOs)
-                                {
-                                    // Remove emergency button
-                                    remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
-
-                                    // Set empty position on bay
-                                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
-                                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                                }
-                            }
-
                             break;
 
                         case 0x02: // SetIP
@@ -440,6 +423,24 @@ namespace Ferretto.VW.Simulator.Services
                             }
                             break;
                     }
+
+                    // Logic
+                    if (outputs[(int)IoPorts.ResetSecurity])
+                    {
+                        // Set run status
+                        device.Inputs[(int)IoPorts.NormalState].Value = true;
+
+                        foreach (var remoteIO in this.remoteIOs)
+                        {
+                            // Remove emergency button
+                            remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+                            // Set empty position on bay
+                            remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+                            remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                        }
+                    }
+
                     var result = client.Client.Send(responseMessage);
                 }
             }
