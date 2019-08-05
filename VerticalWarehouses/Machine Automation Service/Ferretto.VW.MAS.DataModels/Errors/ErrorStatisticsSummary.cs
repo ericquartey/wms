@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Ferretto.VW.MAS.DataModels.Errors
+namespace Ferretto.VW.MAS.DataModels
 {
     public class ErrorStatisticsSummary
     {

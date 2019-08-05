@@ -1,10 +1,8 @@
-﻿using Ferretto.VW.MAS.DataModels.Cells;
-
-namespace Ferretto.VW.MAS.DataModels.LoadingUnits
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public class LoadingUnitPosition
     {
-        #region Fields
+        #region Properties
 
         public decimal LoadingUnitCoord { get; set; }
 
