@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IMoveDrawerMachineService moveDrawerService;
 
         private bool isStartRecallButtonActive = true;
 
@@ -32,14 +35,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Constructors
 
-        public DrawerStoreRecallViewModel(IEventAggregator eventAggregator)
+        public DrawerStoreRecallViewModel(
+            IEventAggregator eventAggregator,
+            IMoveDrawerMachineService moveDrawerService)
         {
             if (eventAggregator == null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
+            if (moveDrawerService == null)
+            {
+                throw new ArgumentNullException(nameof(moveDrawerService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.moveDrawerService = moveDrawerService;
             this.NavigationViewModel = null;
         }
 
@@ -90,7 +101,10 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 this.IsStartRecallButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                // TODO Call the method from service
+                var messageData = new MoveDrawerMessageDataDTO { DrawerOperation = DrawerOperation.ManualRecall };
+                await this.moveDrawerService.ExecuteAsync(messageData);
+
+                this.NoteString = "Start drawer recall...";
             }
             catch (Exception)
             {
@@ -106,7 +120,10 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 this.IsStartStoreButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                // TODO Call the method from service
+                var messageData = new MoveDrawerMessageDataDTO { DrawerOperation = DrawerOperation.ManualStore };
+                await this.moveDrawerService.ExecuteAsync(messageData);
+
+                this.NoteString = "Start drawer storing...";
             }
             catch (Exception)
             {
@@ -119,7 +136,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             try
             {
-                // TODO Call the method from service
+                await this.moveDrawerService.StopAsync();
 
                 this.IsStartStoreButtonActive = true;
                 this.IsStartRecallButtonActive = true;

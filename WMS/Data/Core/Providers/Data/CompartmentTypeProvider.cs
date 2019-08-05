@@ -247,7 +247,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Equals(ct.CompartmentsCount, resultInt));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
         }
@@ -278,15 +278,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return updateResult;
             }
 
-            var createResult = await this.itemCompartmentTypeProvider.CreateAsync(
-                new ItemCompartmentType
-                {
-                    ItemId = itemId,
-                    MaxCapacity = maxCapacity,
-                    CompartmentTypeId = compartmentTypeId,
-                });
+            var newModel = new ItemCompartmentType
+            {
+                ItemId = itemId,
+                MaxCapacity = maxCapacity,
+                CompartmentTypeId = compartmentTypeId,
+            };
+            var createResult = await this.itemCompartmentTypeProvider.CreateAsync(newModel);
 
-            this.NotificationService.PushCreate(typeof(ItemCompartmentType));
+            this.NotificationService.PushCreate(newModel);
 
             return createResult;
         }

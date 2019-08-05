@@ -349,7 +349,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment saved sucessfully..
+        ///   Looks up a localized string similar to Compartment saved successfully..
         /// </summary>
         public static string CompartmentSavedSuccessfully {
             get {
@@ -421,11 +421,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment Type deleted succesfully..
+        ///   Looks up a localized string similar to Compartment Type deleted successfully..
         /// </summary>
-        public static string CompartmentTypeDeletedSuccesfully {
+        public static string CompartmentTypeDeletedSuccessfully {
             get {
-                return ResourceManager.GetString("CompartmentTypeDeletedSuccesfully", resourceCulture);
+                return ResourceManager.GetString("CompartmentTypeDeletedSuccessfully", resourceCulture);
             }
         }
         
@@ -477,9 +477,9 @@ namespace Ferretto.WMS.App.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Create a new compartment of the desired compartment type:.
         /// </summary>
-        public static string CreateNewCompartementDesiredCompartmentType {
+        public static string CreateNewCompartmentDesiredCompartmentType {
             get {
-                return ResourceManager.GetString("CreateNewCompartementDesiredCompartmentType", resourceCulture);
+                return ResourceManager.GetString("CreateNewCompartmentDesiredCompartmentType", resourceCulture);
             }
         }
         
@@ -498,6 +498,15 @@ namespace Ferretto.WMS.App.Resources {
         public static string CurrentItemInformation {
             get {
                 return ResourceManager.GetString("CurrentItemInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disassociate.
+        /// </summary>
+        public static string DisassociateArea {
+            get {
+                return ResourceManager.GetString("DisassociateArea", resourceCulture);
             }
         }
         
@@ -556,7 +565,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Compartment Types saved sucessfully..
+        ///   Looks up a localized string similar to Item Compartment Types saved successfully..
         /// </summary>
         public static string ItemCompartmentTypesSavedSuccessfully {
             get {
@@ -565,7 +574,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item deleted sucessfully..
+        ///   Looks up a localized string similar to Item deleted successfully..
         /// </summary>
         public static string ItemDeletedSuccessfully {
             get {
@@ -736,7 +745,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item saved sucessfully..
+        ///   Looks up a localized string similar to Item saved successfully..
         /// </summary>
         public static string ItemSavedSuccessfully {
             get {
@@ -826,7 +835,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit saved sucessfully..
+        ///   Looks up a localized string similar to Loading Unit saved successfully..
         /// </summary>
         public static string LoadingUnitSavedSuccessfully {
             get {
@@ -880,7 +889,7 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (Min. Step: {0}).
+        ///   Looks up a localized string similar to (Min. Step: {0} mm).
         /// </summary>
         public static string MinStep {
             get {
@@ -975,15 +984,6 @@ namespace Ferretto.WMS.App.Resources {
         public static string RunLoadingUnitWithdraw {
             get {
                 return ResourceManager.GetString("RunLoadingUnitWithdraw", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unassociate.
-        /// </summary>
-        public static string UnassociateArea {
-            get {
-                return ResourceManager.GetString("UnassociateArea", resourceCulture);
             }
         }
         

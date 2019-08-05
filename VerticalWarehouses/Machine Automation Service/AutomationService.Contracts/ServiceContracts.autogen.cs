@@ -213,11 +213,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMoveDrawerMachineService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteAsync();
+        System.Threading.Tasks.Task ExecuteAsync(MoveDrawerMessageDataDTO data);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteAsync(MoveDrawerMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -1023,6 +1023,39 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitWeightStatistics>(data);
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class MoveDrawerMessageDataDTO 
+    {
+        [Newtonsoft.Json.JsonProperty("drawerOperation", Required = Newtonsoft.Json.Required.Always)]
+        public DrawerOperation DrawerOperation { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static MoveDrawerMessageDataDTO FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MoveDrawerMessageDataDTO>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum DrawerOperation
+    {
+        None = 0,
+    
+        ManualStore = 1,
+    
+        ManualRecall = 2,
+    
+        AutomaticStore = 3,
+    
+        AutomaticRecall = 4,
     
     }
     

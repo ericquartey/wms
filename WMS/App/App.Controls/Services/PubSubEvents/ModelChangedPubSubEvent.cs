@@ -9,10 +9,6 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private readonly HubEntityOperation operationType;
 
-        private readonly string resourceId;
-
-        private readonly string resourceName;
-
         #endregion
 
         #region Constructors
@@ -20,11 +16,15 @@ namespace Ferretto.WMS.App.Controls.Services
         public ModelChangedPubSubEvent(
             string resourceName,
             string resourceId,
-            HubEntityOperation operationType)
+            HubEntityOperation operationType,
+            string sourceResourceName,
+            string sourceResourceId)
         {
-            this.resourceId = resourceId;
-            this.resourceName = resourceName;
+            this.ResourceId = resourceId;
+            this.ResourceName = resourceName;
             this.operationType = operationType;
+            this.SourceResourceName = sourceResourceName;
+            this.SourceResourceId = sourceResourceId;
         }
 
         #endregion
@@ -33,9 +33,13 @@ namespace Ferretto.WMS.App.Controls.Services
 
         public HubEntityOperation OperationType => this.operationType;
 
-        public string ResourceId => this.resourceId;
+        public string ResourceId { get; }
 
-        public string ResourceName => this.resourceName;
+        public string ResourceName { get; }
+
+        public string SourceResourceId { get; }
+
+        public string SourceResourceName { get; }
 
         public string Token { get; }
 

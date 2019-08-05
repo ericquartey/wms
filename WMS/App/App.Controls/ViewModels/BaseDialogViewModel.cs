@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils;
@@ -84,8 +85,15 @@ namespace Ferretto.WMS.App.Controls
                         this.model.PropertyChanged += this.Model_PropertyChanged;
                     }
 
-                    this.LoadRelatedData();
-                    this.EvaluateCanExecuteCommands();
+                    this.LoadRelatedDataAsync()
+                        .ContinueWith(
+                            t =>
+                            {
+                                this.EvaluateCanExecuteCommands();
+                                return Task.CompletedTask;
+                            },
+                            TaskScheduler.Current)
+                        .ConfigureAwait(true);
                 }
             }
         }
@@ -94,9 +102,10 @@ namespace Ferretto.WMS.App.Controls
 
         #region Methods
 
-        public virtual void LoadRelatedData()
+        public virtual Task LoadRelatedDataAsync()
         {
             // do nothing. The derived classes can customize the behaviour
+            return Task.CompletedTask;
         }
 
         protected virtual bool CheckValidModel()
