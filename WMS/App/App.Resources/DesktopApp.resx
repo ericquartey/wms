@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -150,6 +150,10 @@
   </data>
   <data name="AreYouSureToRevertChanges" xml:space="preserve">
     <value>Are you sure you want to revert your changes?</value>
+    <comment>Prompt message</comment>
+  </data>
+  <data name="AreYouSureToRefreshWithModifications" xml:space="preserve">
+    <value>Refreshing the page will loose all your unsaved changes. Are you sure you want to proceed?</value>
     <comment>Prompt message</comment>
   </data>
   <data name="ConfirmOperation" xml:space="preserve">

@@ -216,4 +216,7 @@
   <data name="CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed" xml:space="preserve">
     <value>Stock cannot be zero when the item pairing is not fixed.</value>
   </data>
+  <data name="ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed" xml:space="preserve">
+    <value>This object has unsaved changes, but data are changed and need to be refreshed. Please revert your changes to refresh data and then reapply them.</value>
+  </data>
 </root>

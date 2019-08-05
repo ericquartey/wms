@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls;
@@ -76,11 +76,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         public override async Task<bool> SaveAsync()
         {
-            this.IsBusy = true;
-
-            var result = await this.compartmentAdd.ExecuteCreateCommandAsync();
-
-            this.IsBusy = false;
+            var result = await this.compartmentAdd.ExecuteSaveWithPromptAsync();
 
             return result;
         }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Ferretto.WMS.App.Modules.MasterData.CompartmentEditView"
+<UserControl x:Class="Ferretto.WMS.App.Modules.MasterData.CompartmentEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -61,6 +61,12 @@
                                    Content="{x:Static res:General.Cancel}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_24dp.png"
+                                   GlyphSize="Custom" />
+
+                <wms:ActionBarItem Command="{Binding RevertCommand}"
+                                   Content="{x:Static res:General.Revert}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
         </Grid>
@@ -298,10 +304,23 @@
         <ContentControl Grid.Row="2"
                         Grid.ColumnSpan="3"
                         Visibility="{Binding IsErrorsVisible, Converter={StaticResource BTVC}}">
-            <TextBlock MaxWidth="300"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding Model.Error}"
-                       Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+
+            <StackPanel MaxWidth="300">
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Model.Error}"
+                           Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{x:Static res:Errors.ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed}"
+                           TextAlignment="Right">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MBATVC}">
+                            <Binding Path="HasConflictingChanges" />
+                            <Binding Path="IsBusy" Converter="{StaticResource BNC}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+            </StackPanel>
+
         </ContentControl>
     </Grid>
 </UserControl>
