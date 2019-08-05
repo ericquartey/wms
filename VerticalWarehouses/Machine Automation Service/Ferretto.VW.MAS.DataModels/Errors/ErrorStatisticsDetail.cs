@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels.Errors
+﻿namespace Ferretto.VW.MAS.DataModels
 {
     public class ErrorStatisticsDetail
     {
