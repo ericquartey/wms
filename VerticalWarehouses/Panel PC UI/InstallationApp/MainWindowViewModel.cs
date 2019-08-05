@@ -46,6 +46,8 @@ namespace Ferretto.VW.App.Installation
 
         private readonly IOperatorHubClient operatorHubClient;
 
+        private readonly IStatusMessageService statusMessageService;
+
         private IViewModel contentRegionCurrentViewModel;
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
@@ -91,7 +93,8 @@ namespace Ferretto.VW.App.Installation
             IUnityContainer container,
             IErrorsMachineService errorsMachineService,
             IAuthenticationService authenticationService,
-            IOperatorHubClient operatorHubClient)
+            IOperatorHubClient operatorHubClient,
+            IStatusMessageService statusMessageService)
         {
             if (eventAggregator == null)
             {
@@ -128,12 +131,17 @@ namespace Ferretto.VW.App.Installation
                 throw new System.ArgumentNullException(nameof(operatorHubClient));
             }
 
+            if (statusMessageService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statusMessageService));
+            }
+
             this.eventAggregator = eventAggregator;
             this.container = container;
             this.errorsMachineService = errorsMachineService;
             this.authenticationService = authenticationService;
             this.operatorHubClient = operatorHubClient;
-
+            this.statusMessageService = statusMessageService;
             this.NavigationRegionCurrentViewModel = navigationButtonsViewModel as MainWindowNavigationButtonsViewModel;
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.idleViewModel = idleViewModel as IdleViewModel;
@@ -299,16 +307,24 @@ namespace Ferretto.VW.App.Installation
             if (this.ContentRegionCurrentViewModel != errorDetailsViewModel)
             // navigate to error page
             {
-                this.previousNavigationViewModel = this.NavigationRegionCurrentViewModel;
-                this.previousContentRegionViewModel = this.ContentRegionCurrentViewModel;
+                try
+                {
+                    errorDetailsViewModel.Error = await this.errorsMachineService.GetCurrentAsync();
 
-                errorDetailsViewModel.Error = await this.errorsMachineService.GetCurrentAsync();
-                this.NavigationRegionCurrentViewModel = null;
-                this.ContentRegionCurrentViewModel = errorDetailsViewModel;
+                    this.previousNavigationViewModel = this.NavigationRegionCurrentViewModel;
+                    this.previousContentRegionViewModel = this.ContentRegionCurrentViewModel;
 
-                var footerViewModel = this.container.Resolve<IFooterViewModel>();
+                    this.NavigationRegionCurrentViewModel = null;
+                    this.ContentRegionCurrentViewModel = errorDetailsViewModel;
 
-                this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
+                    var footerViewModel = this.container.Resolve<IFooterViewModel>();
+
+                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
+                }
+                catch (System.Exception ex)
+                {
+                    this.statusMessageService.Notify(ex);
+                }
             }
             else
             // leave error page

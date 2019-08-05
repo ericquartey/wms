@@ -49,13 +49,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseDataHub();
 
+            app.UseDataLayer();
+
             app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDataLayer(this.Configuration);
+            services.AddDataLayer();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

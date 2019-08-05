@@ -1,38 +1,35 @@
 using System;
 using System.Data.Common;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 using Microsoft.Extensions.DiagnosticAdapter;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
-    public class CommandListener
+    public class CommandListener<TDbContext>
+        where TDbContext : DbContext, IRedundancyDbContext<TDbContext>
     {
         #region Fields
 
-        private readonly DataLayerContext dataLayerContext;
+        private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
-        private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
+        private bool writingOnStandby;
 
         #endregion
 
         #region Constructors
 
         public CommandListener(
-            DataLayerContext dataLayerContext,
-            IDbContextRedundancyService<DataLayerContext> redundancyService)
+            IDbContextRedundancyService<TDbContext> redundancyService)
         {
-            if (dataLayerContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataLayerContext));
-            }
-
             if (redundancyService == null)
             {
                 throw new ArgumentNullException(nameof(redundancyService));
             }
 
-            this.dataLayerContext = dataLayerContext;
             this.redundancyService = redundancyService;
         }
 
@@ -42,28 +39,81 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
         public void OnCommandError(
+                DbCommand command,
+                DbCommandMethod executeMethod,
+                Guid commandId,
+                Guid connectionId,
+                Exception exception,
+                bool async,
+                DateTimeOffset startTime,
+                TimeSpan duration)
+        {
+            var dbContextOptions = !this.writingOnStandby
+                ? this.redundancyService.ActiveDbContextOptions
+                : this.redundancyService.StandbyDbContextOptions;
+
+            lock (this.redundancyService)
+            {
+                this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
+            }
+        }
+
+        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
+        public void OnCommandExecuting(
             DbCommand command,
             DbCommandMethod executeMethod,
             Guid commandId,
             Guid connectionId,
-            Exception exception,
             bool async,
-            DateTimeOffset startTime,
-            TimeSpan duration)
+            DateTimeOffset startTime)
         {
-            this.redundancyService.HandleDbContextFault(this.dataLayerContext, exception);
+            lock (this.redundancyService)
+            {
+                if (IsInsertOrUpdateCommand(command)
+                    &&
+                    this.IsActiveDbChannel(command.Connection.ConnectionString)
+                    &&
+                    !this.redundancyService.IsStandbyDbInhibited
+                    &&
+                    !this.writingOnStandby)
+                {
+                    this.writingOnStandby = true;
+
+                    var dbContext = new DataLayerContext(
+                       isActiveChannel: false,
+                       this.redundancyService as IDbContextRedundancyService<DataLayerContext>);
+
+                    var parametersArray = new SqliteParameter[command.Parameters.Count];
+                    command.Parameters.CopyTo(parametersArray, 0);
+
+                    try
+                    {
+                        dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
+                    }
+                    catch
+                    {
+                        this.redundancyService.InhibitStandbyDb();
+                    }
+
+                    this.writingOnStandby = false;
+                }
+            }
         }
 
-        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.ConnectionError")]
-        public void OnConnectionError(
-             Microsoft.EntityFrameworkCore.Storage.IRelationalConnection connection,
-             Exception exception,
-             DateTimeOffset startTime,
-             TimeSpan duration,
-             bool async,
-             bool logErrorAsDebug)
+        private static bool IsInsertOrUpdateCommand(DbCommand command)
         {
-            this.redundancyService.HandleDbContextFault(this.dataLayerContext, exception);
+            var normalizedCommandText = command.CommandText.ToUpperInvariant();
+
+            return
+                normalizedCommandText.Contains("UPDATE ")
+                ||
+                normalizedCommandText.Contains("INSERT ");
+        }
+
+        private bool IsActiveDbChannel(string connectionString)
+        {
+            var activeDbExtension = this.redundancyService.ActiveDbContextOptions.FindExtension<SqliteOptionsExtension>();
+            return connectionString == activeDbExtension.ConnectionString;
         }
 
         #endregion

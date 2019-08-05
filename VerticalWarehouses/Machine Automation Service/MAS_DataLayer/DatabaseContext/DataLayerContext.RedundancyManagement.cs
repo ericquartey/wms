@@ -19,9 +19,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #region Constructors
 
         public DataLayerContext(
-            DbContextOptions<DataLayerContext> options,
+            bool isActiveChannel,
             IDbContextRedundancyService<DataLayerContext> redundancyService)
-            : this(options)
+            : this(isActiveChannel ? redundancyService?.ActiveDbContextOptions : redundancyService?.StandbyDbContextOptions)
         {
             if (redundancyService == null)
             {
@@ -48,17 +48,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 return base.SaveChanges();
             }
 
-            if (this.Options == this.redundancyService.ActiveDbContextOptions)
-            {
-                if (this.redundancyService.IsActiveDbInhibited)
-                {
-                    throw new DataLayerPersistentException(
-                        DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
-                }
-
-                this.SaveToStandbyDb();
-            }
-
             var affectedRecordsCount = 0;
 
             try
@@ -69,10 +58,20 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 }
             }
             catch
+            // Swap is handled in diagnostic interceptor:
+            // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             {
-                // Do nothing.
-                // Errors are handled in diagnostic interceptor:
-                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
+                System.Diagnostics.Debug.Assert(
+                      this.Options == this.redundancyService.StandbyDbContextOptions,
+                      "This channel (previously was active) is now standby.");
+
+                if (this.redundancyService.IsActiveDbInhibited)
+                {
+                    throw new DataLayerPersistentException(
+                        DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                }
+
+                affectedRecordsCount = this.SaveToActiveDb();
             }
 
             return affectedRecordsCount;
@@ -88,48 +87,30 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        private static void MirrorEntryToStandbyDb(DataLayerContext standbyDbContext, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entry)
+        public override string ToString()
         {
-            switch (entry.State)
+            if (this.redundancyService == null)
             {
-                case EntityState.Added:
-
-                    standbyDbContext.Add(entry.Entity);
-                    break;
-
-                case EntityState.Deleted:
-                    standbyDbContext.Remove(entry.Entity);
-                    break;
-
-                case EntityState.Modified:
-                    standbyDbContext.Update(entry.Entity);
-                    break;
+                base.ToString();
             }
+
+            return this.redundancyService.ActiveDbContextOptions == this.Options
+                ? "Active DataLayer channel"
+                : "Standby DataLayer channel";
         }
 
-        private void SaveToStandbyDb()
+        private int SaveToActiveDb()
         {
-            if (this.redundancyService.IsStandbyDbInhibited)
-            {
-                return;
-            }
-
-            var standbyDbContext = new DataLayerContext(
-                this.redundancyService.StandbyDbContextOptions,
+            var dbContext = new DataLayerContext(
+                isActiveChannel: true,
                 this.redundancyService);
 
-            this.ChangeTracker.DetectChanges();
-
+            var affectedRecordsCount = 0;
             try
             {
-                foreach (var entry in this.ChangeTracker.Entries())
-                {
-                    MirrorEntryToStandbyDb(standbyDbContext, entry);
-                }
-
                 lock (this.redundancyService)
                 {
-                    standbyDbContext.SaveChanges();
+                    affectedRecordsCount = dbContext.SaveChanges();
                 }
             }
             catch
@@ -138,6 +119,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 // Errors are handled in diagnostic interceptor:
                 // Microsoft.EntityFrameworkCore.Database.Command.CommandError
             }
+
+            return affectedRecordsCount;
         }
 
         #endregion
