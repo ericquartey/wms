@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -100,6 +101,29 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 }
             }
 
+            if (message.Type == FieldMessageType.InverterStatusUpdate)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationExecuting:
+                        if (message.Data is InverterStatusUpdateFieldMessageData data)
+                        {
+                            PositioningMessageData positioningMessageData = new PositioningMessageData();
+                            positioningMessageData.CurrentPosition = data.CurrentPosition;
+
+                            var notificationMessage = new NotificationMessage(
+                                positioningMessageData,
+                                $"Current Encoder position: {data.CurrentPosition}",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.CurrentEncoderPosition,
+                                MessageStatus.OperationExecuting);
+
+                            this.PublishNotificationMessage(notificationMessage);
+                        }
+                        break;
+                }
+            }
             lock (this.CurrentState)
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
