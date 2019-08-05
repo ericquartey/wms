@@ -341,7 +341,7 @@
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           LabelText="Sicurezza"
-                                          SensorState="{Binding InverterService.RemoteIOs01.IOs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
 
             </Grid>
