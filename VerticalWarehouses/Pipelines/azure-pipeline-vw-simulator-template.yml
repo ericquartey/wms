@@ -6,7 +6,7 @@ steps:
 
 - template: ../../Pipelines/azure-pipeline-net4-nuget-template.yml
   parameters:
-    RestoreSolution: '**/Simulator.sln'
+    RestoreSolution: 'VerticalWarehouses/Simulator.sln'
 
 
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
@@ -15,7 +15,7 @@ steps:
 - task: VSBuild@1
   displayName: 'Build solution Simulator.sln'
   inputs:
-    solution: 'Simulator/Simulator.sln'
+    solution: 'VerticalWarehouses/Simulator.sln'
     platform: ${{ parameters.BuildPlatform }}
     configuration: ${{ parameters.BuildConfiguration }}
     msbuildArchitecture: x64
