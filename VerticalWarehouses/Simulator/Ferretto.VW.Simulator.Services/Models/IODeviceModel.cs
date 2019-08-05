@@ -9,6 +9,42 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
+    public enum IoPorts
+    {
+        #region Outputs
+
+        ResetSecurity = 0,
+        ElevatorMotor = 1,
+        CradleMotor = 2,
+        MeasureBarrier = 3,
+        BayLight = 4,
+        FreeSensor1 = 5,
+        EndMissionRobot = 6,
+        ReadyWarehouseRobot = 7,
+
+        #endregion
+
+        #region Inputs
+
+        NormalState = 0,
+        MushroomEmergency = 1,
+        MicroCarterLeftSideBay = 2,
+        MicroCarterRightSideBay = 3,
+        AntiIntrusionBarrierBay = 4,
+        LoadingUnitInBay = 5,
+        LoadingUnitInLowerBay = 6,
+        FreeSensor = 7,
+        ElevatorMotorFeedback = 8,
+        CradleMotorFeedback = 9,
+        DrawerInMachineSide = 10,
+        DrawerInOperatorSide = 11,
+        CalibrationBarrierLight = 12,
+        HookTrolley = 14,
+        FinePickingRobot = 15
+
+        #endregion
+    }
+
     public class IODeviceModel : BindableBase
     {
         #region Fields

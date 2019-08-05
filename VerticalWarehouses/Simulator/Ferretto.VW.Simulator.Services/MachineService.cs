@@ -371,12 +371,6 @@ namespace Ferretto.VW.Simulator.Services
             const int NBYTES_RECEIVE = 15;
             const int NBYTES_RECEIVE_CFG = 3;
 
-            //if (this.EnabledForce)
-            //{
-            //    // Change state flag from set view
-            //    this.UpdateFlag();
-            //}
-
             var device = this.remoteIOs.First(x => x.Id == index);
 
             device.Buffer = device.Buffer.AppendArrays(message, message.Length);
@@ -393,6 +387,9 @@ namespace Ferretto.VW.Simulator.Services
                     var length = extractedMessage[0];
                     var relProtocol = extractedMessage[1];
                     var codeOperation = extractedMessage[2];
+
+                    var spare = relProtocol == 0x10 ? 0 : extractedMessage[3];
+                    bool[] outputs = Enumerable.Range(0, 8).Select(x => Convert.ToString(relProtocol == 0x10 ? extractedMessage[3] : extractedMessage[4]).PadLeft(8, '0')[x] == '1' ? true : false).ToArray();
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
@@ -414,6 +411,12 @@ namespace Ferretto.VW.Simulator.Services
                             responseMessage[0] = NBYTES_RECEIVE_CFG;        // nBytes
                             responseMessage[1] = device.FirmwareVersion;    // fwRelease
                             responseMessage[2] = 0x06;                      // Ack  0x00: data, 0x06: configuration
+
+                            if (outputs[(int)IoPorts.ResetSecurity])
+                            {
+                                device.IOs[(int)IoPorts.NormalState].Value = true;
+                            }
+
                             break;
 
                         case 0x02: // SetIP
