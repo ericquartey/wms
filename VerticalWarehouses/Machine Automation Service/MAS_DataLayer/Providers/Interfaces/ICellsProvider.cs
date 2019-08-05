@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.DataModels.Cells;
+﻿using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 {

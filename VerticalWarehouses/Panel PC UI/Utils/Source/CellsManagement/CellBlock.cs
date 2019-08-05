@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement
 {

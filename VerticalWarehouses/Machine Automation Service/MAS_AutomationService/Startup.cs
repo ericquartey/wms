@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Hubs;
+﻿using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.IODriver;
 using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
@@ -49,17 +50,39 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseDataHub();
 
+            app.UseHealthChecks("/health/ready", new HealthCheckOptions()
+            {
+                Predicate = (check) => check.Tags.Contains("ready"),
+            });
+
+            app.UseHealthChecks("/health/live", new HealthCheckOptions()
+            {
+                Predicate = (check) => check.Tags.Contains("live"),
+            });
+
+            app.UseDataLayer();
+
             app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDataLayer(this.Configuration);
+            services.AddDataLayer();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+              .AddMvc(options =>
+              {
+                  options.Filters.Add(typeof(ReadinessFilter));
+              })
+              .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
+
+            services
+                .AddHealthChecks()
+                .AddCheck<LivelinessHealthCheck>("live", null, tags: new[] { "live" })
+                .AddCheck<ReadinessHealthCheck>("ready", null, tags: new[] { "ready" });
 
             this.InitialiseWmsInterfaces(services);
 

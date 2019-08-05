@@ -21,7 +21,14 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
         public static string GetDataLayerPrimaryConnectionString(this IConfiguration configuration)
         {
-            return configuration.GetConnectionString(PrimaryConnectionStringName);
+            var connectionString = configuration.GetConnectionString(PrimaryConnectionStringName);
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new System.Exception($"Connection string '{PrimaryConnectionStringName}' cannot be null.");
+            }
+
+            return connectionString;
         }
 
         public static string GetDataLayerSecondaryConnectionString(this IConfiguration configuration)

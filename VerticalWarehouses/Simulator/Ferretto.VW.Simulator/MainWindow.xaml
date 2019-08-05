@@ -10,8 +10,8 @@
         xmlns:model="clr-namespace:Ferretto.VW.Simulator.Services.Models;assembly=Ferretto.VW.Simulator.Services"
         xmlns:res="clr-namespace:Ferretto.VW.Simulator.Resources;assembly=Ferretto.VW.Simulator.Resources"
         Title="Simulator"
-        Width="985"
-        Height="700"
+        Width="1000"
+        Height="685"
         Icon="Resources/LogoFerrettoGroup.png"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
@@ -26,9 +26,9 @@
 
         <Style x:Key="VWSIM_Border_IoDriver"
                TargetType="{x:Type Border}">
-            <Setter Property="Width" Value="300" />
+            <Setter Property="Width" Value="Auto" />
             <Setter Property="Height" Value="Auto" />
-            <Setter Property="Margin" Value="0,5,15,0" />
+            <Setter Property="Margin" Value="5" />
             <Setter Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
             <Setter Property="BorderThickness" Value="7" />
             <Setter Property="CornerRadius" Value="5" />
@@ -37,9 +37,9 @@
 
         <Style x:Key="VWSIM_Border_Inverter"
                TargetType="{x:Type Border}">
-            <Setter Property="Width" Value="225" />
+            <Setter Property="Width" Value="Auto" />
             <Setter Property="Height" Value="Auto" />
-            <Setter Property="Margin" Value="0,5,10,0" />
+            <Setter Property="Margin" Value="5" />
             <Setter Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
             <Setter Property="BorderThickness" Value="7" />
             <Setter Property="CornerRadius" Value="5" />
@@ -47,124 +47,183 @@
         </Style>
 
         <ControlTemplate x:Key="VWSIM_Grid_IoDriver">
-            <Grid>
-                <Border Style="{StaticResource ResourceKey=VWSIM_Border_IoDriver}">
-                    <StackPanel Margin="-1"
-                                Background="{StaticResource FerrettoMediumGray}">
-                        <Grid Margin="5,5,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0"
-                                       Style="{StaticResource VWSIM_CustomLabel_ContentInverseTextBlockStyle}"
-                                       Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
-                                       ToolTip="Id" />
-                            <custom:VWIcon Grid.Column="1"
-                                           Height="36"
-                                           HorizontalAlignment="Right"
-                                           ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                           Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/device.png" />
-                        </Grid>
-                        <ItemsControl ItemsSource="{Binding IOs}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ctrl:CustomSensorSmallControl Margin="5,5,11,5"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Center"
-                                                                   LabelText="{Binding Description}"
-                                                                   SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                   Style="{StaticResource VWSIM_CustomSensorSmallControlStyle}" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
-            </Grid>
+            <Border Style="{StaticResource ResourceKey=VWSIM_Border_IoDriver}">
+                <Grid Margin="-1"
+                      Background="{StaticResource FerrettoMediumGray}">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0"
+                          Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                                   Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
+                                   ToolTip="Id" />
+                        <custom:VWIcon Grid.Column="1"
+                                       Height="36"
+                                       HorizontalAlignment="Right"
+                                       ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                       Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/device.png" />
+                    </Grid>
+                    <ItemsControl Grid.Row="1"
+                                  Margin="0,5"
+                                  ItemsSource="{Binding IOs}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ctrl:CustomSensorSmallControl Margin="5,5,13,5"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Center"
+                                                               LabelText="{Binding Description}"
+                                                               SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                               Style="{StaticResource VWSIM_CustomSensorSmallControlStyle}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Border>
         </ControlTemplate>
 
         <ControlTemplate x:Key="VWSIM_Grid_Inverter">
-            <Grid>
-                <Border Style="{StaticResource ResourceKey=VWSIM_Border_Inverter}">
-                    <StackPanel Margin="-1"
-                                HorizontalAlignment="Stretch"
-                                Background="{StaticResource FerrettoMediumGray}">
-                        <Grid Margin="5,5,5,0">
+            <Border Style="{StaticResource ResourceKey=VWSIM_Border_Inverter}">
+                <Grid Margin="-1"
+                      Background="{StaticResource FerrettoMediumGray}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0"
+                          Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel>
-                                <TextBlock VerticalAlignment="Top"
-                                           Style="{StaticResource VWSIM_CustomLabel_ContentInverseTextBlockStyle}"
-                                           Text="{Binding InverterRole, StringFormat='INVERTER {0} '}"
-                                           ToolTip="Inverter Role" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="3"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                                       Text="{Binding InverterRole, StringFormat='INVERTER {0} '}"
+                                       ToolTip="Inverter Role" />
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Top"
-                                               Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                               Text="{Binding InverterType, StringFormat='{}{0} '}"
-                                               ToolTip="Inverter Type" />
-                                    <TextBlock VerticalAlignment="Top"
-                                               Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                               Text="{Binding OperationMode, StringFormat='- {0} '}"
-                                               ToolTip="Operation Mode" />
-                                    <TextBlock VerticalAlignment="Top"
-                                               Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                               Text="{Binding AxisPosition, StringFormat='- {0}'}"
-                                               ToolTip="Axis Position" />
-                                </StackPanel>
-                            </StackPanel>
-                            <custom:VWIcon Grid.Column="1"
-                                           Height="36"
-                                           HorizontalAlignment="Right"
-                                           ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                           Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/inverter.png" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="0"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding InverterType, StringFormat='{}{0} '}"
+                                       ToolTip="Inverter Type" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding OperationMode, StringFormat='- {0} '}"
+                                       ToolTip="Operation Mode" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding AxisPosition, StringFormat='- {0}'}"
+                                       ToolTip="Axis Position" />
                         </Grid>
-                        <ItemsControl Margin="0,5,0,0"
-                                      ItemsSource="{Binding DigitalIO}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ctrl:CustomSensorSmallControl Margin="5,5,10,5"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Center"
-                                                                   LabelText="{Binding Description}"
-                                                                   SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                   Style="{StaticResource VWSIM_CustomSensorSmallControlStyle}" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <Grid Margin="5,5,5,0"
-                              HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0"
-                                       Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                       Text="{Binding ControlWord, StringFormat='{}CW: {0}'}"
-                                       ToolTip="Control Word" />
+                        <custom:VWIcon Grid.Column="1"
+                                       Height="36"
+                                       HorizontalAlignment="Right"
+                                       ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                       Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/inverter.png" />
+                    </Grid>
 
-                            <TextBlock Grid.Column="1"
-                                       Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                       Text="{Binding StatusWord, StringFormat='{}SW: {0}'}"
-                                       ToolTip="Status Word" />
-                        </Grid>
-                    </StackPanel>
-                </Border>
-            </Grid>
+                    <ItemsControl Grid.Row="1"
+                                  Margin="0,5"
+                                  ItemsSource="{Binding DigitalIO}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ctrl:CustomSensorSquareControl Margin="4,5,3,5"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                LabelText="{Binding Description}"
+                                                                SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Grid Grid.Row="2"
+                          Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Right"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Control Word:" />
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="12"
+                                   Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
+                                   Text="{Binding ControlWordBinary, FallbackValue='0000000000000000'}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Right"
+                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                   Text="Status Word:" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="12"
+                                   Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
+                                   Text="{Binding StatusWordBinary, FallbackValue='0000000000000000'}" />
+
+                    </Grid>
+
+                </Grid>
+            </Border>
         </ControlTemplate>
     </Window.Resources>
 
@@ -176,7 +235,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Margin="15,0,0,0">
+        <Grid Margin="15,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -344,58 +403,91 @@
             </Button>
 
             <!--  IoDrive  -->
-            <WrapPanel Grid.Row="3"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       HorizontalAlignment="Stretch"
-                       Orientation="Horizontal">
+            <Grid Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  Margin="-5,0">
 
-                <ContentControl DataContext="{Binding InverterService.RemoteIOs01}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <ContentControl Grid.Column="0"
+                                DataContext="{Binding InverterService.RemoteIOs01}"
                                 Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
-                <ContentControl DataContext="{Binding InverterService.RemoteIOs02}"
+                <ContentControl Grid.Column="1"
+                                DataContext="{Binding InverterService.RemoteIOs02}"
                                 Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
-                <ContentControl DataContext="{Binding InverterService.RemoteIOs03}"
+                <ContentControl Grid.Column="2"
+                                DataContext="{Binding InverterService.RemoteIOs03}"
                                 Template="{StaticResource VWSIM_Grid_IoDriver}" />
 
-            </WrapPanel>
+            </Grid>
 
 
             <!--  Inverter  -->
 
-            <WrapPanel Grid.Row="4"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       Margin="0,20,0,0"
-                       HorizontalAlignment="Stretch"
-                       Orientation="Horizontal">
+            <Grid Grid.Row="4"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="3"
+                  Margin="-5,5,-5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 
-                <ContentControl DataContext="{Binding InverterService.Inverters00}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <ContentControl Grid.Row="0"
+                                Grid.Column="0"
+                                DataContext="{Binding InverterService.Inverters00}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters01}"
+                <ContentControl Grid.Row="0"
+                                Grid.Column="1"
+                                DataContext="{Binding InverterService.Inverters01}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters02}"
+                <ContentControl Grid.Row="0"
+                                Grid.Column="2"
+                                DataContext="{Binding InverterService.Inverters02}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters03}"
+                <ContentControl Grid.Row="0"
+                                Grid.Column="3"
+                                DataContext="{Binding InverterService.Inverters03}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters04}"
+                <ContentControl Grid.Row="1"
+                                Grid.Column="0"
+                                DataContext="{Binding InverterService.Inverters04}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters05}"
+                <ContentControl Grid.Row="1"
+                                Grid.Column="1"
+                                DataContext="{Binding InverterService.Inverters05}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters06}"
+                <ContentControl Grid.Row="1"
+                                Grid.Column="2"
+                                DataContext="{Binding InverterService.Inverters06}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-                <ContentControl DataContext="{Binding InverterService.Inverters07}"
+                <ContentControl Grid.Row="1"
+                                Grid.Column="3"
+                                DataContext="{Binding InverterService.Inverters07}"
                                 Template="{StaticResource VWSIM_Grid_Inverter}" />
 
-            </WrapPanel>
+            </Grid>
         </Grid>
 
         <TextBlock Grid.Row="2"
@@ -404,8 +496,7 @@
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
                    Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   TextWrapping="WrapWithOverflow"
-                   Visibility="Collapsed" />
+                   TextWrapping="WrapWithOverflow" />
 
     </Grid>
 </Window>
