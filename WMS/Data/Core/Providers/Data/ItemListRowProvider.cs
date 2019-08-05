@@ -77,8 +77,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             var createdModel = await this.GetByIdAsync(entry.Entity.Id);
 
             this.NotificationService.PushCreate(createdModel);
-            this.NotificationService.PushUpdate(new ItemList { Id = createdModel.ItemListId });
-            this.NotificationService.PushUpdate(new Item { Id = createdModel.ItemId });
+            this.NotificationService.PushUpdate(new ItemList { Id = createdModel.ItemListId }, createdModel);
+            this.NotificationService.PushUpdate(new Item { Id = createdModel.ItemId }, createdModel);
 
             return new SuccessOperationResult<ItemListRowDetails>(createdModel);
         }
@@ -105,8 +105,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushDelete(existingModel);
-                this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId });
-                this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId });
+                this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId }, existingModel);
+                this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId }, existingModel);
 
                 return new SuccessOperationResult<ItemListRowDetails>(existingModel);
             }
@@ -190,8 +190,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId }, model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
             return result;
         }
@@ -222,7 +222,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemListRowUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as IItemListRowDeletePolicy).ComputeDeletePolicy());

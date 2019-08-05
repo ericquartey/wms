@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public static void SetPolicies(BaseModel<int> model)
+        public static void SetPolicies(BasePolicyModel model)
         {
             model?.AddPolicy((model as IItemListRowExecutePolicy).ComputeExecutePolicy());
         }
@@ -154,8 +154,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 false);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId });
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId }, model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
             return result;
         }
