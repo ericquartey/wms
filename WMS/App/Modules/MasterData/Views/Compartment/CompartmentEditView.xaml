@@ -1,4 +1,4 @@
-<UserControl x:Class="Ferretto.WMS.App.Modules.MasterData.CompartmentEditView"
+﻿<UserControl x:Class="Ferretto.WMS.App.Modules.MasterData.CompartmentEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,7 +26,7 @@
                            Style="{DynamicResource ActionBarNotCustomizable}"
                            Visibility="{Binding IsAdd, Converter={StaticResource BTVC}}">
 
-                <wms:ActionBarItem Command="{Binding CreateCommand}"
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
                                    Content="{x:Static res:General.Create}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
@@ -50,7 +50,7 @@
                                    GlyphSize="Custom"
                                    TooltipText="{Binding SaveReason}" />
 
-                <wms:ActionBarItem Command="{Binding DeleteCompartmentCommand}"
+                <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                    Content="{x:Static res:General.Delete}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"

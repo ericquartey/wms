@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls;
@@ -26,7 +26,10 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         public CompartmentEditStepViewModel()
         {
-            this.compartmentAdd = new CompartmentEditViewModel();
+            this.compartmentAdd = new CompartmentEditViewModel
+            {
+                IsAdd = true,
+            };
         }
 
         #endregion
@@ -131,6 +134,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
                 IsHeaderVisible = false,
                 IsErrorsVisible = false,
                 IsItemLookUpEnabled = false,
+                IsAdd = true,
             };
 
             model.ItemId = itemId;
