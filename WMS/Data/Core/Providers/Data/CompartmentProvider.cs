@@ -114,8 +114,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var filteredModel = CleanCompartmentItemDetails(model);
 
-                var entry = await this.DataContext.Compartments.AddAsync(
-                    this.mapper.Map<Common.DataModels.Compartment>(filteredModel));
+                var compartment = this.mapper.Map<Common.DataModels.Compartment>(filteredModel);
+                compartment.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
+                var entry = await this.DataContext.Compartments.AddAsync(compartment);
                 if (await this.DataContext.SaveChangesAsync() <= 0)
                 {
                     return new CreationErrorOperationResult<CompartmentDetails>();
