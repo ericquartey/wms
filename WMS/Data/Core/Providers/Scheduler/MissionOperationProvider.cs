@@ -252,8 +252,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 checkForPolicies: false);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-            this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
+            this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId }, model);
 
             return result;
         }

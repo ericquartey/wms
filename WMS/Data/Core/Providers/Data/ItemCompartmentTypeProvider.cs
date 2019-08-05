@@ -69,8 +69,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.NotificationService.PushCreate(model);
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-            this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
+            this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId }, model);
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
@@ -116,11 +116,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
-                this.NotificationService.PushDelete(typeof(ItemCompartmentType));
-                this.NotificationService.PushUpdate(new Item { Id = itemId });
-                this.NotificationService.PushUpdate(new CompartmentType { Id = compartmentTypeId });
+                var existingBusinessModel = new ItemCompartmentType { CompartmentTypeId = id.CompartmentTypeId, ItemId = id.ItemId };
 
-                return new SuccessOperationResult<ItemCompartmentType>(new ItemCompartmentType { CompartmentTypeId = compartmentTypeId, ItemId = itemId });
+                this.NotificationService.PushDelete(existingBusinessModel);
+                this.NotificationService.PushUpdate(new Item { Id = id.ItemId }, existingBusinessModel);
+                this.NotificationService.PushUpdate(new CompartmentType { Id = id.CompartmentTypeId }, existingBusinessModel);
+
+                return new SuccessOperationResult<ItemCompartmentType>(existingBusinessModel);
             }
 
             return new UnprocessableEntityOperationResult<ItemCompartmentType>();
@@ -191,8 +193,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushUpdate(model);
-                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-                this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
+                this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId }, model);
             }
 
             return new SuccessOperationResult<ItemCompartmentType>(model);

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -154,8 +154,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 false);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId });
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId }, model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
             return result;
         }
