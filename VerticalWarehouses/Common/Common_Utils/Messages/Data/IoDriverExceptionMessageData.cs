@@ -28,5 +28,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; private set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"Code:{this.ExceptionCode} Description:{this.ExceptionDescription}";
+        }
+
+        #endregion
     }
 }

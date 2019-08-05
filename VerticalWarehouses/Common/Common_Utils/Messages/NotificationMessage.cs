@@ -1,11 +1,20 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using NLog;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages
 {
     public class NotificationMessage
     {
+        #region Fields
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Constructors
 
         public NotificationMessage()
@@ -34,6 +43,15 @@ namespace Ferretto.VW.CommonUtils.Messages
             this.Status = status;
             this.Verbosity = verbosity;
             this.ErrorLevel = level;
+
+            if (Logger?.IsTraceEnabled ?? false)
+            {
+                StackTrace st = new StackTrace();
+                StackFrame sf = st.GetFrame(1);
+                string trace = $"{sf.GetMethod().ReflectedType.Name}.{sf.GetMethod().Name}()";
+
+                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" status:{status} [{data?.ToString()}][{trace}]");
+            }
         }
 
         #endregion
@@ -54,7 +72,7 @@ namespace Ferretto.VW.CommonUtils.Messages
 
         public MessageType Type { get; set; }
 
-        public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Info;
+        public MessageVerbosity Verbosity { get; } = MessageVerbosity.Info;
 
         #endregion
     }

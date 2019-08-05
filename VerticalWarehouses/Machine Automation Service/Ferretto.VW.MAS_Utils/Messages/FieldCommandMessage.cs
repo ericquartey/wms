@@ -1,11 +1,21 @@
 ﻿using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using NLog;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
 {
     public class FieldCommandMessage
     {
+        #region Fields
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Constructors
 
         public FieldCommandMessage()
@@ -27,6 +37,15 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Source = source;
             this.Type = type;
             this.DeviceIndex = deviceIndex;
+
+            if (Logger?.IsTraceEnabled ?? false)
+            {
+                StackTrace st = new StackTrace();
+                StackFrame sf = st.GetFrame(1);
+                string trace = $"{sf.GetMethod().ReflectedType.Name}.{sf.GetMethod().Name}()";
+
+                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data?.ToString()}][{trace}]");
+            }
         }
 
         #endregion

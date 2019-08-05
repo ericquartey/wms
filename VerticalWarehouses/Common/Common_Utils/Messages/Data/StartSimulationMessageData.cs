@@ -1,24 +1,25 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class SwitchAxisMessageData : ISwitchAxisMessageData
+    public class StartSimulationMessageData : IMessageData
     {
         #region Constructors
 
-        public SwitchAxisMessageData(Axis axisToSwitch, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public StartSimulationMessageData(MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.AxisToSwitch = axisToSwitch;
             this.Verbosity = verbosity;
         }
 
         #endregion
 
         #region Properties
-
-        public Axis AxisToSwitch { get; }
 
         public MessageVerbosity Verbosity { get; }
 
@@ -28,7 +29,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"AxisToSwitch:{this.AxisToSwitch}";
+            return $"Verbosity:{this.Verbosity}";
         }
 
         #endregion

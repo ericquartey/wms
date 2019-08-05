@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier
@@ -75,6 +76,25 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public int SensorUpdateInterval { get; }
 
         public MessageVerbosity Verbosity { get; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            string currentSensorStatus = string.Empty;
+            if (this.CurrentSensorStatus != null)
+            {
+                var sb = new StringBuilder();
+                foreach (var b in this.CurrentSensorStatus)
+                {
+                    sb.AppendFormat("{0:x2}", b);
+                }
+                currentSensorStatus = sb.ToString();
+            }
+            return $"Position:{this.AxisPosition} Interval:{this.AxisUpdateInterval} Position:{this.AxisPosition} CurrentAxis:{this.CurrentAxis} CurrentPosition:{this.CurrentPosition} CurrentSensorStatus:{currentSensorStatus}";
+        }
 
         #endregion
     }
