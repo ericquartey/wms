@@ -23,6 +23,6 @@
         <TextBlock Margin="10,0,0,0"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_CustomControlSensor_TextBlockStyle}"
-                   Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}" />
     </StackPanel>
 </UserControl>
