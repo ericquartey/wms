@@ -113,7 +113,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
 
-        public byte FirmwareVersion { get; set; } = 0x11;
+        public byte FirmwareVersion { get; set; } = 0x10;
 
         public int Id { get; set; }
 
@@ -121,12 +121,6 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get => this.inputs;
             set => this.SetProperty(ref this.inputs, value);
-        }
-
-        public List<BitModel> Outputs
-        {
-            get => this.outputs;
-            set => this.SetProperty(ref this.outputs, value);
         }
 
         public ushort InputsValue
@@ -143,6 +137,12 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 return result;
             }
+        }
+
+        public List<BitModel> Outputs
+        {
+            get => this.outputs;
+            set => this.SetProperty(ref this.outputs, value);
         }
 
         #endregion
