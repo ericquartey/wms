@@ -91,6 +91,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IStatisticsMachineService>(
                 new InjectionFactory(c => new StatisticsMachineService(urlString)));
 
+            container.RegisterType<IMoveDrawerMachineService>(
+                new InjectionFactory(c => new MoveDrawerMachineService(urlString)));
+
             return container;
         }
 
