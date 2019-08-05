@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -157,7 +157,7 @@
     <comment>Prompt title</comment>
   </data>
   <data name="AreYouSureToLeaveThePage" xml:space="preserve">
-    <value>Leaving the page will revert all your usaved changes. Are you sure you want to proceed?</value>
+    <value>Leaving the page will revert all your unsaved changes. Are you sure you want to proceed?</value>
   </data>
   <data name="AreYouSureToDeleteCompartment" xml:space="preserve">
     <value>Are you sure you want to delete this compartment?</value>

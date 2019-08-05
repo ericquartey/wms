@@ -280,7 +280,7 @@
                                                            Tag="AssociateAreaBarItem"
                                                            TooltipText="{Binding AssociateAreaReason}" />
                                         <wms:ActionBarItem Command="{Binding UnassociateAreaCommand}"
-                                                           Content="{x:Static res:MasterData.UnassociateArea}"
+                                                           Content="{x:Static res:MasterData.DisassociateArea}"
                                                            CustomGlyphSize="24,24"
                                                            Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-off-black-24dp.png"
                                                            GlyphSize="Custom"
