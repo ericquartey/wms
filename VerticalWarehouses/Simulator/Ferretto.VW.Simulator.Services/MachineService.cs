@@ -377,10 +377,10 @@ namespace Ferretto.VW.Simulator.Services
             if (device.Buffer.Length > 2 && device.Buffer.Length >= device.Buffer[0])
             {
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref device.Buffer, 3, 0, 0);
-                if (extractedMessages.Count > 1 && Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
+                //if (extractedMessages.Count > 1 && Debugger.IsAttached)
+                //{
+                //    Debugger.Break();
+                //}
 
                 foreach (var extractedMessage in extractedMessages)
                 {
@@ -414,7 +414,18 @@ namespace Ferretto.VW.Simulator.Services
 
                             if (outputs[(int)IoPorts.ResetSecurity])
                             {
+                                // Set run status
                                 device.Inputs[(int)IoPorts.NormalState].Value = true;
+                                
+                                foreach (var remoteIO in this.remoteIOs)
+                                {
+                                    // Remove emergency button
+                                    remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+                                    // Set empty position on bay
+                                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+                                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                }
                             }
 
                             break;
