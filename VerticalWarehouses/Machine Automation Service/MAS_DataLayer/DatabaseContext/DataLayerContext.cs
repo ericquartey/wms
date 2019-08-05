@@ -2,9 +2,6 @@ using System;
 using System.IO;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Cells;
-using Ferretto.VW.MAS.DataModels.Errors;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

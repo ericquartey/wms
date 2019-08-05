@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Models
+﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public class MachineIdentity : BaseModel
+    public class MachineIdentity
     {
         #region Properties
 
@@ -9,6 +9,8 @@
         public int BayId { get; set; }
 
         public decimal Depth { get; set; }
+
+        public int Id { get; set; }
 
         public System.DateTime InstallationDate { get; set; }
 
