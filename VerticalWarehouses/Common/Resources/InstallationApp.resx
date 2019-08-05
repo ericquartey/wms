@@ -1109,7 +1109,7 @@
     <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingExecuting" xml:space="preserve">
-    <value>Horizontal Homing Executing</value>
+    <value>Horizontal Homing Executing ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingStarted" xml:space="preserve">
@@ -1129,7 +1129,7 @@
     <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingExecuting" xml:space="preserve">
-    <value>Vertical Homing Executing</value>
+    <value>Vertical Homing Executing ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingStarted" xml:space="preserve">
@@ -1137,11 +1137,11 @@
     <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingError" xml:space="preserve">
-    <value>Vertical Homing Error</value>
+    <value>Vertical Homing Error ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingError" xml:space="preserve">
-    <value>Horizontal Homing Error</value>
+    <value>Horizontal Homing Error ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="SwitchEngineError" xml:space="preserve">
