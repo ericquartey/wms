@@ -58,7 +58,7 @@ namespace Ferretto.VW.Simulator.Services
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
 
-            this.RemoteIOs01.IOs[0].Value = true;
+            //this.RemoteIOs01.IOs[0].Value = true;
         }
 
         #endregion
@@ -105,33 +105,33 @@ namespace Ferretto.VW.Simulator.Services
 
             this.cts = new CancellationTokenSource();
             this.listenerInverter.Start();
-            if (this.RemoteIOs01.Enabled)
+            //if (this.RemoteIOs01.Enabled)
             {
                 this.listenerIoDriver1.Start();
             }
 
-            if (this.RemoteIOs02.Enabled)
+            //if (this.RemoteIOs02.Enabled)
             {
                 this.listenerIoDriver2.Start();
             }
 
-            if (this.RemoteIOs03.Enabled)
+            //if (this.RemoteIOs03.Enabled)
             {
                 this.listenerIoDriver3.Start();
             }
 
             Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
-            if (this.RemoteIOs01.Enabled)
+            //if (this.RemoteIOs01.Enabled)
             {
                 Task.Run(() => this.AcceptClient(this.listenerIoDriver1, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 0)));
             }
 
-            if (this.RemoteIOs02.Enabled)
+            //if (this.RemoteIOs02.Enabled)
             {
                 Task.Run(() => this.AcceptClient(this.listenerIoDriver2, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 1)));
             }
 
-            if (this.RemoteIOs03.Enabled)
+            //if (this.RemoteIOs03.Enabled)
             {
                 Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
             }
@@ -389,7 +389,7 @@ namespace Ferretto.VW.Simulator.Services
                     var codeOperation = extractedMessage[2];
 
                     var spare = relProtocol == 0x10 ? 0 : extractedMessage[3];
-                    bool[] outputs = Enumerable.Range(0, 8).Select(x => Convert.ToString(relProtocol == 0x10 ? extractedMessage[3] : extractedMessage[4]).PadLeft(8, '0')[x] == '1' ? true : false).ToArray();
+                    bool[] outputs = Enumerable.Range(0, 8).Select(x => Convert.ToString(relProtocol == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')[x] == '1' ? true : false).ToArray();
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
@@ -401,7 +401,7 @@ namespace Ferretto.VW.Simulator.Services
                             responseMessage[2] = 0x00;                      // Code op   0x00: data, 0x06: configuration
                             responseMessage[3] = 0x00;                      // error code
                             Array.Copy(extractedMessage, 3, responseMessage, 4, 1);  // output values echo
-                            byte[] inputs = BitConverter.GetBytes(device.IOValue);
+                            byte[] inputs = BitConverter.GetBytes(device.InputsValue);
                             responseMessage[5] = inputs[0];
                             responseMessage[6] = inputs[1];
                             break;
@@ -414,7 +414,7 @@ namespace Ferretto.VW.Simulator.Services
 
                             if (outputs[(int)IoPorts.ResetSecurity])
                             {
-                                device.IOs[(int)IoPorts.NormalState].Value = true;
+                                device.Inputs[(int)IoPorts.NormalState].Value = true;
                             }
 
                             break;

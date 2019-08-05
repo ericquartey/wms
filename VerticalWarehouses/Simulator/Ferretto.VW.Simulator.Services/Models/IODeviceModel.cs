@@ -14,12 +14,19 @@ namespace Ferretto.VW.Simulator.Services.Models
         #region Outputs
 
         ResetSecurity = 0,
+
         ElevatorMotor = 1,
+
         CradleMotor = 2,
+
         MeasureBarrier = 3,
+
         BayLight = 4,
+
         FreeSensor1 = 5,
+
         EndMissionRobot = 6,
+
         ReadyWarehouseRobot = 7,
 
         #endregion
@@ -27,19 +34,33 @@ namespace Ferretto.VW.Simulator.Services.Models
         #region Inputs
 
         NormalState = 0,
+
         MushroomEmergency = 1,
+
         MicroCarterLeftSideBay = 2,
+
         MicroCarterRightSideBay = 3,
+
         AntiIntrusionBarrierBay = 4,
+
         LoadingUnitInBay = 5,
+
         LoadingUnitInLowerBay = 6,
+
         FreeSensor = 7,
+
         ElevatorMotorFeedback = 8,
+
         CradleMotorFeedback = 9,
+
         DrawerInMachineSide = 10,
+
         DrawerInOperatorSide = 11,
+
         CalibrationBarrierLight = 12,
+
         HookTrolley = 14,
+
         FinePickingRobot = 15
 
         #endregion
@@ -53,7 +74,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool enabled = true;
 
-        private ObservableCollectionWithItemNotify<BitModel> ios = new ObservableCollectionWithItemNotify<BitModel>();
+        private ObservableCollectionWithItemNotify<BitModel> inputs = new ObservableCollectionWithItemNotify<BitModel>();
 
         #endregion
 
@@ -61,26 +82,26 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public IODeviceModel()
         {
-            this.ios.Add(new BitModel("Id:00", false));
-            this.ios.Add(new BitModel("Id:01", false));
-            this.ios.Add(new BitModel("Id:02", false));
-            this.ios.Add(new BitModel("Id:03", false));
-            this.ios.Add(new BitModel("Id:04", false));
-            this.ios.Add(new BitModel("Id:05", false));
-            this.ios.Add(new BitModel("Id:06", false));
-            this.ios.Add(new BitModel("Id:07", false));
-            this.ios.Add(new BitModel("Id:08", false));
-            this.ios.Add(new BitModel("Id:09", false));
-            this.ios.Add(new BitModel("Id:10", false));
-            this.ios.Add(new BitModel("Id:11", false));
-            this.ios.Add(new BitModel("Id:12", false));
-            this.ios.Add(new BitModel("Id:13", false));
-            this.ios.Add(new BitModel("Id:14", false));
-            this.ios.Add(new BitModel("Id:15", false));
+            this.inputs.Add(new BitModel("Id:00", false));
+            this.inputs.Add(new BitModel("Id:01", false));
+            this.inputs.Add(new BitModel("Id:02", false));
+            this.inputs.Add(new BitModel("Id:03", false));
+            this.inputs.Add(new BitModel("Id:04", false));
+            this.inputs.Add(new BitModel("Id:05", false));
+            this.inputs.Add(new BitModel("Id:06", false));
+            this.inputs.Add(new BitModel("Id:07", false));
+            this.inputs.Add(new BitModel("Id:08", false));
+            this.inputs.Add(new BitModel("Id:09", false));
+            this.inputs.Add(new BitModel("Id:10", false));
+            this.inputs.Add(new BitModel("Id:11", false));
+            this.inputs.Add(new BitModel("Id:12", false));
+            this.inputs.Add(new BitModel("Id:13", false));
+            this.inputs.Add(new BitModel("Id:14", false));
+            this.inputs.Add(new BitModel("Id:15", false));
 
-            this.ios.PropertyChanged += (s, e) =>
+            this.inputs.PropertyChanged += (s, e) =>
             {
-                this.RaisePropertyChanged(nameof(this.IOValue));
+                this.RaisePropertyChanged(nameof(this.InputsValue));
             };
         }
 
@@ -94,20 +115,20 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int Id { get; set; }
 
-        public ObservableCollectionWithItemNotify<BitModel> IOs
+        public ObservableCollectionWithItemNotify<BitModel> Inputs
         {
-            get => this.ios;
-            set => this.SetProperty(ref this.ios, value);
+            get => this.inputs;
+            set => this.SetProperty(ref this.inputs, value);
         }
 
-        public ushort IOValue
+        public ushort InputsValue
         {
             get
             {
                 ushort result = 0;
-                for (int i = 0; i < this.IOs.Count; i++)
+                for (int i = 0; i < this.Inputs.Count; i++)
                 {
-                    if (this.IOs[i].Value)
+                    if (this.Inputs[i].Value)
                     {
                         result += (ushort)Math.Pow(2, i);
                     }

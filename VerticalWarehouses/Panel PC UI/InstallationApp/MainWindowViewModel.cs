@@ -377,7 +377,7 @@ namespace Ferretto.VW.App.Installation
                 if (!this.SecurityFunctionActive)
                 {
                     this.machineStatusService.ExecuteResetSecurityAsync();
-                    this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
+                    //this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
                 }
             };
 

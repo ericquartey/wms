@@ -74,7 +74,7 @@
                     </Grid>
                     <ItemsControl Grid.Row="1"
                                   Margin="0,5"
-                                  ItemsSource="{Binding IOs}">
+                                  ItemsSource="{Binding Inputs}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />
