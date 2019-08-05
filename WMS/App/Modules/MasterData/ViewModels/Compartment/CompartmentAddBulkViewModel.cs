@@ -49,27 +49,12 @@ namespace Ferretto.WMS.App.Modules.MasterData
             return base.CheckValidModel();
         }
 
-        protected override Task ExecuteRefreshCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
+        protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
             var newCompartments = this.Model.CreateBulk();
             var result = await this.compartmentProvider.AddRangeAsync(newCompartments);
             if (result.Success)
@@ -87,9 +72,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
                 this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
             }
 
-            this.IsBusy = false;
-
-            return true;
+            return result.Success;
         }
 
         protected override Task LoadDataAsync()

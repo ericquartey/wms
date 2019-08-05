@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpDelete("{id}/compartment-types/{compartmentTypeId}")]
         public async Task<ActionResult<ItemCompartmentType>> DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId)
         {
-            var result = await this.itemCompartmentTypeProvider.DeleteAsync(id, compartmentTypeId);
+            var result = await this.itemCompartmentTypeProvider.DeleteAsync((id, compartmentTypeId));
             if (!result.Success)
             {
                 return this.NegativeResponse(result);

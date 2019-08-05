@@ -116,9 +116,8 @@ namespace Ferretto.WMS.App.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                                             App.Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
+                                             Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
                                              StatusType.Success));
-                this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(ItemCompartmentType).ToString(), null, HubEntityOperation.Created));
             }
             else
             {
