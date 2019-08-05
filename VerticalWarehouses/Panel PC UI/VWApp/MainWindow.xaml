@@ -117,7 +117,7 @@
                 VerticalAlignment="Top"
                 Command="{Binding LoginCommand}"
                 Content="{x:Static res:General.Login}"
-                IsEnabled="{Binding IsMachineIdentityAvailable}"
+                IsEnabled="{Binding IsLoginAllowed}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <TextBlock Grid.Row="2"

@@ -57,8 +57,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private Timer pollIoTimer;
 
-        private Timer publishIoTimer;
-
         #endregion
 
         #region Constructors

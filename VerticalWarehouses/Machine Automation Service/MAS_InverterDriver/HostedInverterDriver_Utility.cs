@@ -617,7 +617,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private async Task ProcessPositioningMessage(FieldCommandMessage receivedMessage)
+        private void ProcessPositioningMessage(FieldCommandMessage receivedMessage)
         {
             if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
             {
