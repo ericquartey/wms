@@ -8,11 +8,13 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        public decimal FeedRateAfterZero => this.GetDecimalConfigurationValue((long)VerticalManualMovements.FeedRateAfterZero, ConfigurationCategory.VerticalManualMovements);
+
         public decimal FeedRateVM => this.GetDecimalConfigurationValue((long)VerticalManualMovements.FeedRate, ConfigurationCategory.VerticalManualMovements);
 
-        public decimal InitialTargetPositionVM => this.GetDecimalConfigurationValue((long)VerticalManualMovements.InitialTargetPosition, ConfigurationCategory.VerticalManualMovements);
+        public decimal NegativeTargetPosition => this.GetDecimalConfigurationValue((long)VerticalManualMovements.NegativeTargetPosition, ConfigurationCategory.VerticalManualMovements);
 
-        public decimal RecoveryTargetPositionVM => this.GetDecimalConfigurationValue((long)VerticalManualMovements.RecoveryTargetPosition, ConfigurationCategory.VerticalManualMovements);
+        public decimal PositiveTargetPosition => this.GetDecimalConfigurationValue((long)VerticalManualMovements.PositiveTargetPosition, ConfigurationCategory.VerticalManualMovements);
 
         #endregion
     }

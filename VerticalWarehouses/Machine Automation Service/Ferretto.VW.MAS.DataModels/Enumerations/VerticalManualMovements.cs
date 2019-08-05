@@ -6,8 +6,10 @@
 
         FeedRate = 1L,
 
-        InitialTargetPosition = 2L,
+        PositiveTargetPosition = 2L,
 
-        RecoveryTargetPosition = 3L
+        NegativeTargetPosition = 3L,
+
+        FeedRateAfterZero = 4L
     }
 }

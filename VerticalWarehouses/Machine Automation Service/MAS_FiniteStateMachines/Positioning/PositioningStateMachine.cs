@@ -92,23 +92,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            bool checkVerticalConditions;
-            bool checkHorizontalConditions;
+            bool checkConditions;
 
             //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkVerticalConditions = this.CheckVerticalConditions();
-                checkHorizontalConditions = this.CheckHorizontalConditions();
+                checkConditions = this.CheckConditions();
 
-                if (checkVerticalConditions || checkHorizontalConditions)
+                if (checkConditions)
                 {
-                    this.CurrentState = new PositioningErrorState(this, this.positioningMessageData, null, this.Logger);
+                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
                 }
                 else
                 {
-                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                    this.CurrentState = new PositioningErrorState(this, this.positioningMessageData, null, this.Logger);
                 }
 
                 this.CurrentState?.Start();
@@ -143,26 +141,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             base.Dispose(disposing);
         }
 
-        private bool CheckHorizontalConditions()
+        private bool CheckConditions()
         {
-            bool checkHorizontalConditions;
+            bool checkConditions;
 
-            checkHorizontalConditions = (this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 || this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
-                                         this.machineSensorsStatus.IsDrawerInBay1 ||
-                                         this.machineSensorsStatus.IsDrawerInBay2 ||
-                                         this.machineSensorsStatus.IsDrawerInBay3) && this.positioningMessageData.AxisMovement == Axis.Horizontal;
+            checkConditions = (this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 ||
+                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle) &&
+                               this.positioningMessageData.AxisMovement == Axis.Vertical ||
+                               this.positioningMessageData.AxisMovement == Axis.Horizontal;
 
-            return checkHorizontalConditions;
-        }
-
-        private bool CheckVerticalConditions()
-        {
-            bool checkVerticalConditions;
-
-            checkVerticalConditions = this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 || this.machineSensorsStatus.IsDrawerPartiallyOnCradleBay1 ||
-                                      !this.machineSensorsStatus.IsSensorZeroOnCradle && this.positioningMessageData.AxisMovement == Axis.Vertical;
-
-            return checkVerticalConditions;
+            return checkConditions;
         }
 
         #endregion
