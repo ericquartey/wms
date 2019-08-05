@@ -156,6 +156,9 @@ namespace Ferretto.VW.App.Installation
 
             var machineStatusService = new MachineStatusMachineService(automationServiceUrl);
             this.container.RegisterInstance<IMachineStatusMachineService>(machineStatusService);
+
+            var moveDrawerService = new MoveDrawerMachineService(automationServiceUrl);
+            this.container.RegisterInstance<IMoveDrawerMachineService>(moveDrawerService);
         }
 
         #endregion

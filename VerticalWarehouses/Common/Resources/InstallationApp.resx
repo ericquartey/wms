@@ -1176,4 +1176,16 @@
   <data name="LUPresentMiddleBottomBay3" xml:space="preserve">
     <value>Second LU Present in Bay 3</value>
   </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Start recall from cell to bay</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Start store from bay to cell</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Drawer store and drawer recall</value>
+    <comment>Title</comment>
+  </data>
 </root>
