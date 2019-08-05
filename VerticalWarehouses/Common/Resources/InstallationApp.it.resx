@@ -920,4 +920,13 @@
   <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
     <value>Carica/richiama cassetto</value>
   </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Richiama da cella a baia</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Caricamento da baia a cella</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Caricamento cassetto e richiamo cassetto</value>
+  </data>
 </root>

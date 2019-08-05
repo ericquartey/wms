@@ -10,8 +10,8 @@
 
 namespace Ferretto.WMS.App.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.WMS.App.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Errors {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Errors() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.App.Resources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.App.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Column&apos;s number of new Compartment cannot be equal or less than 0..
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("BulkCompartmentColumn", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Row&apos;s number of new Compartment cannot be equal or less than 0..
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("BulkCompartmentRow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Invalid index.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("BusyIndicatorInvalidIndex", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Style &apos;{0}&apos; for &apos;{1}&apos; not found..
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("BusyIndicatorStyleNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CannotRetrieveDocumentGroupFromLayoutManager", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Addition of a bulk of compartments must have at least one column..
         /// </summary>
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentBulkMustHaveAtLeastOneColumn", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Addition of a bulk of compartments must have at least one row..
         /// </summary>
@@ -122,7 +122,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentBulkMustHaveAtLeastOneRow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The compartment&apos;s max capacity is required when an item is specified..
         /// </summary>
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentMaxCapacityRequiredWhenItemIsSpecified", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Stock cannot be zero when the item pairing is not fixed..
         /// </summary>
@@ -140,7 +140,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Item stock in the compartment cannot be greater that compartment&apos;s maximum capacity..
         /// </summary>
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentStockGreaterThanMaxCapacity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The compartment&apos;s stock is required when an item is specified..
         /// </summary>
@@ -158,7 +158,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentStockRequiredWhenItemIsSpecified", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to XPosition cannot be more than Tray&apos;s width..
         /// </summary>
@@ -167,7 +167,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentXPosition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to YPosition cannot be more than Tray&apos;s height.
         /// </summary>
@@ -176,7 +176,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("CompartmentYPosition", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type Brush..
         /// </summary>
@@ -185,7 +185,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToBrushType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type Double..
         /// </summary>
@@ -194,7 +194,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToDoubleType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type GridViewNavigationStyle..
         /// </summary>
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToNavigationStyleType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type string..
         /// </summary>
@@ -212,7 +212,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToStringType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type TextWrapping..
         /// </summary>
@@ -221,7 +221,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToTextWrappingType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
         /// </summary>
@@ -230,7 +230,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Converter parameter must be a type.
         /// </summary>
@@ -239,7 +239,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ConverterParameterMustBeType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
         /// </summary>
@@ -248,7 +248,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The parameter cannot be null or whitespace..
         /// </summary>
@@ -257,7 +257,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ParameterCannotBeNullOrWhitespace", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to In order to work in xaml Multibinding with two parameters Self, and Self.DataContext must be specificed..
         /// </summary>
@@ -266,7 +266,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PropertyDescriptionConverterCheckParameterError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The property {0} is required..
         /// </summary>
@@ -275,7 +275,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PropertyIsRequired", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The property {0} must be positive..
         /// </summary>
@@ -284,7 +284,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PropertyMustBePositive", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The property {0} must be strictly positive..
         /// </summary>
@@ -293,7 +293,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PropertyMustBeStriclyPositive", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The property {0} must have a value..
         /// </summary>
@@ -302,7 +302,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PropertyMustHaveValue", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The value of property {0} is invalid..
         /// </summary>
@@ -311,7 +311,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("PropertyValueIsInvalid", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Quantity must be equal to 1 if Registration Number is specified..
         /// </summary>
@@ -320,7 +320,16 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("QuantityMustBeOneIfRegistrationNumber", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This object has unsaved changes, but data are changed and need to be refreshed. Please revert your changes to refresh data and then reapply them..
+        /// </summary>
+        public static string ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed {
+            get {
+                return ResourceManager.GetString("ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Unable to load data..
         /// </summary>
@@ -329,7 +338,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("UnableToLoadData", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Unable to save changes..
         /// </summary>
@@ -338,7 +347,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("UnableToSaveChanges", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} ..
         /// </summary>

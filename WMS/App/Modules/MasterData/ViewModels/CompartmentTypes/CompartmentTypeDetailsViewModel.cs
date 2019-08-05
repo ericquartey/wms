@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -127,7 +128,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
             var result = await this.compartmentTypeProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentTypeDeletedSuccesfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(App.Resources.MasterData.CompartmentTypeDeletedSuccessfully, StatusType.Success));
                 this.OnDispose();
             }
             else
@@ -147,10 +148,9 @@ namespace Ferretto.WMS.App.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override Task ExecuteRevertCommandAsync()
-        {
-            throw new System.NotSupportedException();
-        }
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
+
+        protected override Task<bool> ExecuteSaveCommandAsync() => throw new NotSupportedException();
 
         protected override async Task LoadDataAsync()
         {

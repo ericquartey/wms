@@ -128,9 +128,9 @@ namespace Ferretto.WMS.App.Controls
             return (await this.Provider.GetUniqueValuesAsync(propertyName)).ToArray();
         }
 
-        public override void LoadRelatedData()
+        public override async Task LoadRelatedDataAsync()
         {
-            this.LoadDataAsync(null);
+            await this.LoadDataAsync(null);
         }
 
         public override async Task UpdateFilterTilesCountsAsync()

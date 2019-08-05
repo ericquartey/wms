@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public static void SetPolicies(BaseModel<int> model)
+        public static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemListPolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as IItemListDeletePolicy).ComputeDeletePolicy());
