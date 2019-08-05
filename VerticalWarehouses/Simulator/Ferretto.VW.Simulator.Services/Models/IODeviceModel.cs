@@ -76,6 +76,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private ObservableCollectionWithItemNotify<BitModel> inputs = new ObservableCollectionWithItemNotify<BitModel>();
 
+        private List<BitModel> outputs;
+
         #endregion
 
         #region Constructors
@@ -111,7 +113,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
 
-        public byte FirmwareVersion { get; set; } = 0x10;
+        public byte FirmwareVersion { get; set; } = 0x11;
 
         public int Id { get; set; }
 
@@ -119,6 +121,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get => this.inputs;
             set => this.SetProperty(ref this.inputs, value);
+        }
+
+        public List<BitModel> Outputs
+        {
+            get => this.outputs;
+            set => this.SetProperty(ref this.outputs, value);
         }
 
         public ushort InputsValue
