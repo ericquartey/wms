@@ -11,7 +11,7 @@
         xmlns:res="clr-namespace:Ferretto.VW.Simulator.Resources;assembly=Ferretto.VW.Simulator.Resources"
         Title="Simulator"
         Width="1000"
-        Height="685"
+        Height="700"
         Icon="Resources/LogoFerrettoGroup.png"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
