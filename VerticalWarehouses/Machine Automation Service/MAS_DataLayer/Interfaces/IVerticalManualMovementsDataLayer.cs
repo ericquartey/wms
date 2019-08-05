@@ -8,9 +8,9 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         decimal FeedRateVM { get; }
 
-        decimal NegativeTargetPosition { get; }
+        decimal NegativeTargetDirection { get; }
 
-        decimal PositiveTargetPosition { get; }
+        decimal PositiveTargetDirection { get; }
 
         #endregion
     }

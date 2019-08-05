@@ -12,9 +12,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public decimal FeedRateVM => this.GetDecimalConfigurationValue((long)VerticalManualMovements.FeedRate, ConfigurationCategory.VerticalManualMovements);
 
-        public decimal NegativeTargetPosition => this.GetDecimalConfigurationValue((long)VerticalManualMovements.NegativeTargetPosition, ConfigurationCategory.VerticalManualMovements);
+        public decimal NegativeTargetDirection => this.GetDecimalConfigurationValue((long)VerticalManualMovements.NegativeTargetDirection, ConfigurationCategory.VerticalManualMovements);
 
-        public decimal PositiveTargetPosition => this.GetDecimalConfigurationValue((long)VerticalManualMovements.PositiveTargetPosition, ConfigurationCategory.VerticalManualMovements);
+        public decimal PositiveTargetDirection => this.GetDecimalConfigurationValue((long)VerticalManualMovements.PositiveTargetDirection, ConfigurationCategory.VerticalManualMovements);
 
         #endregion
     }

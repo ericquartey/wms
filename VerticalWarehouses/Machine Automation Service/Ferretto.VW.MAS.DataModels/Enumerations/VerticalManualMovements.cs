@@ -6,9 +6,9 @@
 
         FeedRate = 1L,
 
-        PositiveTargetPosition = 2L,
+        PositiveTargetDirection = 2L,
 
-        NegativeTargetPosition = 3L,
+        NegativeTargetDirection = 3L,
 
         FeedRateAfterZero = 4L
     }

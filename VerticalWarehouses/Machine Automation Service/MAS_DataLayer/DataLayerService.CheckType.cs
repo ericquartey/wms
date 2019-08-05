@@ -300,8 +300,8 @@ namespace Ferretto.VW.MAS.DataLayer
             switch (configurationValueEnum)
             {
                 case VerticalManualMovements.FeedRate:
-                case VerticalManualMovements.PositiveTargetPosition:
-                case VerticalManualMovements.NegativeTargetPosition:
+                case VerticalManualMovements.PositiveTargetDirection:
+                case VerticalManualMovements.NegativeTargetDirection:
                 case VerticalManualMovements.FeedRateAfterZero:
                     returnValue = ConfigurationDataType.Float;
                     break;

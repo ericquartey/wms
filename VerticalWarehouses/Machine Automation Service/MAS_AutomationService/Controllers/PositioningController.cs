@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         {
                             feedRate = this.verticalManualMovements.FeedRateVM;
                             //INFO +1 for Up, -1 for Down
-                            initialTargetPosition = data.Displacement > 0 ? this.verticalManualMovements.PositiveTargetPosition : -this.verticalManualMovements.NegativeTargetPosition;
+                            initialTargetPosition = data.Displacement > 0 ? this.verticalManualMovements.PositiveTargetDirection : -this.verticalManualMovements.NegativeTargetDirection;
                         }
 
                         break;
