@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls;
@@ -49,10 +49,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
             return base.CheckValidModel();
         }
 
-        protected override Task ExecuteRefreshCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
+        protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 

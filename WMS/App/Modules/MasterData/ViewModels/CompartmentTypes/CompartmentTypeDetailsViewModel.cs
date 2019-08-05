@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -147,10 +148,9 @@ namespace Ferretto.WMS.App.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override Task ExecuteRevertCommandAsync()
-        {
-            throw new System.NotSupportedException();
-        }
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
+
+        protected override Task<bool> ExecuteSaveCommandAsync() => throw new NotSupportedException();
 
         protected override async Task LoadDataAsync()
         {
