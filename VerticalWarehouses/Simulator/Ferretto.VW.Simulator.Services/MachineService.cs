@@ -395,15 +395,15 @@ namespace Ferretto.VW.Simulator.Services
                     switch (codeOperation)
                     {
                         case 0x00: // Data
-                            responseMessage = new byte[NBYTES_RECEIVE];
-                            responseMessage[0] = NBYTES_RECEIVE;            // nBytes
-                            responseMessage[1] = device.FirmwareVersion;    // fwRelease
-                            responseMessage[2] = 0x00;                      // Code op   0x00: data, 0x06: configuration
-                            responseMessage[3] = 0x00;                      // error code
+                            responseMessage = new byte[NBYTES_RECEIVE + (device.FirmwareVersion == 0x11 ? 11 : 0)];
+                            responseMessage[0] = (byte)responseMessage.Length;  // nBytes
+                            responseMessage[1] = device.FirmwareVersion;        // fwRelease
+                            responseMessage[2] = 0x00;                          // Code op   0x00: data, 0x06: configuration
+                            responseMessage[3] = 0x00;                          // error code
                             Array.Copy(extractedMessage, 3, responseMessage, 4, 1);  // output values echo
                             byte[] inputs = BitConverter.GetBytes(device.InputsValue);
-                            responseMessage[5] = inputs[0];
-                            responseMessage[6] = inputs[1];
+                            responseMessage[device.FirmwareVersion == 0x11 ? 6 : 5] = inputs[0];
+                            responseMessage[device.FirmwareVersion == 0x11 ? 7 : 6] = inputs[1];
                             break;
 
                         case 0x01: // Config
