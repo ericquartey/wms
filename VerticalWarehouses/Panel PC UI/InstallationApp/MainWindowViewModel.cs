@@ -190,8 +190,8 @@ namespace Ferretto.VW.App.Installation
                     this.eventAggregator
                         .GetEvent<InstallationApp_Event>()
                         .Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.BackToVWApp));
-                    ClickedOnMachineModeEventHandler = null;
-                    ClickedOnMachineOnMarchEventHandler = null;
+                    //ClickedOnMachineModeEventHandler = null;
+                    //ClickedOnMachineOnMarchEventHandler = null;
                 }));
 
         public IViewModel ContentRegionCurrentViewModel

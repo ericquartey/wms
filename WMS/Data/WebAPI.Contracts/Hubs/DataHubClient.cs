@@ -82,7 +82,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         private void EntityChangedMessageReceived(EntityChangedHubEvent e)
         {
-            this.EntityChanged?.Invoke(this, new EntityChangedEventArgs(e.EntityType, e.Id, e.Operation));
+            this.EntityChanged?.Invoke(this, new EntityChangedEventArgs(
+                e.EntityType,
+                e.Id,
+                e.Operation,
+                e.SourceEntityType,
+                e.SourceId));
         }
 
         private void Initialize()

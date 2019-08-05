@@ -201,6 +201,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (this.currentStateMachine != null
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
+                    && receivedMessage.Type != MessageType.PowerEnable
                     )
                 {
                     var errorNotification = new NotificationMessage(
@@ -254,6 +255,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.ResetSecurity:
                         this.ProcessResetSecurityMessage(receivedMessage);
+                        break;
+
+                    case MessageType.PowerEnable:
+                        this.ProcessPowerEnableMessage(receivedMessage);
                         break;
 
                     case MessageType.InverterStop:

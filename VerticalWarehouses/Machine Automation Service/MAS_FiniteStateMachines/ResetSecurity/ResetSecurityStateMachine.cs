@@ -13,15 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
     {
         #region Fields
 
-        private readonly Axis calibrateAxis;
-
-        private readonly Axis currentAxis;
-
         private bool disposed;
-
-        private readonly int nMaxSteps;
-
-        private readonly int numberOfExecutedSteps;
 
         #endregion
 

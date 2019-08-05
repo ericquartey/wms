@@ -92,8 +92,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 await this.loadingUnitProvider.UpdateMissionsCountAsync(updatedMission.LoadingUnitId);
 
-                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
                 this.NotificationService.PushUpdate(mission);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId }, mission);
                 return new SuccessOperationResult<Mission>(updatedMission);
             }
 
@@ -143,8 +143,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
-                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
                 this.NotificationService.PushUpdate(mission);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId }, mission);
                 return new SuccessOperationResult<Mission>(updatedMission);
             }
 
@@ -165,7 +165,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return mission;
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             if (model is IMissionPolicy mission)
             {

@@ -23,7 +23,7 @@
 
         <GroupBox Grid.Row="1"
                   Margin="10,0,0,0"
-                  Header="{x:Static res:MasterData.CreateNewCompartementDesiredCompartmentType}">
+                  Header="{x:Static res:MasterData.CreateNewCompartmentDesiredCompartmentType}">
             <Grid Margin="20,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.7*" />

@@ -70,10 +70,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             decimal maxDeceleration = 0;
             decimal feedRate = 0;
             decimal initialTargetPosition = 0;
+            var movementType = MovementType.Relative;
 
             try
             {
-                var machineDone = this.setupStatus.MachineDone;
+                var homingDone = this.setupStatus.VerticalHomingDone;
 
                 switch (data.Axis)
                 {
@@ -82,30 +83,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         maxSpeed = this.verticalAxis.MaxEmptySpeed;
                         maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
                         maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
-                        feedRate = this.verticalManualMovements.FeedRateVM;
 
-                        if (machineDone)
+                        //INFO Absolute movement using the min and max reachable positions for limits
+                        if (homingDone)
                         {
-                            initialTargetPosition = this.verticalManualMovements.RecoveryTargetPositionVM;
+                            feedRate = this.verticalManualMovements.FeedRateAfterZero;
+                            movementType = MovementType.Absolute;
+                            //INFO For movements Up the limit is the UpperBound, for movements down the limit is the LowerBound
+                            initialTargetPosition = data.Displacement > 0 ? this.verticalAxis.UpperBound : this.verticalAxis.LowerBound;
                         }
-                        else
+                        else //INFO Before homing relative movements step by step
                         {
-                            initialTargetPosition = this.verticalManualMovements.InitialTargetPositionVM;
+                            feedRate = this.verticalManualMovements.FeedRateVM;
+                            //INFO +1 for Up, -1 for Down
+                            initialTargetPosition = data.Displacement > 0 ? this.verticalManualMovements.PositiveTargetDirection : -this.verticalManualMovements.NegativeTargetDirection;
                         }
-
-                        // INFO +1 for Up, -1 for Down
-                        initialTargetPosition *= data.Displacement;
 
                         break;
 
-                    // INFO Horizontal LSM
+                    //INFO Horizontal LSM
                     case Axis.Horizontal:
                         maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
                         maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
                         maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
                         feedRate = this.horizontalManualMovements.FeedRateHM;
 
-                        if (machineDone)
+                        if (homingDone)
                         {
                             initialTargetPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
                         }
@@ -124,7 +127,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 var messageData = new PositioningMessageData(
                     data.Axis,
-                    data.MovementType,
+                    movementType,
                     initialTargetPosition,
                     speed,
                     maxAcceleration,
