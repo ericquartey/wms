@@ -366,7 +366,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        private static void SetPolicies(BaseModel<int> operation)
+        private static void SetPolicies(BasePolicyModel operation)
         {
             if (operation is IMissionOperationPolicy operationPolicyDescriptor)
             {

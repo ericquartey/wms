@@ -339,7 +339,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return model;
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as ICompartmentUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as ICompartmentDeletePolicy).ComputeDeletePolicy());

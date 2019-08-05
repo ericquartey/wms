@@ -157,7 +157,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemAreaDeletePolicy).ComputeDeletePolicy());
         }

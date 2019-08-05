@@ -248,7 +248,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(c.Priority, searchAsInt)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as ICellUpdatePolicy).ComputeUpdatePolicy());
         }

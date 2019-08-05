@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public static void SetPolicies(BaseModel<int> model)
+        public static void SetPolicies(BasePolicyModel model)
         {
             model?.AddPolicy((model as IItemListRowExecutePolicy).ComputeExecutePolicy());
         }

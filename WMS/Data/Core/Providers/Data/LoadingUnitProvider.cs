@@ -372,7 +372,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(l.CellNumber, searchAsInt)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as ILoadingUnitUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as ILoadingUnitDeletePolicy).ComputeDeletePolicy());

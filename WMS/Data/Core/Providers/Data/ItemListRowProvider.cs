@@ -222,7 +222,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemListRowUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as IItemListRowDeletePolicy).ComputeDeletePolicy());
