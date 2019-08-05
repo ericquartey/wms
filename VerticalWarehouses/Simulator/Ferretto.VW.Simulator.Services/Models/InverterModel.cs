@@ -301,10 +301,16 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("Id:05", false));
             this.digitalIO.Add(new BitModel("Id:06", false));
             this.digitalIO.Add(new BitModel("Id:07", false));
-            this.digitalIO.Add(new BitModel("Id:08", false));
 
             //this.DigitalIO = new bool[8];
             //this.DigitalIO[0] = true;
+
+            this.digitalIO.PropertyChanged += (s, e) =>
+            {
+                this.RaisePropertyChanged(nameof(this.GetDigitalIO));
+
+                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+            };
         }
 
         #endregion
@@ -313,7 +319,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value, () => this.RaisePropertyChanged(nameof(this.AxisPosition))); }
 
-        public int ControlWord { get => this.controlWord; set => this.SetProperty(ref this.controlWord, value, () => this.RaisePropertyChanged(nameof(this.ControlWord))); }
+        public int ControlWord
+        {
+            get => this.controlWord;
+            set => this.SetProperty(ref this.controlWord, value, () =>
+            {
+                this.RaisePropertyChanged(nameof(this.ControlWord));
+                this.RaisePropertyChanged(nameof(this.ControlWordBinary));
+            });
+        }
+
+        public string ControlWordBinary => Convert.ToString(this.ControlWord, 2).PadLeft(16, '0');
 
         public ObservableCollectionWithItemNotify<BitModel> DigitalIO
         {
@@ -336,7 +352,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public InverterOperationMode OperationMode { get; set; }
 
-        public int StatusWord { get => this.statusWord; set => this.SetProperty(ref this.statusWord, value, () => this.RaisePropertyChanged(nameof(this.StatusWord))); }
+        public int StatusWord
+        {
+            get => this.statusWord;
+            set => this.SetProperty(ref this.statusWord, value, () =>
+            {
+                this.RaisePropertyChanged(nameof(this.StatusWord));
+                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+            });
+        }
+
+        public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
 
         private int homingTickCount { get; set; }
 
