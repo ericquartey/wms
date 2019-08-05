@@ -18,21 +18,24 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         {
             if (receivedMessage.Data is IPowerEnableFieldMessageData powerEnableMessageData)
             {
-                if (this.currentStateMachine != null && powerEnableMessageData.Enable)
+                if (this.currentStateMachine != null )
                 {
-                    this.logger.LogInformation($"Io Driver already executing operation {this.currentStateMachine.GetType()}");
-
-                    var ex = new Exception();
-                    this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
-                }
-                else
-                {
-                    // if Enable is false I have to turn off power immediately, even if another state machine is active
-                    if(this.currentStateMachine != null)
+                    if (powerEnableMessageData.Enable)
                     {
+                        this.logger.LogInformation($"Io Driver already executing operation {this.currentStateMachine.GetType()}");
+
+                        var ex = new Exception();
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+                    }
+                    else 
+                    {
+                        // if Enable is false I have to turn off power immediately, even if another state machine is active
                         this.logger.LogInformation($"PowerEnable Off destroys active state machine {this.currentStateMachine.GetType()}");
                         this.DestroyStateMachine();
                     }
+                }
+                if (this.currentStateMachine == null)
+                {
                     this.currentStateMachine = new PowerEnableStateMachine(powerEnableMessageData.Enable, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
                     this.currentStateMachine.Start();
                 }

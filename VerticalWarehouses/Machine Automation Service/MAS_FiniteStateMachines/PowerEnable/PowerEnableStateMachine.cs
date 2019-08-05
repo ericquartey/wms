@@ -7,11 +7,14 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
+namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class ResetSecurityStateMachine : StateMachineBase
+    public class PowerEnableStateMachine : StateMachineBase
     {
         #region Fields
+
+        private readonly bool enable;
+        private readonly byte index;
 
         private bool disposed;
 
@@ -19,21 +22,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         #region Constructors
 
-        public ResetSecurityStateMachine(
+        public PowerEnableStateMachine(
             IEventAggregator eventAggregator,
-            IResetSecurityMessageData calibrateMessageData,
+            byte index,
+            IPowerEnableMessageData powerEnableMessageData,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.CurrentState = new EmptyState(logger);
+            this.index = index;
+            this.enable = powerEnableMessageData.Enable;
         }
 
         #endregion
 
         #region Destructors
 
-        ~ResetSecurityStateMachine()
+        ~PowerEnableStateMachine()
         {
             this.Dispose(false);
         }
@@ -68,7 +74,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new ResetSecurityStartState(this, this.Logger);
+                this.CurrentState = new PowerEnableStartState(this.index, this.enable, this, this.Logger);
                 this.CurrentState?.Start();
             }
 

@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
@@ -261,16 +262,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (message.Data is IPowerEnableMessageData data)
             {
-                var ioDataMessage = new PowerEnableFieldMessageData(data.Enable);
-                var ioMessage = new FieldCommandMessage(
-                    ioDataMessage,
-                    "Power Enable IO digital input",
-                    FieldMessageActor.IoDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.PowerEnable,
-                    (byte)this.ioIndexDeviceList[0]);
+                this.currentStateMachine = new PowerEnableStateMachine(
+                    this.eventAggregator,
+                    (byte)this.ioIndexDeviceList[0],
+                    data,
+                    this.logger,
+                    this.serviceScopeFactory);
 
-                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+                try
+                {
+                    this.logger.LogDebug("Starting Power Enable FSM");
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                }
             }
         }
 
