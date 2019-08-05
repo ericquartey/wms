@@ -328,6 +328,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         {
                             var inverterIndex = receivedMessage.DeviceIndex;
 
+                            if (dataInverters.CurrentAxis == Axis.Vertical)
+                            {
+                                this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition;
+                            }
+                            else
+                            {
+                                //TODO Update the axis X position
+                            }
+
                             if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();

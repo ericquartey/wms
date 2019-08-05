@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private readonly bool[] sensorStatus;
 
+        private decimal axisYPosition;
+
         #endregion
 
         #region Constructors
@@ -30,6 +32,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         #endregion
 
         #region Properties
+
+        public decimal AxisYPosition { get => this.axisYPosition; set => this.axisYPosition = value; }
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
