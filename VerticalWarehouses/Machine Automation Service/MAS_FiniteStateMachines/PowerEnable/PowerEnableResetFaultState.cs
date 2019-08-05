@@ -10,35 +10,32 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class PowerEnableStartState : StateBase
+    public class PowerEnableResetFaultState : StateBase
     {
         #region Fields
 
-        private readonly bool enable;
-        private readonly byte index;
-
         private bool disposed;
+
+        private InverterIndex currentInverter;
 
         #endregion
 
         #region Constructors
 
-        public PowerEnableStartState(
-            byte index,
-            bool enable,
+        public PowerEnableResetFaultState(
             IStateMachine parentMachine,
+            InverterIndex currentInverter,
             ILogger logger)
             : base(parentMachine, logger)
         {
-            this.index = index;
-            this.enable = enable;
+            this.currentInverter = currentInverter;
         }
 
         #endregion
 
         #region Destructors
 
-        ~PowerEnableStartState()
+        ~PowerEnableResetFaultState()
         {
             this.Dispose(false);
         }
@@ -56,18 +53,28 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.PowerEnable)
+            if (message.Type == FieldMessageType.InverterFaultReset)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if( !this.enable)
+                        if(this.currentInverter < InverterIndex.Slave7)
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
+                            this.currentInverter++;
+                            var inverterCommandMessageData = new InverterFaultFieldMessageData(this.currentInverter);
+                            var inverterCommandMessage = new FieldCommandMessage(
+                                inverterCommandMessageData,
+                                $"Reset Fault Inverter",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.InverterFaultReset);
+                            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+                            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.ParentStateMachine, InverterIndex.MainInverter, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PowerEnableResetSecurityState(this.ParentStateMachine, this.Logger));
                         }
                         break;
 
@@ -75,10 +82,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                         this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
                         break;
                 }
-            }
-            else if (message.Type == FieldMessageType.IoDriverException)
-            {
-                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
             }
         }
 
@@ -89,30 +92,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var commandMessageData = new PowerEnableFieldMessageData(this.enable);
-            var commandMessage = new FieldCommandMessage(
-                commandMessageData,
-                $"Power Enable IO digital input",
-                FieldMessageActor.IoDriver,
+
+            var inverterCommandMessageData = new InverterFaultFieldMessageData(this.currentInverter);
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Reset Fault Inverter",
+                FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.PowerEnable,
-                this.index);
+                FieldMessageType.InverterFaultReset);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Reset Security Started",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.PowerEnable,
-                MessageStatus.OperationStart);
-
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
         }
 
         public override void Stop()

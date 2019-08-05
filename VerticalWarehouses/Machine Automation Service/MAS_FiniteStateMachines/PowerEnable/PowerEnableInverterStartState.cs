@@ -10,35 +10,32 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class PowerEnableStartState : StateBase
+    public class PowerEnableInverterStartState : StateBase
     {
         #region Fields
 
-        private readonly bool enable;
-        private readonly byte index;
-
         private bool disposed;
+
+        private bool inverterSwitched;
+
+        private bool ioSwitched;
 
         #endregion
 
         #region Constructors
 
-        public PowerEnableStartState(
-            byte index,
-            bool enable,
+        public PowerEnableInverterStartState(
             IStateMachine parentMachine,
             ILogger logger)
             : base(parentMachine, logger)
         {
-            this.index = index;
-            this.enable = enable;
         }
 
         #endregion
 
         #region Destructors
 
-        ~PowerEnableStartState()
+        ~PowerEnableInverterStartState()
         {
             this.Dispose(false);
         }
@@ -56,19 +53,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.PowerEnable)
+            if (message.Type == FieldMessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if( !this.enable)
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.ParentStateMachine, InverterIndex.MainInverter, this.Logger));
-                        }
+                        this.Logger.LogDebug("I/O switch completed");
+                        this.ioSwitched = true;
                         break;
 
                     case MessageStatus.OperationError:
@@ -76,9 +67,25 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                         break;
                 }
             }
-            else if (message.Type == FieldMessageType.IoDriverException)
+
+            if (message.Type == FieldMessageType.InverterSwitchOn)
             {
-                this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.inverterSwitched = true;
+                        this.Logger.LogDebug("Inverter switch ON completed");
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new PowerEnableErrorState(this.ParentStateMachine, message, this.Logger));
+                        break;
+                }
+            }
+
+            if (this.ioSwitched && this.inverterSwitched)
+            {
+                this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
             }
         }
 
@@ -89,30 +96,30 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var commandMessageData = new PowerEnableFieldMessageData(this.enable);
-            var commandMessage = new FieldCommandMessage(
-                commandMessageData,
-                $"Power Enable IO digital input",
+            var ioCommandMessageData = new SwitchAxisFieldMessageData(Axis.Both);
+            var ioCommandMessage = new FieldCommandMessage(
+                ioCommandMessageData,
+                $"Switch Axis {Axis.Both}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.PowerEnable,
-                this.index);
+                FieldMessageType.SwitchAxis);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Reset Security Started",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.PowerEnable,
-                MessageStatus.OperationStart);
+            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(Axis.Both, InverterIndex.MainInverter);
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Switch Axis {Axis.Both}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSwitchOn);
 
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
         }
 
         public override void Stop()

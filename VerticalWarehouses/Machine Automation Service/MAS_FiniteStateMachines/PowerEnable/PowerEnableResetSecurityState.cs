@@ -10,12 +10,9 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 {
-    public class PowerEnableStartState : StateBase
+    public class PowerEnableResetSecurityState : StateBase
     {
         #region Fields
-
-        private readonly bool enable;
-        private readonly byte index;
 
         private bool disposed;
 
@@ -23,22 +20,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         #region Constructors
 
-        public PowerEnableStartState(
-            byte index,
-            bool enable,
+        public PowerEnableResetSecurityState(
             IStateMachine parentMachine,
             ILogger logger)
             : base(parentMachine, logger)
         {
-            this.index = index;
-            this.enable = enable;
         }
 
         #endregion
 
         #region Destructors
 
-        ~PowerEnableStartState()
+        ~PowerEnableResetSecurityState()
         {
             this.Dispose(false);
         }
@@ -56,19 +49,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.PowerEnable)
+            if (message.Type == FieldMessageType.ResetSecurity)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if( !this.enable)
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
-                        }
-                        else
-                        {
-                            this.ParentStateMachine.ChangeState(new PowerEnableResetFaultState(this.ParentStateMachine, InverterIndex.MainInverter, this.Logger));
-                        }
+                        this.ParentStateMachine.ChangeState(new PowerEnableInverterStartState(this.ParentStateMachine, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
@@ -89,30 +75,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var commandMessageData = new PowerEnableFieldMessageData(this.enable);
+            var commandMessageData = new ResetSecurityFieldMessageData();
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,
-                $"Power Enable IO digital input",
+                $"Reset Security",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.PowerEnable,
-                this.index);
+                FieldMessageType.ResetSecurity);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-            var notificationMessage = new NotificationMessage(
-                null,
-                "Reset Security Started",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.PowerEnable,
-                MessageStatus.OperationStart);
-
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()

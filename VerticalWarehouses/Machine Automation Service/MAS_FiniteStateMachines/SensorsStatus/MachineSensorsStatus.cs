@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
 
+        public bool IsMachineInNormalState => this.sensorStatus[(int)IOMachineSensors.NormalState];
+
         #endregion
 
         #region Methods

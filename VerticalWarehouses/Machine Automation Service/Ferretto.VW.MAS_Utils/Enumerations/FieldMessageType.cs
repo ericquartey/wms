@@ -46,6 +46,8 @@
 
         ResetSecurity,
 
-        PowerEnable
+        PowerEnable,
+
+        InverterFaultReset
     }
 }
