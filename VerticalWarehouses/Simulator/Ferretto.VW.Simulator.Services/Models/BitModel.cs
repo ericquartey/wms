@@ -23,10 +23,14 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
         }
 
-        public BitModel(string description, bool value)
+        public BitModel(bool value)
+        {
+            this.Value = value;
+        }
+
+        public BitModel(string description, bool value) : this(value)
         {
             this.Description = description;
-            this.Value = value;
         }
 
         #endregion

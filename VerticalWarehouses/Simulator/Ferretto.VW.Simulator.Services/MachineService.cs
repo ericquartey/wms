@@ -385,11 +385,11 @@ namespace Ferretto.VW.Simulator.Services
                 foreach (var extractedMessage in extractedMessages)
                 {
                     var length = extractedMessage[0];
-                    var relProtocol = extractedMessage[1];
+                    var firmwareProtocol = extractedMessage[1];
                     var codeOperation = extractedMessage[2];
+                    bool[] outputs = Enumerable.Range(0, 8).Select(x => Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')[x] == '1' ? true : false).ToArray();
 
-                    var spare = relProtocol == 0x10 ? 0 : extractedMessage[3];
-                    bool[] outputs = Enumerable.Range(0, 8).Select(x => Convert.ToString(relProtocol == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')[x] == '1' ? true : false).ToArray();
+                    device.Outputs = outputs.Select(x => new BitModel(x)).ToList();
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
