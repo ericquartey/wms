@@ -19,6 +19,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Enumerations;
 
 namespace Ferretto.VW.App.Installation
 {
@@ -404,6 +405,7 @@ namespace Ferretto.VW.App.Installation
 
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
+            this.MachineOnMarchSelectionBool = message[(int)IOMachineSensors.NormalState];
         }
 
         #endregion
