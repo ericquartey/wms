@@ -173,8 +173,9 @@
   },
   "VerticalManualMovements": {
     "FeedRate": 0.10,
-    "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 300.0
+    "PositiveTargetDirection": 30.0,
+    "NegativeTargetDirection": 30.0,
+    "FeedRateAfterZero": 0.30
   },
   "HorizontalManualMovements": {
     "FeedRate": 0.10,
