@@ -400,7 +400,7 @@ namespace Ferretto.VW.Simulator.Services
                             responseMessage[1] = device.FirmwareVersion;        // fwRelease
                             responseMessage[2] = 0x00;                          // Code op   0x00: data, 0x06: configuration
                             responseMessage[3] = 0x00;                          // error code
-                            Array.Copy(extractedMessage, 3, responseMessage, 4, 1);  // output values echo
+                            Array.Copy(extractedMessage, device.FirmwareVersion == 0x11 ? 4 : 3, responseMessage, device.FirmwareVersion == 0x11 ? 5 : 4, 1);  // output values echo
                             byte[] inputs = BitConverter.GetBytes(device.InputsValue);
                             responseMessage[device.FirmwareVersion == 0x11 ? 6 : 5] = inputs[0];
                             responseMessage[device.FirmwareVersion == 0x11 ? 7 : 6] = inputs[1];

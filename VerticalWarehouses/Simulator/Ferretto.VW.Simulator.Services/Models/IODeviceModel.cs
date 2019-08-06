@@ -112,7 +112,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
 
-        public byte FirmwareVersion { get; set; } = 0x10;
+        public byte FirmwareVersion { get; set; } = 0x11;
 
         public int Id { get; set; }
 
