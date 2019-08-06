@@ -28,15 +28,21 @@
 
         InverterIndexBay3 = 11L,
 
-        IOExpansion1 = 12L,
+        IOExpansion1IPAddress = 12L,
+
+        IOExpansion1Installed = 30L,
+
+        IOExpansion2Installed = 31L,
+
+        IOExpansion3Installed = 32L,
 
         IOExpansion1Port = 26L,
 
-        IOExpansion2 = 13L,
+        IOExpansion2IPAddress = 13L,
 
         IOExpansion2Port = 27L,
 
-        IOExpansion3 = 14L,
+        IOExpansion3IPAddress = 14L,
 
         IOExpansion3Port = 28L,
 

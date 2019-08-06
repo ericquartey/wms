@@ -58,11 +58,13 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public bool IsActiveDbInhibited => this.isInhibited[this.ActiveDbContextOptions];
 
-        public bool IsEnabled => this.StandbyDbContextOptions != null;
+        public bool IsEnabled { get; set; }
 
         public bool IsStandbyDbInhibited => this.isInhibited[this.StandbyDbContextOptions];
 
         public DbContextOptions<TDbContext> StandbyDbContextOptions { get; private set; }
+
+        private bool IsRedundancyConfigured => this.StandbyDbContextOptions != null;
 
         #endregion
 
@@ -70,7 +72,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public void HandleDbContextFault(DbContextOptions<TDbContext> dbContextOptions, Exception exception)
         {
-            if (!this.IsEnabled)
+            if (!this.IsRedundancyConfigured)
             {
                 return;
             }
@@ -84,7 +86,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             {
                 if (exception == this.lastSeenException)
                 {
-                    this.logger.LogWarning("Exception already seen, skipping ...");
                     return;
                 }
                 else
@@ -121,7 +122,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public void InhibitStandbyDb()
         {
-            if (!this.IsEnabled)
+            if (!this.IsRedundancyConfigured)
             {
                 return;
             }
