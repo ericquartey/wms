@@ -468,14 +468,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.inverterCommandQueue.Peek(out var message);
 
-            if (message.ParameterId == InverterParameterId.ControlWordParam)
-            {
-                if (this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
-                {
-                    inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
-                    message.GetHeartbeatMessage(inverterStatus.CommonControlWord.HeartBeat);
-                }
-            }
             this.logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
 
             var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
@@ -999,10 +991,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                 return;
             }
 
-            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.ControlWordParam))
+            inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
+            if (inverterStatus is AngInverterStatus mainInverterStatus)
+            {
+                mainInverterStatus.WaitingHeartbeatAck = true;
+            }
+
+            if (this.heartbeatQueue.Count == 0)
             {
                 var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-                this.inverterCommandQueue.Enqueue(message);
+                this.heartbeatQueue.Enqueue(message);
             }
         }
 
