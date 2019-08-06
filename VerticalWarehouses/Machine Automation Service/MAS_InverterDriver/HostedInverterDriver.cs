@@ -308,15 +308,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     continue;
                 }
 
-                //if (receivedMessage.Type == FieldMessageType.InverterStop)
-                //{
-                //    this.currentStateMachine?.Dispose();
-
-                //    this.ProcessStopMessage(receivedMessage);
-
-                //    continue;
-                //}
-
                 if (this.CurrentStateMachine != null && receivedMessage.Type == FieldMessageType.InverterStop)
                 {
                     if (receivedMessage.Data is InverterStopFieldMessageData stopMessageData)
@@ -419,7 +410,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 switch (receivedMessage.Type)
                 {
-                    //case FieldMessageType.InverterError:
                     case FieldMessageType.DataLayerReady:
 
                         await this.StartHardwareCommunications();
@@ -730,7 +720,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.readSpeedStopwatch.Start();
                     this.ReadWaitTimeData.AddValue(this.readWaitStopwatch.ElapsedTicks);
                     this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
-
                 }
                 catch (OperationCanceledException)
                 {
@@ -778,7 +767,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 4, 1, 2);
-                if(ExtractedMessages != null)
+                if (ExtractedMessages != null)
                 {
                     this.writeEnableEvent.Set();
                 }
@@ -862,16 +851,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     if (this.socketTransport.IsConnected)
                     {
-                        //switch (handleIndex)
-                        //{
-                        //    case 0:
-                        //        await this.ProcessHeartbeat();
-                        //        break;
-
-                        //    case 1:
-                                await this.ProcessInverterCommand();
-                        //        break;
-                        //}
+                        await this.ProcessInverterCommand();
                     }
                 }
             }

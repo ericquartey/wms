@@ -238,8 +238,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (angInverter.UpdateANGInverterCurrentPosition(this.currentAxis, currentMessage.IntPayload) || this.forceStatusPublish)
                         {
-                            //if (this.shaftPositionUpdateNumberOfTimes == 10 || true || this.forceStatusPublish)
-                            //{
                             var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, currentMessage.IntPayload);
                             var msgNotification = new FieldNotificationMessage(
                               notificationData,
