@@ -192,6 +192,17 @@ namespace Ferretto.VW.App.Services
                             new MAS_EventMessage(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
                     }
                     break;
+
+                case NotificationMessageUI<PowerEnableMessageData> sc:
+                    this.eventAggregator.GetEvent<NotificationEventUI<PowerEnableMessageData>>().Publish(sc);
+
+                    if (sc.Status == MessageStatus.OperationError)
+                    {
+                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
+                            new MAS_EventMessage(NotificationType.Error, ActionType.PowerEnable, ActionStatus.Error));
+                    }
+                    break;
+
             }
         }
 

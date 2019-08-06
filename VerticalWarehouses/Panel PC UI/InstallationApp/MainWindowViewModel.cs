@@ -19,6 +19,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Unity;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Enumerations;
 
 namespace Ferretto.VW.App.Installation
 {
@@ -376,8 +377,12 @@ namespace Ferretto.VW.App.Installation
             {
                 if (!this.SecurityFunctionActive)
                 {
-                    this.machineStatusService.ExecuteResetSecurityAsync();
-                    this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
+                    this.machineStatusService.ExecutePowerOnAsync();
+                    //this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
+                }
+                else
+                {
+                    this.machineStatusService.ExecutePowerOffAsync();
                 }
             };
 
@@ -404,6 +409,7 @@ namespace Ferretto.VW.App.Installation
 
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
+            this.MachineOnMarchSelectionBool = message[(int)IOMachineSensors.NormalState];
         }
 
         #endregion

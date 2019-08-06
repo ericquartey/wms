@@ -38,6 +38,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.ExecuteResetSecurity_Method();
         }
 
+        [HttpGet("ExecutePowerOn")]
+        public void ExecutePowerOn()
+        {
+            this.ExecutePowerOn_Method();
+        }
+
+        [HttpGet("ExecutePowerOff")]
+        public void ExecutePowerOff()
+        {
+            this.ExecutePowerOff_Method();
+        }
+
         #endregion
     }
 }
