@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
+namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
-    public class ResetStateMachine : IoStateMachineBase
+    public class ResetSecurityStateMachine : IoStateMachineBase
     {
         #region Fields
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Constructors
 
-        public ResetStateMachine(
+        public ResetSecurityStateMachine(
             BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
             IoSHDStatus status,
             IEventAggregator eventAggregator,
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Destructors
 
-        ~ResetStateMachine()
+        ~ResetSecurityStateMachine()
         {
             this.Dispose(false);
         }
@@ -106,6 +106,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         private void DelayElapsed(object state)
         {
             var pulseIoMessage = new IoSHDWriteMessage();
+            pulseIoMessage.SwitchResetSecurity(false);
+            pulseIoMessage.SwitchPowerEnable(true);
 
             this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
             this.status.UpdateOutputStates(pulseIoMessage.Outputs);

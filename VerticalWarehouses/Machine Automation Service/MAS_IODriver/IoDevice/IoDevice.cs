@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             outputData,
                             configurationData,
                             errorCode);
-                        this.logger.LogTrace($"4:{messageData}");
+                        this.logger.LogTrace($"4:{messageData}: index {this.index}");
 
                         this.currentStateMachine?.ProcessResponseMessage(messageData);
 
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             outputData,
                             configurationData,
                             errorCode);
-                        this.logger.LogTrace($"4: Configuration message={messageConfig}");
+                        this.logger.LogTrace($"4: Configuration message={messageConfig}: index {this.index}");
 
                         this.currentStateMachine?.ProcessResponseMessage(messageConfig);
 
@@ -220,7 +220,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
 
-                    this.logger.LogDebug($"1:message={shdMessage}");
+                    this.logger.LogDebug($"1:message={shdMessage}: index {this.index}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
                             await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"3:message={shdMessage}");
+                            this.logger.LogTrace($"3:message={shdMessage}: index {this.index}");
                         }
                         break;
 
@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
                             await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"4:message={shdMessage}");
+                            this.logger.LogTrace($"4:message={shdMessage}: index {this.index}");
                         }
                         break;
 

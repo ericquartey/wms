@@ -85,6 +85,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             var resetSecurityIoMessage = new IoSHDWriteMessage();
 
             resetSecurityIoMessage.SwitchResetSecurity(true);
+            resetSecurityIoMessage.SwitchPowerEnable(true);
             this.Logger.LogTrace($"1:Switch Security IO={resetSecurityIoMessage}");
 
             lock (this.status)
