@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         {
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.ResetSecurity)
+            if (message.Type == FieldMessageType.IoPowerUp)
             {
                 switch (message.Status)
                 {

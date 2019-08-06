@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         private bool disposed;
 
+        private Axis axisToSwitch;
+
         private bool inverterSwitched;
 
         private bool ioSwitched;
@@ -29,6 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             ILogger logger)
             : base(parentMachine, logger)
         {
+            this.axisToSwitch = Axis.Horizontal;
         }
 
         #endregion
@@ -85,7 +88,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
+                if(this.axisToSwitch == Axis.Horizontal)
+                {
+                    this.axisToSwitch = Axis.Vertical;
+                    this.Start();
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
+                }
             }
         }
 
@@ -96,10 +107,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-            var ioCommandMessageData = new SwitchAxisFieldMessageData(Axis.Both);
+            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.axisToSwitch);
             var ioCommandMessage = new FieldCommandMessage(
                 ioCommandMessageData,
-                $"Switch Axis {Axis.Both}",
+                $"Switch Axis {this.axisToSwitch}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.SwitchAxis);
@@ -109,10 +120,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
             //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
-            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(Axis.Both, InverterIndex.MainInverter);
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitch, InverterIndex.MainInverter);
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,
-                $"Switch Axis {Axis.Both}",
+                $"Switch Axis {this.axisToSwitch}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterSwitchOn);
@@ -120,6 +131,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
             this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            this.ioSwitched = false;
+            this.inverterSwitched = false;
         }
 
         public override void Stop()
