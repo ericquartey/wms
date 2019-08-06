@@ -631,6 +631,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.ResetSecurity:
+                    case MessageType.PowerEnable:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             switch (receivedMessage.Status)
