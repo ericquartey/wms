@@ -101,29 +101,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                 }
             }
 
-            if (message.Type == FieldMessageType.InverterStatusUpdate)
+            if (message.Type == FieldMessageType.InverterStatusUpdate &&
+                message.Status == MessageStatus.OperationExecuting)
             {
-                switch (message.Status)
+                if (message.Data is InverterStatusUpdateFieldMessageData data)
                 {
-                    case MessageStatus.OperationExecuting:
-                        if (message.Data is InverterStatusUpdateFieldMessageData data)
-                        {
-                            PositioningMessageData positioningMessageData = new PositioningMessageData();
-                            positioningMessageData.CurrentPosition = data.CurrentPosition;
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessage = new NotificationMessage(
+                        notificationMessageData,
+                        $"Current Encoder position: {data.CurrentPosition}",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.CurrentPosition,
+                        MessageStatus.OperationExecuting);
 
-                            var notificationMessage = new NotificationMessage(
-                                positioningMessageData,
-                                $"Current Encoder position: {data.CurrentPosition}",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting);
-
-                            this.PublishNotificationMessage(notificationMessage);
-                        }
-                        break;
+                    this.PublishNotificationMessage(notificationMessage);
                 }
             }
+
             lock (this.CurrentState)
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
