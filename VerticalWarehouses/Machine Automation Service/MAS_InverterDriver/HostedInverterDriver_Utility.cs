@@ -279,6 +279,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace("4:Wrong inverter status");
                     return;
                 }
+
+                if (mainInverterStatus.WaitingHeartbeatAck)
+                {
+                    mainInverterStatus.WaitingHeartbeatAck = false;
+                    this.logger.LogTrace("5:Reset Heartbeat flag");
+                    return;
+                }
             }
             if (this.CurrentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
             {
