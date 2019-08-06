@@ -289,6 +289,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case FieldMessageType.IoPowerUp:
                     case FieldMessageType.SwitchAxis:
+                    case FieldMessageType.PowerEnable:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
