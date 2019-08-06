@@ -14,8 +14,11 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
@@ -57,7 +60,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private Timer pollIoTimer;
 
-        private Timer publishIoTimer;
+        //private Timer publishIoTimer;
+
+        private byte[] ReceiveBuffer;
+
+        private readonly ManualResetEventSlim writeEnableEvent;
 
         #endregion
 
@@ -77,6 +84,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             this.ioSHDStatus = new IoSHDStatus();
 
             this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDWriteMessage>();
+
+            this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
@@ -114,26 +123,62 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
             do
             {
-                var nBytesReceived = 0;
-
-                try
+                if (!this.shdTransport.IsConnected)
                 {
-                    var telegram = await this.shdTransport.ReadAsync(this.stoppingToken);
-
-                    if (telegram.Length == 0)
+                    try
                     {
+                        this.ReceiveBuffer = null;
+                        await this.shdTransport.ConnectAsync();
+                    }
+                    catch (IoDriverException ex)
+                    {
+                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
+
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogCritical($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.CreationFailure));
+                        throw new IOException($"Exception: {ex.Message} ReceiveIoDataTaskFunction Failed 1", ex);
+                    }
+                    if (!this.shdTransport.IsConnected)
+                    {
+                        this.logger.LogError("3:Socket Transport failed to connect");
+
+                        var ex = new Exception();
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         continue;
                     }
+                    this.writeEnableEvent.Set();
+                }
+                // socket connected
+                var nBytesReceived = 0;
+                byte[] telegram;
+                try
+                {
+                    telegram = await this.shdTransport.ReadAsync(this.stoppingToken);
 
-                    this.ParsingDataBytes(
-                    telegram,
-                    out nBytesReceived,
-                    out formatDataOperation,
-                    out fwRelease,
-                    ref inputData,
-                    ref outputData,
-                    out configurationData,
-                    out errorCode);
+                    if (telegram == null || telegram.Length == 0)
+                    {
+                        // connection error
+                        this.logger.LogError($"4:IO Driver message is null");
+                        var ex = new Exception();
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                        continue;
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    this.logger.LogDebug("3:Method End - operation cancelled");
+                    return;
+                }
+                catch (IoDriverException ex)
+                {
+                    // connection error
+                    this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                    continue;
                 }
                 catch (Exception ex)
                 {
@@ -141,15 +186,76 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
+                this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(telegram, telegram.Length);
 
-                lock (this.ioSHDStatus)
+                //INFO: Byte 0 of read data contains packet length
+                if (!(this.ReceiveBuffer[0] == 3 || this.ReceiveBuffer[0] == 15 || this.ReceiveBuffer[0] == 26))
                 {
-                    this.ioSHDStatus.FwRelease = fwRelease;
+                    // message error
+                    this.logger.LogError($"5:IO Driver message length error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    var ex = new Exception();
+                    this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                    this.shdTransport.Disconnect();
+                    continue;
                 }
-
-                switch (formatDataOperation)
+                if (this.ReceiveBuffer.Length < this.ReceiveBuffer[0])
                 {
-                    case SHDFormatDataOperation.Data:
+                    // this is not an error: we try to recover from messages received in more pieces
+                    this.logger.LogWarning($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    continue;
+                }
+                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 3, 0, 0);
+                if(this.ReceiveBuffer.Length > 0)
+                {
+                    this.logger.LogWarning($" extracted: count {ExtractedMessages.Count}: left bytes {this.ReceiveBuffer.Length}");
+                }
+                if (ExtractedMessages != null)
+                {
+                    this.writeEnableEvent.Set();
+                }
+                foreach (var extractedMessage in ExtractedMessages)
+                {
+                    if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release
+                        || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release
+                        )
+                    {
+                        // message error
+                        this.logger.LogError($"5:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                        var ex = new Exception();
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                        this.shdTransport.Disconnect();
+                        break;
+                    }
+                    try
+                    {
+                        this.ParsingDataBytes(
+                            extractedMessage,
+                            out nBytesReceived,
+                            out formatDataOperation,
+                            out fwRelease,
+                            ref inputData,
+                            ref outputData,
+                            out configurationData,
+                            out errorCode);
+                    }
+                    catch (Exception ex)
+                    {
+                        // message error
+                        this.logger.LogError($"6:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(extractedMessage)}");
+                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                        this.shdTransport.Disconnect();
+                        break;
+                    }
+
+                    // message ok
+                    lock (this.ioSHDStatus)
+                    {
+                        this.ioSHDStatus.FwRelease = fwRelease;
+                    }
+
+                    switch (formatDataOperation)
+                    {
+                        case SHDFormatDataOperation.Data:
 
                         //INFO The mushroom signal must be inverted
                         inputData[1] = !inputData[1];
@@ -173,39 +279,40 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                                 (byte)this.index);
                             this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
 
-                            this.forceIoStatusPublish = false;
-                        }
+                                this.forceIoStatusPublish = false;
+                            }
 
-                        var messageData = new IoSHDReadMessage(
-                            formatDataOperation,
-                            fwRelease,
-                            inputData,
-                            outputData,
-                            configurationData,
-                            errorCode);
-                        this.logger.LogTrace($"4:{messageData}");
+                            var messageData = new IoSHDReadMessage(
+                                formatDataOperation,
+                                fwRelease,
+                                inputData,
+                                outputData,
+                                configurationData,
+                                errorCode);
+                            this.logger.LogTrace($"4:{messageData}");
 
-                        this.currentStateMachine?.ProcessResponseMessage(messageData);
+                            this.currentStateMachine?.ProcessResponseMessage(messageData);
 
-                        break;
+                            break;
 
-                    case SHDFormatDataOperation.Ack:
+                        case SHDFormatDataOperation.Ack:
 
-                        var messageConfig = new IoSHDReadMessage(
-                            formatDataOperation,
-                            fwRelease,
-                            inputData,
-                            outputData,
-                            configurationData,
-                            errorCode);
-                        this.logger.LogTrace($"4: Configuration message={messageConfig}");
+                            var messageConfig = new IoSHDReadMessage(
+                                formatDataOperation,
+                                fwRelease,
+                                inputData,
+                                outputData,
+                                configurationData,
+                                errorCode);
+                            this.logger.LogTrace($"4: Configuration message={messageConfig}");
 
-                        this.currentStateMachine?.ProcessResponseMessage(messageConfig);
+                            this.currentStateMachine?.ProcessResponseMessage(messageConfig);
 
-                        break;
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
@@ -218,9 +325,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 IoSHDWriteMessage shdMessage;
                 try
                 {
-                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
+                    this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out shdMessage);
 
-                    this.logger.LogDebug($"1:message={shdMessage}");
+                    this.logger.LogTrace($"1:message={shdMessage}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -229,36 +336,55 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     return;
                 }
 
-                byte[] telegram;
-                switch (shdMessage.CodeOperation)
+                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
-                    case SHDCodeOperation.Data:
-                        if (shdMessage.ValidOutputs)
+                    this.writeEnableEvent.Reset();
+
+                    if (this.shdTransport.IsConnected)
+                    {
+                        try
                         {
-                            telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
-                            await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
+                            byte[] telegram;
+                            switch (shdMessage.CodeOperation)
+                            {
+                                case SHDCodeOperation.Data:
+                                    if (shdMessage.ValidOutputs)
+                                    {
+                                        telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
+                                        await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"3:message={shdMessage}");
+                                        this.logger.LogTrace($"3:message={shdMessage}");
+                                    }
+                                    break;
+
+                                case SHDCodeOperation.Configuration:
+                                    {
+                                        telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
+                                        await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
+
+                                        this.logger.LogTrace($"4:message={shdMessage}");
+                                    }
+                                    break;
+
+                                case SHDCodeOperation.SetIP:
+                                    {
+                                        // TODO
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
                         }
-                        break;
-
-                    case SHDCodeOperation.Configuration:
+                        catch (IoDriverException ex)
                         {
-                            telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
-                            await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
-
-                            this.logger.LogTrace($"4:message={shdMessage}");
+                            // connection error
+                            this.logger.LogError($"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
+                            this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                            continue;
                         }
-                        break;
-
-                    case SHDCodeOperation.SetIP:
-                        {
-                            // TODO
-                        }
-                        break;
-
-                    default:
-                        break;
+                        this.ioCommandQueue.Dequeue(out var consumedMessage);
+                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
@@ -266,9 +392,12 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         public void SendIoMessageData(object state)
         {
-            var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
+            if (!this.ioCommandQueue.Any(x => x.CodeOperation == SHDCodeOperation.Data))
+            {
+                var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
 
-            this.ioCommandQueue.Enqueue(message);
+                this.ioCommandQueue.Enqueue(message);
+            }
         }
 
         public void SendIoPublish(object state)
@@ -301,18 +430,26 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             {
                 await this.shdTransport.ConnectAsync();
             }
+            catch (IoDriverException ex)
+            {
+                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}");
+
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
+            }
             catch (Exception ex)
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
+                throw new IOException($"Exception: {ex.Message} StartHardwareCommunications Failed 1", ex);
             }
 
             if (!this.shdTransport.IsConnected)
             {
-                this.logger.LogCritical("3:Failed to connect to Modbus I/O master");
+                this.logger.LogError("3:Failed to connect to Modbus I/O master");
 
-                throw new IoDriverException("Failed to connect to Modbus I/O master");
+                var ex = new Exception();
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "Socket Transport failed to connect", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
 
             try
@@ -326,6 +463,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 this.logger.LogCritical($"4:Exception: {ex.Message} while starting service hardware threads - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
+                throw new IOException($"Exception: {ex.Message} StartHardwareCommunications Failed 2", ex);
             }
 
             this.StartPollingIoMessage();
@@ -361,6 +499,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             if (disposing)
             {
                 this.pollIoTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
             }
 
             this.disposed = true;

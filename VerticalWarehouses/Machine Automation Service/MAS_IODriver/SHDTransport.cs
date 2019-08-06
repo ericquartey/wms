@@ -40,6 +40,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
+        public bool IsReadingOk { get; set; }
+
         #endregion
 
         #region Methods
@@ -82,9 +84,13 @@ namespace Ferretto.VW.MAS.IODriver
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                throw new IoDriverException(
-                    "Socket Transport is already open",
-                    IoDriverExceptionCode.SocketOpen);
+                //throw new IoDriverException(
+                //    "Socket Transport is already open",
+                //    IoDriverExceptionCode.SocketOpen);
+                this.transportClient?.Dispose();
+                this.transportStream?.Dispose();
+                this.transportClient = null;
+                this.transportStream = null;
             }
 
             try
@@ -139,7 +145,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.transportStream?.Close();
             this.transportClient?.Close();
 
-            this.Dispose(true);
+            //this.Dispose(true);
         }
 
         public void Dispose()
@@ -177,11 +183,13 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 else
                 {
-                    return null;
+                    this.Disconnect();
+                    throw new IoDriverException("Error reading data from Transport Stream");
                 }
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new IoDriverException(
                     "Error reading data from Transport Stream",
                     IoDriverExceptionCode.NetworkStreamReadFailure,
@@ -208,12 +216,17 @@ namespace Ferretto.VW.MAS.IODriver
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
@@ -237,6 +250,10 @@ namespace Ferretto.VW.MAS.IODriver
                     IoDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 if (delay > 0)
@@ -247,6 +264,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
