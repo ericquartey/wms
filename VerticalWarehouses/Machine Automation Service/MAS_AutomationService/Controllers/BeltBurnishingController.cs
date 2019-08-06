@@ -114,11 +114,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
             var category = (ConfigurationCategory)categoryId;
-
-            //switch (category)
-            //{
-            //    case ConfigurationCategory.VerticalAxis:
-
             var parseSuccess = Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
 
             if (parseSuccess)
@@ -143,56 +138,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
-
-            //case ConfigurationCategory.HorizontalAxis:
-
-            //    Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
-            //    if (horizontalAxisParameterId != null)
-            //    {
-            //        decimal value2;
-            //        try
-            //        {
-            //            value2 = this.dataLayerConfigurationValueManagement
-            //                .GetDecimalConfigurationValue(
-            //                (long)horizontalAxisParameterId,
-            //                category);
-            //        }
-            //        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-            //        {
-            //            return this.NotFound("Parameter not found");
-            //        }
-
-            //        return this.Ok(value2);
-            //    }
-            //    else
-            //    {
-            //        return this.NotFound("Parameter not found");
-            //    }
-            //case ConfigurationCategory.ResolutionCalibration:
-            //    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
-            //    if (resolutionCalibrationParameterId != null)
-            //    {
-            //        decimal value3;
-            //        try
-            //        {
-            //            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-            //                (long)resolutionCalibrationParameterId,
-            //                category);
-            //        }
-            //        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-            //        {
-            //            return this.NotFound("Parameter not found");
-            //        }
-
-            //        return this.Ok(value3);
-            //    }
-            //    else
-            //    {
-            //        return this.NotFound("Parameter not found");
-            //    }
-            //}
-
-            //return 0;
         }
 
         private ActionResult<int> GetIntegerConfigurationParameter_Method(string categoryString, string parameter)

@@ -108,7 +108,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageType.SwitchAxis);
 
             this.Logger.LogDebug($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-            //            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
@@ -122,9 +121,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 FieldMessageType.InverterSwitchOn);
 
             this.Logger.LogDebug($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-            //            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            this.positioningMessageData.ExecutedCycles = 0;
 
             var notificationMessage = new NotificationMessage(
                 this.positioningMessageData,

@@ -113,7 +113,7 @@
   //},
 
   "VerticalAxis": {
-    "MaxEmptySpeed": 100.0, //TEMP temporary commented, it is too much for our tests //770.0,
+    "MaxEmptySpeed": 100.0, //TEMP temporary commented, it is too much for our tests 770.0,
     "MaxEmptyAcceleration": 1000.0,
     "MaxEmptyDeceleration": 1000.0,
     "MinFullSpeed": 550.0,
@@ -129,7 +129,7 @@
     "Resolution": 77.61182,
     "Offset": 350.0,
     "UpperBound": 1000.0, //TEMP temporary commented, it is too much for our tests //"UpperBound": 4000.0,
-    "LowerBound": 500.0, //TEMP temporary commented, it is too low for our tests //"LowerBound": 300.0,
+    "LowerBound": 300.0,
     "TakingOffset": 0.0,
     "DepositOffset": 0.0
   },

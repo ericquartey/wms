@@ -66,6 +66,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            var executedSteps = 0;
+
             this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.Positioning)
@@ -74,6 +76,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 {
                     case MessageStatus.OperationEnd:
                         this.numberExecutedSteps++;
+                        executedSteps = this.numberExecutedSteps / 2;
+                        this.positioningMessageData.ExecutedCycles = executedSteps;
+
                         if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
                         {
                             this.Logger.LogDebug("FSM Finished Executing State");
@@ -95,18 +100,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                             var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0 ? BeltBurnishingPosition.LowerBound : BeltBurnishingPosition.UpperBound;
 
-                            var executedSteps = this.numberExecutedSteps / 2;
-
                             this.positioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
-                            this.positioningMessageData.ExecutedCycles = executedSteps;
 
                             // Notification message
                             var notificationMessage = new NotificationMessage(
                                 this.positioningMessageData,
-                                $"Current position {beltBurnishingPosition}",
+                                $"Current position {beltBurnishingPosition} - loop {this.positioningMessageData.ExecutedCycles}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.CurrentEncoderPosition,
+                                MessageType.Positioning,
                                 MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -133,7 +135,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                 $"Current Encoder position: {data.CurrentPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.CurrentEncoderPosition,
+                                MessageType.Positioning,
                                 MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

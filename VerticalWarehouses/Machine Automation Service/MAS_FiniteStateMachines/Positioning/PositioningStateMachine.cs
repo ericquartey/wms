@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             bool checkConditions;
 
             checkConditions = (this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 ||
-                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle) &&
+                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
                                this.positioningMessageData.AxisMovement == Axis.Vertical ||
                                this.positioningMessageData.AxisMovement == Axis.Horizontal;
 
