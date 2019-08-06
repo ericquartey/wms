@@ -440,6 +440,26 @@ namespace Ferretto.VW.Simulator.Services
                             remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
                             remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
                         }
+
+                        // Set inverter run
+                        foreach (var inverter in this.Inverters)
+                        {
+                            switch (inverter.InverterType)
+                            {
+                                case InverterType.Ang:
+                                    inverter.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true;
+                                    break;
+                                case InverterType.Agl:
+                                    inverter.DigitalIO[(int)InverterSensors.AGL_HardwareSensorSTO].Value = true;
+                                    break;
+                                case InverterType.Acu:
+                                    inverter.DigitalIO[(int)InverterSensors.ACU_HardwareSensorSTO].Value = true;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            
+                        }
                     }
 
                     var result = client.Client.Send(responseMessage);
