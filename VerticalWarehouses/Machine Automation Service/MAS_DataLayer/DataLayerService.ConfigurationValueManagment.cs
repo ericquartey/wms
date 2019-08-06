@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DataLayer
             else
             {
                 this.Logger.LogCritical(
-                    $"Unable to parse value '{configurationValue.VarValue}' as DateTime for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
+                    $"Unable to parse value '{configurationValueEnum}' as DateTime for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.DataLayer
             else
             {
                 this.Logger.LogCritical(
-                    $"Unable to parse value '{configurationValue.VarValue}' as Decimal for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
+                    $"Unable to parse value '{configurationValueEnum}' as Decimal for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.DataLayer
             else
             {
                 this.Logger.LogCritical(
-                    $"Unable to parse value '{configurationValue.VarValue}' as Integer for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
+                    $"Unable to parse value '{configurationValueEnum}' as Integer for field '{category}.{configurationValueEnum}'.", DataLayerPersistentExceptionCode.ParseValue);
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 

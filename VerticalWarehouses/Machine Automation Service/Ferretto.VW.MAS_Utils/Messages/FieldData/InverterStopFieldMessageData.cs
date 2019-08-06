@@ -24,5 +24,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public MessageVerbosity Verbosity { get; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"InverterToStop:{this.InverterToStop.ToString()}";
+        }
+
+        #endregion
     }
 }
