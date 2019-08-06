@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 {
     public static class BufferUtility
     {
+        #region Methods
+
         public static byte[] AppendArrays(this byte[] a, byte[] b, int bytesRead)
         {
             if (a == null)
@@ -49,74 +51,9 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             return -1;
         }
 
-        internal static IList<string> GetMessagesToEnqueue(ref byte[] receiveBuffer, byte[] messageStartPattern, byte[] messageEndPattern)
+        public static IList<byte[]> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
         {
-            if (messageEndPattern == null)
-            {
-                throw new ArgumentNullException(nameof(messageEndPattern));
-            }
-
-            int startIndex = 0;
-
-            bool useStartPattern = false;
-            if (messageStartPattern != null)
-            {
-                useStartPattern = messageStartPattern.Any();
-            }
-            else
-            {
-                messageStartPattern = new byte[0];
-            }
-
-            IList<string> messages = new List<string>();
-            while (startIndex != -1 && startIndex < receiveBuffer.Length)
-            {
-                if (receiveBuffer.Length > 0)
-                {
-                    if (useStartPattern)
-                    {
-                        startIndex = ByteIndexOf(receiveBuffer, messageStartPattern, startIndex);
-                    }
-
-                    if (!useStartPattern || (startIndex != -1 && receiveBuffer.Length >= (startIndex + messageStartPattern.Length)))
-                    {
-                        int endIndex = ByteIndexOf(receiveBuffer, messageEndPattern, startIndex + 1);
-                        if (endIndex != -1)
-                        {
-                            // Cut message from raw buffer and enqueue it
-                            byte[] message = new byte[endIndex - startIndex - messageStartPattern.Length];
-                            Array.Copy(receiveBuffer, startIndex + messageStartPattern.Length, message, 0, message.Length);
-                            messages.Add(Encoding.ASCII.GetString(message));
-
-                            // Remove message from raw buffer
-                            int count = receiveBuffer.Length - endIndex - messageEndPattern.Length;
-                            byte[] newarray = new byte[count];
-                            Buffer.BlockCopy(receiveBuffer, endIndex + messageEndPattern.Length, newarray, 0, count);
-                            receiveBuffer = newarray;
-                            startIndex = 0;
-
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return messages;
-        }
-
-        public static IList<byte []> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
-        {
-            IList<byte []> messages = new List<byte []>();
+            IList<byte[]> messages = new List<byte[]>();
             if (receiveBuffer.Length >= totalHeaderLength + lengthAdjust)
             {
                 int startIndex = 0;
@@ -125,7 +62,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     int messageLength = receiveBuffer[startIndex + iLength] + lengthAdjust;
 
                     // check if there is a message to extract
-                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)      
+                    if (messageLength > 0 && receiveBuffer.Length >= messageLength)
                     {
                         // Cut message from raw buffer and enqueue it
                         byte[] message = new byte[messageLength];
@@ -138,7 +75,6 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                         Buffer.BlockCopy(receiveBuffer, startIndex + messageLength, newarray, 0, count);
                         receiveBuffer = newarray;
                         startIndex = 0;
-                        
                     }
                     else
                     {
@@ -147,8 +83,9 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                 }
             }
 
-
             return messages;
         }
+
+        #endregion
     }
 }

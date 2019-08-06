@@ -118,7 +118,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.sensorStopwatch.Stop();
                 this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
 
-                //this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
                 this.logger.LogDebug($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var index = 0;
@@ -253,29 +252,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
                             this.forceStatusPublish = false;
-                            //}
-                            //else
-                            //{
-                            //    this.shaftPositionUpdateNumberOfTimes++;
-                            //}
                         }
                     }
                 }
-
-                //if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload) || this.forceStatusPublish)
-                //{
-                //    var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, currentMessage.UShortPayload);
-                //    var msgNotification = new FieldNotificationMessage(notificationData,
-                //        "Inverter encoder value update",
-                //        FieldMessageActor.FiniteStateMachines,
-                //        FieldMessageActor.InverterDriver,
-                //        FieldMessageType.InverterStatusUpdate,
-                //        MessageStatus.OperationExecuting);
-
-                //    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-
-                //    this.forceStatusPublish = false;
-                //}
             }
         }
 
@@ -302,13 +281,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace("4:Wrong inverter status");
                     return;
                 }
-
-                //if (mainInverterStatus.WaitingHeartbeatAck)
-                //{
-                //    mainInverterStatus.WaitingHeartbeatAck = false;
-                //    this.logger.LogTrace("5:Reset Heartbeat flag");
-                //    return;
-                //}
             }
             if (this.CurrentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
             {
@@ -386,6 +358,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
         }
 
+        private bool IsInverterFault(IInverterStatusBase inverterStatus)
+        {
+            return inverterStatus.CommonStatusWord.IsFault;
+        }
+
         private bool IsInverterPoweredOn(IInverterStatusBase inverterStatus)
         {
             return inverterStatus.CommonStatusWord.IsVoltageEnabled &
@@ -398,11 +375,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                    inverterStatus.CommonStatusWord.IsSwitchedOn &
                    inverterStatus.CommonStatusWord.IsVoltageEnabled &
                    inverterStatus.CommonStatusWord.IsQuickStopTrue;
-        }
-
-        private bool IsInverterFault(IInverterStatusBase inverterStatus)
-        {
-            return inverterStatus.CommonStatusWord.IsFault;
         }
 
         private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage)
@@ -451,6 +423,28 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
+        private void ProcessFaultResetMessage(FieldCommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IInverterFaultFieldMessageData data)
+            {
+                if (!this.inverterStatuses.TryGetValue(data.InverterToReset, out var inverterStatus))
+                {
+                    inverterStatus = null;
+                }
+                this.CurrentStateMachine = new ResetFaultStateMachine(inverterStatus, data.InverterToReset, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                this.CurrentStateMachine?.Start();
+            }
+            else
+            {
+                this.logger.LogTrace("3:Invalid message data for InverterStop message Type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
+            }
+        }
+
         private async Task ProcessHeartbeat()
         {
             this.heartbeatQueue.Dequeue(out var message);
@@ -474,7 +468,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private async Task ProcessInverterCommand()
         {
-            //this.inverterCommandQueue.Dequeue(out var message);
             this.inverterCommandQueue.Peek(out var message);
 
             if (message.ParameterId == InverterParameterId.ControlWordParam)
@@ -935,28 +928,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void ProcessFaultResetMessage(FieldCommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IInverterFaultFieldMessageData data)
-            {
-                if (!this.inverterStatuses.TryGetValue(data.InverterToReset, out var inverterStatus))
-                {
-                    inverterStatus = null;
-                }
-                this.CurrentStateMachine = new ResetFaultStateMachine(inverterStatus, data.InverterToReset, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                this.CurrentStateMachine?.Start();
-            }
-            else
-            {
-                this.logger.LogTrace("3:Invalid message data for InverterStop message Type");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
-            }
-        }
-
         private void RequestAxisPositionUpdate(object state)
         {
             var readAxisPositionMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ActualPositionShaft);
@@ -1035,16 +1006,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 return;
             }
 
-            //inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
-            //if (inverterStatus is AngInverterStatus mainInverterStatus)
-            //{
-            //    mainInverterStatus.WaitingHeartbeatAck = true;
-            //}
-            //if (this.heartbeatQueue.Count == 0)
-            //{
-            //    var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-            //    this.heartbeatQueue.Enqueue(message);
-            //}
             if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.ControlWordParam))
             {
                 var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);

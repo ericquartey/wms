@@ -40,8 +40,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
-        public bool IsReadingOk { get; set; }
-
         #endregion
 
         #region Methods

@@ -109,9 +109,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                //throw new InverterDriverException(
-                //    "Socket Transport is already open",
-                //    InverterDriverExceptionCode.SocketOpen);
                 this.transportClient?.Dispose();
                 this.transportStream?.Dispose();
                 this.transportClient = null;
