@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E9153A64-A20D-4AA8-B2CC-49CADE123412}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ferretto.VW.App.Themes</RootNamespace>
+    <AssemblyName>Ferretto.VW.App.Themes</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\theme_dark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\theme_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_account_circle_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_account_circle_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_check_circle_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_check_circle_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_error_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_error_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_help_outline_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_help_outline_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_power_settings_new_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_power_settings_new_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_warning_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\baseline_warning_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Punto_Interrogativo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Punto_Interrogativo_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Punto_Interrogativo_3.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

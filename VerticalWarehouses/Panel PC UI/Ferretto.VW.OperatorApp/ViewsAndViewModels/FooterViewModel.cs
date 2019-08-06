@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
             this.navigateBackCommand
             ??
             (this.navigateBackCommand = new DelegateCommand(
-                () => this.container.Resolve<INavigationService>().NavigateFromView()));
+                () => this.container.Resolve<Operator.Interfaces.INavigationService>().NavigateFromView()));
 
         public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 

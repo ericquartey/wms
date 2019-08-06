@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         private readonly IItemListsDataService itemListsDataService;
 
-        private readonly INavigationService navigationService;
+        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
 
         private int areaId;
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         public DetailListInWaitViewModel(
             IStatusMessageService statusMessageService,
-            INavigationService navigationService,
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             IIdentityService identityService,
             IItemListsDataService itemListsDataService
             )

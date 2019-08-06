@@ -14,7 +14,7 @@ using Unity;
 
 namespace Ferretto.VW.App.Operator
 {
-    public class NavigationService : INavigationService
+    public class NavigationService : Ferretto.VW.App.Operator.Interfaces.INavigationService
     {
         #region Fields
 

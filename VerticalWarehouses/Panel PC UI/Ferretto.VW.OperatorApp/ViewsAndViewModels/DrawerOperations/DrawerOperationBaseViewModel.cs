@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         public DrawerOperationBaseViewModel(
             IEventAggregator eventAggregator,
-            INavigationService navigationService,
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         protected IMissionOperationsService MissionOperationsService { get; }
 
-        protected INavigationService NavigationService { get; }
+        protected Ferretto.VW.App.Operator.Interfaces.INavigationService NavigationService { get; }
 
         protected IStatusMessageService StatusMessageService { get; }
 

@@ -132,4 +132,7 @@
   <data name="UserLogin_UserNameMustBeSpecified" xml:space="preserve">
     <value>User name must be specified.</value>
   </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+  </data>
 </root>

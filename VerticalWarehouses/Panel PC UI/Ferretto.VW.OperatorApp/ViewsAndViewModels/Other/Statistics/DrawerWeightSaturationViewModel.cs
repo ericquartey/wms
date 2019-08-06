@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly ILoadingUnitsService loadingUnitService;
 
-        private readonly INavigationService navigationService;
+        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
             ILoadingUnitsService loadingUnitService,
             IIdentityService identityService,
             IStatusMessageService statusMessageService,
-            INavigationService navigationService,
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;

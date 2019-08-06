@@ -11,12 +11,22 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0"
+        <TextBlock
                    Margin="20,0,0,0"
                    VerticalAlignment="Center"
                    Foreground="{Binding NoteBrush}"
                    Style="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBlockStyle}"
                    Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock
+                   Height="40"
+                   Margin="80,2,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
+                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   TextWrapping="WrapWithOverflow" />
+        
         <StackPanel Grid.Column="1"
                     Margin="0,0,10,0"
                     FlowDirection="RightToLeft"

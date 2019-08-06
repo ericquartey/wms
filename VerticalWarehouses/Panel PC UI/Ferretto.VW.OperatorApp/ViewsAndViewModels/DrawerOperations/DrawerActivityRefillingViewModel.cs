@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 
         public DrawerActivityRefillingViewModel(
             IEventAggregator eventAggregator,
-            INavigationService navigationService,
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,

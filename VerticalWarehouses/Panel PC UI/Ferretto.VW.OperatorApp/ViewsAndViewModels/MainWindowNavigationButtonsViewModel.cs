@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly INavigationService navigationService;
+        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
 
         private ICommand drawerActivityButtonCommand;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
         public MainWindowNavigationButtonsViewModel(
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            INavigationService navigationService)
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService)
         {
             if (eventAggregator == null)
             {

@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 
         private readonly IMainWindowViewModel mainWindowViewModel;
 
-        private readonly INavigationService navigationService;
+        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
 
         private int pendingMissionsCount;
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 
         public DrawerWaitViewModel(
             IBayManager bayManager,
-            INavigationService navigationService,
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             IMainWindowViewModel mainWindowViewModel)
         {
             if (bayManager == null)

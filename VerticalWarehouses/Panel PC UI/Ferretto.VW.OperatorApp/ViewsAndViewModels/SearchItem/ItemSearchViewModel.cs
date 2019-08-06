@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IIdentityService identityService;
 
-        private readonly INavigationService navigationService;
+        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             IStatusMessageService statusMessageService,
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
-            INavigationService navigationService,
+            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             IIdentityService identityService)
         {
             if (statusMessageService == null)

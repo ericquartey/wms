@@ -13,7 +13,6 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomControlArticleDataGridStyle.xaml" />
-
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/NavigationButtonControlTemplate.xaml" />
@@ -24,5 +23,6 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomInputText_TextBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/DataGridScrollButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/DataGridRepeatButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Converters/Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
