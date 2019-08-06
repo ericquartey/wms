@@ -55,8 +55,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 this.NotificationService.PushCreate(model);
-                this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
-                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                this.NotificationService.PushUpdate(new Area { Id = model.AreaId }, model);
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
                 return new SuccessOperationResult<ItemArea>(model);
             }
@@ -94,8 +94,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
 
                 this.NotificationService.PushDelete(existingModel);
-                this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
-                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                this.NotificationService.PushUpdate(new Area { Id = model.AreaId }, existingModel);
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, existingModel);
 
                 return new SuccessOperationResult<ItemArea>(model);
             }
@@ -157,7 +157,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemAreaDeletePolicy).ComputeDeletePolicy());
         }

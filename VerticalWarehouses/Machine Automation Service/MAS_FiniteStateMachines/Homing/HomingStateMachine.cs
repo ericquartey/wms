@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -97,6 +98,24 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
                         (this.homingOperation.AxisToCalibrate == Axis.Vertical) ?
                             Axis.Horizontal :
                             Axis.Vertical;
+                }
+            }
+
+            if (message.Type == FieldMessageType.InverterStatusUpdate &&
+                message.Status == MessageStatus.OperationExecuting)
+            {
+                if (message.Data is InverterStatusUpdateFieldMessageData data)
+                {
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessage = new NotificationMessage(
+                        notificationMessageData,
+                        $"Current Encoder position: {data.CurrentPosition}",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.CurrentPosition,
+                        MessageStatus.OperationExecuting);
+
+                    this.PublishNotificationMessage(notificationMessage);
                 }
             }
 

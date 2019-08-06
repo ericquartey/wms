@@ -12,6 +12,7 @@ using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
@@ -238,25 +239,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (angInverter.UpdateANGInverterCurrentPosition(this.currentAxis, currentMessage.IntPayload) || this.forceStatusPublish)
                         {
-                            if (this.shaftPositionUpdateNumberOfTimes == 10 || true || this.forceStatusPublish)
-                            {
-                                var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, currentMessage.IntPayload);
-                                var msgNotification = new FieldNotificationMessage(
-                                  notificationData,
-                                  "Inverter encoder value update",
-                                  FieldMessageActor.FiniteStateMachines,
-                                  FieldMessageActor.InverterDriver,
-                                  FieldMessageType.InverterStatusUpdate,
-                                  MessageStatus.OperationExecuting);
+                            //if (this.shaftPositionUpdateNumberOfTimes == 10 || true || this.forceStatusPublish)
+                            //{
+                            var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, currentMessage.IntPayload);
+                            var msgNotification = new FieldNotificationMessage(
+                              notificationData,
+                              "Inverter encoder value update",
+                              FieldMessageActor.FiniteStateMachines,
+                              FieldMessageActor.InverterDriver,
+                              FieldMessageType.InverterStatusUpdate,
+                              MessageStatus.OperationExecuting);
 
-                                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
-                                this.forceStatusPublish = false;
-                            }
-                            else
-                            {
-                                this.shaftPositionUpdateNumberOfTimes++;
-                            }
+                            this.forceStatusPublish = false;
+                            //}
+                            //else
+                            //{
+                            //    this.shaftPositionUpdateNumberOfTimes++;
+                            //}
                         }
                     }
                 }
@@ -397,6 +398,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                    inverterStatus.CommonStatusWord.IsSwitchedOn &
                    inverterStatus.CommonStatusWord.IsVoltageEnabled &
                    inverterStatus.CommonStatusWord.IsQuickStopTrue;
+        }
+
+        private bool IsInverterFault(IInverterStatusBase inverterStatus)
+        {
+            return inverterStatus.CommonStatusWord.IsFault;
         }
 
         private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage)
@@ -919,6 +925,28 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Inverter status not configured for requested inverter {stopData.InverterToStop}", 0), FieldMessageType.InverterStop);
                 }
+            }
+            else
+            {
+                this.logger.LogTrace("3:Invalid message data for InverterStop message Type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
+            }
+        }
+
+        private void ProcessFaultResetMessage(FieldCommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IInverterFaultFieldMessageData data)
+            {
+                if (!this.inverterStatuses.TryGetValue(data.InverterToReset, out var inverterStatus))
+                {
+                    inverterStatus = null;
+                }
+                this.CurrentStateMachine = new ResetFaultStateMachine(inverterStatus, data.InverterToReset, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                this.CurrentStateMachine?.Start();
             }
             else
             {

@@ -10,6 +10,8 @@
     <ctrls:BoolToVisibilityConverter x:Key="BTVHC"
                                      Hide="True" />
 
+    <ctrls:MultiBoolAndToVisibilityConverter x:Key="MBATVC" />
+
     <ctrls:StringToVisibilityConverter x:Key="STVC" />
     <ctrls:StringToVisibilityConverter x:Key="STVIC"
                                        Invert="True" />
@@ -32,6 +34,5 @@
 
     <ctrls:LogicalAndConverter x:Key="LAC" />
     <ctrls:LogicalOrConverter x:Key="LOC" />
-
 
 </ResourceDictionary>

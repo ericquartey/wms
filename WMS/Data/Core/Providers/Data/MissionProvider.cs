@@ -270,7 +270,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (successConversionAsInt && Equals(m.Priority, searchAsInt));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             if (model is IMissionPolicy mission)
             {

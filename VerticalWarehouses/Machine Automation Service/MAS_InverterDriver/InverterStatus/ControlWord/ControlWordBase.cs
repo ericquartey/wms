@@ -76,6 +76,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool FaultReset
         {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0080) > 0;
+                }
+            }
             set
             {
                 lock (this.controlWordLockObject)

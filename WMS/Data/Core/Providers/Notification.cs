@@ -7,11 +7,13 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Constructors
 
-        public Notification(string modelId, Type modelType, HubEntityOperation operationType)
+        public Notification(string modelId, Type modelType, string sourceModelId, Type sourceModelType, HubEntityOperation operationType)
         {
             this.ModelId = modelId;
             this.ModelType = modelType;
             this.OperationType = operationType;
+            this.SourceModelId = sourceModelId;
+            this.SourceModelType = sourceModelType;
         }
 
         #endregion
@@ -23,6 +25,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         public Type ModelType { get; }
 
         public HubEntityOperation OperationType { get; }
+
+        public string SourceModelId { get; }
+
+        public Type SourceModelType { get; }
 
         #endregion
 

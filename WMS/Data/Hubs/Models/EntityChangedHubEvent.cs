@@ -10,6 +10,10 @@ namespace Ferretto.WMS.Data.Hubs.Models
 
         public HubEntityOperation Operation { get; set; }
 
+        public string SourceEntityType { get; set; }
+
+        public string SourceId { get; set; }
+
         #endregion
     }
 }
