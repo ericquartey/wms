@@ -373,6 +373,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     case FieldMessageType.InverterStop:
                         this.ProcessStopMessage(receivedMessage);
                         break;
+
+                    case FieldMessageType.InverterFaultReset:
+                        this.ProcessFaultResetMessage(receivedMessage);
+                        break;
                 }
 
                 this.logger.LogTrace($"Socket Timings: Read Wait Samples {this.ReadWaitTimeData.TotalSamples}, Max {this.ReadWaitTimeData.MaxValue}ms, Min {this.ReadWaitTimeData.MinValue}ms, Average {this.ReadWaitTimeData.AverageValue}ms, Deviation {this.ReadWaitTimeData.StandardDeviation}ms / Round Trip Samples {this.WriteRoundtripTimeData.TotalSamples}, Max {this.WriteRoundtripTimeData.MaxValue}ms, Min {this.WriteRoundtripTimeData.MinValue}ms, Average {this.WriteRoundtripTimeData.AverageValue}ms, Deviation {this.WriteRoundtripTimeData.StandardDeviation}ms");

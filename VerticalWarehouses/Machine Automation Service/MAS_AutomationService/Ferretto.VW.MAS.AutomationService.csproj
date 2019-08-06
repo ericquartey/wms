@@ -22,11 +22,15 @@
   <ItemGroup>
     <Content Remove="nlog.config" />
     <Content Remove="VertimagConfiguration.json" />
+    <Content Remove="VertimagConfiguration.Simulation.json" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="VertimagConfiguration.Simulation.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="VertimagConfiguration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -61,6 +65,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.Simulation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
