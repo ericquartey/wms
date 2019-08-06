@@ -502,11 +502,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.roundTripStopwatch.Reset();
                     this.roundTripStopwatch.Start();
                     await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
-                    if ((inverterMessagePacket[0] & 0x80) == 0 && inverterMessagePacket[1] > 4
-                        && System.Diagnostics.Debugger.IsAttached)
-                    {
-                        System.Diagnostics.Debugger.Break();
-                    }
                     this.inverterCommandQueue.Dequeue(out var consumedMessage);
                 }
                 catch (InverterDriverException ex)
