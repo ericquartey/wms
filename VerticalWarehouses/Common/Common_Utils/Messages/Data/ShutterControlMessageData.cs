@@ -40,5 +40,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"BayNumber:{this.BayNumber} CurrentShutterPosition:{this.CurrentShutterPosition} Delay:{this.Delay} ExecutedCycles:{this.ExecutedCycles} NumberCycles:{this.NumberCycles} ShutterType:{this.ShutterType.ToString()} SpeedRate:{this.SpeedRate}";
+        }
+
+        #endregion
     }
 }

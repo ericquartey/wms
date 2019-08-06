@@ -46,6 +46,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                 "PositioningNotify", this.OnPositioningNotify);
 
+            connection.On<NotificationMessageUI<CurrentPositionMessageData>>(
+                "CurrentPositionNotify", this.OnCurrentPositionNotify);
+
             connection.On<NotificationMessageUI<HomingMessageData>>(
                 "HomingNotify", this.OnHomingNotify);
 
@@ -67,6 +70,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         /// </summary>
         /// <param name="message"></param>
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for Current Positioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnCurrentPositionNotify(NotificationMessageUI<CurrentPositionMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
