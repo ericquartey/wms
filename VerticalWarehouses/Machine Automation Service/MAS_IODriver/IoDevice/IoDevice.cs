@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,11 +15,9 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
-using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using System.Collections.Generic;
-using System.Linq;
+using static Ferretto.VW.MAS.Utils.Utilities.BufferUtility;
 
 namespace Ferretto.VW.MAS.IODriver.IoDevice
 {
