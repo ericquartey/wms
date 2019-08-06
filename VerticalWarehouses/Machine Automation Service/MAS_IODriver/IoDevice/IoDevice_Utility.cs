@@ -200,6 +200,17 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
             return bits;
         }
 
+        private bool IsHeaderValid(byte header)
+        {
+            return (header == 3 || header == 15 || header == 26);
+        }
+
+        private bool IsMessageLengthValid(byte firmwareVersion, byte length)
+        {
+            return (firmwareVersion == 0x10 && !(length == 15 || length == 3))    // length is not valid for old release
+                || (firmwareVersion == 0x11 && !(length == 26 || length == 3));
+        }
+
         #endregion
     }
 }

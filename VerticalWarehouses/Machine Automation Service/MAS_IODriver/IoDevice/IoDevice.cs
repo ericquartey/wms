@@ -143,6 +143,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.CreationFailure));
                         throw new IOException($"Exception: {ex.Message} ReceiveIoDataTaskFunction Failed 1", ex);
                     }
+
                     if (!this.shdTransport.IsConnected)
                     {
                         this.logger.LogError("3:Socket Transport failed to connect");
@@ -153,6 +154,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     }
                     this.writeEnableEvent.Set();
                 }
+
                 // socket connected
                 var nBytesReceived = 0;
                 byte[] telegram;
@@ -189,7 +191,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 this.receiveBuffer = this.receiveBuffer.AppendArrays(telegram, telegram.Length);
 
                 //INFO: Byte 0 of read data contains packet length
-                if (!(this.receiveBuffer[0] == 3 || this.receiveBuffer[0] == 15 || this.receiveBuffer[0] == 26))
+                if (!this.IsHeaderValid(this.receiveBuffer[0]))
                 {
                     // message error
                     this.logger.LogError($"5:IO Driver message length error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.receiveBuffer)}");
@@ -198,26 +200,28 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                     this.shdTransport.Disconnect();
                     continue;
                 }
+
                 if (this.receiveBuffer.Length < this.receiveBuffer[0])
                 {
                     // this is not an error: we try to recover from messages received in more pieces
                     this.logger.LogWarning($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.receiveBuffer)}");
                     continue;
                 }
+
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 3, 0, 0);
                 if (this.receiveBuffer.Length > 0)
                 {
                     this.logger.LogWarning($" extracted: count {extractedMessages.Count}: left bytes {this.receiveBuffer.Length}");
                 }
+
                 if (extractedMessages != null)
                 {
                     this.writeEnableEvent.Set();
                 }
+
                 foreach (var extractedMessage in extractedMessages)
                 {
-                    if ((extractedMessage[1] == 0x10 && !(extractedMessage[0] == 15 || extractedMessage[0] == 3))    // length is not valid for old release
-                        || (extractedMessage[1] == 0x11 && !(extractedMessage[0] == 26 || extractedMessage[0] == 3))    // length is not valid  for new release
-                        )
+                    if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))    // length is not valid  for new release
                     {
                         // message error
                         this.logger.LogError($"5:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.receiveBuffer)}");
@@ -226,6 +230,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.shdTransport.Disconnect();
                         break;
                     }
+
                     try
                     {
                         this.ParsingDataBytes(
@@ -258,11 +263,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         case SHDFormatDataOperation.Data:
 
                             //INFO The mushroom signal must be inverted
-                            inputData[1] = !inputData[1];
+                            inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
                             //INFO The sensor presence in bay must be inverted
-                            inputData[5] = !inputData[5];
+                            inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];
                             //INFO The sensor presence in lower bay must be inverted (NOT for BIG: to do)
-                            inputData[6] = !inputData[6];
+                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
                             if (this.ioSHDStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {
@@ -292,7 +297,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             this.logger.LogTrace($"4:{messageData}");
 
                             this.currentStateMachine?.ProcessResponseMessage(messageData);
-
                             break;
 
                         case SHDFormatDataOperation.Ack:
@@ -307,7 +311,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                             this.logger.LogTrace($"4: Configuration message={messageConfig}");
 
                             this.currentStateMachine?.ProcessResponseMessage(messageConfig);
-
                             break;
 
                         default:
