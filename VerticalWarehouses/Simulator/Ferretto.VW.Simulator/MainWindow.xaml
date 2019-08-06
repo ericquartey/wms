@@ -82,7 +82,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ctrl:CustomSensorSmallControl Margin="5,5,13,5"
+                                <ctrl:CustomSensorSmallControl Margin="5,5,9,5"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                LabelText="{Binding Description}"
@@ -170,7 +170,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ctrl:CustomSensorSquareControl Margin="4,5,3,5"
+                                <ctrl:CustomSensorSquareControl Margin="2,5,3,5"
                                                                 HorizontalAlignment="Left"
                                                                 VerticalAlignment="Center"
                                                                 LabelText="{Binding Description}"

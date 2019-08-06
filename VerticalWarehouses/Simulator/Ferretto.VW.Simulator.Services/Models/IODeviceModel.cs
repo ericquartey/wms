@@ -83,22 +83,22 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public IODeviceModel()
         {
-            this.inputs.Add(new BitModel("Id:00", false));
-            this.inputs.Add(new BitModel("Id:01", false));
-            this.inputs.Add(new BitModel("Id:02", false));
-            this.inputs.Add(new BitModel("Id:03", false));
-            this.inputs.Add(new BitModel("Id:04", false));
-            this.inputs.Add(new BitModel("Id:05", false));
-            this.inputs.Add(new BitModel("Id:06", false));
-            this.inputs.Add(new BitModel("Id:07", false));
-            this.inputs.Add(new BitModel("Id:08", false));
-            this.inputs.Add(new BitModel("Id:09", false));
-            this.inputs.Add(new BitModel("Id:10", false));
-            this.inputs.Add(new BitModel("Id:11", false));
-            this.inputs.Add(new BitModel("Id:12", false));
-            this.inputs.Add(new BitModel("Id:13", false));
-            this.inputs.Add(new BitModel("Id:14", false));
-            this.inputs.Add(new BitModel("Id:15", false));
+            this.inputs.Add(new BitModel("Bit 00", false));
+            this.inputs.Add(new BitModel("Bit 01", false));
+            this.inputs.Add(new BitModel("Bit 02", false));
+            this.inputs.Add(new BitModel("Bit 03", false));
+            this.inputs.Add(new BitModel("Bit 04", false));
+            this.inputs.Add(new BitModel("Bit 05", false));
+            this.inputs.Add(new BitModel("Bit 06", false));
+            this.inputs.Add(new BitModel("Bit 07", false));
+            this.inputs.Add(new BitModel("Bit 08", false));
+            this.inputs.Add(new BitModel("Bit 09", false));
+            this.inputs.Add(new BitModel("Bit 10", false));
+            this.inputs.Add(new BitModel("Bit 11", false));
+            this.inputs.Add(new BitModel("Bit 12", false));
+            this.inputs.Add(new BitModel("Bit 13", false));
+            this.inputs.Add(new BitModel("Bit 14", false));
+            this.inputs.Add(new BitModel("Bit 15", false));
 
             //this.inputs.PropertyChanged += (s, e) =>
             //{

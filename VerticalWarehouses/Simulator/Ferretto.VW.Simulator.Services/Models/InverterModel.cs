@@ -293,14 +293,14 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.OperationMode = InverterOperationMode.Velocity;
 
-            this.digitalIO.Add(new BitModel("Id:00", false));
-            this.digitalIO.Add(new BitModel("Id:01", false));
-            this.digitalIO.Add(new BitModel("Id:02", false));
-            this.digitalIO.Add(new BitModel("Id:03", false));
-            this.digitalIO.Add(new BitModel("Id:04", false));
-            this.digitalIO.Add(new BitModel("Id:05", false));
-            this.digitalIO.Add(new BitModel("Id:06", false));
-            this.digitalIO.Add(new BitModel("Id:07", false));
+            this.digitalIO.Add(new BitModel("Bit 00", false));
+            this.digitalIO.Add(new BitModel("Bit 01", false));
+            this.digitalIO.Add(new BitModel("Bit 02", false));
+            this.digitalIO.Add(new BitModel("Bit 03", false));
+            this.digitalIO.Add(new BitModel("Bit 04", false));
+            this.digitalIO.Add(new BitModel("Bit 05", false));
+            this.digitalIO.Add(new BitModel("Bit 06", false));
+            this.digitalIO.Add(new BitModel("Bit 07", false));
 
             //this.DigitalIO = new bool[8];
             //this.DigitalIO[0] = true;
@@ -349,22 +349,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             get { return this.inverterType; }
             set { this.inverterType = value; }
         }
-
-        public InverterOperationMode OperationMode { get; set; }
-
-        public int StatusWord
-        {
-            get => this.statusWord;
-            set => this.SetProperty(ref this.statusWord, value, () =>
-            {
-                this.RaisePropertyChanged(nameof(this.StatusWord));
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
-            });
-        }
-
-        public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
-
-        #region Properties
 
         public bool IsFault
         {
@@ -454,7 +438,19 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        #endregion
+        public InverterOperationMode OperationMode { get; set; }
+
+        public int StatusWord
+        {
+            get => this.statusWord;
+            set => this.SetProperty(ref this.statusWord, value, () =>
+            {
+                this.RaisePropertyChanged(nameof(this.StatusWord));
+                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+            });
+        }
+
+        public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
 
         private int homingTickCount { get; set; }
 
