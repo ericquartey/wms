@@ -319,24 +319,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.StatusWordParam:
-                            switch (inverter.OperationMode)
-                            {
-                                case InverterOperationMode.Homing:
-                                    inverter.BuildHomingStatusWord();
-                                    break;
-
-                                case InverterOperationMode.Velocity:
-                                case InverterOperationMode.ProfileVelocity:
-                                    inverter.BuildVelocityStatusWord();
-                                    break;
-
-                                default:
-                                    if (System.Diagnostics.Debugger.IsAttached)
-                                    {
-                                        System.Diagnostics.Debugger.Break();
-                                    }
-                                    break;
-                            }
+                            this.UpdateInverter(inverter);
                             var statusWordMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
                             result = client.Client.Send(statusWordMessage);
                             break;
@@ -457,13 +440,23 @@ namespace Ferretto.VW.Simulator.Services
 
         private void UpdateInverter(InverterModel inverter)
         {
-            if ((inverter.ControlWord & 0x0080) > 0)            // Reset fault
+            switch (inverter.OperationMode)
             {
-                inverter.IsFault = false;
-            }
-            else if ((inverter.ControlWord & 0x0001) > 0)       // SwitchOn
-            {
-                inverter.IsSwitchedOn = true;
+                case InverterOperationMode.Homing:
+                    inverter.BuildHomingStatusWord();
+                    break;
+
+                case InverterOperationMode.Velocity:
+                case InverterOperationMode.ProfileVelocity:
+                    inverter.BuildVelocityStatusWord();
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
         }
 
