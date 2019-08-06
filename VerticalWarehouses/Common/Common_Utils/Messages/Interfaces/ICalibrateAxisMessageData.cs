@@ -8,6 +8,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         Axis AxisToCalibrate { get; }
 
+        int CurrentStepCalibrate { get; }
+
+        int MaxStepCalibrate { get; }
+
         #endregion
     }
 }

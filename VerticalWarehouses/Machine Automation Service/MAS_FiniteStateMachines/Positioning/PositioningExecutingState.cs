@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                 $"Current position {beltBurnishingPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.CurrentEncoderPosition,
+                                MessageType.CurrentPosition,
                                 MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

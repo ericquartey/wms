@@ -31,5 +31,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"Axis:{this.Axis.ToString()} Displacement:{this.Displacement} MovementType:{this.MovementType.ToString()} SpeedPercentage:{this.SpeedPercentage}";
+        }
+
+        #endregion
     }
 }

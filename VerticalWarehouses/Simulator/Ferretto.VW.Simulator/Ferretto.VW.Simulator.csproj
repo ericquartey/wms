@@ -77,6 +77,7 @@
     <None Remove="Images\Divieto_Dark.png" />
     <None Remove="Images\Divieto_Light.png" />
       <None Remove="Resources\LogoFerrettoGroup.png" />
+      <None Remove="Resources\LogoFerrettoGroup2.png" />
       <Content Include="Images\Divieto_Dark.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
@@ -96,6 +97,7 @@
   <ItemGroup>
     <Resource Include="favicon.ico" />
     <Resource Include="Resources\LogoFerrettoGroup.png" />
+    <Resource Include="Resources\LogoFerrettoGroup2.png" />
   </ItemGroup>
 
 

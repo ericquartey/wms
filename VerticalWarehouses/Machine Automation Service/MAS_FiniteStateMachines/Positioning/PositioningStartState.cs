@@ -109,9 +109,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
             }
 
+            var description = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? $"{ this.machineSensorsStatus.AxisYPosition}" : $"{this.machineSensorsStatus.AxisXPosition}";
             var notificationCurrPositionMessage = new NotificationMessage(
                 this.positioningMessageData,
-                $"Current Encoder position: {this.machineSensorsStatus.AxisYPosition}",
+                $"Current {this.positioningMessageData.AxisMovement} axis position: {description}",
                 MessageActor.AutomationService,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
