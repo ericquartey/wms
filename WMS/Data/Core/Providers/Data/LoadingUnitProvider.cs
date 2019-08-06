@@ -367,7 +367,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (l.LoadingUnitStatusDescription != null && l.LoadingUnitStatusDescription.Contains(search))
                 || (l.AbcClassDescription != null && l.AbcClassDescription.Contains(search))
                 || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search))
-                || (l.CellSide != null && l.CellSide.ToString().Contains(search))
+                || l.CellSide.GetDisplayName(typeof(Enums.Side)).Contains(search)
                 || (successConversionAsInt
                     && (Equals(l.CellFloor, searchAsInt)
                         || Equals(l.CellColumn, searchAsInt)

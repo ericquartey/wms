@@ -248,7 +248,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             return (m) =>
                 (m.BayDescription != null && m.BayDescription.Contains(search))
-                || m.Status.ToString().Contains(search)
+                || m.Status.GetDisplayName(typeof(Enums.MissionStatus)).Contains(search)
                 || (successConversionAsInt && Equals(m.Priority, searchAsInt));
         }
 
@@ -268,7 +268,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return (m) =>
                 (m.BayDescription != null && m.BayDescription.Contains(search))
                 || (m.LoadingUnitCode != null && m.LoadingUnitCode.Contains(search))
-                || m.Status.ToString().Contains(search)
+                || m.Status.GetDisplayName(typeof(Enums.MissionStatus)).Contains(search)
                 || (successConversionAsInt && Equals(m.Priority, searchAsInt));
         }
 
