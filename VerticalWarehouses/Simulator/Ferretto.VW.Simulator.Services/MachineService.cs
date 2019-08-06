@@ -291,6 +291,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         case InverterParameterId.ControlWordParam:
                             inverter.ControlWord = ushortPayload;
+                            this.UpdateInverter(inverter);
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -318,7 +319,6 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.StatusWordParam:
-                            //inverter.StatusWord = ushortPayload;
                             switch (inverter.OperationMode)
                             {
                                 case InverterOperationMode.Homing:
@@ -389,7 +389,6 @@ namespace Ferretto.VW.Simulator.Services
                     bool[] outputs = (from x in Enumerable.Range(0, 8)
                                      let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
                                      select binary[x] == '1' ? true : false).Reverse().ToArray();
-
                     device.Outputs = outputs.Select(x => new BitModel(x)).ToList();
 
                     byte[] responseMessage = null;
@@ -425,42 +424,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
                     }
 
-                    // Logic
-                    if (outputs[(int)IoPorts.ResetSecurity])
-                    {
-                        // Set run status
-                        device.Inputs[(int)IoPorts.NormalState].Value = true;
-
-                        foreach (var remoteIO in this.remoteIOs)
-                        {
-                            // Remove emergency button
-                            remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
-
-                            // Set empty position on bay
-                            remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
-                            remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                        }
-
-                        // Set inverter run
-                        foreach (var inverter in this.Inverters)
-                        {
-                            switch (inverter.InverterType)
-                            {
-                                case InverterType.Ang:
-                                    inverter.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true;
-                                    break;
-                                case InverterType.Agl:
-                                    inverter.DigitalIO[(int)InverterSensors.AGL_HardwareSensorSTO].Value = true;
-                                    break;
-                                case InverterType.Acu:
-                                    inverter.DigitalIO[(int)InverterSensors.ACU_HardwareSensorSTO].Value = true;
-                                    break;
-                                default:
-                                    break;
-                            }
-                            
-                        }
-                    }
+                    this.UpdateRemoteIO(device);
 
                     var result = client.Client.Send(responseMessage);
                 }
@@ -468,6 +432,38 @@ namespace Ferretto.VW.Simulator.Services
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        private void UpdateRemoteIO(IODeviceModel device)
+        {
+            // Logic
+            if (device.Outputs[(int)IoPorts.ResetSecurity].Value)
+            {
+                // Set run status
+                device.Inputs[(int)IoPorts.NormalState].Value = true;
+
+                foreach (var remoteIO in this.remoteIOs)
+                {
+                    // Remove emergency button
+                    remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+                    // Set empty position on bay
+                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                }
+            }
+        }
+
+        private void UpdateInverter(InverterModel inverter)
+        {
+            if ((inverter.ControlWord & 0x0080) > 0)            // Reset fault
+            {
+                inverter.IsFault = false;
+            }
+            else if ((inverter.ControlWord & 0x0001) > 0)       // SwitchOn
+            {
+                inverter.IsSwitchedOn = true;
             }
         }
 

@@ -364,6 +364,98 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
 
+        #region Properties
+
+        public bool IsFault
+        {
+            get
+            {
+                return (this.statusWord & 0x0008) > 0;
+            }
+            set
+            {
+                this.statusWord |= 0x0008;
+            }
+        }
+
+        public bool IsOperationEnabled
+        {
+            get
+            {
+                return (this.statusWord & 0x0004) > 0;
+            }
+        }
+
+        public bool IsQuickStopTrue
+        {
+            get
+            {
+                return (this.statusWord & 0x0020) > 0;
+            }
+        }
+
+        public bool IsReadyToSwitchOn
+        {
+            get
+            {
+                return (this.statusWord & 0x0001) > 0;
+            }
+        }
+
+        public bool IsRemote
+        {
+            get
+            {
+                return (this.statusWord & 0x0200) > 0;
+            }
+        }
+
+        public bool IsSwitchedOn
+        {
+            get
+            {
+                return (this.statusWord & 0x0002) > 0;
+            }
+            set
+            {
+                this.statusWord |= 0x0002;
+            }
+        }
+
+        public bool IsSwitchOnDisabled
+        {
+            get
+            {
+                return (this.statusWord & 0x0040) > 0;
+            }
+        }
+
+        public bool IsVoltageEnabled
+        {
+            get
+            {
+                return (this.statusWord & 0x0010) > 0;
+            }
+        }
+
+        public bool IsWarning
+        {
+            get
+            {
+                return (this.statusWord & 0x0080) > 0;
+            }
+        }
+
+        public bool IsWarning2
+        {
+            get
+            {
+                return (this.statusWord & 0x8000) > 0;
+            }
+        }
+
+        #endregion
+
         private int homingTickCount { get; set; }
 
         private bool homingTimerActive { get; set; }
