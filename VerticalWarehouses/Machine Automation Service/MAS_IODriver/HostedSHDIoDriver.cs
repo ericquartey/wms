@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case FieldMessageType.ResetSecurity:
                         currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        this.ioDevices[currentDevice].ExecuteResetSecurity();
                         break;
 
                     case FieldMessageType.PowerEnable:
@@ -279,17 +279,18 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
-                        // the machine starts with power off
-                        //foreach (var ioDevice in this.ioDevices)
-                        //{
-                        //    ioDevice.Value.ExecuteIoPowerUp();
-                        //}
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
                         break;
 
                     case FieldMessageType.IoPowerUp:
                     case FieldMessageType.SwitchAxis:
                     case FieldMessageType.PowerEnable:
+                    case FieldMessageType.IoReset:
+                    case FieldMessageType.ResetSecurity:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
