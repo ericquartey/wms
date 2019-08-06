@@ -82,6 +82,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ResetSecurity);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
         }
