@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing;
 using Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer;
 using Ferretto.VW.MAS.FiniteStateMachines.Positioning;
+using Ferretto.VW.MAS.FiniteStateMachines.PowerEnable;
 using Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning;
@@ -209,7 +210,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator,
                     data,
                     this.logger,
-                    this.serviceScopeFactory);
+                    this.serviceScopeFactory,
+                    this.machineSensorsStatus);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
@@ -251,6 +253,61 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
                     this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                }
+            }
+        }
+
+        private void ProcessPowerEnableMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IPowerEnableMessageData data)
+            {
+                if (
+                    (this.machineSensorsStatus.IsMachineInNormalState && !data.Enable) ||
+                    (!this.machineSensorsStatus.IsMachineInNormalState && data.Enable)
+                    )
+                {
+                    if (this.currentStateMachine != null)
+                    {
+                        this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                        this.currentStateMachine = null;
+                    }
+                    this.currentStateMachine = new PowerEnableStateMachine(
+                        this.eventAggregator,
+                        (byte)this.ioIndexDeviceList[0],
+                        data,
+                        this.logger,
+                        this.serviceScopeFactory);
+
+                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
+
+                    try
+                    {
+                        this.currentStateMachine.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
+
+                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                    }
+                }
+                else
+                {
+                    this.logger.LogTrace($"5:Machine is already in the requested state: IsNormal {this.machineSensorsStatus.IsMachineInNormalState}: Enable {data.Enable}");
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        "Power Enable Completed",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.PowerEnable,
+                        MessageStatus.OperationEnd);
+
+                    this.logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
                 }
             }
         }

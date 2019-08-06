@@ -146,7 +146,7 @@
     <comment>Filter - Items with FIFO policy</comment>
   </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
-    <value>Item saved sucessfully.</value>
+    <value>Item saved successfully.</value>
     <comment>Notification - Successful operation</comment>
   </data>
   <data name="CompartmentAll" xml:space="preserve">
@@ -154,7 +154,7 @@
     <comment>Filter - All Compartments</comment>
   </data>
   <data name="CompartmentSavedSuccessfully" xml:space="preserve">
-    <value>Compartment saved sucessfully.</value>
+    <value>Compartment saved successfully.</value>
     <comment>Notification - Successful operation</comment>
   </data>
   <data name="CompartmentInformation" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Label - Grouping</comment>
   </data>
   <data name="LoadingUnitSavedSuccessfully" xml:space="preserve">
-    <value>Loading Unit saved sucessfully.</value>
+    <value>Loading Unit saved successfully.</value>
     <comment>Notification - Successful operation</comment>
   </data>
   <data name="LoadingUnitAll" xml:space="preserve">
@@ -350,7 +350,7 @@
     <value>Edit Loading Unit</value>
   </data>
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
-    <value>Item deleted sucessfully.</value>
+    <value>Item deleted successfully.</value>
     <comment>Notification - Successful operation</comment>
   </data>
   <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
@@ -406,8 +406,8 @@
     <value>Associate</value>
     <comment>Action</comment>
   </data>
-  <data name="UnassociateArea" xml:space="preserve">
-    <value>Unassociate</value>
+  <data name="DisassociateArea" xml:space="preserve">
+    <value>Disassociate</value>
     <comment>Action</comment>
   </data>
   <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
@@ -448,8 +448,8 @@
   <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
     <value>Remove</value>
   </data>
-  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
-    <value>Compartment Type deleted succesfully.</value>
+  <data name="CompartmentTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Compartment Type deleted successfully.</value>
   </data>
   <data name="CompartmentTypeAll" xml:space="preserve">
     <value>All</value>
@@ -465,7 +465,7 @@
     <value>Item association successfully deleted.</value>
   </data>
   <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
-    <value>Item Compartment Types saved sucessfully.</value>
+    <value>Item Compartment Types saved successfully.</value>
     <comment>Notification - Successful operation</comment>
   </data>
   <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
@@ -476,7 +476,7 @@
     <value>No unassociated Compartment Types available</value>
   </data>
   <data name="MinStep" xml:space="preserve">
-    <value>(Min. Step: {0})</value>
+    <value>(Min. Step: {0} mm)</value>
   </data>
   <data name="ChooseTheLoadingUnitCreateNewCompartmentType" xml:space="preserve">
     <value>Choose the loading unit where you want to create a new compartment type:</value>
@@ -490,7 +490,7 @@
     <value>Layout Overview</value>
     <comment>Wizard  - ChooseLoadingUnitStepView  -</comment>
   </data>
-  <data name="CreateNewCompartementDesiredCompartmentType" xml:space="preserve">
+  <data name="CreateNewCompartmentDesiredCompartmentType" xml:space="preserve">
     <value>Create a new compartment of the desired compartment type:</value>
     <comment>Wizard - CompartmentEditStepView -</comment>
   </data>

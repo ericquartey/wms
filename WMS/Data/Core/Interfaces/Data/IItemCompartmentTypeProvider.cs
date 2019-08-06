@@ -7,14 +7,13 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IItemCompartmentTypeProvider :
-        ICreateAsyncProvider<ItemCompartmentType, int>,
-        IUpdateAsyncProvider<ItemCompartmentType, int>
+        ICreateAsyncProvider<ItemCompartmentType, (int, int)>,
+        IUpdateAsyncProvider<ItemCompartmentType, (int, int)>,
+        IDeleteAsyncProvider<ItemCompartmentType, (int ItemId, int CompartmentTypeId)>
     {
         #region Methods
 
         Task<IOperationResult<IEnumerable<ItemCompartmentType>>> CreateItemCompartmentTypesRangeByItemIdAsync(IEnumerable<ItemCompartmentType> itemCompartmentTypes);
-
-        Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId);
 
         Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id);
 

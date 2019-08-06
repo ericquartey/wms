@@ -354,7 +354,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(i.TotalStock, searchAsDouble)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             if (model is IItemUpdatePolicy update)
             {
