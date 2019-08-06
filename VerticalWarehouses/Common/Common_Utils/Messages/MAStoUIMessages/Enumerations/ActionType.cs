@@ -32,6 +32,8 @@
 
         InverterStop = 14,
 
+        PowerEnable = 15,
+
         Stop = 99,
     }
 }

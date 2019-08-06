@@ -280,11 +280,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.logger,
                         this.serviceScopeFactory);
 
-                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}");
+                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
 
                     try
                     {
-                        this.logger.LogDebug("Starting Power Enable FSM");
                         this.currentStateMachine.Start();
                     }
                     catch (Exception ex)
