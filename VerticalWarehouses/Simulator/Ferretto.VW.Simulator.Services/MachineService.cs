@@ -56,16 +56,6 @@ namespace Ferretto.VW.Simulator.Services
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
-
-            foreach (var remoteIO in this.remoteIOs)
-            {
-                // Remove emergency button
-                remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
-
-                // Set empty position on bay
-                remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
-                remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-            }
         }
 
         #endregion
@@ -394,10 +384,10 @@ namespace Ferretto.VW.Simulator.Services
                     var length = extractedMessage[0];
                     var firmwareProtocol = extractedMessage[1];
                     var codeOperation = extractedMessage[2];
-                    bool[] outputs = (from x in Enumerable.Range(0, 8)
-                                     let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
-                                     select binary[x] == '1' ? true : false).Reverse().ToArray();
-                    device.Outputs = outputs.Select(x => new BitModel(x)).ToList();
+                    var outputs = (from x in Enumerable.Range(0, 8)
+                                   let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
+                                   select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString() }).Reverse().ToArray();
+                    device.Outputs = outputs.Select(x => new BitModel(x.Description, x.Value)).ToList();
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
@@ -443,6 +433,18 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
+        private void UpdateInverter(InverterModel inverter)
+        {
+            if ((inverter.ControlWord & 0x0080) > 0)            // Reset fault
+            {
+                inverter.IsFault = false;
+            }
+            else if ((inverter.ControlWord & 0x0001) > 0)       // SwitchOn
+            {
+                inverter.IsSwitchedOn = true;
+            }
+        }
+
         private void UpdateRemoteIO(IODeviceModel device)
         {
             // Logic
@@ -455,18 +457,6 @@ namespace Ferretto.VW.Simulator.Services
             {
                 // Set run status
                 device.Inputs[(int)IoPorts.NormalState].Value = true;
-            }
-        }
-
-        private void UpdateInverter(InverterModel inverter)
-        {
-            if ((inverter.ControlWord & 0x0080) > 0)            // Reset fault
-            {
-                inverter.IsFault = false;
-            }
-            else if ((inverter.ControlWord & 0x0001) > 0)       // SwitchOn
-            {
-                inverter.IsSwitchedOn = true;
             }
         }
 

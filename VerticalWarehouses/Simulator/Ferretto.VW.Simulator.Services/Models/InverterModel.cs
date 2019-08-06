@@ -301,16 +301,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("Bit 05", false));
             this.digitalIO.Add(new BitModel("Bit 06", false));
             this.digitalIO.Add(new BitModel("Bit 07", false));
-
-            //this.DigitalIO = new bool[8];
-            //this.DigitalIO[0] = true;
-
-            //this.digitalIO.PropertyChanged += (s, e) =>
-            //{
-            //    this.RaisePropertyChanged(nameof(this.GetDigitalIO));
-
-            //    this.RaisePropertyChanged(nameof(this.StatusWordBinary));
-            //};
         }
 
         #endregion
