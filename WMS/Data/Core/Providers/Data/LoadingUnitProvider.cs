@@ -8,11 +8,13 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -396,16 +398,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
                     CellId = l.CellId,
-                    CellSide = (Side)l.Cell.Side,
+                    CellSide = l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                     CompartmentsCount = l.Compartments.Count(),
                     HasCompartments = l.LoadingUnitType.HasCompartments,
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Operations.Any(o =>
-                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            o.Status != Enums.MissionOperationStatus.Completed
                             &&
-                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
+                            o.Status != Enums.MissionOperationStatus.Incomplete)),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Depth)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
@@ -440,7 +442,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Depth = l.LoadingUnitType.LoadingUnitSizeClass.Depth,
                     Note = l.Note,
                     IsCellPairingFixed = l.IsCellPairingFixed,
-                    ReferenceType = (ReferenceType)l.ReferenceType,
+                    ReferenceType = l.ReferenceType,
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
@@ -463,9 +465,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(m =>
                         m.Operations.Any(o =>
-                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            o.Status != Enums.MissionOperationStatus.Completed
                             &&
-                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
+                            o.Status != Enums.MissionOperationStatus.Incomplete)),
                 });
         }
 

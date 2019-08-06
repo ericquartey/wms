@@ -9,6 +9,7 @@ using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -101,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentSets = this.GetCompartmentSetsForRequest(item, itemOptions);
 
             compartmentSets = this.compartmentOperationProvider
-               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Put);
+               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, Enums.OperationType.Put);
 
             var selectedSets = SelectMinimumCompartmentSets(compartmentSets, itemOptions.RequestedQuantity);
             if (selectedSets.Sum(s => s.RemainingCapacity) < itemOptions.RequestedQuantity)
@@ -310,7 +311,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): A total of {candidateCompartmentSets.Count()} compartment sets match the request.");
 
             var aggregatedRequests = this.DataContext.SchedulerRequests
-                .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
+                .Where(r => r.ItemId == item.Id && r.Status != Enums.SchedulerRequestStatus.Completed);
 
             System.Diagnostics.Debug.WriteLine($"Put request for item (id={item.Id}): There are {aggregatedRequests.Count()} accepted requests for the same item.");
 
@@ -327,7 +328,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             .Select(g => new CompartmentSet
             {
                 RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
-                    r => (r.OperationType == Common.DataModels.OperationType.Put ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+                    r => (r.OperationType == Enums.OperationType.Put ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
                 Size = g.c.CompartmentsCount,
                 Sub1 = g.c.Sub1,
                 Sub2 = g.c.Sub2,

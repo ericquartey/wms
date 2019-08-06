@@ -10,6 +10,7 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -146,15 +147,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 if (machine.Id == 1)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expired;
                 }
             }
 
@@ -167,15 +168,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 if (machine.Id == 1)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expired;
                 }
             }
 
@@ -507,7 +508,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var machineStatus = this.liveMachinesDataContext.GetMachineStatus(machine.Id);
 
-            machine.Status = (MachineStatus)machineStatus.Mode;
+            machine.Status = machineStatus.Mode;
 
             return machine;
         }

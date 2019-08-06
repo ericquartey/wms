@@ -583,57 +583,9 @@
     <value>Maintenance Status</value>
     <comment>Machine - Maintenance Status</comment>
   </data>
-  <data name="MachineStatusAutomatic" xml:space="preserve">
-    <value>Automatic</value>
-    <comment>Machine Status - Automatic</comment>
-  </data>
-  <data name="MachineStatusError" xml:space="preserve">
-    <value>Error</value>
-    <comment>Machine Status - Error</comment>
-  </data>
-  <data name="MachineStatusManual" xml:space="preserve">
-    <value>Manual</value>
-    <comment>Machine Status - Manual</comment>
-  </data>
-  <data name="MachineStatusOffline" xml:space="preserve">
-    <value>Offline</value>
-    <comment>Machine Status - Offline</comment>
-  </data>
-  <data name="MachineMaintenanceStatusValid" xml:space="preserve">
-    <value>Valid</value>
-    <comment>Machine - Maintenance Status - Valid</comment>
-  </data>
-  <data name="MachineMaintenanceStatusExpiring" xml:space="preserve">
-    <value>Expiring</value>
-    <comment>Machine - Maintenance Status - Expiring</comment>
-  </data>
-  <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
-    <value>Expired</value>
-    <comment>Machine - Maintenance Status - Expired</comment>
-  </data>
   <data name="MachineStatus" xml:space="preserve">
     <value>Machine Status</value>
     <comment>Machine Status</comment>
-  </data>
-  <data name="ItemListStatusWaiting" xml:space="preserve">
-    <value>Waiting</value>
-    <comment>Item List Status - Waiting</comment>
-  </data>
-  <data name="ItemListStatusExecuting" xml:space="preserve">
-    <value>Executing</value>
-    <comment>Item List Status - Executing</comment>
-  </data>
-  <data name="ItemListStatusCompleted" xml:space="preserve">
-    <value>Completed</value>
-    <comment>Item List Status - Completed</comment>
-  </data>
-  <data name="ItemListStatusIncomplete" xml:space="preserve">
-    <value>Incomplete</value>
-    <comment>Item List Status - Incomplete</comment>
-  </data>
-  <data name="ItemListStatusSuspended" xml:space="preserve">
-    <value>Suspended</value>
-    <comment>Item List Status - Suspended</comment>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>
@@ -655,60 +607,6 @@
     <value>Schedule</value>
     <comment>List Execution Request - Schedule</comment>
   </data>
-  <data name="ItemListRowStatusWaiting" xml:space="preserve">
-    <value>Waiting</value>
-    <comment>Item List Row Status - Waiting</comment>
-  </data>
-  <data name="ItemListRowStatusExecuting" xml:space="preserve">
-    <value>Executing</value>
-    <comment>Item List Row Status - Executing</comment>
-  </data>
-  <data name="ItemListRowStatusCompleted" xml:space="preserve">
-    <value>Completed</value>
-    <comment>Item List Row Status - Completed</comment>
-  </data>
-  <data name="ItemListRowStatusIncomplete" xml:space="preserve">
-    <value>Incomplete</value>
-    <comment>Item List Row Status - Incomplete</comment>
-  </data>
-  <data name="ItemListRowStatusSuspended" xml:space="preserve">
-    <value>Suspended</value>
-    <comment>Item List Row Status - Suspended</comment>
-  </data>
-  <data name="Pick" xml:space="preserve">
-    <value>Pick</value>
-    <comment>Pick</comment>
-  </data>
-  <data name="Put" xml:space="preserve">
-    <value>Put</value>
-    <comment>Put</comment>
-  </data>
-  <data name="Inventory" xml:space="preserve">
-    <value>Inventory</value>
-    <comment>Item List Type - Inventory</comment>
-  </data>
-  <data name="MonoReference" xml:space="preserve">
-    <value>Mono Reference</value>
-  </data>
-  <data name="PluriReference" xml:space="preserve">
-    <value>Multi Reference</value>
-  </data>
-  <data name="SideBack" xml:space="preserve">
-    <value>Back</value>
-    <comment>Side - Back</comment>
-  </data>
-  <data name="SideFront" xml:space="preserve">
-    <value>Front</value>
-    <comment>Side - Front</comment>
-  </data>
-  <data name="SideLeft" xml:space="preserve">
-    <value>Left</value>
-    <comment>Side - Left</comment>
-  </data>
-  <data name="SideRight" xml:space="preserve">
-    <value>Right</value>
-    <comment>Side - Right</comment>
-  </data>
   <data name="ItemManagementTypeFIFO" xml:space="preserve">
     <value>FIFO</value>
   </data>
@@ -722,54 +620,17 @@
     <value>Last Execution Date</value>
     <comment>Last Execution Date</comment>
   </data>
-  <data name="MissionStatusNew" xml:space="preserve">
-    <value>New</value>
-  </data>
-  <data name="MissionStatusExecuting" xml:space="preserve">
-    <value>Executing</value>
-    <comment>Mission Status - Executiong</comment>
-  </data>
-  <data name="MissionStatusCompleted" xml:space="preserve">
-    <value>Completed</value>
-    <comment>Mission Status - Completed</comment>
-  </data>
-  <data name="MissionStatusError" xml:space="preserve">
-    <value>Error</value>
-    <comment>Mission Status - Error</comment>
-  </data>
-  <data name="MissionTypeBypass" xml:space="preserve">
-    <value>Bypass</value>
-  </data>
-  <data name="MissionTypeReorder" xml:space="preserve">
-    <value>Reorder</value>
-  </data>
-  <data name="MissionTypeReplace" xml:space="preserve">
-    <value>Replace</value>
-  </data>
   <data name="Item" xml:space="preserve">
     <value>Item</value>
   </data>
   <data name="ItemList" xml:space="preserve">
     <value>List</value>
   </data>
-  <data name="OperationInsert" xml:space="preserve">
-    <value>Insert</value>
-  </data>
-  <data name="OperationReplace" xml:space="preserve">
-    <value>Replace</value>
-  </data>
-  <data name="OperationReorder" xml:space="preserve">
-    <value>Reorder</value>
-  </data>
   <data name="OperationType" xml:space="preserve">
     <value>Operation Type</value>
   </data>
   <data name="ItemListRow" xml:space="preserve">
     <value>Item List Row</value>
-  </data>
-  <data name="MissionStatusIncomplete" xml:space="preserve">
-    <value>Incomplete</value>
-    <comment>Mission Status - Incomplete</comment>
   </data>
   <data name="Mission" xml:space="preserve">
     <value>Mission</value>
@@ -780,22 +641,6 @@
   </data>
   <data name="SchedulerRequest" xml:space="preserve">
     <value>Scheduler Request</value>
-  </data>
-  <data name="ItemListRowStatusError" xml:space="preserve">
-    <value>Error</value>
-    <comment>Item List Row Status - Error</comment>
-  </data>
-  <data name="ItemListRowStatusNew" xml:space="preserve">
-    <value>New</value>
-    <comment>Item List Row Status - New</comment>
-  </data>
-  <data name="ItemListStatusError" xml:space="preserve">
-    <value>Error</value>
-    <comment>Item List Status - Error</comment>
-  </data>
-  <data name="ItemListStatusNew" xml:space="preserve">
-    <value>New</value>
-    <comment>Item List Status - New</comment>
   </data>
   <data name="AreaFillRate" xml:space="preserve">
     <value>Area Fill Rate</value>
@@ -854,14 +699,6 @@
   <data name="MachineNetMaxWeight" xml:space="preserve">
     <value>Net Max Weight [g]</value>
   </data>
-  <data name="ItemListStatusReady" xml:space="preserve">
-    <value>Ready</value>
-    <comment>Item List Status - Ready</comment>
-  </data>
-  <data name="ItemListRowStatusReady" xml:space="preserve">
-    <value>Ready</value>
-    <comment>Item List Row Status - Ready</comment>
-  </data>
   <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
     <value>Associated Compartments</value>
     <comment>Compartment Type - CompartmentsCount</comment>
@@ -895,21 +732,6 @@
   </data>
   <data name="WeightFillRate" xml:space="preserve">
     <value>Weight Fill Rate</value>
-  </data>
-  <data name="MissionOperationStatusCompleted" xml:space="preserve">
-    <value>Completed</value>
-  </data>
-  <data name="MissionOperationStatusError" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="MissionOperationStatusExecuting" xml:space="preserve">
-    <value>Executing</value>
-  </data>
-  <data name="MissionOperationStatusIncomplete" xml:space="preserve">
-    <value>Incomplete</value>
-  </data>
-  <data name="MissionOperationStatusNew" xml:space="preserve">
-    <value>New</value>
   </data>
   <data name="CompartmentPickMissionOperationCount" xml:space="preserve">
     <value>Pick Missions Operation Count</value>

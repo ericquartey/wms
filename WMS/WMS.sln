@@ -90,6 +90,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MachineAutomati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Data.Resources", "Data\Resources\Ferretto.WMS.Data.Resources.csproj", "{B8E046DF-609A-4680-82B6-A90E17993F7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Resources", "..\Common\Resources\Ferretto.Common.Resources.csproj", "{0E501C84-3CB7-4957-B4A1-6E558A160FAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Autogen|Any CPU = Autogen|Any CPU
@@ -345,6 +347,16 @@ Global
 		{B8E046DF-609A-4680-82B6-A90E17993F7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8E046DF-609A-4680-82B6-A90E17993F7A}.ReleaseWmsUI|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8E046DF-609A-4680-82B6-A90E17993F7A}.ReleaseWmsUI|Any CPU.Build.0 = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.Autogen|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.Autogen|Any CPU.Build.0 = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.DebugWmsUI|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.DebugWmsUI|Any CPU.Build.0 = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.ReleaseWmsUI|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC}.ReleaseWmsUI|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -382,6 +394,7 @@ Global
 		{7A5AD5F9-521A-4A42-BCE8-28C1BF9D5092} = {369D47BF-E1BB-4E61-9370-EC13F162D3C4}
 		{B8E046DF-609A-4680-82B6-A90E17993F7A} = {B4262EEC-49FA-4052-80C9-73E0A03BBBEA}
 		{EC02D26C-F149-496C-BC7C-75D229B4333F} = {97B1C3A8-48D9-42B8-B32D-75369C5E7B9A}
+		{0E501C84-3CB7-4957-B4A1-6E558A160FAC} = {7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}

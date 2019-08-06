@@ -1,4 +1,5 @@
 ﻿using System;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -49,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? InstallationDate { get; set; }
 
-        public bool IsOnLine => this.Status != MachineStatus.Offline;
+        public bool IsOnLine => this.Status != Enums.MachineStatus.Offline;
 
         public DateTime? LastPowerOn { get; set; }
 
@@ -66,7 +67,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MachineTypeId { get; set; }
 
-        public MaintenanceStatus MaintenanceStatus { get; set; }
+        public Enums.MaintenanceStatus MaintenanceStatus { get; set; }
 
         [PositiveOrZero]
         public long? ManualTime { get; set; }
@@ -97,7 +98,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        public MachineStatus Status { get; set; }
+        public Enums.MachineStatus Status { get; set; }
 
         public DateTime? TestDate { get; set; }
 

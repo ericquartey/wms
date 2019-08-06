@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -26,7 +27,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? priority;
 
-        private Side? side;
+        private Enums.Side? side;
 
         private double? xCoordinate;
 
@@ -121,7 +122,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
-        public Side? Side
+        public Enums.Side? Side
         {
             get => this.side;
             set => this.SetProperty(ref this.side, value);

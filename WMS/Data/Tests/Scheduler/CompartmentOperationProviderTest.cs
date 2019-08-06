@@ -9,6 +9,7 @@ using Ferretto.WMS.Data.Tests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -262,13 +263,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Put, 2, 3, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Pick, 3, 2, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Put, 4, 1, 2, 3)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Pick, 3, 1, 2, 4)]
+        [DataRow(Enums.ItemManagementType.FIFO, Enums.OperationType.Put, 2, 3, 4, 1)]
+        [DataRow(Enums.ItemManagementType.FIFO, Enums.OperationType.Pick, 3, 2, 4, 1)]
+        [DataRow(Enums.ItemManagementType.Volume, Enums.OperationType.Put, 4, 1, 2, 3)]
+        [DataRow(Enums.ItemManagementType.Volume, Enums.OperationType.Pick, 3, 1, 2, 4)]
         public void OrderCompartmentsByManagementType_Compartments(
-            Core.Models.ItemManagementType managementType,
-            Core.Models.OperationType operationType,
+            Enums.ItemManagementType managementType,
+            Enums.OperationType operationType,
             int firstCompartmentId,
             int secondCompartmentId,
             int thirdCompartmentId,
@@ -330,13 +331,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Put, 3, 2, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Pick, 3, 2, 4, 1)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Put, 4, 3, 2, 1)]
-        [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Pick, 4, 1, 3, 2)]
+        [DataRow(Enums.ItemManagementType.FIFO, Enums.OperationType.Put, 3, 2, 4, 1)]
+        [DataRow(Enums.ItemManagementType.FIFO, Enums.OperationType.Pick, 3, 2, 4, 1)]
+        [DataRow(Enums.ItemManagementType.Volume, Enums.OperationType.Put, 4, 3, 2, 1)]
+        [DataRow(Enums.ItemManagementType.Volume, Enums.OperationType.Pick, 4, 1, 3, 2)]
         public void OrderCompartmentsByManagementType_CompartmentSets(
-           Core.Models.ItemManagementType managementType,
-           Core.Models.OperationType operationType,
+           Enums.ItemManagementType managementType,
+           Enums.OperationType operationType,
            int firstCompartmentSize,
            int secondCompartmentSize,
            int thirdCompartmentSize,

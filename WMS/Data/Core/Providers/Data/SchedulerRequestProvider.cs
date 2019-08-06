@@ -7,10 +7,12 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {

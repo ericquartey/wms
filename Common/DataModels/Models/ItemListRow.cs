@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -50,7 +51,7 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
-        public ItemListRowStatus Status { get; set; }
+        public Enums.ItemListRowStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 

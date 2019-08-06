@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.App.Core.Models
+namespace Ferretto.Common.Resources.Enums
 {
+    // Stato di Riga di Lista Articoli
     public enum ItemListRowStatus
     {
+        [Display(Name = nameof(BusinessObjects.EnumNotSpecified), ResourceType = typeof(BusinessObjects))]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
 
@@ -20,13 +23,13 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusCompleted), ResourceType = typeof(BusinessObjects))]
         Completed = 'C',
 
+        [Display(Name = nameof(BusinessObjects.ItemListRowStatusError), ResourceType = typeof(BusinessObjects))]
+        Error = 'E',
+
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusIncomplete), ResourceType = typeof(BusinessObjects))]
         Incomplete = 'I',
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusSuspended), ResourceType = typeof(BusinessObjects))]
         Suspended = 'S',
-
-        [Display(Name = nameof(BusinessObjects.ItemListRowStatusError), ResourceType = typeof(BusinessObjects))]
-        Error = 'E',
     }
 }

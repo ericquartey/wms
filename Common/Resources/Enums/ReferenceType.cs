@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.App.Core.Models
+namespace Ferretto.Common.Resources.Enums
 {
+    // Tipo Referenza
     public enum ReferenceType
     {
+        [Display(Name = nameof(BusinessObjects.EnumNotSpecified), ResourceType = typeof(BusinessObjects))]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.MonoReference), ResourceType = typeof(BusinessObjects))]
         MonoReference = 'M',
 

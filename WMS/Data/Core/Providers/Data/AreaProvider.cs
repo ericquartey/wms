@@ -5,6 +5,7 @@ using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -80,9 +81,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                         LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
                         LoadingUnitsBufferUsage = b.Missions.Count(
                             m => m.Operations.Any(o =>
-                                o.Status != Common.DataModels.MissionOperationStatus.Completed
+                                o.Status != Enums.MissionOperationStatus.Completed
                                 &&
-                                o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
+                                o.Status != Enums.MissionOperationStatus.Incomplete)),
                     }),
                 })
                 .SingleAsync(a => a.Id == id);

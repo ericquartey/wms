@@ -1758,6 +1758,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ReferenceType
     {
+        NotSpecified = 0,
+    
         MonoReference = 77,
     
         PluriReference = 80,
@@ -2873,6 +2875,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum SchedulerRequestStatus
     {
+        NotSpecified = 0,
+    
         Completed = 67,
     
         New = 78,
@@ -3351,6 +3355,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MissionOperationStatus
     {
+        NotSpecified = 0,
+    
         Completed = 67,
     
         Error = 69,

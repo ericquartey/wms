@@ -8,11 +8,13 @@ using AutoMapper.QueryableExtensions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -201,7 +203,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(m =>
                     m.LoadingUnitId == loadingUnitId
                     &&
-                    m.Operations.All(o => o.Status == Common.DataModels.MissionOperationStatus.New)
+                    m.Operations.All(o => o.Status == Enums.MissionOperationStatus.New)
                     &&
 
                     // exclude loading unit missions (they do not have operations)

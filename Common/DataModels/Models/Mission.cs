@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -25,7 +26,7 @@ namespace Ferretto.Common.DataModels
 
         public int Priority { get; set; }
 
-        public MissionStatus Status { get; set; }
+        public Enums.MissionStatus Status { get; set; }
 
         #endregion
     }

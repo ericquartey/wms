@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -56,9 +57,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
                 ReservedQuantity = 0,
-                OperationType = Common.DataModels.OperationType.Pick,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                Type = Common.DataModels.SchedulerRequestType.Item,
+                OperationType = Enums.OperationType.Pick,
+                Status = Enums.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
             };
 
             using (var context = this.CreateContext())
@@ -516,9 +517,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = 3,
                 ReservedQuantity = 0,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
+                OperationType = Enums.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -587,9 +588,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
+                OperationType = Enums.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -599,9 +600,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
+                OperationType = Enums.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -781,9 +782,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = subX,
                 RequestedQuantity = 9,
                 ReservedQuantity = 0,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
+                OperationType = Enums.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -793,9 +794,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = subZ,
                 RequestedQuantity = 9,
                 ReservedQuantity = 0,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
+                OperationType = Enums.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -867,9 +868,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
                 ReservedQuantity = 0,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Status = Enums.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
+                OperationType = Enums.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -879,8 +880,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Sub1 = sub1,
                 RequestedQuantity = compartment2.Stock / 2,
                 ReservedQuantity = 0,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                OperationType = Enums.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MeasureUnitDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.OperationType), ResourceType = typeof(BusinessObjects))]
-        public OperationType? OperationType { get; set; }
+        public Enums.OperationType? OperationType { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public string PackageTypeDescription { get; set; }
@@ -62,7 +63,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? ReservedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
-        public SchedulerRequestStatus? Status { get; set; }
+        public Enums.SchedulerRequestStatus? Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
@@ -71,7 +72,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
-        public SchedulerRequestType? Type { get; set; }
+        public Enums.SchedulerRequestType? Type { get; set; }
 
         #endregion
     }

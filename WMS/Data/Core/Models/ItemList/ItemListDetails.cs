@@ -2,6 +2,7 @@
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -49,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int ItemListRowsCount { get; set; }
 
-        public ItemListType ItemListType { get; set; }
+        public Enums.ItemListType ItemListType { get; set; }
 
         public string ItemListTypeDescription { get; set; }
 
@@ -78,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string ShipmentUnitDescription { get; set; }
 
-        public ItemListStatus Status => ItemList.GetStatus(
+        public Enums.ItemListStatus Status => ItemList.GetStatus(
            this.RowsCount,
            this.CompletedRowsCount,
            this.NewRowsCount,

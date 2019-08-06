@@ -6,6 +6,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
@@ -142,39 +143,39 @@ namespace Ferretto.WMS.App.Modules.BLL
             var itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
             var type = parameter;
-            if (parameter != null && Enum.IsDefined(typeof(ItemListType), (int)(char)parameter))
+            if (parameter != null && Enum.IsDefined(typeof(Enums.ItemListType), (int)(char)parameter))
             {
-                type = (ItemListType)Enum.ToObject(typeof(ItemListType), parameter);
+                type = (Enums.ItemListType)Enum.ToObject(typeof(Enums.ItemListType), parameter);
             }
 
             var listFilters = new List<PagedDataSource<ItemList, int>>();
             switch (type)
             {
-                case ItemListType.Pick:
+                case Enums.ItemListType.Pick:
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsAllTypePick,
                             itemListProvider,
-                            $"[ItemListType] == '{ItemListType.Pick}'"));
+                            $"[ItemListType] == '{Enums.ItemListType.Pick}'"));
                     break;
 
-                case ItemListType.Put:
+                case Enums.ItemListType.Put:
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsAllTypePut,
                             itemListProvider,
-                            $"[ItemListType] == '{ItemListType.Put}'"));
+                            $"[ItemListType] == '{Enums.ItemListType.Put}'"));
                     break;
 
-                case ItemListType.Inventory:
+                case Enums.ItemListType.Inventory:
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsAllTypeInventory,
                             itemListProvider,
-                            $"[ItemListType] == '{ItemListType.Inventory}'"));
+                            $"[ItemListType] == '{Enums.ItemListType.Inventory}'"));
                     break;
 
                 default:
@@ -187,19 +188,19 @@ namespace Ferretto.WMS.App.Modules.BLL
                             "ItemListViewTypePick",
                             Resources.MasterData.ItemListsTypePick,
                             itemListProvider,
-                            $"[ItemListType] == '{ItemListType.Pick}'"));
+                            $"[ItemListType] == '{Enums.ItemListType.Pick}'"));
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePut",
                             Resources.MasterData.ItemListsTypePut,
                             itemListProvider,
-                            $"[ItemListType] == '{ItemListType.Put}'"));
+                            $"[ItemListType] == '{Enums.ItemListType.Put}'"));
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypeInventory",
                             Resources.MasterData.ItemListsTypeInventory,
                             itemListProvider,
-                            $"[ItemListType] == '{ItemListType.Inventory}'"));
+                            $"[ItemListType] == '{Enums.ItemListType.Inventory}'"));
                     break;
             }
 
@@ -210,14 +211,14 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemListViewStatusWaiting",
                     Resources.MasterData.ItemListStatusWaiting,
                     itemListProvider,
-                    $"[Status] == '{ItemListStatus.Waiting}' {typeFilter}"));
+                    $"[Status] == '{Enums.ItemListStatus.Waiting}' {typeFilter}"));
 
             listFilters.Add(
                 new PagedDataSource<ItemList, int>(
                     "ItemListViewStatusCompleted",
                     Resources.MasterData.ItemListStatusCompleted,
                     itemListProvider,
-                    $"[Status] == '{ItemListStatus.Completed}' {typeFilter}"));
+                    $"[Status] == '{Enums.ItemListStatus.Completed}' {typeFilter}"));
 
             return listFilters.Cast<IFilterDataSource<TModel, TKey>>();
         }
@@ -243,7 +244,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     "ItemsViewFIFO",
                     Resources.MasterData.ItemFIFO,
                     itemsProvider,
-                    $"[ManagementType] == '{ItemManagementType.FIFO}'"),
+                    $"[ManagementType] == '{Enums.ItemManagementType.FIFO}'"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
@@ -333,12 +334,12 @@ namespace Ferretto.WMS.App.Modules.BLL
                 new DataSourceCollection<Mission, int>(
                     "MissionViewStatusCompleted",
                     Resources.Scheduler.MissionStatusCompleted,
-                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.Completed}'")),
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{Enums.MissionStatus.Completed}'")),
 
                 new DataSourceCollection<Mission, int>(
                     "MissionViewStatusNew",
                     Resources.Scheduler.MissionStatusNew,
-                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{MissionStatus.New}'")),
+                    async () => await missionProvider.GetAllAsync(0, 0, null, $"[Status] == '{Enums.MissionStatus.New}'")),
             }.Cast<IDataSource<TModel, TKey>>();
         }
 
@@ -356,15 +357,15 @@ namespace Ferretto.WMS.App.Modules.BLL
 
                         new PagedDataSource<SchedulerRequest, int>(
                             "SchedulerRequestOperationPut",
-                            Resources.BusinessObjects.Put,
+                            Common.Resources.BusinessObjects.Put,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Put}'"),
+                            $"[OperationType] == '{Enums.OperationType.Put}'"),
 
                         new PagedDataSource<SchedulerRequest, int>(
                             "SchedulerRequestOperationPick",
-                            Resources.BusinessObjects.Pick,
+                            Common.Resources.BusinessObjects.Pick,
                             schedulerRequestProvider,
-                            $"[OperationType] == '{OperationType.Pick}'"),
+                            $"[OperationType] == '{Enums.OperationType.Pick}'"),
                     }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 

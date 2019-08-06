@@ -8,10 +8,10 @@
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+             xmlns:enums="clr-namespace:Ferretto.Common.Resources.Enums;assembly=Ferretto.Common.Resources"
              Title="{x:Static res:Navigation.LoadingUnitDetails}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -234,7 +234,7 @@
                                       EditValue="{Binding Model.ReferenceType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ReferenceType}"
+                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type enums:ReferenceType}"
                                                                 SortMode="DisplayName" />
                             </dxmvvm:Interaction.Behaviors>
                         </wms:ComboBox>
