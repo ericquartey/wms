@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -279,11 +279,14 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
-                        // the machine starts with power off
-                        //foreach (var ioDevice in this.ioDevices)
-                        //{
-                        //    ioDevice.Value.ExecuteIoPowerUp();
-                        //}
+                        //HACK the machine starts with power off
+                        // It is necessary to invoke the ExecuteIoPowerUp state machine in order to:
+                        // 1. remove the time-out condition from the IoRemote device
+                        // 2. reset the electrical safe-box
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
                         break;
 

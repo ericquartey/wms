@@ -114,8 +114,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.sensorStopwatch.Stop();
                 this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
 
-                //this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
-                this.logger.LogDebug($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
+                this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
+                //this.logger.LogDebug($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var index = 0;
                 foreach (var installedInverter in this.inverterStatuses)
@@ -235,25 +235,40 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (angInverter.UpdateANGInverterCurrentPosition(this.currentAxis, currentMessage.IntPayload) || this.forceStatusPublish)
                         {
-                            if (this.shaftPositionUpdateNumberOfTimes == 10 || this.forceStatusPublish)
+                            ConfigurationCategory configurationCategory;
+                            switch (this.currentAxis)
                             {
-                                var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, currentMessage.IntPayload);
-                                var msgNotification = new FieldNotificationMessage(
-                                  notificationData,
-                                  "Inverter encoder value update",
-                                  FieldMessageActor.FiniteStateMachines,
-                                  FieldMessageActor.InverterDriver,
-                                  FieldMessageType.InverterStatusUpdate,
-                                  MessageStatus.OperationExecuting);
+                                case Axis.Horizontal:
+                                    configurationCategory = ConfigurationCategory.HorizontalAxis;
+                                    break;
 
-                                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                case Axis.Vertical:
+                                    configurationCategory = ConfigurationCategory.VerticalAxis;
+                                    break;
 
-                                this.forceStatusPublish = false;
+                                default:
+                                    configurationCategory = ConfigurationCategory.Undefined;
+                                    break;
                             }
-                            else
+
+                            decimal currentAxisPosition = 0;
+                            if (currentMessage.IntPayload != 0)
                             {
-                                this.shaftPositionUpdateNumberOfTimes++;
+                                currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
                             }
+
+                            var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
+                            var msgNotification = new FieldNotificationMessage(
+                              notificationData,
+                              "Inverter encoder value update",
+                              FieldMessageActor.FiniteStateMachines,
+                              FieldMessageActor.InverterDriver,
+                              FieldMessageType.InverterStatusUpdate,
+                              MessageStatus.OperationExecuting);
+
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                            this.forceStatusPublish = false;
                         }
                     }
                 }
@@ -382,6 +397,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
         }
 
+        private bool IsInverterFault(IInverterStatusBase inverterStatus)
+        {
+            return inverterStatus.CommonStatusWord.IsFault;
+        }
+
         private bool IsInverterPoweredOn(IInverterStatusBase inverterStatus)
         {
             return inverterStatus.CommonStatusWord.IsVoltageEnabled &
@@ -394,11 +414,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                    inverterStatus.CommonStatusWord.IsSwitchedOn &
                    inverterStatus.CommonStatusWord.IsVoltageEnabled &
                    inverterStatus.CommonStatusWord.IsQuickStopTrue;
-        }
-
-        private bool IsInverterFault(IInverterStatusBase inverterStatus)
-        {
-            return inverterStatus.CommonStatusWord.IsFault;
         }
 
         private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage)
@@ -444,6 +459,28 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.CalibrateAxis);
+            }
+        }
+
+        private void ProcessFaultResetMessage(FieldCommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IInverterFaultFieldMessageData data)
+            {
+                if (!this.inverterStatuses.TryGetValue(data.InverterToReset, out var inverterStatus))
+                {
+                    inverterStatus = null;
+                }
+                this.CurrentStateMachine = new ResetFaultStateMachine(inverterStatus, data.InverterToReset, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                this.CurrentStateMachine?.Start();
+            }
+            else
+            {
+                this.logger.LogTrace("3:Invalid message data for InverterStop message Type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
             }
         }
 
@@ -646,7 +683,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.currentAxis = positioningData.AxisMovement;
 
-                    this.shaftPositionUpdateNumberOfTimes = 0;
+                    //this.shaftPositionUpdateNumberOfTimes = 0;
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
@@ -905,28 +942,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Inverter status not configured for requested inverter {stopData.InverterToStop}", 0), FieldMessageType.InverterStop);
                 }
-            }
-            else
-            {
-                this.logger.LogTrace("3:Invalid message data for InverterStop message Type");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invalid message data for InverterStop message type", 0), FieldMessageType.InverterStop);
-            }
-        }
-
-        private void ProcessFaultResetMessage(FieldCommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            if (message.Data is IInverterFaultFieldMessageData data)
-            {
-                if (!this.inverterStatuses.TryGetValue(data.InverterToReset, out var inverterStatus))
-                {
-                    inverterStatus = null;
-                }
-                this.CurrentStateMachine = new ResetFaultStateMachine(inverterStatus, data.InverterToReset, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                this.CurrentStateMachine?.Start();
             }
             else
             {

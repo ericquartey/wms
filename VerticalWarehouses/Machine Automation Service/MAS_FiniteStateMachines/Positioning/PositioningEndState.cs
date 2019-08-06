@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
     public class PositioningEndState : StateBase
     {
         #region Fields
+
+        private readonly MachineSensorsStatus machineSensorsStatus;
 
         private readonly int numberExecutedSteps;
 
@@ -28,6 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public PositioningEndState(
             IStateMachine parentMachine,
             IPositioningMessageData positioningMessageData,
+            MachineSensorsStatus machineSensorsStatus,
             ILogger logger,
             int numberExecutedSteps,
             bool stopRequested = false)
@@ -35,6 +39,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.stopRequested = stopRequested;
             this.positioningMessageData = positioningMessageData;
+            this.machineSensorsStatus = machineSensorsStatus;
             this.numberExecutedSteps = numberExecutedSteps;
         }
 
@@ -93,6 +98,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Start()
         {
             this.Logger?.LogTrace("1:Method Start");
+
+            lock (this.machineSensorsStatus)
+            {
+                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+            }
+
+            var notificationCurrPositionMessage = new NotificationMessage(
+                this.positioningMessageData,
+                $"Current Encoder position: {this.machineSensorsStatus.AxisYPosition}",
+                MessageActor.AutomationService,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationCurrPositionMessage);
 
             if (this.stopRequested)
             {

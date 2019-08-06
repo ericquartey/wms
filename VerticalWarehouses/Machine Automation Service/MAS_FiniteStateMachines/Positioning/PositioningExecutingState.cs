@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -15,11 +16,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
     {
         #region Fields
 
+        private readonly MachineSensorsStatus machineSensorsStatus;
+
         private readonly IPositioningMessageData positioningMessageData;
 
         private FieldCommandMessage commandMessage;
 
         private bool disposed;
+
+        private decimal nTimes;
 
         private int numberExecutedSteps;
 
@@ -40,10 +45,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public PositioningExecutingState(
             IStateMachine parentMachine,
             IPositioningMessageData positioningMessageData,
+            MachineSensorsStatus machineSensorsStatus,
             ILogger logger)
             : base(parentMachine, logger)
         {
             this.positioningMessageData = positioningMessageData;
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -77,7 +84,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                         if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
                         {
                             this.Logger.LogDebug("FSM Finished Executing State");
-                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.Logger, this.numberExecutedSteps));
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.machineSensorsStatus, this.Logger, this.numberExecutedSteps));
                         }
                         else
                         {
@@ -126,17 +133,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     case MessageStatus.OperationExecuting:
                         if (message.Data is InverterStatusUpdateFieldMessageData data)
                         {
-                            this.positioningMessageData.CurrentPosition = data.CurrentPosition;
+                            if (this.IsNotificationToSend())
+                            {
+                                this.positioningMessageData.CurrentPosition = data.CurrentPosition;
 
-                            var notificationMessage = new NotificationMessage(
-                                this.positioningMessageData,
-                                $"Current Encoder position: {data.CurrentPosition}",
-                                MessageActor.AutomationService,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting);
+                                var notificationMessage = new NotificationMessage(
+                                    this.positioningMessageData,
+                                    $"Current Encoder position: {data.CurrentPosition}",
+                                    MessageActor.AutomationService,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.Positioning,
+                                    MessageStatus.OperationExecuting);
 
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            }
                         }
                         break;
 
@@ -246,7 +256,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.Logger, this.numberExecutedSteps, true));
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.machineSensorsStatus, this.Logger, this.numberExecutedSteps, true));
         }
 
         protected override void Dispose(bool disposing)
@@ -263,6 +273,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        private bool IsNotificationToSend()
+        {
+            const int NTIMES_TO_WAIT = 5;
+            if (this.nTimes == NTIMES_TO_WAIT)
+            {
+                this.nTimes = 0;
+                return true;
+            }
+            else
+            {
+                this.nTimes++;
+                return false;
+            }
         }
 
         #endregion
