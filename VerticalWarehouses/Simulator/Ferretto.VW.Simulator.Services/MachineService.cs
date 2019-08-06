@@ -14,7 +14,6 @@ using static Ferretto.VW.Simulator.Services.BufferUtility;
 using Microsoft.Extensions.Logging;
 using NLog;
 using Prism.Mvvm;
-using Ferretto.VW.Simulator.Services.Helpers;
 
 namespace Ferretto.VW.Simulator.Services
 {
@@ -34,7 +33,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ObservableCollectionWithItemNotify<IODeviceModel> remoteIOs = new ObservableCollectionWithItemNotify<IODeviceModel>();
+        private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -292,6 +291,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         case InverterParameterId.ControlWordParam:
                             inverter.ControlWord = ushortPayload;
+                            this.UpdateInverter(inverter);
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -319,25 +319,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.StatusWordParam:
-                            //inverter.StatusWord = ushortPayload;
-                            switch (inverter.OperationMode)
-                            {
-                                case InverterOperationMode.Homing:
-                                    inverter.BuildHomingStatusWord();
-                                    break;
-
-                                case InverterOperationMode.Velocity:
-                                case InverterOperationMode.ProfileVelocity:
-                                    inverter.BuildVelocityStatusWord();
-                                    break;
-
-                                default:
-                                    if (System.Diagnostics.Debugger.IsAttached)
-                                    {
-                                        System.Diagnostics.Debugger.Break();
-                                    }
-                                    break;
-                            }
+                            this.UpdateInverter(inverter);
                             var statusWordMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes((ushort)inverter.StatusWord));
                             result = client.Client.Send(statusWordMessage);
                             break;
@@ -385,25 +367,26 @@ namespace Ferretto.VW.Simulator.Services
                 foreach (var extractedMessage in extractedMessages)
                 {
                     var length = extractedMessage[0];
-                    var relProtocol = extractedMessage[1];
+                    var firmwareProtocol = extractedMessage[1];
                     var codeOperation = extractedMessage[2];
-
-                    var spare = relProtocol == 0x10 ? 0 : extractedMessage[3];
-                    bool[] outputs = Enumerable.Range(0, 8).Select(x => Convert.ToString(relProtocol == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')[x] == '1' ? true : false).ToArray();
+                    bool[] outputs = (from x in Enumerable.Range(0, 8)
+                                     let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
+                                     select binary[x] == '1' ? true : false).Reverse().ToArray();
+                    device.Outputs = outputs.Select(x => new BitModel(x)).ToList();
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
                     {
                         case 0x00: // Data
-                            responseMessage = new byte[NBYTES_RECEIVE];
-                            responseMessage[0] = NBYTES_RECEIVE;            // nBytes
-                            responseMessage[1] = device.FirmwareVersion;    // fwRelease
-                            responseMessage[2] = 0x00;                      // Code op   0x00: data, 0x06: configuration
-                            responseMessage[3] = 0x00;                      // error code
-                            Array.Copy(extractedMessage, 3, responseMessage, 4, 1);  // output values echo
+                            responseMessage = new byte[NBYTES_RECEIVE + (device.FirmwareVersion == 0x11 ? 11 : 0)];
+                            responseMessage[0] = (byte)responseMessage.Length;  // nBytes
+                            responseMessage[1] = device.FirmwareVersion;        // fwRelease
+                            responseMessage[2] = 0x00;                          // Code op   0x00: data, 0x06: configuration
+                            responseMessage[3] = 0x00;                          // error code
+                            Array.Copy(extractedMessage, device.FirmwareVersion == 0x11 ? 4 : 3, responseMessage, device.FirmwareVersion == 0x11 ? 5 : 4, 1);  // output values echo
                             byte[] inputs = BitConverter.GetBytes(device.InputsValue);
-                            responseMessage[5] = inputs[0];
-                            responseMessage[6] = inputs[1];
+                            responseMessage[device.FirmwareVersion == 0x11 ? 6 : 5] = inputs[0];
+                            responseMessage[device.FirmwareVersion == 0x11 ? 7 : 6] = inputs[1];
                             break;
 
                         case 0x01: // Config
@@ -411,23 +394,6 @@ namespace Ferretto.VW.Simulator.Services
                             responseMessage[0] = NBYTES_RECEIVE_CFG;        // nBytes
                             responseMessage[1] = device.FirmwareVersion;    // fwRelease
                             responseMessage[2] = 0x06;                      // Ack  0x00: data, 0x06: configuration
-
-                            if (outputs[(int)IoPorts.ResetSecurity])
-                            {
-                                // Set run status
-                                device.Inputs[(int)IoPorts.NormalState].Value = true;
-                                
-                                foreach (var remoteIO in this.remoteIOs)
-                                {
-                                    // Remove emergency button
-                                    remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
-
-                                    // Set empty position on bay
-                                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
-                                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                                }
-                            }
-
                             break;
 
                         case 0x02: // SetIP
@@ -440,12 +406,57 @@ namespace Ferretto.VW.Simulator.Services
                             }
                             break;
                     }
+
+                    this.UpdateRemoteIO(device);
+
                     var result = client.Client.Send(responseMessage);
                 }
             }
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        private void UpdateRemoteIO(IODeviceModel device)
+        {
+            // Logic
+            if (device.Outputs[(int)IoPorts.ResetSecurity].Value)
+            {
+                // Set run status
+                device.Inputs[(int)IoPorts.NormalState].Value = true;
+
+                foreach (var remoteIO in this.remoteIOs)
+                {
+                    // Remove emergency button
+                    remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+                    // Set empty position on bay
+                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                }
+            }
+        }
+
+        private void UpdateInverter(InverterModel inverter)
+        {
+            switch (inverter.OperationMode)
+            {
+                case InverterOperationMode.Homing:
+                    inverter.BuildHomingStatusWord();
+                    break;
+
+                case InverterOperationMode.Velocity:
+                case InverterOperationMode.ProfileVelocity:
+                    inverter.BuildVelocityStatusWord();
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
         }
 

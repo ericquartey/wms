@@ -27,7 +27,7 @@
                        VerticalAlignment="Center"
                        Fill="{Binding BulletColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-        <TextBlock Margin="5,0,0,0"
+        <TextBlock Margin="3,0,0,0"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_CustomControlSensor_TextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}" />
