@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
@@ -624,6 +625,24 @@ namespace Ferretto.VW.MAS.InverterDriver
                             if (nextMessage != null)
                             {
                                 this.commandQueue.Enqueue(nextMessage);
+                            }
+                        }
+
+                        break;
+
+                    case FieldMessageType.InverterFaultReset:
+
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.logger.LogDebug($"InverterFaultReset Deallocating {this.CurrentStateMachine?.GetType()} state machine");
+
+                            if (this.CurrentStateMachine is ResetFaultStateMachine)
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
                             }
                         }
 
