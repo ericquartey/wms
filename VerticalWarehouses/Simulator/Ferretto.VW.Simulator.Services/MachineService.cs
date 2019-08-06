@@ -57,7 +57,15 @@ namespace Ferretto.VW.Simulator.Services
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
 
-            //this.RemoteIOs01.IOs[0].Value = true;
+            foreach (var remoteIO in this.remoteIOs)
+            {
+                // Remove emergency button
+                remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+                // Set empty position on bay
+                remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+                remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+            }
         }
 
         #endregion
@@ -291,7 +299,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         case InverterParameterId.ControlWordParam:
                             inverter.ControlWord = ushortPayload;
-                            this.UpdateInverter(inverter);
+                            //this.UpdateInverter(inverter);
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -438,20 +446,15 @@ namespace Ferretto.VW.Simulator.Services
         private void UpdateRemoteIO(IODeviceModel device)
         {
             // Logic
-            if (device.Outputs[(int)IoPorts.ResetSecurity].Value)
+            if (!device.Outputs[(int)IoPorts.PowerEnable].Value)
+            {
+                // Set run status
+                device.Inputs[(int)IoPorts.NormalState].Value = false;
+            }
+            else if (device.Outputs[(int)IoPorts.ResetSecurity].Value)
             {
                 // Set run status
                 device.Inputs[(int)IoPorts.NormalState].Value = true;
-
-                foreach (var remoteIO in this.remoteIOs)
-                {
-                    // Remove emergency button
-                    remoteIO.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
-
-                    // Set empty position on bay
-                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
-                    remoteIO.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                }
             }
         }
 

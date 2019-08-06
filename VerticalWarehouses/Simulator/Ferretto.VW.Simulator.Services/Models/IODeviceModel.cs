@@ -22,7 +22,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         BayLight = 4,
 
-        FreeSensor1 = 5,
+        PowerEnable = 5,
 
         EndMissionRobot = 6,
 
