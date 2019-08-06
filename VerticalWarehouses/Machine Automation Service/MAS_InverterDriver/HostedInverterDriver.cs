@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private InverterIndex inverterIndexToStop;
 
-        private byte[] ReceiveBuffer;
+        private byte[] receiveBuffer;
 
         private Timer sensorStatusUpdateTimer;
 
@@ -670,7 +670,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     try
                     {
-                        this.ReceiveBuffer = null;
+                        this.receiveBuffer = null;
                         await this.socketTransport.ConnectAsync();
                     }
                     catch (InverterDriverException ex)
@@ -710,7 +710,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                         continue;
                     }
-                    this.ReceiveBuffer = this.ReceiveBuffer.AppendArrays(inverterData, inverterData.Length);
+                    this.receiveBuffer = this.receiveBuffer.AppendArrays(inverterData, inverterData.Length);
 
                     this.readWaitStopwatch.Stop();
                     this.roundTripStopwatch.Stop();
@@ -751,27 +751,27 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 //INFO: Byte 1 of read data contains packet length
-                if (this.ReceiveBuffer[1] == 0x00)
+                if (this.receiveBuffer[1] == 0x00)
                 {
                     // message error
-                    this.logger.LogError($"5:Inverter message length is zero: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    this.logger.LogError($"5:Inverter message length is zero: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.receiveBuffer)}");
                     this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                     this.socketTransport.Disconnect();
                     continue;
                 }
-                if (this.ReceiveBuffer.Length < 2 || this.ReceiveBuffer.Length < this.ReceiveBuffer[1] + 2)
+                if (this.receiveBuffer.Length < 2 || this.receiveBuffer.Length < this.receiveBuffer[1] + 2)
                 {
                     // this is not an error: we try to recover from messages received in more pieces
-                    this.logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.ReceiveBuffer)}");
+                    this.logger.LogTrace($"5:Inverter message is not complete: received {BitConverter.ToString(inverterData)}: message {BitConverter.ToString(this.receiveBuffer)}");
                     continue;
                 }
 
-                var ExtractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.ReceiveBuffer, 4, 1, 2);
-                if (ExtractedMessages != null)
+                var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 4, 1, 2);
+                if (extractedMessages != null)
                 {
                     this.writeEnableEvent.Set();
                 }
-                foreach (var extractedMessage in ExtractedMessages)
+                foreach (var extractedMessage in extractedMessages)
                 {
                     InverterMessage currentMessage;
                     try
