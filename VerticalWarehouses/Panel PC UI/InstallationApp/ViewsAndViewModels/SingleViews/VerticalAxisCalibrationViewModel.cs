@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 ThreadOption.PublisherThread,
                 false);
 
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
                 message =>
                 {

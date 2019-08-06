@@ -260,6 +260,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.CalibrateAxisMethod(receivedMessage);
                         break;
 
+                    case MessageType.CurrentPosition:
+                        this.CurrentPositionMethod(receivedMessage);
+                        break;
+
                     case MessageType.ShutterControl:
                         this.ShutterControlMethod(receivedMessage);
                         break;
