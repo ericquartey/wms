@@ -262,6 +262,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
+        public bool PowerEnable => this.outputs?[(int)IoPorts.PowerEnable] ?? false;
+
         public byte SetupOutputLines => this.setupOutputLines;
 
         public bool UseSetupOutputLines => this.useSetupOutputLines;
