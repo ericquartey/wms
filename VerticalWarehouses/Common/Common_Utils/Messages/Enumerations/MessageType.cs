@@ -62,5 +62,7 @@
 
         InverterStop,
 
+        PowerEnable,
+
     }
 }
