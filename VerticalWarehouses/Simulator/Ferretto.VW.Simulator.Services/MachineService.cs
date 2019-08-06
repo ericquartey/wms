@@ -14,7 +14,6 @@ using static Ferretto.VW.Simulator.Services.BufferUtility;
 using Microsoft.Extensions.Logging;
 using NLog;
 using Prism.Mvvm;
-using Ferretto.VW.Simulator.Services.Helpers;
 
 namespace Ferretto.VW.Simulator.Services
 {
@@ -34,7 +33,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ObservableCollectionWithItemNotify<IODeviceModel> remoteIOs = new ObservableCollectionWithItemNotify<IODeviceModel>();
+        private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 

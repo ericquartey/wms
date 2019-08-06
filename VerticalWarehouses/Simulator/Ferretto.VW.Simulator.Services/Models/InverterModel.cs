@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Simulator.Services.Helpers;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -270,7 +270,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private int controlWord;
 
-        private ObservableCollectionWithItemNotify<BitModel> digitalIO = new ObservableCollectionWithItemNotify<BitModel>();
+        private ObservableCollection<BitModel> digitalIO = new ObservableCollection<BitModel>();
 
         private bool enabled;
 
@@ -305,12 +305,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             //this.DigitalIO = new bool[8];
             //this.DigitalIO[0] = true;
 
-            this.digitalIO.PropertyChanged += (s, e) =>
-            {
-                this.RaisePropertyChanged(nameof(this.GetDigitalIO));
+            //this.digitalIO.PropertyChanged += (s, e) =>
+            //{
+            //    this.RaisePropertyChanged(nameof(this.GetDigitalIO));
 
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
-            };
+            //    this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+            //};
         }
 
         #endregion
@@ -331,7 +331,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public string ControlWordBinary => Convert.ToString(this.ControlWord, 2).PadLeft(16, '0');
 
-        public ObservableCollectionWithItemNotify<BitModel> DigitalIO
+        public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
             set => this.SetProperty(ref this.digitalIO, value);

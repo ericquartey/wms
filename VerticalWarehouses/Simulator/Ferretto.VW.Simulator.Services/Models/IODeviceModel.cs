@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.Simulator.Services.Helpers;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -74,7 +73,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool enabled = true;
 
-        private ObservableCollectionWithItemNotify<BitModel> inputs = new ObservableCollectionWithItemNotify<BitModel>();
+        private ObservableCollection<BitModel> inputs = new ObservableCollection<BitModel>();
 
         private List<BitModel> outputs;
 
@@ -101,10 +100,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("Id:14", false));
             this.inputs.Add(new BitModel("Id:15", false));
 
-            this.inputs.PropertyChanged += (s, e) =>
-            {
-                this.RaisePropertyChanged(nameof(this.InputsValue));
-            };
+            //this.inputs.PropertyChanged += (s, e) =>
+            //{
+            //    this.RaisePropertyChanged(nameof(this.InputsValue));
+            //};
         }
 
         #endregion
@@ -117,7 +116,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int Id { get; set; }
 
-        public ObservableCollectionWithItemNotify<BitModel> Inputs
+        public ObservableCollection<BitModel> Inputs
         {
             get => this.inputs;
             set => this.SetProperty(ref this.inputs, value);
