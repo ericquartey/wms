@@ -10,6 +10,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
+        public CurrentPositionMessageData()
+        {
+        }
+
         public CurrentPositionMessageData(decimal currentPosition)
         {
             this.CurrentPosition = currentPosition;
