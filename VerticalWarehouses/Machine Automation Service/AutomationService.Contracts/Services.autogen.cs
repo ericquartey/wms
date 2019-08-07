@@ -1459,7 +1459,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Homing/GetCurrentPositionAxis");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2489,7 +2489,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/MachineStatus/ExecutePowerOn");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
@@ -2552,7 +2552,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/MachineStatus/ExecutePowerOff");
     
-            var client_ = new System.Net.Http.HttpClient();
+            var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
