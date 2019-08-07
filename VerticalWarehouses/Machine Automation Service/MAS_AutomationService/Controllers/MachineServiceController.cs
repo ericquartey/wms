@@ -1,12 +1,14 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route( "1.0.0/Installation/[controller]" )]
     [ApiController]
     public partial class MachineServiceController : ControllerBase
     {
@@ -14,24 +16,33 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHorizontalAxisDataLayer horizontalAxis;
+
+        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public MachineServiceController(IEventAggregator eventAggregator)
+        public MachineServiceController( IEventAggregator eventAggregator, IServiceProvider services, ILogger<MachineServiceController> logger )
         {
             this.eventAggregator = eventAggregator;
+            this.logger = logger;
+            this.horizontalAxis = services.GetService( typeof( IHorizontalAxisDataLayer ) ) as IHorizontalAxisDataLayer;
+            this.horizontalManualMovements = services.GetService( typeof( IHorizontalManualMovementsDataLayer ) ) as IHorizontalManualMovementsDataLayer;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200)]
-        [HttpGet("ExecuteMachineReset")]
-        public void ExecuteMachineReset(ResetOperation operation)
+        [ProducesResponseType( 200 )]
+        [HttpGet( "ExecuteSearchHorizontalZero" )]
+        public void ExecuteSearchHorizontalZero()
         {
-            this.ExecuteMachineReset_Method(operation);
+            this.ExecuteSearchHorizontalZero_Method();
         }
 
         #endregion

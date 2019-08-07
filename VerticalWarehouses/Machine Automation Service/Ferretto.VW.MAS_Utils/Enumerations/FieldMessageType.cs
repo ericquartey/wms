@@ -32,6 +32,8 @@
 
         InverterError,
 
+        InverterDisable,
+
         AxisPosition,
 
         Positioning,
