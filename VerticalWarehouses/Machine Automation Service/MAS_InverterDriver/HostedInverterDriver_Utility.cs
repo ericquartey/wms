@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.sensorStopwatch.Stop();
                 this.SensorTimeData.AddValue(this.sensorStopwatch.ElapsedTicks);
 
-                this.logger.LogDebug($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
+                this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var index = 0;
                 foreach (var installedInverter in this.inverterStatuses)
