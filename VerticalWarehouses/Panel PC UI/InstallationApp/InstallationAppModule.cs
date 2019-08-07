@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Views.ErrorDetails;
@@ -13,7 +12,6 @@ using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -67,8 +65,6 @@ namespace Ferretto.VW.App.Installation
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            this.RegisterAutomationServices();
-
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
@@ -121,44 +117,6 @@ namespace Ferretto.VW.App.Installation
 
             this.container.RegisterSingleton<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterSingleton<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
-        }
-
-        private void RegisterAutomationServices()
-        {
-            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
-
-            var homingService = new HomingMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IHomingMachineService>(homingService);
-
-            var positioningService = new PositioningMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IPositioningMachineService>(positioningService);
-
-            var beltBurnishingService = new BeltBurnishingMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IBeltBurnishingMachineService>(beltBurnishingService);
-
-            var shutterService = new ShutterMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IShutterMachineService>(shutterService);
-
-            var resolutionCalibrationService = new ResolutionCalibrationMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IResolutionCalibrationMachineService>(resolutionCalibrationService);
-
-            var offsetCalibrationService = new OffsetCalibrationMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IOffsetCalibrationMachineService>(offsetCalibrationService);
-
-            var installationStatusService = new InstallationStatusMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IInstallationStatusMachineService>(installationStatusService);
-
-            var updateSensorsService = new UpdateSensorsMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IUpdateSensorsMachineService>(updateSensorsService);
-
-            var testService = new TestMachineService(automationServiceUrl);
-            this.container.RegisterInstance<ITestMachineService>(testService);
-
-            var machineStatusService = new MachineStatusMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IMachineStatusMachineService>(machineStatusService);
-
-            var moveDrawerService = new MoveDrawerMachineService(automationServiceUrl);
-            this.container.RegisterInstance<IMoveDrawerMachineService>(moveDrawerService);
         }
 
         #endregion
