@@ -293,8 +293,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.OperationMode = InverterOperationMode.Velocity;
 
-            this.digitalIO.Add(new BitModel("Bit 00", false));
-            this.digitalIO.Add(new BitModel("Bit 01", false));
+            this.digitalIO.Add(new BitModel("Bit 00", false, "Potenza ON"));
+            this.digitalIO.Add(new BitModel("Bit 01", false, "Funzionamento normale"));
             this.digitalIO.Add(new BitModel("Bit 02", false));
             this.digitalIO.Add(new BitModel("Bit 03", false));
             this.digitalIO.Add(new BitModel("Bit 04", false));

@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                 {
                     this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out shdMessage);
 
-                    this.logger.LogDebug($"1:message={shdMessage}: index {this.index}");
+                    this.logger.LogTrace($"1:message={shdMessage}: index {this.index}");
                 }
                 catch (OperationCanceledException)
                 {
