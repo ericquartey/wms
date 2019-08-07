@@ -13,8 +13,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
 
-    <Grid Height="80"
-          DataContext="{Binding States}">
+    <Grid Height="80">
 
         <Image Grid.Row="0"
                Grid.Column="0"
@@ -36,6 +35,7 @@
                               Height="60"
                               Margin="10,0,10,0"
                               VerticalContentAlignment="Center"
+                              Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Help}">
                 <Button Background="{DynamicResource VWAPP_BACKGROUND}"
                         BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
@@ -52,6 +52,7 @@
 
             <custom:CustomControlLoggedUser Margin="10,0,20,0"
                                             IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
+                                            Items="{Binding States}"
                                             LogOffCommand="{Binding BackToVWAPPCommand}"
                                             OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                             UserText="{Binding LoggedUser}"
@@ -60,6 +61,7 @@
 
             <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                   CustomCommand="{Binding MachineModeCustomCommand}"
+                                                  Items="{Binding States}"
                                                   MachineModeState="{Binding MachineModeSelectionBool}"
                                                   Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"
                                                   Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
@@ -67,6 +69,7 @@
             <custom:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
                                                      Margin="10,0,0,0"
                                                      CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                                                     Items="{Binding States}"
                                                      MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay}"
                                                      Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}"
                                                      Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
@@ -74,12 +77,8 @@
             <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                 ContentText="Error"
                                                 CustomCommand="{Binding ErrorButtonCommand}"
+                                                Items="{Binding States}"
                                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
-
-            <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
-                                                  ContentText="Service"
-                                                  CustomCommand="{Binding ErrorButtonCommand}"
-                                                  Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
         </StackPanel>
         <!--  end installator  -->
 
@@ -89,6 +88,7 @@
                           Margin="550,10,0,10"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Center"
+                          Items="{Binding States}"
                           PresentationType="{x:Static enums:PresentationTypes.Theme}"
                           Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
             <Button Command="{Binding ExecuteCommand}">
@@ -97,13 +97,13 @@
                         <custom:VWIcon Height="36"
                                        Margin="10"
                                        ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                       Source="pack://application:,,,/Ferretto.WMS.App.Themes;Component/Icons/theme_dark.png"
+                                       Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_dark.png"
                                        Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
                         <custom:VWIcon Height="36"
                                        Margin="10"
                                        ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                       Source="pack://application:,,,//Ferretto.WMS.App.Themes;Component/Icons/theme_light.png"
+                                       Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_light.png"
                                        Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
 
                         <TextBlock Margin="0,0,10,0"
@@ -147,6 +147,7 @@
                           Margin="0,0,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
+                          Items="{Binding States}"
                           PresentationType="{x:Static enums:PresentationTypes.Switch}"
                           Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
             <Button Command="{Binding ExecuteCommand}"

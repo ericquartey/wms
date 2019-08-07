@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Layout.Presentation;
+﻿using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Modules.Layout.Views;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Ioc;
@@ -40,11 +39,11 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationError));
-            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationMachineMarch));
-            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationMachineMode));
+            containerRegistry.Register<IPresentation, PresentationError>(nameof(PresentationError));
+            containerRegistry.Register<IPresentation, PresentationMachineMarch>(nameof(PresentationMachineMarch));
+            containerRegistry.Register<IPresentation, PresentationMachineMode>(nameof(PresentationMachineMode));
             containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationLogged));
-            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationHelp));
+            containerRegistry.Register<IPresentation, PresentationLogged>(nameof(PresentationHelp));
 
             containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationTheme));
             containerRegistry.Register<IPresentation, PresentationSwitch>(nameof(PresentationSwitch));

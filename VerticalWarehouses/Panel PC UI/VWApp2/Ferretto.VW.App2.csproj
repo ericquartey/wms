@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.App.Controls.csproj" />
+    <ProjectReference Include="..\Themes\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
