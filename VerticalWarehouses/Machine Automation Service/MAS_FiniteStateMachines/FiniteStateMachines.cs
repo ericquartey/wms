@@ -333,6 +333,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         {
                             var inverterIndex = receivedMessage.DeviceIndex;
 
+                            //TEMP Update X, Y axis positions
+                            if (dataInverters.CurrentAxis == Axis.Vertical)
+                            {
+                                lock (this.machineSensorsStatus)
+                                {
+                                    this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition;
+                                }
+                            }
+                            else
+                            {
+                                lock (this.machineSensorsStatus)
+                                {
+                                    this.machineSensorsStatus.AxisXPosition = dataInverters.CurrentPosition;
+                                }
+                            }
+
                             if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();

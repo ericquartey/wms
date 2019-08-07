@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 if (checkConditions)
                 {
-                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.machineSensorsStatus, this.logger);
                 }
                 else
                 {
@@ -145,6 +145,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             bool checkConditions;
 
+            //HACK The condition must be handled by the Bug #3711
             checkConditions = (this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 ||
                                this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
                                this.positioningMessageData.AxisMovement == Axis.Vertical ||
