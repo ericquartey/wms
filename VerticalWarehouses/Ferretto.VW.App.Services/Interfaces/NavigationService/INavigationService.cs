@@ -12,8 +12,6 @@
 
         void SetBusy(bool isBusy);
 
-        void ShowInstallation();
-
         #endregion
     }
 }

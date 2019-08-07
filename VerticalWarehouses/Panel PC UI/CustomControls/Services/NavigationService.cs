@@ -108,11 +108,6 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public void ShowInstallation()
-        {
-            ((IInstallation)Application.Current)?.ShowInstallation();
-        }
-
         #endregion
     }
 }

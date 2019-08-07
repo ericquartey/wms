@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>..\VWApp\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\VWApp2\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,17 +49,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\InstallatorMenu.xaml" />
+    <Compile Update="ViewsAndViewModels\SensorsState\BaysSensorsView.xaml.cs">
+      <DependentUpon>BaysSensorsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\InstallatorMenu.xaml.cs">
-      <DependentUpon>InstallatorMenu.xaml</DependentUpon>
+    <None Remove="Views\InstallatorMenuView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\InstallatorMenuView.xaml.cs">
+      <DependentUpon>InstallatorMenuView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\SensorsState\SSBaysView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\SingleViews\DrawerStoreRecallView.xaml">

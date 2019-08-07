@@ -37,7 +37,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding Machine.ModelName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding MachineIdentity.ModelName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel Grid.Row="1"
                     Margin="80,150,0,0"
@@ -51,7 +51,7 @@
             <TextBlock Grid.Row="1"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                       Text="{Binding Machine.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                       Text="{Binding MachineIdentity.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 

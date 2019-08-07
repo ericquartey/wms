@@ -24,6 +24,7 @@ namespace Ferretto.VW.App.Installation
         "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "This is a container initialization class, so it is ok to be coupled to many types.")]
+    [Module(ModuleName = nameof(Utils.Modules.Installation), OnDemand = true)]
     public class InstallationAppModule : IModule
     {
         #region Fields
@@ -66,7 +67,7 @@ namespace Ferretto.VW.App.Installation
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<InstallatorMenu>();
+            containerRegistry.RegisterForNavigation<InstallatorMenuView>();
 
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 

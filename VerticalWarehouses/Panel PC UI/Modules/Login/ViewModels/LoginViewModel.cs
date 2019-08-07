@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Regions;
 
@@ -26,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IIdentityMachineService identityMachineService;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private ICommand loginCommand;
 
         private ICommand switchOffCommand;
@@ -38,7 +37,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             ISessionService sessionService,
             IBayManager bayManager,
-            IIdentityMachineService identityMachineService) : base(PresentationMode.Login)
+            IIdentityMachineService identityMachineService,
+            IHealthProbeService healthProbeService)
+            : base(PresentationMode.Login)
         {
             if (authenticationService == null)
             {
@@ -60,10 +61,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(identityMachineService));
             }
 
+            if (healthProbeService == null)
+            {
+                throw new ArgumentNullException(nameof(healthProbeService));
+            }
+
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
             this.bayManager = bayManager;
             this.identityMachineService = identityMachineService;
+            this.healthProbeService = healthProbeService;
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -75,7 +82,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.UserLogin = new UserLogin();
 #endif
 
-            this.HACK_InitialiseHubOperator();
+            this.healthProbeService.SubscribeOnHealthStatusChanged(async (e) => await this.OnHealthStatusChanged(e));
         }
 
         public override void OnNavigated()
@@ -84,24 +91,38 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.NavigationService.SetBusy(true);
         }
 
-        private async Task OnHubConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            if (!e.IsConnected)
+            await this.RetrieveMachineInfoAsync();
+        }
+
+        public bool IsLoginAllowed
+        {
+            get => this.isLoginAllowed;
+            set => this.SetProperty(ref this.isLoginAllowed, value);
+        }
+
+        private bool isLoginAllowed;
+
+        private async Task RetrieveMachineInfoAsync()
+        {
+            if (this.healthProbeService.HealthStatus == HealthStatus.Healthy
+                ||
+                this.healthProbeService.HealthStatus == HealthStatus.Degraded)
             {
-                this.ShowError("Connection to Machine Automation Service lost.");
+                await this.bayManager.InitializeAsync();
+                this.MachineIdentity = this.bayManager.Identity;
+                this.IsLoginAllowed = true;
             }
-            else
+            else if (this.healthProbeService.HealthStatus == HealthStatus.Unhealthy)
             {
-                try
-                {
-                    await this.bayManager.InitializeAsync();
-                    this.Machine = this.bayManager.Identity;
-                    this.ShowError(string.Empty);
-                }
-                catch
-                {
-                    this.ShowError("Unable to retrieve machine info.");
-                }
+                this.IsLoginAllowed = false;
+
+                this.EventAggregator
+                    .GetEvent<PresentationChangedPubSubEvent>()
+                    .Publish(new PresentationChangedMessage("Impossibile connettersi al servizio di automazione.")); // TODO move to resources
+
+                //this.NavigationService.Appear(nameof(M)) // move to navigation
             }
         }
 
@@ -116,7 +137,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private bool CanExecuteLogin()
         {
-            return this.machineInfo != null;
+            return this.machineIdentity != null
+                &&
+                string.IsNullOrEmpty(this.UserLogin.Error);
         }
 
         public ICommand SwitchOffCommand =>
@@ -126,32 +149,25 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public UserLogin UserLogin { get; }
 
-        public MachineIdentity Machine
+        public MachineIdentity MachineIdentity
         {
-            get => this.machineInfo;
+            get => this.machineIdentity;
             set
             {
-                if (this.SetProperty(ref this.machineInfo, value))
+                if (this.SetProperty(ref this.machineIdentity, value))
                 {
                     ((DelegateCommand)this.LoginCommand).RaiseCanExecuteChanged();
                 }
             }
         }
 
-        private readonly IOperatorHubClient operatorHubClient = ServiceLocator.Current.GetInstance<IOperatorHubClient>();
-
-        private MachineIdentity machineInfo;
+        private MachineIdentity machineIdentity;
 
         #endregion
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            this.HACK_InitialiseHubOperator();
-        }
-
-        public void HACK_InitialiseHubOperator()
-        {
-            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionStatusChanged(sender, e);
+            this.RetrieveMachineInfoAsync();
         }
 
         private async Task ExecuteLoginCommandAsync()
@@ -210,7 +226,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.IsBusy = false;
 
-                this.NavigationService.ShowInstallation();
+                this.NavigationService.Appear(nameof(Utils.Modules.Installation), Utils.Modules.Installation.INSTALLATORMENU);
             }
             catch (Exception ex)
             {
@@ -232,7 +248,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.IsBusy = false;
 
-                this.NavigationService.ShowInstallation();
+                this.NavigationService.Appear(nameof(Utils.Modules.Operator), "TODO"); // TODO
             }
             catch (Exception ex)
             {

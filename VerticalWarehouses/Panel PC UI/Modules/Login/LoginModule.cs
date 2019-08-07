@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.App.Modules.Login.Views;
+using Ferretto.VW.App.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -18,6 +19,9 @@ namespace Ferretto.VW.App.Modules.Login
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
+            var healthProbeService = containerProvider.Resolve<IHealthProbeService>();
+            healthProbeService.Start();
+
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
             regionManager.RegisterViewWithRegion(

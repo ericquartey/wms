@@ -5,7 +5,6 @@ using System.Windows;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
@@ -18,7 +17,7 @@ using Unity.Injection;
 
 namespace Ferretto.VW.App
 {
-    public partial class App : PrismApplication, IInstallation
+    public partial class App : PrismApplication
     {
         #region Fields
 
@@ -30,7 +29,7 @@ namespace Ferretto.VW.App
 
         public App()
         {
-            System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
         }
 
         #endregion
@@ -48,11 +47,6 @@ namespace Ferretto.VW.App
         public static void LoadCatalog(IModuleCatalog moduleCatalog)
         {
             (moduleCatalog as ModuleCatalog)?.Load();
-        }
-
-        public void ShowInstallation()
-        {
-            this.InstallationAppMainWindowInstance?.Show();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
