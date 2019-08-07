@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
@@ -16,6 +17,26 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public bool SensorsStatus { get; set; }
 
         public MessageVerbosity Verbosity => MessageVerbosity.Info;
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            string sensorsStates = string.Empty;
+            if (this.SensorsStates != null)
+            {
+                var sb = new StringBuilder();
+                foreach (var b in this.SensorsStates)
+                {
+                    sb.AppendFormat("{0:x2};", b);
+                }
+                sensorsStates = sb.ToString();
+            }
+
+            return $"SensorsStatus(bool):{this.SensorsStatus} SensorsStates:{sensorsStates}";
+        }
 
         #endregion
     }

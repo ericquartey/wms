@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Simulator.Services.Helpers;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -270,7 +270,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private int controlWord;
 
-        private ObservableCollectionWithItemNotify<BitModel> digitalIO = new ObservableCollectionWithItemNotify<BitModel>();
+        private ObservableCollection<BitModel> digitalIO = new ObservableCollection<BitModel>();
 
         private bool enabled;
 
@@ -293,24 +293,14 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.OperationMode = InverterOperationMode.Velocity;
 
-            this.digitalIO.Add(new BitModel("Id:00", false));
-            this.digitalIO.Add(new BitModel("Id:01", false));
-            this.digitalIO.Add(new BitModel("Id:02", false));
-            this.digitalIO.Add(new BitModel("Id:03", false));
-            this.digitalIO.Add(new BitModel("Id:04", false));
-            this.digitalIO.Add(new BitModel("Id:05", false));
-            this.digitalIO.Add(new BitModel("Id:06", false));
-            this.digitalIO.Add(new BitModel("Id:07", false));
-
-            //this.DigitalIO = new bool[8];
-            //this.DigitalIO[0] = true;
-
-            this.digitalIO.PropertyChanged += (s, e) =>
-            {
-                this.RaisePropertyChanged(nameof(this.GetDigitalIO));
-
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
-            };
+            this.digitalIO.Add(new BitModel("Bit 00", false));
+            this.digitalIO.Add(new BitModel("Bit 01", false));
+            this.digitalIO.Add(new BitModel("Bit 02", false));
+            this.digitalIO.Add(new BitModel("Bit 03", false));
+            this.digitalIO.Add(new BitModel("Bit 04", false));
+            this.digitalIO.Add(new BitModel("Bit 05", false));
+            this.digitalIO.Add(new BitModel("Bit 06", false));
+            this.digitalIO.Add(new BitModel("Bit 07", false));
         }
 
         #endregion
@@ -331,7 +321,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public string ControlWordBinary => Convert.ToString(this.ControlWord, 2).PadLeft(16, '0');
 
-        public ObservableCollectionWithItemNotify<BitModel> DigitalIO
+        public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
             set => this.SetProperty(ref this.digitalIO, value);
@@ -348,6 +338,94 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get { return this.inverterType; }
             set { this.inverterType = value; }
+        }
+
+        public bool IsFault
+        {
+            get
+            {
+                return (this.statusWord & 0x0008) > 0;
+            }
+            set
+            {
+                this.statusWord |= 0x0008;
+            }
+        }
+
+        public bool IsOperationEnabled
+        {
+            get
+            {
+                return (this.statusWord & 0x0004) > 0;
+            }
+        }
+
+        public bool IsQuickStopTrue
+        {
+            get
+            {
+                return (this.statusWord & 0x0020) > 0;
+            }
+        }
+
+        public bool IsReadyToSwitchOn
+        {
+            get
+            {
+                return (this.statusWord & 0x0001) > 0;
+            }
+        }
+
+        public bool IsRemote
+        {
+            get
+            {
+                return (this.statusWord & 0x0200) > 0;
+            }
+        }
+
+        public bool IsSwitchedOn
+        {
+            get
+            {
+                return (this.statusWord & 0x0002) > 0;
+            }
+            set
+            {
+                this.statusWord |= 0x0002;
+            }
+        }
+
+        public bool IsSwitchOnDisabled
+        {
+            get
+            {
+                return (this.statusWord & 0x0040) > 0;
+            }
+        }
+
+        public bool IsVoltageEnabled
+        {
+            get
+            {
+                return (this.statusWord & 0x0010) > 0;
+            }
+        }
+
+        public bool IsWarning
+        {
+            get
+            {
+                return (this.statusWord & 0x0080) > 0;
+            }
+        }
+
+        public bool IsWarning2
+        {
+            get
+            {
+                return (this.statusWord & 0x8000) > 0;
+            }
         }
 
         public InverterOperationMode OperationMode { get; set; }

@@ -8,4 +8,7 @@
     <BitmapImage x:Key="Ferretto_Logo"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_light.png" />
 
+    <BitmapImage x:Key="Ferretto_Small_Logo"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
+
 </ResourceDictionary>

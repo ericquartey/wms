@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.Simulator.Services.Helpers;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -23,7 +22,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         BayLight = 4,
 
-        FreeSensor1 = 5,
+        PowerEnable = 5,
 
         EndMissionRobot = 6,
 
@@ -74,7 +73,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool enabled = true;
 
-        private ObservableCollectionWithItemNotify<BitModel> inputs = new ObservableCollectionWithItemNotify<BitModel>();
+        private ObservableCollection<BitModel> inputs = new ObservableCollection<BitModel>();
+
+        private List<BitModel> outputs;
 
         #endregion
 
@@ -82,27 +83,33 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public IODeviceModel()
         {
-            this.inputs.Add(new BitModel("Id:00", false));
-            this.inputs.Add(new BitModel("Id:01", false));
-            this.inputs.Add(new BitModel("Id:02", false));
-            this.inputs.Add(new BitModel("Id:03", false));
-            this.inputs.Add(new BitModel("Id:04", false));
-            this.inputs.Add(new BitModel("Id:05", false));
-            this.inputs.Add(new BitModel("Id:06", false));
-            this.inputs.Add(new BitModel("Id:07", false));
-            this.inputs.Add(new BitModel("Id:08", false));
-            this.inputs.Add(new BitModel("Id:09", false));
-            this.inputs.Add(new BitModel("Id:10", false));
-            this.inputs.Add(new BitModel("Id:11", false));
-            this.inputs.Add(new BitModel("Id:12", false));
-            this.inputs.Add(new BitModel("Id:13", false));
-            this.inputs.Add(new BitModel("Id:14", false));
-            this.inputs.Add(new BitModel("Id:15", false));
+            // Initialize inputs
+            this.inputs.Add(new BitModel("Bit 00", false));
+            this.inputs.Add(new BitModel("Bit 01", false));
+            this.inputs.Add(new BitModel("Bit 02", false));
+            this.inputs.Add(new BitModel("Bit 03", false));
+            this.inputs.Add(new BitModel("Bit 04", false));
+            this.inputs.Add(new BitModel("Bit 05", false));
+            this.inputs.Add(new BitModel("Bit 06", false));
+            this.inputs.Add(new BitModel("Bit 07", false));
+            this.inputs.Add(new BitModel("Bit 08", false));
+            this.inputs.Add(new BitModel("Bit 09", false));
+            this.inputs.Add(new BitModel("Bit 10", false));
+            this.inputs.Add(new BitModel("Bit 11", false));
+            this.inputs.Add(new BitModel("Bit 12", false));
+            this.inputs.Add(new BitModel("Bit 13", false));
+            this.inputs.Add(new BitModel("Bit 14", false));
+            this.inputs.Add(new BitModel("Bit 15", false));
 
-            this.inputs.PropertyChanged += (s, e) =>
-            {
-                this.RaisePropertyChanged(nameof(this.InputsValue));
-            };
+            // Initialize ouputs
+            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false)).ToList();
+
+            // Remove emergency button
+            this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+            // Set empty position on bay
+            this.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
         }
 
         #endregion
@@ -111,11 +118,11 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
 
-        public byte FirmwareVersion { get; set; } = 0x10;
+        public byte FirmwareVersion { get; set; } = 0x11;
 
         public int Id { get; set; }
 
-        public ObservableCollectionWithItemNotify<BitModel> Inputs
+        public ObservableCollection<BitModel> Inputs
         {
             get => this.inputs;
             set => this.SetProperty(ref this.inputs, value);
@@ -135,6 +142,12 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 return result;
             }
+        }
+
+        public List<BitModel> Outputs
+        {
+            get => this.outputs;
+            set => this.SetProperty(ref this.outputs, value);
         }
 
         #endregion

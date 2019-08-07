@@ -12,7 +12,7 @@
         Title="Simulator"
         Width="1000"
         Height="700"
-        Icon="Resources/LogoFerrettoGroup.png"
+        Icon="Resources/LogoFerrettoGroup2.png"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
@@ -57,21 +57,76 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0"
-                          Margin="5">
+                          Margin="5,5,5,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
-                                   ToolTip="Id" />
+
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="2"
+                                       Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                                       Text="{Binding Id, StringFormat='IO DEVICE 0{0}'}"
+                                       ToolTip="Id" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="0"
+                                       Margin="0,0,5,0"
+                                       VerticalAlignment="Center"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="Output:" />
+
+                            <ItemsControl Grid.Row="1"
+                                          Grid.Column="1"
+                                          Margin="0,5"
+                                          ItemsSource="{Binding Outputs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <ctrl:CustomSensorSquareControl Margin="0"
+                                                                            HorizontalAlignment="Left"
+                                                                            VerticalAlignment="Center"
+                                                                            IsReadOnly="True"
+                                                                            LabelText=""
+                                                                            SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}" />
+                                            <TextBlock Margin="-2,2,0,0"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                                       Text="{Binding Description}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </Grid>
+
                         <custom:VWIcon Grid.Column="1"
                                        Height="36"
                                        HorizontalAlignment="Right"
                                        ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                                        Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/device.png" />
                     </Grid>
+
                     <ItemsControl Grid.Row="1"
                                   Margin="0,5"
                                   ItemsSource="{Binding Inputs}">
@@ -82,7 +137,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ctrl:CustomSensorSmallControl Margin="5,5,13,5"
+                                <ctrl:CustomSensorSmallControl Margin="5,5,9,5"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                LabelText="{Binding Description}"
@@ -170,7 +225,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ctrl:CustomSensorSquareControl Margin="4,5,3,5"
+                                <ctrl:CustomSensorSquareControl Margin="2,5,3,5"
                                                                 HorizontalAlignment="Left"
                                                                 VerticalAlignment="Center"
                                                                 LabelText="{Binding Description}"

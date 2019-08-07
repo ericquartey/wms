@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
-        private readonly byte[] responseMessage;
+        private byte[] responseMessage;
 
         #endregion
 
@@ -164,6 +164,7 @@ namespace Ferretto.VW.MAS.IODriver
             switch (codeOperation)
             {
                 case 0x00: // Data
+                    this.responseMessage = new byte[NBYTES_RECEIVE];
                     this.responseMessage[0] = NBYTES_RECEIVE;  // nBytes
                     this.responseMessage[1] = FW_RELEASE;      // fwRelease
                     this.responseMessage[2] = 0x00;            // Code op   0x00: data, 0x06: configuration
@@ -191,6 +192,7 @@ namespace Ferretto.VW.MAS.IODriver
                     break;
 
                 case 0x01: // Config
+                    this.responseMessage = new byte[NBYTES_RECEIVE_CFG];
                     this.responseMessage[0] = NBYTES_RECEIVE_CFG;  // nBytes
                     this.responseMessage[1] = FW_RELEASE;          // fwRelease
                     this.responseMessage[2] = 0x06;                // Ack  0x00: data, 0x06: configuration

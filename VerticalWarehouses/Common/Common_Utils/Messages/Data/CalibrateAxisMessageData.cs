@@ -8,10 +8,16 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public CalibrateAxisMessageData(Axis axisToCalibrate, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public CalibrateAxisMessageData(
+            Axis axisToCalibrate,
+            int currentStepCalibrate,
+            int maxStepCalibrate,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToCalibrate = axisToCalibrate;
             this.Verbosity = verbosity;
+            this.CurrentStepCalibrate = currentStepCalibrate;
+            this.MaxStepCalibrate = maxStepCalibrate;
         }
 
         #endregion
@@ -20,7 +26,20 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public Axis AxisToCalibrate { get; }
 
+        public int CurrentStepCalibrate { get; }
+
+        public int MaxStepCalibrate { get; }
+
         public MessageVerbosity Verbosity { get; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"AxisToCalibrate:{this.AxisToCalibrate.ToString()} CurrentStep:{this.CurrentStepCalibrate} MaxStep:{this.MaxStepCalibrate}";
+        }
 
         #endregion
     }

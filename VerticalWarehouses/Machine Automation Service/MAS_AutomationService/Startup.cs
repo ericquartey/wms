@@ -19,6 +19,14 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
+        #region Fields
+
+        private const string LiveHealthCheckTag = "live";
+
+        private const string ReadyHealthCheckTag = "ready";
+
+        #endregion
+
         #region Constructors
 
         public Startup(IConfiguration configuration)
@@ -52,12 +60,12 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseHealthChecks("/health/ready", new HealthCheckOptions()
             {
-                Predicate = (check) => check.Tags.Contains("ready"),
+                Predicate = (check) => check.Tags.Contains(ReadyHealthCheckTag),
             });
 
             app.UseHealthChecks("/health/live", new HealthCheckOptions()
             {
-                Predicate = (check) => check.Tags.Contains("live"),
+                Predicate = (check) => check.Tags.Contains(LiveHealthCheckTag),
             });
 
             app.UseDataLayer();
@@ -81,8 +89,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services
                 .AddHealthChecks()
-                .AddCheck<LivelinessHealthCheck>("live", null, tags: new[] { "live" })
-                .AddCheck<ReadinessHealthCheck>("ready", null, tags: new[] { "ready" });
+                .AddCheck<LivelinessHealthCheck>("live", null, tags: new[] { LiveHealthCheckTag })
+                .AddCheck<ReadinessHealthCheck>("ready", null, tags: new[] { ReadyHealthCheckTag });
 
             this.InitialiseWmsInterfaces(services);
 
