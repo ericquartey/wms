@@ -29,6 +29,8 @@ namespace Ferretto.VW.Simulator.Controls.Controls
 
         public static readonly DependencyProperty IoMachineSensorProperty = DependencyProperty.Register("IoMachineSensor", typeof(IOMachineSensors), typeof(CustomSensorSquareControl));
 
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(CustomSensorSquareControl));
+
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomSensorSquareControl), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty SensorPortProperty = DependencyProperty.Register("SensorPort", typeof(IOMachineSensors), typeof(CustomSensorSquareControl), new FrameworkPropertyMetadata(IOMachineSensors.NoValue, OnSensorPortChanged));
@@ -68,6 +70,16 @@ namespace Ferretto.VW.Simulator.Controls.Controls
             {
                 this.SetValue(BulletColorProperty, value);
                 this.RaisePropertyChanged(nameof(this.BulletColor));
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get => (bool)this.GetValue(IsReadOnlyProperty);
+            set
+            {
+                this.SetValue(IsReadOnlyProperty, value);
+                this.RaisePropertyChanged(nameof(this.IsReadOnly));
             }
         }
 
@@ -146,7 +158,10 @@ namespace Ferretto.VW.Simulator.Controls.Controls
 
         private void ExecuteLeftClick()
         {
-            this.SensorState = !this.SensorState;
+            if (!this.IsReadOnly)
+            {
+                this.SensorState = !this.SensorState;
+            }
         }
 
         private void RaisePropertyChanged(string propertyName)
