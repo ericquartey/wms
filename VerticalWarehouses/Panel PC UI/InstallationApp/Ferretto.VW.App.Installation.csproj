@@ -49,6 +49,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\InstallatorMenu.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\InstallatorMenu.xaml.cs">
+      <DependentUpon>InstallatorMenu.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

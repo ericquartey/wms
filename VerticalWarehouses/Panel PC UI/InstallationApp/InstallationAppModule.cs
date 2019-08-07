@@ -4,6 +4,7 @@ using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Views.ErrorDetails;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState;
@@ -65,6 +66,8 @@ namespace Ferretto.VW.App.Installation
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<InstallatorMenu>();
+
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
