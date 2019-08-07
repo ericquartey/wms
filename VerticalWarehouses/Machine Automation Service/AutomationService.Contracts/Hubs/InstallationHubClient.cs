@@ -63,6 +63,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<InverterStopMessageData>>(
                 "InverterStopNotify", this.OnInverterStopNotify);
+
+            connection.On<NotificationMessageUI<PowerEnableMessageData>>(
+                "PowerEnableNotify", this.OnPowerEnableNotify);
+
         }
 
         /// <summary>
@@ -116,6 +120,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         /// </summary>
         /// <param name="message"></param>
         private void OnResetSecurityNotify(NotificationMessageUI<ResetSecurityMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the PowerEnable event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnPowerEnableNotify(NotificationMessageUI<PowerEnableMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

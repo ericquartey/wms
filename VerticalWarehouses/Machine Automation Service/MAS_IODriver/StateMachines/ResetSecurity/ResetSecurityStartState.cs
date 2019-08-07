@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
+namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
     public class ResetSecurityStartState : IoStateBase
     {
@@ -42,9 +42,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
-            if (message.ValidOutputs && message.OutputsCleared)
+            if (message.ValidOutputs && !message.ResetSecurity)
             {
                 this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.status, this.Logger));
             }
@@ -52,12 +52,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs && message.OutputsCleared;
+                message.ValidOutputs && !message.ResetSecurity;
 
-            if (this.status.MatchOutputs(message.Outputs))
+            if (checkMessage && this.status.MatchOutputs(message.Outputs))
             {
                 this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.ParentStateMachine, this.status, this.Logger));
             }
@@ -66,9 +66,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         public override void Start()
         {
             var resetIoMessage = new IoSHDWriteMessage();
-            resetIoMessage.Force = true;
+            resetIoMessage.SwitchResetSecurity(true);
+            resetIoMessage.SwitchPowerEnable(true);
 
-            this.Logger.LogTrace($"1:Reset IO={resetIoMessage}");
+            this.Logger.LogTrace($"1:Reset Security Pulse={resetIoMessage}");
 
             lock (this.status)
             {

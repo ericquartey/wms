@@ -348,6 +348,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceInverterIoStatusPublish = false;
+
+                                //if(this.machineSensorsStatus.IsInverterFault)
                             }
                         }
                         break;
@@ -631,6 +633,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.ResetSecurity:
+                    case MessageType.PowerEnable:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             switch (receivedMessage.Status)
