@@ -35,18 +35,20 @@ namespace Ferretto.VW.App.Modules.Layout
                             $"{Utils.Modules.Layout.REGION_FOOTER}",
                             typeof(FooterView));
 
-            //.RequestNavigate($"{Utils.Modules.Layout.REGION_MAINCONTENT}", "LoginView");
-
             this.logger.Trace("Module loaded.");
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.RegisterForNavigation<LayoutView>(Utils.Modules.Layout.LAYOUT);
-            //containerRegistry.Register<IView, LayoutView>(Utils.Modules.Layout.LAYOUT);
+            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationError));
+            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationMachineMarch));
+            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationMachineMode));
+            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationLogged));
+            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationHelp));
 
             containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationTheme));
             containerRegistry.Register<IPresentation, PresentationSwitch>(nameof(PresentationSwitch));
+
             containerRegistry.Register<IPresentation, PresentationBack>(nameof(PresentationBack));
         }
 

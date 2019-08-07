@@ -10,9 +10,9 @@
 
         Switch,
 
-        Power,
+        MachineMarch,
 
-        Status,
+        Logged,
 
         MachineMode,
 

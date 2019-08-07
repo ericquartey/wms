@@ -2,13 +2,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomControlLoggedUser.xaml
     /// </summary>
-    public partial class CustomControlLoggedUser : UserControl, INotifyPropertyChanged
+    public partial class CustomControlLoggedUser : PpcControl, INotifyPropertyChanged
     {
         #region Fields
 
@@ -29,6 +30,7 @@ namespace Ferretto.VW.App.Controls.Controls
             this.InitializeComponent();
             var customControlLoggedUser = this;
             this.LayoutRoot.DataContext = customControlLoggedUser;
+            this.PresentationType = PresentationTypes.Logged;
         }
 
         #endregion

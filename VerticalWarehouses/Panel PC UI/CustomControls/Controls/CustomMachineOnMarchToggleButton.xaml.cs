@@ -3,13 +3,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomMachineOnMarchToggleButton.xaml
     /// </summary>
-    public partial class CustomMachineOnMarchToggleButton : UserControl, INotifyPropertyChanged
+    public partial class CustomMachineOnMarchToggleButton : PpcControl, INotifyPropertyChanged
     {
         #region Fields
 
@@ -30,6 +31,7 @@ namespace Ferretto.VW.App.Controls.Controls
             this.InitializeComponent();
             var customMachineOnMarchToggleButton = this;
             this.LayoutRoot.DataContext = customMachineOnMarchToggleButton;
+            this.PresentationType = PresentationTypes.MachineMarch;
         }
 
         #endregion

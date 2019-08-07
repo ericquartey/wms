@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:vwicon="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"             
+             xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:enums="clr-namespace:Ferretto.VW.App.Services;assembly=Ferretto.VW.App.Services"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -27,75 +27,132 @@
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Fill" />
 
+        <!--  Installator  -->
+        <StackPanel FlowDirection="RightToLeft"
+                    Orientation="Horizontal"
+                    ScrollViewer.CanContentScroll="True">
+
+            <ctrls:PpcControl Width="60"
+                              Height="60"
+                              Margin="10,0,10,0"
+                              VerticalContentAlignment="Center"
+                              PresentationType="{x:Static enums:PresentationTypes.Help}">
+                <Button Background="{DynamicResource VWAPP_BACKGROUND}"
+                        BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
+                        BorderThickness="1"
+                        Command="{Binding OpenHelpWindow}">
+
+                    <TextBlock FontSize="25"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               TextAlignment="Center">
+                        ?
+                    </TextBlock>
+                </Button>
+            </ctrls:PpcControl>
+
+            <custom:CustomControlLoggedUser Margin="10,0,20,0"
+                                            IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
+                                            LogOffCommand="{Binding BackToVWAPPCommand}"
+                                            OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
+                                            UserText="{Binding LoggedUser}"
+                                            Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+
+            <custom:CustomMachineModeToggleButton Name="MachineModeControl"
+                                                  CustomCommand="{Binding MachineModeCustomCommand}"
+                                                  MachineModeState="{Binding MachineModeSelectionBool}"
+                                                  Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"
+                                                  Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+            <custom:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
+                                                     Margin="10,0,0,0"
+                                                     CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                                                     MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay}"
+                                                     Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}"
+                                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+            <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
+                                                ContentText="Error"
+                                                CustomCommand="{Binding ErrorButtonCommand}"
+                                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+            <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
+                                                  ContentText="Service"
+                                                  CustomCommand="{Binding ErrorButtonCommand}"
+                                                  Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+        </StackPanel>
+        <!--  end installator  -->
+
         <!--  Login  -->
         <!--  ToggleThemeCommand  -->
-        <ctrls:PpcPresentationControl Grid.Row="0"
-                                      Margin="550,10,0,10"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Center"
-                                      Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}"
-                                      Command="{Binding ExecuteCommand}"
-                                      PresentationType="{x:Static enums:PresentationTypes.Theme}">
-            <ctrls:PpcPresentationControl.Content>
-                <StackPanel Orientation="Horizontal">
-                    <vwicon:VWIcon Height="36"
-                                  Margin="10"
-                                  ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                  Source="pack://application:,,,/Ferretto.WMS.App.Themes;Component/Icons/theme_dark.png"
-                                  Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
+        <ctrls:PpcControl Grid.Row="0"
+                          Margin="550,10,0,10"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          PresentationType="{x:Static enums:PresentationTypes.Theme}"
+                          Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+            <Button Command="{Binding ExecuteCommand}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <custom:VWIcon Height="36"
+                                       Margin="10"
+                                       ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                       Source="pack://application:,,,/Ferretto.WMS.App.Themes;Component/Icons/theme_dark.png"
+                                       Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
-                    <vwicon:VWIcon Height="36"
-                                  Margin="10"
-                                  ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                  Source="pack://application:,,,//Ferretto.WMS.App.Themes;Component/Icons/theme_light.png"
-                                  Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
+                        <custom:VWIcon Height="36"
+                                       Margin="10"
+                                       ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                       Source="pack://application:,,,//Ferretto.WMS.App.Themes;Component/Icons/theme_light.png"
+                                       Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
 
-                    <TextBlock Margin="0,0,10,0"
-                               VerticalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                 Value="True">
-                                        <Setter Property="TextBlock.Text" Value="Tema Scuro" />
-                                        <Setter Property="TextBlock.Foreground" Value="White" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                                                 Value="False">
-                                        <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
-                                        <Setter Property="TextBlock.Foreground" Value="Black" />
-                                    </DataTrigger>
+                        <TextBlock Margin="0,0,10,0"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                                                     Value="True">
+                                            <Setter Property="TextBlock.Text" Value="Tema Scuro" />
+                                            <Setter Property="TextBlock.Foreground" Value="White" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                                                     Value="False">
+                                            <Setter Property="TextBlock.Text" Value="Tema Chiaro" />
+                                            <Setter Property="TextBlock.Foreground" Value="Black" />
+                                        </DataTrigger>
 
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </ctrls:PpcPresentationControl.Content>
-            <ctrls:PpcPresentationControl.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-
-            </ctrls:PpcPresentationControl.Style>
-        </ctrls:PpcPresentationControl>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </ctrls:PpcControl>
 
         <!--  SwitchOffCommand  -->
-        <ctrls:PpcPresentationControl Grid.Row="0"
-                                      Margin="0,0,15,0"
-                                      HorizontalAlignment="Right"
-                                      VerticalAlignment="Center"
-                                      Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}"
-                                      Command="{Binding ExecuteCommand}"
-                                      Content="{x:Static res:VWApp.SwitchOff}"
-                                      PresentationType="{x:Static enums:PresentationTypes.Switch}"
-                                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <ctrls:PpcControl Grid.Row="0"
+                          Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          PresentationType="{x:Static enums:PresentationTypes.Switch}"
+                          Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+            <Button Command="{Binding ExecuteCommand}"
+                    Content="{x:Static res:VWApp.SwitchOff}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        </ctrls:PpcControl>
 
         <!--  End Login  -->
 

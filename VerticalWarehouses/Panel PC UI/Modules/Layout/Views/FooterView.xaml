@@ -25,14 +25,14 @@
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
 
-            <ctrls:PpcPresentationControl Margin="10,0,0,0"
-                                          VerticalAlignment="Center"
-                                          Command="{Binding NavigateBackCommand}"
-                                          Content="{x:Static res:InstallationApp.Back}"
-                                          IsEnabled="{Binding IsBackButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          PresentationType="{x:Static enums:PresentationTypes.Back}"
-                                          Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-                                          Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+            <ctrls:PpcControl Margin="10,0,0,0"
+                              VerticalAlignment="Center"
+                              PresentationType="{x:Static enums:PresentationTypes.Back}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <Button Command="{Binding NavigateBackCommand}"
+                        Content="{x:Static res:InstallationApp.Back}"
+                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+            </ctrls:PpcControl>
 
         </StackPanel>
 

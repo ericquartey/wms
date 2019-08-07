@@ -2,13 +2,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomMainWindowErrorButton.xaml
     /// </summary>
-    public partial class CustomMainWindowErrorButton : UserControl, INotifyPropertyChanged
+    public partial class CustomMainWindowErrorButton : PpcControl, INotifyPropertyChanged
     {
         #region Fields
 
@@ -25,6 +26,7 @@ namespace Ferretto.VW.App.Controls.Controls
             this.InitializeComponent();
             var customMainWindowErrorButton = this;
             this.LayoutRoot.DataContext = customMainWindowErrorButton;
+            this.PresentationType = PresentationTypes.Error;
         }
 
         #endregion

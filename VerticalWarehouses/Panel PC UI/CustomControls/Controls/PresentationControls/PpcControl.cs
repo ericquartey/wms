@@ -7,14 +7,14 @@ using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class PpcPresentationControl : Button
+    public class PpcControl : UserControl
     {
         #region Fields
 
-        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable<IPresentation>), typeof(PpcPresentationControl),
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable<IPresentation>), typeof(PpcControl),
                                                                             new PropertyMetadata(default(IEnumerable<IPresentation>), ItemsChanged));
 
-        public static readonly DependencyProperty PresentationTypeProperty = DependencyProperty.Register("PresentationType", typeof(PresentationTypes), typeof(PpcPresentationControl),
+        public static readonly DependencyProperty PresentationTypeProperty = DependencyProperty.Register("PresentationType", typeof(PresentationTypes), typeof(PpcControl),
                                                                             new PropertyMetadata(default(PresentationTypes), PresentationTypeChanged));
 
         #endregion
@@ -62,7 +62,7 @@ namespace Ferretto.VW.App.Controls
 
         private static void ItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PpcPresentationControl control)
+            if (d is PpcControl control)
             {
                 control.Initialize();
             }
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Controls
 
         private static void PresentationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PpcPresentationControl control)
+            if (d is PpcControl control)
             {
                 control.Initialize();
             }

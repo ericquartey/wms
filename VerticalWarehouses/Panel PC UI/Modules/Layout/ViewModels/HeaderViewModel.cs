@@ -12,6 +12,11 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             base.InitializeData();
             this.States.Add(this.GetInstance(nameof(PresentationTheme)));
             this.States.Add(this.GetInstance(nameof(PresentationSwitch)));
+            this.States.Add(this.GetInstance(nameof(PresentationHelp)));
+            this.States.Add(this.GetInstance(nameof(PresentationLogged)));
+            this.States.Add(this.GetInstance(nameof(PresentationMachineMode)));
+            this.States.Add(this.GetInstance(nameof(PresentationMachineMarch)));
+            this.States.Add(this.GetInstance(nameof(PresentationError)));
         }
 
         public override void UpdatePresentation(PresentationMode mode)
@@ -32,9 +37,20 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
                 case PresentationMode.Installator:
                     this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Help, true);
+                    this.Show(PresentationTypes.Logged, true);
+                    this.Show(PresentationTypes.MachineMode, true);
+                    this.Show(PresentationTypes.MachineMarch, true);
+                    this.Show(PresentationTypes.Error, true);
                     break;
 
                 case PresentationMode.Operator:
+                    this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Help, true);
+                    this.Show(PresentationTypes.Logged, true);
+                    this.Show(PresentationTypes.MachineMode, true);
+                    this.Show(PresentationTypes.MachineMarch, true);
+                    this.Show(PresentationTypes.Error, true);
                     break;
 
                 case PresentationMode.Help:

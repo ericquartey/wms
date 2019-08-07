@@ -3,13 +3,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomMachineModeToggleButton.xaml
     /// </summary>
-    public partial class CustomMachineModeToggleButton : UserControl, INotifyPropertyChanged
+    public partial class CustomMachineModeToggleButton : PpcControl, INotifyPropertyChanged
     {
         #region Fields
 
@@ -28,6 +29,7 @@ namespace Ferretto.VW.App.Controls.Controls
         public CustomMachineModeToggleButton()
         {
             this.InitializeComponent();
+            this.PresentationType = PresentationTypes.MachineMode;
             var customMachineModeToggleButton = this;
             this.LayoutRoot.DataContext = customMachineModeToggleButton;
         }
