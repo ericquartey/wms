@@ -25,9 +25,13 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IBayManager bayManager;
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
+
+        private readonly IItemsDataService itemsDataService;
 
         private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
+
+        private readonly IStatusMessageService statusMessageService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -66,7 +70,10 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
             Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
-            IIdentityService identityService)
+            IIdentityService identityService,
+            IItemsDataService itemsDataService,
+            INavigationService navigationService,
+            IIdentityMachineService identityService)
         {
             if (statusMessageService == null)
             {
@@ -83,15 +90,21 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
+            if (itemsDataService == null)
+            {
+                throw new ArgumentNullException(nameof(itemsDataService));
+            }
+
             if (navigationService == null)
             {
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            this.StatusMessageService = statusMessageService;
             this.identityService = identityService;
+            this.statusMessageService = statusMessageService;
             this.wmsDataProvider = wmsDataProvider;
             this.bayManager = bayManager;
+            this.itemsDataService = itemsDataService;
             this.navigationService = navigationService;
             this.NavigationViewModel = null;
             this.currentItemIndex = 0;
@@ -162,8 +175,6 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             }
         }
 
-        public IStatusMessageService StatusMessageService { get; }
-
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
@@ -212,19 +223,19 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
             var success = await this.wmsDataProvider.PickAsync(
                 itemToPick.Id,
-                2,
+                2, // TODO remove this hardcoded value
                 this.bayManager.BayId,
                 qty);
 
             if (success)
             {
-                this.StatusMessageService.Notify(
+                this.statusMessageService.Notify(
                     $"Successfully called {qty} pieces of item {itemToPick.Id}.",
                     StatusMessageLevel.Success);
             }
             else
             {
-                this.StatusMessageService.Notify(
+                this.statusMessageService.Notify(
                     $"Couldn't get {qty} pieces of item {itemToPick.Id}.",
                     StatusMessageLevel.Error);
             }
@@ -234,7 +245,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         public override async Task OnEnterViewAsync()
         {
-            if (this.items != null &&
+            if (this.items != null
+                &&
                 this.selectedItem != null)
             {
                 return;
@@ -263,17 +275,22 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
             try
             {
-                var newItems = await this.wmsDataProvider.GetItemsAsync(this.areaId.Value, this.searchItemCode, skip, DEFAULT_QUANTITY_ITEM, cancellationToken);
-                if (newItems != null)
+                var newItems = await this.itemsDataService.GetAllAsync(
+                    skip,
+                    DEFAULT_QUANTITY_ITEM,
+                    null,
+                    null,
+                    this.searchItemCode,
+                    cancellationToken);
+
+                foreach (var item in newItems)
                 {
-                    foreach (var item in newItems)
-                    {
-                        this.items.Add(item);
-                    }
+                    this.items.Add(item);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.statusMessageService.Notify(ex);
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;

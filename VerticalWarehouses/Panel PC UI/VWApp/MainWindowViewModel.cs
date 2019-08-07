@@ -12,8 +12,6 @@ using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
-using ConnectionStatusChangedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.ConnectionStatusChangedEventArgs;
-using IOperatorHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IOperatorHubClient;
 
 namespace Ferretto.VW.App
 {
@@ -29,9 +27,13 @@ namespace Ferretto.VW.App
 
         private readonly ISessionService sessionService;
 
+        private readonly IStatusMessageService statusMessageService;
+
         private readonly IBayManager bayManager;
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
+
+        private readonly IHealthProbeService healthProbeService;
 
         private readonly IThemeService themeService;
 
@@ -57,8 +59,10 @@ namespace Ferretto.VW.App
             IThemeService themeService,
             IModuleManager moduleManager,
             ISessionService sessionService,
+            IStatusMessageService statusMessageService,
             IBayManager bayManager,
-            IIdentityService identityService)
+            IIdentityMachineService identityService,
+            IHealthProbeService healthProbeService)
         {
             if (eventAggregator == null)
             {
@@ -85,6 +89,11 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(sessionService));
             }
 
+            if (statusMessageService == null)
+            {
+                throw new ArgumentNullException(nameof(statusMessageService));
+            }
+
             if (bayManager == null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
@@ -95,13 +104,22 @@ namespace Ferretto.VW.App
                 throw new ArgumentNullException(nameof(identityService));
             }
 
+            if (healthProbeService == null)
+            {
+                throw new ArgumentNullException(nameof(healthProbeService));
+            }
+
             this.eventAggregator = eventAggregator;
             this.themeService = themeService;
             this.moduleManager = moduleManager;
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
+            this.statusMessageService = statusMessageService;
             this.bayManager = bayManager;
             this.identityService = identityService;
+            this.healthProbeService = healthProbeService;
+
+            this.healthProbeService.SubscribeOnHealthStatusChanged(async (e) => await this.OnHealthStatusChanged(e));
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -114,24 +132,37 @@ namespace Ferretto.VW.App
 #endif
         }
 
-        private async Task OnHubConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            if (!e.IsConnected)
-            {
-                this.ErrorMessage = "Connection to Machine Automation Service lost.";
-            }
-            else
-            {
-                try
-                {
-                    await this.bayManager.InitializeAsync();
-                    this.Machine = this.bayManager.Identity;
+            await this.RetrieveMachineInfo();
+        }
 
-                    this.ErrorMessage = null;
-                }
-                catch
+        private async Task RetrieveMachineInfo()
+        {
+            if (this.healthProbeService.HealthStatus == HealthStatus.Healthy
+                ||
+                this.healthProbeService.HealthStatus == HealthStatus.Degraded)
+            {
+                this.ErrorMessage = null;
+                await this.bayManager.InitializeAsync();
+                this.Machine = this.bayManager.Identity;
+                this.IsLoginAllowed = true;
+            }
+            else if (this.healthProbeService.HealthStatus == HealthStatus.Unhealthy)
+            {
+                this.IsLoginAllowed = false;
+                this.ErrorMessage = "Impossibile connettersi al servizio di automazione.";
+                if (Application.Current is App app)
                 {
-                    this.ErrorMessage = "Unable to retrieve machine info.";
+                    if (app.OperatorAppMainWindowInstance?.IsVisible == true)
+                    {
+                        app.OperatorAppMainWindowInstance.Hide();
+                    }
+
+                    if (app.InstallationAppMainWindowInstance?.IsVisible == true)
+                    {
+                        app.InstallationAppMainWindowInstance.Hide();
+                    }
                 }
             }
         }
@@ -179,34 +210,33 @@ namespace Ferretto.VW.App
             }
         }
 
-        public IOperatorHubClient operatorHubClient;
-
         private MachineIdentity machineInfo;
 
         private bool isMachineIdentityAvailable;
+
+        private bool isLoginAllowed;
 
         #endregion
 
         #region Methods
 
-        public Task InitializeViewModelAsync(IUnityContainer container)
+        public async Task InitializeViewModelAsync(IUnityContainer container)
         {
             this.container = container;
 
-            return Task.CompletedTask;
-        }
-
-        public void HACK_InitialiseHubOperator()
-        {
-            this.operatorHubClient = this.container.Resolve<IOperatorHubClient>();
-
-            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionStatusChanged(sender, e);
+            await this.RetrieveMachineInfo();
         }
 
         public bool IsMachineIdentityAvailable
         {
             get => this.isMachineIdentityAvailable;
             set => this.SetProperty(ref this.isMachineIdentityAvailable, value);
+        }
+
+        public bool IsLoginAllowed
+        {
+            get => this.isLoginAllowed;
+            set => this.SetProperty(ref this.isLoginAllowed, value);
         }
 
         private async Task ExecuteLoginCommandAsync()

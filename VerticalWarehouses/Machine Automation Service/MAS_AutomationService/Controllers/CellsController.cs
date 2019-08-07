@@ -1,6 +1,6 @@
 ﻿using System;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -11,31 +11,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ICellManagmentDataLayer dataLayerCellManagment;
+        private readonly ICellsProvider cellsProvider;
 
         #endregion
 
         #region Constructors
 
-        public CellsController(ICellManagmentDataLayer dataLayerCellManagment)
+        public CellsController(ICellsProvider cellsProvider)
         {
-            if (dataLayerCellManagment == null)
+            if (cellsProvider == null)
             {
-                throw new ArgumentNullException(nameof(dataLayerCellManagment));
+                throw new ArgumentNullException(nameof(cellsProvider));
             }
 
-            this.dataLayerCellManagment = dataLayerCellManagment;
+            this.cellsProvider = cellsProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("Statistics")]
+        [HttpGet("statistics")]
         public ActionResult<CellStatisticsSummary> GetStatistics()
         {
-            var statics = this.dataLayerCellManagment.GetCellStatistics();
-            return this.Ok(statics);
+            var statistics = this.cellsProvider.GetStatistics();
+
+            return this.Ok(statistics);
         }
 
         #endregion

@@ -15,9 +15,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
 
-        private readonly ILoadingUnitsService loadingUnitService;
+        private readonly ILoadingUnitsMachineService loadingUnitService;
 
         private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         private decimal grossWeight;
 
-        private decimal maxGrossWeight;
+        private double maxGrossWeight;
 
         private decimal maxNetWeight;
 
@@ -50,8 +50,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerWeightSaturationViewModel(
-            ILoadingUnitsService loadingUnitService,
-            IIdentityService identityService,
+            ILoadingUnitsMachineService loadingUnitService,
+            IIdentityMachineService identityService,
             IStatusMessageService statusMessageService,
             Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
@@ -78,7 +78,11 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         public decimal GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 
-        public decimal MaxGrossWeight { get => this.maxGrossWeight; set => this.SetProperty(ref this.maxGrossWeight, value); }
+        public double MaxGrossWeight
+        {
+            get => this.maxGrossWeight;
+            set => this.SetProperty(ref this.maxGrossWeight, value);
+        }
 
         public decimal MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
 
@@ -132,10 +136,10 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.MaxGrossWeight = machine.MaxGrossWeight;
-                this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
+                this.MaxNetWeight = (decimal)machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
                 this.NetWeight = loadingUnits.Sum(l => l.GrossWeight) - loadingUnits.Sum(l => l.Tare);
-                this.NetWeightPercent = this.NetWeight / this.MaxNetWeight;
+                this.NetWeightPercent = this.NetWeight * 100 / this.MaxNetWeight;
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }

@@ -40,8 +40,8 @@ steps:
   parameters:
     BuildConfiguration: $(BuildConfiguration)
     TargetFramework: 'netcoreapp2.2'
-    RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
-    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
+    RestoreBuildProjects: '**/Ferretto.VW.MAS.AutomationService.csproj'
+    TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*.Tests.csproj'
 
 
 - template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-ui-template.yml'

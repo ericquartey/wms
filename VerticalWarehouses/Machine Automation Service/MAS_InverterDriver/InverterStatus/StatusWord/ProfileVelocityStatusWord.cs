@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
 
         #region Properties
 
-        public bool TargetReached { get; }
+        public bool TargetReached => (this.Value & 0x0400) > 0;
 
         #endregion
     }

@@ -30,7 +30,7 @@
 
         Positioning,
 
-        CurrentEncoderPosition,
+        CurrentPosition,
 
         ShutterPositioning,
 
@@ -53,6 +53,15 @@
         WebApiException,
 
         CheckCondition,
-        NewMissionOperationAvailable
+
+        NewMissionOperationAvailable,
+
+        ErrorStatusChanged,
+
+        ResetSecurity,
+
+        InverterStop,
+
+        PowerEnable,
     }
 }

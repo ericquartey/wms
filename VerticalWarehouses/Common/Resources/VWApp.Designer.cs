@@ -61,6 +61,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error Code.
+        /// </summary>
+        public static string ErrorCode {
+            get {
+                return ResourceManager.GetString("ErrorCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Description.
+        /// </summary>
+        public static string ErrorDescription {
+            get {
+                return ResourceManager.GetString("ErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Reason.
+        /// </summary>
+        public static string ErrorReason {
+            get {
+                return ResourceManager.GetString("ErrorReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error recovery.
+        /// </summary>
+        public static string ErrorRecoveryProcedure {
+            get {
+                return ResourceManager.GetString("ErrorRecoveryProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string Ok {

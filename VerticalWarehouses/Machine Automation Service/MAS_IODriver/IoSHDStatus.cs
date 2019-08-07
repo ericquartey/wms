@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Properties
 
-        public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionShutterBay] ?? false;
+        public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionBarrierBay] ?? false;
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.IODriver
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
-        public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitExistenceInBay] ?? false;
+        public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitInBay] ?? false;
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 

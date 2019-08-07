@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,64 +15,71 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
     {
         #region Methods
 
-        public static IServiceCollection AddDataLayer(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDataLayer(
+                    this IServiceCollection services)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            services.AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>();
 
-            var dataLayerConfiguration = new DataLayerConfiguration(
-                configuration.GetDataLayerPrimaryConnectionString(),
-                configuration.GetDataLayerSecondaryConnectionString(),
-                configuration.GetDataLayerConfigurationFile());
+            services.AddTransient(p =>
+                new DataLayerContext(
+                   isActiveChannel: true,
+                   p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
 
-            services.AddDbContext<DataLayerContext>(
-               options => options.UseSqlite(configuration.GetDataLayerPrimaryConnectionString()));
+            services.AddSingleton<IDataLayerService, DataLayerService>();
 
-            services.AddSingleton(dataLayerConfiguration);
+            services.AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IBayPositionControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IBeltBurnishingDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as ICellControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IGeneralInfoConfigurationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalAxisDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalManualMovementsDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementBackwardProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IHorizontalMovementForwardProfileDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as ILoadFirstDrawerDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IOffsetCalibrationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IPanelControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionCalibrationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupNetworkDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as ISetupStatusDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IShutterHeightControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalAxisDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IVerticalManualMovementsDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IWeightControlDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as ICellManagmentDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IConfigurationValueManagmentDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IVertimagConfigurationDataLayer)
+                .AddSingleton(p => p.GetService<IDataLayerService>() as IResolutionConversionDataLayer);
 
-            services.AddSingleton<IDataLayer, DataLayerService>();
-
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IHostedService);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IBayPositionControlDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IBeltBurnishingDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as ICellControlDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IGeneralInfoConfigurationDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IHorizontalAxisDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IHorizontalManualMovementsDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IHorizontalMovementBackwardProfileDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IHorizontalMovementForwardProfileDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as ILoadFirstDrawerDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IOffsetCalibrationDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IPanelControlDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionCalibrationDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as ISetupNetworkDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as ISetupStatusDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IShutterHeightControlDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVerticalAxisDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVerticalManualMovementsDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IWeightControlDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as ICellManagmentDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IConfigurationValueManagmentDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IVertimagConfigurationDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IErrorStatisticsProvider);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IMachineStatisticsDataLayer);
-            services.AddSingleton(provider => provider.GetService<IDataLayer>() as IResolutionConversionDataLayer);
-
-            services.AddTransient<IServicingProvider, ServicingProvider>();
-            services.AddTransient<IBaysProvider, BaysProvider>();
-            services.AddTransient<IUsersProvider, UsersProvider>();
-            services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
-            services.AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>();
-            services.AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
+            services.AddTransient<IServicingProvider, ServicingProvider>()
+                .AddTransient<IBaysProvider, BaysProvider>()
+                .AddTransient<ICellsProvider, CellsProvider>()
+                .AddTransient<IErrorsProvider, ErrorsProvider>()
+                .AddTransient<IMachineStatisticsProvider, MachineStatisticsProvider>()
+                .AddTransient<IUsersProvider, UsersProvider>()
+                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>()
+                .AddTransient<ILoadingUnitStatisticsProvider, LoadingUnitStatisticsProvider>()
+                .AddTransient<IBaysConfigurationProvider, BaysConfigurationProvider>();
 
             return services;
+        }
+
+        public static IApplicationBuilder UseDataLayer(this IApplicationBuilder app)
+        {
+            var dataContext = app.ApplicationServices.GetRequiredService<DataLayerContext>();
+
+            var listener = dataContext.GetService<DiagnosticSource>() as DiagnosticListener;
+
+            var redundancyService = app.ApplicationServices.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+            listener.SubscribeWithAdapter(new CommandListener<DataLayerContext>(redundancyService));
+
+            return app;
         }
 
         #endregion

@@ -24,7 +24,7 @@
         <wms:DisplayNameConverter x:Key="DNC" />
 
         <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource TextBlockCell}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -34,11 +34,20 @@
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="RowData.Row.RequestedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="RowData.Row.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.ToolTip>
             </TextBlock>
         </DataTemplate>
 
         <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock Style="{DynamicResource TextBlockCell}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -48,6 +57,15 @@
                                  TargetNullValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
+                <TextBlock.ToolTip>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="RowData.Row.DispatchedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="RowData.Row.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.ToolTip>
             </TextBlock>
         </DataTemplate>
     </wms:WmsView.Resources>
@@ -134,15 +152,28 @@
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
-            <TextBlock Grid.Row="1"
-                       Grid.ColumnSpan="2"
-                       Margin="0,0,10,5"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding Model.Error}"
-                       TextAlignment="Right"
-                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,10,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Model.Error}"
+                           TextAlignment="Right"
+                           Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{x:Static res:Errors.ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed}"
+                           TextAlignment="Right">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MBATVC}">
+                            <Binding Path="HasConflictingChanges" />
+                            <Binding Path="IsBusy" Converter="{StaticResource BNC}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+            </StackPanel>
+
         </Grid>
 
         <ScrollViewer Grid.Row="1"
@@ -347,7 +378,7 @@
                                                 FieldName="Status">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
+                                            <Grid HorizontalAlignment="Stretch">
                                                 <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                                       VerticalAlignment="Center"
                                                                       EnumType="{x:Type models:ItemListRowStatus}"
@@ -356,7 +387,7 @@
                                                                       IconSize="8"
                                                                       ShowText="True" />
 
-                                            </StackPanel>
+                                            </Grid>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>

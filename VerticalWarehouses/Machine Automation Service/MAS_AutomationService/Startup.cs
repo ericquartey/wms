@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Hubs;
+﻿using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Interface;
@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.IODriver;
 using Ferretto.VW.MAS.MissionsManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,14 @@ namespace Ferretto.VW.MAS.AutomationService
 {
     public class Startup
     {
+        #region Fields
+
+        private const string LiveHealthCheckTag = "live";
+
+        private const string ReadyHealthCheckTag = "ready";
+
+        #endregion
+
         #region Constructors
 
         public Startup(IConfiguration configuration)
@@ -47,17 +56,41 @@ namespace Ferretto.VW.MAS.AutomationService
             app.UseOpenApi();
             app.UseSwaggerUi3();
 
+            app.UseDataHub();
+
+            app.UseHealthChecks("/health/ready", new HealthCheckOptions()
+            {
+                Predicate = (check) => check.Tags.Contains(ReadyHealthCheckTag),
+            });
+
+            app.UseHealthChecks("/health/live", new HealthCheckOptions()
+            {
+                Predicate = (check) => check.Tags.Contains(LiveHealthCheckTag),
+            });
+
+            app.UseDataLayer();
+
             app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDataLayer(this.Configuration);
+            services.AddDataLayer();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+              .AddMvc(options =>
+              {
+                  options.Filters.Add(typeof(ReadinessFilter));
+              })
+              .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
+
+            services
+                .AddHealthChecks()
+                .AddCheck<LivelinessHealthCheck>("live", null, tags: new[] { LiveHealthCheckTag })
+                .AddCheck<ReadinessHealthCheck>("ready", null, tags: new[] { ReadyHealthCheckTag });
 
             this.InitialiseWmsInterfaces(services);
 

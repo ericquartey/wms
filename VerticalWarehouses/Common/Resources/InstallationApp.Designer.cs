@@ -664,6 +664,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drawer store and drawer recall.
+        /// </summary>
+        public static string DrawerStoreAndRecall {
+            get {
+                return ResourceManager.GetString("DrawerStoreAndRecall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator Engine Selected.
         /// </summary>
         public static string ElevatorEngineSelected {
@@ -880,65 +889,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate sensor A bay 1.
-        /// </summary>
-        public static string GateSensorABay1 {
-            get {
-                return ResourceManager.GetString("GateSensorABay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gate sensor A bay 2.
-        /// </summary>
-        public static string GateSensorABay2 {
-            get {
-                return ResourceManager.GetString("GateSensorABay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gate sensor A bay 3.
-        /// </summary>
-        public static string GateSensorABay3 {
-            get {
-                return ResourceManager.GetString("GateSensorABay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Gate Sensor B.
         /// </summary>
         public static string GateSensorB {
             get {
                 return ResourceManager.GetString("GateSensorB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gate sensor B bay 1.
-        /// </summary>
-        public static string GateSensorBBay1 {
-            get {
-                return ResourceManager.GetString("GateSensorBBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gate sensor B bay 2.
-        /// </summary>
-        public static string GateSensorBBay2 {
-            get {
-                return ResourceManager.GetString("GateSensorBBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gate sensor B bay 3.
-        /// </summary>
-        public static string GateSensorBBay3 {
-            get {
-                return ResourceManager.GetString("GateSensorBBay3", resourceCulture);
             }
         }
         
@@ -1483,6 +1438,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Second LU Present in Bay 1.
+        /// </summary>
+        public static string LUPresentMiddleBottomBay1 {
+            get {
+                return ResourceManager.GetString("LUPresentMiddleBottomBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second LU Present in Bay 2.
+        /// </summary>
+        public static string LUPresentMiddleBottomBay2 {
+            get {
+                return ResourceManager.GetString("LUPresentMiddleBottomBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second LU Present in Bay 3.
+        /// </summary>
+        public static string LUPresentMiddleBottomBay3 {
+            get {
+                return ResourceManager.GetString("LUPresentMiddleBottomBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation completed.
         /// </summary>
         public static string MachineDone {
@@ -1497,6 +1479,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Manual {
             get {
                 return ResourceManager.GetString("Manual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Store/recall drawer.
+        /// </summary>
+        public static string ManualDrawerStoreRecallButton {
+            get {
+                return ResourceManager.GetString("ManualDrawerStoreRecallButton", resourceCulture);
             }
         }
         
@@ -2077,6 +2068,60 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sensor shutter A bay 1.
+        /// </summary>
+        public static string ShutterSensorABay1 {
+            get {
+                return ResourceManager.GetString("ShutterSensorABay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor shutter A bay 2.
+        /// </summary>
+        public static string ShutterSensorABay2 {
+            get {
+                return ResourceManager.GetString("ShutterSensorABay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor shutter A bay 3.
+        /// </summary>
+        public static string ShutterSensorABay3 {
+            get {
+                return ResourceManager.GetString("ShutterSensorABay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor shutter B bay 1.
+        /// </summary>
+        public static string ShutterSensorBBay1 {
+            get {
+                return ResourceManager.GetString("ShutterSensorBBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor shutter B bay 2.
+        /// </summary>
+        public static string ShutterSensorBBay2 {
+            get {
+                return ResourceManager.GetString("ShutterSensorBBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor shutter B bay 3.
+        /// </summary>
+        public static string ShutterSensorBBay3 {
+            get {
+                return ResourceManager.GetString("ShutterSensorBBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speed [mm/s]:.
         /// </summary>
         public static string SpeedMMSec {
@@ -2091,6 +2136,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start recall from cell to bay.
+        /// </summary>
+        public static string StartManualDrawerRecall {
+            get {
+                return ResourceManager.GetString("StartManualDrawerRecall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start store from bay to cell.
+        /// </summary>
+        public static string StartManualDrawerStore {
+            get {
+                return ResourceManager.GetString("StartManualDrawerStore", resourceCulture);
             }
         }
         
@@ -2212,7 +2275,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Update Resolution.
+        ///   Looks up a localized string similar to Update Resolution.
         /// </summary>
         public static string UpdateResolution {
             get {
@@ -2221,7 +2284,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a Upper bound [mm]:.
+        ///   Looks up a localized string similar to Upper bound [mm]:.
         /// </summary>
         public static string UpperBound {
             get {

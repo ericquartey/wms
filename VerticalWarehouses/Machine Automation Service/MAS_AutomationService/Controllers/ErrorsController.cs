@@ -1,5 +1,5 @@
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels.Errors;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -10,26 +10,60 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IErrorStatisticsProvider errorStatistics;
+        private readonly IErrorsProvider errorsProvider;
 
         #endregion
 
         #region Constructors
 
-        public ErrorsController(IErrorStatisticsProvider errorStatistics)
+        public ErrorsController(IErrorsProvider errorsProvider)
         {
-            this.errorStatistics = errorStatistics;
+            this.errorsProvider = errorsProvider;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("Statistics")]
+        [HttpGet("current")]
+        public ActionResult<Error> GetCurrent()
+        {
+            var currentError = this.errorsProvider.GetCurrent();
+
+            return this.Ok(currentError);
+        }
+
+        [HttpGet("statistics")]
         public ActionResult<ErrorStatisticsSummary> GetStatistics()
         {
-            var statistics = this.errorStatistics.GetErrorStatistics();
+            var statistics = this.errorsProvider.GetStatistics();
+
             return this.Ok(statistics);
+        }
+
+#if DEBUG
+
+        [HttpPost]
+        public ActionResult<Error> Create(MachineErrors code)
+        {
+            var newError = this.errorsProvider.RecordNew(code);
+
+            return this.Ok(newError);
+        }
+
+#endif
+
+        [HttpPost("{id}/resolve")]
+        public ActionResult<Error> Resolve(int id)
+        {
+            var resolvedError = this.errorsProvider.Resolve(id);
+
+            if (resolvedError == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok(resolvedError);
         }
 
         #endregion

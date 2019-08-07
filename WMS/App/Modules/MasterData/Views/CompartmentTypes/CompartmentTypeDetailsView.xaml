@@ -194,15 +194,28 @@
                 </wms:ActionBar>
             </Grid>
 
-            <TextBlock Grid.Row="1"
-                       Grid.ColumnSpan="3"
-                       Margin="0,0,10,5"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding Model.Error}"
-                       TextAlignment="Right"
-                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,10,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Model.Error}"
+                           TextAlignment="Right"
+                           Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{x:Static res:Errors.ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed}"
+                           TextAlignment="Right">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MBATVC}">
+                            <Binding Path="HasConflictingChanges" />
+                            <Binding Path="IsBusy" Converter="{StaticResource BNC}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+            </StackPanel>
+
         </Grid>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"

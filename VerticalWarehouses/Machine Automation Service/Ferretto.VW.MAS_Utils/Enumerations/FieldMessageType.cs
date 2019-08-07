@@ -42,6 +42,12 @@
 
         IoDriverException,
 
-        SetConfigurationIO
+        SetConfigurationIO,
+
+        ResetSecurity,
+
+        PowerEnable,
+
+        InverterFaultReset
     }
 }

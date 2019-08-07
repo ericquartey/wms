@@ -39,47 +39,58 @@
                               MinWidth="300"
                               DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext}">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TextBlock VerticalAlignment="Center"
                                        FontSize="14"
                                        Text="{x:Static res:MasterData.AvailableAreas}" />
                             <wms:ComboBox x:Name="SelectedArea"
                                           Grid.Row="1"
-                                          MinWidth="100"
+                                          MinWidth="200"
                                           wms:ShowTitle.Show="True"
                                           DisplayMember="Name"
                                           EditValue="{Binding ItemAreaInput.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           ItemsSource="{Binding AvailableAreasDataSource}" />
 
-                            <TextBlock x:Name="Error"
-                                       Grid.Row="2"
-                                       Height="50"
-                                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                                       Text="{Binding ItemAreaInput.Error}"
-                                       Visibility="{Binding ItemAreaInput.IsValidationEnabled, Converter={StaticResource BTVHC}}" />
+                            <Grid Grid.Row="2"
+                                  Height="20" />
 
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                            <wms:ActionBar x:Name="AssociateAreaBar"
-                                           Grid.Row="3"
-                                           MinWidth="100"
-                                           HorizontalAlignment="Right"
-                                           Style="{DynamicResource ActionBarNotCustomizable}">
-                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
-                                                   Content="{x:Static res:General.Add}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/Action/1x_web/ic_done_black_24dp.png"
-                                                   GlyphSize="Custom"
-                                                   Tag="AssociateAreaBarItem" />
-                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
-                                                   Content="{x:Static res:General.Cancel}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_clear_black_24dp.png"
-                                                   GlyphSize="Custom" />
-                            </wms:ActionBar>
+                                <TextBlock x:Name="Error"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           Style="{DynamicResource TextBlockErrorMessageStyle}"
+                                           Text="{Binding ItemAreaInput.Error}"
+                                           Visibility="{Binding ItemAreaInput.IsValidationEnabled, Converter={StaticResource BTVHC}}" />
+
+                                <wms:ActionBar x:Name="AssociateAreaBar"
+                                               Grid.Column="1"
+                                               MinWidth="100"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource ActionBarNotCustomizable}">
+                                    <wms:ActionBarItem
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
+                                        Content="{x:Static res:General.Add}"
+                                        CustomGlyphSize="24,24"
+                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/Action/1x_web/ic_done_black_24dp.png"
+                                        GlyphSize="Custom"
+                                        Tag="AssociateAreaBarItem" />
+                                    <wms:ActionBarItem
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
+                                        Content="{x:Static res:General.Cancel}"
+                                        CustomGlyphSize="24,24"
+                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_clear_black_24dp.png"
+                                        GlyphSize="Custom" />
+                                </wms:ActionBar>
+                            </Grid>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
@@ -169,15 +180,28 @@
                 </wms:ActionBar>
             </Grid>
 
-            <TextBlock Grid.Row="1"
-                       Grid.ColumnSpan="3"
-                       Margin="0,0,10,5"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding Model.Error}"
-                       TextAlignment="Right"
-                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,10,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Model.Error}"
+                           TextAlignment="Right"
+                           Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{x:Static res:Errors.ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed}"
+                           TextAlignment="Right">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MBATVC}">
+                            <Binding Path="HasConflictingChanges" />
+                            <Binding Path="IsBusy" Converter="{StaticResource BNC}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+            </StackPanel>
+
         </Grid>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
@@ -269,7 +293,7 @@
                                                            Tag="AssociateAreaBarItem"
                                                            TooltipText="{Binding AssociateAreaReason}" />
                                         <wms:ActionBarItem Command="{Binding UnassociateAreaCommand}"
-                                                           Content="{x:Static res:MasterData.UnassociateArea}"
+                                                           Content="{x:Static res:MasterData.DisassociateArea}"
                                                            CustomGlyphSize="24,24"
                                                            Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-off-black-24dp.png"
                                                            GlyphSize="Custom"
@@ -491,7 +515,7 @@
                                                 FieldName="Stock">
                                     <dxg:GridColumn.CellDisplayTemplate>
                                         <DataTemplate>
-                                            <TextBlock VerticalAlignment="Center">
+                                            <TextBlock Style="{DynamicResource TextBlockCell}">
                                                 <TextBlock.Text>
                                                     <MultiBinding Converter="{StaticResource SFC}">
                                                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
@@ -501,6 +525,15 @@
                                                                  TargetNullValue="" />
                                                     </MultiBinding>
                                                 </TextBlock.Text>
+                                                <TextBlock.ToolTip>
+                                                    <MultiBinding Converter="{StaticResource SFC}">
+                                                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                                                        <Binding Path="Data.Stock"
+                                                                 TargetNullValue="" />
+                                                        <Binding Path="Data.ItemMeasureUnit"
+                                                                 TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.ToolTip>
                                             </TextBlock>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellDisplayTemplate>

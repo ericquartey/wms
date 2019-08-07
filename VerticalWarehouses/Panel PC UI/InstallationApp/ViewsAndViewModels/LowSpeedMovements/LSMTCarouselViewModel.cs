@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 {
@@ -17,15 +16,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         private readonly IEventAggregator eventAggregator;
 
-        private DelegateCommand closeButtonCommand;
+        private readonly IPositioningMachineService positioningService;
 
-        private IUnityContainer container;
+        private DelegateCommand closeButtonCommand;
 
         private string currentPosition;
 
         private DelegateCommand openButtonCommand;
-
-        private IPositioningService positioningService;
 
         private DelegateCommand stopButtonCommand;
 
@@ -35,9 +32,22 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         #region Constructors
 
-        public LSMTCarouselViewModel(IEventAggregator eventAggregator)
+        public LSMTCarouselViewModel(
+            IEventAggregator eventAggregator,
+            IPositioningMachineService positioningService)
         {
+            if (eventAggregator == null)
+            {
+                throw new System.ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (positioningService == null)
+            {
+                throw new System.ArgumentNullException(nameof(positioningService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.positioningService = positioningService;
             this.NavigationViewModel = null;
         }
 
@@ -68,12 +78,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
         public void ExitFromViewMethod()
         {
             // TODO
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.positioningService = this.container.Resolve<IPositioningService>();
         }
 
         public Task OnEnterViewAsync()

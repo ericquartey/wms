@@ -116,14 +116,12 @@ namespace Ferretto.WMS.App.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                                             App.Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
+                                             Resources.MasterData.ItemCompartmentTypesSavedSuccessfully,
                                              StatusType.Success));
-                this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(ItemCompartmentType).ToString(), null, HubEntityOperation.Created));
             }
             else
             {
                 this.SetValidation(true);
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
                 this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
             }
 
@@ -146,17 +144,17 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         private IEnumerable<ItemCompartmentType> CreateBulk()
         {
-            var newItemComaratmentTypes = new List<ItemCompartmentType>();
+            var newItemComparatmentTypes = new List<ItemCompartmentType>();
 
             var filtered = this.UnassociatedItemCompartmentTypesDataSource.Where(uct => uct.IsActive);
 
             foreach (var itemCompartmentType in filtered)
             {
                 itemCompartmentType.ItemId = ((IModel<int>)this.Data).Id;
-                newItemComaratmentTypes.Add(itemCompartmentType);
+                newItemComparatmentTypes.Add(itemCompartmentType);
             }
 
-            return newItemComaratmentTypes;
+            return newItemComparatmentTypes;
         }
 
         private bool IsValid()

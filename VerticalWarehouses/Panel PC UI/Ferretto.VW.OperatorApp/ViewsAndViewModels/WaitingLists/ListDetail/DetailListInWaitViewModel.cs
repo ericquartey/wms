@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
     {
         #region Fields
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -48,9 +48,8 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
         public DetailListInWaitViewModel(
             IStatusMessageService statusMessageService,
             Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
-            IIdentityService identityService,
-            IItemListsDataService itemListsDataService
-            )
+            IIdentityMachineService identityService,
+            IItemListsDataService itemListsDataService)
         {
             if (statusMessageService == null)
             {
@@ -83,13 +82,19 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         #region Properties
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
+        public ICommand DownDataGridButtonCommand =>
+            this.downDataGridButtonCommand
+            ??
+            (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
 
         public IItemListsDataService ItemListsDataService { get; }
 
         public ItemList List => this.list;
 
-        public ICommand ListExecuteCommand => this.listExecuteCommand ?? (this.listExecuteCommand = new DelegateCommand(() => this.ExecuteListAsync(), this.CanExecuteList));
+        public ICommand ListExecuteCommand =>
+            this.listExecuteCommand
+            ??
+            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
 
         public IList<ItemListRow> ListRows => new List<ItemListRow>(this.listRows);
 
@@ -103,7 +108,10 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
 
         public IStatusMessageService StatusMessageService { get; }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
+        public ICommand UpDataGridButtonCommand =>
+            this.upDataGridButtonCommand
+            ??
+            (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
 
         #endregion
 
@@ -137,7 +145,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail
             }
             catch (Exception ex)
             {
-                this.StatusMessageService.Notify(ex, $"Cannot execute List.");
+                this.StatusMessageService.Notify(ex, "Cannot execute List.");
             }
         }
 

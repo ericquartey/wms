@@ -42,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\SSBaysView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
@@ -121,6 +125,15 @@
     <None Update="Templates\DataGridScrollButtonControlTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Views\ErrorDetails\ErrorDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\ErrorDetails\ErrorDetailsView.xaml.cs">
+      <DependentUpon>ErrorDetailsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -132,7 +132,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
             this.InitializeMethodSubscriptions();
 
-            this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.OnWmsEntityChanged;
         }
 
@@ -147,7 +146,7 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.dataHubClient.ConnectAsync();
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
@@ -155,13 +154,22 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
+
+#if DEBUG
+                // simulate error
+                await Task.Delay(20 * 1000);
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                    errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
+                }
+#endif
             }
             catch (Exception ex)
             {
                 throw new AutomationServiceException($"Exception: {ex.Message} while starting service threads.", ex);
             }
-
-            return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
@@ -252,6 +260,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.CalibrateAxisMethod(receivedMessage);
                         break;
 
+                    case MessageType.CurrentPosition:
+                        this.CurrentPositionMethod(receivedMessage);
+                        break;
+
                     case MessageType.ShutterControl:
                         this.ShutterControlMethod(receivedMessage);
                         break;
@@ -265,7 +277,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     case MessageType.IoDriverException:
                     case MessageType.DLException:
                     case MessageType.WebApiException:
-                        this.ExceptionHandlerMethod(receivedMessage);
+
                         break;
 
                     case MessageType.ResolutionCalibration:
@@ -287,6 +299,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
                     case MessageType.DataLayerReady:
                         this.OnDataLayerReady();
+                        break;
+
+                    case MessageType.ErrorStatusChanged:
+                        this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
                         break;
 
                     default:

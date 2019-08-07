@@ -21,5 +21,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"CurrentPosition:{this.CurrentPosition}";
+        }
+
+        #endregion
     }
 }

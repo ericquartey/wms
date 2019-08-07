@@ -1,14 +1,9 @@
-﻿using Ferretto.VW.MAS.DataModels.Cells;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
+﻿using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Interfaces
 {
     public interface ICellManagmentDataLayer
     {
-        #region Methods
-
-        CellStatisticsSummary GetCellStatistics();
-
         ///// <summary>
         /////     Get an object with the vertical position and side to place a drawer
         ///// </summary>
@@ -16,6 +11,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         ///// <param name="loadingUnitId">Id of the Drawer we take into account</param>
         ///// <returns>An object with position and side for a return mission</returns>
         //LoadingUnitPosition GetFreeBlockPosition(decimal loadingUnitHeight, int loadingUnitId);
+
+        #region Methods
 
         /// <summary>
         /// Get to the mission the lowest cell position for a drawer

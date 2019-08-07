@@ -1,6 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -13,6 +16,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
+        private readonly MachineSensorsStatus machineSensorsStatus;
+
         private readonly IPositioningMessageData positioningMessageData;
 
         private bool disposed;
@@ -21,8 +26,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
-            : base(eventAggregator, logger)
+        public PositioningStateMachine(
+            IEventAggregator eventAggregator,
+            IPositioningMessageData positioningMessageData,
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory,
+            MachineSensorsStatus machineSensorsStatus)
+            : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.logger = logger;
 
@@ -33,6 +43,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.CurrentState = new EmptyState(logger);
 
             this.positioningMessageData = positioningMessageData;
+
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -80,11 +92,26 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
+            bool checkConditions;
+
+            //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                //INFO Check the Horizontal and Vertical conditions for Positioning
+                checkConditions = this.CheckConditions();
+
+                if (checkConditions)
+                {
+                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                }
+                else
+                {
+                    this.CurrentState = new PositioningErrorState(this, this.positioningMessageData, null, this.Logger);
+                }
+
                 this.CurrentState?.Start();
             }
+            //INFO End check the pre conditions to start the positioning
 
             this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
@@ -112,6 +139,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.disposed = true;
             base.Dispose(disposing);
+        }
+
+        private bool CheckConditions()
+        {
+            bool checkConditions;
+
+            checkConditions = (this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 ||
+                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle) &&
+                               this.positioningMessageData.AxisMovement == Axis.Vertical ||
+                               this.positioningMessageData.AxisMovement == Axis.Horizontal;
+
+            return checkConditions;
         }
 
         #endregion

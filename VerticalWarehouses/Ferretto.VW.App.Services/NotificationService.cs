@@ -1,11 +1,12 @@
-﻿using Ferretto.VW.App.Services.Interfaces;
+﻿using System.Diagnostics;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
 using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs.MessageNotifiedEventArgs;
@@ -80,7 +81,7 @@ namespace Ferretto.VW.App.Services
 
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(message);
 
-            if (!dataSensors[(int)IOMachineSensors.NormalStateBay1])
+            if (!dataSensors[(int)IOMachineSensors.NormalState])
             {
                 this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
                     new MAS_EventMessage(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
@@ -170,6 +171,33 @@ namespace Ferretto.VW.App.Services
                     {
                         this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
                             new MAS_EventMessage(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
+                    }
+                    break;
+
+                case NotificationMessageUI<ResetSecurityMessageData> sc:
+                    this.eventAggregator.GetEvent<NotificationEventUI<ResetSecurityMessageData>>().Publish(sc);
+
+                    if (sc.Status == MessageStatus.OperationError)
+                    {
+                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
+                            new MAS_EventMessage(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
+                    }
+                    break;
+
+                case NotificationMessageUI<InverterStopMessageData> sc:
+                    this.eventAggregator.GetEvent<NotificationEventUI<InverterStopMessageData>>().Publish(sc);
+
+                    if (sc.Status == MessageStatus.OperationError)
+                    {
+                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
+                            new MAS_EventMessage(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
+                    }
+                    break;
+
+                case null:
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
                     }
                     break;
             }

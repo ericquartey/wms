@@ -2,17 +2,15 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
@@ -20,13 +18,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
     {
         #region Fields
 
+        private readonly IBeltBurnishingMachineService beltBurnishingService;
+
         private readonly IEventAggregator eventAggregator;
 
-        private IBeltBurnishingService beltBurnishingService;
-
         private string completedCycles;
-
-        private IUnityContainer container;
 
         private string currentPosition;
 
@@ -52,9 +48,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Constructors
 
-        public BeltBurnishingViewModel(IEventAggregator eventAggregator)
+        public BeltBurnishingViewModel(
+            IEventAggregator eventAggregator,
+            IBeltBurnishingMachineService beltBurnishingService)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (beltBurnishingService == null)
+            {
+                throw new ArgumentNullException(nameof(beltBurnishingService));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.beltBurnishingService = beltBurnishingService;
+
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
             this.NavigationViewModel = null;
         }
@@ -142,22 +152,16 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             try
             {
-                var Category = "VerticalAxis";
-                this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                var category = "VerticalAxis";
+                this.UpperBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(category, "UpperBound")).ToString();
+                this.LowerBound = (await this.beltBurnishingService.GetDecimalConfigurationParameterAsync(category, "LowerBound")).ToString();
 
-                Category = "BeltBurnishing";
-                this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
+                category = "BeltBurnishing";
+                this.CycleQuantity = (await this.beltBurnishingService.GetIntegerConfigurationParameterAsync(category, "CycleQuantity")).ToString();
             }
             catch (SwaggerException)
             {
             }
-        }
-
-        public void InitializeViewModel(IUnityContainer container)
-        {
-            this.container = container;
-            this.beltBurnishingService = this.container.Resolve<IBeltBurnishingService>();
         }
 
         public async Task OnEnterViewAsync()

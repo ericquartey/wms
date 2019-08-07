@@ -289,7 +289,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var sb = new StringBuilder();
                     foreach (var b in this.payload)
                     {
-                        sb.AppendFormat("{0:x2}", b);
+                        sb.AppendFormat("{0:x2};", b);
                     }
                     returnString.Append($"{sb}");
                 }

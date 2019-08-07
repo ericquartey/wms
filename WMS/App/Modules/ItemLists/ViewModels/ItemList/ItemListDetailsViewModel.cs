@@ -129,9 +129,10 @@ namespace Ferretto.WMS.App.Modules.ItemLists
 
         #region Methods
 
-        public override void LoadRelatedData()
+        public override Task LoadRelatedDataAsync()
         {
             // TODO: implement method
+            return Task.CompletedTask;
         }
 
         public override void UpdateReasons()
@@ -213,18 +214,6 @@ namespace Ferretto.WMS.App.Modules.ItemLists
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
             var result = await this.itemListProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
@@ -243,9 +232,7 @@ namespace Ferretto.WMS.App.Modules.ItemLists
                         StatusType.Error));
             }
 
-            this.IsBusy = false;
-
-            return true;
+            return result.Success;
         }
 
         protected override async Task LoadDataAsync()

@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice.Interfaces
 
         void StartPollingIoMessage();
 
+        void SendIoPublish(object state);
+
         void SendIoMessageData(object state);
 
         void SendMessage(IFieldMessageData messageData);
@@ -25,6 +27,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice.Interfaces
         void ExecuteIoReset();
 
         void ExecuteIoPowerUp();
+
+        void ExecutePowerEnable(FieldCommandMessage receivedMessage);
 
         void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage);
 

@@ -9,11 +9,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        public decimal FeedRateWC => this.GetDecimalConfigurationValue((long)WeightControl.FeedRate, (long)ConfigurationCategory.WeightControl);
+        public decimal FeedRateWC => this.GetDecimalConfigurationValue((long)WeightControl.FeedRate, ConfigurationCategory.WeightControl);
 
-        public decimal RequiredToleranceWC => this.GetDecimalConfigurationValue((long)WeightControl.RequiredTolerance, (long)ConfigurationCategory.WeightControl);
+        public decimal RequiredToleranceWC => this.GetDecimalConfigurationValue((long)WeightControl.RequiredTolerance, ConfigurationCategory.WeightControl);
 
-        public decimal TestRun => this.GetDecimalConfigurationValue((long)WeightControl.TestRun, (long)ConfigurationCategory.WeightControl);
+        public decimal TestRun => this.GetDecimalConfigurationValue((long)WeightControl.TestRun, ConfigurationCategory.WeightControl);
 
         #endregion
     }

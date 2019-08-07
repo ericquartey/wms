@@ -1,16 +1,13 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Cells;
-using Ferretto.VW.MAS.DataModels.Errors;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
-    public class DataLayerContext : DbContext
+    public partial class DataLayerContext : DbContext
     {
         #region Fields
 
@@ -22,7 +19,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #region Constructors
 
-        // TODO: use IConfiguration injection instead
         public DataLayerContext()
         {
         }
@@ -30,6 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DataLayerContext(DbContextOptions<DataLayerContext> options)
             : base(options)
         {
+            this.Options = options;
         }
 
         #endregion
@@ -41,6 +38,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
+
+        public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
 
         public DbSet<Error> Errors { get; set; }
 
@@ -73,6 +72,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             {
                 return;
             }
+
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(DEFAULT_APPLICATION_SETTINGS_FILE, optional: false, reloadOnChange: false)
@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             modelBuilder.ApplyConfiguration(new BaysConfiguration());
             modelBuilder.ApplyConfiguration(new CellsConfiguration());
             modelBuilder.ApplyConfiguration(new ConfigurationValuesConfiguration());
-            modelBuilder.ApplyConfiguration(new ErrorConfiguration());
+            modelBuilder.ApplyConfiguration(new ErrorDefinitionConfiguration());
             modelBuilder.ApplyConfiguration(new ErrorStatisticConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitsConfiguration());
             modelBuilder.ApplyConfiguration(new MachineStatisticsConfiguration());

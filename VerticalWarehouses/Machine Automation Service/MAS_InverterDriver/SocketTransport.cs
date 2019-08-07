@@ -109,9 +109,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                throw new InverterDriverException(
-                    "Socket Transport is already open",
-                    InverterDriverExceptionCode.SocketOpen);
+                this.transportClient?.Dispose();
+                this.transportStream?.Dispose();
+                this.transportClient = null;
+                this.transportStream = null;
             }
 
             try
@@ -166,7 +167,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.transportStream?.Close();
             this.transportClient?.Close();
 
-            this.Dispose(true);
+            //this.Dispose(true);
         }
 
         public void Dispose()
@@ -192,6 +193,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            byte[] receivedData;
             try
             {
                 this.readStopwatch.Reset();
@@ -204,24 +206,30 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (readBytes > 0)
                 {
-                    var receivedData = new byte[readBytes];
+                    receivedData = new byte[readBytes];
 
                     Array.Copy(this.receiveBuffer, receivedData, readBytes);
                 }
                 else
                 {
-                    return null;
+                    //return null;
+                    this.Disconnect();
+                    throw new InvalidOperationException("Error reading data from Transport Stream");
                 }
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException(
+                //throw new InverterDriverException(
+                //    "Error reading data from Transport Stream",
+                //    InverterDriverExceptionCode.NetworkStreamReadFailure,
+                //    ex);
+                this.Disconnect();
+                throw new InvalidOperationException(
                     "Error reading data from Transport Stream",
-                    InverterDriverExceptionCode.NetworkStreamReadFailure,
                     ex);
             }
 
-            return this.receiveBuffer;
+            return receivedData;
         }
 
         /// <inheritdoc />
@@ -241,6 +249,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new InverterDriverException(
+                    "Error writing data to Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 this.roundTripStopwatch.Reset();
@@ -249,6 +263,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new InverterDriverException(
                     "Error writing data to Transport Stream",
                     InverterDriverExceptionCode.NetworkStreamWriteFailure,
@@ -274,6 +289,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
             }
 
+            if (!this.IsConnected)
+            {
+                throw new InverterDriverException(
+                    "Error writing data to Transport Stream",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure);
+            }
             try
             {
                 if (delay > 0)
@@ -286,6 +307,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
+                this.Disconnect();
                 throw new InverterDriverException(
                     "Error writing data to Transport Stream",
                     InverterDriverExceptionCode.NetworkStreamWriteFailure,

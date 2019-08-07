@@ -201,16 +201,13 @@ namespace Ferretto.WMS.App.Controls
             return this.SelectedItem != null;
         }
 
-        public virtual void LoadRelatedData()
+        public virtual Task LoadRelatedDataAsync()
         {
-            Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new Action(() =>
-                {
-                    var oldFilterDataSource = this.selectedFilterDataSource;
-                    this.SelectedFilterDataSource = null;
-                    this.SelectedFilterDataSource = oldFilterDataSource;
-                }));
+            var oldFilterDataSource = this.selectedFilterDataSource;
+            this.SelectedFilterDataSource = null;
+            this.SelectedFilterDataSource = oldFilterDataSource;
+
+            return Task.CompletedTask;
         }
 
         public virtual void ShowDetails()
@@ -285,7 +282,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected void ExecuteRefreshCommand()
         {
-            this.LoadRelatedData();
+            this.LoadRelatedDataAsync().ConfigureAwait(true);
         }
 
         protected override async Task OnAppearAsync()
@@ -313,6 +310,7 @@ namespace Ferretto.WMS.App.Controls
                 }
 
                 await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
+                this.SelectedFilter = this.Filters.FirstOrDefault();
             }
             catch (Exception ex)
             {

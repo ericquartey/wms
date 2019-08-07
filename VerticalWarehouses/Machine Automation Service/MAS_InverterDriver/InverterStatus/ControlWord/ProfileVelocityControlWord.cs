@@ -57,6 +57,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool FaultReset
         {
+            get
+            {
+                return (this.Value & 0x0080) > 0;
+            }
             set
             {
                 if (value)

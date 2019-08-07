@@ -26,7 +26,10 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         public CompartmentEditStepViewModel()
         {
-            this.compartmentAdd = new CompartmentEditViewModel();
+            this.compartmentAdd = new CompartmentEditViewModel
+            {
+                IsAdd = true,
+            };
         }
 
         #endregion
@@ -76,11 +79,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         public override async Task<bool> SaveAsync()
         {
-            this.IsBusy = true;
-
-            var result = await this.compartmentAdd.ExecuteCreateCommandAsync();
-
-            this.IsBusy = false;
+            var result = await this.compartmentAdd.ExecuteSaveWithPromptAsync();
 
             return result;
         }
@@ -135,6 +134,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
                 IsHeaderVisible = false,
                 IsErrorsVisible = false,
                 IsItemLookUpEnabled = false,
+                IsAdd = true,
             };
 
             model.ItemId = itemId;

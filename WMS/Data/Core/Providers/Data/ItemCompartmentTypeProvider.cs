@@ -69,8 +69,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.NotificationService.PushCreate(model);
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-            this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
+            this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId }, model);
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
@@ -92,8 +92,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         return new CreationErrorOperationResult<IEnumerable<ItemCompartmentType>>(result.Description);
                     }
-
-                    itemCompartmentType.Id = result.Entity.Id;
                 }
 
                 scope.Complete();
@@ -101,26 +99,28 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId)
+        public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync((int ItemId, int CompartmentTypeId) id)
         {
-            var existingModel = await this.DataContext.ItemsCompartmentTypes
-                .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == compartmentTypeId && ct.ItemId == itemId);
+            var existingDataModel = await this.DataContext.ItemsCompartmentTypes
+                .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == id.CompartmentTypeId && ct.ItemId == id.ItemId);
 
-            if (existingModel == null)
+            if (existingDataModel == null)
             {
                 return new NotFoundOperationResult<ItemCompartmentType>();
             }
 
-            this.DataContext.ItemsCompartmentTypes.Remove(existingModel);
+            this.DataContext.ItemsCompartmentTypes.Remove(existingDataModel);
 
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
-                this.NotificationService.PushDelete(typeof(ItemCompartmentType));
-                this.NotificationService.PushUpdate(new Item { Id = itemId });
-                this.NotificationService.PushUpdate(new CompartmentType { Id = compartmentTypeId });
+                var existingBusinessModel = new ItemCompartmentType { CompartmentTypeId = id.CompartmentTypeId, ItemId = id.ItemId };
 
-                return new SuccessOperationResult<ItemCompartmentType>(new ItemCompartmentType { CompartmentTypeId = compartmentTypeId, ItemId = itemId });
+                this.NotificationService.PushDelete(existingBusinessModel);
+                this.NotificationService.PushUpdate(new Item { Id = id.ItemId }, existingBusinessModel);
+                this.NotificationService.PushUpdate(new CompartmentType { Id = id.CompartmentTypeId }, existingBusinessModel);
+
+                return new SuccessOperationResult<ItemCompartmentType>(existingBusinessModel);
             }
 
             return new UnprocessableEntityOperationResult<ItemCompartmentType>();
@@ -191,8 +191,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushUpdate(model);
-                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-                this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
+                this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId }, model);
             }
 
             return new SuccessOperationResult<ItemCompartmentType>(model);

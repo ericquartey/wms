@@ -3,10 +3,13 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -78,7 +81,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                 {
                     case MessageStatus.OperationEnd:
 
-                        //TEMP Check sensors' status
+                        // TEMP Check sensors' status
                         // NOTE: Comment the line about the sensor check, if you use it with Bender
                         if (!this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1)
                         {
@@ -92,9 +95,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
                                 ErrorLevel.Error,
                                 MessageVerbosity.Error);
 
+                            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                            {
+                                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                                errorsProvider.RecordNew(MachineErrors.CradleNotCompletelyLoaded);
+                            }
+
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                            this.ParentStateMachine.ChangeState(new MoveDrawerErrorState(this.ParentStateMachine, message, this.drawerOperationData, Axis.Horizontal, this.Logger));
+                            this.ParentStateMachine.ChangeState(
+                                new MoveDrawerErrorState(
+                                    this.ParentStateMachine,
+                                    message,
+                                    this.drawerOperationData,
+                                    Axis.Horizontal,
+                                    this.Logger));
 
                             return;
                         }

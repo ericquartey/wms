@@ -171,6 +171,16 @@ namespace Ferretto.VW.MAS.IODriver
                         this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
+                    case FieldMessageType.ResetSecurity:
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        break;
+
+                    case FieldMessageType.PowerEnable:
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecutePowerEnable(receivedMessage);
+                        break;
+
                     default:
                         break;
                 }
@@ -200,22 +210,22 @@ namespace Ferretto.VW.MAS.IODriver
                 switch (ioIndex)
                 {
                     case IoIndex.IoDevice1:
-                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1, ConfigurationCategory.SetupNetwork);
+                        var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
 
                         break;
 
                     case IoIndex.IoDevice2:
-                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, (long)ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2, ConfigurationCategory.SetupNetwork);
+                        var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
 
                         break;
 
                     case IoIndex.IoDevice3:
-                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3, (long)ConfigurationCategory.SetupNetwork);
-                        var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, (long)ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3, ConfigurationCategory.SetupNetwork);
+                        var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
 
                         break;
@@ -269,10 +279,11 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
-                        foreach (var ioDevice in this.ioDevices)
-                        {
-                            ioDevice.Value.ExecuteIoPowerUp();
-                        }
+                        // the machine starts with power off
+                        //foreach (var ioDevice in this.ioDevices)
+                        //{
+                        //    ioDevice.Value.ExecuteIoPowerUp();
+                        //}
 
                         break;
 

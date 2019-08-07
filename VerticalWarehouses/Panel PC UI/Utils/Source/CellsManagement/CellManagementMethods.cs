@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Ferretto.VW.MAS.DataModels.Cells;
+using Ferretto.VW.MAS.DataModels;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement
@@ -179,7 +179,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             {
                 return false;
             }
-            InsertNewDrawer(cm, cm.Bays[(int)bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].HeightMillimiters);
+            InsertNewDrawer(cm, cm.Bays[bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].HeightMillimiters);
             cm.Bays[bayID - 1].Occupied = false;
             cm.Bays[bayID - 1].DrawerID = -1;
             CreateBlocks(cm);

@@ -17,6 +17,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
+        private readonly Timer targetTimer;
+
+        private int axisPosition;
+
         private ushort controlWord;
 
         private bool disposed;
@@ -30,6 +34,10 @@ namespace Ferretto.VW.MAS.InverterDriver
         private InverterOperationMode operatingMode;
 
         private ushort statusWord;
+
+        private int targetTickCount;
+
+        private bool targetTimerActive;
 
         #endregion
 
@@ -46,6 +54,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
 
             this.homingTimerActive = false;
+            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
+
+            this.targetTimerActive = false;
+
+            this.axisPosition = 0;
         }
 
         #endregion
@@ -158,7 +171,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             var rawMessage = new byte[6 + inputValues.Length];
 
             rawMessage[0] = 0x00;
-            rawMessage[1] = 0x06;
+            rawMessage[1] = (byte)(0x04 + inputValues.Length);
             rawMessage[2] = systemIndex;
             rawMessage[3] = dataSet;
 
@@ -222,8 +235,9 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 500);
+                    this.homingTimer.Change(0, 1000);
                     this.homingTimerActive = true;
+                    this.axisPosition = 0;
                 }
             }
             else
@@ -246,6 +260,43 @@ namespace Ferretto.VW.MAS.InverterDriver
         private void BuildPositionStatusWord()
         {
             throw new NotImplementedException();
+        }
+
+        private byte[] BuildRawActualPositionShaftMessage()
+        {
+            byte systemIndex;
+            InverterParameterId parameterId;
+            byte dataSet;
+
+            lock (this.lastWriteMessage)
+            {
+                systemIndex = this.lastWriteMessage.SystemIndex;
+                parameterId = this.lastWriteMessage.ParameterId;
+                dataSet = this.lastWriteMessage.DataSetIndex;
+            }
+
+            //return (this.statusWord & 0x0002) > 0;
+            //this.statusWord |= 0x0002;
+
+            var rawMessage = new byte[10];
+
+            rawMessage[0] = 0x00;
+            rawMessage[1] = 0x08;
+            rawMessage[2] = systemIndex;
+            rawMessage[3] = dataSet;
+
+            var parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+
+            rawMessage[4] = parameterBytes[0];
+            rawMessage[5] = parameterBytes[1];
+
+            var payloadBytes = BitConverter.GetBytes(++this.axisPosition);
+            rawMessage[6] = payloadBytes[0];
+            rawMessage[7] = payloadBytes[1];
+            rawMessage[8] = payloadBytes[2];
+            rawMessage[9] = payloadBytes[3];
+
+            return rawMessage;
         }
 
         private byte[] BuildRawStatusMessage()
@@ -280,6 +331,41 @@ namespace Ferretto.VW.MAS.InverterDriver
             return rawMessage;
         }
 
+        private byte[] BuildRawStatusPowerOnMessage()
+        {
+            byte systemIndex;
+            InverterParameterId parameterId;
+            byte dataSet;
+
+            lock (this.lastWriteMessage)
+            {
+                systemIndex = this.lastWriteMessage.SystemIndex;
+                parameterId = this.lastWriteMessage.ParameterId;
+                dataSet = this.lastWriteMessage.DataSetIndex;
+            }
+
+            //return (this.statusWord & 0x0002) > 0;
+            //this.statusWord |= 0x0002;
+
+            var rawMessage = new byte[8];
+
+            rawMessage[0] = 0x00;
+            rawMessage[1] = 0x06;
+            rawMessage[2] = systemIndex;
+            rawMessage[3] = dataSet;
+
+            var parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+
+            rawMessage[4] = parameterBytes[0];
+            rawMessage[5] = parameterBytes[1];
+
+            var payloadBytes = BitConverter.GetBytes(this.statusWord);
+            rawMessage[6] = payloadBytes[0];
+            rawMessage[7] = payloadBytes[1];
+
+            return rawMessage;
+        }
+
         private byte[] BuildReadMessage(InverterMessage currentMessage)
         {
             byte[] returnValue = null;
@@ -288,6 +374,21 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 case InverterParameterId.DigitalInputsOutputs:
                     returnValue = this.BuildDigitalInputsMessage(currentMessage);
+                    break;
+
+                case InverterParameterId.StatusWordParam:
+                    returnValue = this.BuildRawStatusPowerOnMessage();
+                    break;
+
+                case InverterParameterId.ActualPositionShaft:
+                    returnValue = this.BuildRawActualPositionShaftMessage();
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
                     break;
             }
 
@@ -332,6 +433,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             if ((this.controlWord & 0x0008) > 0)
             {
                 this.statusWord |= 0x0004;
+                if (!this.targetTimerActive)
+                {
+                    this.targetTimer.Change(0, 1000);
+                    this.targetTimerActive = true;
+                }
             }
             else
             {
@@ -354,10 +460,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.homingTickCount++;
 
-            if (this.homingTickCount > 10)
+            if (this.homingTickCount > 5)
             {
                 this.statusWord |= 0x1000;
                 this.homingTimerActive = false;
+                this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
         }
@@ -371,6 +478,16 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case InverterParameterId.DigitalInputsOutputs:
                     return await this.ProcessDigitalInputs(inverterMessage, stoppingToken);
+
+                case InverterParameterId.ActualPositionShaft:
+                    return await this.ProcessActualPositionShafts(inverterMessage, stoppingToken);
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
             return inverterMessage.GetReadMessage().Length;
         }
@@ -401,9 +518,36 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case InverterParameterId.SetOperatingModeParam:
                     return await this.ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
+
+                case InverterParameterId.ShutterTargetPosition:
+                    return await this.ProcessTargetPositionPayload(inverterMessage, stoppingToken);
+
+                case InverterParameterId.ShutterTargetVelocityParam:
+                    return await this.ProcessTargetPositionPayload(inverterMessage, stoppingToken);
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
 
             return inverterMessage.GetWriteMessage().Length;
+        }
+
+        private async Task<int> ProcessActualPositionShafts(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        {
+            await Task.Delay(5, stoppingToken);
+
+            lock (this.lastWriteMessage)
+            {
+                this.lastWriteMessage = inverterMessage;
+            }
+
+            this.readCompleteEventSlim.Set();
+
+            return inverterMessage.GetReadMessage().Length;
         }
 
         private async Task<int> ProcessControlWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
@@ -425,6 +569,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.lastWriteMessage = inverterMessage;
             }
+
+            this.readCompleteEventSlim.Set();
 
             return inverterMessage.GetReadMessage().Length;
         }
@@ -457,10 +603,46 @@ namespace Ferretto.VW.MAS.InverterDriver
                 case InverterOperationMode.Velocity:
                     this.BuildVelocityStatusWord();
                     break;
+
+                case InverterOperationMode.ProfileVelocity:
+                    this.BuildVelocityStatusWord();
+                    break;
+
+                default:
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                    break;
             }
             this.readCompleteEventSlim.Set();
 
             return inverterMessage.GetReadMessage().Length;
+        }
+
+        private async Task<int> ProcessTargetPositionPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        {
+            //this.operatingMode = Enum.Parse<InverterOperationMode>(inverterMessage.UShortPayload.ToString());
+
+            await Task.Delay(5, stoppingToken);
+
+            this.readCompleteEventSlim.Set();
+
+            return inverterMessage.GetWriteMessage().Length;
+        }
+
+        private void TargetTick(object state)
+        {
+            this.targetTickCount++;
+
+            if (this.targetTickCount > 10)
+            {
+                this.statusWord |= 0x0400;
+                this.targetTimerActive = false;
+                this.targetTimer.Change(-1, Timeout.Infinite);
+                // Reset contatore
+                this.targetTickCount = 0;
+            }
         }
 
         #endregion

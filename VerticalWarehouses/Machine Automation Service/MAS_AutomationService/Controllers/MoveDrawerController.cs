@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -44,26 +45,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200)]
-        [HttpGet("Execute")]
-        public void Execute()
+        [HttpPost("Execute")]
+        public void Execute([FromBody]MoveDrawerMessageDataDTO data)
         {
-            this.ExecuteMovingDrawer_Method();
-            this.Ok();
+            this.ExecuteMovingDrawer_Method(data);
         }
 
         [ProducesResponseType(200)]
         [HttpGet("Stop")]
         public void Stop()
         {
-            //TODO: Publish a command message to stop operation
+            this.Stop_Method();
             this.Ok();
         }
 
-        private void ExecuteMovingDrawer_Method()
+        private void ExecuteMovingDrawer_Method(MoveDrawerMessageDataDTO data)
         {
             IDrawerOperationMessageData drawerOperationData = new DrawerOperationMessageData(
-                DrawerOperation.ManualStore,
+                data.DrawerOperation,
                 DrawerOperationStep.None);
             drawerOperationData.Source = DrawerDestination.InternalBay1Up;
             drawerOperationData.Destination = DrawerDestination.Cell;
@@ -75,6 +74,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageActor.FiniteStateMachines,
                     MessageActor.WebApi,
                     MessageType.DrawerOperation));
+        }
+
+        private void Stop_Method()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(
+                new CommandMessage(
+                    null,
+                    "Stop Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.Stop));
         }
 
         #endregion
