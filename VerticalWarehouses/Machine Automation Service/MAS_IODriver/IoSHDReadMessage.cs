@@ -122,6 +122,7 @@ namespace Ferretto.VW.MAS.IODriver
         public bool OutputsCleared => !this.outputs?.Any(o => o) ?? false;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+        public bool PowerEnable => this.outputs?[(int)IoPorts.PowerEnable] ?? false;
 
         public bool ValidData => this.data != null;
 

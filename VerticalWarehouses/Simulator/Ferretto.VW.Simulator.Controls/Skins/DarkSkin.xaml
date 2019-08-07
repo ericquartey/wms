@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.Simulator.Controls.Skins">
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkSkinGeneral.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkVarious.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkSkinImages.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkActionButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkNavigationButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkNavigationRepeatButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkMainWindowUserComboBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomInputFieldControlFocusable.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/DarkCustomControlSensor.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomLabelTextBlock.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/DarkCustomLabelTextBlock.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomMainWindowErrorButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomMainWindowToggleButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomControlLoggedUser.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/DarkCustomControlDataGrid.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/Shared.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

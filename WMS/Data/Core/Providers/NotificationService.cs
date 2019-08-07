@@ -42,9 +42,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.Notifications.Clear();
         }
 
-        public void PushCreate(Type modelType)
+        public void PushCreate<TKeySource>(Type modelType, IModel<TKeySource> sourceModel)
         {
-            this.Push(null, modelType, HubEntityOperation.Created);
+            if (sourceModel == null)
+            {
+                throw new ArgumentNullException(nameof(sourceModel));
+            }
+
+            this.Push(null, modelType, sourceModel.Id.ToString(), sourceModel.GetType(), HubEntityOperation.Created);
+        }
+
+        public void PushCreate(Type modelType, string sourceModelId, Type sourceModelType)
+        {
+            this.Push(null, modelType, sourceModelId, sourceModelType, HubEntityOperation.Created);
+        }
+
+        public void PushCreate<TKey, TKeySource>(IModel<TKey> model, IModel<TKeySource> sourceModel)
+        {
+            this.Push(model, sourceModel, HubEntityOperation.Created);
         }
 
         public void PushCreate<TKey>(IModel<TKey> model)
@@ -52,9 +67,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.Push(model, HubEntityOperation.Created);
         }
 
-        public void PushDelete(Type modelType)
+        public void PushDelete<TKeySource>(Type modelType, IModel<TKeySource> sourceModel)
         {
-            this.Push(null, modelType, HubEntityOperation.Deleted);
+            if (sourceModel == null)
+            {
+                throw new ArgumentNullException(nameof(sourceModel));
+            }
+
+            this.Push(null, modelType, sourceModel.Id.ToString(), sourceModel.GetType(), HubEntityOperation.Deleted);
+        }
+
+        public void PushDelete(Type modelType, string sourceModelId, Type sourceModelType)
+        {
+            this.Push(null, modelType, sourceModelId, sourceModelType, HubEntityOperation.Deleted);
+        }
+
+        public void PushDelete<TKey, TKeySource>(IModel<TKey> model, IModel<TKeySource> sourceModel)
+        {
+            this.Push(model, sourceModel, HubEntityOperation.Deleted);
         }
 
         public void PushDelete<TKey>(IModel<TKey> model)
@@ -62,9 +92,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.Push(model, HubEntityOperation.Deleted);
         }
 
-        public void PushUpdate(Type modelType)
+        public void PushUpdate(Type modelType, string sourceModelId, Type sourceModelType)
         {
-            this.Push(null, modelType, HubEntityOperation.Updated);
+            this.Push(null, modelType, sourceModelId, sourceModelType, HubEntityOperation.Updated);
+        }
+
+        public void PushUpdate<TKeySource>(Type modelType, IModel<TKeySource> sourceModel)
+        {
+            if (sourceModel == null)
+            {
+                throw new ArgumentNullException(nameof(sourceModel));
+            }
+
+            this.Push(null, modelType, sourceModel.Id.ToString(), sourceModel.GetType(), HubEntityOperation.Updated);
+        }
+
+        public void PushUpdate<TKey, TKeySource>(IModel<TKey> model, IModel<TKeySource> sourceModel)
+        {
+            this.Push(model, sourceModel, HubEntityOperation.Updated);
         }
 
         public void PushUpdate<TKey>(IModel<TKey> model)
@@ -82,11 +127,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var notification in this.Notifications)
             {
-                var attribute = notification.ModelType
+                var targetAttribute = notification.ModelType
                     .GetCustomAttributes(typeof(ResourceAttribute), true)
                     .FirstOrDefault() as ResourceAttribute;
 
-                if (attribute == null)
+                var sourceAttribute = notification.SourceModelType
+                    .GetCustomAttributes(typeof(ResourceAttribute), true)
+                    .FirstOrDefault() as ResourceAttribute;
+
+                if (targetAttribute == null || sourceAttribute == null)
                 {
                     continue;
                 }
@@ -94,8 +143,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var eventDetails = new EntityChangedHubEvent
                 {
                     Id = notification.ModelId,
-                    EntityType = attribute.ResourceName,
+                    EntityType = targetAttribute.ResourceName,
                     Operation = notification.OperationType,
+                    SourceId = notification.SourceModelId,
+                    SourceEntityType = sourceAttribute.ResourceName,
                 };
 
                 await this.hubContext.Clients.All.EntityUpdated(eventDetails);
@@ -114,9 +165,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.Push(model.Id.ToString(), model.GetType(), operationType);
         }
 
+        private void Push<TKey, TKeySource>(IModel<TKey> model, IModel<TKeySource> sourceModel, HubEntityOperation operationType)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            this.Push(model.Id.ToString(), model.GetType(), sourceModel.Id.ToString(), sourceModel.GetType(), operationType);
+        }
+
         private void Push(string modelId, Type modelType, HubEntityOperation operationType)
         {
-            this.Notifications.Add(new Notification(modelId, modelType, operationType));
+            this.Notifications.Add(new Notification(modelId, modelType, modelId, modelType, operationType));
+        }
+
+        private void Push(string modelId, Type modelType, string sourceModelId, Type sourceModelType, HubEntityOperation operationType)
+        {
+            this.Notifications.Add(new Notification(modelId, modelType, sourceModelId, sourceModelType, operationType));
         }
 
         #endregion

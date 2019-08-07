@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.Id = entry.Entity.Id;
 
                 this.NotificationService.PushCreate(model);
-                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
             }
 
             return new SuccessOperationResult<ItemSchedulerRequest>(model);
@@ -76,7 +76,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.Id = entry.Entity.Id;
 
                 this.NotificationService.PushCreate(model);
-                this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId }, model);
             }
 
             return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
@@ -99,7 +99,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = entry.Entity.Id;
 
                     this.NotificationService.PushCreate(model);
-                    this.NotificationService.PushUpdate(new ItemListRow { Id = model.ListRowId });
+                    this.NotificationService.PushUpdate(new ItemListRow { Id = model.ListRowId }, model);
                 }
 
                 return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         model.Id = entry.Entity.Id;
 
                         this.NotificationService.PushCreate(model);
-                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
                     }
                 }
 
@@ -170,7 +170,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
             return result;
         }
@@ -183,7 +183,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+            this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId }, model);
 
             return result;
         }

@@ -19,6 +19,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.BeltBurnishingPosition = beltBurnishingPosition;
         }
 
+        public CurrentPositionMessageData(int executedCycles, decimal currentPosition, BeltBurnishingPosition beltBurnishingPosition)
+        {
+            this.ExecutedCycles = executedCycles;
+            this.CurrentPosition = currentPosition;
+            this.BeltBurnishingPosition = beltBurnishingPosition;
+        }
+
         #endregion
 
         #region Properties
@@ -30,6 +37,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int ExecutedCycles { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"BeltBurnishingPosition:{this.BeltBurnishingPosition.ToString()} CurrentPosition:{this.CurrentPosition} ExecutedCycles:{this.ExecutedCycles}";
+        }
 
         #endregion
     }

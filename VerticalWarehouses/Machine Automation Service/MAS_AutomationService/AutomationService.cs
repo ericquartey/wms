@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels.Errors;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -259,6 +258,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         //case MessageType.DataLayerReady:
                         //case MessageType.IOPowerUp:
                         this.CalibrateAxisMethod(receivedMessage);
+                        break;
+
+                    case MessageType.CurrentPosition:
+                        this.CurrentPositionMethod(receivedMessage);
                         break;
 
                     case MessageType.ShutterControl:

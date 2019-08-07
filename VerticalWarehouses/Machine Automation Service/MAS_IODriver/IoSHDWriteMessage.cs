@@ -273,6 +273,18 @@ namespace Ferretto.VW.MAS.IODriver
             return true;
         }
 
+        public bool SwitchPowerEnable(bool switchOn)
+        {
+            if (this.outputs == null)
+            {
+                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
+            }
+
+            this.outputs[(int)IoPorts.PowerEnable] = switchOn;
+
+            return true;
+        }
+
         public override string ToString()
         {
             var returnString = new StringBuilder();

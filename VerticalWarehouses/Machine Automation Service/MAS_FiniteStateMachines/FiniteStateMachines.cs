@@ -201,6 +201,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (this.currentStateMachine != null
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
+                    && receivedMessage.Type != MessageType.PowerEnable
                     )
                 {
                     var errorNotification = new NotificationMessage(
@@ -254,6 +255,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                     case MessageType.ResetSecurity:
                         this.ProcessResetSecurityMessage(receivedMessage);
+                        break;
+
+                    case MessageType.PowerEnable:
+                        this.ProcessPowerEnableMessage(receivedMessage);
                         break;
 
                     case MessageType.InverterStop:
@@ -413,7 +418,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             fieldNotificationEvent.Subscribe(
                 message =>
                 {
-                    this.logger.LogTrace($"Enqueue Field Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}");
+                    this.logger.LogTrace($"Enqueue Field Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}, Count: {this.fieldNotificationQueue.Count}");
                     this.fieldNotificationQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,

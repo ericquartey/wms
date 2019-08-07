@@ -14,5 +14,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"MissionOperationId:{this.MissionOperationId} MissionId:{this.MissionId}";
+        }
+
+        #endregion
     }
 }

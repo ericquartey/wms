@@ -4,11 +4,13 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
     {
         #region Properties
 
+        decimal FeedRateAfterZero { get; }
+
         decimal FeedRateVM { get; }
 
-        decimal InitialTargetPositionVM { get; }
+        decimal NegativeTargetDirection { get; }
 
-        decimal RecoveryTargetPositionVM { get; }
+        decimal PositiveTargetDirection { get; }
 
         #endregion
     }

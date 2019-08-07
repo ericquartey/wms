@@ -117,7 +117,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
                 var itemCompartmentType = new ItemCompartmentType
                 {
-                    Id = result.Id,
                     CompartmentTypeId = result.CompartmentTypeId,
                     ItemId = result.ItemId,
                     MaxCapacity = result.MaxCapacity,
@@ -157,7 +156,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
                 var itemCompartmentType = new ItemCompartmentType
                 {
-                    Id = result.Id,
                     CompartmentTypeId = result.CompartmentTypeId,
                     ItemId = result.ItemId,
                     MaxCapacity = result.MaxCapacity,
@@ -628,7 +626,6 @@ namespace Ferretto.WMS.App.Core.Providers
                 var itemCompartmentType = new ItemCompartmentType
                 {
                     CompartmentTypeId = result.CompartmentTypeId,
-                    Id = result.Id,
                     ItemId = result.ItemId,
                     MaxCapacity = result.MaxCapacity,
                     Policies = result.GetPolicies(),

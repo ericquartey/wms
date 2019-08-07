@@ -124,18 +124,6 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
             var result = await this.compartmentProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
@@ -152,9 +140,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
                         StatusType.Error));
             }
 
-            this.IsBusy = false;
-
-            return true;
+            return result.Success;
         }
 
         protected override async Task LoadDataAsync()

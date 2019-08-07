@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
@@ -11,10 +13,14 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
     {
         #region Fields
 
+        private readonly string activeDbConnectionString;
+
         private readonly IDictionary<DbContextOptions<TDbContext>, bool> isInhibited
-            = new Dictionary<DbContextOptions<TDbContext>, bool>();
+                            = new Dictionary<DbContextOptions<TDbContext>, bool>();
 
         private readonly ILogger logger;
+
+        private readonly string standbyDbConnectionString;
 
         private Exception lastSeenException;
 
@@ -23,22 +29,12 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #region Constructors
 
         public DbContextRedundancyService(
-           string activeDbConnectionString,
-           string standbyDbConnectionString,
-           ILogger logger)
+           IConfiguration configuration,
+           ILogger<DataLayerContext> logger)
         {
-            if (string.IsNullOrWhiteSpace(activeDbConnectionString))
+            if (configuration == null)
             {
-                throw new ArgumentException(
-                    "Connection string cannot be null or whitespace.",
-                    nameof(activeDbConnectionString));
-            }
-
-            if (string.IsNullOrWhiteSpace(standbyDbConnectionString))
-            {
-                throw new ArgumentException(
-                    "Connection string cannot be null or whitespace.",
-                    nameof(standbyDbConnectionString));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
             if (logger == null)
@@ -46,17 +42,12 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            this.ActiveDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
-                .UseSqlite(activeDbConnectionString)
-                .Options;
-
-            this.StandbyDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
-                .UseSqlite(standbyDbConnectionString)
-                .Options;
-
-            this.isInhibited.Add(this.ActiveDbContextOptions, false);
-            this.isInhibited.Add(this.StandbyDbContextOptions, false);
             this.logger = logger;
+
+            this.activeDbConnectionString = configuration.GetDataLayerPrimaryConnectionString();
+            this.standbyDbConnectionString = configuration.GetDataLayerSecondaryConnectionString();
+
+            this.Initialize();
         }
 
         #endregion
@@ -67,6 +58,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public bool IsActiveDbInhibited => this.isInhibited[this.ActiveDbContextOptions];
 
+        public bool IsEnabled => this.StandbyDbContextOptions != null;
+
         public bool IsStandbyDbInhibited => this.isInhibited[this.StandbyDbContextOptions];
 
         public DbContextOptions<TDbContext> StandbyDbContextOptions { get; private set; }
@@ -75,12 +68,23 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #region Methods
 
-        public void HandleDbContextFault(TDbContext dbContext, Exception exception)
+        public void HandleDbContextFault(DbContextOptions<TDbContext> dbContextOptions, Exception exception)
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
+            if (dbContextOptions == null)
+            {
+                throw new ArgumentNullException(nameof(dbContextOptions));
+            }
+
             if (exception != null)
             {
                 if (exception == this.lastSeenException)
                 {
+                    this.logger.LogWarning("Exception already seen, skipping ...");
                     return;
                 }
                 else
@@ -89,37 +93,75 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                 }
             }
 
-            if (dbContext.Options == this.ActiveDbContextOptions)
+            if (dbContextOptions == this.ActiveDbContextOptions)
             {
-                this.SwapContexts();
-                this.logger.LogError(exception, "Operation failed on active database. Active database swapped with standby.");
+                this.SwapContexts(exception);
             }
-            else if (dbContext.Options == this.StandbyDbContextOptions)
+            else if (dbContextOptions == this.StandbyDbContextOptions)
             {
                 this.logger.LogError(exception, "Operation failed on standby database.");
                 if (!this.IsStandbyDbInhibited)
                 {
-                    this.InhibitStanbyDb();
-                    this.logger.LogError(exception, "Standby database inhibited.");
+                    this.InhibitStandbyDb();
+                    this.logger.LogError("Standby database inhibited.");
                 }
             }
+            else
+            {
+                throw new ArgumentException(
+                    "The specified database context options do not relate to the acrive nor to the standby database.",
+                    nameof(dbContextOptions));
+            }
+
             if (this.IsActiveDbInhibited)
             {
                 this.logger.LogCritical(exception, "Active database operations inhibited because of previous errors.");
             }
         }
 
-        private void InhibitStanbyDb()
+        public void InhibitStandbyDb()
         {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
             this.isInhibited[this.StandbyDbContextOptions] = true;
         }
 
-        private void SwapContexts(bool inhibitActive = true)
+        private void Initialize()
         {
-            if (inhibitActive)
+            this.ActiveDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
+              .UseSqlite(this.activeDbConnectionString)
+              .Options;
+            this.isInhibited.Add(this.ActiveDbContextOptions, false);
+
+            if (string.IsNullOrWhiteSpace(this.standbyDbConnectionString))
             {
-                this.isInhibited[this.ActiveDbContextOptions] = true;
+                this.isInhibited.Add(this.StandbyDbContextOptions, true);
+                this.logger.LogWarning("No connection string specified for standby database. Database redundancy disabled.");
             }
+            else
+            {
+                this.StandbyDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
+                    .UseSqlite(this.standbyDbConnectionString)
+                    .Options;
+
+                this.isInhibited.Add(this.StandbyDbContextOptions, false);
+            }
+        }
+
+        private void SwapContexts(Exception exception)
+        {
+            this.isInhibited[this.ActiveDbContextOptions] = true;
+
+            if (this.isInhibited[this.StandbyDbContextOptions])
+            {
+                this.logger.LogCritical(exception, "Unable to swap active with standby, because standby is inhibited (not usable).");
+                return;
+            }
+
+            this.logger.LogError(exception, "Operation failed on active database. Active database swapped with standby.");
 
             var newActiveDbContextOptions = this.StandbyDbContextOptions;
 

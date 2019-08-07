@@ -1,6 +1,6 @@
 ﻿using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.MAS.AutomationService.Interfaces
+namespace Ferretto.VW.MAS.AutomationService
 {
     public interface IAutomationService
     {

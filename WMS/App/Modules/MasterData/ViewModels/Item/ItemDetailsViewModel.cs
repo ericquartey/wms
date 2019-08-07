@@ -19,6 +19,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item))]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
     [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemArea), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
     public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IEdit
     {
         #region Fields
@@ -193,7 +194,7 @@ namespace Ferretto.WMS.App.Modules.MasterData
             return this.SelectedAllowedItemArea != null;
         }
 
-        public override async void LoadRelatedData()
+        public override async Task LoadRelatedDataAsync()
         {
             if (!this.IsModelIdValid)
             {
@@ -257,18 +258,6 @@ namespace Ferretto.WMS.App.Modules.MasterData
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
             var result = await this.itemProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
@@ -284,8 +273,6 @@ namespace Ferretto.WMS.App.Modules.MasterData
                         result.Description,
                         StatusType.Error));
             }
-
-            this.IsBusy = false;
 
             return result.Success;
         }

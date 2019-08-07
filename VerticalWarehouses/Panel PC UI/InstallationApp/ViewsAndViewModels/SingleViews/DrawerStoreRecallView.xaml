@@ -16,7 +16,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Drawer Store - Recall" />
+                   Text="{x:Static res:InstallationApp.DrawerStoreAndRecall}" />
 
         <Button Grid.Column="0"
                 Margin="407,369,0,0"
@@ -32,7 +32,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding StartStoreButtonCommand}"
-            Content="Start store bay to cell"
+            Content="{x:Static res:InstallationApp.StartManualDrawerStore}"
             IsEnabled="{Binding IsStartStoreButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
@@ -41,7 +41,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding StartRecallButtonCommand}"
-            Content="Start recall cell to bay"
+            Content="{x:Static res:InstallationApp.StartManualDrawerRecall}"
             IsEnabled="{Binding IsStartRecallButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 

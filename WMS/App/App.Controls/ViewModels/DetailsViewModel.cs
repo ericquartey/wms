@@ -29,6 +29,8 @@ namespace Ferretto.WMS.App.Controls
 
         private string deleteReason;
 
+        private bool hasConflictingChanges;
+
         private bool isBusy;
 
         private bool isModelValid;
@@ -60,41 +62,12 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public string AddReason
-        {
-            get => this.addReason;
-            set => this.SetProperty(ref this.addReason, value);
-        }
-
-        public ColorRequired ColorRequired
-        {
-            get => this.colorRequired;
-            set => this.SetProperty(ref this.colorRequired, value);
-        }
-
         public ICommand DeleteCommand => this.deleteCommand ??
             (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteWithPromptAsync()));
-
-        public string DeleteReason
-        {
-            get => this.deleteReason;
-            set => this.SetProperty(ref this.deleteReason, value);
-        }
+                async () => await this.ExecuteDeleteWithPromptAsync(),
+                this.CanExecuteDeleteCommand));
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.EvaluateCanExecuteCommands();
-                }
-            }
-        }
 
         public bool IsModelIdValid => this.Model?.Id > 0;
 
@@ -114,6 +87,63 @@ namespace Ferretto.WMS.App.Controls
 
                 this.SetProperty(ref this.isModelValid, temp);
                 return temp;
+            }
+        }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                    (this.refreshCommand = new DelegateCommand(
+                async () => await this.ExecuteRefreshWithPromptAsync(),
+                this.CanExecuteRefreshCommand));
+
+        public ICommand RevertCommand => this.revertCommand ??
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPromptAsync(),
+                this.CanExecuteRevertCommand));
+
+        public ICommand SaveCommand => this.saveCommand ??
+            (this.saveCommand = new DelegateCommand(
+                async () => await this.ExecuteSaveWithPromptAsync(),
+                this.CanExecuteSaveCommand));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
+
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
+
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
+        public bool HasConflictingChanges
+        {
+            get => this.hasConflictingChanges;
+            set
+            {
+                if (this.SetProperty(ref this.hasConflictingChanges, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
             }
         }
 
@@ -137,25 +167,11 @@ namespace Ferretto.WMS.App.Controls
                     }
 
                     this.UpdateReasons();
-                    this.LoadRelatedData();
+                    this.LoadRelatedDataAsync().ConfigureAwait(true);
                     this.EvaluateCanExecuteCommands();
                 }
             }
         }
-
-        public ICommand RefreshCommand => this.refreshCommand ??
-                    (this.refreshCommand = new DelegateCommand(
-                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
-
-        public ICommand RevertCommand => this.revertCommand ??
-            (this.revertCommand = new DelegateCommand(
-                async () => await this.ExecuteRevertWithPromptAsync(),
-                this.CanExecuteRevertCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand));
 
         public string SaveReason
         {
@@ -186,9 +202,10 @@ namespace Ferretto.WMS.App.Controls
             return true;
         }
 
-        public virtual void LoadRelatedData()
+        public virtual Task LoadRelatedDataAsync()
         {
             // do nothing. The derived classes can customize the behaviour
+            return Task.CompletedTask;
         }
 
         public void ShowErrorDialog(string message)
@@ -210,6 +227,38 @@ namespace Ferretto.WMS.App.Controls
                 .Select(p => p.Reason).FirstOrDefault();
         }
 
+        public async Task<bool> ExecuteSaveWithPromptAsync()
+        {
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
+            // TODO: will be rewritten in scope of Task
+            // https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/2158
+            dynamic dynamicModel = this.Model;
+
+            if (!PolicyExtensions.CanUpdate(dynamicModel))
+            {
+                this.ShowErrorDialog(PolicyExtensions.GetCanUpdateReason(dynamicModel));
+
+                return false;
+            }
+
+            this.IsBusy = true;
+
+            var result = await this.ExecuteSaveCommandAsync();
+
+            this.IsBusy = false;
+
+            return result;
+        }
+
+        protected virtual bool CanExecuteDeleteCommand()
+        {
+            return !this.IsBusy && !this.HasConflictingChanges;
+        }
+
         protected virtual bool CanExecuteRevertCommand()
         {
             return this.changeDetector.IsModified
@@ -218,7 +267,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return !this.IsBusy;
+            return !this.IsBusy && !this.HasConflictingChanges;
         }
 
         protected virtual bool CheckValidModel()
@@ -232,6 +281,7 @@ namespace Ferretto.WMS.App.Controls
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.DeleteCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
         }
@@ -250,21 +300,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected abstract Task ExecuteRevertCommandAsync();
 
-        protected virtual Task<bool> ExecuteSaveCommandAsync()
-        {
-            // TODO: will be rewritten in scope of Task
-            // https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/2158
-            dynamic dynamicModel = this.Model;
-
-            if (!PolicyExtensions.CanUpdate(dynamicModel))
-            {
-                this.ShowErrorDialog(PolicyExtensions.GetCanUpdateReason(dynamicModel));
-
-                return Task.FromResult(false);
-            }
-
-            return Task.FromResult(true);
-        }
+        protected abstract Task<bool> ExecuteSaveCommandAsync();
 
         protected abstract Task LoadDataAsync();
 
@@ -300,8 +336,13 @@ namespace Ferretto.WMS.App.Controls
                 && !this.IsBusy;
         }
 
-        private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
+        private void ChangeDetector_ModifiedChanged(object sender, EventArgs e)
         {
+            if (!this.changeDetector.IsModified)
+            {
+                this.HasConflictingChanges = false;
+            }
+
             this.EvaluateCanExecuteCommands();
         }
 
@@ -329,6 +370,25 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        private async Task ExecuteRefreshWithPromptAsync()
+        {
+            if (this.changeDetector.IsModified)
+            {
+                var result = this.DialogService.ShowMessage(
+                    DesktopApp.AreYouSureToRefreshWithModifications,
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Question,
+                    DialogButtons.YesNo);
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            await this.ExecuteRefreshCommandAsync();
+        }
+
         private async Task ExecuteRevertWithPromptAsync()
         {
             var result = this.DialogService.ShowMessage(
@@ -343,6 +403,36 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        private async Task OnModelChangedPubSubEventAsync(ModelChangedPubSubEvent e)
+        {
+            var attributes = this.GetType()
+                .GetCustomAttributes(typeof(ResourceAttribute), true)
+                .Cast<ResourceAttribute>();
+
+            if (this.changeDetector.IsModified)
+            {
+                if (e.ResourceName == e.SourceResourceName &&
+                    e.ResourceId == e.SourceResourceId &&
+                    attributes.Any(a => a.ResourceName == e.ResourceName && a.Primary) &&
+                    this.model != null &&
+                    e.ResourceId == this.model.Id.ToString())
+                {
+                    this.HasConflictingChanges = true;
+                }
+                else
+                {
+                    if (attributes.Any(a => a.ResourceName == e.ResourceName && !a.Primary))
+                    {
+                        await this.LoadRelatedDataAsync().ConfigureAwait(true);
+                    }
+                }
+            }
+            else
+            {
+                await this.LoadDataAsync().ConfigureAwait(true);
+            }
+        }
+
         private void SubscribeToEvents()
         {
             var attributes = this.GetType()
@@ -353,7 +443,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
-                        async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
+                        async eventArgs => await this.OnModelChangedPubSubEventAsync(eventArgs),
                         true,
                         e => attributes.Any(a =>
                             a.ResourceName == e.ResourceName &&

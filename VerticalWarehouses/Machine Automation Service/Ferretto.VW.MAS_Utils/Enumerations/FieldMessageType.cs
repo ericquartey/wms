@@ -47,5 +47,9 @@
         SetConfigurationIO,
 
         ResetSecurity,
+
+        PowerEnable,
+
+        InverterFaultReset
     }
 }

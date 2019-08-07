@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Ferretto.WMS.App.Controls.Interfaces
 {
     public interface IExtensionDataEntityViewModel
@@ -10,7 +12,7 @@ namespace Ferretto.WMS.App.Controls.Interfaces
 
         #region Methods
 
-        void LoadRelatedData();
+        Task LoadRelatedDataAsync();
 
         #endregion
     }

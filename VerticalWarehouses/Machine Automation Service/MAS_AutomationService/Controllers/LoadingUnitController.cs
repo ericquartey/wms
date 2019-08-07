@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

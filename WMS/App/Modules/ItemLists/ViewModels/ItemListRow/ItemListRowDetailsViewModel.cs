@@ -125,18 +125,6 @@ namespace Ferretto.WMS.App.Modules.ItemLists
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.CheckValidModel())
-            {
-                return false;
-            }
-
-            if (!await base.ExecuteSaveCommandAsync())
-            {
-                return false;
-            }
-
-            this.IsBusy = true;
-
             var result = await this.itemListRowProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
@@ -155,9 +143,7 @@ namespace Ferretto.WMS.App.Modules.ItemLists
                         StatusType.Error));
             }
 
-            this.IsBusy = false;
-
-            return true;
+            return result.Success;
         }
 
         protected override async Task LoadDataAsync()

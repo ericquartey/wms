@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Services.Interfaces;
+﻿using System.Diagnostics;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -190,6 +191,13 @@ namespace Ferretto.VW.App.Services
                     {
                         this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(
                             new MAS_EventMessage(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
+                    }
+                    break;
+
+                case null:
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
                     }
                     break;
             }

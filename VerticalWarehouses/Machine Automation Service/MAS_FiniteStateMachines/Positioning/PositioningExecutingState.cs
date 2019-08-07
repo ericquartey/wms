@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                     $"Current position {beltBurnishingPosition}",
                                     MessageActor.AutomationService,
                                     MessageActor.FiniteStateMachines,
-                                    MessageType.CurrentEncoderPosition,
+                                    MessageType.Positioning,
                                     MessageStatus.OperationExecuting );
 
                                 this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
@@ -178,8 +178,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                                 $"Current Encoder position: {data.CurrentPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting );
+                                MessageType.Positioning,
+                                MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
                         }
