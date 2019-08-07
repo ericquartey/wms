@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningStateMachine(
-            IMachineSensorsStatus machineSensorStatus,
+            IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
             IPositioningMessageData positioningMessageData,
             ILogger logger,
@@ -42,7 +42,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
             this.CurrentState = new EmptyState( logger );
 
-            this.machineSensorsStatus = machineSensorStatus;
             this.positioningMessageData = positioningMessageData;
 
             this.machineSensorsStatus = machineSensorsStatus;
@@ -103,11 +102,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 if (checkConditions)
                 {
-                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                    this.CurrentState = new PositioningStartState( this, this.machineSensorsStatus, this.positioningMessageData, this.logger );
                 }
                 else
                 {
-                    this.CurrentState = new PositioningErrorState(this, this.positioningMessageData, null, this.Logger);
+                    this.CurrentState = new PositioningErrorState( this, this.machineSensorsStatus, this.positioningMessageData, null, this.Logger );
                 }
 
                 this.CurrentState?.Start();
