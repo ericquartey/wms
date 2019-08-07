@@ -7,7 +7,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     public class PowerEnableMessageData : IPowerEnableMessageData
     {
         #region Constructors
+        public PowerEnableMessageData()
+        {
 
+        }
         public PowerEnableMessageData(bool enable, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Enable = enable;
