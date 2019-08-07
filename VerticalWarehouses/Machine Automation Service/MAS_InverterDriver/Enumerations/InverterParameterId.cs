@@ -22,7 +22,7 @@
 
         ShutterTargetVelocityParam = 480,
 
-        StatusWordParam = 411, //INFO:Readonly
+        StatusWordParam = 411, //19B INFO:Readonly
 
         ActualPositionShaft = 1108,
 
@@ -30,6 +30,6 @@
 
         DigitalInputsOutputs = 1411,
 
-        ShutterTargetPosition = 414
+        ShutterTargetPosition = 414 // 19E
     }
 }
