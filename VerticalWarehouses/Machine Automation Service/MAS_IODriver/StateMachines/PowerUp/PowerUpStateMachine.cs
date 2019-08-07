@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                                message.ValidOutputs &&
                                message.ResetSecurity;
 
-            if (this.CurrentState is PulseResetState && checkMessage && !this.pulseOneTime)
+            if (checkMessage && !this.pulseOneTime)
             {
                 //TEMP Start the timer for the PulseResetSecurity message in state ON according to the device specifications
                 this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
