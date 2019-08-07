@@ -151,6 +151,17 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         continue;
                     }
+                  
+                    var message = new IoSHDWriteMessage(
+                        this.ioSHDStatus.ComunicationTimeOut,
+                        this.ioSHDStatus.UseSetupOutputLines,
+                        this.ioSHDStatus.SetupOutputLines,
+                        this.ioSHDStatus.DebounceInput);
+
+                    this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.ioSHDStatus.ComunicationTimeOut} ms - debounceTime={this.ioSHDStatus.DebounceInput} ms]");
+
+                    this.ioCommandQueue.Enqueue(message);
+
                     this.writeEnableEvent.Set();
                 }
 
