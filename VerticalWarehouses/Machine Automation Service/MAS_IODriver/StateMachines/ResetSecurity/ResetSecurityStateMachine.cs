@@ -1,19 +1,16 @@
 ﻿using System.Threading;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
+namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
-    public class PowerUpStateMachine : IoStateMachineBase
+    public class ResetSecurityStateMachine : IoStateMachineBase
     {
         #region Fields
 
         private const int PULSE_INTERVAL = 350;
-
-        private readonly IoIndex index;
 
         private readonly IoSHDStatus status;
 
@@ -27,17 +24,15 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         #region Constructors
 
-        public PowerUpStateMachine(
+        public ResetSecurityStateMachine(
             BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
             IoSHDStatus status,
-            IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger)
         {
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
-            this.index = index;
 
             logger.LogTrace("1:Method Start");
         }
@@ -46,7 +41,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         #region Destructors
 
-        ~PowerUpStateMachine()
+        ~ResetSecurityStateMachine()
         {
             this.Dispose(false);
         }
@@ -57,11 +52,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
-            if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
-                message.ValidOutputs &&
-                message.ResetSecurity)
+            if (message.ValidOutputs && message.ResetSecurity)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
             }
@@ -71,15 +64,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                               message.ValidOutputs &&
-                               message.ResetSecurity;
+                message.ValidOutputs && message.ResetSecurity;
 
-            if (checkMessage && !this.pulseOneTime)
+            if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
             {
-                //TEMP Start the timer for the PulseResetSecurity message in state ON according to the device specifications
                 this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
                 this.pulseOneTime = true;
             }
@@ -90,7 +81,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new PowerUpStartState(this, this.status, this.index, this.Logger);
+            this.CurrentState = new ResetSecurityStartState(this, this.status, this.Logger);
             this.CurrentState?.Start();
         }
 
@@ -114,16 +105,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         private void DelayElapsed(object state)
         {
-            //TEMP Clear message IO
-            var clearIoMessage = new IoSHDWriteMessage();
+            var pulseIoMessage = new IoSHDWriteMessage();
+            pulseIoMessage.SwitchResetSecurity(false);
+            pulseIoMessage.SwitchPowerEnable(true);
 
-            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
-            lock (this.status)
-            {
-                this.status.UpdateOutputStates(clearIoMessage.Outputs);
-            }
+            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
 
-            this.EnqueueMessage(clearIoMessage);
+            this.EnqueueMessage(pulseIoMessage);
         }
 
         #endregion
