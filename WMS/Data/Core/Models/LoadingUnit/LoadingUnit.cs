@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public double? AreaFillRate { get; set; }
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
         public string AreaName { get; set; }
 

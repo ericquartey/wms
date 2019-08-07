@@ -118,10 +118,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             string search)
         {
             var models = await this.GetAllBase()
+                .Where(l => l.AreaId.HasValue)
                 .Where(l => this.DataContext.ItemsAreas.Where(
-                    ia => ia.ItemId == id)
-                            .Select(ia => ia.AreaId)
-                            .Contains(l.AreaId))
+                        ia => ia.ItemId == id)
+                    .Select(ia => ia.AreaId)
+                    .Contains(l.AreaId.Value))
                 .Where(l => l.HasCompartments)
                 .ToArrayAsync<LoadingUnit, Common.DataModels.LoadingUnit>(
                     skip,
@@ -383,7 +384,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<LoadingUnit> GetAllBase()
         {
-            var loadingUnitsMachines = this.DataContext.LoadingUnits.Join(this.DataContext.Machines, l => l.Cell.Aisle.Id, machine => machine.AisleId, (l, m) => new { l, m }).ToArray();
+            var loadingUnitsMachines = this.DataContext.LoadingUnits.Join(
+                this.DataContext.Machines,
+                l => l.Cell.Aisle.Id,
+                machine => machine.AisleId,
+                (l, m) => new { l, m })
+                .ToArray();
+
             return this.DataContext.LoadingUnits
                 .Select(l => new LoadingUnit
                 {

@@ -91,6 +91,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Machine> GetByBayIdAsync(int bayId)
         {
             var bay = await this.bayProvider.GetByIdAsync(bayId);
+
+            if (bay == null || bay.MachineId == null)
+            {
+                return null;
+            }
+
             var machine = await this.GetAllBase()
                        .SingleOrDefaultAsync(i => i.Id == bay.MachineId);
 
@@ -194,7 +200,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             l => l.CellId,
                             (c, l) => new
                             {
-                                AisleId = c.AisleId,
+                                c.AisleId,
                                 LoadingUnitId = l.Id,
                             })
                         .Join(
@@ -203,8 +209,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                             c => c.LoadingUnitId,
                             (l, c) => new
                             {
-                                AisleId = l.AisleId,
-                                ItemId = c.ItemId,
+                                l.AisleId,
+                                c.ItemId,
                             })
                         .Distinct()
                         .GroupBy(i => i.AisleId)
@@ -301,6 +307,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return this.DataContext.Machines
                 .GroupJoin(
                     this.DataContext.LoadingUnits
+                        .Where(l => l.CellId.HasValue)
                         .Select(l => new
                         {
                             l.Id,
