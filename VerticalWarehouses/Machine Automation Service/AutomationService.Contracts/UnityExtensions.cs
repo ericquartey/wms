@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Prism.Ioc;
 using Unity;
 using Unity.Injection;
 
@@ -98,5 +99,75 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
 
         #endregion
+
+        public static IContainerRegistry RegisterMachineAutomationHubs(
+        this IContainerRegistry container,
+        System.Uri serviceUrl,
+        string operatorHubPath,
+        string installationHubPath)
+        {
+            var urlString = serviceUrl.ToString();
+
+            var operatorHubUrl = new System.Uri(serviceUrl, operatorHubPath);
+
+            container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
+            container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(urlString, installationHubPath));
+
+            return container;
+        }
+
+        public static IContainerRegistry RegisterMachineAutomationServices(
+            this IContainerRegistry container,
+            System.Uri serviceUrl)
+        {
+            var urlString = serviceUrl.ToString();
+
+            container.RegisterInstance<IIdentityMachineService>(new IdentityMachineService(urlString));
+
+            container.RegisterInstance<IUsersMachineService>(new UsersMachineService(urlString));
+
+            container.RegisterInstance<IErrorsMachineService>( new ErrorsMachineService(urlString));
+
+            container.RegisterInstance<IMissionOperationsMachineService>(new MissionOperationsMachineService(urlString));
+
+            container.RegisterInstance<IHomingMachineService>(new HomingMachineService(urlString));
+
+            container.RegisterInstance<IPositioningMachineService>(new PositioningMachineService(urlString));
+
+            container.RegisterInstance<IBeltBurnishingMachineService>(new BeltBurnishingMachineService(urlString));
+
+            container.RegisterInstance<IShutterMachineService>(new ShutterMachineService(urlString));
+
+            container.RegisterInstance<IResolutionCalibrationMachineService>(new ResolutionCalibrationMachineService(urlString));
+
+            container.RegisterInstance<IOffsetCalibrationMachineService>(new OffsetCalibrationMachineService(urlString));
+
+            container.RegisterInstance<IInstallationStatusMachineService>(new InstallationStatusMachineService(urlString));
+
+            container.RegisterInstance<IUpdateSensorsMachineService>(new UpdateSensorsMachineService(urlString));
+
+            container.RegisterInstance<ITestMachineService>(new TestMachineService(urlString));
+
+            container.RegisterInstance<IMachineStatusMachineService>(new MachineStatusMachineService(urlString));
+
+            container.RegisterInstance<IMissionOperationsMachineService>(new MissionOperationsMachineService(urlString));
+
+            container.RegisterInstance<ILoadingUnitsMachineService>(new LoadingUnitsMachineService(urlString));
+
+            container.RegisterInstance<ICellsMachineService>(new CellsMachineService(urlString));
+
+            container.RegisterInstance<IErrorsMachineService>(new ErrorsMachineService(urlString));
+
+            container.RegisterInstance<IBaysMachineService>(new BaysMachineService(urlString));
+
+            container.RegisterInstance<IStatisticsMachineService>(new StatisticsMachineService(urlString));
+
+            container.RegisterInstance<IMoveDrawerMachineService>(new MoveDrawerMachineService(urlString));
+
+            return container;
+        }
+
+
+
     }
 }

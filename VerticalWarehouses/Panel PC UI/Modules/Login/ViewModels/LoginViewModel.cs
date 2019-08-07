@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly IIdentityService identityService;
+        private readonly IIdentityMachineService identityMachineService;
 
         private ICommand loginCommand;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             ISessionService sessionService,
             IBayManager bayManager,
-            IIdentityService identityService) : base(PresentationMode.Login)
+            IIdentityMachineService identityMachineService) : base(PresentationMode.Login)
         {
             if (authenticationService == null)
             {
@@ -55,15 +55,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            if (identityService == null)
+            if (identityMachineService == null)
             {
-                throw new ArgumentNullException(nameof(identityService));
+                throw new ArgumentNullException(nameof(identityMachineService));
             }
 
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
             this.bayManager = bayManager;
-            this.identityService = identityService;
+            this.identityMachineService = identityMachineService;
 
 #if DEBUG
             this.UserLogin = new UserLogin

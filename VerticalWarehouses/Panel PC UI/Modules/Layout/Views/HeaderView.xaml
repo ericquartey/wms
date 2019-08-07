@@ -36,7 +36,8 @@
                               Margin="10,0,10,0"
                               VerticalContentAlignment="Center"
                               Items="{Binding States}"
-                              PresentationType="{x:Static enums:PresentationTypes.Help}">
+                              PresentationType="{x:Static enums:PresentationTypes.Help}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <Button Background="{DynamicResource VWAPP_BACKGROUND}"
                         BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
                         BorderThickness="1"

@@ -8,12 +8,13 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
+using Unity;
+using Unity.Injection;
 
 namespace Ferretto.VW.App
 {
@@ -92,54 +93,47 @@ namespace Ferretto.VW.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
-
             var navigationService = this.Container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
 
-            containerRegistry.RegisterInstance<IUsersService>(new UsersService(automationServiceUrl));
+            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
+            containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
+
+            var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
+            var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
+            var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
             // UI services
             containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
             containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
-
+            containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
+                new InjectionFactory(c =>
+                    new HealthProbeService(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath, c.Resolve<IEventAggregator>())));
             containerRegistry.RegisterInstance(ServiceFactory.Get<IThemeService>());
             containerRegistry.RegisterInstance(ServiceFactory.Get<ISessionService>());
 
             // MAS Web API services
-            containerRegistry.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
-            containerRegistry.RegisterInstance<IMissionOperationsService>(new MissionOperationsService(automationServiceUrl));
-
-            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
-            containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
+            var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
+            var installationHubPath = ConfigurationManager.AppSettings.GetAutomationServiceInstallationHubPath();
+            containerRegistry.RegisterMachineAutomationServices(serviceUrl);
+            containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
 
             RegisterHubs(containerRegistry);
 
             RegisterWmsProviders(containerRegistry);
         }
 
-        private static void RegisterHubs(IContainerRegistry containerRegistry)
+        private static void RegisterHubs(IContainerRegistry container)
         {
-            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
-
-            var operatorHubPath = ConfigurationManager.AppSettings.Get("OperatorHubEndpoint");
-            var operatorHubUrl = new System.Uri(new System.Uri(automationServiceUrl), operatorHubPath);
-            var operatorHubClient = new OperatorHubClient(operatorHubUrl);
-            containerRegistry.RegisterInstance<IOperatorHubClient>(operatorHubClient);
-
-            var installationHubPath = ConfigurationManager.AppSettings.Get("InstallationHubEndpoint");
-            var installationHubClient = new InstallationHubClient(automationServiceUrl, installationHubPath);
-            containerRegistry.RegisterInstance<IInstallationHubClient>(installationHubClient);
-
-            var wmsHubPath = ConfigurationManager.AppSettings.Get("WMSServiceAddressHubsEndpoint");
+            var wmsHubPath = ConfigurationManager.AppSettings.Get("WMS:DataService:Hubs:Data:Path");
             var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new System.Uri(wmsHubPath));
-            containerRegistry.RegisterInstance(wmsHub);
+            container.RegisterInstance(wmsHub);
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
-            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMSServiceAddress"));
+            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMS:DataService:Url"));
 
             container.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             container.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
