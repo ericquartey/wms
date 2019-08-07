@@ -8,7 +8,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         #region Constructors
         public CurrentPositionMessageData()
         {
-
         }
 
         public CurrentPositionMessageData(decimal currentPosition)
