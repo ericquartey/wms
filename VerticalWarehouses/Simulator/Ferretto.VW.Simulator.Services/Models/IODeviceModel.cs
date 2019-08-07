@@ -22,7 +22,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         BayLight = 4,
 
-        FreeSensor1 = 5,
+        PowerEnable = 5,
 
         EndMissionRobot = 6,
 
@@ -83,6 +83,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public IODeviceModel()
         {
+            // Initialize inputs
             this.inputs.Add(new BitModel("Bit 00", false));
             this.inputs.Add(new BitModel("Bit 01", false));
             this.inputs.Add(new BitModel("Bit 02", false));
@@ -100,10 +101,15 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("Bit 14", false));
             this.inputs.Add(new BitModel("Bit 15", false));
 
-            //this.inputs.PropertyChanged += (s, e) =>
-            //{
-            //    this.RaisePropertyChanged(nameof(this.InputsValue));
-            //};
+            // Initialize ouputs
+            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false)).ToList();
+
+            // Remove emergency button
+            this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
+
+            // Set empty position on bay
+            this.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;
+            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
         }
 
         #endregion

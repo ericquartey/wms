@@ -35,11 +35,6 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             return this.TryDequeue(out result);
         }
 
-        public bool Peek(out T result)
-        {
-            this.dataReady?.Reset();
-            return this.TryPeek(out result);
-        }
         public new void Enqueue(T item)
         {
             if (item != null)
@@ -47,6 +42,12 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                 base.Enqueue(item);
                 this.dataReady?.Set();
             }
+        }
+
+        public bool Peek(out T result)
+        {
+            this.dataReady?.Reset();
+            return this.TryPeek(out result);
         }
 
         public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)
@@ -106,6 +107,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
             return false;
         }
+
         #endregion
     }
 }
