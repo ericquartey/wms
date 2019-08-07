@@ -14,7 +14,6 @@ using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -26,7 +25,7 @@ namespace Ferretto.VW.App.Operator
     {
         #region Fields
 
-        private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+        private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationService:Url");
 
         private readonly IUnityContainer container;
 
@@ -63,8 +62,6 @@ namespace Ferretto.VW.App.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            this.RegisterMachineAutomationServiceWebApis(containerRegistry);
-
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
@@ -109,27 +106,6 @@ namespace Ferretto.VW.App.Operator
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
-        }
-
-        private void RegisterMachineAutomationServiceWebApis(IContainerRegistry containerRegistry)
-        {
-            var missionOperationsService = new MissionOperationsMachineService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IMissionOperationsMachineService>(missionOperationsService);
-
-            var loadingUnitsService = new LoadingUnitsMachineService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ILoadingUnitsMachineService>(loadingUnitsService);
-
-            var cellsService = new CellsMachineService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<ICellsMachineService>(cellsService);
-
-            var errorsService = new ErrorsMachineService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IErrorsMachineService>(errorsService);
-
-            var baysService = new BaysMachineService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IBaysMachineService>(baysService);
-
-            var statisticsService = new StatisticsMachineService(this.automationServiceUrl);
-            containerRegistry.RegisterInstance<IStatisticsMachineService>(statisticsService);
         }
 
         #endregion
