@@ -104,22 +104,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            lock (this.machineSensorsStatus)
-            {
-                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
-            }
-
-            var description = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? $"{ this.machineSensorsStatus.AxisYPosition}" : $"{this.machineSensorsStatus.AxisXPosition}";
-            var notificationCurrPositionMessage = new NotificationMessage(
-                this.positioningMessageData,
-                $"Current {this.positioningMessageData.AxisMovement} axis position: {description}",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationExecuting);
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationCurrPositionMessage);
-
             var ioCommandMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
             var ioCommandMessage = new FieldCommandMessage(
                 ioCommandMessageData,
@@ -146,6 +130,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             //            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            lock (this.machineSensorsStatus)
+            {
+                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+            }
 
             var notificationMessage = new NotificationMessage(
                 this.positioningMessageData,

@@ -104,17 +104,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                 this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
             }
 
-            var description = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? $"{ this.machineSensorsStatus.AxisYPosition}" : $"{this.machineSensorsStatus.AxisXPosition}";
-            var notificationCurrPositionMessage = new NotificationMessage(
-                this.positioningMessageData,
-                $"Current {this.positioningMessageData.AxisMovement} position: {description}",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationExecuting);
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationCurrPositionMessage);
-
             if (this.stopRequested)
             {
                 //TEMP The FSM must be defined the inverter to stop (by the inverter index)

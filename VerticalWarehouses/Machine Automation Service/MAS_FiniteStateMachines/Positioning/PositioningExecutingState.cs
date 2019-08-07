@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool disposed;
 
-        private decimal nTimes;
-
         private int numberExecutedSteps;
 
         private IPositioningFieldMessageData positioningDownFieldMessageData;
@@ -133,20 +131,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                     case MessageStatus.OperationExecuting:
                         if (message.Data is InverterStatusUpdateFieldMessageData data)
                         {
-                            if (this.IsNotificationToSend())
-                            {
-                                this.positioningMessageData.CurrentPosition = data.CurrentPosition;
+                            this.positioningMessageData.CurrentPosition = data.CurrentPosition;
 
-                                var notificationMessage = new NotificationMessage(
-                                    this.positioningMessageData,
-                                    $"Current Encoder position: {data.CurrentPosition}",
-                                    MessageActor.AutomationService,
-                                    MessageActor.FiniteStateMachines,
-                                    MessageType.Positioning,
-                                    MessageStatus.OperationExecuting);
+                            var notificationMessage = new NotificationMessage(
+                                this.positioningMessageData,
+                                $"Current Encoder position: {data.CurrentPosition}",
+                                MessageActor.AutomationService,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Positioning,
+                                MessageStatus.OperationExecuting);
 
-                                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                            }
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                         }
                         break;
 
@@ -273,21 +268,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             this.disposed = true;
 
             base.Dispose(disposing);
-        }
-
-        private bool IsNotificationToSend()
-        {
-            const int NTIMES_TO_WAIT = 5;
-            if (this.nTimes == NTIMES_TO_WAIT)
-            {
-                this.nTimes = 0;
-                return true;
-            }
-            else
-            {
-                this.nTimes++;
-                return false;
-            }
         }
 
         #endregion
