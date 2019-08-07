@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new PowerEnableInverterStartState(this.ParentStateMachine, this.Logger));
+                        this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
                         break;
 
                     case MessageStatus.OperationError:
@@ -82,6 +82,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ResetSecurity);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
         }

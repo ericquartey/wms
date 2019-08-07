@@ -6,7 +6,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     public class CurrentPositionMessageData : IMessageData
     {
         #region Constructors
-
         public CurrentPositionMessageData()
         {
         }

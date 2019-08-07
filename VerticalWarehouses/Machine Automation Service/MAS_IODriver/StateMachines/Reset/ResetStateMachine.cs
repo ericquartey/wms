@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs && message.ResetSecurity;
 
-            if (this.CurrentState is ResetOutputsState && checkMessage && !this.pulseOneTime)
+            if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
                 this.pulseOneTime = true;
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetOutputsState(this, this.status, this.Logger);
+            this.CurrentState = new ResetSecurityStartState(this, this.status, this.Logger);
             this.CurrentState?.Start();
         }
 
