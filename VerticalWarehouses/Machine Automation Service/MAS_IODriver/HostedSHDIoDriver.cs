@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case FieldMessageType.ResetSecurity:
                         currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        this.ioDevices[currentDevice].ExecuteResetSecurity();
                         break;
 
                     case FieldMessageType.PowerEnable:
@@ -279,10 +279,6 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
-                        //HACK the machine starts with power off
-                        // It is necessary to invoke the ExecuteIoPowerUp state machine in order to:
-                        // 1. remove the time-out condition from the IoRemote device
-                        // 2. reset the electrical safe-box
                         foreach (var ioDevice in this.ioDevices)
                         {
                             ioDevice.Value.ExecuteIoPowerUp();
@@ -292,6 +288,9 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case FieldMessageType.IoPowerUp:
                     case FieldMessageType.SwitchAxis:
+                    case FieldMessageType.PowerEnable:
+                    case FieldMessageType.IoReset:
+                    case FieldMessageType.ResetSecurity:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {

@@ -64,6 +64,7 @@
   //  "PPC3SlaveIPAddress": "::3"
   //},
 
+  //production in Vicenza
   "SetupNetwork": {
     "MachineNumber": 1,
     "WMS_ON": true,
