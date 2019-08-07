@@ -386,8 +386,9 @@ namespace Ferretto.VW.Simulator.Services
                     var codeOperation = extractedMessage[2];
                     var outputs = (from x in Enumerable.Range(0, 8)
                                    let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
-                                   select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString() }).Reverse().ToArray();
-                    device.Outputs = outputs.Select(x => new BitModel(x.Description, x.Value)).ToList();
+                                   select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString(), Index = (7 - x) }).Reverse().ToArray();
+                    device.Outputs = outputs.Select(x => new BitModel(x.Description, x.Value, this.GetRemoteIOSignalDescription(x.Index))).ToList();
+
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
@@ -457,6 +458,31 @@ namespace Ferretto.VW.Simulator.Services
             {
                 // Set run status
                 device.Inputs[(int)IoPorts.NormalState].Value = true;
+            }
+        }
+
+        private string GetRemoteIOSignalDescription(int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Reset funzione sicurezza (impulso 300ms)";
+                case 1:
+                    return "Selezione motore elevatore";
+                case 2:
+                    return "Selezione motore culla";
+                case 3:
+                    return "Attivazione lettura altezza (barriera di misura)";
+                case 4:
+                    return "Attivazione illuminazione baia";
+                case 5:
+                    return "Abilitazione al marcia dalla console";
+                case 6:
+                    return "Opzione robot - Missione terminata magazzino";
+                case 7:
+                    return "Opzione robot - Magazzino pronto/guasto";
+                default:
+                    return string.Empty;
             }
         }
 

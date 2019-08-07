@@ -107,7 +107,8 @@
                                                                             IsReadOnly="True"
                                                                             LabelText=""
                                                                             SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                            Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}" />
+                                                                            Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}"
+                                                                            ToolTip="{Binding Description}" />
                                             <TextBlock Margin="-2,2,0,0"
                                                        HorizontalAlignment="Center"
                                                        VerticalAlignment="Center"
