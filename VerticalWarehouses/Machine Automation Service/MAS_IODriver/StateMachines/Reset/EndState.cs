@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
-    public class EndState : IoStateBase
+    public class ResetSecurityEndState : IoStateBase
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Constructors
 
-        public EndState(
+        public ResetSecurityEndState(
             IIoStateMachine parentStateMachine,
             IoSHDStatus status,
             ILogger logger)
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Destructors
 
-        ~EndState()
+        ~ResetSecurityEndState()
         {
             this.Dispose(false);
         }
@@ -91,6 +91,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             var resetSecurityIoMessage = new IoSHDWriteMessage();
 
             resetSecurityIoMessage.SwitchElevatorMotor(true);
+            resetSecurityIoMessage.SwitchPowerEnable(true);
 
             this.Logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
             lock (this.status)

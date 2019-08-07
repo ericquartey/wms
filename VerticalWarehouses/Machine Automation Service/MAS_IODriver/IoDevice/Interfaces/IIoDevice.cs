@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice.Interfaces
 
         void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage);
 
+        void ExecuteResetSecurity();
+
         void ExecuteSetConfiguration();
 
         void DestroyStateMachine();
