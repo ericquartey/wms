@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         private readonly bool[] sensorStatus;
 
+        private decimal axisXPosition;
+
+        private decimal axisYPosition;
+
         #endregion
 
         #region Constructors
@@ -31,6 +35,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
 
         #region Properties
 
+        public decimal AxisXPosition { get => this.axisXPosition; set => this.axisXPosition = value; }
+
+        public decimal AxisYPosition { get => this.axisYPosition; set => this.axisYPosition = value; }
+
         public bool[] DisplayedInputs => this.sensorStatus;
 
         public bool IsDrawerCompletelyOffCradle => !this.sensorStatus[(int)IOMachineSensors.LuPresentiInMachineSideBay1] && !this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
@@ -44,11 +52,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
         public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.NormalState];
 
+        public bool IsMachineInNormalState => this.sensorStatus[(int)IOMachineSensors.NormalState];
+
         public bool IsSensorZeroOnCradle => this.sensorStatus[(int)IOMachineSensors.ZeroPawlSensor];
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
-
-        public bool IsMachineInNormalState => this.sensorStatus[(int)IOMachineSensors.NormalState];
 
         #endregion
 

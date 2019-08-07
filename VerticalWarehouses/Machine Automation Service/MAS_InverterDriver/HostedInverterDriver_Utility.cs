@@ -238,7 +238,29 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (angInverter.UpdateANGInverterCurrentPosition(this.currentAxis, currentMessage.IntPayload) || this.forceStatusPublish)
                         {
-                            var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, currentMessage.IntPayload);
+                            ConfigurationCategory configurationCategory;
+                            switch (this.currentAxis)
+                            {
+                                case Axis.Horizontal:
+                                    configurationCategory = ConfigurationCategory.HorizontalAxis;
+                                    break;
+
+                                case Axis.Vertical:
+                                    configurationCategory = ConfigurationCategory.VerticalAxis;
+                                    break;
+
+                                default:
+                                    configurationCategory = ConfigurationCategory.Undefined;
+                                    break;
+                            }
+
+                            decimal currentAxisPosition = 0;
+                            if (currentMessage.IntPayload != 0)
+                            {
+                                currentAxisPosition = this.dataLayerResolutionConversion.PulsesToMeterSUConversion(currentMessage.IntPayload, configurationCategory);
+                            }
+
+                            var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, (int)currentAxisPosition /*currentMessage.IntPayload*/);
                             var msgNotification = new FieldNotificationMessage(
                               notificationData,
                               "Inverter encoder value update",
@@ -651,7 +673,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.currentAxis = positioningData.AxisMovement;
 
-                    this.shaftPositionUpdateNumberOfTimes = 0;
+                    //this.shaftPositionUpdateNumberOfTimes = 0;
 
                     this.logger.LogTrace("4:Starting Positioning FSM");
 
@@ -1003,12 +1025,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 mainInverterStatus.WaitingHeartbeatAck = true;
             }
-
-            if (this.heartbeatQueue.Count == 0)
-            {
-                var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
-                this.heartbeatQueue.Enqueue(message);
-            }
+            var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+            this.heartbeatQueue.Enqueue(message);
         }
 
         private async Task StartHardwareCommunications()
