@@ -21,7 +21,8 @@
         <custom:CustomLabelTextBlockControl Margin="170,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="980,8"
+                                            ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
         <Button Margin="440,300,0,0"
