@@ -13,36 +13,47 @@
            mc:Ignorable="d">
     <Grid>
 
-        <Image Grid.Row="1"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image Grid.RowSpan="5"
+               Grid.Column="2"
                Width="300"
                Height="520"
-               Margin="540,70,0,0"
                HorizontalAlignment="Left"
-               VerticalAlignment="Top"
+               VerticalAlignment="Center"
                Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
                Stretch="Fill" />
 
         <TextBlock Grid.Row="1"
-                   Width="420"
-                   Margin="80,70,0,0"
+                   Grid.Column="1"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
                    Text="Initializing ..."
-                   Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVIC}}" />
+                   Visibility="{Binding MachineIdentity, Converter={StaticResource RTVIC}}" />
 
         <TextBlock Grid.Row="1"
-                   Width="420"
-                   Margin="80,70,0,0"
+                   Grid.Column="1"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
                    Text="{Binding MachineIdentity.ModelName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <StackPanel Grid.Row="1"
-                    Margin="80,150,0,0"
+        <StackPanel Grid.Row="2"
+                    Grid.Column="1"
                     Orientation="Horizontal"
-                    Visibility="{Binding IsMachineIdentityAvailable, Converter={StaticResource BTVC}}">
+                    Visibility="{Binding MachineIdentity, Converter={StaticResource RTVC}}">
 
             <TextBlock VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
@@ -55,40 +66,31 @@
 
         </StackPanel>
 
-        <ctrls:CustomInputFieldControlFocusable Grid.Row="1"
-                                                Width="200"
-                                                Margin="80,370,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Top"
-                                                InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                LabelText="{x:Static res:VWApp.UserLogin_UserName}"
-                                                Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <StackPanel Name="LoginForm"
+                    Grid.Row="4"
+                    Grid.Column="1">
 
-        <ctrls:CustomInputFieldControlFocusable Grid.Row="1"
-                                                Width="200"
-                                                Margin="80,430,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Top"
-                                                InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                LabelText="{x:Static res:VWApp.UserLogin_Password}"
-                                                Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+            <ctrls:CustomInputFieldControlFocusable Width="200"
+                                                    Margin="0,10"
+                                                    HorizontalAlignment="Left"
+                                                    InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                    LabelText="{x:Static res:VWApp.UserLogin_UserName}"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <Button Grid.Row="1"
-                Margin="80,510,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Command="{Binding LoginCommand}"
-                Content="{x:Static res:General.Login}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+            <ctrls:CustomInputFieldControlFocusable Width="200"
+                                                    Margin="0,10"
+                                                    HorizontalAlignment="Left"
+                                                    InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                    LabelText="{x:Static res:VWApp.UserLogin_Password}"
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <TextBlock Grid.Row="2"
-                   Height="40"
-                   Margin="80,2,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   TextWrapping="WrapWithOverflow" />
+            <Button Margin="0,20"
+                    HorizontalAlignment="Left"
+                    Command="{Binding LoginCommand}"
+                    Content="{x:Static res:General.Login}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        </StackPanel>
+
 
     </Grid>
 

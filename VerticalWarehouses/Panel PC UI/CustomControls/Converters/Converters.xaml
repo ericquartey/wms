@@ -9,6 +9,10 @@
     <conv:BoolToVisibilityConverter x:Key="BTVHC"
                                     Hide="True" />
 
+    <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                         Invert="True" />
+
     <conv:EnumCellStatusConverter x:Key="ECSC" />
     <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
     <conv:ImageToSourceConverter x:Key="ITSC" />

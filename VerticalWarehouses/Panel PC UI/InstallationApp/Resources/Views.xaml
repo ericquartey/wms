@@ -87,9 +87,6 @@
     <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
         <viewsAndViewModels:MainWindowNavigationButtonsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsAndViewModels:FooterViewModel}">
-        <viewsAndViewModels:FooterView />
-    </DataTemplate>
     <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTMainViewModel}">
         <lowSpeedMovements:LSMTMainView />
     </DataTemplate>

@@ -79,7 +79,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<INotificationService, NotificationService>();
             this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
 
-            this.container.RegisterSingleton<IFooterViewModel, FooterViewModel>();
             this.container.RegisterSingleton<ErrorDetailsViewModel>();
 
             this.container.RegisterSingleton<IBeltBurnishingViewModel, BeltBurnishingViewModel>();

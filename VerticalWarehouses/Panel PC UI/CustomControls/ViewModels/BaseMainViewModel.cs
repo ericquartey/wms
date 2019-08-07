@@ -51,14 +51,16 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowError(string error)
         {
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()
-                        .Publish(new PresentationChangedMessage(error));
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Publish(new PresentationChangedMessage(error));
         }
 
         private void UpdatePresentation()
         {
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()
-                        .Publish(new PresentationChangedMessage(this.Mode));
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Publish(new PresentationChangedMessage(this.Mode));
         }
 
         #endregion

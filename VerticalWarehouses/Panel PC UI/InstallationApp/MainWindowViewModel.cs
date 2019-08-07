@@ -319,8 +319,6 @@ namespace Ferretto.VW.App.Installation
                     this.ContentRegionCurrentViewModel = errorDetailsViewModel;
 
                     var footerViewModel = this.container.Resolve<IFooterViewModel>();
-
-                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
                 }
                 catch (System.Exception ex)
                 {
@@ -344,7 +342,6 @@ namespace Ferretto.VW.App.Installation
                 (message) =>
                 {
                     this.NavigationRegionCurrentViewModel = null;
-                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
                 },
                 ThreadOption.PublisherThread,
                 false,

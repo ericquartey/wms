@@ -181,11 +181,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 return;
             }
 
-            this.IsBusy = true;
+            this.NavigationService.SetBusy(true);
 
             var claims = await this.authenticationService.LogInAsync(
                this.UserLogin.UserName,
                this.UserLogin.Password);
+
+            this.NavigationService.SetBusy(false);
 
             if (claims != null)
             {
@@ -202,8 +204,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ShowError(Resources.Errors.UserLogin_InvalidCredentials);
             }
-
-            this.IsBusy = false;
         }
 
         private void ExecuteSwitchOffCommand()
