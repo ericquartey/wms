@@ -1,14 +1,13 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements.LSMTVerticalEngineView"
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.CarouselManualMovementsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
-             xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
+
     <Grid Width="774"
           Height="608">
 
@@ -16,48 +15,46 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
+                   Text="{x:Static res:InstallationApp.LSMTCarouselPageHeader}" />
 
         <custom:CustomLabelTextBlockControl Margin="170,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ContentText="1235,2"
                                             LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
-        <Button Name="VerticalEngineUp"
+        <Button x:Name="VerticalEngineUp"
                 Margin="440,300,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Up}"
-                IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveUpButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding OpenCarouselCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding StopCarouselCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
 
-        <Button Name="VerticalEngineDown"
+        <Button x:Name="VerticalEngineDown"
                 Margin="440,420,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Down}"
-                IsEnabled="{Binding IsButtonDownEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveDownButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding CloseCarouselCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding StopCarouselCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
+
         <custom:CustomLabelTextBlockControl Width="500"
                                             Height="100"
                                             Margin="170,130,0,0"
@@ -65,5 +62,6 @@
                                             VerticalAlignment="Top"
                                             ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
                                             LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
+
     </Grid>
 </UserControl>

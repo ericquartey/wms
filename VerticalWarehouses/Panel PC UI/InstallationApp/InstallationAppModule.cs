@@ -6,7 +6,6 @@ using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
@@ -76,6 +75,12 @@ namespace Ferretto.VW.App.Installation
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
 
+            containerRegistry.RegisterForNavigation<CarouselManualMovementsView>();
+            containerRegistry.RegisterForNavigation<HorizontalEngineManualMovementsView>();
+            containerRegistry.RegisterForNavigation<ManualMovementsNavigationView>();
+            containerRegistry.RegisterForNavigation<ShutterEngineManualMovementsView>();
+            containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
+
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
@@ -99,11 +104,7 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<IShutter3HeightControlViewModel, Shutter3HeightControlViewModel>();
             this.container.RegisterSingleton<IIdleViewModel, IdleViewModel>();
             this.container.RegisterSingleton<IInstallationStateViewModel, InstallationStateViewModel>();
-            this.container.RegisterSingleton<ILSMTShutterEngineViewModel, LSMTShutterEngineViewModel>();
-            this.container.RegisterSingleton<ILSMTHorizontalEngineViewModel, LSMTHorizontalEngineViewModel>();
-            this.container.RegisterSingleton<ILSMTNavigationButtonsViewModel, LSMTNavigationButtonsViewModel>();
-            this.container.RegisterSingleton<ILSMTMainViewModel, LSMTMainViewModel>();
-            this.container.RegisterSingleton<ILSMTVerticalEngineViewModel, LSMTVerticalEngineViewModel>();
+
             this.container.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
             this.container.RegisterSingleton<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationViewModel>();
@@ -115,7 +116,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<ISaveRestoreConfigViewModel, SaveRestoreConfigViewModel>();
             this.container.RegisterSingleton<ICellsSideControlViewModel, CellsSideControlViewModel>();
             this.container.RegisterSingleton<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>();
-            this.container.RegisterSingleton<ILSMTCarouselViewModel, LSMTCarouselViewModel>();
             this.container.RegisterSingleton<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>();
 
             this.container.RegisterSingleton<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();

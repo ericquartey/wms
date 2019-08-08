@@ -1,12 +1,10 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements.LSMTShutterEngineView"
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.ShutterEngineManualMovementsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
-             xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="774"
@@ -32,10 +30,10 @@
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding UpButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
@@ -48,10 +46,10 @@
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding DownButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

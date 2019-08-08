@@ -14,18 +14,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool[] sensorsStates;
 
-        private SubscriptionToken updateSensorsStateToken;
+        private SubscriptionToken subscriptionToken;
 
         #endregion
 
         #region Constructors
 
-        public BaseSensorsViewModel(ISensorsMachineService sensorsMachineService)
+        protected BaseSensorsViewModel(ISensorsMachineService sensorsMachineService)
             : base(Services.PresentationMode.Installator)
         {
-            if (this.sensorsMachineService == null)
+            if (sensorsMachineService == null)
             {
-                throw new System.ArgumentNullException(nameof(this.sensorsMachineService));
+                throw new System.ArgumentNullException(nameof(sensorsMachineService));
             }
 
             this.sensorsMachineService = sensorsMachineService;
@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async void OnNavigated()
         {
-            this.updateSensorsStateToken = this.EventAggregator
+            this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
               .Subscribe(
                   message => this.SensorsStates = message?.Data?.SensorsStates,
@@ -68,13 +68,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && this.updateSensorsStateToken != null)
+            if (disposing && this.subscriptionToken != null)
             {
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Unsubscribe(this.updateSensorsStateToken);
+                    .Unsubscribe(this.subscriptionToken);
 
-                this.updateSensorsStateToken = null;
+                this.subscriptionToken = null;
             }
 
             base.Dispose(disposing);

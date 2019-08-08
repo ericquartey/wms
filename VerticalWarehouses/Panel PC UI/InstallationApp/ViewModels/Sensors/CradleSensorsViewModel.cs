@@ -1,13 +1,10 @@
 ﻿using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class CradleSensorsViewModel : BaseSensorsViewModel
     {
         #region Fields
-
-        private readonly SubscriptionToken updateCradleSensorsState;
 
         private bool isZeroPawlSensorActive;
 

@@ -226,7 +226,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.IsBusy = false;
 
-                this.NavigationService.Appear(nameof(Utils.Modules.Installation), Utils.Modules.Installation.INSTALLATORMENU);
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.ManualMovements.CAROUSEL);
             }
             catch (Exception ex)
             {

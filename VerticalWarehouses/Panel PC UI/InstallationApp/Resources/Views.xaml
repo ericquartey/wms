@@ -9,18 +9,7 @@
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
                     xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
                     xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
-    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTShutterEngineViewModel}">
-        <lowSpeedMovements:LSMTShutterEngineView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTHorizontalEngineViewModel}">
-        <lowSpeedMovements:LSMTHorizontalEngineView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTVerticalEngineViewModel}">
-        <lowSpeedMovements:LSMTVerticalEngineView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTNavigationButtonsViewModel}">
-        <lowSpeedMovements:LSMTNavigationButtonsView />
-    </DataTemplate>
+   
     <DataTemplate DataType="{x:Type singleViews:VerticalAxisCalibrationViewModel}">
         <singleViews:VerticalAxisCalibrationView />
     </DataTemplate>
@@ -69,9 +58,7 @@
     <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
         <viewsAndViewModels:MainWindowNavigationButtonsView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTMainViewModel}">
-        <lowSpeedMovements:LSMTMainView />
-    </DataTemplate>
+
     <DataTemplate DataType="{x:Type singleViews:CellsSideControlViewModel}">
         <singleViews:CellsSideControlView />
     </DataTemplate>
@@ -87,9 +74,7 @@
     <DataTemplate DataType="{x:Type singleViews:DrawerLoadingUnloadingTestViewModel}">
         <singleViews:DrawerLoadingUnloadingTestView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTCarouselViewModel}">
-        <lowSpeedMovements:LSMTCarouselView />
-    </DataTemplate>
+
     <DataTemplate DataType="{x:Type singleViews:SaveRestoreConfigViewModel}">
         <singleViews:SaveRestoreConfigView />
     </DataTemplate>

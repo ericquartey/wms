@@ -10,6 +10,23 @@
 
         #region Classes
 
+        public static class ManualMovements
+        {
+            #region Fields
+
+            public const string CAROUSEL = "CarouselManualMovementsViewModel";
+
+            public const string HORIZONTALENGINE = "HorizontalEngineManualMovementsViewModel";
+
+            public const string NAVIGATION = "ManualMovementsNavigationViewModel";
+
+            public const string SHUTTER = "ShutterEngineManualMovementsViewModel";
+
+            public const string VERTICALENGINE = "VerticalEngineManualMovementsViewModel";
+
+            #endregion
+        }
+
         public static class Sensors
         {
             #region Fields
