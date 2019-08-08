@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -336,97 +332,37 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public InverterType InverterType
         {
-            get { return this.inverterType; }
-            set { this.inverterType = value; }
+            get => this.inverterType;
+            set => this.inverterType = value;
         }
 
         public bool IsFault
         {
-            get
-            {
-                return (this.statusWord & 0x0008) > 0;
-            }
-            set
-            {
-                this.statusWord |= 0x0008;
-            }
+            get => (this.statusWord & 0x0008) > 0;
+            set => this.statusWord |= 0x0008;
         }
 
-        public bool IsOperationEnabled
-        {
-            get
-            {
-                return (this.statusWord & 0x0004) > 0;
-            }
-        }
+        public bool IsOperationEnabled => (this.statusWord & 0x0004) > 0;
 
-        public bool IsQuickStopTrue
-        {
-            get
-            {
-                return (this.statusWord & 0x0020) > 0;
-            }
-        }
+        public bool IsQuickStopTrue => (this.statusWord & 0x0020) > 0;
 
-        public bool IsReadyToSwitchOn
-        {
-            get
-            {
-                return (this.statusWord & 0x0001) > 0;
-            }
-        }
+        public bool IsReadyToSwitchOn => (this.statusWord & 0x0001) > 0;
 
-        public bool IsRemote
-        {
-            get
-            {
-                return (this.statusWord & 0x0200) > 0;
-            }
-        }
+        public bool IsRemote => (this.statusWord & 0x0200) > 0;
 
         public bool IsSwitchedOn
         {
-            get
-            {
-                return (this.statusWord & 0x0002) > 0;
-            }
-            set
-            {
-                this.statusWord |= 0x0002;
-            }
+            get => (this.statusWord & 0x0002) > 0;
+            set => this.statusWord |= 0x0002;
         }
 
-        public bool IsSwitchOnDisabled
-        {
-            get
-            {
-                return (this.statusWord & 0x0040) > 0;
-            }
-        }
+        public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
-        public bool IsVoltageEnabled
-        {
-            get
-            {
-                return (this.statusWord & 0x0010) > 0;
-            }
-        }
+        public bool IsVoltageEnabled => (this.statusWord & 0x0010) > 0;
 
-        public bool IsWarning
-        {
-            get
-            {
-                return (this.statusWord & 0x0080) > 0;
-            }
-        }
+        public bool IsWarning => (this.statusWord & 0x0080) > 0;
 
-        public bool IsWarning2
-        {
-            get
-            {
-                return (this.statusWord & 0x8000) > 0;
-            }
-        }
+        public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
         public InverterOperationMode OperationMode { get; set; }
 
@@ -525,6 +461,77 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public void BuildPositionStatusWord()
+        {
+            //SwitchON
+            if ((this.ControlWord & 0x0001) > 0)
+            {
+                this.StatusWord |= 0x0002;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFD;
+            }
+
+            //EnableVoltage
+            if ((this.ControlWord & 0x0002) > 0)
+            {
+                this.StatusWord |= 0x0001;
+                this.StatusWord |= 0x0010;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFE;
+                this.StatusWord &= 0xFFEF;
+            }
+
+            //QuickStop
+            if ((this.ControlWord & 0x0004) > 0)
+            {
+                this.StatusWord |= 0x0020;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFDF;
+            }
+
+            //EnableOperation
+            if ((this.ControlWord & 0x0008) > 0)
+            {
+                this.StatusWord |= 0x0004;
+            }
+            else
+            {
+                this.StatusWord &= 0xFFFB;
+            }
+
+            //New SetPoint
+            if ((this.ControlWord & 0x0010) > 0)
+            {
+                if (!this.targetTimerActive)
+                {
+                    this.targetTimer.Change(0, 500);
+                    this.targetTimerActive = true;
+                    this.AxisPosition = 0;
+                }
+            }
+            else
+            {
+                this.StatusWord &= 0xEFFF;
+            }
+
+            //Fault Reset
+            if ((this.ControlWord & 0x0080) > 0)
+            {
+                this.StatusWord &= 0xFFBF;
+            }
+
+            //Halt
+            if ((this.ControlWord & 0x0100) > 0)
+            {
+            }
+        }
+
         public void BuildVelocityStatusWord()
         {
             //SwitchON
@@ -589,8 +596,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int GetDigitalIO()
         {
-            int result = 0;
-            for (int i = 0; i < this.DigitalIO.Count; i++)
+            var result = 0;
+            for (var i = 0; i < this.DigitalIO.Count; i++)
             {
                 if (this.DigitalIO[i].Value)
                 {
@@ -603,6 +610,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public void HomingTick(object state)
         {
             this.homingTickCount++;
+            this.AxisPosition++;
 
             if (this.homingTickCount > 5)
             {
@@ -616,6 +624,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void TargetTick(object state)
         {
             this.targetTickCount++;
+            this.AxisPosition++;
 
             if (this.targetTickCount > 10)
             {
@@ -624,6 +633,8 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.targetTimer.Change(-1, Timeout.Infinite);
                 // Reset contatore
                 this.targetTickCount = 0;
+
+                this.ControlWord &= 0xFFEF;
             }
         }
 
