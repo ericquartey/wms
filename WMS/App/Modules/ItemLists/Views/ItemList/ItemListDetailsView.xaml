@@ -8,10 +8,10 @@
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+             xmlns:enums="clr-namespace:Ferretto.Common.Resources.Enums;assembly=Ferretto.Common.Resources"
              Title="{x:Static res:Navigation.ListDetails}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -73,7 +73,7 @@
         <MultiBinding Converter="{StaticResource SFC}">
             <Binding Source="{x:Static res:Title.ItemListDetailsView}" />
             <Binding Converter="{StaticResource DNC}"
-                     ConverterParameter="{x:Type models:ItemListType}"
+                     ConverterParameter="{x:Type enums:ItemListType}"
                      Path="Model.ItemListType"
                      TargetNullValue="" />
             <Binding Path="Model.Code"
@@ -230,7 +230,7 @@
                                           EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                                 <dxmvvm:Interaction.Behaviors>
-                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListType}"
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type enums:ItemListType}"
                                                                     SortMode="DisplayName" />
                                 </dxmvvm:Interaction.Behaviors>
                             </wms:ComboBox>
@@ -381,7 +381,7 @@
                                             <Grid HorizontalAlignment="Stretch">
                                                 <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                                       VerticalAlignment="Center"
-                                                                      EnumType="{x:Type models:ItemListRowStatus}"
+                                                                      EnumType="{x:Type enums:ItemListRowStatus}"
                                                                       EnumValue="{Binding Data.Status}"
                                                                       HideIcon="True"
                                                                       IconSize="8"
@@ -444,7 +444,7 @@
                     <GroupBox Grid.Row="0"
                               Margin="20,0"
                               Header="{x:Static res:ItemLists.ExecutionDetails}">
-                        <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListStatus}"
+                        <wms:WmsEnumIndicator EnumType="{x:Type enums:ItemListStatus}"
                                               EnumValue="{Binding Model.Status}"
                                               IconSize="48"
                                               ShowText="True" />

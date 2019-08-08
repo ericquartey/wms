@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "Row1",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
-                Status = Common.DataModels.ItemListRowStatus.Waiting,
+                Status = Enums.ItemListRowStatus.Waiting,
             };
 
             var row2 = new Common.DataModels.ItemListRow
@@ -48,13 +48,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "Row2",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
-                Status = Common.DataModels.ItemListRowStatus.Waiting,
+                Status = Enums.ItemListRowStatus.Waiting,
             };
 
             var list1 = new Common.DataModels.ItemList
             {
                 Id = GetNewId(),
-                ItemListType = Common.DataModels.ItemListType.Pick,
+                ItemListType = Enums.ItemListType.Pick,
                 ItemListRows = new[]
                 {
                     row1,
@@ -134,12 +134,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var updatedRow1 = await rowExecutionProvider.GetByIdAsync(row1.Id);
 
             Assert.AreEqual(
-                 ItemListStatus.Executing,
-                 updatedList.Status,
-                 "The list should be in the Executing state.");
+                Enums.ItemListStatus.Executing,
+                updatedList.Status,
+                "The list should be in the Executing state.");
 
             Assert.AreEqual(
-                ItemListRowStatus.Completed,
+                Enums.ItemListRowStatus.Completed,
                 updatedRow1.Status,
                 "The list row should be in the Completed state.");
 
@@ -149,12 +149,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                "All the quantity of the row should be dispatched.");
 
             Assert.AreEqual(
-                MissionStatus.Executing,
+                Enums.MissionStatus.Executing,
                 updatedMission.Status,
                 "The mission should be in the Executing state.");
 
             Assert.AreEqual(
-                MissionOperationStatus.Completed,
+                Enums.MissionOperationStatus.Completed,
                 updatedOperation.Status,
                 "The mission should be in the Completed state.");
 
@@ -192,7 +192,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
             };
 
             var row2 = new Common.DataModels.ItemListRow
@@ -201,13 +201,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
             };
 
             var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListType = Common.DataModels.ItemListType.Pick,
+                ItemListType = Enums.ItemListType.Pick,
                 ItemListRows = new[]
                 {
                     row1,
@@ -254,7 +254,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var updatedList = await listExecutionProvider.GetByIdAsync(list1.Id);
 
             Assert.AreEqual(
-                ItemListStatus.Ready,
+                Enums.ItemListStatus.Ready,
                 updatedList.Status,
                 "The list should be in the Ready state.");
 
@@ -327,7 +327,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "high",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 20,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = 2,
             };
 
@@ -337,7 +337,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "medium",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = 3,
             };
 
@@ -347,14 +347,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "low",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = 4,
             };
 
             var list = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListType = Common.DataModels.ItemListType.Pick,
+                ItemListType = Enums.ItemListType.Pick,
                 ItemListRows = new[]
                 {
                     rowLowPriority,
@@ -488,7 +488,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
             };
 
             var row2 = new Common.DataModels.ItemListRow
@@ -497,13 +497,13 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
             };
 
             var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListType = Common.DataModels.ItemListType.Put,
+                ItemListType = Enums.ItemListType.Put,
                 ItemListRows = new[]
                 {
                     row1,
@@ -566,7 +566,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsNotNull(updatedList);
 
             Assert.AreEqual(
-                ItemListStatus.Ready,
+                Enums.ItemListStatus.Ready,
                 updatedList.Status,
                 "The list should be in the Ready state.");
 
@@ -629,9 +629,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
              WHEN  the new list is requested for execution \
              THEN  a new set of requests is generated
              AND   the generated missions have as priority the sum of the row's priority and of the bay")]
-        [DataRow(Common.DataModels.ItemListType.Pick)]
-        [DataRow(Common.DataModels.ItemListType.Put)]
-        public async Task ExecuteListAsync_RowsWithAndWithoutPriority(Common.DataModels.ItemListType itemListType)
+        [DataRow(Enums.ItemListType.Pick)]
+        [DataRow(Enums.ItemListType.Put)]
+        public async Task ExecuteListAsync_RowsWithAndWithoutPriority(Enums.ItemListType itemListType)
         {
             #region Arrange
 
@@ -661,7 +661,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "row1",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 20,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = 2,
             };
 
@@ -671,7 +671,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "row2",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = null,
             };
 
@@ -681,7 +681,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "row3",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = null,
             };
 
@@ -793,7 +793,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.Suspended,
+                Status = Enums.ItemListRowStatus.Suspended,
                 Priority = 1,
             };
 
@@ -857,7 +857,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.Waiting,
+                Status = Enums.ItemListRowStatus.Waiting,
                 Priority = 1,
             };
 
@@ -930,14 +930,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 ItemId = itemId,
                 RequestedQuantity = 1,
                 ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
+                Status = Enums.ItemListRowStatus.New,
                 Priority = 32,
             };
 
             var list = new Common.DataModels.ItemList
             {
                 Id = listId,
-                ItemListType = Common.DataModels.ItemListType.Pick,
+                ItemListType = Enums.ItemListType.Pick,
             };
 
             var compartment1 = new Common.DataModels.Compartment
@@ -1020,7 +1020,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "row1",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 10,
-                Status = Common.DataModels.ItemListRowStatus.Waiting,
+                Status = Enums.ItemListRowStatus.Waiting,
                 Priority = 1,
             };
 
@@ -1030,14 +1030,14 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Code = "row2",
                 ItemId = this.ItemFifo.Id,
                 RequestedQuantity = 30,
-                Status = Common.DataModels.ItemListRowStatus.Waiting,
+                Status = Enums.ItemListRowStatus.Waiting,
                 Priority = 1,
             };
 
             var list = new Common.DataModels.ItemList
             {
                 Id = GetNewId(),
-                ItemListType = Common.DataModels.ItemListType.Pick,
+                ItemListType = Enums.ItemListType.Pick,
                 ItemListRows = new[]
                 {
                     row1,
@@ -1101,22 +1101,22 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var updatedRow1 = await rowExecutionProvider.GetByIdAsync(row1.Id);
 
                 Assert.AreEqual(
-                   Common.DataModels.MissionOperationStatus.Executing,
-                   updatedOperation.Status,
-                   "The operation should be in the Executing state.");
+                    Enums.MissionOperationStatus.Executing,
+                    updatedOperation.Status,
+                    "The operation should be in the Executing state.");
 
                 Assert.AreEqual(
-                    ItemListStatus.Executing,
+                    Enums.ItemListStatus.Executing,
                     updatedList.Status,
                     "The list should be in the Executing state.");
 
                 Assert.AreEqual(
-                    ItemListRowStatus.Executing,
+                    Enums.ItemListRowStatus.Executing,
                     updatedRow1.Status,
                     "The list row should be in the Executing state.");
 
                 Assert.AreEqual(
-                    MissionStatus.Executing,
+                    Enums.MissionStatus.Executing,
                     updatedMission.Status,
                     "The mission should be in the Executing state.");
             }

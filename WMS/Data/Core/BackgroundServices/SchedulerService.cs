@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Services
 {
@@ -308,7 +309,7 @@ namespace Ferretto.WMS.Data.Core.Services
                             LoadingUnitId = loadingUnitId,
                             Priority = 1,
                             BayId = bayId,
-                            Status = SchedulerRequestStatus.New,
+                            Status = Enums.SchedulerRequestStatus.New,
                         };
 
                         var creationResult = await requestsProvider.CreateAsync(qualifiedRequest);

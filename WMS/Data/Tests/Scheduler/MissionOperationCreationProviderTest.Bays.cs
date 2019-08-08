@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -49,7 +50,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 RequestedQuantity = mission1ReservedQty,
                 ItemId = this.ItemFifo.Id,
                 Priority = 2,
-                Status = Common.DataModels.MissionOperationStatus.New,
+                Status = Enums.MissionOperationStatus.New,
                 CompartmentId = compartment.Id,
                 MissionId = mission.Id,
             };
@@ -61,12 +62,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemFifo.Id,
-                OperationType = Common.DataModels.OperationType.Pick,
+                OperationType = Enums.OperationType.Pick,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Priority = 2,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
             };
 
             using (var context = this.CreateContext())
@@ -133,9 +134,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Priority = this.Bay1Aisle1.Priority,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
+                OperationType = Enums.OperationType.Pick,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
             };
 
@@ -143,8 +144,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 RequestedQuantity = 1,
-                Status = Common.DataModels.MissionOperationStatus.New,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Status = Enums.MissionOperationStatus.New,
+                Type = Enums.MissionOperationType.Pick,
             };
 
             var mission1 = new Common.DataModels.Mission
@@ -159,8 +160,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 RequestedQuantity = 1,
-                Status = Common.DataModels.MissionOperationStatus.New,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Status = Enums.MissionOperationStatus.New,
+                Type = Enums.MissionOperationType.Pick,
             };
 
             var mission2 = new Common.DataModels.Mission

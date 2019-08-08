@@ -16,12 +16,11 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="410,120,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <custom:CustomLabelTextBlockControl Margin="410,120,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
         <custom:CustomLabelTextBlockControl Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
@@ -85,10 +84,11 @@
                 Content="{x:Static res:InstallationApp.DoCorrectOffset}"
                 IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <custom:CustomLabelTextBlockControl Margin="230,120,0,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top"
-                                            ContentText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+        <custom:CustomInputFieldControlFocusable Margin="230,120,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 InputText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.CurrentCell}"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
     </Grid>
 </UserControl>

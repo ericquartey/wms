@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -61,7 +62,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double RequestedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
-        public MissionOperationStatus Status { get; set; }
+        public Enums.MissionOperationStatus Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Sub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
@@ -70,7 +71,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
-        public MissionOperationType Type { get; set; }
+        public Enums.MissionOperationType Type { get; set; }
 
         #endregion
     }

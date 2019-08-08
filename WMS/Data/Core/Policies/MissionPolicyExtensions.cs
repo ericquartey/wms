@@ -2,6 +2,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Policies
 {
@@ -23,11 +24,11 @@ namespace Ferretto.WMS.Data.Core.Policies
                     Resources.Mission.OnlyLoadingUnitMissionsCanBeAborted);
             }
 
-            if (mission.Status != MissionStatus.Executing
+            if (mission.Status != Enums.MissionStatus.Executing
                 &&
-                mission.Status != MissionStatus.New
+                mission.Status != Enums.MissionStatus.New
                 &&
-                mission.Status != MissionStatus.Error)
+                mission.Status != Enums.MissionStatus.Error)
             {
                 policy.AddErrorMessage(
                     Resources.Mission.UnableToAbortTheMissionBecauseOfItsCurrentState);
@@ -50,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Policies
                     Resources.Mission.OnlyLoadingUnitMissionsCanBeCompleted);
             }
 
-            if (mission.Status != MissionStatus.Executing)
+            if (mission.Status != Enums.MissionStatus.Executing)
             {
                 policy.AddErrorMessage(
                     Resources.Mission.UnableToCompleteTheMissionBecauseOfItsCurrentState);
@@ -73,7 +74,7 @@ namespace Ferretto.WMS.Data.Core.Policies
                     Resources.Mission.OnlyLoadingUnitMissionsCanBeExecuted);
             }
 
-            if (mission.Status != MissionStatus.New)
+            if (mission.Status != Enums.MissionStatus.New)
             {
                 policy.AddErrorMessage(
                     Resources.Mission.UnableToExecuteTheMissionBecauseOfItsCurrentState);

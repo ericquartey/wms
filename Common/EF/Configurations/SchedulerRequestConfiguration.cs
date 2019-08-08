@@ -2,6 +2,7 @@
 using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.EF.Configurations
 {
@@ -22,19 +23,19 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(
                     enumValue => (char)enumValue,
-                    charValue => (OperationType)Enum.ToObject(typeof(OperationType), charValue));
+                    charValue => (Enums.OperationType)Enum.ToObject(typeof(Enums.OperationType), charValue));
 
             builder.Property(a => a.Type)
                 .HasColumnType("char(1)")
                 .HasConversion(
                     enumValue => (char)enumValue,
-                    charValue => (SchedulerRequestType)Enum.ToObject(typeof(SchedulerRequestType), charValue));
+                    charValue => (Enums.SchedulerRequestType)Enum.ToObject(typeof(Enums.SchedulerRequestType), charValue));
 
             builder.Property(a => a.Status)
                .HasColumnType("char(1)")
                .HasConversion(
                    enumValue => (char)enumValue,
-                   charValue => (SchedulerRequestStatus)Enum.ToObject(typeof(SchedulerRequestStatus), charValue));
+                   charValue => (Enums.SchedulerRequestStatus)Enum.ToObject(typeof(Enums.SchedulerRequestStatus), charValue));
 
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");

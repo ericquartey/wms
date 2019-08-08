@@ -7,10 +7,12 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -98,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (i.ItemDescription != null && i.ItemDescription.Contains(search))
                 || (i.ListDescription != null && i.ListDescription.Contains(search))
                 || (i.ListRowCode != null && i.ListRowCode.Contains(search))
-                || i.OperationType.ToString().Contains(search)
+                || i.OperationType.GetDisplayName(typeof(Enums.OperationType)).Contains(search)
                 || (successConversionAsDouble
                     && Equals(i.RequestedQuantity, searchAsDouble));
         }

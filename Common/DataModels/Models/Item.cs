@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -54,7 +55,7 @@ namespace Ferretto.Common.DataModels
 
         public double? Depth { get; set; }
 
-        public ItemManagementType ManagementType { get; set; }
+        public Enums.ItemManagementType ManagementType { get; set; }
 
         public MeasureUnit MeasureUnit { get; set; }
 

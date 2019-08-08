@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -24,7 +25,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private IEnumerable<ItemListRow> itemListRows;
 
-        private ItemListType? itemListType;
+        private Enums.ItemListType? itemListType;
 
         private string itemListTypeDescription;
 
@@ -38,7 +39,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string shipmentUnitDescription;
 
-        private ItemListStatus? status;
+        private Enums.ItemListStatus? status;
 
         #endregion
 
@@ -106,7 +107,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
-        public ItemListType? ItemListType
+        public Enums.ItemListType? ItemListType
         {
             get => this.itemListType;
             set => this.SetProperty(ref this.itemListType, value);
@@ -168,7 +169,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus? Status
+        public Enums.ItemListStatus? Status
         {
             get => this.status;
             set => this.SetProperty(ref this.status, value);

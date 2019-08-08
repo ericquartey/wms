@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.bayProvider.GetByIdAsync(id);
             if (result == null)
             {
-                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                var message = string.Format(Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.machineProvider.GetByBayIdAsync(id);
             if (result == null)
             {
-                var message = string.Format(WMS.Data.Resources.Errors.NoEntityExists, id);
+                var message = string.Format(Resources.Errors.NoEntityExists, id);
                 this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {

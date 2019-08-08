@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+  </ItemGroup>
+
 </Project>

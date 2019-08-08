@@ -67,7 +67,7 @@ namespace Ferretto.WMS.App.Modules.Machines
                 var machine = machines.SingleOrDefault(m => m.Id == e.MachineStatus.MachineId);
                 if (machine != null)
                 {
-                    machine.Status = (MachineStatus)e.MachineStatus.Mode;
+                    machine.Status = e.MachineStatus.Mode;
                 }
             }
         }

@@ -1,5 +1,6 @@
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Tests
 {
@@ -24,7 +25,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.Completed,
+                Enums.ItemListStatus.Completed,
                 list.Status,
                 "ItemList status should be Completed");
         }
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.New,
+                Enums.ItemListStatus.New,
                 list.Status,
                 "ItemList status should be New");
         }
@@ -66,7 +67,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 3,
             };
             Assert.AreEqual(
-                ItemListStatus.Ready,
+                Enums.ItemListStatus.Ready,
                 list.Status,
                 "ItemList status should be Ready");
         }
@@ -87,7 +88,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.Waiting,
+                Enums.ItemListStatus.Waiting,
                 list.Status,
                 "ItemList status should be Waiting");
         }
@@ -108,7 +109,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.New,
+                Enums.ItemListStatus.New,
                 list.Status,
                 "ItemList status should be New");
         }
@@ -129,7 +130,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.New,
+                Enums.ItemListStatus.New,
                 list.Status,
                 "ItemList status should be New");
         }
@@ -150,7 +151,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 1,
             };
             Assert.AreEqual(
-                ItemListStatus.Error,
+                Enums.ItemListStatus.Error,
                 list.Status,
                 "ItemList status should be Error");
         }
@@ -171,7 +172,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 1,
             };
             Assert.AreEqual(
-                ItemListStatus.Executing,
+                Enums.ItemListStatus.Executing,
                 list.Status,
                 "ItemList status should be Executing");
         }
@@ -192,7 +193,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.Incomplete,
+                Enums.ItemListStatus.Incomplete,
                 list.Status,
                 "ItemList status should be Incomplete");
         }
@@ -213,7 +214,7 @@ namespace Ferretto.WMS.Data.Tests
                 ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.Suspended,
+                Enums.ItemListStatus.Suspended,
                 list.Status,
                 "ItemList status should be Suspended");
         }
