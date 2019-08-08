@@ -26,7 +26,7 @@
 
         LuPresentInOperatorSideBay1 = 10,
 
-        LuPresentiInMachineSideBay1 = 11,
+        LuPresentInMachineSideBay1 = 11,
 
         BarrierCalibrationBay1 = 12,
 

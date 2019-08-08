@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1;
+                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
@@ -229,34 +229,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessResetSecurityMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            //if (message.Data is IResetSecurityMessageData data)
-            {
-                this.currentStateMachine = new ResetSecurityStateMachine(
-                    this.eventAggregator,
-                    null,
-                    this.logger,
-                    this.serviceScopeFactory);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.logger.LogDebug("Starting Reset Security FSM");
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
-            }
-        }
-
         private void ProcessPowerEnableMessage(CommandMessage message)
         {
             this.logger.LogTrace("1:Method Start");
@@ -307,7 +279,34 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                }
+            }
+        }
 
+        private void ProcessResetSecurityMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            //if (message.Data is IResetSecurityMessageData data)
+            {
+                this.currentStateMachine = new ResetSecurityStateMachine(
+                    this.eventAggregator,
+                    null,
+                    this.logger,
+                    this.serviceScopeFactory);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+                try
+                {
+                    this.logger.LogDebug("Starting Reset Security FSM");
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
