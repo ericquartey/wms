@@ -105,6 +105,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     break;
 
                 case SetupNetwork.WMS_ON:
+                case SetupNetwork.IOExpansion1Installed:
+                case SetupNetwork.IOExpansion2Installed:
+                case SetupNetwork.IOExpansion3Installed:
                     returnValue = ConfigurationDataType.Boolean;
                     break;
 
@@ -112,9 +115,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 case SetupNetwork.AlfaNumBay2:
                 case SetupNetwork.AlfaNumBay3:
                 case SetupNetwork.Inverter1:
-                case SetupNetwork.IOExpansion1:
-                case SetupNetwork.IOExpansion2:
-                case SetupNetwork.IOExpansion3:
+                case SetupNetwork.IOExpansion1IPAddress:
+                case SetupNetwork.IOExpansion2IPAddress:
+                case SetupNetwork.IOExpansion3IPAddress:
                 case SetupNetwork.LaserBay1:
                 case SetupNetwork.LaserBay2:
                 case SetupNetwork.LaserBay3:
