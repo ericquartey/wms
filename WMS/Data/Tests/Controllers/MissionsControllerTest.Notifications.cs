@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Tests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -27,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType = new Common.DataModels.CompartmentType
@@ -56,7 +57,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 LoadingUnitId = this.LoadingUnit1.Id,
-                Status = Common.DataModels.MissionStatus.Executing,
+                Status = Enums.MissionStatus.Executing,
             };
 
             using (var context = this.CreateContext())

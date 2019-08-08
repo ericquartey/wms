@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -30,7 +31,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? Priority { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
-        public MissionStatus? Status { get; set; } = MissionStatus.New;
+        public Enums.MissionStatus? Status { get; set; } = Enums.MissionStatus.New;
 
         #endregion
     }

@@ -1,6 +1,7 @@
 using System;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -60,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public double? Depth { get; set; }
 
-        public ItemManagementType ManagementType { get; set; }
+        public Enums.ItemManagementType ManagementType { get; set; }
 
         public string MeasureUnitDescription { get; set; }
 

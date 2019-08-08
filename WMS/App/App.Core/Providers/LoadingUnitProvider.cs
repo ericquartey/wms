@@ -7,6 +7,7 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -135,7 +136,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         AisleName = l.AisleName,
                         CellFloor = l.CellFloor,
                         CellColumn = l.CellColumn,
-                        CellSide = (Side?)l.CellSide,
+                        CellSide = (Enums.Side?)l.CellSide,
                         CellNumber = l.CellNumber,
                         CellPositionDescription = l.CellPositionDescription,
                         AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
@@ -175,7 +176,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         AisleName = l.AisleName,
                         CellFloor = l.CellFloor,
                         CellColumn = l.CellColumn,
-                        CellSide = (Side?)l.CellSide,
+                        CellSide = (Enums.Side?)l.CellSide,
                         CellNumber = l.CellNumber,
                         CellPositionDescription = l.CellPositionDescription,
                         AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
@@ -251,7 +252,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Note = l.Note,
                         MissionsCount = l.MissionsCount,
                         Policies = l.GetPolicies(),
-                        ReferenceType = (ReferenceType)l.ReferenceType,
+                        ReferenceType = (Enums.ReferenceType)l.ReferenceType,
                         Weight = l.Weight,
                         Width = l.Width,
                     });
@@ -315,7 +316,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
                     Note = loadingUnit.Note,
                     Policies = loadingUnit.GetPolicies(),
-                    ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
+                    ReferenceType = (Enums.ReferenceType)loadingUnit.ReferenceType,
                     Weight = loadingUnit.Weight,
                     Width = loadingUnit.Width,
                 };

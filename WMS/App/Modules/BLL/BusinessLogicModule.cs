@@ -1,5 +1,7 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Net.Http;
+using DevExpress.Data.Filtering;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -32,6 +34,8 @@ namespace Ferretto.WMS.App.Modules.BLL
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
+            EnumProcessingHelper.RegisterEnums(typeof(Common.Resources.Enums.Side).Assembly);
+
             NLog.LogManager
                 .GetCurrentClassLogger()
                 .Trace("Module loaded.");

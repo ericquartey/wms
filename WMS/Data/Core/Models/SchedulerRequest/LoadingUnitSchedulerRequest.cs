@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -17,13 +18,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitId { get; set; }
 
-        public OperationType OperationType { get; } = Models.OperationType.Pick;
+        public Enums.OperationType OperationType { get; } = Enums.OperationType.Pick;
 
         public int? Priority { get; set; }
 
-        public SchedulerRequestStatus Status { get; set; }
+        public Enums.SchedulerRequestStatus Status { get; set; }
 
-        public SchedulerRequestType Type => SchedulerRequestType.LoadingUnit;
+        public Enums.SchedulerRequestType Type => Enums.SchedulerRequestType.LoadingUnit;
 
         #endregion
 

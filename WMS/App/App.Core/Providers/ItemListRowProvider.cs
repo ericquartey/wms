@@ -7,6 +7,7 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -123,7 +124,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Code = l.Code,
                         DispatchedQuantity = l.DispatchedQuantity,
                         ItemDescription = l.ItemDescription,
-                        Status = (ItemListRowStatus)l.Status,
+                        Status = (Enums.ItemListRowStatus)l.Status,
                         ItemUnitMeasure = l.ItemUnitMeasure,
                         MaterialStatusDescription = l.MaterialStatusDescription,
                         RequestedQuantity = l.RequestedQuantity,
@@ -168,12 +169,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemImage = row.ItemImage,
                     RequestedQuantity = row.RequestedQuantity,
                     DispatchedQuantity = row.DispatchedQuantity,
-                    Status = (ItemListRowStatus)row.Status,
+                    Status = (Enums.ItemListRowStatus)row.Status,
                     ItemDescription = row.ItemDescription,
                     CreationDate = row.CreationDate,
                     ItemListCode = row.ItemListCode,
                     ItemListDescription = row.ItemListDescription,
-                    ItemListType = (ItemListType)row.ItemListType,
+                    ItemListType = (Enums.ItemListType)row.ItemListType,
                     CompletionDate = row.CompletionDate,
                     LastExecutionDate = row.LastExecutionDate,
                     LastModificationDate = row.LastModificationDate,
@@ -209,7 +210,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         ItemDescription = r.ItemDescription,
                         RequestedQuantity = r.RequestedQuantity,
                         DispatchedQuantity = r.DispatchedQuantity,
-                        Status = (ItemListRowStatus)r.Status,
+                        Status = (Enums.ItemListRowStatus)r.Status,
                         MaterialStatusDescription = r.MaterialStatusDescription,
                         CreationDate = r.CreationDate,
                         ItemUnitMeasure = r.ItemUnitMeasure,

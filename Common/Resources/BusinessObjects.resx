@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+
+    <data name="EnumNotSpecified" xml:space="preserve">
+      <value>- Not Specified -</value>
+  </data>
+    <data name="SideLeft" xml:space="preserve">
+        <value>Left</value>
+        <comment>Side - Left</comment>
+    </data>
+    <data name="SideRight" xml:space="preserve">
+        <value>Right</value>
+        <comment>Side - Right</comment>
+    </data>
+    <data name="SideFront" xml:space="preserve">
+        <value>Front</value>
+        <comment>Side - Front</comment>
+    </data>
+    <data name="SideBack" xml:space="preserve">
+        <value>Back</value>
+        <comment>Side - Back</comment>
+    </data>
+    <data name="MonoReference" xml:space="preserve">
+        <value>Mono Reference</value>
+    </data>
+    <data name="PluriReference" xml:space="preserve">
+        <value>Multi Reference</value>
+    </data>
+    <data name="ItemManagementTypeFIFO" xml:space="preserve">
+        <value>FIFO</value>
+    </data>
+    <data name="ItemManagementTypeVolume" xml:space="preserve">
+        <value>Volume</value>
+    </data>
+    <data name="ItemListStatusError" xml:space="preserve">
+        <value>Error</value>
+        <comment>Item List Status - Error</comment>
+    </data>
+    <data name="ItemListStatusNew" xml:space="preserve">
+        <value>New</value>
+        <comment>Item List Status - New</comment>
+    </data>
+    <data name="ItemListStatusReady" xml:space="preserve">
+        <value>Ready</value>
+        <comment>Item List Status - Ready</comment>
+    </data>
+    <data name="ItemListStatusWaiting" xml:space="preserve">
+        <value>Waiting</value>
+        <comment>Item List Status - Waiting</comment>
+    </data>
+    <data name="ItemListStatusExecuting" xml:space="preserve">
+        <value>Executing</value>
+        <comment>Item List Status - Executing</comment>
+    </data>
+    <data name="ItemListStatusCompleted" xml:space="preserve">
+        <value>Completed</value>
+        <comment>Item List Status - Completed</comment>
+    </data>
+    <data name="ItemListStatusIncomplete" xml:space="preserve">
+        <value>Incomplete</value>
+        <comment>Item List Status - Incomplete</comment>
+    </data>
+    <data name="ItemListStatusSuspended" xml:space="preserve">
+        <value>Suspended</value>
+        <comment>Item List Status - Suspended</comment>
+    </data>
+    <data name="Pick" xml:space="preserve">
+        <value>Pick</value>
+        <comment>Pick</comment>
+    </data>
+    <data name="Put" xml:space="preserve">
+        <value>Put</value>
+        <comment>Put</comment>
+    </data>
+    <data name="Inventory" xml:space="preserve">
+        <value>Inventory</value>
+        <comment>Item List Type - Inventory</comment>
+    </data>
+    <data name="MissionTypeBypass" xml:space="preserve">
+        <value>Bypass</value>
+    </data>
+    <data name="MissionTypeReorder" xml:space="preserve">
+        <value>Reorder</value>
+    </data>
+    <data name="MissionTypeReplace" xml:space="preserve">
+        <value>Replace</value>
+    </data>
+    <data name="OperationReplace" xml:space="preserve">
+        <value>Replace</value>
+    </data>
+    <data name="OperationReorder" xml:space="preserve">
+        <value>Reorder</value>
+    </data>
+    <data name="ItemListRowStatusError" xml:space="preserve">
+        <value>Error</value>
+        <comment>Item List Row Status - Error</comment>
+    </data>
+    <data name="ItemListRowStatusNew" xml:space="preserve">
+        <value>New</value>
+        <comment>Item List Row Status - New</comment>
+    </data>
+    <data name="ItemListRowStatusReady" xml:space="preserve">
+        <value>Ready</value>
+        <comment>Item List Row Status - Ready</comment>
+    </data>
+    <data name="ItemListRowStatusWaiting" xml:space="preserve">
+        <value>Waiting</value>
+        <comment>Item List Row Status - Waiting</comment>
+    </data>
+    <data name="ItemListRowStatusExecuting" xml:space="preserve">
+        <value>Executing</value>
+        <comment>Item List Row Status - Executing</comment>
+    </data>
+    <data name="ItemListRowStatusCompleted" xml:space="preserve">
+        <value>Completed</value>
+        <comment>Item List Row Status - Completed</comment>
+    </data>
+    <data name="ItemListRowStatusIncomplete" xml:space="preserve">
+        <value>Incomplete</value>
+        <comment>Item List Row Status - Incomplete</comment>
+    </data>
+    <data name="ItemListRowStatusSuspended" xml:space="preserve">
+        <value>Suspended</value>
+        <comment>Item List Row Status - Suspended</comment>
+    </data>
+    <data name="MachineMaintenanceStatusValid" xml:space="preserve">
+        <value>Valid</value>
+        <comment>Machine - Maintenance Status - Valid</comment>
+    </data>
+    <data name="MachineMaintenanceStatusExpiring" xml:space="preserve">
+        <value>Expiring</value>
+        <comment>Machine - Maintenance Status - Expiring</comment>
+    </data>
+    <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
+        <value>Expired</value>
+        <comment>Machine - Maintenance Status - Expired</comment>
+    </data>
+    <data name="MachineStatusAutomatic" xml:space="preserve">
+        <value>Automatic</value>
+        <comment>Machine Status - Automatic</comment>
+    </data>
+    <data name="MachineStatusError" xml:space="preserve">
+        <value>Error</value>
+        <comment>Machine Status - Error</comment>
+    </data>
+    <data name="MachineStatusManual" xml:space="preserve">
+        <value>Manual</value>
+        <comment>Machine Status - Manual</comment>
+    </data>
+    <data name="MachineStatusOffline" xml:space="preserve">
+        <value>Offline</value>
+        <comment>Machine Status - Offline</comment>
+    </data>
+    <data name="MissionOperationStatusCompleted" xml:space="preserve">
+        <value>Completed</value>
+    </data>
+    <data name="MissionOperationStatusError" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="MissionOperationStatusExecuting" xml:space="preserve">
+        <value>Executing</value>
+    </data>
+    <data name="MissionOperationStatusIncomplete" xml:space="preserve">
+        <value>Incomplete</value>
+    </data>
+    <data name="MissionOperationStatusNew" xml:space="preserve">
+        <value>New</value>
+    </data>
+    <data name="MissionStatusNew" xml:space="preserve">
+        <value>New</value>
+    </data>
+    <data name="MissionStatusExecuting" xml:space="preserve">
+        <value>Executing</value>
+        <comment>Mission Status - Executing</comment>
+    </data>
+    <data name="MissionStatusCompleted" xml:space="preserve">
+        <value>Completed</value>
+        <comment>Mission Status - Completed</comment>
+    </data>
+    <data name="MissionStatusError" xml:space="preserve">
+        <value>Error</value>
+        <comment>Mission Status - Error</comment>
+    </data>
+    <data name="MissionStatusIncomplete" xml:space="preserve">
+        <value>Incomplete</value>
+        <comment>Mission Status - Incomplete</comment>
+    </data>
+    <data name="SchedulerRequestStatusNew" xml:space="preserve">
+        <value>New</value>
+        <comment>Scheduler Request Status - New</comment>
+    </data>
+    <data name="SchedulerRequestStatusCompleted" xml:space="preserve">
+        <value>Completed</value>
+        <comment>Scheduler Request Status - Completed</comment>
+    </data>
+    <data name="SchedulerRequestTypeItem" xml:space="preserve">
+        <value>Item</value>
+        <comment>Scheduler Request Type - Item</comment>
+    </data>
+    <data name="SchedulerRequestTypeLoadingUnit" xml:space="preserve">
+        <value>LoadingUnit</value>
+        <comment>Scheduler Request Type - LoadingUnit</comment>
+    </data>
+    <data name="SchedulerRequestTypeItemList" xml:space="preserve">
+        <value>ItemList</value>
+        <comment>Scheduler Request Type - ItemList</comment>
+    </data>
+    <data name="SchedulerRequestTypeItemListRow" xml:space="preserve">
+        <value>ItemListRow</value>
+        <comment>Scheduler Request Type - ItemListRow</comment>
+    </data>
+</root>

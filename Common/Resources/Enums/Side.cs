@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.App.Core.Models
+namespace Ferretto.Common.Resources.Enums
 {
+    // Lato
     public enum Side
     {
+        [Display(Name = nameof(BusinessObjects.EnumNotSpecified), ResourceType = typeof(BusinessObjects))]
+        NotSpecified,
+
         [Display(Name = nameof(BusinessObjects.SideLeft), ResourceType = typeof(BusinessObjects))]
         Left = 'L',
 

@@ -2,6 +2,7 @@
 using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.EF.Configurations
 {
@@ -55,8 +56,8 @@ namespace Ferretto.Common.EF.Configurations
                .HasColumnType("char(1)")
                .HasConversion(
                     enumValue => (char)enumValue,
-                    charValue => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), charValue))
-               .HasDefaultValueSql($"'{(char)ItemListRowStatus.New}'");
+                    charValue => (Enums.ItemListRowStatus)Enum.ToObject(typeof(Enums.ItemListRowStatus), charValue))
+               .HasDefaultValueSql($"'{(char)Enums.ItemListRowStatus.New}'");
         }
 
         #endregion

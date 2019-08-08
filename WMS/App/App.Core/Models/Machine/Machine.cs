@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -8,7 +9,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
-        private MachineStatus? status;
+        private Enums.MachineStatus? status;
 
         #endregion
 
@@ -59,7 +60,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineInstallationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InstallationDate { get; set; }
 
-        public bool IsOnLine => this.Status != MachineStatus.Offline;
+        public bool IsOnLine => this.Status != Enums.MachineStatus.Offline;
 
         [Display(Name = nameof(BusinessObjects.MachineLastPowerOn), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPowerOn { get; set; }
@@ -80,7 +81,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MachineTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatus), ResourceType = typeof(BusinessObjects))]
-        public MaintenanceStatus? MaintenanceStatus { get; set; }
+        public Enums.MaintenanceStatus? MaintenanceStatus { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineManualTime), ResourceType = typeof(BusinessObjects))]
         public long? ManualTime { get; set; }
@@ -110,7 +111,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus? Status
+        public Enums.MachineStatus? Status
         {
             get => this.status;
             set

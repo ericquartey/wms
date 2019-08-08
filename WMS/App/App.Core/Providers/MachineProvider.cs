@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -73,7 +74,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
                         Longitude = m.Longitude,
                         MachineTypeDescription = m.MachineTypeDescription,
-                        MaintenanceStatus = (MaintenanceStatus)m.MaintenanceStatus,
+                        MaintenanceStatus = (Enums.MaintenanceStatus)m.MaintenanceStatus,
                         ManualTime = m.ManualTime,
                         MissionTime = m.MissionTime,
                         Model = m.Model,
@@ -83,7 +84,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
                         PowerOnTime = m.PowerOnTime,
                         RegistrationNumber = m.RegistrationNumber,
-                        Status = (MachineStatus)m.Status,
+                        Status = (Enums.MachineStatus)m.Status,
                         TestDate = m.TestDate,
                         TotalMaxWeight = m.TotalMaxWeight,
                         WeightFillRate = m.WeightFillRate,
@@ -156,7 +157,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitsPerCradle = machine.LoadingUnitsPerCradle,
                     Longitude = machine.Longitude,
                     MachineTypeDescription = machine.MachineTypeDescription,
-                    MaintenanceStatus = (MaintenanceStatus)machine.MaintenanceStatus,
+                    MaintenanceStatus = (Enums.MaintenanceStatus)machine.MaintenanceStatus,
                     ManualTime = machine.ManualTime,
                     MissionsCount = machine.MissionsCount,
                     MissionTime = machine.MissionTime,
@@ -170,7 +171,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     PowerOnTime = machine.PowerOnTime,
                     RegistrationNumber = machine.RegistrationNumber,
                     ServiceUrl = machine.ServiceUrl,
-                    Status = (MachineStatus)machine.Status,
+                    Status = (Enums.MachineStatus)machine.Status,
                     TestDate = machine.TestDate,
                     TotalMaxWeight = machine.TotalMaxWeight,
                     WeightFillRate = machine.WeightFillRate,

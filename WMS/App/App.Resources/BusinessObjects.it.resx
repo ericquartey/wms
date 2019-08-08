@@ -466,47 +466,11 @@
   <data name="ItemListShipmentUnitAssociated" xml:space="preserve">
     <value>Unità di Spedizione associata</value>
   </data>
-  <data name="MachineStatusAutomatic" xml:space="preserve">
-    <value>Automatico</value>
-  </data>
-  <data name="MachineStatusError" xml:space="preserve">
-    <value>In Errore</value>
-  </data>
-  <data name="MachineStatusManual" xml:space="preserve">
-    <value>Manuale</value>
-  </data>
-  <data name="MachineStatusOffline" xml:space="preserve">
-    <value>Non In Linea</value>
-  </data>
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Stato Manutenzione</value>
   </data>
-  <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
-    <value>Scaduta</value>
-  </data>
-  <data name="MachineMaintenanceStatusValid" xml:space="preserve">
-    <value>Valida</value>
-  </data>
-  <data name="MachineMaintenanceStatusExpiring" xml:space="preserve">
-    <value>In scadenza</value>
-  </data>
   <data name="MachineStatus" xml:space="preserve">
     <value>Stato Macchina</value>
-  </data>
-  <data name="ItemListStatusCompleted" xml:space="preserve">
-    <value>Completata</value>
-  </data>
-  <data name="ItemListStatusExecuting" xml:space="preserve">
-    <value>In Esecuzione</value>
-  </data>
-  <data name="ItemListStatusIncomplete" xml:space="preserve">
-    <value>Incompleta</value>
-  </data>
-  <data name="ItemListStatusSuspended" xml:space="preserve">
-    <value>Sospesa</value>
-  </data>
-  <data name="ItemListStatusWaiting" xml:space="preserve">
-    <value>In Attesa</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Nome Utente</value>
@@ -520,54 +484,6 @@
   <data name="PairingFixed" xml:space="preserve">
     <value>Fisso</value>
   </data>
-  <data name="ItemListRowStatusWaiting" xml:space="preserve">
-    <value>In Attesa</value>
-  </data>
-  <data name="ItemListRowStatusSuspended" xml:space="preserve">
-    <value>Sospesa</value>
-  </data>
-  <data name="ItemListRowStatusIncomplete" xml:space="preserve">
-    <value>Incompleta</value>
-  </data>
-  <data name="ItemListRowStatusExecuting" xml:space="preserve">
-    <value>In Esecuzione</value>
-  </data>
-  <data name="ItemListRowStatusCompleted" xml:space="preserve">
-    <value>Completata</value>
-  </data>
-  <data name="Inventory" xml:space="preserve">
-    <value>Inventario</value>
-  </data>
-  <data name="Pick" xml:space="preserve">
-    <value>Prelievo</value>
-  </data>
-  <data name="Put" xml:space="preserve">
-    <value>Versamento</value>
-  </data>
-  <data name="MonoReference" xml:space="preserve">
-    <value>Mono Referenza</value>
-  </data>
-  <data name="PluriReference" xml:space="preserve">
-    <value>Multi Referenza</value>
-  </data>
-  <data name="SideBack" xml:space="preserve">
-    <value>Posteriore</value>
-  </data>
-  <data name="SideFront" xml:space="preserve">
-    <value>Frontale</value>
-  </data>
-  <data name="SideLeft" xml:space="preserve">
-    <value>Sinistro</value>
-  </data>
-  <data name="SideRight" xml:space="preserve">
-    <value>Destro</value>
-  </data>
-  <data name="ItemManagementTypeFIFO" xml:space="preserve">
-    <value>FIFO</value>
-  </data>
-  <data name="ItemManagementTypeVolume" xml:space="preserve">
-    <value>Volume</value>
-  </data>
   <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
     <value>Pianifica</value>
     <comment>List Execution Request - Schedule</comment>
@@ -578,41 +494,11 @@
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Data Ultima Esecuzione</value>
   </data>
-  <data name="MissionStatusNew" xml:space="preserve">
-    <value>Nuova</value>
-  </data>
-  <data name="MissionStatusExecuting" xml:space="preserve">
-    <value>In esecuzione</value>
-  </data>
-  <data name="MissionStatusCompleted" xml:space="preserve">
-    <value>Completata</value>
-  </data>
-  <data name="MissionStatusError" xml:space="preserve">
-    <value>In Errore</value>
-  </data>
-  <data name="MissionTypeBypass" xml:space="preserve">
-    <value>Bypass</value>
-  </data>
-  <data name="MissionTypeReorder" xml:space="preserve">
-    <value>Riordino</value>
-  </data>
-  <data name="MissionTypeReplace" xml:space="preserve">
-    <value>Rimpiazzo</value>
-  </data>
   <data name="Item" xml:space="preserve">
     <value>Articolo</value>
   </data>
   <data name="ItemList" xml:space="preserve">
     <value>Liste</value>
-  </data>
-  <data name="OperationInsert" xml:space="preserve">
-    <value>Inserimento</value>
-  </data>
-  <data name="OperationReorder" xml:space="preserve">
-    <value>Riordino</value>
-  </data>
-  <data name="OperationReplace" xml:space="preserve">
-    <value>Sostituzione</value>
   </data>
   <data name="OperationType" xml:space="preserve">
     <value>Tipo Operazione</value>
@@ -629,23 +515,8 @@
   <data name="SchedulerRequest" xml:space="preserve">
     <value>Richiesta Schedulatore</value>
   </data>
-  <data name="MissionStatusIncomplete" xml:space="preserve">
-    <value>Incompleta</value>
-  </data>
   <data name="AreaFillRate" xml:space="preserve">
-    <value>Percentuale Riempimento Superficie</value>
-  </data>
-  <data name="ItemListRowStatusError" xml:space="preserve">
-    <value>Errore</value>
-  </data>
-  <data name="ItemListRowStatusNew" xml:space="preserve">
-    <value>Nuova</value>
-  </data>
-  <data name="ItemListStatusError" xml:space="preserve">
-    <value>Errore</value>
-  </data>
-  <data name="ItemListStatusNew" xml:space="preserve">
-    <value>Nuova</value>
+    <value>% Riempimento Superficie</value>
   </data>
   <data name="ItemPutAvailableCapacity" xml:space="preserve">
     <value>Capacità Disponibile</value>
@@ -698,12 +569,6 @@
   <data name="MachineNetWeight" xml:space="preserve">
     <value>Peso Netto [g]</value>
   </data>
-  <data name="ItemListStatusReady" xml:space="preserve">
-    <value>Pronta</value>
-  </data>
-  <data name="ItemListRowStatusReady" xml:space="preserve">
-    <value>Pronta</value>
-  </data>
   <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
     <value>Scomparti Associati</value>
   </data>
@@ -732,22 +597,7 @@
     <value>Totale Vuoti</value>
   </data>
   <data name="WeightFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento Peso</value>
-  </data>
-  <data name="MissionOperationStatusCompleted" xml:space="preserve">
-    <value>Completata</value>
-  </data>
-  <data name="MissionOperationStatusError" xml:space="preserve">
-    <value>Errore</value>
-  </data>
-  <data name="MissionOperationStatusExecuting" xml:space="preserve">
-    <value>In Esecuzione</value>
-  </data>
-  <data name="MissionOperationStatusIncomplete" xml:space="preserve">
-    <value>Incompleta</value>
-  </data>
-  <data name="MissionOperationStatusNew" xml:space="preserve">
-    <value>Nuova</value>
+    <value>% Riempimento Peso</value>
   </data>
   <data name="CompartmentOtherMissionOperationCount" xml:space="preserve">
     <value>Contatore Inventario Missioni Operazioni</value>

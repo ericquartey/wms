@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Maps
 {
@@ -10,9 +11,6 @@ namespace Ferretto.WMS.Data.Core.Maps
 
         public MissionMappingProfile()
         {
-            this.CreateMap<Common.DataModels.MissionStatus, MissionStatus>()
-                .ConvertUsing(value => (MissionStatus)value);
-
             this.CreateMap<Common.DataModels.LoadingUnit, LoadingUnitMissionInfo>()
                 .ForMember(l => l.Width, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Width))
                 .ForMember(l => l.Depth, c => c.MapFrom(l => l.LoadingUnitType.LoadingUnitSizeClass.Depth))
@@ -27,21 +25,21 @@ namespace Ferretto.WMS.Data.Core.Maps
                         c => c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : 0));
 
             this.CreateMap<Common.DataModels.Mission, Mission>()
-                .ForMember(m => m.CompletedOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Completed)))
-                .ForMember(m => m.ExecutingOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Executing)))
-                .ForMember(m => m.IncompleteOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Incomplete)))
-                .ForMember(m => m.NewOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.New)))
+                .ForMember(m => m.CompletedOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Completed)))
+                .ForMember(m => m.ExecutingOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Executing)))
+                .ForMember(m => m.IncompleteOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Incomplete)))
+                .ForMember(m => m.NewOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.New)))
                 .ForMember(m => m.OperationsCount, c => c.MapFrom(m => m.Operations.Count()))
-                .ForMember(m => m.ErrorOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Error)));
+                .ForMember(m => m.ErrorOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Error)));
             this.CreateMap<Mission, Common.DataModels.Mission>();
 
             this.CreateMap<Common.DataModels.Mission, MissionInfo>()
-                .ForMember(m => m.CompletedOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Completed)))
-                .ForMember(m => m.ExecutingOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Executing)))
-                .ForMember(m => m.IncompleteOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Incomplete)))
-                .ForMember(m => m.NewOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.New)))
+                .ForMember(m => m.CompletedOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Completed)))
+                .ForMember(m => m.ExecutingOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Executing)))
+                .ForMember(m => m.IncompleteOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Incomplete)))
+                .ForMember(m => m.NewOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.New)))
                 .ForMember(m => m.OperationsCount, c => c.MapFrom(m => m.Operations.Count()))
-                .ForMember(m => m.ErrorOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Common.DataModels.MissionOperationStatus.Error)))
+                .ForMember(m => m.ErrorOperationsCount, c => c.MapFrom(m => m.Operations.Count(o => o.Status == Enums.MissionOperationStatus.Error)))
                 .ForMember(m => m.AreaId, c => c.MapFrom(m => m.Bay.AreaId))
                 .ForMember(m => m.AreaName, c => c.MapFrom(m => m.Bay.Area.Name));
 
