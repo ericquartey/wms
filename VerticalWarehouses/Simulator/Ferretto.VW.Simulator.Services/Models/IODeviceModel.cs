@@ -102,7 +102,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("Bit 15", false, "Opzione robot - Tasto fine picking (oppure fine picking robot)"));
 
             // Initialize ouputs
-            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false)).ToList();
+            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, IODeviceModel.GetRemoteIOSignalDescription(x))).ToList();
 
             // Remove emergency button
             this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
@@ -148,6 +148,43 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get => this.outputs;
             set => this.SetProperty(ref this.outputs, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        internal static string GetRemoteIOSignalDescription(int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Reset funzione sicurezza (impulso 300ms)";
+
+                case 1:
+                    return "Selezione motore elevatore";
+
+                case 2:
+                    return "Selezione motore culla";
+
+                case 3:
+                    return "Attivazione lettura altezza (barriera di misura)";
+
+                case 4:
+                    return "Attivazione illuminazione baia";
+
+                case 5:
+                    return "Abilitazione al marcia dalla console";
+
+                case 6:
+                    return "Opzione robot - Missione terminata magazzino";
+
+                case 7:
+                    return "Opzione robot - Magazzino pronto/guasto";
+
+                default:
+                    return string.Empty;
+            }
         }
 
         #endregion
