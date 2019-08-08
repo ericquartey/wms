@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
@@ -60,6 +61,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private string stepValue;
 
+        private CancellationTokenSource tokenSource;
+
         #endregion
 
         #region Constructors
@@ -119,7 +122,16 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public string ReferenceCellHeight { get => this.referenceCellHeight; set => this.SetProperty(ref this.referenceCellHeight, value); }
 
-        public string ReferenceCellNumber { get => this.referenceCellNumber; set => this.SetProperty(ref this.referenceCellNumber, value); }
+        public string ReferenceCellNumber
+        {
+            get => this.referenceCellNumber;
+            set
+            {
+                this.SetProperty(ref this.referenceCellNumber, value);
+                this.CheckReferenceCellNumberCorrectness(value);
+                this.TriggerSearchAsync().GetAwaiter();
+            }
+        }
 
         public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonCommandMethod()));
 
@@ -150,6 +162,19 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             }
         }
 
+        public void CheckReferenceCellNumberCorrectness(string input)
+        {
+            if (!string.IsNullOrEmpty(input) && int.TryParse(input, out var i) && i > 0)
+            {
+                this.IsSetPositionButtonActive = true;
+            }
+            else
+            {
+                this.IsSetPositionButtonActive = false;
+                this.ReferenceCellHeight = string.Empty;
+            }
+        }
+
         public async Task CorrectOffsetButtonCommandMethodAsync()
         {
             var result = await this.offsetCalibrationService.ExecuteCompletedAsync();
@@ -171,9 +196,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             {
                 const string Category = "OffsetCalibration";
                 this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
-
-                //TEMP temporary commented because there is not a cell map
-                //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
                 this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
             }
             catch (SwaggerException)
@@ -194,6 +216,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 },
                 ThreadOption.PublisherThread,
                 false);
+
+            this.tokenSource = new CancellationTokenSource();
+            await this.ReferenceCellNumberAsync(this.referenceCellNumber);
         }
 
         public void PositioningDone(bool result)
@@ -201,11 +226,16 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             // TODO implement missing feature
         }
 
+        public async Task ReferenceCellNumberAsync(string referenceCellNumber)
+        {
+            this.ReferenceCellHeight = await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(referenceCellNumber);
+        }
+
         public async Task SetPositionButtonCommandMethod()
         {
             try
             {
-                await this.offsetCalibrationService.ExecutePositioningAsync();
+                await this.offsetCalibrationService.ExecutePositioningAsync(this.referenceCellHeight);
             }
             catch (Exception)
             {
@@ -227,6 +257,29 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         public void UnSubscribeMethodFromEvent()
         {
             this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivePositioningUpdateToken);
+        }
+
+        private async Task TriggerSearchAsync()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 500;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
+                    .ContinueWith(
+                        async t => await this.ReferenceCellNumberAsync(this.referenceCellNumber),
+                        this.tokenSource.Token,
+                        TaskContinuationOptions.NotOnCanceled,
+                        TaskScheduler.Current);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
