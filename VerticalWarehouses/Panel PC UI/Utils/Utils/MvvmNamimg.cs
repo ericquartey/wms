@@ -20,8 +20,15 @@ namespace Ferretto.VW.Utils
 
         public static string GetViewModelName(string viewFullname)
         {
+            // TO DO remove when Installation modules moved into modules
+            string modulePresent = string.Empty;
+            if (viewFullname.Contains("Modules"))
+            {
+                modulePresent = ".Modules";
+                viewFullname = viewFullname.Replace(".Modules", "");
+            }
             var elems = GetViewNameSplit(viewFullname);
-            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{elems.moduleName}.{Common.VIEWMODELS_SUFFIX}.{elems.viewName}{Common.MODEL_SUFFIX}";
+            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}{modulePresent}.{elems.moduleName}.{Common.VIEWMODELS_SUFFIX}.{elems.viewName}{Common.MODEL_SUFFIX}";
         }
 
         public static string GetViewNameFromViewModelName(string viewModelName)

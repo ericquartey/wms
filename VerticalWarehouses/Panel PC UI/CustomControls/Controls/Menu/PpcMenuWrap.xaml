@@ -1,0 +1,27 @@
+﻿<ItemsControl x:Class="Ferretto.VW.App.Controls.PpcMenuWrap"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d">
+    <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+            <WrapPanel HorizontalAlignment="Right"
+                       Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <Border Margin="5"
+                    BorderBrush="White"
+                    BorderThickness="1">
+                <Button Command="{Binding NavigateCommand}">
+                    <Button.Content>
+                        <TextBlock Name="Description"
+                                   Text="{Binding Dscription}" />
+                    </Button.Content>
+                </Button>
+            </Border>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+</ItemsControl>

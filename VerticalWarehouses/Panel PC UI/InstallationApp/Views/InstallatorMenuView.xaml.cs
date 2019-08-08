@@ -6,7 +6,7 @@
 
         public InstallatorMenuView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

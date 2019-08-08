@@ -4,7 +4,7 @@
     {
         #region Fields
 
-        public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.VW.App.Modules";
+        public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.VW.App";
 
         public const string MAIN_REGION = "MainRegion";
 

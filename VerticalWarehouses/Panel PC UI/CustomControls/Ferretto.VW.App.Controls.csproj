@@ -131,9 +131,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\PpcTextBox.xaml.cs">
-      <DependentUpon>PpcTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\ErrorDetails\ErrorDetailsView.xaml.cs">
       <DependentUpon>ErrorDetailsView.xaml</DependentUpon>
     </Compile>
