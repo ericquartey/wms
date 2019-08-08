@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Ferretto.WMS.App.Resources;
 
-namespace Ferretto.WMS.App.Core.Models
+namespace Ferretto.Common.Resources.Enums
 {
     public enum OperationType
     {
-        [Display(Name = nameof(BusinessObjects.OperationInsert), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.EnumNotSpecified), ResourceType = typeof(BusinessObjects))]
+        NotSpecified,
+
+        [Display(Name = nameof(BusinessObjects.Put), ResourceType = typeof(BusinessObjects))]
         Put = 'U',
 
         [Display(Name = nameof(BusinessObjects.Pick), ResourceType = typeof(BusinessObjects))]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -43,7 +44,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? depth;
 
-        private ItemManagementType? managementType;
+        private Enums.ItemManagementType? managementType;
 
         private string measureUnitId;
 
@@ -194,7 +195,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public ItemManagementType? ManagementType
+        public Enums.ItemManagementType? ManagementType
         {
             get => this.managementType;
             set => this.SetProperty(ref this.managementType, value);

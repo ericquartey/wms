@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -24,7 +25,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
-        public ItemListType OperationType { get; set; }
+        public Enums.ItemListType OperationType { get; set; }
 
         public int? PackageTypeId { get; set; }
 
@@ -36,7 +37,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public double RequestedQuantity { get; set; }
 
-        public ItemListRowStatus Status { get; set; }
+        public Enums.ItemListRowStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 

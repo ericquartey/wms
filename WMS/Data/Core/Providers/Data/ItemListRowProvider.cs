@@ -13,6 +13,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -242,14 +243,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    Status = (ItemListRowStatus)l.Status,
+                    Status = l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.MissionOperations.Count(
-                        m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
-                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete),
+                        m => m.Status != Enums.MissionOperationStatus.Completed &&
+                            m.Status != Enums.MissionOperationStatus.Incomplete),
                     Machines = this.DataContext.Compartments.Where(c => c.ItemId == l.ItemId)
                         .Join(
                             this.DataContext.Machines,
@@ -283,13 +284,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemImage = l.Item.Image,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    Status = (ItemListRowStatus)l.Status,
+                    Status = l.Status,
                     ItemDescription = l.Item.Description,
                     CreationDate = l.CreationDate,
                     ItemListCode = l.ItemList.Code,
                     ItemListDescription = l.ItemList.Description,
                     ItemListId = l.ItemListId,
-                    ItemListType = (ItemListType)l.ItemList.ItemListType,
+                    ItemListType = l.ItemList.ItemListType,
                     CompletionDate = l.CompletionDate,
                     LastExecutionDate = l.LastExecutionDate,
                     LastModificationDate = l.LastModificationDate,
@@ -303,8 +304,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.MissionOperations.Count(
-                        m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
-                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete),
+                        m => m.Status != Enums.MissionOperationStatus.Completed &&
+                            m.Status != Enums.MissionOperationStatus.Incomplete),
                 });
         }
 

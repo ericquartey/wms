@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using DevExpress.Data.Filtering;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
@@ -93,6 +94,8 @@ namespace Ferretto.WMS.Data.WebAPI
             app.UseHealthChecks($"/health");
 
             app.UseMvc();
+
+            EnumProcessingHelper.RegisterEnums(typeof(Common.Resources.Enums.Side).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

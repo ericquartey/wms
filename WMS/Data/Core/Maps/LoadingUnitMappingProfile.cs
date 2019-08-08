@@ -1,5 +1,6 @@
 using AutoMapper;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Maps
 {
@@ -9,9 +10,6 @@ namespace Ferretto.WMS.Data.Core.Maps
 
         public LoadingUnitMappingProfile()
         {
-            this.CreateMap<ReferenceType, Common.DataModels.ReferenceType>()
-                .ConvertUsing(value => (Common.DataModels.ReferenceType)value);
-
             this.CreateMap<LoadingUnitDetails, Common.DataModels.LoadingUnit>();
         }
 

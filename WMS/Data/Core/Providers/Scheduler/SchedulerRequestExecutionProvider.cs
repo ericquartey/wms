@@ -9,6 +9,7 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -63,12 +64,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Add(new Common.DataModels.SchedulerRequest
                 {
                     LoadingUnitId = model.LoadingUnitId,
-                    OperationType = (Common.DataModels.OperationType)model.OperationType,
-                    Type = (Common.DataModels.SchedulerRequestType)model.Type,
+                    OperationType = model.OperationType,
+                    Type = model.Type,
                     IsInstant = model.IsInstant,
                     Priority = model.Priority,
                     BayId = model.BayId,
-                    Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
+                    Status = model.Status,
                 });
 
             if (await this.DataContext.SaveChangesAsync() > 0)
@@ -153,10 +154,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.DataContext.SchedulerRequests
-               .Where(r => r.Status == Common.DataModels.SchedulerRequestStatus.New)
+               .Where(r => r.Status == Enums.SchedulerRequestStatus.New)
                .Where(r => !r.ListRowId.HasValue
-                    || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
-                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Ready))
+                    || (r.ListRow.Status == Enums.ItemListRowStatus.Executing
+                    || r.ListRow.Status == Enums.ItemListRowStatus.Ready))
                .OrderBy(r => r.Priority)
                .Select(r => SelectRequest(r))
                .ToArrayAsync();
@@ -200,14 +201,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
                 RegistrationNumber = model.RegistrationNumber,
-                OperationType = (Common.DataModels.OperationType)(int)model.OperationType,
+                OperationType = (Enums.OperationType)(int)model.OperationType,
                 RequestedQuantity = model.RequestedQuantity,
                 ReservedQuantity = model.ReservedQuantity,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2,
                 Priority = model.Priority,
-                Type = (Common.DataModels.SchedulerRequestType)model.Type,
-                Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
+                Type = model.Type,
+                Status = model.Status,
             };
             if (model is ItemListRowSchedulerRequest rowRequest)
             {
@@ -222,7 +223,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             switch (r.Type)
             {
-                case Common.DataModels.SchedulerRequestType.Item:
+                case Enums.SchedulerRequestType.Item:
 
                     if (!r.RequestedQuantity.HasValue
                         ||
@@ -241,7 +242,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         IsInstant = r.IsInstant,
                         ItemId = r.ItemId.Value,
                         Lot = r.Lot,
-                        OperationType = (OperationType)r.OperationType,
+                        OperationType = r.OperationType,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
@@ -250,10 +251,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
                         Priority = r.Priority,
-                        Status = (SchedulerRequestStatus)r.Status,
+                        Status = r.Status,
                     };
 
-                case Common.DataModels.SchedulerRequestType.LoadingUnit:
+                case Enums.SchedulerRequestType.LoadingUnit:
 
                     if (!r.LoadingUnitId.HasValue
                         ||
@@ -271,10 +272,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Priority = r.Priority,
                         BayId = r.BayId.Value,
                         LoadingUnitId = r.LoadingUnitId.Value,
-                        Status = (SchedulerRequestStatus)r.Status,
+                        Status = r.Status,
                     };
 
-                case Common.DataModels.SchedulerRequestType.ItemListRow:
+                case Enums.SchedulerRequestType.ItemListRow:
                     return new ItemListRowSchedulerRequest
                     {
                         Id = r.Id,
@@ -284,7 +285,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         IsInstant = r.IsInstant,
                         ItemId = r.ItemId.Value,
                         Lot = r.Lot,
-                        OperationType = (OperationType)r.OperationType,
+                        OperationType = r.OperationType,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
@@ -295,7 +296,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Priority = r.Priority,
                         ListId = r.ListId.Value,
                         ListRowId = r.ListRowId.Value,
-                        Status = (SchedulerRequestStatus)r.Status,
+                        Status = r.Status,
                     };
 
                 default:

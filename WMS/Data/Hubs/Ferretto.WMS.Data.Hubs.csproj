@@ -19,5 +19,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
+  </ItemGroup>
   
 </Project>

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxf="clr-namespace:DevExpress.Data.Filtering;assembly=DevExpress.Data.v19.1"
                     xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                     xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources">
 
@@ -24,6 +25,8 @@
            BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey Type=dxe:ComboBoxEdit,
                                                                 ThemeName=Office2016White}}"
            TargetType="wms:ComboBox">
+        <Setter Property="FilterCriteria"
+                Value="{DXBinding Expr='new $dxf:NotOperator(new $dxf:InOperator(`Id`, new $dxf:OperandValue(`NotSpecified`)))'}" />
         <Setter Property="NullText" Value="{x:Static res:General.SelectValue}" />
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />

@@ -1,5 +1,6 @@
 using System;
 using Ferretto.Common.Utils;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -38,7 +39,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MeasureUnitDescription { get; set; }
 
-        public OperationType OperationType { get; set; }
+        public Enums.OperationType OperationType { get; set; }
 
         public string PackageTypeDescription { get; set; }
 
@@ -48,13 +49,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public double? ReservedQuantity { get; set; }
 
-        public SchedulerRequestStatus Status { get; set; }
+        public Enums.SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public SchedulerRequestType Type { get; set; }
+        public Enums.SchedulerRequestType Type { get; set; }
 
         #endregion
     }

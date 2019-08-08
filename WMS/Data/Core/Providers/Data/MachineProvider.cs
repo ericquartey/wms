@@ -10,6 +10,7 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -90,6 +91,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Machine> GetByBayIdAsync(int bayId)
         {
             var bay = await this.bayProvider.GetByIdAsync(bayId);
+
+            if (bay == null || bay.MachineId == null)
+            {
+                return null;
+            }
+
             var machine = await this.GetAllBase()
                        .SingleOrDefaultAsync(i => i.Id == bay.MachineId);
 
@@ -146,15 +153,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 if (machine.Id == 1)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expired;
                 }
             }
 
@@ -167,15 +174,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 if (machine.Id == 1)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
+                    machine.MaintenanceStatus = Enums.MaintenanceStatus.Expired;
                 }
             }
 
@@ -193,7 +200,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             l => l.CellId,
                             (c, l) => new
                             {
-                                AisleId = c.AisleId,
+                                c.AisleId,
                                 LoadingUnitId = l.Id,
                             })
                         .Join(
@@ -202,8 +209,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                             c => c.LoadingUnitId,
                             (l, c) => new
                             {
-                                AisleId = l.AisleId,
-                                ItemId = c.ItemId,
+                                l.AisleId,
+                                c.ItemId,
                             })
                         .Distinct()
                         .GroupBy(i => i.AisleId)
@@ -300,6 +307,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return this.DataContext.Machines
                 .GroupJoin(
                     this.DataContext.LoadingUnits
+                        .Where(l => l.CellId.HasValue)
                         .Select(l => new
                         {
                             l.Id,
@@ -507,7 +515,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var machineStatus = this.liveMachinesDataContext.GetMachineStatus(machine.Id);
 
-            machine.Status = (MachineStatus)machineStatus.Mode;
+            machine.Status = machineStatus.Mode;
 
             return machine;
         }

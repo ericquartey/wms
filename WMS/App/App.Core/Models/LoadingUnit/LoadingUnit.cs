@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -54,7 +55,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string CellPositionDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellSide_extended), ResourceType = typeof(BusinessObjects))]
-        public Side? CellSide { get; set; }
+        public Enums.Side? CellSide { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Code), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }

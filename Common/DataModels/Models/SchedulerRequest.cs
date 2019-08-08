@@ -1,4 +1,5 @@
 ﻿using System;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -44,7 +45,7 @@ namespace Ferretto.Common.DataModels
 
         public int? MaterialStatusId { get; set; }
 
-        public OperationType OperationType { get; set; }
+        public Enums.OperationType OperationType { get; set; }
 
         public PackageType PackageType { get; set; }
 
@@ -58,13 +59,13 @@ namespace Ferretto.Common.DataModels
 
         public double? ReservedQuantity { get; set; }
 
-        public SchedulerRequestStatus Status { get; set; }
+        public Enums.SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public SchedulerRequestType Type { get; set; }
+        public Enums.SchedulerRequestType Type { get; set; }
 
         #endregion
     }

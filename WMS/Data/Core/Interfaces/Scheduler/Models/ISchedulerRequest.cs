@@ -1,5 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
@@ -9,13 +9,13 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         bool IsInstant { get; set; }
 
-        OperationType OperationType { get; }
+        Enums.OperationType OperationType { get; }
 
         int? Priority { get; set; }
 
-        SchedulerRequestStatus Status { get; set; }
+        Enums.SchedulerRequestStatus Status { get; set; }
 
-        SchedulerRequestType Type { get; }
+        Enums.SchedulerRequestType Type { get; }
 
         #endregion
     }

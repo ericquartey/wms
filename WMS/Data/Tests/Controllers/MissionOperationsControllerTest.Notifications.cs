@@ -5,6 +5,7 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -25,7 +26,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType = new Common.DataModels.CompartmentType
@@ -53,10 +54,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var missionOperation = new Common.DataModels.MissionOperation
             {
                 Id = 1,
-                Status = Common.DataModels.MissionOperationStatus.New,
+                Status = Enums.MissionOperationStatus.New,
                 CompartmentId = compartment.Id,
                 ItemId = item.Id,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Type = Enums.MissionOperationType.Pick,
                 RequestedQuantity = 7,
             };
 
@@ -121,7 +122,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType = new Common.DataModels.CompartmentType
@@ -149,10 +150,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var missionOperation = new Common.DataModels.MissionOperation
             {
                 Id = GetNewId(),
-                Status = Common.DataModels.MissionOperationStatus.Executing,
+                Status = Enums.MissionOperationStatus.Executing,
                 CompartmentId = compartment.Id,
                 ItemId = item.Id,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Type = Enums.MissionOperationType.Pick,
                 RequestedQuantity = 7,
             };
 
@@ -224,7 +225,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -254,8 +255,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 CompartmentId = compartment1.Id,
                 ItemId = item1.Id,
-                Status = Common.DataModels.MissionOperationStatus.New,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Status = Enums.MissionOperationStatus.New,
+                Type = Enums.MissionOperationType.Pick,
                 RequestedQuantity = 7,
             };
 
