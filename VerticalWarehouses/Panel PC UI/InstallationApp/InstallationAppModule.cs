@@ -68,6 +68,7 @@ namespace Ferretto.VW.App.Installation
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
+            containerRegistry.RegisterForNavigation<BaysSensorsView>();
 
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 
@@ -99,7 +100,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<ILSMTVerticalEngineViewModel, LSMTVerticalEngineViewModel>();
             this.container.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
-            this.container.RegisterSingleton<ISSBaysViewModel, SSBaysViewModel>();
             this.container.RegisterSingleton<ISSCradleViewModel, SSCradleViewModel>();
             this.container.RegisterSingleton<ISSShutterViewModel, SSShutterViewModel>();
             this.container.RegisterSingleton<ISSMainViewModel, SSMainViewModel>();

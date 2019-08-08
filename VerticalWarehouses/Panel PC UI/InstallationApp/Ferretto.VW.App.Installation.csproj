@@ -62,13 +62,16 @@
     <Compile Update="Views\InstallatorMenuView.xaml.cs">
       <DependentUpon>InstallatorMenuView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\BaysSensorsView.xaml.cs">
+      <DependentUpon>BaysSensorsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ViewsAndViewModels\SensorsState\SSBaysView.xaml">
+    <None Update="Views\BaysSensorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\SingleViews\DrawerStoreRecallView.xaml">

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         #region Methods
 
-        public static IUnityContainer RegisterMachineAutomationHubs(
+        public static IUnityContainer RegisterMachineAutomationHubs( // TODO remove this 
             this IUnityContainer container,
             System.Uri serviceUrl,
             string operatorHubPath,
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return container;
         }
 
-        public static IUnityContainer RegisterMachineAutomationServices(
+        public static IUnityContainer RegisterMachineAutomationServices(// TODO remove this 
             this IUnityContainer container,
             System.Uri serviceUrl)
         {
@@ -65,8 +65,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IInstallationStatusMachineService>(
                 new InjectionFactory(c => new InstallationStatusMachineService(urlString)));
 
-            container.RegisterType<IUpdateSensorsMachineService>(
-                new InjectionFactory(c => new UpdateSensorsMachineService(urlString)));
+            container.RegisterType<ISensorsMachineService>(
+                new InjectionFactory(c => new SensorsMachineService(urlString)));
 
             container.RegisterType<ITestMachineService>(
                 new InjectionFactory(c => new TestMachineService(urlString)));
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.RegisterInstance<IInstallationStatusMachineService>(new InstallationStatusMachineService(urlString));
 
-            container.RegisterInstance<IUpdateSensorsMachineService>(new UpdateSensorsMachineService(urlString));
+            container.RegisterInstance<ISensorsMachineService>(new SensorsMachineService(urlString));
 
             container.RegisterInstance<ITestMachineService>(new TestMachineService(urlString));
 

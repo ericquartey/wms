@@ -250,11 +250,13 @@ namespace Ferretto.VW.App.Installation
             (this.saveRestoreConfigButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<SaveRestoreConfigViewModel, ISaveRestoreConfigViewModel>()));
 
-        public ICommand SsBaysButtonCommand =>
-            this.ssBaysButtonCommand
-            ??
-            (this.ssBaysButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>()));
+        /*
+                public ICommand SsBaysButtonCommand =>
+                    this.ssBaysButtonCommand
+                    ??
+                    (this.ssBaysButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>()));
+                        */
 
         public ICommand SsCradleButtonCommand =>
             this.ssCradleButtonCommand

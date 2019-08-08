@@ -79,9 +79,9 @@ namespace Ferretto.VW.App.Installation
 
         private bool securityFunctionActive;
 
-        private ICommand showErrorDetailsCommand;
+        private ISensorsMachineService sensorsMachineService;
 
-        private IUpdateSensorsMachineService updateSensorsService;
+        private ICommand showErrorDetailsCommand;
 
         #endregion
 

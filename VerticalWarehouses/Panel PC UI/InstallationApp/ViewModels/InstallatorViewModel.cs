@@ -7,7 +7,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Constructors
 
-        public InstallatorMenuViewModel(PresentationMode mode) : base(mode)
+        public InstallatorMenuViewModel()
+            : base(PresentationMode.Installator)
         {
         }
 

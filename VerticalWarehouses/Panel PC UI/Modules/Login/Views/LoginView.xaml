@@ -34,6 +34,7 @@
                Height="520"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"
                Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
                Stretch="Fill" />
 
@@ -90,7 +91,6 @@
                     Content="{x:Static res:General.Login}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </StackPanel>
-
 
     </Grid>
 

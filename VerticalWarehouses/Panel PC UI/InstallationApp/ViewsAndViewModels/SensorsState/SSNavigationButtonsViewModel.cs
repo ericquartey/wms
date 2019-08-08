@@ -14,11 +14,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
     {
         #region Fields
 
+        private readonly IUnityContainer container;
+
         private readonly IEventAggregator eventAggregator;
 
         private ICommand baysButtonCommand;
-
-        private readonly IUnityContainer container;
 
         private ICommand variousButtonCommand;
 
@@ -53,6 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         public ICommand BaysButtonCommand => this.baysButtonCommand ?? (this.baysButtonCommand = new DelegateCommand(() =>
         {
+            /*
             this.eventAggregator
                 .GetEvent<InstallationApp_Event>()
                 .Subscribe(
@@ -70,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
                     message => message.Type == InstallationApp_EventMessageType.ExitView);
 
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>());
+            ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>());*/
         }));
 
         public BindableBase NavigationViewModel { get; set; }
