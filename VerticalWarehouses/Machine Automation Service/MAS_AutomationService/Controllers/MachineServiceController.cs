@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
 
+        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
+
         private readonly ILogger logger;
 
         #endregion
@@ -29,6 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.eventAggregator = eventAggregator;
             this.logger = logger;
             this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;
+            this.horizontalManualMovements = services.GetService(typeof(IHorizontalManualMovementsDataLayer)) as IHorizontalManualMovementsDataLayer;
         }
 
         #endregion
@@ -36,10 +39,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [ProducesResponseType(200)]
-        [HttpGet("ExecuteSearchHorizontalZero/{speed}")]
-        public void ExecuteSearchHorizontalZero(decimal speed)
+        [HttpGet("ExecuteSearchHorizontalZero")]
+        public void ExecuteSearchHorizontalZero()
         {
-            this.ExecuteSearchHorizontalZero_Method(speed);
+            this.ExecuteSearchHorizontalZero_Method();
         }
 
         #endregion

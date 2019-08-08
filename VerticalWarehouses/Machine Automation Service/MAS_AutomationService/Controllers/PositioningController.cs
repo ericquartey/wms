@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 var messageData = new PositioningMessageData(
                     data.Axis,
-                    data.MovementType,
+                    movementType,
                     MovementMode.Position,
                     initialTargetPosition,
                     speed,

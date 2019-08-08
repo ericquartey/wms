@@ -196,11 +196,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineServiceMachineService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(decimal speed);
+        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(decimal speed, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -208,11 +208,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineStatusMachineService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteResetSecurityAsync();
+        System.Threading.Tasks.Task ExecutePowerOffAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteResetSecurityAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecutePowerOffAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecutePowerOnAsync();
@@ -222,11 +222,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task ExecutePowerOnAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecutePowerOffAsync();
+        System.Threading.Tasks.Task ExecuteResetSecurityAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecutePowerOffAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteResetSecurityAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     

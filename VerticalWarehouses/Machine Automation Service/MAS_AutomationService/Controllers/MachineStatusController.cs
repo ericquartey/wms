@@ -1,7 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -32,10 +29,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("ExecuteResetSecurity")]
-        public void ExecuteResetSecurity()
+        [HttpGet("ExecutePowerOff")]
+        public void ExecutePowerOff()
         {
-            this.ExecuteResetSecurity_Method();
+            this.ExecutePowerOff_Method();
         }
 
         [HttpGet("ExecutePowerOn")]
@@ -44,10 +41,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.ExecutePowerOn_Method();
         }
 
-        [HttpGet("ExecutePowerOff")]
-        public void ExecutePowerOff()
+        [HttpGet("ExecuteResetSecurity")]
+        public void ExecuteResetSecurity()
         {
-            this.ExecutePowerOff_Method();
+            this.ExecuteResetSecurity_Method();
         }
 
         #endregion

@@ -16,14 +16,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        private void ExecuteSearchHorizontalZero_Method(decimal speed)
+        private void ExecuteSearchHorizontalZero_Method()
         {
-            decimal actualSpeed = 0.10M;
-
-            if (speed != 0)
-            {
-                actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * speed;
-            }
+            var actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

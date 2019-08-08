@@ -102,8 +102,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 if (checkConditions)
                 {
-                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero &&
-                        this.machineSensorsStatus.IsSensorZeroOnCradle)
+                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero && this.machineSensorsStatus.IsSensorZeroOnCradle)
                     {
                         this.CurrentState = new PositioningEndState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger, 0);
                     }
