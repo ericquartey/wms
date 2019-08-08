@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -226,7 +226,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.IsBusy = false;
 
-                this.NavigationService.Appear(nameof(Utils.Modules.Installation), Utils.Modules.Installation.INSTALLATORMENU);
+                this.NavigationService.Appear(nameof(Utils.Modules.Installation), Utils.Modules.Installation.Sensors.VERTICALAXIS);
             }
             catch (Exception ex)
             {
