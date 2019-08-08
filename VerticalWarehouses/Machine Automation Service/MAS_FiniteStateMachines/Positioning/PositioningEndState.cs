@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -39,8 +40,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.stopRequested = stopRequested;
             this.positioningMessageData = positioningMessageData;
+            this.machineSensorsStatus = machineSensorsStatus;
             this.numberExecutedSteps = numberExecutedSteps;
-            this.positioningMessageData = positioningMessageData;
         }
 
         #endregion
@@ -49,16 +50,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         ~PositioningEndState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessCommandMessage( CommandMessage message )
+        public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace( $"1:Process Command Message {message.Type} Source {message.Source}" );
+            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
@@ -98,6 +99,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Start()
         {
             this.Logger?.LogTrace( "1:Method Start" );
+
+            lock (this.machineSensorsStatus)
+            {
+                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+            }
 
             if (this.stopRequested)
             {

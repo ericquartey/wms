@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -30,13 +31,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public PositioningStartState(
             IStateMachine parentMachine,
-            IMachineSensorsStatus machineSensorStatus,
+            IMachineSensorsStatus machineSensorsStatus,
             IPositioningMessageData positioningMessageData,
             ILogger logger )
             : base( parentMachine, logger )
         {
             this.positioningMessageData = positioningMessageData;
-            this.machineSensorsStatus = machineSensorStatus;
+            this.machineSensorsStatus = machineSensorsStatus;
         }
 
         #endregion
@@ -130,6 +131,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
             //            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage( inverterCommandMessage );
+
+            lock (this.machineSensorsStatus)
+            {
+                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+            }
 
             var notificationMessage = new NotificationMessage(
                 this.positioningMessageData,

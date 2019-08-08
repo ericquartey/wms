@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         bool IsActiveDbInhibited { get; }
 
+        bool IsEnabled { get; set; }
+
         bool IsStandbyDbInhibited { get; }
 
         DbContextOptions<TDbContext> StandbyDbContextOptions { get; }

@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case FieldMessageType.ResetSecurity:
                         currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        this.ioDevices[currentDevice].ExecuteResetSecurity();
                         break;
 
                     case FieldMessageType.PowerEnable:
@@ -210,21 +210,21 @@ namespace Ferretto.VW.MAS.IODriver
                 switch (ioIndex)
                 {
                     case IoIndex.IoDevice1:
-                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1, ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice1 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice1 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice1, portDevice1, IoIndex.IoDevice1, this.logger);
 
                         break;
 
                     case IoIndex.IoDevice2:
-                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2, ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice2 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice2 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice2, portDevice2, IoIndex.IoDevice2, this.logger);
 
                         break;
 
                     case IoIndex.IoDevice3:
-                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3, ConfigurationCategory.SetupNetwork);
+                        var ipAddressDevice3 = this.dataLayerConfigurationValueManagement.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
                         var portDevice3 = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
                         ioDevice = new IoDevice.IoDevice(this.eventAggregator, transport, ipAddressDevice3, portDevice3, IoIndex.IoDevice3, this.logger);
 
@@ -279,16 +279,18 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
-                        // the machine starts with power off
-                        //foreach (var ioDevice in this.ioDevices)
-                        //{
-                        //    ioDevice.Value.ExecuteIoPowerUp();
-                        //}
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
                         break;
 
                     case FieldMessageType.IoPowerUp:
                     case FieldMessageType.SwitchAxis:
+                    case FieldMessageType.PowerEnable:
+                    case FieldMessageType.IoReset:
+                    case FieldMessageType.ResetSecurity:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {

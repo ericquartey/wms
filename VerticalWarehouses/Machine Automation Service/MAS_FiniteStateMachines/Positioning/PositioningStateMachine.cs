@@ -145,8 +145,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             bool checkConditions;
 
+            //HACK The condition must be handled by the Bug #3711
             checkConditions = (this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 ||
-                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle && this.machineSensorsStatus.IsSensorZeroOnCradle) &&
+                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
                                this.positioningMessageData.AxisMovement == Axis.Vertical ||
                                this.positioningMessageData.AxisMovement == Axis.Horizontal;
 

@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                 message.ValidOutputs &&
                 message.OutputsCleared)
             {
-                this.ParentStateMachine.ChangeState( new PowerUpPulseResetState( this.ParentStateMachine, this.status, this.index, this.Logger ) );
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
             if (this.status.MatchOutputs( message.Outputs ))
             {
-                this.ParentStateMachine.ChangeState( new PowerUpPulseResetState( this.ParentStateMachine, this.status, this.index, this.Logger ) );
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.index, this.Logger));
             }
         }
 
