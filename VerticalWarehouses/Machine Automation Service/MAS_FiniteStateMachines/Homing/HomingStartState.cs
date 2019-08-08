@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
 
             // Send a field message to the Update of position axis to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(false, 0, true, 250);
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, true, 250);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
