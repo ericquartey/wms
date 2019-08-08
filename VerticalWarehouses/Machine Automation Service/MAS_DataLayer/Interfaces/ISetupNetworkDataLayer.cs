@@ -32,15 +32,15 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         int InverterIndexShutter3 { get; }
 
-        IPAddress IOExpansion1 { get; }
+        IPAddress IOExpansion1IPAddress { get; }
 
         int IOExpansion1Port { get; }
 
-        IPAddress IOExpansion2 { get; }
+        IPAddress IOExpansion2IPAddress { get; }
 
         int IOExpansion2Port { get; }
 
-        IPAddress IOExpansion3 { get; }
+        IPAddress IOExpansion3IPAddress { get; }
 
         int IOExpansion3Port { get; }
 
