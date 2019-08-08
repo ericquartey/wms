@@ -143,14 +143,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private bool CheckConditions()
         {
-            bool checkConditions;
-
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1 && this.positioningMessageData.NumberCycles == 0) ||
-                               this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
-                               this.positioningMessageData.AxisMovement == Axis.Vertical ||
-                               this.positioningMessageData.AxisMovement == Axis.Horizontal;
+            var checkConditions = ((this.machineSensorsStatus.IsDrawerCompletelyOnCradle && this.positioningMessageData.NumberCycles == 0) ||
+                                    this.machineSensorsStatus.IsDrawerCompletelyOffCradle /*&& this.machineSensorsStatus.IsSensorZeroOnCradle*/) &&
+                                    this.positioningMessageData.AxisMovement == Axis.Vertical ||
+                                    this.positioningMessageData.AxisMovement == Axis.Horizontal;
 
             return checkConditions;
         }
