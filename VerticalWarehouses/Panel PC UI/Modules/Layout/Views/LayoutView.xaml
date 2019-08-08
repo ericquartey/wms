@@ -11,7 +11,7 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}"
-          IsEnabled="{Binding IsBusy}">
+          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"
                            MaxHeight="80" />

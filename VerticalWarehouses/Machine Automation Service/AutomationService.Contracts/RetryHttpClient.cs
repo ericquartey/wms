@@ -45,13 +45,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             var jitterSeconds = random.NextDouble();
 
-            System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri}");
             Func<int, TimeSpan> sleepDurationProvider = count =>
             {
                 System.Diagnostics.Debug.WriteLine($"Request: {request.Method} {request.RequestUri} (retry #{count})");
                 return TimeSpan.FromSeconds(jitterSeconds + Math.Pow(count, 2));
             };
-            ;
 
             return await Policy
               .Handle<HttpRequestException>()
@@ -90,8 +88,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private static bool IsServerError(HttpResponseMessage response)
         {
-            System.Diagnostics.Debug.WriteLine($"Response is {response.StatusCode}: {response.RequestMessage.Method} {response.RequestMessage.RequestUri}");
-
             return (int)response.StatusCode / 100 == 5;
         }
 

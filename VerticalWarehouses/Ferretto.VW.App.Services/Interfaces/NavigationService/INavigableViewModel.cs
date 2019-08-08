@@ -5,12 +5,6 @@ namespace Ferretto.VW.App.Services.Interfaces
 {
     public interface INavigableViewModel : IDisposable
     {
-        #region Properties
-
-        bool IsBusy { get; set; }
-
-        #endregion
-
         #region Methods
 
         void Appear();

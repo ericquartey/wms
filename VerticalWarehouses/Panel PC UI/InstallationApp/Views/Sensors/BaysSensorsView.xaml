@@ -1,14 +1,15 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.BaysSensorsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
-             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             mc:Ignorable="d">
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.BaysSensorsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
     <Grid>
 
         <TextBlock Margin="100,30,0,0"
@@ -137,4 +138,4 @@
 
 
     </Grid>
-</UserControl>
+</ctrls:View>

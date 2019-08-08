@@ -1,8 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using Ferretto.VW.App.Controls;
 
 namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class VerticalOffsetCalibrationView : UserControl
+    public partial class VerticalOffsetCalibrationView : View
     {
         #region Constructors
 

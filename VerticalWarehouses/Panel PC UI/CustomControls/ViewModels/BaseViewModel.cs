@@ -7,12 +7,6 @@ namespace Ferretto.VW.App.Controls
 {
     public class BaseNavigationViewModel : BindableBase, INavigableViewModel, INavigationAware
     {
-        #region Fields
-
-        private bool isBusy;
-
-        #endregion
-
         #region Constructors
 
         protected BaseNavigationViewModel()
@@ -35,12 +29,6 @@ namespace Ferretto.VW.App.Controls
         #region Properties
 
         public object Data { get; set; }
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value);
-        }
 
         public bool IsDisposed
         {

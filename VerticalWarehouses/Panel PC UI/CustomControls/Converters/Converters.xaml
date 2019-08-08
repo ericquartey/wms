@@ -8,6 +8,7 @@
                                     Invert="True" />
     <conv:BoolToVisibilityConverter x:Key="BTVHC"
                                     Hide="True" />
+    <conv:BooleanNegationConverter x:Key="BNC" />
 
     <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"

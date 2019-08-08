@@ -102,9 +102,9 @@ namespace Ferretto.VW.App.Services
         public void SetBusy(bool isBusy)
         {
             if (Application.Current.MainWindow.Descendants<View>().FirstOrDefault() is View view &&
-                view.DataContext is INavigableViewModel layoutViewModel)
+                view.DataContext is IBusyViewModel busyViewModel)
             {
-                layoutViewModel.IsBusy = isBusy;
+                busyViewModel.IsBusy = isBusy;
             }
         }
 

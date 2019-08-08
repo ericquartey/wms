@@ -1,11 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using Ferretto.VW.App.Controls;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
-    /// <summary>
-    /// Interaction logic for SSNavigationButtonsView.xaml
-    /// </summary>
-    public partial class SSNavigationButtonsView : UserControl
+    public partial class SSNavigationButtonsView : View
     {
         #region Constructors
 

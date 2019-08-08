@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -88,7 +88,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public override void OnNavigated()
         {
             base.OnNavigated();
-            this.NavigationService.SetBusy(true);
         }
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -208,7 +207,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private void ExecuteSwitchOffCommand()
         {
-            this.IsBusy = true;
             var requestAccepted = this.sessionService.Shutdown();
             if (requestAccepted)
             {
@@ -218,13 +216,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private void LoadInstallerModule()
         {
-            this.IsBusy = true;
-
             try
             {
                 this.NavigationService.LoadModule(nameof(Utils.Modules.Installation));
-
-                this.IsBusy = false;
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
@@ -236,19 +230,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             finally
             {
-                this.IsBusy = false;
             }
         }
 
         private void LoadOperatorModule()
         {
-            this.IsBusy = true;
-
             try
             {
                 this.NavigationService.LoadModule(nameof(Utils.Modules.Operator));
-
-                this.IsBusy = false;
 
                 this.NavigationService.Appear(nameof(Utils.Modules.Operator), "TODO"); // TODO
             }
@@ -258,7 +247,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             finally
             {
-                this.IsBusy = false;
             }
         }
     }

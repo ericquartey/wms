@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.Attributes;
 using Ferretto.VW.App.Installation.Models;
