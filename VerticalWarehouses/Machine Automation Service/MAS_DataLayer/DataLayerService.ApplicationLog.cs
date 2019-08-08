@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.serviceScopeFactory)
             {
-                this.Logger.LogDebug($"Saving log entry '{logEntry.Description}' (id={logEntry.Id})");
+                this.Logger.LogTrace($"Saving log entry '{logEntry.Description}' (id={logEntry.Id})");
                 using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();

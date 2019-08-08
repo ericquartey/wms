@@ -1,0 +1,22 @@
+{
+  "profiles": {
+    "MAS (Development)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "MAS (Simulation)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Simulation"
+      }
+    },
+    "MAS (Prototype #1)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Prototype1"
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@
     "Longitude": "11.498999179729909",
     "ProductionDate": "2011-04-01T19:43:37+0100",
     "InstallationDate": "2011-05-01T19:43:37+0100",
-    "Model": "VRT EF 84 L 990-BID H4563",
+    "Model": "Mocked Vertimag",
     "Serial": "VM_190001",
     "Height": 4.563,
     "MaxGrossWeight": 50000,
@@ -22,20 +22,12 @@
     "Bay2Type": 2,
     "Bay3Type": 0,
     "Bay1Position1": 744.00,
-    //"Bay1Height1":,
-    //"Bay1Position2":,
-    //"Bay1Height2":,
     "Bay2Position1": 743.00,
     "Bay2Height1": 1080.0,
     "Bay2Position2": 1143.0,
     "Bay2Height2": 680.0,
-    //"Bay3Position1": ,
-    //"Bay3Height1": ,
-    //"Bay3Position2": ,
-    //"Bay3Height2": ,
     "Shutter1Type": 1,
     "Shutter2Type": 1,
-    //"Shutter3Type": ,
     "LaserBay1": false,
     "LaserBay2": false,
     "LaserBay3": false,
@@ -44,27 +36,8 @@
     "AlfaNumBay3": false,
     "Barrier1Height": 30,
     "Barrier2Height": 30
-    //"Barrier3Height":
-    //"MaxAcceptedBai1Height": ,
-    //"MaxAcceptedBai2Height": ,
-    //"MaxAcceptedBai3Height":
   },
 
-  //"SetupNetwork": {
-  //  "Inverter1": "192.168.0.100",
-  //  "Inverter1Port": 17221,
-  //  "IOExpansion1": "192.168.0.1",
-  //  "IOExpansion1Port": 19550,
-  //  "InverterIndexMaster": 0,
-  //  "InverterIndexShutter1": 2,
-  //  "InverterIndexBay1": 3,
-  //  "InverterIndexShutter2": 4,
-  //  "PPC1MasterIPAddress": "::1",
-  //  "PPC2SlaveIPAddress": "::2",
-  //  "PPC3SlaveIPAddress": "::3"
-  //},
-
-  //production in Vicenza
   "SetupNetwork": {
     "MachineNumber": 1,
     "WMS_ON": true,
@@ -85,34 +58,6 @@
     "PPC2SlaveIPAddress": "198.168.0.2",
     "PPC3SlaveIPAddress": "198.168.0.3"
   },
-
-  //TEMP To remove but temporary commented, until the test won't be ok
-  //"SetupStatus": {
-  //  "VerticalHomingDone": false,
-  //  "HorizontalHomingDone": false,
-  //  "BeltBurnishingDone": false,
-  //  "VerticalResolutionDone": false,
-  //  "VerticalOffsetDone": false,
-  //  "CellsControlDone": false,
-  //  "PanelsControlDone": false,
-  //  "Shape1Done": false,
-  //  "Shape2Done": false,
-  //  "Shape3Done": false,
-  //  "WeightMeasurementDone": false,
-  //  "Shutter1Done": false,
-  //  "Shutter2Done": false,
-  //  "Shutter3Done": false,
-  //  "Bay1ControlDone": false,
-  //  "Bay2ControlDone": false,
-  //  "Bay3ControlDone": false,
-  //  "FirstDrawerLoadDone": false,
-  //  "DrawersLoadedDone": false,
-  //  "Laser1Done": false,
-  //  "Laser2Done": false,
-  //  "Laser3Done": false,
-  //  "MachineDone": false
-  //},
-
   "VerticalAxis": {
     "MaxEmptySpeed": 770.0,
     "MaxEmptyAcceleration": 1000.0,
@@ -141,7 +86,6 @@
     "MaxFullSpeed": 55.0,
     "MaxFullAcceleration": 350.00,
     "MaxFullDeceleration": 350.00,
-    //"HomingExecuted":false,
     "Resolution": 77.6722,
     "Offset": 0.0,
     "ClockWiseRun": 1235.0,
@@ -156,25 +100,12 @@
     "P0Deceleration": 1000.0,
     "P0SpeedV1": 730.0,
     "P1Quote": 100.0,
-    //"P1Acceleration":
-    //"P1Deceleration":
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
-    //"P2Acceleration":
-    //"P2Deceleration":
-    //"P2SpeedV3":
-    //"P3Quote":
-    //"P3Acceleration":
-    //"P3Deceleration":
     "P3SpeedV4": 100.0,
     "P4Quote": 985.00,
-    //"P4Acceleration":
-    //"P4Deceleration":
     "P4SpeedV5": 730.0,
     "P5Quote": 1135.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
   },
   "HorizontalMovementBackwardProfile": {
     "TotalSteps": 4,
@@ -185,25 +116,12 @@
     "P0Deceleration": 1000.0,
     "P0SpeedV1": 730.0,
     "P1Quote": 100.0,
-    //"P1Acceleration":
-    //"P1Deceleration":
     "P1SpeedV2": 100.0,
     "P2Quote": 250.0,
-    //"P2Acceleration":
-    //"P2Deceleration":
-    //"P2SpeedV3":
-    //"P3Quote":
-    //"P3Acceleration":
-    //"P3Deceleration":
     "P3SpeedV4": 100.0,
     "P4Quote": 991.00,
-    //"P4Acceleration":
-    //"P4Deceleration":
     "P4SpeedV5": 730.0,
     "P5Quote": 1141.0
-    //"P5Acceleration":
-    //"P5Deceleration":
-    //"P5Speed":
   },
   "VerticalManualMovements": {
     "FeedRate": 0.10,
@@ -226,12 +144,12 @@
     "CycleQuantity": 200
   },
   "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
+    "InitialPosition": 1000.0,
+    "FinalPosition": 5500.0,
     "FeedRate": 0.20
   },
   "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
+    "ReferenceCell": 50,
     "StepValue": 0.5,
     "FeedRate": 0.20
   },

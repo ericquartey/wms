@@ -36,15 +36,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int InverterIndexShutter3 => this.GetIntegerConfigurationValue((long)SetupNetwork.InverterIndexShutter3, ConfigurationCategory.SetupNetwork);
 
-        public IPAddress IOExpansion1 => this.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1, ConfigurationCategory.SetupNetwork);
+        public IPAddress IOExpansion1IPAddress => this.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion1IPAddress, ConfigurationCategory.SetupNetwork);
 
         public int IOExpansion1Port => this.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion1Port, ConfigurationCategory.SetupNetwork);
 
-        public IPAddress IOExpansion2 => this.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2, ConfigurationCategory.SetupNetwork);
+        public IPAddress IOExpansion2IPAddress => this.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion2IPAddress, ConfigurationCategory.SetupNetwork);
 
         public int IOExpansion2Port => this.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion2Port, ConfigurationCategory.SetupNetwork);
 
-        public IPAddress IOExpansion3 => this.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3, ConfigurationCategory.SetupNetwork);
+        public IPAddress IOExpansion3IPAddress => this.GetIpAddressConfigurationValue((long)SetupNetwork.IOExpansion3IPAddress, ConfigurationCategory.SetupNetwork);
 
         public int IOExpansion3Port => this.GetIntegerConfigurationValue((long)SetupNetwork.IOExpansion3Port, ConfigurationCategory.SetupNetwork);
 
