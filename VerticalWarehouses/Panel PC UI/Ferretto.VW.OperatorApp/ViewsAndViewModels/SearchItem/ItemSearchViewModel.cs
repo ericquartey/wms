@@ -69,11 +69,9 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
             IStatusMessageService statusMessageService,
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
-            IIdentityService identityService,
-            IItemsDataService itemsDataService,
-            INavigationService navigationService,
-            IIdentityMachineService identityService)
+            Operator.Interfaces.INavigationService navigationService,
+            IIdentityMachineService identityService,
+            IItemsDataService itemsDataService)
         {
             if (statusMessageService == null)
             {

@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "operator",
+                UserName = "installer",
                 Password = "password",
             };
 #else

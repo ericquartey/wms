@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
 
-        private readonly INavigationService navigationService;
+        private readonly Operator.Interfaces.INavigationService navigationService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public CellsStatisticsViewModel(
-            INavigationService navigationService,
+            Operator.Interfaces.INavigationService navigationService,
             ICellsMachineService cellsService,
             IStatusMessageService statusMessageService,
             ICustomControlCellStatisticsDataGridViewModel cellStatisticsDataGridViewModel)

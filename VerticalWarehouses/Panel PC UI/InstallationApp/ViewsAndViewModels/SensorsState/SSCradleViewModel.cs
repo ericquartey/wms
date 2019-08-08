@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IUpdateSensorsMachineService updateSensorsService;
+        private readonly ISensorsMachineService sensorsService;
 
         private bool luPresentiInMachineSide;
 
@@ -30,20 +30,20 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         public SSCradleViewModel(
             IEventAggregator eventAggregator,
-            IUpdateSensorsMachineService updateSensorsService)
+            ISensorsMachineService sensorsService)
         {
             if (eventAggregator == null)
             {
                 throw new System.ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (updateSensorsService == null)
+            if (sensorsService == null)
             {
-                throw new System.ArgumentNullException(nameof(updateSensorsService));
+                throw new System.ArgumentNullException(nameof(sensorsService));
             }
 
             this.eventAggregator = eventAggregator;
-            this.updateSensorsService = updateSensorsService;
+            this.sensorsService = sensorsService;
             this.NavigationViewModel = null;
         }
 
@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
                     ThreadOption.PublisherThread,
                     false);
 
-            await this.updateSensorsService.ExecuteAsync();
+            await this.sensorsService.ForceNotificationAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

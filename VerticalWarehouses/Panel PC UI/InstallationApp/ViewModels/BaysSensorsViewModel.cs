@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -9,7 +10,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly ISensorsMachineService sernsorsMachineService;
+        private readonly ISensorsMachineService sensorsMachineService;
 
         private bool[] sensorsStates;
 
@@ -22,9 +23,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BaysSensorsViewModel(ISensorsMachineService sensorsMachineService)
             : base(Services.PresentationMode.Installator)
         {
-            if (this.sernsorsMachineService == null)
+            if (this.sensorsMachineService == null)
             {
-                throw new System.ArgumentNullException(nameof(this.sernsorsMachineService));
+                throw new System.ArgumentNullException(nameof(this.sensorsMachineService));
             }
 
             this.sensorsMachineService = sensorsMachineService;
@@ -55,7 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.sensorsMachineService.ForceRefresh();
+                await this.sensorsMachineService.ForceNotificationAsync();
             }
             catch (System.Exception ex)
             {

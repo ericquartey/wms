@@ -383,8 +383,8 @@ namespace Ferretto.VW.App.Installation
                 }
             };
 
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsMachineService>();
-            this.updateSensorsService.ExecuteAsync();
+            this.sensorsMachineService = this.container.Resolve<ISensorsMachineService>();
+            this.sensorsMachineService.ForceNotificationAsync();
         }
 
         private async Task OnMachineErrorStatusChanged(object sender,
