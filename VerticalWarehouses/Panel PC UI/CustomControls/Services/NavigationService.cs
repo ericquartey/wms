@@ -21,14 +21,20 @@ namespace Ferretto.VW.App.Services
 
         private readonly IRegionManager regionManager;
 
+        private readonly IRegionNavigationService regionNavigationService;
+
         #endregion
 
         #region Constructors
 
-        public NavigationService(IUnityContainer unityContainer, IRegionManager regionManager)
+        public NavigationService(
+            IUnityContainer unityContainer,
+            IRegionManager regionManager,
+            IRegionNavigationService regionNavigationService)
         {
             this.container = unityContainer;
             this.regionManager = regionManager;
+            this.regionNavigationService = regionNavigationService;
         }
 
         #endregion
@@ -78,6 +84,12 @@ namespace Ferretto.VW.App.Services
             {
                 this.logger.Error(ex, string.Format("Cannot close view model '{0}'.", viewModel.GetType().Name));
             }
+        }
+
+        public void GoBack()
+        {
+            var journal = this.regionNavigationService.Journal;
+            journal.GoBack();
         }
 
         public void LoadModule(string moduleName)

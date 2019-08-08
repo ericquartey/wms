@@ -125,15 +125,10 @@
     <None Update="Templates\DataGridScrollButtonControlTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Views\ErrorDetails\ErrorDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\ErrorDetails\ErrorDetailsView.xaml.cs">
-      <DependentUpon>ErrorDetailsView.xaml</DependentUpon>
-    </Compile>
+    <Folder Include="Views\ErrorDetails\" />
   </ItemGroup>
 
 </Project>

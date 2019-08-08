@@ -26,12 +26,12 @@
                        FontFamily="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontFamily}"
                        FontSize="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontSize}"
                        Foreground="{DynamicResource VWAPP_CustomMachineModeToggleButton_Foreground_Normal}"
-                       Text="{Binding MachineModeString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       Text="{Binding MachineModeString}"
                        TextAlignment="Center" />
             <Rectangle Grid.Row="1"
                        Width="98"
                        Height="12"
-                       Fill="{Binding RectangleBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                       Fill="{Binding RectangleBrush}" />
         </Grid>
     </Button>
 </ctrls:PpcControl>

@@ -50,7 +50,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
               .Subscribe(
-                  message => this.SensorsStates = message?.Data?.SensorsStates,
+                  message =>
+                  this.SensorsStates = message?.Data?.SensorsStates,
                   ThreadOption.PublisherThread,
                   false);
 

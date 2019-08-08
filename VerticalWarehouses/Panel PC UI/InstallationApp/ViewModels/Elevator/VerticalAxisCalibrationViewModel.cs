@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -11,24 +11,17 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Unity;
 using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalAxisCalibrationViewModel : BindableBase, IVerticalAxisCalibrationViewModel
+    public class VerticalAxisCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly IHomingMachineService homingService;
 
         private string currentPosition;
-
-        private bool isStartButtonActive = true;
-
-        private bool isStopButtonActive = false;
 
         private string lowerBound;
 
@@ -46,9 +39,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private string resolution;
 
-        private ICommand startButtonCommand;
+        private ICommand startCommand;
 
-        private ICommand stopButtonCommand;
+        private ICommand stopCommand;
 
         private SubscriptionToken updateCurrentPositionToken;
 
@@ -59,94 +52,67 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         #region Constructors
 
         public VerticalAxisCalibrationViewModel(
-            IEventAggregator eventAggregator,
             IHomingMachineService homingService)
+            : base(Services.PresentationMode.Installator)
         {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
             if (homingService == null)
             {
                 throw new ArgumentNullException(nameof(homingService));
             }
 
-            this.eventAggregator = eventAggregator;
             this.homingService = homingService;
-
-            this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
-            this.NavigationViewModel = null;
         }
-
-        #endregion
-
-        #region Delegates
-
-        public delegate void CheckCorrectnessOnPropertyChangedEventHandler();
-
-        #endregion
-
-        #region Events
-
-        public event CheckCorrectnessOnPropertyChangedEventHandler InputsCorrectionControlEventHandler;
 
         #endregion
 
         #region Properties
 
-        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
-
-        public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
-
-        public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
+        public string CurrentPosition
+        {
+            get => this.currentPosition;
+            set => this.SetProperty(ref this.currentPosition, value);
+        }
 
         public string LowerBound
         {
             get => this.lowerBound;
-            set
-            {
-                this.SetProperty(ref this.lowerBound, value);
-                this.InputsCorrectionControlEventHandler();
-            }
+            set => this.SetProperty(ref this.lowerBound, value);
         }
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
+        public string NoteString
+        {
+            get => this.noteString;
+            set => this.SetProperty(ref this.noteString, value);
+        }
 
         public string Offset
         {
             get => this.offset;
-            set
-            {
-                this.SetProperty(ref this.offset, value);
-                this.InputsCorrectionControlEventHandler();
-            }
+            set => this.SetProperty(ref this.offset, value);
         }
 
         public string Resolution
         {
             get => this.resolution;
-            set
-            {
-                this.SetProperty(ref this.resolution, value);
-                this.InputsCorrectionControlEventHandler();
-            }
+            set => this.SetProperty(ref this.resolution, value);
         }
 
-        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(async () => await this.ExecuteStartButtonCommandAsync()));
+        public ICommand StartButtonCommand =>
+            this.startCommand
+            ??
+            (this.startCommand = new DelegateCommand(async () => await this.ExecuteStartCommandAsync()));
 
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopButtonMethodAsync()));
+        public ICommand StopButtonCommand =>
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(async () => await this.ExecuteStopCommandAsync()));
 
         public string UpperBound
         {
             get => this.upperBound;
-            set
-            {
-                this.SetProperty(ref this.upperBound, value);
-                this.InputsCorrectionControlEventHandler();
-            }
+            set => this.SetProperty(ref this.upperBound, value);
         }
 
         #endregion
@@ -170,9 +136,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
                 await this.homingService.GetCurrentPositionAxisAsync();
             }
-            catch (SwaggerException)
+            catch (Exception ex)
             {
-                this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+                this.ShowError(ex);
             }
         }
 
@@ -180,7 +146,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             await this.GetParameterValuesAsync();
 
-            this.receivedSwitchAxisUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
+            this.receivedSwitchAxisUpdateToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -189,7 +156,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 ThreadOption.PublisherThread,
                 false);
 
-            this.receivedCalibrateAxisUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
+            this.receivedCalibrateAxisUpdateToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -198,7 +166,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 ThreadOption.PublisherThread,
                 false);
 
-            this.receiveHomingUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>()
+            this.receiveHomingUpdateToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<HomingMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -207,7 +176,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 ThreadOption.PublisherThread,
                 false);
 
-            this.receiveExceptionToken = this.eventAggregator.GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
+            this.receiveExceptionToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -216,7 +186,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 ThreadOption.PublisherThread,
                 false);
 
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
+            this.updateCurrentPositionToken = this.EventAggregator
+                .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -228,9 +199,17 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Unsubscribe(this.receivedSwitchAxisUpdateToken);
-            this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Unsubscribe(this.receivedCalibrateAxisUpdateToken);
-            this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Unsubscribe(this.receiveHomingUpdateToken);
+            this.EventAggregator
+                .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
+                .Unsubscribe(this.receivedSwitchAxisUpdateToken);
+
+            this.EventAggregator
+                .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
+                .Unsubscribe(this.receivedCalibrateAxisUpdateToken);
+
+            this.EventAggregator
+                .GetEvent<NotificationEventUI<HomingMessageData>>()
+                .Unsubscribe(this.receiveHomingUpdateToken);
         }
 
         public void UpdateCurrentPosition(decimal currentPosition)
@@ -245,33 +224,52 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 decimal.TryParse(this.Resolution, out var _resolution) &&
                 decimal.TryParse(this.UpperBound, out var _upperBound))
             { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
-                this.IsStartButtonActive = (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0) ? true : false;
+                var isStartButtonActive =
+                    _lowerBound > 0
+                    &&
+                    _lowerBound < _upperBound
+                    &&
+                    _upperBound > 0
+                    &&
+                    _resolution > 0
+                    &&
+                    _offset > 0;
             }
             else
             {
-                this.IsStartButtonActive = false;
+                var isStartButtonActive = false;
             }
         }
 
-        private async Task ExecuteStartButtonCommandAsync()
+        private async Task ExecuteStartCommandAsync()
         {
             try
             {
-                this.IsStartButtonActive = false;
-                this.IsStopButtonActive = true;
-
                 await this.homingService.ExecuteAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.NoteString = "Couldn't get response from this http get request.";
-                throw;
+                this.ShowError(ex);
+            }
+        }
+
+        private async Task ExecuteStopCommandAsync()
+        {
+            try
+            {
+                await this.homingService.StopAsync();
+
+                this.NoteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex);
             }
         }
 
         private string GetStringByCalibrateAxisMessageData(Axis axisToCalibrate, MessageStatus status)
         {
-            string res = string.Empty;
+            var res = string.Empty;
             switch (status)
             {
                 case MessageStatus.OperationExecuting:
@@ -287,23 +285,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                     break;
             }
             return res;
-        }
-
-        private async Task StopButtonMethodAsync()
-        {
-            try
-            {
-                await this.homingService.StopAsync();
-
-                this.IsStartButtonActive = true;
-                this.IsStopButtonActive = false;
-                this.NoteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
-            }
-            catch (Exception)
-            {
-                this.NoteString = "Couldn't get response from this http get request.";
-                throw;
-            }
         }
 
         private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
@@ -322,8 +303,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
                     case MessageStatus.OperationError:
                         this.NoteString = VW.App.Resources.InstallationApp.SwitchEngineError;
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
+                        //this.IsStartButtonActive = true;
+                        //this.IsStopButtonActive = false;
                         break;
                 }
             }
@@ -340,8 +321,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
                     if (c.Status == MessageStatus.OperationError)
                     {
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
+                        //this.IsStartButtonActive = true;
+                        /// this.IsStopButtonActive = false;
                     }
                 }
             }
@@ -356,14 +337,14 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
                     case MessageStatus.OperationEnd:
                         this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingCompleted;
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
+                        //this.IsStartButtonActive = true;
+                        //this.IsStopButtonActive = false;
                         break;
 
                     case MessageStatus.OperationError:
                         this.NoteString = VW.App.Resources.InstallationApp.HorizontalHomingError;
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
+                        //this.IsStartButtonActive = true;
+                        //this.IsStopButtonActive = false;
                         break;
                 }
             }

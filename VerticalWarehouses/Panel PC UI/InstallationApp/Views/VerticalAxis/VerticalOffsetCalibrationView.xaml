@@ -1,0 +1,95 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.VerticalOffsetCalibrationView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid>
+
+        <TextBlock Margin="230,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
+
+        <custom:PpcTextBox Margin="410,120,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
+                           Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+
+        <custom:CustomLabelTextBlockControl Margin="410,290,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <custom:PpcTextBox Margin="230,290,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{x:Static res:InstallationApp.StepValue}"
+                           Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+
+        <custom:CustomLabelTextBlockControl Margin="410,430,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
+
+        <custom:PpcTextBox Margin="410,490,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{x:Static res:InstallationApp.CorrectOffset}"
+                           Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+
+        <Button Margin="680,120,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding SetPositionButtonCommand}"
+                Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Button Margin="680,250,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding StepUpButtonCommand}"
+                Content="{x:Static res:InstallationApp.StepUp}"
+                IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="680,330,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding StepDownButtonCommand}"
+                Content="{x:Static res:InstallationApp.StepDown}"
+                IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="680,410,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding AcceptOffsetButtonCommand}"
+                Content="{x:Static res:InstallationApp.AcceptOffset}"
+                IsEnabled="{Binding IsAcceptOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="680,490,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding CorrectOffsetButtonCommand}"
+                Content="{x:Static res:InstallationApp.DoCorrectOffset}"
+                IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <custom:CustomLabelTextBlockControl Margin="230,120,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.CurrentCell}" />
+    </Grid>
+</ctrls:View>

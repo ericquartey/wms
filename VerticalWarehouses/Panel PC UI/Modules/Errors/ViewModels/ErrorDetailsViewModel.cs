@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Controls.Views.ErrorDetails
+namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
-    public class ErrorDetailsViewModel : Controls.BaseViewModel
+    public class ErrorDetailsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -21,6 +22,7 @@ namespace Ferretto.VW.App.Controls.Views.ErrorDetails
         #region Constructors
 
         public ErrorDetailsViewModel(IErrorsMachineService errorsMachineService)
+            : base(Services.PresentationMode.Installator)
         {
             if (errorsMachineService == null)
             {
@@ -52,9 +54,33 @@ namespace Ferretto.VW.App.Controls.Views.ErrorDetails
 
         #region Methods
 
+        public override async void OnNavigated()
+        {
+            await this.CheckErrorsPresenceAsync();
+
+            base.OnNavigated();
+        }
+
         private bool CanExecuteMarkAsResolvedCommand()
         {
             return this.error != null;
+        }
+
+        private async Task CheckErrorsPresenceAsync()
+        {
+            try
+            {
+                this.NavigationService.SetBusy(true);
+                this.Error = await this.errorsMachineService.GetCurrentAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex);
+            }
+            finally
+            {
+                this.NavigationService.SetBusy(false);
+            }
         }
 
         private async Task ExecuteMarkAsResolvedCommandAsync()
@@ -66,13 +92,22 @@ namespace Ferretto.VW.App.Controls.Views.ErrorDetails
 
             try
             {
+                this.NavigationService.SetBusy(true);
                 await this.errorsMachineService.ResolveAsync(this.error.Id);
 
-                this.Error = await this.errorsMachineService.GetCurrentAsync();
+                var nextError = await this.errorsMachineService.GetCurrentAsync();
+                this.NavigationService.SetBusy(false);
+                if (nextError == null)
+                {
+                    this.NavigationService.GoBack();
+                }
+
+                this.Error = nextError;
             }
-            catch
+            catch (Exception ex)
             {
-                // TODO notify error on footer
+                this.ShowError(ex);
+                this.NavigationService.SetBusy(false);
             }
         }
 

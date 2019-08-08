@@ -21,6 +21,8 @@ using Unity;
 
 namespace Ferretto.VW.App.Modules.Operator
 {
+    [Module(ModuleName = nameof(Utils.Modules.Operator), OnDemand = true)]
+    [ModuleDependency(nameof(Utils.Modules.Errors))]
     public class OperatorAppModule : IModule
     {
         #region Fields

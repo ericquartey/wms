@@ -36,10 +36,6 @@
             <helpWindows:HelpShutterControl />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodels:VerticalAxisCalibrationViewModel}">
-            <helpWindows:HelpVerticalAxisCalibration />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
             <helpWindows:HelpCellsPanelControl />
         </DataTemplate>

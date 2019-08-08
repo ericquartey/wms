@@ -27,12 +27,12 @@
                        FontFamily="{DynamicResource VWAPP_ActionButton_FontFamily_Normal}"
                        FontSize="{DynamicResource VWAPP_ActionButton_FontSize_Normal}"
                        Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                       Text="{Binding MachineOnMarchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       Text="{Binding MachineOnMarchString}"
                        TextAlignment="Center" />
             <Rectangle Grid.Row="1"
                        Width="98"
                        Height="12"
-                       Fill="{Binding RectangleBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                       Fill="{Binding RectangleBrush}" />
         </Grid>
     </Button>
 </ctrls:PpcControl>

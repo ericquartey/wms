@@ -255,20 +255,19 @@ namespace Ferretto.VW.App.Installation
                     ??
                     (this.ssBaysButtonCommand = new DelegateCommand(
                         async () => await this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>()));
-                        */
-        /*
+
                 public ICommand SsCradleButtonCommand =>
                     this.ssCradleButtonCommand
                     ??
                     (this.ssCradleButtonCommand = new DelegateCommand(
                         async () => await this.NavigateToViewAsync<CradleSensorsViewModel, ISSCradleViewModel>()));
-                        */
-        /* public ICommand SsGateButtonCommand =>
+
+         public ICommand SsGateButtonCommand =>
              this.ssGateButtonCommand
              ??
              (this.ssGateButtonCommand = new DelegateCommand(async () => await this.NavigateToViewAsync<ShutterSensorsViewModel, ISSShutterViewModel>()));
-             */
-        /*     public ICommand SsNavigationButtonsButtonCommand =>
+
+             public ICommand SsNavigationButtonsButtonCommand =>
                  this.ssNavigationButtonsButtonCommand
                  ??
                  (this.ssNavigationButtonsButtonCommand = new DelegateCommand(
@@ -278,20 +277,19 @@ namespace Ferretto.VW.App.Installation
                          await this.NavigateToViewAsync<SSMainViewModel, ISSMainViewModel>();
                          this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel =
                              this.container.Resolve<ISSNavigationButtonsViewModel>() as SensorsNavigationViewModel;
-                     }));*/
-        /*
+                     }));
+
                 public ICommand SsVariousInputsButtonCommand =>
                     this.ssVariousInputsButtonCommand
                     ??
                     (this.ssVariousInputsButtonCommand = new DelegateCommand(
                         async () => await this.NavigateToViewAsync<SSVariousInputsViewModel, ISSVariousInputsViewModel>()));
-        */
-        /*   public ICommand SsVerticalAxisButtonCommand =>
+
+           public ICommand SsVerticalAxisButtonCommand =>
                this.ssVerticalAxisButtonCommand
                ??
                (this.ssVerticalAxisButtonCommand = new DelegateCommand(
                    async () => await this.NavigateToViewAsync<VerticalAxisSensorsViewModel, ISSVerticalAxisViewModel>()));
-                   */
 
         public ICommand VerticalAxisCalibrationButtonCommand =>
             this.verticalAxisCalibrationButtonCommand
@@ -299,7 +297,6 @@ namespace Ferretto.VW.App.Installation
             (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<VerticalAxisCalibrationViewModel, IVerticalAxisCalibrationViewModel>()));
 
-        /*
                 public ICommand VerticalOffsetCalibrationButtonCommand =>
                     this.verticalOffsetCalibrationButtonCommand
                     ??

@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Views.ErrorDetails;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Resources;
@@ -303,37 +302,6 @@ namespace Ferretto.VW.App.Installation
 
         private async Task ExecuteShowErrorDetailsCommandAsync()
         {
-            var errorDetailsViewModel = this.container.Resolve<ErrorDetailsViewModel>();
-
-            if (this.ContentRegionCurrentViewModel != errorDetailsViewModel)
-            // navigate to error page
-            {
-                try
-                {
-                    errorDetailsViewModel.Error = await this.errorsMachineService.GetCurrentAsync();
-
-                    this.previousNavigationViewModel = this.NavigationRegionCurrentViewModel;
-                    this.previousContentRegionViewModel = this.ContentRegionCurrentViewModel;
-
-                    this.NavigationRegionCurrentViewModel = null;
-                    this.ContentRegionCurrentViewModel = errorDetailsViewModel;
-
-                    var footerViewModel = this.container.Resolve<IFooterViewModel>();
-                }
-                catch (System.Exception ex)
-                {
-                    this.statusMessageService.Notify(ex);
-                }
-            }
-            else
-            // leave error page
-            {
-                this.NavigationRegionCurrentViewModel = this.previousNavigationViewModel;
-                this.ContentRegionCurrentViewModel = this.previousContentRegionViewModel;
-
-                this.previousNavigationViewModel = null;
-                this.previousContentRegionViewModel = null;
-            }
         }
 
         private void InitializeEvents()
@@ -366,7 +334,6 @@ namespace Ferretto.VW.App.Installation
 
             this.machineStatusService = this.container.Resolve<IMachineStatusMachineService>();
 
-            MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             // TODO MachineOnMarch comes from the driver
             //MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };

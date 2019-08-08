@@ -8,6 +8,8 @@
 
         void Disappear(INavigableViewModel viewModel);
 
+        void GoBack();
+
         void LoadModule(string moduleName);
 
         void SetBusy(bool isBusy);

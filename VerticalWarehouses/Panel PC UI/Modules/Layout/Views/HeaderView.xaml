@@ -31,21 +31,22 @@
 
             <ctrls:PpcControl Width="60"
                               Height="60"
-                              Margin="10,0,10,0"
+                              Margin="10,0"
                               VerticalContentAlignment="Center"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Help}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <Button Background="{DynamicResource VWAPP_BACKGROUND}"
-                        BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
-                        BorderThickness="1"
+                <Button Width="60"
+                        Height="60"
+                        Background="{DynamicResource VWAPP_BACKGROUND}"
+                        BorderThickness="0"
                         Command="{Binding OpenHelpWindow}">
 
-                    <TextBlock FontSize="25"
-                               Foreground="{DynamicResource FerrettoPureWhite}"
-                               TextAlignment="Center">
-                        ?
-                    </TextBlock>
+                    <custom:VWIcon Height="36"
+                                   Margin="15,0"
+                                   ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                   Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
+
                 </Button>
             </ctrls:PpcControl>
 
@@ -54,7 +55,7 @@
                                             Items="{Binding States}"
                                             LogOffCommand="{Binding BackToVWAPPCommand}"
                                             OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
-                                            UserText="{Binding LoggedUser}"
+                                            UserText="{Binding UserName}"
                                             Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <custom:CustomMachineModeToggleButton Name="MachineModeControl"
@@ -73,8 +74,6 @@
                                                      Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
-                                                ContentText="Error"
-                                                CustomCommand="{Binding ErrorButtonCommand}"
                                                 Items="{Binding States}"
                                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
         </StackPanel>

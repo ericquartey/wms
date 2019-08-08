@@ -5,20 +5,21 @@ using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    /// <summary>
-    /// Interaction logic for CustomControlLoggedUser.xaml
-    /// </summary>
     public partial class CustomControlLoggedUser : PpcControl, INotifyPropertyChanged
     {
         #region Fields
 
-        public static readonly DependencyProperty IsPopupOpenProperty = DependencyProperty.Register("IsPopupOpen", typeof(bool), typeof(CustomControlLoggedUser));
+        public static readonly DependencyProperty IsPopupOpenProperty =
+            DependencyProperty.Register(nameof(IsPopupOpen), typeof(bool), typeof(CustomControlLoggedUser));
 
-        public static readonly DependencyProperty LogOffCommandProperty = DependencyProperty.Register("LogOffCommand", typeof(ICommand), typeof(CustomControlLoggedUser));
+        public static readonly DependencyProperty LogOffCommandProperty =
+            DependencyProperty.Register(nameof(LogOffCommand), typeof(ICommand), typeof(CustomControlLoggedUser));
 
-        public static readonly DependencyProperty OpenClosePopupCommandProperty = DependencyProperty.Register("OpenClosePopupCommand", typeof(ICommand), typeof(CustomControlLoggedUser));
+        public static readonly DependencyProperty OpenClosePopupCommandProperty =
+            DependencyProperty.Register(nameof(OpenClosePopupCommand), typeof(ICommand), typeof(CustomControlLoggedUser));
 
-        public static readonly DependencyProperty UserTextProperty = DependencyProperty.Register("UserText", typeof(string), typeof(CustomControlLoggedUser));
+        public static readonly DependencyProperty UserTextProperty =
+            DependencyProperty.Register(nameof(UserText), typeof(string), typeof(CustomControlLoggedUser));
 
         #endregion
 

@@ -6,10 +6,7 @@
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
                     xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
                     xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
-   
-    <DataTemplate DataType="{x:Type singleViews:VerticalAxisCalibrationViewModel}">
-        <singleViews:VerticalAxisCalibrationView />
-    </DataTemplate>
+
     <DataTemplate DataType="{x:Type singleViews:ResolutionCalibrationVerticalAxisViewModel}">
         <singleViews:ResolutionCalibrationVerticalAxisView />
     </DataTemplate>
@@ -81,10 +78,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsTwoPositionsViewModel}">
         <custom:CustomShutterControlSensorsTwoPositions />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type common:ErrorDetailsViewModel}">
-        <common:ErrorDetailsView />
     </DataTemplate>
 
 </ResourceDictionary>

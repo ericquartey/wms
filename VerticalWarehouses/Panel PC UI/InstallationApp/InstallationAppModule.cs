@@ -1,7 +1,5 @@
-﻿using System.Windows;
-using Ferretto.VW.App.Controls.Controls;
+﻿using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Controls.Views.ErrorDetails;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Views;
@@ -24,6 +22,7 @@ namespace Ferretto.VW.App.Installation
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "This is a container initialization class, so it is ok to be coupled to many types.")]
     [Module(ModuleName = nameof(Utils.Modules.Installation), OnDemand = true)]
+    [ModuleDependency(nameof(Utils.Modules.Errors))]
     public class InstallationAppModule : IModule
     {
         #region Fields
@@ -52,16 +51,6 @@ namespace Ferretto.VW.App.Installation
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            BindViewModelToView<IMainWindowViewModel, MainWindow>(containerProvider);
-
-            var mainWindow = (MainWindow)containerProvider.Resolve<IMainWindow>();
-            var mainWindowViewModel = containerProvider.Resolve<IMainWindowViewModel>();
-
-            mainWindow.DataContext = mainWindowViewModel;
-            mainWindowViewModel.OnEnterViewAsync();
-
-            var mainWindowProperty = Application.Current.GetType().GetProperty("InstallationAppMainWindowInstance");
-            mainWindowProperty.SetValue(Application.Current, mainWindow);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -82,8 +71,7 @@ namespace Ferretto.VW.App.Installation
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
 
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
-
-            this.container.RegisterSingleton<IMainWindow, MainWindow>();
+            containerRegistry.RegisterForNavigation<VerticalAxisCalibrationView>();
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
 
@@ -92,8 +80,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             this.container.RegisterSingleton<INotificationService, NotificationService>();
             this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
-
-            this.container.RegisterSingleton<ErrorDetailsViewModel>();
 
             this.container.RegisterSingleton<IBeltBurnishingViewModel, BeltBurnishingViewModel>();
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
@@ -109,7 +95,7 @@ namespace Ferretto.VW.App.Installation
 
             this.container.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
-            this.container.RegisterSingleton<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationViewModel>();
+
             this.container.RegisterSingleton<IWeightControlViewModel, WeightControlViewModel>();
             this.container.RegisterSingleton<IBayControlViewModel, BayControlViewModel>();
             this.container.RegisterSingleton<ILoadFirstDrawerViewModel, LoadFirstDrawerViewModel>();

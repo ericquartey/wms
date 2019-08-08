@@ -28,6 +28,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Controls", "Panel PC UI\CustomControls\Ferretto.VW.App.Controls.csproj", "{2F45ED0E-31CB-4115-8F27-6EC0B17876B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Installation", "Panel PC UI\InstallationApp\Ferretto.VW.App.Installation.csproj", "{7A484BAF-AB01-488A-853F-C0CE4305BA56}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {D81C6B47-11EC-4B7D-B087-F580639106C3}
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC UI\VWApp\Ferretto.VW.App.csproj", "{BBB70951-5692-44F2-BD04-C1E150D970FD}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -40,6 +44,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Utils", "Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj", "{73086AC9-1316-4FFC-AA5D-0A50C132456A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Operator", "Panel PC UI\Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj", "{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {D81C6B47-11EC-4B7D-B087-F580639106C3}
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Logging.SQLiteTarget", "Common\SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj", "{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}"
 EndProject
@@ -75,8 +83,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Layout", "Panel PC UI\Modules\Layout\Ferretto.VW.App.Modules.Layout.csproj", "{68CFD192-D446-42A8-B8C8-44EDD7F357CF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Login", "Panel PC UI\Modules\Login\Ferretto.VW.App.Modules.Login.csproj", "{ED8D9E03-C5C4-4319-8207-122DA6C2D043}"
+	ProjectSection(ProjectDependencies) = postProject
+		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Themes", "Panel PC UI\Themes\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj", "{E9153A64-A20D-4AA8-B2CC-49CADE123412}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Errors", "Panel PC UI\Modules\Errors\Ferretto.VW.App.Modules.Errors.csproj", "{D81C6B47-11EC-4B7D-B087-F580639106C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -595,6 +608,24 @@ Global
 		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x64.Build.0 = Release|Any CPU
 		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x86.ActiveCfg = Release|Any CPU
 		{E9153A64-A20D-4AA8-B2CC-49CADE123412}.Release|x86.Build.0 = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x64.Build.0 = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{D81C6B47-11EC-4B7D-B087-F580639106C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -629,6 +660,7 @@ Global
 		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 		{ED8D9E03-C5C4-4319-8207-122DA6C2D043} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 		{E9153A64-A20D-4AA8-B2CC-49CADE123412} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
