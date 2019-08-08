@@ -1,6 +1,6 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Operator.Interfaces
+namespace Ferretto.VW.App.Modules.Operator.Interfaces
 {
     public interface IMainWindowViewModel
     {

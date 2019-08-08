@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
 {
     public class DrawerActivityPickingViewModel : DrawerOperationBaseViewModel, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
     {
@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMissionOperationsMachineService missionOperationsService,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
+            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IBayManager bayManager)
             : base(eventAggregator,
                     navigationService,

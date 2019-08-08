@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class MachineStatisticsViewModel : BaseViewModel, IMachineStatisticsViewModel
     {

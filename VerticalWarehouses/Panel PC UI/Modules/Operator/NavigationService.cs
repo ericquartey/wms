@@ -1,9 +1,9 @@
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ViewsAndViewModels;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -12,9 +12,9 @@ using Prism.Mvvm;
 using System.Collections.Generic;
 using Unity;
 
-namespace Ferretto.VW.App.Operator
+namespace Ferretto.VW.App.Modules.Operator
 {
-    public class NavigationService : Ferretto.VW.App.Operator.Interfaces.INavigationService
+    public class NavigationService : Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService
     {
         #region Fields
 

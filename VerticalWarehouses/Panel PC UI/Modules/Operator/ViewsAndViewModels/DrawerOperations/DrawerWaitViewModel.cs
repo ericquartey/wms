@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
 {
     public class DrawerWaitViewModel : BaseViewModel, IDrawerWaitViewModel, IDrawerActivityViewModel
     {
@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 
         private readonly IMainWindowViewModel mainWindowViewModel;
 
-        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
+        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
         private int pendingMissionsCount;
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
 
         public DrawerWaitViewModel(
             IBayManager bayManager,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
+            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IMainWindowViewModel mainWindowViewModel)
         {
             if (bayManager == null)

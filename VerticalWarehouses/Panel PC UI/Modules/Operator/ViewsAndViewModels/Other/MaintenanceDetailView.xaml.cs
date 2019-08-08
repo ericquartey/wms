@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other
 {
     /// <summary>
     /// Logica di interazione per MaintenanceDetailView.xaml

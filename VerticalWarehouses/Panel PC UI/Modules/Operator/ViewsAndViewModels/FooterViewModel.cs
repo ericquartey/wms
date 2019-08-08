@@ -1,14 +1,14 @@
 ﻿using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Prism.Commands;
 using Prism.Events;
 using Unity;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 {
     public class FooterViewModel : BaseViewModel, IFooterViewModel
     {

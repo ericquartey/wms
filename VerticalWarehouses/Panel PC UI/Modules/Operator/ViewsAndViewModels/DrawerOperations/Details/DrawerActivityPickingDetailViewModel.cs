@@ -3,11 +3,11 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Prism.Events;
 using Unity;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations.Details
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details
 {
     public class DrawerActivityPickingDetailViewModel : BaseViewModel, IDrawerActivityPickingDetailViewModel
     {

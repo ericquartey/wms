@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.App.Operator.Resources.Enumerations;
+﻿using Ferretto.VW.App.Modules.Operator.Resources.Enumerations;
 
-namespace Ferretto.VW.App.Operator.Resources
+namespace Ferretto.VW.App.Modules.Operator.Resources
 {
     public class OperatorApp_EventMessage
     {

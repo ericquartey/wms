@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 {
     public class ListsInWaitViewModel : BaseViewModel, IListsInWaitViewModel
     {
@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
 
         private readonly IItemListsDataService itemListsDataService;
 
-        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
+        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
         private int areaId;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists
         public ListsInWaitViewModel(
             IStatusMessageService statusMessageService,
             IIdentityMachineService identityService,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
+            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IItemListsDataService itemListsDataService,
             IAreasDataService areasDataService
             )

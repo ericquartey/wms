@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -13,7 +13,7 @@ using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 {
     public class DrawerOperationBaseViewModel : BaseViewModel
     {
@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         public DrawerOperationBaseViewModel(
             IEventAggregator eventAggregator,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
+            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         protected IMissionOperationsMachineService MissionOperationsService { get; }
 
-        protected Ferretto.VW.App.Operator.Interfaces.INavigationService NavigationService { get; }
+        protected Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService NavigationService { get; }
 
         protected IStatusMessageService StatusMessageService { get; }
 

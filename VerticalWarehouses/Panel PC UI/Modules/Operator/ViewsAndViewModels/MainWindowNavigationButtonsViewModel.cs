@@ -1,16 +1,16 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.Other;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.App.Operator.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem;
+using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 {
     public class MainWindowNavigationButtonsViewModel : BaseViewModel, IMainWindowNavigationButtonsViewModel
     {
@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
+        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
         private ICommand drawerActivityButtonCommand;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels
         public MainWindowNavigationButtonsViewModel(
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService)
+            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService)
         {
             if (eventAggregator == null)
             {

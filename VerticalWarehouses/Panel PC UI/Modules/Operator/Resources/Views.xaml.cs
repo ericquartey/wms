@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Ferretto.VW.App.Operator.Resources
+namespace Ferretto.VW.App.Modules.Operator.Resources
 {
     /// <summary>
     /// Interaction logic for Views.xaml

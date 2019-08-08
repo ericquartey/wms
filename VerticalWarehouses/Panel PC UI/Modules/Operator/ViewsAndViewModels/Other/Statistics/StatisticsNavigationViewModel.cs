@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Unity;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class StatisticsNavigationViewModel : BaseViewModel, IStatisticsNavigationViewModel
     {

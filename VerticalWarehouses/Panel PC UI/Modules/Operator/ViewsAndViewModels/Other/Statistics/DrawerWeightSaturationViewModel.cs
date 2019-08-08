@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class DrawerWeightSaturationViewModel : BaseViewModel, IDrawerWeightSaturationViewModel
     {
@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly ILoadingUnitsMachineService loadingUnitService;
 
-        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
+        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.Other.Statistics
             ILoadingUnitsMachineService loadingUnitService,
             IIdentityMachineService identityService,
             IStatusMessageService statusMessageService,
-            Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService,
+            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;

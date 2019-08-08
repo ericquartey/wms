@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 {
     public class ItemDetailViewModel : BaseViewModel, IItemDetailViewModel
     {

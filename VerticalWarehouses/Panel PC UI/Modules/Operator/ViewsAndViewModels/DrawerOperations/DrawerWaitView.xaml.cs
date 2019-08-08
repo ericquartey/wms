@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.DrawerOperations
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
 {
     public partial class DrawerWaitView : UserControl
     {

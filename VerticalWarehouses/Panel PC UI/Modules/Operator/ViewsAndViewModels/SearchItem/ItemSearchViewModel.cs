@@ -6,14 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 {
     public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
     {
@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IItemsDataService itemsDataService;
 
-        private readonly Ferretto.VW.App.Operator.Interfaces.INavigationService navigationService;
+        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
         private readonly IStatusMessageService statusMessageService;
 
