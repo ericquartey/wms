@@ -6,40 +6,37 @@ using System.Windows.Media;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    /// <summary>
-    /// Interaction logic for CustomInputFieldControlFocusableFocusable.xaml
-    /// </summary>
-    public partial class CustomInputFieldControlFocusable : UserControl, INotifyPropertyChanged
+    public partial class PpcTextBox : UserControl, INotifyPropertyChanged
     {
         #region Fields
 
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register(
             nameof(BorderColor),
             typeof(SolidColorBrush),
-            typeof(CustomInputFieldControlFocusable));
+            typeof(PpcTextBox));
 
         public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
             nameof(Highlighted),
             typeof(bool),
-            typeof(CustomInputFieldControlFocusable));
+            typeof(PpcTextBox));
 
         public static readonly DependencyProperty InputProperty = DependencyProperty.Register(
             nameof(InputText),
             typeof(string),
-            typeof(CustomInputFieldControlFocusable),
+            typeof(PpcTextBox),
             new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
             nameof(LabelText),
             typeof(string),
-            typeof(CustomInputFieldControlFocusable),
+            typeof(PpcTextBox),
             new PropertyMetadata(string.Empty));
 
         #endregion
 
         #region Constructors
 
-        public CustomInputFieldControlFocusable()
+        public PpcTextBox()
         {
             this.InitializeComponent();
             var customInputFieldControlFocusable = this;

@@ -42,7 +42,7 @@
                    Grid.Column="1"
                    HorizontalAlignment="Left"
                    Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="Initializing ..."
+                   Text="{x:Static res:InstallationApp.InitializingWithEllipsis}"
                    Visibility="{Binding MachineIdentity, Converter={StaticResource RTVIC}}" />
 
         <TextBlock Grid.Row="1"
@@ -71,19 +71,19 @@
                     Grid.Row="4"
                     Grid.Column="1">
 
-            <ctrls:CustomInputFieldControlFocusable Width="200"
-                                                    Margin="0,10"
-                                                    HorizontalAlignment="Left"
-                                                    InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                    LabelText="{x:Static res:VWApp.UserLogin_UserName}"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+            <ctrls:PpcTextBox Width="200"
+                              Margin="0,10"
+                              HorizontalAlignment="Left"
+                              InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              LabelText="{x:Static res:VWApp.UserLogin_UserName}"
+                              Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-            <ctrls:CustomInputFieldControlFocusable Width="200"
-                                                    Margin="0,10"
-                                                    HorizontalAlignment="Left"
-                                                    InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                    LabelText="{x:Static res:VWApp.UserLogin_Password}"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+            <ctrls:PpcTextBox Width="200"
+                              Margin="0,10"
+                              HorizontalAlignment="Left"
+                              InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                              LabelText="{x:Static res:VWApp.UserLogin_Password}"
+                              Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
             <Button Margin="0,20"
                     HorizontalAlignment="Left"

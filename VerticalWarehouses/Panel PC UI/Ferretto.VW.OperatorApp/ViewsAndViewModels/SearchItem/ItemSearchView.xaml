@@ -38,13 +38,13 @@
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomInputFieldControlFocusable MaxWidth="200"
+        <Controls:PpcTextBox MaxWidth="200"
                                                    Margin="610,500,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="200"
                                               Margin="610,450,0,0"
@@ -67,13 +67,13 @@
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomInputFieldControlFocusable MaxWidth="200"
+        <Controls:PpcTextBox MaxWidth="200"
                                                    Margin="170,450,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding SearchItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Controls:BusyIndicator Width="40"
                                 Height="40"

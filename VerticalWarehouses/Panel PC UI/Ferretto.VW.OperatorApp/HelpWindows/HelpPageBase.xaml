@@ -50,12 +50,12 @@
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,190,0,0"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,190,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025,5"
                                                      LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"

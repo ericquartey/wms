@@ -39,12 +39,12 @@
                                                ContentText="150"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,290,0,0" MaxWidth="300" IsEnabled="False"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,290,0,0" MaxWidth="300" IsEnabled="False"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,290,0,0" MaxWidth="300" IsEnabled="False"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,290,0,0" MaxWidth="300" IsEnabled="False"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,110,0,0" MaxWidth="500"
             Style="{StaticResource VWAPP_GeneralTextBlockStyle}"

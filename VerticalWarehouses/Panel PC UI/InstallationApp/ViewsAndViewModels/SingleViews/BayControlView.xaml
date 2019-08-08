@@ -30,12 +30,12 @@
                                             LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}" />
         <!--  ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
-        <custom:CustomInputFieldControlFocusable Margin="200,270,0,0"
+        <custom:PpcTextBox Margin="200,270,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.BayControlStepValue}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
 
         <custom:CustomLabelTextBlockControl Margin="420,120,0,0"

@@ -51,8 +51,8 @@
                                                ContentText="Ingranaggio"
                                                LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     Highlighted="True" IsEnabled="True"
                                                     LabelText="{x:Static res:OperatorApp.DrawerActivityPickingQtyPick}" />
 

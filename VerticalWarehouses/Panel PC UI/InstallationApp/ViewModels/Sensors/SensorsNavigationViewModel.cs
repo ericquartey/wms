@@ -1,8 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Installation.Interfaces;
-using Ferretto.VW.App.Installation.Resources;
-using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -10,7 +7,7 @@ using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
-    public class SSNavigationButtonsViewModel : BindableBase, ISSNavigationButtonsViewModel
+    public class SensorsNavigationViewModel : BindableBase
     {
         #region Fields
 
@@ -28,7 +25,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         #region Constructors
 
-        public SSNavigationButtonsViewModel(
+        public SensorsNavigationViewModel(
             IEventAggregator eventAggregator,
             IUnityContainer container) // TODO container should be removed from injection
         {
@@ -77,7 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
         public BindableBase NavigationViewModel { get; set; }
 
         public ICommand VariousButtonCommand => this.variousButtonCommand ?? (this.variousButtonCommand = new DelegateCommand(() =>
-        {
+        {/*
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
                 (message) => { (this.container.Resolve<ISSVariousInputsViewModel>() as SSVariousInputsViewModel)?.OnEnterViewAsync(); },
                 ThreadOption.PublisherThread,
@@ -89,23 +86,23 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
                 false,
                 message => message.Type == InstallationApp_EventMessageType.ExitView);
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>();
+            ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>();*/
         }));
 
         public ICommand VerticalButtonCommand => this.verticalButtonCommand ?? (this.verticalButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                    (message) => { ((SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()).OnEnterViewAsync(); },
-                    ThreadOption.PublisherThread,
-                    false,
-                    message => message.Type == InstallationApp_EventMessageType.EnterView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()).UnSubscribeMethodFromEvent(); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Type == InstallationApp_EventMessageType.ExitView);
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
-            ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>();
+            /*  this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                      (message) => { ((VerticalAxisSensorsViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()).OnEnterViewAsync(); },
+                      ThreadOption.PublisherThread,
+                      false,
+                      message => message.Type == InstallationApp_EventMessageType.EnterView);
+              this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                  (message) => { ((VerticalAxisSensorsViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()).UnSubscribeMethodFromEvent(); },
+                  ThreadOption.PublisherThread,
+                  false,
+                  message => message.Type == InstallationApp_EventMessageType.ExitView);
+              this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
+              ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (VerticalAxisSensorsViewModel)this.container.Resolve<ISSVerticalAxisViewModel>();*/
         }));
 
         #endregion

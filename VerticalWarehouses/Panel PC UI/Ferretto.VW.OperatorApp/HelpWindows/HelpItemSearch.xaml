@@ -50,7 +50,7 @@
                   Content="{x:Static res:OperatorApp.CommonUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0"
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="12"
@@ -72,7 +72,7 @@
                   Content="{x:Static res:OperatorApp.CommonButtonDetail}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0"                                                           
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="25CF"

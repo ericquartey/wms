@@ -35,22 +35,22 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpWCFinalResult}" />
 
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,210,0,0"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,210,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="250,0"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                      LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
         <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
                                                   ContentText="5,0"
                                                   LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
 
-        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <Controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="80,5"
-                                                       Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                        LabelText="{x:Static res:InstallationApp.TestRun}" />
 
         <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"

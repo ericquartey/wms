@@ -35,11 +35,11 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpGHCFinalResult}" />
 
-        <Controls:CustomInputFieldControlFocusable    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <Controls:PpcTextBox    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                       Width="180"
                                                       Highlighted="True" IsEnabled="True"
                                                       InputText="120,0"
-                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                      Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                       LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 
         <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"

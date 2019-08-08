@@ -51,11 +51,11 @@
                                                  LabelText="{x:Static res:InstallationApp.BayControlPositionHeight}"  
                                                  ContentText="1256,5" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="0,5"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.BayControlStepValue}" />
         
         <Controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"

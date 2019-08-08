@@ -37,12 +37,12 @@
                                             ContentText="234"
                                             LabelText="{x:Static res:InstallationApp.LoadFirstDrawerActualCellToCheck}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="580,140,0,0"
+        <custom:PpcTextBox Margin="580,140,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="1"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         <!--  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
 
         <custom:CustomLabelTextBlockControl Margin="580,240,0,0"

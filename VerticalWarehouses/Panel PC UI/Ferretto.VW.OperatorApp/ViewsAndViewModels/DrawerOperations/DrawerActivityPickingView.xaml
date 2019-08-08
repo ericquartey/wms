@@ -84,14 +84,14 @@
                                               VerticalAlignment="Top"
                                               ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
-        <Controls:CustomInputFieldControlFocusable MaxWidth="160"
+        <Controls:PpcTextBox MaxWidth="160"
                                                    Margin="844,400,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding EvadedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyPick}"
                                                    RenderTransformOrigin="0.499,0.627"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         <Button Margin="280,0,0,20"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"

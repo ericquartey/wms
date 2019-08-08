@@ -40,21 +40,21 @@
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.HelpGCRequiredCycles}" />
 
-        <Controls:CustomInputFieldControlFocusable Width="180"
+        <Controls:PpcTextBox Width="180"
                                                    Margin="20,140,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="580"
                                                    LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:CustomInputFieldControlFocusable Width="180"
+        <Controls:PpcTextBox Width="180"
                                                    Margin="20,210,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="1,5"
                                                    LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Controls:CustomLabelTextBlockControl Width="180"
                                               Margin="20,280,0,0"

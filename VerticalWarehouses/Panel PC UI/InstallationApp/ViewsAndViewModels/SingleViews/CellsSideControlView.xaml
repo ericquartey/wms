@@ -17,26 +17,26 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.CellsSideControlDescription}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="200,170,0,0"
+        <Controls:PpcTextBox Margin="200,170,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="429,170,0,0"
+        <Controls:PpcTextBox Margin="429,170,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="660,170,0,0"
+        <Controls:PpcTextBox Margin="660,170,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Controls:CustomLabelTextBlockControl Margin="200,310,0,0"
                                               HorizontalAlignment="Left"

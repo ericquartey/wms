@@ -16,12 +16,12 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="410,120,0,0"
+        <custom:PpcTextBox Margin="410,120,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
@@ -29,12 +29,12 @@
                                             ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="230,290,0,0"
+        <custom:PpcTextBox Margin="230,290,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.StepValue}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="410,430,0,0"
                                             HorizontalAlignment="Left"
@@ -42,12 +42,12 @@
                                             ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="410,490,0,0"
+        <custom:PpcTextBox Margin="410,490,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.CorrectOffset}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Button Margin="680,120,0,0"
                 HorizontalAlignment="Left"

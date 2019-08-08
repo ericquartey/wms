@@ -51,11 +51,11 @@
                   Content="{x:Static res:OperatorApp.DrawerCompactingRearCompact}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="450"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:OperatorApp.DrawerCompactingSpaceToRecover}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"

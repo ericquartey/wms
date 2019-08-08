@@ -68,7 +68,13 @@ namespace Ferretto.VW.App.Installation
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
+
+            containerRegistry.RegisterForNavigation<SensorsNavigationViewModel>();
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
+            containerRegistry.RegisterForNavigation<CradleSensorsView>();
+            containerRegistry.RegisterForNavigation<ShutterSensorsView>();
+            containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
+            containerRegistry.RegisterForNavigation<OtherSensorsView>();
 
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 
@@ -100,12 +106,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<ILSMTVerticalEngineViewModel, LSMTVerticalEngineViewModel>();
             this.container.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
-            this.container.RegisterSingleton<ISSCradleViewModel, SSCradleViewModel>();
-            this.container.RegisterSingleton<ISSShutterViewModel, SSShutterViewModel>();
-            this.container.RegisterSingleton<ISSMainViewModel, SSMainViewModel>();
-            this.container.RegisterSingleton<ISSNavigationButtonsViewModel, SSNavigationButtonsViewModel>();
-            this.container.RegisterSingleton<ISSVariousInputsViewModel, SSVariousInputsViewModel>();
-            this.container.RegisterSingleton<ISSVerticalAxisViewModel, SSVerticalAxisViewModel>();
             this.container.RegisterSingleton<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationViewModel>();
             this.container.RegisterSingleton<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationViewModel>();
             this.container.RegisterSingleton<IWeightControlViewModel, WeightControlViewModel>();

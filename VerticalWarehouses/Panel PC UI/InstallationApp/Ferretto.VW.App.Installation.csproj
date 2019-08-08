@@ -59,11 +59,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Sensors\ShutterSensorsView.xaml.cs">
+      <DependentUpon>ShutterSensorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sensors\CradleSensorsView.xaml.cs">
+      <DependentUpon>CradleSensorsView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\InstallatorMenuView.xaml.cs">
       <DependentUpon>InstallatorMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\BaysSensorsView.xaml.cs">
+    <Compile Update="Views\Sensors\BaysSensorsView.xaml.cs">
       <DependentUpon>BaysSensorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sensors\OtherSensorsView.xaml.cs">
+      <DependentUpon>OtherSensorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sensors\SensorsNavigationView.xaml.cs">
+      <DependentUpon>SensorsNavigationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sensors\VerticalAxisSensorsView.xaml.cs">
+      <DependentUpon>VerticalAxisSensorsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -71,12 +86,16 @@
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Views\BaysSensorsView.xaml">
+    <None Update="Views\Sensors\BaysSensorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\SingleViews\DrawerStoreRecallView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewsAndViewModels\SensorsState\" />
   </ItemGroup>
 
 </Project>

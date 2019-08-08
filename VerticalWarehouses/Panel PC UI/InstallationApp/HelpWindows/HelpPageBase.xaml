@@ -30,12 +30,12 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
         
-        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,165,0,0"
+        <Controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,165,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
                                                        LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                       Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         
         <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0"
                                                        Width="180"

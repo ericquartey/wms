@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
@@ -257,41 +255,42 @@ namespace Ferretto.VW.App.Installation
                     (this.ssBaysButtonCommand = new DelegateCommand(
                         async () => await this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>()));
                         */
-
-        public ICommand SsCradleButtonCommand =>
-            this.ssCradleButtonCommand
-            ??
-            (this.ssCradleButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSCradleViewModel, ISSCradleViewModel>()));
-
-        public ICommand SsGateButtonCommand =>
-            this.ssGateButtonCommand
-            ??
-            (this.ssGateButtonCommand = new DelegateCommand(async () => await this.NavigateToViewAsync<SSShutterViewModel, ISSShutterViewModel>()));
-
-        public ICommand SsNavigationButtonsButtonCommand =>
-            this.ssNavigationButtonsButtonCommand
-            ??
-            (this.ssNavigationButtonsButtonCommand = new DelegateCommand(
-                async () =>
-                {
-                    this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
-                    await this.NavigateToViewAsync<SSMainViewModel, ISSMainViewModel>();
-                    this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel =
-                        this.container.Resolve<ISSNavigationButtonsViewModel>() as SSNavigationButtonsViewModel;
-                }));
-
-        public ICommand SsVariousInputsButtonCommand =>
-            this.ssVariousInputsButtonCommand
-            ??
-            (this.ssVariousInputsButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSVariousInputsViewModel, ISSVariousInputsViewModel>()));
-
-        public ICommand SsVerticalAxisButtonCommand =>
-            this.ssVerticalAxisButtonCommand
-            ??
-            (this.ssVerticalAxisButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSVerticalAxisViewModel, ISSVerticalAxisViewModel>()));
+        /*
+                public ICommand SsCradleButtonCommand =>
+                    this.ssCradleButtonCommand
+                    ??
+                    (this.ssCradleButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<CradleSensorsViewModel, ISSCradleViewModel>()));
+                        */
+        /* public ICommand SsGateButtonCommand =>
+             this.ssGateButtonCommand
+             ??
+             (this.ssGateButtonCommand = new DelegateCommand(async () => await this.NavigateToViewAsync<ShutterSensorsViewModel, ISSShutterViewModel>()));
+             */
+        /*     public ICommand SsNavigationButtonsButtonCommand =>
+                 this.ssNavigationButtonsButtonCommand
+                 ??
+                 (this.ssNavigationButtonsButtonCommand = new DelegateCommand(
+                     async () =>
+                     {
+                         this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
+                         await this.NavigateToViewAsync<SSMainViewModel, ISSMainViewModel>();
+                         this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel =
+                             this.container.Resolve<ISSNavigationButtonsViewModel>() as SensorsNavigationViewModel;
+                     }));*/
+        /*
+                public ICommand SsVariousInputsButtonCommand =>
+                    this.ssVariousInputsButtonCommand
+                    ??
+                    (this.ssVariousInputsButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<SSVariousInputsViewModel, ISSVariousInputsViewModel>()));
+        */
+        /*   public ICommand SsVerticalAxisButtonCommand =>
+               this.ssVerticalAxisButtonCommand
+               ??
+               (this.ssVerticalAxisButtonCommand = new DelegateCommand(
+                   async () => await this.NavigateToViewAsync<VerticalAxisSensorsViewModel, ISSVerticalAxisViewModel>()));
+                   */
 
         public ICommand VerticalAxisCalibrationButtonCommand =>
             this.verticalAxisCalibrationButtonCommand

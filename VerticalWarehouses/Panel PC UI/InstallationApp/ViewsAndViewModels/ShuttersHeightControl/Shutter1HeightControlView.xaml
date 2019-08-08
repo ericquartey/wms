@@ -14,8 +14,8 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate1HeightControl}"/>
 
-        <custom:CustomInputFieldControlFocusable    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <custom:PpcTextBox    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 

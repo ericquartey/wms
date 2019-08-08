@@ -55,8 +55,8 @@
                                                 ContentText="123,0"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,490,0,0" Width="180"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,490,0,0" Width="180"
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                      InputText="0,5"
                                                      Highlighted="True" IsEnabled="True"
                                                      LabelText="{x:Static res:InstallationApp.StepValue}" />

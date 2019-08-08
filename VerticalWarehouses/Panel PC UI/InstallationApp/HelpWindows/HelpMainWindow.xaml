@@ -33,9 +33,7 @@
             <helpWindows:HelpInstallationState></helpWindows:HelpInstallationState>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type sensorsState:SSMainViewModel}">
-            <helpWindows:HelpSensorState></helpWindows:HelpSensorState>
-        </DataTemplate>
+  
 
         <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTMainViewModel}">
             <helpWindows:HelpLowSpeedMovements></helpWindows:HelpLowSpeedMovements>

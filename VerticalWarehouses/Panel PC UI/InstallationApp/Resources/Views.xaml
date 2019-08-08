@@ -9,21 +9,6 @@
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
                     xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
                     xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
-    <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
-        <local:SSNavigationButtonsView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SSVerticalAxisViewModel}">
-        <local:SSVerticalAxisView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SSCradleViewModel}">
-        <local:SSCradleView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SSShutterViewModel}">
-        <local:SSShutterView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SSVariousInputsViewModel}">
-        <local:SSVariousInputsView />
-    </DataTemplate>
     <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTShutterEngineViewModel}">
         <lowSpeedMovements:LSMTShutterEngineView />
     </DataTemplate>
@@ -86,9 +71,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTMainViewModel}">
         <lowSpeedMovements:LSMTMainView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type local:SSMainViewModel}">
-        <local:SSMainView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type singleViews:CellsSideControlViewModel}">
         <singleViews:CellsSideControlView />

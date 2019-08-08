@@ -37,7 +37,7 @@
             ContentText="4500" Width="180"
             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
-        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
             Highlighted="True" IsEnabled="True"
             Width="180"

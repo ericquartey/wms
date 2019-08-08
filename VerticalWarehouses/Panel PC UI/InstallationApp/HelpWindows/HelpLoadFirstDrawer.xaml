@@ -37,10 +37,10 @@
                                                  Width="180" ContentText="234"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerActualCellToCheck}"  />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                     Width="180" InputText="1"
                                                     Highlighted="True" IsEnabled="True"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
         
         <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"

@@ -55,9 +55,9 @@
                                                ContentText="Ingranaggio Z=45"
                                                LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True" InputText="12"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerActivityInventoryQtyStored}"  />
         
         <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"

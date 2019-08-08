@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Operator.HelpWindows
 
         #endregion
 
-        private void CustomInputFieldControlFocusable_Loaded(object sender, RoutedEventArgs e)
+        private void PpcTextBox_Loaded(object sender, RoutedEventArgs e)
         {
         }
     }

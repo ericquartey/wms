@@ -6,7 +6,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BaysSensorsViewModel : BaseMainViewModel
+    public class BaseSensorsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public BaysSensorsViewModel(ISensorsMachineService sensorsMachineService)
+        public BaseSensorsViewModel(ISensorsMachineService sensorsMachineService)
             : base(Services.PresentationMode.Installator)
         {
             if (this.sensorsMachineService == null)

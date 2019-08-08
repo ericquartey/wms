@@ -31,12 +31,12 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpImmediateDrawerCallRequestedDrawer}" />
 
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025"
                                                      LabelText="{x:Static res:OperatorApp.ImmediateDrawerCallRequiredDrawer}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0" Width="260"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"

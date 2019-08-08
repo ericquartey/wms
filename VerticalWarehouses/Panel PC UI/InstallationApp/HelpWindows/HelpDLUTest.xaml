@@ -35,8 +35,8 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpDLUTGotoPosition}" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="10"
                                                     LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}" />
@@ -49,10 +49,10 @@
                                                    ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestActualposition}" />
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="20"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}" />
 
         <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
@@ -96,16 +96,16 @@
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.HelpDLUTStop}" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="1"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.BayControlSelectedBay}" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="1"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}" />
 
     </Grid>

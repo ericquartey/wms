@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -230,7 +230,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError($"Error: {ex.Message}");
+                this.ShowError(ex);
             }
             finally
             {
@@ -252,7 +252,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError($"Error: {ex.Message}");
+                this.ShowError(ex);
             }
             finally
             {

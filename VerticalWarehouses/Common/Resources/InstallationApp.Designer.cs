@@ -988,7 +988,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal Homing Error.
+        ///   Looks up a localized string similar to Horizontal Homing Error ({0} of {1}).
         /// </summary>
         public static string HorizontalHomingError {
             get {
@@ -997,7 +997,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal Homing Executing.
+        ///   Looks up a localized string similar to Horizontal Homing Executing ({0} of {1}).
         /// </summary>
         public static string HorizontalHomingExecuting {
             get {
@@ -1011,6 +1011,15 @@ namespace Ferretto.VW.App.Resources {
         public static string HorizontalHomingStarted {
             get {
                 return ResourceManager.GetString("HorizontalHomingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing ....
+        /// </summary>
+        public static string InitializingWithEllipsis {
+            get {
+                return ResourceManager.GetString("InitializingWithEllipsis", resourceCulture);
             }
         }
         
@@ -2401,7 +2410,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Homing Error.
+        ///   Looks up a localized string similar to Vertical Homing Error ({0} of {1}).
         /// </summary>
         public static string VerticalHomingError {
             get {
@@ -2410,7 +2419,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Homing Executing.
+        ///   Looks up a localized string similar to Vertical Homing Executing ({0} of {1}).
         /// </summary>
         public static string VerticalHomingExecuting {
             get {

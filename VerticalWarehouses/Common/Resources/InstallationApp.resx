@@ -1188,4 +1188,7 @@
     <value>Drawer store and drawer recall</value>
     <comment>Title</comment>
   </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Initializing ...</value>
+  </data>
 </root>

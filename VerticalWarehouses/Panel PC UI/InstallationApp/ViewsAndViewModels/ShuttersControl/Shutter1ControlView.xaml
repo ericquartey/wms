@@ -18,19 +18,19 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate1Control}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="260,170,0,0"
+        <custom:PpcTextBox Margin="260,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="560,170,0,0"
+        <custom:PpcTextBox Margin="560,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding DelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="260,300,0,0"
                                             HorizontalAlignment="Left"

@@ -1,14 +1,12 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState.SSShutterView"
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.ShutterSensorsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
-    <Grid Width="774"
-          Height="608">
+    <Grid>
         <TextBlock Margin="160,10,0,562"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate}" />

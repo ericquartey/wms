@@ -14,12 +14,12 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate3Control}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="150,170,499,375"
+        <custom:PpcTextBox Margin="150,170,499,375"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomInputFieldControlFocusable Margin="150,260,549,284"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <custom:PpcTextBox Margin="150,260,549,284"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         <custom:CustomLabelTextBlockControl Margin="150,350,549,195"
                                             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
         <ContentControl Name="SensorRegionContentControl"

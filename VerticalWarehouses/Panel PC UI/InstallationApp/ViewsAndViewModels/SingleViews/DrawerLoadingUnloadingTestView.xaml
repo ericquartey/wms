@@ -17,12 +17,12 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.DLUTestHeader}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="200,270,0,0"
+        <Controls:PpcTextBox Margin="200,270,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestFeedRate}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
 
         <Controls:CustomLabelTextBlockControl Margin="420,370,0,0"
@@ -38,12 +38,12 @@
                                               ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.DLUTestActualposition}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="420,270,0,0"
+        <Controls:PpcTextBox Margin="420,270,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.DLUTestCycleRequired}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Button Margin="640,120,0,0"
                 HorizontalAlignment="Left"
@@ -63,19 +63,19 @@
                 Content="{x:Static res:InstallationApp.DLUTestStart}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="200,120,0,0"
+        <Controls:PpcTextBox Margin="200,120,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedBay}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="420,120,0,0"
+        <Controls:PpcTextBox Margin="420,120,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.BayControlSelectedPosition}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
     </Grid>
 </UserControl>

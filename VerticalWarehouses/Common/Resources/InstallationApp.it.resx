@@ -929,4 +929,7 @@
   <data name="DrawerStoreAndRecall" xml:space="preserve">
     <value>Caricamento cassetto e richiamo cassetto</value>
   </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Inizializzazione ...</value>
+  </data>
 </root>

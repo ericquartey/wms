@@ -35,34 +35,34 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpVOCGoToCell}" />
 
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025,5"
                                                      LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         
         <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                                   ContentText="1023,5"
                                                   LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
         
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="0,5"
                                                      LabelText="{x:Static res:InstallationApp.StepValue}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         
         <Controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                    ContentText="145,0"
                                                    LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
         
-        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0"
+        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,490,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="148,0"
                                                      LabelText="{x:Static res:InstallationApp.CorrectOffset}"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
                   Content="{x:Static res:InstallationApp.GoToInitialPosition}"

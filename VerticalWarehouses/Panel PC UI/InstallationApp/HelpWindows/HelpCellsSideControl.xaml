@@ -24,25 +24,25 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpCSCDescription}" />
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="125"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="175"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="-2,5"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
         
         <Controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
