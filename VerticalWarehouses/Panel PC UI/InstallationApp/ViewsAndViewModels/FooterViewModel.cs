@@ -42,7 +42,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
         #region Constructors
 
         public FooterViewModel(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             IStatusMessageService statusMessageService,
             IUnityContainer container)
         {

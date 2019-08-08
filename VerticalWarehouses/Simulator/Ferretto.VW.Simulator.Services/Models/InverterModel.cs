@@ -301,16 +301,6 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("Bit 05", false));
             this.digitalIO.Add(new BitModel("Bit 06", false));
             this.digitalIO.Add(new BitModel("Bit 07", false));
-
-            //this.DigitalIO = new bool[8];
-            //this.DigitalIO[0] = true;
-
-            //this.digitalIO.PropertyChanged += (s, e) =>
-            //{
-            //    this.RaisePropertyChanged(nameof(this.GetDigitalIO));
-
-            //    this.RaisePropertyChanged(nameof(this.StatusWordBinary));
-            //};
         }
 
         #endregion
@@ -513,7 +503,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 1000);
+                    this.homingTimer.Change(0, 500);
                     this.homingTimerActive = true;
                     this.AxisPosition = 0;
                 }
@@ -575,8 +565,9 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.StatusWord |= 0x0004;
                 if (!this.targetTimerActive)
                 {
-                    this.targetTimer.Change(0, 1000);
+                    this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
+                    this.AxisPosition = 0;
                 }
             }
             else
