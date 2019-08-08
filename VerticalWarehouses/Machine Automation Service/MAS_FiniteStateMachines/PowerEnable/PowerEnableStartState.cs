@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -15,6 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         #region Fields
 
         private readonly bool enable;
+
         private readonly byte index;
 
         private bool disposed;
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if( !this.enable)
+                        if (!this.enable)
                         {
                             this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
                         }

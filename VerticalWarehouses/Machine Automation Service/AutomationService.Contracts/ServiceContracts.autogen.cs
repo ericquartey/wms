@@ -196,11 +196,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineServiceMachineService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync();
+        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(decimal speed);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(decimal speed, System.Threading.CancellationToken cancellationToken);
     
     }
     

@@ -28,15 +28,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public PositioningErrorState(
             IStateMachine parentMachine,
-            IMachineSensorsStatus machineSensorStatus,
+            IMachineSensorsStatus machineSensorsStatus,
             IPositioningMessageData positioningMessageData,
             FieldNotificationMessage errorMessage,
             ILogger logger )
             : base( parentMachine, logger )
         {
             this.positioningMessageData = positioningMessageData;
+            this.machineSensorsStatus = machineSensorsStatus;
             this.errorMessage = errorMessage;
-            this.positioningMessageData = positioningMessageData;
         }
 
         #endregion

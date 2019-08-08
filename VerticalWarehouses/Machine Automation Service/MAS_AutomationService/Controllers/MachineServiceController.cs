@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route( "1.0.0/Installation/[controller]" )]
+    [Route("1.0.0/Installation/[controller]")]
     [ApiController]
     public partial class MachineServiceController : ControllerBase
     {
@@ -18,31 +18,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
-
         private readonly ILogger logger;
 
         #endregion
 
         #region Constructors
 
-        public MachineServiceController( IEventAggregator eventAggregator, IServiceProvider services, ILogger<MachineServiceController> logger )
+        public MachineServiceController(IEventAggregator eventAggregator, IServiceProvider services, ILogger<MachineServiceController> logger)
         {
             this.eventAggregator = eventAggregator;
             this.logger = logger;
-            this.horizontalAxis = services.GetService( typeof( IHorizontalAxisDataLayer ) ) as IHorizontalAxisDataLayer;
-            this.horizontalManualMovements = services.GetService( typeof( IHorizontalManualMovementsDataLayer ) ) as IHorizontalManualMovementsDataLayer;
+            this.horizontalAxis = services.GetService(typeof(IHorizontalAxisDataLayer)) as IHorizontalAxisDataLayer;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType( 200 )]
-        [HttpGet( "ExecuteSearchHorizontalZero" )]
-        public void ExecuteSearchHorizontalZero()
+        [ProducesResponseType(200)]
+        [HttpGet("ExecuteSearchHorizontalZero/{speed}")]
+        public void ExecuteSearchHorizontalZero(decimal speed)
         {
-            this.ExecuteSearchHorizontalZero_Method();
+            this.ExecuteSearchHorizontalZero_Method(speed);
         }
 
         #endregion

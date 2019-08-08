@@ -2414,17 +2414,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync()
+        public System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(decimal speed)
         {
-            return ExecuteSearchHorizontalZeroAsync(System.Threading.CancellationToken.None);
+            return ExecuteSearchHorizontalZeroAsync(speed, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ExecuteSearchHorizontalZeroAsync(decimal speed, System.Threading.CancellationToken cancellationToken)
         {
+            if (speed == null)
+                throw new System.ArgumentNullException("speed");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/MachineService/ExecuteSearchHorizontalZero");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/MachineService/ExecuteSearchHorizontalZero/{speed}");
+            urlBuilder_.Replace("{speed}", System.Uri.EscapeDataString(ConvertToString(speed, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient();
             try

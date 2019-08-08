@@ -1,11 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -29,8 +26,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             IStateMachine parentMachine,
             ITemplateData templateData,
             FieldNotificationMessage errorMessage,
-            ILogger logger )
-            : base( parentMachine, logger )
+            ILogger logger)
+            : base(parentMachine, logger)
         {
             this.templateData = templateData;
             this.errorMessage = errorMessage;
@@ -42,23 +39,23 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         ~TemplateErrorState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessCommandMessage( CommandMessage message )
+        public override void ProcessCommandMessage(CommandMessage message)
         {
         }
 
-        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
         }
 
         /// <inheritdoc/>
-        public override void ProcessNotificationMessage( NotificationMessage message )
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
         }
 
@@ -71,16 +68,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
                 MessageActor.FiniteStateMachines,
                 MessageType.NoType,
                 MessageStatus.OperationError,
-                ErrorLevel.Error );
+                ErrorLevel.Error);
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -92,7 +89,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

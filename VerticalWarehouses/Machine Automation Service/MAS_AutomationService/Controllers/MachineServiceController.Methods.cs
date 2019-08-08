@@ -10,27 +10,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private const decimal ChainLength = 2500.0M;
+        private const decimal ChainLength = 2850.0M;
 
         #endregion
 
         #region Methods
 
-        private void ExecuteSearchHorizontalZero_Method()
+        private void ExecuteSearchHorizontalZero_Method(decimal speed)
         {
-            var speed = this.horizontalAxis.MaxFullSpeed * this.horizontalManualMovements.FeedRateHM;
+            decimal actualSpeed = 0.10M;
+
+            if (speed != 0)
+            {
+                actualSpeed = this.horizontalAxis.MaxEmptySpeedHA * speed;
+            }
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.Relative,
                 MovementMode.FindZero,
                 ChainLength,
-                speed,
-                this.horizontalAxis.MaxFullAccelerationHA,
-                this.horizontalAxis.MaxFullDecelerationHA,
+                actualSpeed,
+                this.horizontalAxis.MaxEmptyAccelerationHA,
+                this.horizontalAxis.MaxEmptyDecelerationHA,
                 0,
                 0,
-                0 );
+                0);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(
@@ -38,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     $"Execute Find Horizontal Zero Positioning Command",
                     MessageActor.FiniteStateMachines,
                     MessageActor.WebApi,
-                    MessageType.Positioning ) );
+                    MessageType.Positioning));
         }
 
         #endregion
