@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core
 {
@@ -135,7 +136,7 @@ namespace Ferretto.WMS.Data.Core
 
                 var machineStatus = this.liveMachinesDataContext.GetMachineStatus(e.MachineId);
 
-                machineStatus.Mode = MachineMode.Offline;
+                machineStatus.Mode = Enums.MachineStatus.Offline;
 
                 this.NotifyUpdate(e.MachineId);
             }
@@ -208,7 +209,7 @@ namespace Ferretto.WMS.Data.Core
         {
             var machineStatus = this.liveMachinesDataContext.GetMachineStatus(e.MachineId);
 
-            if (machineStatus.Mode == MachineMode.Offline)
+            if (machineStatus.Mode == Enums.MachineStatus.Offline)
             {
                 var machineHub = this.liveMachinesDataContext.MachineHubs
                     .SingleOrDefault(hub => hub.MachineId == e.MachineId);
@@ -221,7 +222,7 @@ namespace Ferretto.WMS.Data.Core
             else
             {
                 machineStatus.Mode = e.Mode;
-                if (e.Mode == MachineMode.Fault)
+                if (e.Mode == Enums.MachineStatus.Error)
                 {
                     machineStatus.FaultCode = e.FaultCode;
                 }

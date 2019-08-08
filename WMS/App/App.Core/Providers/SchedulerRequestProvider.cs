@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -55,15 +56,15 @@ namespace Ferretto.WMS.App.Core.Providers
                         Lot = r.Lot,
                         MaterialStatusDescription = r.MaterialStatusDescription,
                         MeasureUnitDescription = r.MeasureUnitDescription,
-                        OperationType = (OperationType)r.OperationType,
+                        OperationType = (Enums.OperationType)r.OperationType,
                         PackageTypeDescription = r.PackageTypeDescription,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequestedQuantity,
                         ReservedQuantity = r.ReservedQuantity,
-                        Status = (SchedulerRequestStatus)r.Status,
+                        Status = (Enums.SchedulerRequestStatus)r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
-                        Type = (SchedulerRequestType)r.Type,
+                        Type = (Enums.SchedulerRequestType)r.Type,
                     });
             }
             catch
@@ -103,15 +104,15 @@ namespace Ferretto.WMS.App.Core.Providers
                     Lot = schedulerRequest.Lot,
                     MaterialStatusDescription = schedulerRequest.MaterialStatusDescription,
                     MeasureUnitDescription = schedulerRequest.MeasureUnitDescription,
-                    OperationType = (OperationType)schedulerRequest.OperationType,
+                    OperationType = (Enums.OperationType)schedulerRequest.OperationType,
                     PackageTypeDescription = schedulerRequest.PackageTypeDescription,
                     RegistrationNumber = schedulerRequest.RegistrationNumber,
                     RequestedQuantity = schedulerRequest.RequestedQuantity,
                     ReservedQuantity = schedulerRequest.ReservedQuantity,
-                    Status = (SchedulerRequestStatus)schedulerRequest.Status,
+                    Status = (Enums.SchedulerRequestStatus)schedulerRequest.Status,
                     Sub1 = schedulerRequest.Sub1,
                     Sub2 = schedulerRequest.Sub2,
-                    Type = (SchedulerRequestType)schedulerRequest.Type,
+                    Type = (Enums.SchedulerRequestType)schedulerRequest.Type,
                 };
             }
             catch

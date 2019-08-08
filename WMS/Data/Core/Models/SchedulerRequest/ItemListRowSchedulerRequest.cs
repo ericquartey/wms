@@ -1,4 +1,5 @@
 ﻿using Ferretto.Common.Utils;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -11,7 +12,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int ListRowId { get; set; }
 
-        public override SchedulerRequestType Type { get => SchedulerRequestType.ItemListRow; }
+        public override Enums.SchedulerRequestType Type { get => Enums.SchedulerRequestType.ItemListRow; }
 
         #endregion
     }

@@ -272,11 +272,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> ExecuteCompletedAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecutePositioningAsync();
+        System.Threading.Tasks.Task ExecutePositioningAsync(string targetPosition);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ExecutePositioningAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecutePositioningAsync(string targetPosition, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteStepDownAsync();
@@ -307,11 +307,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> GetLoadingUnitPositionParameterAsync(string category, string parameter);
+        System.Threading.Tasks.Task<string> GetLoadingUnitPositionParameterAsync(string referenceCell);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> GetLoadingUnitPositionParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<string> GetLoadingUnitPositionParameterAsync(string referenceCell, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetLoadingUnitSideParameterAsync(string category, string parameter);

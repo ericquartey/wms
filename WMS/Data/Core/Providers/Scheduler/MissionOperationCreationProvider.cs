@@ -7,6 +7,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -83,26 +84,26 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     switch (request.OperationType)
                     {
-                        case OperationType.Pick:
+                        case Enums.OperationType.Pick:
 
                             var pickOperations = await this.CreatePickOperationsAsync(itemRequest);
                             operations.AddRange(pickOperations);
 
                             break;
 
-                        case OperationType.Put:
+                        case Enums.OperationType.Put:
 
                             var putOperations = await this.CreatePutOperationsAsync(itemRequest);
                             operations.AddRange(putOperations);
 
                             break;
 
-                        case OperationType.Replacement:
+                        case Enums.OperationType.Replacement:
                             this.logger.LogWarning(
                                 $"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
                             break;
 
-                        case OperationType.Reorder:
+                        case Enums.OperationType.Reorder:
                             this.logger.LogWarning(
                                 $"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
                             break;
@@ -136,7 +137,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (request.OperationType != OperationType.Pick)
+            if (request.OperationType != Enums.OperationType.Pick)
             {
                 throw new InvalidOperationException(
                     string.Format(
@@ -173,7 +174,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 if (request.QuantityLeftToReserve.Equals(0))
                 {
-                    request.Status = SchedulerRequestStatus.Completed;
+                    request.Status = Enums.SchedulerRequestStatus.Completed;
                 }
 
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
@@ -240,7 +241,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (request.OperationType != OperationType.Put)
+            if (request.OperationType != Enums.OperationType.Put)
             {
                 throw new InvalidOperationException(
                     string.Format(
@@ -263,7 +264,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var createdMissionsCount = 0;
             var missionOperations = new List<MissionOperation>();
 
-            while (request.Status != SchedulerRequestStatus.Completed
+            while (request.Status != Enums.SchedulerRequestStatus.Completed
                 && availableCompartments.Any()
                 && createdMissionsCount < queuableMissionsCount)
             {
@@ -288,7 +289,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
                 if (request.QuantityLeftToReserve.Equals(0))
                 {
-                    request.Status = SchedulerRequestStatus.Completed;
+                    request.Status = Enums.SchedulerRequestStatus.Completed;
                 }
 
                 await this.schedulerRequestSchedulerProvider.UpdateAsync(request);
@@ -361,9 +362,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Sub2 = compartment.Sub2,
                 Priority = request.Priority.Value,
                 RequestedQuantity = requestedQuantity,
-                Type = request.OperationType == OperationType.Pick
-                    ? MissionOperationType.Pick
-                    : MissionOperationType.Put,
+                Type = request.OperationType == Enums.OperationType.Pick
+                    ? Enums.MissionOperationType.Pick
+                    : Enums.MissionOperationType.Put,
             };
 
             if (request is ItemListRowSchedulerRequest rowRequest)

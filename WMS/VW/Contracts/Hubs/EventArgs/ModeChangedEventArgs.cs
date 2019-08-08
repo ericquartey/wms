@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MachineAutomationService.Hubs;
+﻿using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.MachineAutomationService.Contracts
 {
@@ -6,7 +6,7 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
     {
         #region Constructors
 
-        public ModeChangedEventArgs(int machineId, MachineMode mode, int? faultCode)
+        public ModeChangedEventArgs(int machineId, Enums.MachineStatus mode, int? faultCode)
         {
             this.MachineId = machineId;
             this.FaultCode = faultCode;
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
 
         public int MachineId { get; private set; }
 
-        public MachineMode Mode { get; }
+        public Enums.MachineStatus Mode { get; }
 
         #endregion
     }

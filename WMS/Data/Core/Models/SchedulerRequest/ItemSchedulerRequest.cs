@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -31,7 +32,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
-        public OperationType OperationType { get; set; }
+        public Enums.OperationType OperationType { get; set; }
 
         public int? PackageTypeId { get; set; }
 
@@ -72,13 +73,13 @@ namespace Ferretto.WMS.Data.Core.Models
             }
         }
 
-        public SchedulerRequestStatus Status { get; set; } = SchedulerRequestStatus.New;
+        public Enums.SchedulerRequestStatus Status { get; set; } = Enums.SchedulerRequestStatus.New;
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public virtual SchedulerRequestType Type => SchedulerRequestType.Item;
+        public virtual Enums.SchedulerRequestType Type => Enums.SchedulerRequestType.Item;
 
         #endregion
 
@@ -117,7 +118,7 @@ namespace Ferretto.WMS.Data.Core.Models
             request.RequestedQuantity = options.RequestedQuantity;
             request.Sub1 = options.Sub1;
             request.Sub2 = options.Sub2;
-            request.OperationType = OperationType.Pick;
+            request.OperationType = Enums.OperationType.Pick;
 
             return request;
         }
@@ -155,7 +156,7 @@ namespace Ferretto.WMS.Data.Core.Models
             request.RequestedQuantity = options.RequestedQuantity;
             request.Sub1 = options.Sub1;
             request.Sub2 = options.Sub2;
-            request.OperationType = OperationType.Put;
+            request.OperationType = Enums.OperationType.Put;
 
             return request;
         }

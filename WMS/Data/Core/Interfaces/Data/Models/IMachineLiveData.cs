@@ -1,4 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -6,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        MachineStatus Status { get; set; }
+        Enums.MachineStatus Status { get; set; }
 
         #endregion
     }

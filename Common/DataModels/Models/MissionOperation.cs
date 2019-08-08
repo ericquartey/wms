@@ -1,4 +1,5 @@
 using System;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -50,13 +51,13 @@ namespace Ferretto.Common.DataModels
 
         public double RequestedQuantity { get; set; }
 
-        public MissionOperationStatus Status { get; set; }
+        public Enums.MissionOperationStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public MissionOperationType Type { get; set; }
+        public Enums.MissionOperationType Type { get; set; }
 
         #endregion
     }

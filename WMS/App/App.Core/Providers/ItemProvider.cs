@@ -10,6 +10,7 @@ using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -418,7 +419,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LastPickDate = item.LastPickDate,
                     LastPutDate = item.LastPutDate,
                     Depth = item.Depth,
-                    ManagementType = (ItemManagementType)item.ManagementType,
+                    ManagementType = (Enums.ItemManagementType)item.ManagementType,
                     MeasureUnitDescription = item.MeasureUnitDescription,
                     MeasureUnitId = item.MeasureUnitId,
                     Note = item.Note,
@@ -662,7 +663,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
                 itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
-                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
+                itemDetails.ManagementTypeChoices = ((Enums.ItemManagementType[])Enum.GetValues(typeof(Enums.ItemManagementType)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
                 itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
             }

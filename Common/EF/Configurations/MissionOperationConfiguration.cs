@@ -1,6 +1,7 @@
 using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.EF.Configurations
 {
@@ -21,14 +22,14 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(
                     enumValue => (char)enumValue,
-                    charValue => (MissionOperationStatus)System.Enum.ToObject(typeof(MissionOperationStatus), charValue))
-                .HasDefaultValueSql($"'{(char)MissionOperationStatus.New}'");
+                    charValue => (Enums.MissionOperationStatus)System.Enum.ToObject(typeof(Enums.MissionOperationStatus), charValue))
+                .HasDefaultValueSql($"'{(char)Enums.MissionOperationStatus.New}'");
 
             builder.Property(o => o.Type)
                 .HasColumnType("char(1)")
                 .HasConversion(
                     enumValue => (char)enumValue,
-                    charValue => (MissionOperationType)System.Enum.ToObject(typeof(MissionOperationType), charValue));
+                    charValue => (Enums.MissionOperationType)System.Enum.ToObject(typeof(Enums.MissionOperationType), charValue));
 
             builder.Property(o => o.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");

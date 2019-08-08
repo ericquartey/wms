@@ -10,8 +10,8 @@
 
 namespace Ferretto.WMS.App.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,19 +19,19 @@ namespace Ferretto.WMS.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EnumColors {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal EnumColors() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.App.Resources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.App.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #43A047.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #D50000.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #0D47A1.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusExecuting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #FF6F00.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusIncomplete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #970da0.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusNew", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #64FFDA.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusReady", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #616161.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusSuspended", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #00BCD4.
         /// </summary>
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListRowStatusWaiting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #43A047.
         /// </summary>
@@ -140,7 +140,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #D50000.
         /// </summary>
@@ -149,7 +149,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #0D47A1.
         /// </summary>
@@ -158,7 +158,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusExecuting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #FF6F00.
         /// </summary>
@@ -167,7 +167,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusIncomplete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #970da0.
         /// </summary>
@@ -176,7 +176,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusNew", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #64FFDA.
         /// </summary>
@@ -185,7 +185,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusReady", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #616161.
         /// </summary>
@@ -194,7 +194,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusSuspended", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #00BCD4.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("ItemListStatusWaiting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #FF0072C6.
         /// </summary>
@@ -212,7 +212,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineStatusAutomatic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #e2001a.
         /// </summary>
@@ -221,7 +221,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineStatusError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #57A639.
         /// </summary>
@@ -230,7 +230,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineStatusManual", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #777777.
         /// </summary>
@@ -239,7 +239,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MachineStatusOffline", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #e2001a.
         /// </summary>
@@ -248,7 +248,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MaintenanceStatusExpired", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #FFB100.
         /// </summary>
@@ -257,7 +257,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MaintenanceStatusExpiring", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #57A639.
         /// </summary>
@@ -266,7 +266,43 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MaintenanceStatusValid", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #57A639.
+        /// </summary>
+        public static string MissionOperationStatusCompleted {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #D50000.
+        /// </summary>
+        public static string MissionOperationStatusError {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #0D47A1.
+        /// </summary>
+        public static string MissionOperationStatusExecuting {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #970da0.
+        /// </summary>
+        public static string MissionOperationStatusNew {
+            get {
+                return ResourceManager.GetString("MissionOperationStatusNew", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to #57A639.
         /// </summary>
@@ -275,7 +311,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionStatusCompleted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #D50000.
         /// </summary>
@@ -284,7 +320,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionStatusError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #0D47A1.
         /// </summary>
@@ -293,7 +329,7 @@ namespace Ferretto.WMS.App.Resources {
                 return ResourceManager.GetString("MissionStatusExecuting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to #970da0.
         /// </summary>

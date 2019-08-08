@@ -1,5 +1,5 @@
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         bool HasActiveRows { get; }
 
-        ItemListStatus Status { get; }
+        Enums.ItemListStatus Status { get; }
 
         #endregion
     }

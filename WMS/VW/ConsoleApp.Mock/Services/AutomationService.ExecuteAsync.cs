@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 {
@@ -49,7 +50,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 var bays = await this.automationProvider.GetBaysAsync(this.machineStatus.MachineId);
                 this.machineStatus.BaysStatus = bays.Select(b => new BayStatus { BayId = b.Id }).ToArray();
 
-                this.machineStatus.Mode = MachineMode.Auto;
+                this.machineStatus.Mode = Enums.MachineStatus.Automatic;
                 await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, null);
             }
             catch (Exception ex)
