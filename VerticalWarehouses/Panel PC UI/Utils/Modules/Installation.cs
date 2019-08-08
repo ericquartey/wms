@@ -6,6 +6,8 @@
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
+        public const string VERTICALOFFSETCALIBRATION = "VerticalOffsetCalibrationViewModel";
+
         #endregion
 
         #region Classes

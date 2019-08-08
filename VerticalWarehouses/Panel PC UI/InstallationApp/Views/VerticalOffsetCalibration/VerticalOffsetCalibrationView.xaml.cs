@@ -1,10 +1,7 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.Views
 {
-    /// <summary>
-    /// Interaction logic for VerticalOffsetCalibrationView.xaml
-    /// </summary>
     public partial class VerticalOffsetCalibrationView : UserControl
     {
         #region Constructors

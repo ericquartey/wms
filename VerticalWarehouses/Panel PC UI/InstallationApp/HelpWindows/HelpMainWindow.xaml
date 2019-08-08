@@ -52,10 +52,6 @@
             <helpWindows:HelpWeightControl />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodels:VerticalOffsetCalibrationViewModel}">
-            <helpWindows:HelpVerticalOffsetCalibration />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewmodels:CellsSideControlViewModel}">
             <helpWindows:HelpCellsSideControl />
         </DataTemplate>

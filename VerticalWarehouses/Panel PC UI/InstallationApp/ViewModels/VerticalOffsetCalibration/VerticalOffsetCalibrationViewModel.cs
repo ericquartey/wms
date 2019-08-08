@@ -11,7 +11,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.App.Installation.ViewModels
 {
     public class VerticalOffsetCalibrationViewModel : BaseMainViewModel
     {
