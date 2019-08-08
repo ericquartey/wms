@@ -268,30 +268,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     (!this.machineSensorsStatus.IsMachineInNormalState && data.Enable)
                     )
                 {
-                    if (this.currentStateMachine != null)
-                    {
-                        this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                        this.currentStateMachine = null;
-                    }
-                    this.currentStateMachine = new PowerEnableStateMachine(
-                        this.eventAggregator,
-                        (byte)this.ioIndexDeviceList[0],
-                        data,
-                        this.logger,
-                        this.serviceScopeFactory);
-
-                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
-
-                    try
-                    {
-                        this.currentStateMachine.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
-
-                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                    }
+                    this.CreatePowerEnableStateMachine(data);
                 }
                 else
                 {
@@ -309,6 +286,34 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
                 }
+            }
+        }
+
+        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
+        {
+            if (this.currentStateMachine != null)
+            {
+                this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                this.currentStateMachine = null;
+            }
+            this.currentStateMachine = new PowerEnableStateMachine(
+                this.eventAggregator,
+                (byte)this.ioIndexDeviceList[0],
+                data,
+                this.logger,
+                this.serviceScopeFactory);
+
+            this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
+
+            try
+            {
+                this.currentStateMachine.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
+
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
         }
 

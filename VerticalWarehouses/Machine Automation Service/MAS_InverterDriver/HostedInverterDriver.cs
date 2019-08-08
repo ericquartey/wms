@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
+        private const int STATUS_WORD_TIMEOUT = 300;   
+
         private readonly Stopwatch axisIntervalStopwatch;
 
         private readonly Stopwatch axisStopwatch;
@@ -107,6 +109,9 @@ namespace Ferretto.VW.MAS.InverterDriver
         private byte[] receiveBuffer;
 
         private Timer sensorStatusUpdateTimer;
+
+        private Timer statusWordUpdateTimer;
+
 
         // index of inverter to Stop
         private int shaftPositionUpdateNumberOfTimes;
@@ -238,6 +243,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
                 this.axisPositionUpdateTimer?.Dispose();
+                this.statusWordUpdateTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
             }
 
@@ -272,6 +278,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.axisPositionUpdateTimer?.Dispose();
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
+
+            this.statusWordUpdateTimer?.Dispose();
+            this.statusWordUpdateTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
 
             do
             {
