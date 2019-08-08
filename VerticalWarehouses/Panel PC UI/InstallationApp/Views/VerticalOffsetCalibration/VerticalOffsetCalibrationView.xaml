@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <Grid Width="1024"
           Height="608">
@@ -17,11 +18,11 @@
                    Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
 
         <custom:PpcTextBox Margin="410,120,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
+                           Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
@@ -30,11 +31,11 @@
                                             LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
         <custom:PpcTextBox Margin="230,290,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.StepValue}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{x:Static res:InstallationApp.StepValue}"
+                           Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="410,430,0,0"
                                             HorizontalAlignment="Left"
@@ -43,11 +44,11 @@
                                             LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
 
         <custom:PpcTextBox Margin="410,490,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.CorrectOffset}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{x:Static res:InstallationApp.CorrectOffset}"
+                           Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Button Margin="680,120,0,0"
                 HorizontalAlignment="Left"

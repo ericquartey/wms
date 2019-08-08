@@ -299,11 +299,13 @@ namespace Ferretto.VW.App.Installation
             (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<VerticalAxisCalibrationViewModel, IVerticalAxisCalibrationViewModel>()));
 
-        public ICommand VerticalOffsetCalibrationButtonCommand =>
-            this.verticalOffsetCalibrationButtonCommand
-            ??
-            (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>()));
+        /*
+                public ICommand VerticalOffsetCalibrationButtonCommand =>
+                    this.verticalOffsetCalibrationButtonCommand
+                    ??
+                    (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>()));
+        */
 
         public ICommand WeightControlButtonCommand =>
             this.weightControlButtonCommand

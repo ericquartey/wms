@@ -58,6 +58,11 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowError(System.Exception exception)
         {
+            if (exception == null)
+            {
+                throw new System.ArgumentNullException(nameof(exception));
+            }
+
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
                 .Publish(new PresentationChangedMessage(exception.Message));

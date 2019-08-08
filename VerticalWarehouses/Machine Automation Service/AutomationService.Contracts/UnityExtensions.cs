@@ -59,8 +59,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IResolutionCalibrationMachineService>(
                 new InjectionFactory(c => new ResolutionCalibrationMachineService(urlString)));
 
-            container.RegisterType<IOffsetCalibrationMachineService>(
-                new InjectionFactory(c => new OffsetCalibrationMachineService(urlString)));
+            container.RegisterType<IVerticalOffsetMachineService>(
+                new InjectionFactory(c => new VerticalOffsetMachineService(urlString)));
 
             container.RegisterType<IInstallationStatusMachineService>(
                 new InjectionFactory(c => new InstallationStatusMachineService(urlString)));
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             container.RegisterInstance<IResolutionCalibrationMachineService>(new ResolutionCalibrationMachineService(urlString));
 
-            container.RegisterInstance<IOffsetCalibrationMachineService>(new OffsetCalibrationMachineService(urlString));
+            container.RegisterInstance<IVerticalOffsetMachineService>(new VerticalOffsetMachineService(urlString));
 
             container.RegisterInstance<IInstallationStatusMachineService>(new InstallationStatusMachineService(urlString));
 

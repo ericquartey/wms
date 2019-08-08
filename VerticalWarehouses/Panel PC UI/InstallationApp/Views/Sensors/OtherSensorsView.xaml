@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <Grid>
         <TextBlock Grid.Row="0"

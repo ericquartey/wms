@@ -10,13 +10,14 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
+using Microsoft.AspNetCore.Http;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
-    public class OffsetCalibrationController : ControllerBase
+    public class VerticalOffsetController : ControllerBase
     {
         #region Fields
 
@@ -32,31 +33,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public OffsetCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
+        public VerticalOffsetController(
+            IEventAggregator eventAggregator,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            ICellManagmentDataLayer dataLayerCellsManagement,
+            ILogger<VerticalOffsetController> logger)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.dataLayerCellsManagement = services.GetService(typeof(ICellManagmentDataLayer)) as ICellManagmentDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.dataLayerCellsManagement = dataLayerCellsManagement;
+            this.logger = logger;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpPost("ExecuteCompleted")]
-        public bool ExecuteCompleted()
-        {
-            return this.ExecuteCompleted_Method();
-        }
-
-        [HttpGet("ExecutePositioning")]
+        [HttpPost("ExecutePositioning")]
         public void ExecutePositioning()
         {
             this.ExecutePositioning_Method();
         }
 
-        [HttpGet("ExecuteStepDown")]
+        [HttpPost("ExecuteStepDown")]
         public void ExecuteStepDown()
         {
             var stepValue = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
@@ -65,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.ExecuteStep_Method(-stepValue);
         }
 
-        [HttpGet("ExecuteStepUp")]
+        [HttpPost("ExecuteStepUp")]
         public void ExecuteStepUp()
         {
             var stepValue = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
@@ -90,52 +89,65 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.GetIntegerConfigurationParameter_Method(category, parameter);
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(404)]
-        [HttpGet("GetLoadingUnitPositionParameter/{category}/{parameter}")]
-        public ActionResult<decimal> GetLoadingUnitPositionParameter(string category, string parameter)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("reference-cell")]
+        public ActionResult<LoadingUnitPosition> GetLoadingUnitSideParameter()
         {
-            return this.GetLoadingUnitPositionParameter_Method(category, parameter);
-        }
-
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(404)]
-        [HttpGet("GetLoadingUnitSideParameter/{category}/{parameter}")]
-        public ActionResult<int> GetLoadingUnitSideParameter(string category, string parameter)
-        {
-            return this.GetLoadingUnitSideParameter_Method(category, parameter);
-        }
-
-        [ProducesResponseType(200)]
-        [ProducesResponseType(422)]
-        [ProducesResponseType(400)]
-        [HttpPost("SetOffsetParameter/{newOffset}/")]
-        public bool SetOffsetParameter(decimal newOffset)
-        {
-            return this.SetOffsetParameter_Method(newOffset);
-        }
-
-        [ProducesResponseType(200)]
-        [HttpGet("Stop")]
-        public void Stop()
-        {
-            this.Stop_Method();
-        }
-
-        private bool ExecuteCompleted_Method()
-        {
-            var completionPersist = true;
+            var cellId = this.dataLayerConfigurationValueManagement
+                .GetIntegerConfigurationValue(
+                    (long)OffsetCalibration.ReferenceCell,
+                    ConfigurationCategory.OffsetCalibration);
 
             try
             {
-                this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue((long)SetupStatus.VerticalOffsetDone, ConfigurationCategory.SetupStatus, true);
-            }
-            catch (Exception)
-            {
-                completionPersist = false;
-            }
+                var loadingUnitPosition = this.dataLayerCellsManagement.GetLoadingUnitPosition(cellId);
 
-            return completionPersist;
+                return this.Ok(loadingUnitPosition);
+            }
+            catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+            {
+                return this.UnprocessableEntity("Parameter not found");
+            }
+        }
+
+        [HttpPost("mark-as-complete")]
+        public IActionResult MarkAsComplete()
+        {
+            this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue(
+                (long)SetupStatus.VerticalOffsetDone,
+                ConfigurationCategory.SetupStatus,
+                true);
+
+            return this.Ok();
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost]
+        public IActionResult Set(decimal offset)
+        {
+            this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue(
+                (long)VerticalAxis.Offset,
+                ConfigurationCategory.VerticalAxis,
+                offset);
+
+            return this.Ok();
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost("stop")]
+        public IActionResult Stop()
+        {
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        null,
+                        "Stop Command",
+                        MessageActor.FiniteStateMachines,
+                        MessageActor.WebApi,
+                        MessageType.Stop));
+
+            return this.Ok();
         }
 
         private void ExecutePositioning_Method()
@@ -297,87 +309,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
-        }
-
-        private ActionResult<decimal> GetLoadingUnitPositionParameter_Method(string category, string parameter)
-        {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-            Enum.TryParse(typeof(OffsetCalibration), parameter, out var parameterId);
-
-            if (parameterId != null)
-            {
-                LoadingUnitPosition value;
-                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
-
-                try
-                {
-                    value = this.dataLayerCellsManagement.GetLoadingUnitPosition(cellId);
-                }
-                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                {
-                    return this.NotFound("Parameter not found");
-                }
-
-                return this.Ok(value.LoadingUnitCoord);
-            }
-            else
-            {
-                return this.NotFound("Parameter not found");
-            }
-        }
-
-        private ActionResult<int> GetLoadingUnitSideParameter_Method(string category, string parameter)
-        {
-            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-            Enum.TryParse(typeof(OffsetCalibration), parameter, out var parameterId);
-
-            if (parameterId != null)
-            {
-                LoadingUnitPosition value;
-                var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
-
-                try
-                {
-                    value = this.dataLayerCellsManagement.GetLoadingUnitPosition(cellId);
-                }
-                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                {
-                    return this.NotFound("Parameter not found");
-                }
-
-                return this.Ok((int)value.LoadingUnitSide);
-            }
-            else
-            {
-                return this.NotFound("Parameter not found");
-            }
-        }
-
-        private bool SetOffsetParameter_Method(decimal newOffset)
-        {
-            var resultAssignment = true;
-
-            try
-            {
-                this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValue((long)VerticalAxis.Offset, ConfigurationCategory.VerticalAxis, newOffset);
-            }
-            catch (Exception)
-            {
-                resultAssignment = false;
-            }
-
-            return resultAssignment;
-        }
-
-        private void Stop_Method()
-        {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(
-                new CommandMessage(
-                    null,
-                    "Stop Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.WebApi,
-                    MessageType.Stop));
         }
 
         #endregion

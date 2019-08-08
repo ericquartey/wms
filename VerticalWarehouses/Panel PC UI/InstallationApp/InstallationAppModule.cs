@@ -81,6 +81,8 @@ namespace Ferretto.VW.App.Installation
             containerRegistry.RegisterForNavigation<ShutterEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
 
+            containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
+
             this.container.RegisterSingleton<IMainWindow, MainWindow>();
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
@@ -108,7 +110,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
             this.container.RegisterSingleton<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationViewModel>();
-            this.container.RegisterSingleton<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationViewModel>();
             this.container.RegisterSingleton<IWeightControlViewModel, WeightControlViewModel>();
             this.container.RegisterSingleton<IBayControlViewModel, BayControlViewModel>();
             this.container.RegisterSingleton<ILoadFirstDrawerViewModel, LoadFirstDrawerViewModel>();

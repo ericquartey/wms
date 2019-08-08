@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -10,17 +10,24 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class VerticalOffsetCalibrationViewModel : BindableBase, IVerticalOffsetCalibrationViewModel
+    public class VerticalOffsetCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly bool isAcceptOffsetButtonActive = true;
 
-        private readonly IOffsetCalibrationMachineService offsetCalibrationService;
+        private readonly bool isCorrectOffsetButtonActive;
+
+        private readonly bool isSetPositionButtonActive = true;
+
+        private readonly bool isStepDownButtonActive = true;
+
+        private readonly bool isStepUpButtonActive = true;
+
+        private readonly IVerticalOffsetMachineService verticalOffsetMachineService;
 
         private ICommand acceptOffsetButtonCommand;
 
@@ -33,16 +40,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         private decimal currentOffset;
 
         private ICommand exitFromViewCommand;
-
-        private bool isAcceptOffsetButtonActive = true;
-
-        private bool isCorrectOffsetButtonActive;
-
-        private bool isSetPositionButtonActive = true;
-
-        private bool isStepDownButtonActive = true;
-
-        private bool isStepUpButtonActive = true;
 
         private string noteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
@@ -65,24 +62,17 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         #region Constructors
 
         public VerticalOffsetCalibrationViewModel(
-            IEventAggregator eventAggregator,
-            IOffsetCalibrationMachineService offsetCalibrationService)
+            IVerticalOffsetMachineService verticalOffsetMachineService)
+            : base(Services.PresentationMode.Installator)
         {
-            if (eventAggregator == null)
+            if (verticalOffsetMachineService == null)
             {
-                throw new ArgumentNullException(nameof(eventAggregator));
+                throw new ArgumentNullException(nameof(verticalOffsetMachineService));
             }
 
-            if (offsetCalibrationService == null)
-            {
-                throw new ArgumentNullException(nameof(offsetCalibrationService));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.offsetCalibrationService = offsetCalibrationService;
+            this.verticalOffsetMachineService = verticalOffsetMachineService;
 
             this.NoteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
-            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -103,18 +93,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
 
-        public bool IsAcceptOffsetButtonActive { get => this.isAcceptOffsetButtonActive; set => this.SetProperty(ref this.isAcceptOffsetButtonActive, value); }
-
-        public bool IsCorrectOffsetButtonActive { get => this.isCorrectOffsetButtonActive; set => this.SetProperty(ref this.isCorrectOffsetButtonActive, value); }
-
-        public bool IsSetPositionButtonActive { get => this.isSetPositionButtonActive; set => this.SetProperty(ref this.isSetPositionButtonActive, value); }
-
-        public bool IsStepDownButtonActive { get => this.isStepDownButtonActive; set => this.SetProperty(ref this.isStepDownButtonActive, value); }
-
-        public bool IsStepUpButtonActive { get => this.isStepUpButtonActive; set => this.SetProperty(ref this.isStepUpButtonActive, value); }
-
-        public BindableBase NavigationViewModel { get; set; }
-
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
         public string ReferenceCellHeight { get => this.referenceCellHeight; set => this.SetProperty(ref this.referenceCellHeight, value); }
@@ -127,7 +105,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public ICommand StepUpButtonCommand => this.stepUpButtonCommand ?? (this.stepUpButtonCommand = new DelegateCommand(this.StepUpButtonCommandMethod));
 
-        public string StepValue { get => this.stepValue; set => this.SetProperty(ref this.stepValue, value); }
+        public string StepValue
+        {
+            get => this.stepValue;
+            set => this.SetProperty(ref this.stepValue, value);
+        }
 
         #endregion
 
@@ -135,28 +117,30 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public async Task AcceptOffsetButtonCommandMethodAsync()
         {
-            if (decimal.TryParse(this.CorrectOffset, out var decCorrectOffset))
+            if (decimal.TryParse(this.CorrectOffset, out var correctOffset))
             {
-                var result = await this.offsetCalibrationService.SetOffsetParameterAsync(decCorrectOffset);
-
-                if (result)
+                try
                 {
-                    this.IsAcceptOffsetButtonActive = false;
-                    this.IsCorrectOffsetButtonActive = true;
-                    this.IsStepDownButtonActive = false;
-                    this.IsStepUpButtonActive = false;
-                    this.CurrentOffset = decCorrectOffset;
+                    await this.verticalOffsetMachineService.SetAsync(correctOffset);
+
+                    this.CurrentOffset = correctOffset;
+                }
+                catch (Exception ex)
+                {
+                    this.ShowError(ex);
                 }
             }
         }
 
         public async Task CorrectOffsetButtonCommandMethodAsync()
         {
-            var result = await this.offsetCalibrationService.ExecuteCompletedAsync();
-
-            if (result)
+            try
             {
-                this.IsCorrectOffsetButtonActive = false;
+                await this.verticalOffsetMachineService.MarkAsCompleteAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex);
             }
         }
 
@@ -170,11 +154,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             try
             {
                 const string Category = "OffsetCalibration";
-                this.referenceCellNumber = (await this.offsetCalibrationService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
+                this.referenceCellNumber = (await this.verticalOffsetMachineService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
 
                 //TEMP temporary commented because there is not a cell map
                 //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
-                this.stepValue = (await this.offsetCalibrationService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
+                this.stepValue = (await this.verticalOffsetMachineService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
             }
             catch (SwaggerException)
             {
@@ -186,7 +170,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             await this.GetParameterValuesAsync();
 
-            this.receivePositioningUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.receivePositioningUpdateToken = this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -205,7 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             try
             {
-                await this.offsetCalibrationService.ExecutePositioningAsync();
+                await this.verticalOffsetMachineService.ExecutePositioningAsync();
             }
             catch (Exception)
             {
@@ -226,7 +210,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivePositioningUpdateToken);
+            this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivePositioningUpdateToken);
         }
 
         private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
