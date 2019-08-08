@@ -22,8 +22,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public byte InverterIndex { get; }
-        public ushort Value { get; }
+        public byte InverterIndex { get; set; }
+        public ushort Value { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

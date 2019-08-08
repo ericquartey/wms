@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
@@ -112,13 +113,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace("3:Validate Command Response True");
                 }
 
-                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
+                if (this.inverterStatusWords.TryGetValue(inverterIndex, out var inverterStatus))
                 {
-                    if(inverterStatus.CommonStatusWord.Value != currentMessage.UShortPayload)
+                    if (inverterStatus.Value != currentMessage.UShortPayload)
                     {
-                        inverterStatus.CommonStatusWord.Value = currentMessage.UShortPayload;
-
-                        var notificationData = new InverterStatusWordFieldMessageData(inverterStatus.CommonStatusWord.Value);
+                        var notificationData = new InverterStatusWordFieldMessageData(currentMessage.UShortPayload);
                         var msgNotification = new FieldNotificationMessage(
                         notificationData,
                         "Inverter Status Word update",
@@ -127,12 +126,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterStatusWord,
                         MessageStatus.OperationExecuting,
                         ErrorLevel.NoError,
-                        inverterStatus.SystemIndex);
+                        (byte)inverterIndex);
 
                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
                     }
+                    inverterStatus.Value = currentMessage.UShortPayload;
                 }
+
             }
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
@@ -364,6 +365,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
 
                 this.inverterStatuses.Add(inverterType.Key, inverterStatus);
+                this.inverterStatusWords.Add(inverterType.Key, new StatusWordBase());
             }
 
             this.logger.LogTrace("1:Start Heart beat timer");
@@ -372,7 +374,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             try
             {
-                //this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+                this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
                 this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
                 this.statusWordUpdateTimer?.Change(STATUS_WORD_TIMEOUT, STATUS_WORD_TIMEOUT);
             }

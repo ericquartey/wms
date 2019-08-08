@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -377,7 +378,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         {
                             var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
                             var statusWord = new StatusWordBase(statusWordData.Value);
-                            if (statusWord.IsFault && this.machineSensorsStatus.IsMachineInNormalState)
+                            if (statusWord.IsFault
+                                && this.machineSensorsStatus.IsMachineInNormalState
+                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine") )
+                                )
                             {
                                 this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
                                 var powerEnableData = new PowerEnableMessageData(false);

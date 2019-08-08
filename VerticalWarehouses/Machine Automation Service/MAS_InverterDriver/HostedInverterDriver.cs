@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
@@ -111,6 +112,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         private Timer sensorStatusUpdateTimer;
 
         private Timer statusWordUpdateTimer;
+        private readonly Dictionary<InverterIndex, IStatusWord> inverterStatusWords;
 
 
         // index of inverter to Stop
@@ -168,6 +170,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.SensorIntervalTimeData = new InverterDiagnosticsData();
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
+            this.inverterStatusWords = new Dictionary<InverterIndex, IStatusWord>();
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();

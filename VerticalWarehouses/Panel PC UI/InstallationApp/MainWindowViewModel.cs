@@ -20,6 +20,8 @@ using Prism.Mvvm;
 using Unity;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Ferretto.VW.App.Installation
 {
@@ -82,6 +84,8 @@ namespace Ferretto.VW.App.Installation
         private ICommand showErrorDetailsCommand;
 
         private IUpdateSensorsMachineService updateSensorsService;
+
+        private Dictionary<byte, IStatusWord> inverterStatuses = new Dictionary<byte, IStatusWord>();
 
         #endregion
 
@@ -367,6 +371,12 @@ namespace Ferretto.VW.App.Installation
                 ThreadOption.PublisherThread,
                 false);
 
+            this.eventAggregator.GetEvent<NotificationEventUI<InverterStatusWordMessageData>>()
+                .Subscribe(
+                message => this.UpdateInverterStatusWord(message.Data),
+                ThreadOption.PublisherThread,
+                false);
+
             this.machineStatusService = this.container.Resolve<IMachineStatusMachineService>();
 
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
@@ -410,6 +420,23 @@ namespace Ferretto.VW.App.Installation
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
             this.MachineOnMarchSelectionBool = message[(int)IOMachineSensors.NormalState];
+        }
+
+        private void UpdateInverterStatusWord(InverterStatusWordMessageData message)
+        {
+            if (this.inverterStatuses.ContainsKey(message.InverterIndex))
+            {
+                this.inverterStatuses[message.InverterIndex] = new StatusWordBase(message.Value);
+            }
+            else
+            {
+                this.inverterStatuses.Add(message.InverterIndex, new StatusWordBase(message.Value));
+            }
+            //if (this.inverterStatuses[message.InverterIndex].IsFault && Debugger.IsAttached)
+            //{
+            //    Debugger.Break(); // it works!!!
+            //}
+
         }
 
         #endregion

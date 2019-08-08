@@ -67,6 +67,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<PowerEnableMessageData>>(
                 "PowerEnableNotify", this.OnPowerEnableNotify);
 
+            connection.On<NotificationMessageUI<InverterStatusWordMessageData>>(
+                "InverterStatusWordNotify", this.OnInverterStatusWordNotify);
+
         }
 
         /// <summary>
@@ -174,6 +177,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         /// </summary>
         /// <param name="message"></param>
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the InverterStatusWord event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnInverterStatusWordNotify(NotificationMessageUI<InverterStatusWordMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
