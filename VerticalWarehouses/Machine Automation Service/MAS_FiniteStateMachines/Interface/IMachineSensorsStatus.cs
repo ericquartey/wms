@@ -6,6 +6,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
     {
         #region Properties
 
+        decimal AxisXPosition { get; set; }
+
+        decimal AxisYPosition { get; set; }
+
         bool[] DisplayedInputs { get; }
 
         bool IsDrawerCompletelyOffCradle { get; }
@@ -26,7 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         #region Methods
 
-        bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
+        bool UpdateInputs( byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor );
 
         #endregion
     }
