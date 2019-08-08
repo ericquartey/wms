@@ -100,6 +100,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOnAxisIoMessage.SwitchElevatorMotor(true);
                     break;
             }
+            switchOnAxisIoMessage.SwitchResetSecurity(false);
+            switchOnAxisIoMessage.SwitchPowerEnable(true);
 
             this.Logger.LogTrace($"2:{switchOnAxisIoMessage}");
             lock (this.status)

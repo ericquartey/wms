@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
-using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case FieldMessageType.ResetSecurity:
                         currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                        this.ioDevices[currentDevice].ExecuteIoPowerUp();
+                        this.ioDevices[currentDevice].ExecuteResetSecurity();
                         break;
 
                     case FieldMessageType.PowerEnable:
@@ -279,16 +279,18 @@ namespace Ferretto.VW.MAS.IODriver
                         this.InitializeIoDevice();
                         await this.StartHardwareCommunications();
 
-                        // the machine starts with power off
-                        //foreach (var ioDevice in this.ioDevices)
-                        //{
-                        //    ioDevice.Value.ExecuteIoPowerUp();
-                        //}
+                        foreach (var ioDevice in this.ioDevices)
+                        {
+                            ioDevice.Value.ExecuteIoPowerUp();
+                        }
 
                         break;
 
                     case FieldMessageType.IoPowerUp:
                     case FieldMessageType.SwitchAxis:
+                    case FieldMessageType.PowerEnable:
+                    case FieldMessageType.IoReset:
+                    case FieldMessageType.ResetSecurity:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {
