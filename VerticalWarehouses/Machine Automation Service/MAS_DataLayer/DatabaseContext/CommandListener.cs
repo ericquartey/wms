@@ -54,7 +54,10 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
             lock (this.redundancyService)
             {
-                this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
+                if (this.redundancyService.IsEnabled)
+                {
+                    this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
+                }
             }
         }
 
@@ -69,7 +72,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         {
             lock (this.redundancyService)
             {
-                if (IsInsertOrUpdateCommand(command)
+                if (this.redundancyService.IsEnabled
+                    &&
+                    IsModifyingCommand(command)
                     &&
                     this.IsActiveDbChannel(command.Connection.ConnectionString)
                     &&
@@ -100,14 +105,16 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             }
         }
 
-        private static bool IsInsertOrUpdateCommand(DbCommand command)
+        private static bool IsModifyingCommand(DbCommand command)
         {
             var normalizedCommandText = command.CommandText.ToUpperInvariant();
 
             return
                 normalizedCommandText.Contains("UPDATE ")
                 ||
-                normalizedCommandText.Contains("INSERT ");
+                normalizedCommandText.Contains("INSERT ")
+                ||
+                normalizedCommandText.Contains("DELETE ");
         }
 
         private bool IsActiveDbChannel(string connectionString)
