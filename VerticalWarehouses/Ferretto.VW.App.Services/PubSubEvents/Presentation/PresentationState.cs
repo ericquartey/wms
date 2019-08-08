@@ -7,9 +7,9 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
-        public ICommand ExecuteCommand { get; set; }
+        public ICommand ExecuteCommand { get; }
 
-        public bool IsVisible { get; set; }
+        public bool? IsVisible { get; set; }
 
         public PresentationStates State { get; set; }
 

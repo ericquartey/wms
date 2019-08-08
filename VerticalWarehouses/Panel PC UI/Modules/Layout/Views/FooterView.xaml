@@ -29,7 +29,7 @@
                               VerticalAlignment="Center"
                               PresentationType="{x:Static enums:PresentationTypes.Back}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <Button Command="{Binding NavigateBackCommand}"
+                <Button Command="{Binding ExecuteCommand}"
                         Content="{x:Static res:InstallationApp.Back}"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             </ctrls:PpcControl>

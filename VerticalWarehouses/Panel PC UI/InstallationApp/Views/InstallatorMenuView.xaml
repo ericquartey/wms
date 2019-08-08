@@ -9,19 +9,18 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid MinHeight="200">
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ctrls:PpcMenuWrap ItemsSource="{Binding InstallatorItems}" />
 
         <ctrls:PpcMenuWrap Grid.Row="2"
-                           Background="White"
-                           Foreground="Black"
                            ItemsSource="{Binding SensorsItems}" />
 
         <ctrls:PpcMenuWrap Grid.Row="4"

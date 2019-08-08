@@ -2,6 +2,8 @@
 {
     public enum PresentationStates
     {
+        None,
+
         Normal,
 
         Pressed,

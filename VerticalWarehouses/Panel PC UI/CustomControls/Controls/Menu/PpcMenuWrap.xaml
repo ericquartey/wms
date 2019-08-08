@@ -6,19 +6,22 @@
               mc:Ignorable="d">
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <WrapPanel HorizontalAlignment="Right"
-                       Orientation="Horizontal" />
+            <WrapPanel Orientation="Horizontal" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
         <DataTemplate>
-            <Border Margin="5"
-                    BorderBrush="White"
+            <Border Width="170"
+                    Height="70"
+                    Margin="13,6,13,6"
                     BorderThickness="1">
                 <Button Command="{Binding NavigateCommand}">
                     <Button.Content>
                         <TextBlock Name="Description"
-                                   Text="{Binding Dscription}" />
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Text="{Binding Description}"
+                                   TextWrapping="Wrap" />
                     </Button.Content>
                 </Button>
             </Border>

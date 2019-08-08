@@ -222,7 +222,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.ManualMovements.CAROUSEL);
+                    Utils.Modules.Installation.INSTALLATORMENU);
             }
             catch (Exception ex)
             {

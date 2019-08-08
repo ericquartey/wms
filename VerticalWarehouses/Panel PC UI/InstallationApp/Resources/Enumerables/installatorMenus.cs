@@ -5,8 +5,20 @@ namespace Ferretto.VW.App.Installation.Resources
 {
     public enum InstallatorMenus
     {
+        [View(Utils.Modules.Installation.VERTICALAXISCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [Display(Description = "Origine asse verticale")]
+        VerticalAxisCalibration,
+
+        [View(Utils.Modules.Installation.VERTICALOFFSETCALIBRATION, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installator)]
+        [Display(Description = "Calibraione offset asse verticale")]
+        VerticalOffsetCalibration,
+
         [View(Utils.Modules.Installation.Sensors.BAYS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Sensors)]
         [Display(Description = "Stato sensori")]
-        BaySensors
+        SensorsState,
+
+        [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Movimenti manuali a bassa velocità")]
+        VerticalEngineManualMovements
     }
 }

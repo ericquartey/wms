@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.Attributes;
@@ -14,11 +15,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly List<NavigationMenuItem> installatorItems = new List<NavigationMenuItem>();
+        private readonly BindingList<NavigationMenuItem> installatorItems = new BindingList<NavigationMenuItem>();
 
-        private readonly List<NavigationMenuItem> otherItems = new List<NavigationMenuItem>();
+        private readonly BindingList<NavigationMenuItem> otherItems = new BindingList<NavigationMenuItem>();
 
-        private readonly List<NavigationMenuItem> sensorsItems = new List<NavigationMenuItem>();
+        private readonly BindingList<NavigationMenuItem> sensorsItems = new BindingList<NavigationMenuItem>();
 
         #endregion
 
@@ -33,11 +34,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public List<NavigationMenuItem> InstallatorItems => this.installatorItems;
+        public BindingList<NavigationMenuItem> InstallatorItems => this.installatorItems;
 
-        public List<NavigationMenuItem> OtherItems => this.otherItems;
+        public BindingList<NavigationMenuItem> OtherItems => this.otherItems;
 
-        public List<NavigationMenuItem> SensorsItems => this.sensorsItems;
+        public BindingList<NavigationMenuItem> SensorsItems => this.sensorsItems;
 
         #endregion
 
