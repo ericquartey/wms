@@ -48,7 +48,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void OnNavigated()
         {
             base.OnNavigated();
-            this.SohwButton(false);
+            this.SohwBack(false);
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, NavigationMenuItem menuItem)

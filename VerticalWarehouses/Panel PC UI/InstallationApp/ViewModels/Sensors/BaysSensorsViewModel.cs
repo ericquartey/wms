@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void OnNavigated()
         {
             base.OnNavigated();
-            this.SohwButton(true);
+            this.SohwBack(true);
         }
 
         #endregion

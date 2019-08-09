@@ -48,7 +48,7 @@ namespace Ferretto.VW.App.Controls
             this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(this.journal));
         }
 
-        public void SohwButton(bool isVisible)
+        public void SohwBack(bool isVisible)
         {
             var state = new Presentation()
             {
