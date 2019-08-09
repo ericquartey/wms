@@ -45,8 +45,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 50;
 
-        private const int STATUS_WORD_TIMEOUT = 300;   
-
         private readonly Stopwatch axisIntervalStopwatch;
 
         private readonly Stopwatch axisStopwatch;
@@ -112,11 +110,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private Timer sensorStatusUpdateTimer;
 
         private Timer statusWordUpdateTimer;
-        private readonly Dictionary<InverterIndex, IStatusWord> inverterStatusWords;
-
-
-        // index of inverter to Stop
-        private int shaftPositionUpdateNumberOfTimes;
 
         private CancellationToken stoppingToken;
 
@@ -170,7 +163,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.SensorIntervalTimeData = new InverterDiagnosticsData();
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
-            this.inverterStatusWords = new Dictionary<InverterIndex, IStatusWord>();
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
