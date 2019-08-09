@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
+﻿using Ferretto.VW.CommonUtils.Enumerations;
+
+namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
 {
     public interface IPositionStatusWord : IStatusWord
     {

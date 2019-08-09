@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
@@ -43,6 +44,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 50;
+
+        private const int STATUS_WORD_TIMEOUT = 300;   
 
         private readonly Stopwatch axisIntervalStopwatch;
 
@@ -108,6 +111,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Timer sensorStatusUpdateTimer;
 
+        private Timer statusWordUpdateTimer;
+        private readonly Dictionary<InverterIndex, IStatusWord> inverterStatusWords;
+
+
         // index of inverter to Stop
         private int shaftPositionUpdateNumberOfTimes;
 
@@ -163,6 +170,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.SensorIntervalTimeData = new InverterDiagnosticsData();
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
+            this.inverterStatusWords = new Dictionary<InverterIndex, IStatusWord>();
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -238,6 +246,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
                 this.axisPositionUpdateTimer?.Dispose();
+                this.statusWordUpdateTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
             }
 
@@ -272,6 +281,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.axisPositionUpdateTimer?.Dispose();
             this.axisPositionUpdateTimer = new Timer( this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite );
+
+            this.statusWordUpdateTimer?.Dispose();
+            this.statusWordUpdateTimer = new Timer(this.RequestStatusWordMessage, null, -1, Timeout.Infinite);
 
             do
             {

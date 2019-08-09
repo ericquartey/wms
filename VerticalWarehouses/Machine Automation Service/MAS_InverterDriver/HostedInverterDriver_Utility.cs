@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
@@ -98,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!this.CurrentStateMachine?.ValidateCommandResponse( currentMessage ) ?? false)
                 {
-                    if (!this.inverterCommandQueue.Any( x => x.ParameterId == InverterParameterId.StatusWordParam ))
+                    if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)inverterIndex))
                     {
                         var readStatusWordMessage = new InverterMessage( inverterIndex, (short)InverterParameterId.StatusWordParam );
 
@@ -111,6 +112,28 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.logger.LogTrace( "3:Validate Command Response True" );
                 }
+
+                if (this.inverterStatusWords.TryGetValue(inverterIndex, out var inverterStatus))
+                {
+                    if (inverterStatus.Value != currentMessage.UShortPayload)
+                    {
+                        var notificationData = new InverterStatusWordFieldMessageData(currentMessage.UShortPayload);
+                        var msgNotification = new FieldNotificationMessage(
+                        notificationData,
+                        "Inverter Status Word update",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusWord,
+                        MessageStatus.OperationExecuting,
+                        ErrorLevel.NoError,
+                        (byte)inverterIndex);
+
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                    }
+                    inverterStatus.Value = currentMessage.UShortPayload;
+                }
+
             }
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
@@ -312,9 +335,12 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             if (this.CurrentStateMachine?.ValidateCommandMessage( currentMessage ) ?? false)
             {
-                this.logger.LogTrace( "6:Request Status word" );
-                var readStatusWordMessage = new InverterMessage( inverterIndex, (short)InverterParameterId.StatusWordParam );
-                this.inverterCommandQueue.Enqueue( readStatusWordMessage );
+                if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)inverterIndex))
+                {
+                    this.logger.LogTrace("6:Request Status word");
+                    var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                }
             }
         }
 
@@ -339,7 +365,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         break;
                 }
 
-                this.inverterStatuses.Add( inverterType.Key, inverterStatus );
+                this.inverterStatuses.Add(inverterType.Key, inverterStatus);
+                this.inverterStatusWords.Add(inverterType.Key, new StatusWordBase());
             }
 
             this.logger.LogTrace( "1:Start Heart beat timer" );
@@ -348,8 +375,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             try
             {
-                this.heartBeatTimer = new Timer( this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds( HEARTBEAT_TIMEOUT ) );
-                this.sensorStatusUpdateTimer?.Change( SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL );
+                this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+                this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
+                this.statusWordUpdateTimer?.Change(STATUS_WORD_TIMEOUT, STATUS_WORD_TIMEOUT);
             }
             catch (Exception ex)
             {
@@ -985,7 +1013,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.sensorStopwatch.Reset();
             this.sensorStopwatch.Start();
-            if (!this.inverterCommandQueue.Any( x => x.ParameterId == InverterParameterId.DigitalInputsOutputs ))
+            if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.DigitalInputsOutputs && x.SystemIndex == (byte)InverterIndex.MainInverter))
             {
                 this.logger.LogTrace( $"1:ReadSensorStatusMessage={readSensorStatusMessage}" );
 
@@ -993,7 +1021,23 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private bool[] RetrieveInverterIOStatus( string currentMessageStringPayload, int inverterIndex )
+        private void RequestStatusWordMessage(object state)
+        {
+            foreach (var installedInverter in this.inverterStatuses)
+            {
+                if (!this.inverterCommandQueue.Any(x => x.ParameterId == InverterParameterId.StatusWordParam && x.SystemIndex == (byte)installedInverter.Key))
+                {
+                    var readStatusWordMessage = new InverterMessage(installedInverter.Key, (short)InverterParameterId.StatusWordParam);
+
+                    this.logger.LogTrace($"1:readStatusWordMessage={readStatusWordMessage}");
+
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                }
+
+            }
+        }
+
+        private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, int inverterIndex)
         {
             //TEMP NOTE ==>
             // int i = Array.IndexOf(this.inverterStatuses.Keys.ToArray(), (ushort)inverterIndex);  // retrieve the first occurrence in the dictionary

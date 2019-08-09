@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Interface
 
         bool IsDrawerCompletelyOffCradle { get; }
 
-        bool IsDrawerCompletelyOnCradleBay1 { get; }
+        bool IsDrawerCompletelyOnCradle { get; }
 
         bool IsDrawerInBay1Up { get; }
 

@@ -67,7 +67,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LuPresentiInMachineSideBay1}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.LuPresentInMachineSideBay1}"
                                     Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 

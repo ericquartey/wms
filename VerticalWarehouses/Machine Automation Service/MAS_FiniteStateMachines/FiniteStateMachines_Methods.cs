@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     break;
 
                 case ConditionToCheckType.DrawerIsCompletelyOnCradle:
-                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1;
+                    result = this.machineSensorsStatus.IsDrawerCompletelyOnCradle;
                     break;
 
                 case ConditionToCheckType.DrawerIsPartiallyOnCradle:
@@ -283,7 +283,38 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             }
         }
 
-        private void ProcessResetSecurityMessage( CommandMessage message )
+        private void ProcessPowerEnableMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IPowerEnableMessageData data)
+            {
+                if (
+                    (this.machineSensorsStatus.IsMachineInNormalState && !data.Enable) ||
+                    (!this.machineSensorsStatus.IsMachineInNormalState && data.Enable)
+                    )
+                {
+                    this.CreatePowerEnableStateMachine(data);
+                }
+                else
+                {
+                    this.logger.LogTrace($"5:Machine is already in the requested state: IsNormal {this.machineSensorsStatus.IsMachineInNormalState}: Enable {data.Enable}");
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        "Power Enable Completed",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.PowerEnable,
+                        MessageStatus.OperationEnd);
+
+                    this.logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                }
+            }
+        }
+
+        private void ProcessResetSecurityMessage(CommandMessage message)
         {
             this.logger.LogTrace( "1:Method Start" );
 
