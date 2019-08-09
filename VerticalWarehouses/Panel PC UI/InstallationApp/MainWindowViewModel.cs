@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -9,19 +10,17 @@ using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Enumerations;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Ferretto.VW.App.Installation
 {
@@ -53,6 +52,8 @@ namespace Ferretto.VW.App.Installation
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
+        private Dictionary<byte, IStatusWord> inverterStatuses = new Dictionary<byte, IStatusWord>();
+
         private bool isExitViewButtonRegionExpanded;
 
         private Visibility isNavigationButtonRegionExpanded = Visibility.Visible;
@@ -67,6 +68,8 @@ namespace Ferretto.VW.App.Installation
 
         private bool machineModeSelectionBool;
 
+        private bool machineOnMarchSelectionBool;
+
         private IMachineStatusMachineService machineStatusService;
 
         private IViewModel navigationRegionCurrentViewModel;
@@ -77,13 +80,9 @@ namespace Ferretto.VW.App.Installation
 
         private IViewModel previousNavigationViewModel;
 
-        private bool machineOnMarchSelectionBool;
-
         private ICommand showErrorDetailsCommand;
 
         private IUpdateSensorsMachineService updateSensorsService;
-
-        private Dictionary<byte, IStatusWord> inverterStatuses = new Dictionary<byte, IStatusWord>();
 
         #endregion
 
@@ -286,10 +285,10 @@ namespace Ferretto.VW.App.Installation
                 this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
             }));
 
-         public ICommand ShowErrorDetailsCommand =>
-            this.showErrorDetailsCommand
-            ??
-            (this.showErrorDetailsCommand = new DelegateCommand(async () => await this.ExecuteShowErrorDetailsCommandAsync()));
+        public ICommand ShowErrorDetailsCommand =>
+           this.showErrorDetailsCommand
+           ??
+           (this.showErrorDetailsCommand = new DelegateCommand(async () => await this.ExecuteShowErrorDetailsCommandAsync()));
 
         #endregion
 
@@ -410,11 +409,6 @@ namespace Ferretto.VW.App.Installation
 
         private void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
 
-        private void UpdateVariousInputsSensorsState(bool[] message)
-        {
-            this.MachineOnMarchSelectionBool = message[(int)IOMachineSensors.NormalState];
-        }
-
         private void UpdateInverterStatusWord(InverterStatusWordMessageData message)
         {
             if (this.inverterStatuses.ContainsKey(message.InverterIndex))
@@ -429,7 +423,11 @@ namespace Ferretto.VW.App.Installation
             //{
             //    Debugger.Break(); // it works!!!
             //}
+        }
 
+        private void UpdateVariousInputsSensorsState(bool[] message)
+        {
+            this.MachineOnMarchSelectionBool = message[(int)IOMachineSensors.NormalState];
         }
 
         #endregion
