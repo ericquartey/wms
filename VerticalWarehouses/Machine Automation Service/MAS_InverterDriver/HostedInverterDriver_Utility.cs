@@ -129,11 +129,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         (byte)inverterIndex);
 
                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-
                     }
                     inverterStatus.Value = currentMessage.UShortPayload;
                 }
-
             }
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
@@ -1017,7 +1015,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                 }
-
             }
         }
 
