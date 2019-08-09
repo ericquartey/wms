@@ -212,7 +212,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private int IntValue2Impulses(int value)
         {
-            return value * 1024;
+            const int IMPULSES_ENCODER_PER_ROUND = 1024;
+            return value * IMPULSES_ENCODER_PER_ROUND;
         }
 
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)

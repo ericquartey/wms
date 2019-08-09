@@ -272,6 +272,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterType inverterType;
 
+        private bool positionReached;
+
         private int statusWord;
 
         #endregion
@@ -503,13 +505,16 @@ namespace Ferretto.VW.Simulator.Services.Models
             else
             {
                 this.StatusWord &= 0xFFFB;
+                this.positionReached = false;
             }
 
             //New SetPoint
             if ((this.ControlWord & 0x0010) > 0)
             {
-                if (!this.targetTimerActive)
+                if (!this.targetTimerActive && !this.positionReached)
                 {
+                    this.StatusWord &= 0xFBFF;
+
                     this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
                     this.AxisPosition = 0;
@@ -628,13 +633,15 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             if (this.targetTickCount > 10)
             {
+                this.ControlWord &= 0xFFEF;
                 this.StatusWord |= 0x0400;
-                this.targetTimerActive = false;
+
                 this.targetTimer.Change(-1, Timeout.Infinite);
                 // Reset contatore
                 this.targetTickCount = 0;
 
-                this.ControlWord &= 0xFFEF;
+                this.targetTimerActive = false;
+                this.positionReached = true;
             }
         }
 
