@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 50;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
         private readonly Stopwatch axisIntervalStopwatch;
 
