@@ -53,14 +53,24 @@
            TargetType="{x:Type Button}">
         <Setter Property="Foreground" Value="{DynamicResource FontColor}" />
         <Setter Property="FontSize" Value="15" />
+        <Setter Property="Padding" Value="4,6" />
         <Setter Property="Margin" Value="0,0,20,20" />
         <Setter Property="FontFamily" Value="{DynamicResource FontSmall}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="Transparent">
-                        <ContentPresenter />
+                    <Border Background="Transparent"
+                            x:Name="border">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="#7F9ECFF1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -113,7 +123,6 @@
                             <Button x:Name="PART_OkButton"
                                     MinWidth="65"
                                     Margin="6,0,0,0"
-                                    Background="Red"
                                     Content="{x:Static res:General.Ok}"
                                     Style="{StaticResource ButtonMessageUIStyle}" />
                         </Grid>

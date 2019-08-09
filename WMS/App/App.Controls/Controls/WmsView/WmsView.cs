@@ -191,11 +191,12 @@ namespace Ferretto.WMS.App.Controls
         {
             var clonedView = new WmsView
             {
-                MapId = this.MapId,
+                Content = this.Content,
                 Data = this.Data,
                 DataContext = this.DataContext,
+                MapId = this.MapId,
+                Title = this.Title,
                 Token = this.Token,
-                Content = this.Content,
             };
             return clonedView;
         }
