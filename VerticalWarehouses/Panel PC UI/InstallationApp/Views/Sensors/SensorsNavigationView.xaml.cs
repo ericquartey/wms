@@ -1,12 +1,12 @@
 ﻿using Ferretto.VW.App.Controls;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class SSNavigationButtonsView : View
+    public partial class SensorsNavigationView : View
     {
         #region Constructors
 
-        public SSNavigationButtonsView()
+        public SensorsNavigationView()
         {
             this.InitializeComponent();
         }
