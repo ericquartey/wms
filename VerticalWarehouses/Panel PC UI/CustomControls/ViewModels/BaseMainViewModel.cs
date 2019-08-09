@@ -3,7 +3,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BaseMainViewModel : BaseServiceViewModel
+    public class BaseMainViewModel : BaseNavigationViewModel
     {
         #region Fields
 

@@ -18,13 +18,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationBack()
         {
-            if (regionNavigationService == null)
-            {
-                throw new ArgumentNullException(nameof(regionNavigationService));
-            }
-
-            this.regionNavigationService = regionNavigationService;
-
             this.Type = PresentationTypes.Back;
 
             this.EventAggregator
@@ -50,10 +43,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 this.journal = message.Journal;
             }
 
-            if (message.States != null &&
-                message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back)
-            {
-                if (back.IsVisible.HasValue)
             if (message.States != null
                 &&
                 message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back

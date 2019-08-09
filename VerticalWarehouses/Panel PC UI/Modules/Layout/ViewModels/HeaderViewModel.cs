@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public override void UpdatePresentation(PresentationMode mode)
         {
-            if (this.CurrentPresentation == PresentationMode.None ||
+            if (mode == PresentationMode.None ||
                 this.CurrentPresentation == mode)
             {
                 return;

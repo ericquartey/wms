@@ -2,6 +2,8 @@
 {
     public enum PresentationMode
     {
+        None,
+
         Help,
 
         Login,
@@ -9,7 +11,6 @@
         Installator,
 
         Operator,
-
-        None,
+     
     }
 }

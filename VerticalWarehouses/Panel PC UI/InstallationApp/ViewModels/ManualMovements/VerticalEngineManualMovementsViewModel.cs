@@ -53,6 +53,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartPositioningAsync(messageData);
         }
 
+        public override void OnNavigated()
+        {
+            base.OnNavigated();
+            this.SohwButton(true);
+        }
+
         private static MovementMessageDataDto CreatePositioningMessageData(decimal displacement)
         {
             return new MovementMessageDataDto

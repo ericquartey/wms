@@ -102,6 +102,12 @@
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Views\Elevator\VerticalAxisCalibrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\Elevator\VerticalOffsetCalibrationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Views\Sensors\BaysSensorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>

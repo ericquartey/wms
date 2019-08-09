@@ -6,7 +6,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BaseServiceViewModel : BaseNavigationViewModel
+    public class BaseNavigationViewModel : ViewModelBase
     {
         #region Fields
 
@@ -14,11 +14,13 @@ namespace Ferretto.VW.App.Controls
 
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
+        private IRegionNavigationJournal journal;
+
         #endregion
 
         #region Constructors
 
-        public BaseServiceViewModel()
+        public BaseNavigationViewModel()
         {
         }
 
@@ -34,11 +36,27 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
+        public void GoBack()
+        {
+            this.journal?.GoBack();
+        }
+
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
-            var journal = navigationContext.NavigationService.Journal;
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(journal));
+            this.journal = navigationContext.NavigationService.Journal;
+            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(this.journal));
+        }
+
+        public void SohwButton(bool isVisible)
+        {
+            var state = new Presentation()
+            {
+                Type = PresentationTypes.Back,
+                IsVisible = isVisible
+            };
+
+            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(state));
         }
 
         #endregion

@@ -5,11 +5,11 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public class BaseNavigationViewModel : BindableBase, INavigableViewModel, INavigationAware
+    public class ViewModelBase : BindableBase, INavigableViewModel, INavigationAware
     {
         #region Constructors
 
-        protected BaseNavigationViewModel()
+        protected ViewModelBase()
         {
         }
 
@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Controls
         #region Destructors
 
         // Use C# destructor syntax for finalization code.
-        ~BaseNavigationViewModel()
+        ~ViewModelBase()
         {
             // Simply call Dispose(false).
             this.Dispose(false);

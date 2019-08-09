@@ -10,7 +10,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
-    public class BasePresentationViewModel : BaseServiceViewModel
+    public class BasePresentationViewModel : BaseNavigationViewModel
     {
         #region Fields
 

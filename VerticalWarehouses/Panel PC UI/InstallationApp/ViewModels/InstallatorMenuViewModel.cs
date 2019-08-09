@@ -48,14 +48,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void OnNavigated()
         {
             base.OnNavigated();
-
-            var state = new Presentation()
-            {
-                Type = PresentationTypes.Back,
-                IsVisible = false
-            };
-
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(state));
+            this.SohwButton(false);
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, NavigationMenuItem menuItem)

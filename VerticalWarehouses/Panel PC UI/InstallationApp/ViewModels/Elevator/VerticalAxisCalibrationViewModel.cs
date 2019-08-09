@@ -197,6 +197,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 false);
         }
 
+        public override void OnNavigated()
+        {
+            base.OnNavigated();
+            this.SohwButton(true);
+        }
+
         public void UnSubscribeMethodFromEvent()
         {
             this.EventAggregator
