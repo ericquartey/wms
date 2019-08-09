@@ -48,6 +48,8 @@
 
         PowerEnable,
 
-        InverterFaultReset
+        InverterFaultReset,
+
+        InverterStatusWord
     }
 }

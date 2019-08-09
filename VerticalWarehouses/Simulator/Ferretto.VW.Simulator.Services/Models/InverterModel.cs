@@ -348,7 +348,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             set
             {
-                this.statusWord |= 0x0008;
+                if (value)
+                {
+                    this.statusWord |= 0x0008;
+                }
+                else
+                {
+                    this.statusWord &= ~0x0008;
+                }
             }
         }
 

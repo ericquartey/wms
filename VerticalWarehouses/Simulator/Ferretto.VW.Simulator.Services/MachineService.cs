@@ -355,6 +355,7 @@ namespace Ferretto.VW.Simulator.Services
                             }
                             break;
                     }
+                    this.UpdateInverter(inverter);
                 }
             }
             else
