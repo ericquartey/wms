@@ -557,7 +557,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 }
             }
 
-            this.IsAcceptButtonActive = this.newResolutionDec > 0 ? true : false;
+            this.IsAcceptButtonActive = this.newResolutionDec > 0;
         }
 
         #endregion

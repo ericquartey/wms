@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         decimal Offset { get; }
 
-        decimal Resolution { get; }
+        decimal Resolution { get; set; }
 
         decimal TakingOffset { get; }
 

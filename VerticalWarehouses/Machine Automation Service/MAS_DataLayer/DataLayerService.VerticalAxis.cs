@@ -43,7 +43,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public decimal Offset => this.GetDecimalConfigurationValue((long)VerticalAxis.Offset, ConfigurationCategory.VerticalAxis);
 
-        public decimal Resolution => this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
+        public decimal Resolution
+        {
+            get => this.GetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis);
+            set => this.SetDecimalConfigurationValue((long)VerticalAxis.Resolution, ConfigurationCategory.VerticalAxis, value);
+        }
 
         public decimal TakingOffset => this.GetDecimalConfigurationValue((long)VerticalAxis.TakingOffset, ConfigurationCategory.VerticalAxis);
 
