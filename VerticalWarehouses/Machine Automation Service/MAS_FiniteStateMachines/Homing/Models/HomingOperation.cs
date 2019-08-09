@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Homing.Interfaces;
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Homing.Models

@@ -22,13 +22,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             IIoStateMachine parentStateMachine,
             IoSHDStatus status,
             IoIndex index,
-            ILogger logger)
-            : base(parentStateMachine, logger)
+            ILogger logger )
+            : base( parentStateMachine, logger )
         {
             this.status = status;
             this.index = index;
 
-            logger.LogTrace("1:Method Start");
+            logger.LogTrace( "1:Method Start" );
         }
 
         #endregion
@@ -37,43 +37,43 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         ~PowerUpStartState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessMessage(IoSHDMessage message)
+        public override void ProcessMessage( IoSHDMessage message )
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}" );
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
             {
-                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState( new PowerUpClearOutputsState( this.ParentStateMachine, this.status, this.index, this.Logger ) );
             }
         }
 
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        public override void ProcessResponseMessage( IoSHDReadMessage message )
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace( "1:Method Start" );
 
             if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data)
             {
-                this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
+                this.Logger.LogTrace( $"2:Format data operation message={message.FormatDataOperation}" );
 
-                this.ParentStateMachine.ChangeState(new ConfigState(this.ParentStateMachine, this.status, this.index, this.Logger));
+                this.ParentStateMachine.ChangeState( new PowerUpConfigState( this.ParentStateMachine, this.status, this.index, this.Logger ) );
             }
         }
 
         public override void Start()
         {
-            var message = new IoSHDWriteMessage(this.status.OutputData);
+            var message = new IoSHDWriteMessage( this.status.OutputData );
 
-            this.ParentStateMachine.EnqueueMessage(message);
+            this.ParentStateMachine.EnqueueMessage( message );
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

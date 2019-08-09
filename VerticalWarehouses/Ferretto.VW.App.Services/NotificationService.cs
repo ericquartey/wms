@@ -204,6 +204,10 @@ namespace Ferretto.VW.App.Services
                     }
                     break;
 
+                case NotificationMessageUI<InverterStatusWordMessageData> isw:
+                    this.eventAggregator.GetEvent<NotificationEventUI<InverterStatusWordMessageData>>().Publish(isw);
+                    break;
+
 
                 case null:
                     if (Debugger.IsAttached)

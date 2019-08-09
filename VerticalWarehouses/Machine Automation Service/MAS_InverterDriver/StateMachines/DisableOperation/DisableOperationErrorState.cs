@@ -6,28 +6,27 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
+namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    public class VerticalPositioningEndState : InverterStateBase
+    public class DisableOperationErrorState : InverterStateBase
     {
         #region Constructors
 
-        public VerticalPositioningEndState(
+        public DisableOperationErrorState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
-            ILogger logger)
-            : base(parentStateMachine, inverterStatus, logger)
+            ILogger logger )
+            : base( parentStateMachine, inverterStatus, logger )
         {
-            this.Logger.LogTrace("1:Method Start");
         }
 
         #endregion
 
         #region Destructors
 
-        ~VerticalPositioningEndState()
+        ~DisableOperationErrorState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
@@ -45,32 +44,33 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Template
                 "Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterStop,
-                MessageStatus.OperationEnd);
+                FieldMessageType.InverterDisable,
+                MessageStatus.OperationError,
+                ErrorLevel.Error );
 
-            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.Logger.LogTrace( $"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}" );
 
-            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+            this.ParentStateMachine.PublishNotificationEvent( notificationMessage );
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace( "1:Method Start" );
         }
 
         /// <inheritdoc />
-        public override bool ValidateCommandMessage(InverterMessage message)
+        public override bool ValidateCommandMessage( InverterMessage message )
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace( $"1:message={message}:Is Error={message.IsError}" );
 
             //True means I want to request a status word.
             return false;
         }
 
-        public override bool ValidateCommandResponse(InverterMessage message)
+        public override bool ValidateCommandResponse( InverterMessage message )
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.Logger.LogTrace( $"1:message={message}:Is Error={message.IsError}" );
 
             //True means I got the expected response. Do not request more status words
             return true;
