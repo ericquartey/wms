@@ -357,7 +357,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             var resultAssignment = await this.resolutionCalibrationService.SetResolutionParameterAsync(this.newResolutionDec);
 
-            if (resultAssignment == true)
+            if (resultAssignment)
             {
                 this.IsAcceptButtonActive = false;
                 this.IsUpdateResolutionButtonActive = false;

@@ -101,11 +101,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement
-                    .SetBoolConfigurationValue(
-                        (long)SetupStatus.VerticalResolutionDone,
-                        ConfigurationCategory.SetupStatus,
-                        true);
+                this.setupStatus.VerticalResolutionDone = true;
             }
             catch (Exception)
             {

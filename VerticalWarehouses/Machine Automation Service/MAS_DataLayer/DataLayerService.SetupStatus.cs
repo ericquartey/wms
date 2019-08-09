@@ -50,7 +50,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool VerticalOffsetDone => this.GetBoolConfigurationValue((long)SetupStatus.VerticalOffsetDone, ConfigurationCategory.SetupStatus);
 
-        public bool VerticalResolutionDone => this.GetBoolConfigurationValue((long)SetupStatus.VerticalResolutionDone, ConfigurationCategory.SetupStatus);
+        public bool VerticalResolutionDone
+        { 
+          get => this.GetBoolConfigurationValue((long)SetupStatus.VerticalResolutionDone, ConfigurationCategory.SetupStatus);
+          set => this.SetBoolConfigurationValue((long)SetupStatus.VerticalResolutionDone, ConfigurationCategory.SetupStatus, value);
+        }
 
         public bool WeightMeasurementDone => this.GetBoolConfigurationValue((long)SetupStatus.WeightMeasurementDone, ConfigurationCategory.SetupStatus);
 
