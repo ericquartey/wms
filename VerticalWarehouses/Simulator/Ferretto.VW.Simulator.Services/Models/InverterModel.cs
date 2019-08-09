@@ -340,8 +340,21 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsFault
         {
-            get => (this.statusWord & 0x0008) > 0;
-            set => this.statusWord |= 0x0008;
+            get
+            {
+                return (this.statusWord & 0x0008) > 0;
+            }
+            set
+            {
+                if (value)
+                {
+                    this.statusWord |= 0x0008;
+                }
+                else
+                {
+                    this.statusWord &= ~0x0008;
+                }
+            }
         }
 
         public bool IsOperationEnabled => (this.statusWord & 0x0004) > 0;

@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.MoveDrawer
 
                         // TEMP Check sensors' status
                         // NOTE: Comment the line about the sensor check, if you use it with Bender
-                        if (!this.machineSensorsStatus.IsDrawerCompletelyOnCradleBay1)
+                        if (!this.machineSensorsStatus.IsDrawerCompletelyOnCradle)
                         {
                             var notificationMessage = new NotificationMessage(
                                 null,
