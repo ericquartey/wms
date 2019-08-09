@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -8,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BasePositioningViewModel : BaseMainViewModel
+    public class BasePositioningViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
@@ -25,7 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         protected BasePositioningViewModel(IPositioningMachineService positioningService)
-            : base(Services.PresentationMode.Installator)
         {
             if (positioningService == null)
             {

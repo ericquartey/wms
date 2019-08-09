@@ -9,7 +9,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
     {
         public DrawerActivityLocalCallView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

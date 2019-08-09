@@ -4,9 +4,7 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d">
 
     <Grid Width="1024"
@@ -25,19 +23,19 @@
                   Width="670"
                         Content="{Binding DataGridViewModel}">
         </ContentControl>
-        
+
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,130,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,195,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
                   Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
+
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="380,520,0,0" MaxWidth="350"
                                                ContentText="Cassetto bloccato."
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>

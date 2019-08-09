@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other
 
         public GeneralInfoViewModel(
             IIdentityMachineService identityService,
-            Ferretto.WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient,
+            WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient,
             IOtherNavigationViewModel otherNavigationViewModel)
         {
             if (identityService == null)

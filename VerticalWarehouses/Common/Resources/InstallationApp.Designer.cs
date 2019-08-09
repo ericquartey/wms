@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -318,6 +318,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BrakeResistanceOvertemperature {
             get {
                 return ResourceManager.GetString("BrakeResistanceOvertemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carousel.
+        /// </summary>
+        public static string Carousel {
+            get {
+                return ResourceManager.GetString("Carousel", resourceCulture);
             }
         }
         
@@ -970,6 +979,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal Axis.
+        /// </summary>
+        public static string HorizontalAxis {
+            get {
+                return ResourceManager.GetString("HorizontalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal axis homed.
         /// </summary>
         public static string HorizontalAxisHomedDone {
@@ -1303,15 +1321,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carousel.
-        /// </summary>
-        public static string LSMTCarouselButton {
-            get {
-                return ResourceManager.GetString("LSMTCarouselButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Carousel movements.
         /// </summary>
         public static string LSMTCarouselPageHeader {
@@ -1339,15 +1348,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate.
-        /// </summary>
-        public static string LSMTGateEngineButton {
-            get {
-                return ResourceManager.GetString("LSMTGateEngineButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Gate engine movements.
         /// </summary>
         public static string LSMTGateEngineTitle {
@@ -1357,20 +1357,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal Axis.
-        /// </summary>
-        public static string LSMTHorizontalEngineButton {
-            get {
-                return ResourceManager.GetString("LSMTHorizontalEngineButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Horizontal axis movements.
         /// </summary>
-        public static string LSMTHorizontalEngineTitle {
+        public static string LSMTHorizontalAxisTitle {
             get {
-                return ResourceManager.GetString("LSMTHorizontalEngineTitle", resourceCulture);
+                return ResourceManager.GetString("LSMTHorizontalAxisTitle", resourceCulture);
             }
         }
         
@@ -1380,15 +1371,6 @@ namespace Ferretto.VW.App.Resources {
         public static string LSMTNoteHeader {
             get {
                 return ResourceManager.GetString("LSMTNoteHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis.
-        /// </summary>
-        public static string LSMTVerticalEngineButton {
-            get {
-                return ResourceManager.GetString("LSMTVerticalEngineButton", resourceCulture);
             }
         }
         
@@ -2077,6 +2059,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gate.
+        /// </summary>
+        public static string Shutter {
+            get {
+                return ResourceManager.GetString("Shutter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sensor shutter A bay 1.
         /// </summary>
         public static string ShutterSensorABay1 {
@@ -2347,11 +2338,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical and craddle.
+        ///   Looks up a localized string similar to Vertical Axis.
         /// </summary>
         public static string VerticalAxis {
             get {
                 return ResourceManager.GetString("VerticalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical and cradle.
+        /// </summary>
+        public static string VerticalAxisAndCradle {
+            get {
+                return ResourceManager.GetString("VerticalAxisAndCradle", resourceCulture);
             }
         }
         

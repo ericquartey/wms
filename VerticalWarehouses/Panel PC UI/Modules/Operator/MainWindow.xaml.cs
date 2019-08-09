@@ -105,8 +105,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private void UnsubscribeEvents()
         {
-            MainWindow.FinishedMachineModeChangeStateEventHandler = null;
-            MainWindow.FinishedMachineOnMarchChangeStateEventHandler = null;
+            FinishedMachineModeChangeStateEventHandler = null;
+            FinishedMachineOnMarchChangeStateEventHandler = null;
         }
 
         #endregion

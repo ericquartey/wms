@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class HorizontalEngineManualMovementsView : View
+    public partial class HorizontalAxisManualMovementsView : View
     {
         #region Constructors
 
-        public HorizontalEngineManualMovementsView()
+        public HorizontalAxisManualMovementsView()
         {
             this.InitializeComponent();
         }

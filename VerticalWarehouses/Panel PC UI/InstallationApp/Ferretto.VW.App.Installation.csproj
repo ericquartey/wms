@@ -63,8 +63,8 @@
     <Compile Update="Views\ManualMovements\CarouselManualMovementsView.xaml.cs">
       <DependentUpon>CarouselManualMovementsView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\ManualMovements\HorizontalEngineManualMovementsView.xaml.cs">
-      <DependentUpon>HorizontalEngineManualMovementsView.xaml</DependentUpon>
+    <Compile Update="Views\ManualMovements\HorizontalAxisManualMovementsView.xaml.cs">
+      <DependentUpon>HorizontalAxisManualMovementsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ManualMovements\ShutterEngineManualMovementsView.xaml.cs">
       <DependentUpon>ShutterEngineManualMovementsView.xaml</DependentUpon>

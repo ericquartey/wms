@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
@@ -75,8 +73,6 @@
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=OneWay}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
                     <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
-                                                        ContentText="Error"
-                                                        CustomCommand="{Binding ErrorButtonCommand}"
                                                         Visibility="Collapsed" />
                     <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
                                                           ContentText="Service"

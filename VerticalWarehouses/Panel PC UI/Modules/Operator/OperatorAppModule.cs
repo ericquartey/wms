@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
             containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
-            containerRegistry.RegisterSingleton<Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService, NavigationService>();
+            containerRegistry.RegisterSingleton<Interfaces.INavigationService, NavigationService>();
 
             containerRegistry.RegisterSingleton<IIdleViewModel, IdleViewModel>();
             containerRegistry.RegisterSingleton<IFooterViewModel, FooterViewModel>();

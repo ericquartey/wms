@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -11,15 +10,11 @@ using Prism.Mvvm;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ShutterEngineManualMovementsViewModel : BaseMainViewModel
+    public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
-        private readonly DelegateCommand currentShutterPosition;
-
         private readonly IShutterMachineService shutterService;
-
-        private readonly ITestMachineService testService;
 
         private ShutterPosition? currentPosition;
 
@@ -36,7 +31,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ShutterEngineManualMovementsViewModel(IShutterMachineService shutterService)
-            : base(Services.PresentationMode.Installator)
         {
             if (shutterService == null)
             {

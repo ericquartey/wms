@@ -127,9 +127,5 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\ErrorDetails\" />
-  </ItemGroup>
-
 </Project>
 

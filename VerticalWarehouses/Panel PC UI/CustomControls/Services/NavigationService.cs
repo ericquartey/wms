@@ -86,12 +86,6 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public void GoBack()
-        {
-            var journal = this.regionNavigationService.Journal;
-            journal.GoBack();
-        }
-
         public void LoadModule(string moduleName)
         {
             var catalog = this.container.Resolve<IModuleCatalog>();

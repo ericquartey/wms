@@ -5,20 +5,20 @@ using Ferretto.VW.App.Controls.Controls;
 
 namespace Ferretto.VW.App.Controls
 {
-    public partial class PpcMenuWrap : ItemsControl
+    public partial class PpcStackedMenu : ItemsControl
     {
         #region Fields
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             nameof(Orientation),
             typeof(Orientation),
-            typeof(PpcMenuWrap));
+            typeof(PpcStackedMenu));
 
         #endregion
 
         #region Constructors
 
-        public PpcMenuWrap()
+        public PpcStackedMenu()
         {
             this.InitializeComponent();
         }

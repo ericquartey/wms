@@ -20,7 +20,7 @@
 
             public const string CAROUSEL = "CarouselManualMovementsViewModel";
 
-            public const string HORIZONTALENGINE = "HorizontalEngineManualMovementsViewModel";
+            public const string HORIZONTALENGINE = "HorizontalAxisManualMovementsViewModel";
 
             public const string NAVIGATION = "ManualMovementsNavigationViewModel";
 

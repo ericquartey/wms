@@ -8,60 +8,67 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Width="774"
-          Height="608">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Margin="170,30,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
+        <views:ManualMovementsNavigationView Margin="0,30,0,0" />
 
-        <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
-                                            Margin="170,300,0,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top"
-                                            ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.ActualPosition}" />
-        <Button Name="GateEngineUp"
-                Margin="440,300,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{x:Static res:InstallationApp.Up}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Button>
+        <Grid Grid.Column="1">
+            <TextBlock Margin="170,30,0,0"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
 
-        <Button Name="GateEngineDown"
-                Margin="440,420,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{x:Static res:InstallationApp.Down}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Button>
-        <custom:CustomLabelTextBlockControl Width="500"
-                                            Height="100"
-                                            Margin="170,130,0,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Top"
-                                            ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
-                                            LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
+            <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
+                                                Margin="170,300,0,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+            <Button Name="GateEngineUp"
+                    Margin="440,300,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="{x:Static res:InstallationApp.Up}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Button Name="GateEngineDown"
+                    Margin="440,420,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="{x:Static res:InstallationApp.Down}"
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseUp">
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <custom:CustomLabelTextBlockControl Width="500"
+                                                Height="100"
+                                                Margin="170,130,0,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
+                                                LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
+        </Grid>
     </Grid>
 </ctrls:View>

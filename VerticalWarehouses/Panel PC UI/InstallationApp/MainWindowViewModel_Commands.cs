@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Installation
 
         private ICommand lsmtGateEngineButtonCommand;
 
-        private ICommand lsmtHorizontalEngineButtonCommand;
+        private ICommand lsmtHorizontalAxisButtonCommand;
 
         private ICommand lsmtVerticalEngineButtonCommand;
 
@@ -212,19 +212,19 @@ namespace Ferretto.VW.App.Installation
              (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(
                  async () => await this.NavigateToViewAsync<LSMTMainViewModel, ILSMTMainViewModel>()));
 
-         public ICommand LSMTGateEngineButtonCommand =>
+         public ICommand ShutterCommand =>
              this.lsmtGateEngineButtonCommand
              ??
              (this.lsmtGateEngineButtonCommand = new DelegateCommand(
                  async () => await this.NavigateToViewAsync<LSMTShutterEngineViewModel, ILSMTShutterEngineViewModel>()));
 
-         public ICommand LSMTHorizontalEngineButtonCommand =>
-             this.lsmtHorizontalEngineButtonCommand
+         public ICommand HorizontalAxisCommand =>
+             this.lsmtHorizontalAxisButtonCommand
              ??
-             (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(
-                 async () => await this.NavigateToViewAsync<LSMTHorizontalEngineViewModel, ILSMTHorizontalEngineViewModel>()));
+             (this.lsmtHorizontalAxisButtonCommand = new DelegateCommand(
+                 async () => await this.NavigateToViewAsync<LSMTHorizontalAxisViewModel, ILSMTHorizontalAxisViewModel>()));
 
-         public ICommand LSMTVerticalEngineButtonCommand =>
+         public ICommand VerticalAxisCommand =>
              this.lsmtVerticalEngineButtonCommand
              ??
              (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(

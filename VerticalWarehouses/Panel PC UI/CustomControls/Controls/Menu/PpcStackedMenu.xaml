@@ -1,4 +1,4 @@
-﻿<ItemsControl x:Class="Ferretto.VW.App.Controls.PpcMenuWrap"
+﻿<ItemsControl x:Class="Ferretto.VW.App.Controls.PpcStackedMenu"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,14 +6,14 @@
               mc:Ignorable="d">
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <WrapPanel Orientation="{Binding Orientation}" />
+            <StackPanel Orientation="Vertical" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
         <DataTemplate>
             <Border Width="170"
                     Height="70"
-                    Margin="13,6,13,6"
+                    Margin="13,0,13,12"
                     BorderThickness="1">
                 <Button Command="{Binding NavigateCommand}">
                     <Button.Content>
@@ -26,22 +26,5 @@
                 </Button>
             </Border>
         </DataTemplate>
-        <!--<DataTemplate>
-            <Border Width="170"
-                    Height="70"
-                    Margin="13,6,13,6"
-                    BorderThickness="1">
-                <Button Command="{Binding NavigateCommand}">
-                    <Button.Content>
-                        <TextBlock Name="Description"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch"
-                                   Text="{Binding Description}"
-                                   TextWrapping="Wrap" />
-                    </Button.Content>
-                </Button>
-            </Border>
-        </DataTemplate>-->
-
     </ItemsControl.ItemTemplate>
 </ItemsControl>

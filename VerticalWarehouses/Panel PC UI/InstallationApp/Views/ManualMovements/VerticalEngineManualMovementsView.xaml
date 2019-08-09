@@ -8,13 +8,19 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Width="774"
-          Height="608">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
+        <views:ManualMovementsNavigationView Margin="0,30,0,0" />
+
+        <Grid Grid.Column="1">
         <TextBlock Margin="170,30,0,0"
-                   HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
@@ -66,5 +72,5 @@
                                             VerticalAlignment="Top"
                                             ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
                                             LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
-    </Grid>
+        </Grid> </Grid>
 </ctrls:View>

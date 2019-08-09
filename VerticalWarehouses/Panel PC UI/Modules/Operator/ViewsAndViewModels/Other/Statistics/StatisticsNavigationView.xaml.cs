@@ -9,7 +9,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         public StatisticsNavigationView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }
