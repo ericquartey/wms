@@ -114,8 +114,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var viewAttribute = enumValue.GetAttributeOfType<InstallatorMenus, ViewAttribute>();
                 var dispAttribute = enumValue.GetAttributeOfType<InstallatorMenus, DisplayAttribute>();
 
-                this.AddMenuItem(viewAttribute.InstallatorMenuType,
-                                new NavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description));
+                if (viewAttribute != null
+                    &&
+                    dispAttribute != null)
+                {
+                    this.AddMenuItem(viewAttribute.InstallatorMenuType,
+                                    new NavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description));
+                }
             }
 
             this.RaisePropertyChanged(nameof(this.InstallatorItems));

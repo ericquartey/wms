@@ -2,6 +2,7 @@
 using System.Linq;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
@@ -10,13 +11,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
+        private readonly INavigationService navigationService;
+
         private IRegionNavigationJournal journal;
 
         #endregion
 
         #region Constructors
 
-        public PresentationBack()
+        public PresentationBack(INavigationService navigationService)
         {
             this.Type = PresentationTypes.Back;
 
@@ -25,6 +28,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 .Subscribe(this.Update);
             this.Type = PresentationTypes.Back;
             this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>().Subscribe(this.Update);
+            this.navigationService = navigationService;
         }
 
         #endregion
@@ -33,7 +37,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override void Execute()
         {
-            this.journal?.GoBack();
+            this.navigationService.GoBack();
+            //this.journal?.GoBack();
         }
 
         private void Update(PresentationChangedMessage message)

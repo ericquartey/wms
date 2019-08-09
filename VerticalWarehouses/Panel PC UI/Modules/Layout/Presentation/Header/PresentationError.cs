@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override void Execute()
         {
-            this.navigationService.Appear(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW);
+            this.navigationService.Appear(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW, false);
         }
 
         private async Task CheckErrorsPresenceAsync()

@@ -19,24 +19,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.menuItems.Add(
                 new NavigationMenuItem(
+                    Resources.InstallatorMenus.None,
                     Utils.Modules.Installation.ManualMovements.VERTICALENGINE,
                     nameof(Utils.Modules.Installation),
                     Ferretto.VW.App.Resources.InstallationApp.VerticalAxis));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
+                    Resources.InstallatorMenus.None,
                     Utils.Modules.Installation.ManualMovements.HORIZONTALENGINE,
                     nameof(Utils.Modules.Installation),
                     Ferretto.VW.App.Resources.InstallationApp.HorizontalAxis));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
+                    Resources.InstallatorMenus.None,
                     Utils.Modules.Installation.ManualMovements.SHUTTER,
                     nameof(Utils.Modules.Installation),
                     Ferretto.VW.App.Resources.InstallationApp.Shutter));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
+                    Resources.InstallatorMenus.None,
                     Utils.Modules.Installation.ManualMovements.CAROUSEL,
                     nameof(Utils.Modules.Installation),
                     Ferretto.VW.App.Resources.InstallationApp.Carousel));

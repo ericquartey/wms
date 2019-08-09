@@ -222,7 +222,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.INSTALLATORMENU);
+                    Utils.Modules.Installation.INSTALLATORMENU, true);
             }
             catch (Exception ex)
             {
@@ -239,7 +239,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.NavigationService.LoadModule(nameof(Utils.Modules.Operator));
 
-                this.NavigationService.Appear(nameof(Utils.Modules.Operator), "TODO"); // TODO
+                this.NavigationService.Appear(nameof(Utils.Modules.Operator), "TODO", true); // TODO
             }
             catch (Exception ex)
             {

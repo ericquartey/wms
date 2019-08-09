@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public override void Execute()
         {
-            this.navigationService.Appear(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
+            this.navigationService.Appear(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN, false);
         }
 
         private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)

@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Installation.Models
 
         private void Navigate()
         {
-            this.navigationService.Appear(this.moduleName, this.viewModelName);
+            this.navigationService.Appear(this.moduleName, this.viewModelName, true);
         }
 
         #endregion

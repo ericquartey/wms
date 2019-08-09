@@ -4,11 +4,7 @@ using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {
-    public interface IView
-    {
-    }
-
-    public class View : UserControl, IView
+    public class View : UserControl
     {
         #region Constructors
 

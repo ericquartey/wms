@@ -4,9 +4,11 @@
     {
         #region Methods
 
-        void Appear(string moduleName, string viewModelName, object data = null);
+        void Appear(string moduleName, string viewModelName, bool keepTrack, object data = null);
 
         void Disappear(INavigableViewModel viewModel);
+
+        void GoBack();
 
         void LoadModule(string moduleName);
 

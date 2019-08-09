@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.Utils;
@@ -23,6 +25,10 @@ namespace Ferretto.VW.App.Services
 
         private readonly IRegionNavigationService regionNavigationService;
 
+        private readonly Stack<NavigationTrack> tracks = new Stack<NavigationTrack>();
+
+        private bool isLastTrack;
+
         #endregion
 
         #region Constructors
@@ -41,7 +47,7 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, object data = null)
+        public void Appear(string moduleName, string viewModelName, bool keepTrack, object data = null)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
@@ -60,6 +66,12 @@ namespace Ferretto.VW.App.Services
                 parameters.Add(viewModelName, data);
 
                 this.regionManager.RequestNavigate(Ferretto.VW.Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
+
+                if (keepTrack)
+                {
+                    this.tracks.Push(new NavigationTrack(moduleName, viewName));
+                }
+                this.isLastTrack = keepTrack;
             }
             catch (Exception ex)
             {
@@ -83,6 +95,20 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.logger.Error(ex, string.Format("Cannot close view model '{0}'.", viewModel.GetType().Name));
+            }
+        }
+
+        public void GoBack()
+        {
+            if (this.tracks.Count > 0)
+            {                
+                if (this.isLastTrack)
+                {
+                    this.tracks.Pop();
+                    this.isLastTrack = false;
+                }             
+                var track = this.tracks.Last();                
+                this.regionManager.RequestNavigate(Ferretto.VW.Utils.Modules.Layout.REGION_MAINCONTENT, track.ViewName, new NavigationParameters());
             }
         }
 

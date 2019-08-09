@@ -19,6 +19,9 @@ namespace Ferretto.VW.App.Installation.Resources
 
         [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Movimenti manuali a bassa velocità")]
-        VerticalEngineManualMovements
+        VerticalEngineManualMovements,
+
+        //To DO remove after implementing PpcControl for navigation of sub menus
+        None
     }
 }
