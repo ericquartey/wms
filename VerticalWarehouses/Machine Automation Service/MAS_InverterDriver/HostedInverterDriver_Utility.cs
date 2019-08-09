@@ -91,9 +91,32 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.StatusWordParam)
             {
+                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
+                {
+                    if (inverterStatus.CommonStatusWord.Value != currentMessage.UShortPayload)
+                    {
+                        var notificationData = new InverterStatusWordFieldMessageData(currentMessage.UShortPayload);
+                        var msgNotification = new FieldNotificationMessage(
+                        notificationData,
+                        "Inverter Status Word update",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusWord,
+                        MessageStatus.OperationExecuting,
+                        ErrorLevel.NoError,
+                        (byte)inverterIndex);
+
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                    }
+                }
+
                 if (this.CurrentStateMachine == null)
                 {
                     this.logger.LogWarning( $"Status word received current machine null" );
+                    if(inverterStatus != null)
+                    {
+                        inverterStatus.CommonStatusWord.Value = currentMessage.UShortPayload;
+                    }
                 }
 
                 if (!this.CurrentStateMachine?.ValidateCommandResponse( currentMessage ) ?? false)
@@ -111,6 +134,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.logger.LogTrace( "3:Validate Command Response True" );
                 }
+
             }
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)

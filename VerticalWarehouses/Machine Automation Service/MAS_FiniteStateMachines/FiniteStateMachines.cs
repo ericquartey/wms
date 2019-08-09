@@ -308,6 +308,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                         {
                             var ioIndex = receivedMessage.DeviceIndex;
+                            var oldNormalState = this.machineSensorsStatus.IsMachineInNormalState;
 
                             if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
@@ -324,6 +325,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceRemoteIoStatusPublish = false;
+                            }
+                            if (oldNormalState
+                                && !this.machineSensorsStatus.IsMachineInNormalState
+                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                                )
+                            {
+                                this.logger.LogWarning($"3b:Normal machine state fall detected! Set Power Enable Off.");
+                                var powerEnableData = new PowerEnableMessageData(false);
+                                this.CreatePowerEnableStateMachine(powerEnableData);
                             }
                         }
                         break;
@@ -376,11 +386,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
                         {
-                            var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
                             var statusWord = new StatusWordBase(statusWordData.Value);
                             if (statusWord.IsFault
                                 && this.machineSensorsStatus.IsMachineInNormalState
-                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine") )
+                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
                                 )
                             {
                                 this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
@@ -388,6 +397,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 this.CreatePowerEnableStateMachine(powerEnableData);
                             }
 
+                            var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
                             msg = new NotificationMessage(
                             msgData,
                             "Inverter Status Word",
