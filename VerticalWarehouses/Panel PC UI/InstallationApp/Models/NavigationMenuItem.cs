@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -18,8 +16,6 @@ namespace Ferretto.VW.App.Installation.Models
 
         private bool isEnabled;
 
-        private InstallatorMenus menuItemType;
-
         private string moduleName;
 
         private ICommand navigateCommand;
@@ -30,12 +26,12 @@ namespace Ferretto.VW.App.Installation.Models
 
         #region Constructors
 
-        public NavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description)
+        public NavigationMenuItem(string viewModelName, string moduleName, string description)
         {
             this.ViewModelName = viewModelName;
             this.ModuleName = moduleName;
             this.Description = description;
-            this.MenuItemType = menuItemType;
+
             this.IsEnabled = true;
         }
 
@@ -59,12 +55,6 @@ namespace Ferretto.VW.App.Installation.Models
                     ((DelegateCommand)this.NavigateCommand).RaiseCanExecuteChanged();
                 }
             }
-        }
-
-        public InstallatorMenus MenuItemType
-        {
-            get => this.menuItemType;
-            set => this.SetProperty(ref this.menuItemType, value);
         }
 
         public string ModuleName

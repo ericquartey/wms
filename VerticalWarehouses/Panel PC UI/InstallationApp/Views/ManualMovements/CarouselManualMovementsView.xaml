@@ -11,7 +11,6 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -47,19 +46,27 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Margin="170,30,0,0"
+                <TextBlock Grid.ColumnSpan="2"
                            VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.LSMTCarouselPageHeader}" />
 
-                <custom:CustomLabelTextBlockControl Margin="170,300,0,0"
+                <custom:CustomLabelTextBlockControl Grid.Row="1"
+                                                    Grid.ColumnSpan="2"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Top"
+                                                    ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
+                                                    LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
+
+
+                <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Top"
                                                     ContentText="1235,2"
                                                     LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
-                <Button x:Name="VerticalEngineUp"
-                        Margin="440,300,0,0"
+                <Button Grid.Row="2"
+                        Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="{x:Static res:InstallationApp.Up}"
@@ -74,8 +81,8 @@
                     </i:Interaction.Triggers>
                 </Button>
 
-                <Button x:Name="VerticalEngineDown"
-                        Margin="440,420,0,0"
+                <Button Grid.Row="3"
+                        Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="{x:Static res:InstallationApp.Down}"
@@ -90,13 +97,6 @@
                     </i:Interaction.Triggers>
                 </Button>
 
-                <custom:CustomLabelTextBlockControl Width="500"
-                                                    Height="100"
-                                                    Margin="170,130,0,0"
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Top"
-                                                    ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
-                                                    LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
 
             </Grid>
         </Grid>

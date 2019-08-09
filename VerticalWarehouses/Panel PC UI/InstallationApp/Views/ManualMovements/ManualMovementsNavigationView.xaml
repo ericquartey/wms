@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid>
-        <ctrls:PpcStackedMenu ItemsSource="{Binding MenuItems}" Orientation="Vertical" />
+        <ctrls:PpcStackedMenu ItemsSource="{Binding MenuItems}"
+                              Orientation="Vertical" />
     </Grid>
 </UserControl>

@@ -20,11 +20,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IInstallationStatusMachineService installationStatusService;
 
-        private readonly BindingList<NavigationMenuItem> installatorItems = new BindingList<NavigationMenuItem>();
+        private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
-        private readonly BindingList<NavigationMenuItem> otherItems = new BindingList<NavigationMenuItem>();
+        private readonly BindingList<MainNavigationMenuItem> otherItems = new BindingList<MainNavigationMenuItem>();
 
-        private readonly BindingList<NavigationMenuItem> sensorsItems = new BindingList<NavigationMenuItem>();
+        private readonly BindingList<MainNavigationMenuItem> sensorsItems = new BindingList<MainNavigationMenuItem>();
 
         #endregion
 
@@ -41,11 +41,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public BindingList<NavigationMenuItem> InstallatorItems => this.installatorItems;
+        public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
 
-        public BindingList<NavigationMenuItem> OtherItems => this.otherItems;
+        public BindingList<MainNavigationMenuItem> OtherItems => this.otherItems;
 
-        public BindingList<NavigationMenuItem> SensorsItems => this.sensorsItems;
+        public BindingList<MainNavigationMenuItem> SensorsItems => this.sensorsItems;
 
         #endregion
 
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void AddMenuItem(InstallatorMenuTypes menuType, NavigationMenuItem menuItem)
+        private void AddMenuItem(InstallatorMenuTypes menuType, MainNavigationMenuItem menuItem)
         {
             switch (menuType)
             {
@@ -94,9 +94,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void EnableMenuItem(IEnumerable<NavigationMenuItem> menuItems, InstallatorMenus menuItemType, bool isEnabled)
+        private void EnableMenuItem(IEnumerable<MainNavigationMenuItem> menuItems, InstallatorMenus menuItemType, bool isEnabled)
         {
-            if (menuItems.FirstOrDefault(i => i.MenuItemType == menuItemType) is NavigationMenuItem menuItem)
+            if (menuItems.FirstOrDefault(i => i.MenuItemType == menuItemType) is MainNavigationMenuItem menuItem)
             {
                 menuItem.IsEnabled = isEnabled;
             }
