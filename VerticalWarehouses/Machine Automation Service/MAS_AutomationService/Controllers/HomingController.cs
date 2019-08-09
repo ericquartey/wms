@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
+                MovementMode.BeltBurnishing,
                 upperBound,
                 maxSpeed,
                 acceleration,
@@ -114,6 +115,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
             var category = (ConfigurationCategory)categoryId;
+
             var parseSuccess = Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
 
             if (parseSuccess)
@@ -138,6 +140,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
+
         }
 
         private ActionResult<int> GetIntegerConfigurationParameter_Method(string categoryString, string parameter)

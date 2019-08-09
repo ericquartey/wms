@@ -16,6 +16,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         decimal LowerBound { get; }
 
+        MovementMode MovementMode { get; set; }
+
         MovementType MovementType { get; }
 
         int NumberCycles { get; }

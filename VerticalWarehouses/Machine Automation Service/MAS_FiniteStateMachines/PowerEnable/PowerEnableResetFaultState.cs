@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -14,9 +13,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
     {
         #region Fields
 
-        private bool disposed;
-
         private InverterIndex currentInverter;
+
+        private bool disposed;
 
         #endregion
 
@@ -58,7 +57,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if(this.currentInverter < InverterIndex.Slave7)
+                        if (this.currentInverter < InverterIndex.Slave7)
                         {
                             this.currentInverter++;
                             var inverterCommandMessageData = new InverterFaultFieldMessageData(this.currentInverter);
@@ -92,7 +91,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
 
         public override void Start()
         {
-
             var inverterCommandMessageData = new InverterFaultFieldMessageData(this.currentInverter);
             var inverterCommandMessage = new FieldCommandMessage(
                 inverterCommandMessageData,

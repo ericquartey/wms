@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -10,10 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
-using static Ferretto.VW.Simulator.Services.BufferUtility;
-using Microsoft.Extensions.Logging;
 using NLog;
 using Prism.Mvvm;
+using static Ferretto.VW.Simulator.Services.BufferUtility;
 
 namespace Ferretto.VW.Simulator.Services
 {
@@ -213,6 +210,12 @@ namespace Ferretto.VW.Simulator.Services
             return byteMessage;
         }
 
+        private int IntValue2Impulses(int value)
+        {
+            const int IMPULSES_ENCODER_PER_ROUND = 1024;
+            return value * IMPULSES_ENCODER_PER_ROUND;
+        }
+
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
         {
             using (client)
@@ -230,7 +233,7 @@ namespace Ferretto.VW.Simulator.Services
                                 var bytes = socket.Receive(buffer);
                                 if (bytes > 0)
                                 {
-                                    byte[] message = new byte[bytes];
+                                    var message = new byte[bytes];
                                     Array.Copy(buffer, 0, message, 0, message.Length);
                                     messageHandler(client, message);
                                 }
@@ -284,7 +287,7 @@ namespace Ferretto.VW.Simulator.Services
                         }
                     }
 
-                    int result = 0;
+                    var result = 0;
                     switch ((InverterParameterId)parameterId)
                     {
                         case InverterParameterId.ControlWordParam:
@@ -295,7 +298,7 @@ namespace Ferretto.VW.Simulator.Services
 
                         case InverterParameterId.DigitalInputsOutputs:
                             var values = this.Inverters.GroupBy(x => x.Id / 2).Select(x => x.First().GetDigitalIO() + (x.Last().GetDigitalIO() << 8)).ToArray();
-                            string inputValues = $" {string.Join(" ", values)} ";
+                            var inputValues = $" {string.Join(" ", values)} ";
                             var ioStatusMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, Encoding.ASCII.GetBytes(inputValues));
                             result = client.Client.Send(ioStatusMessage);
                             break;
@@ -323,6 +326,10 @@ namespace Ferretto.VW.Simulator.Services
                                     inverter.BuildHomingStatusWord();
                                     break;
 
+                                case InverterOperationMode.Position:
+                                    inverter.BuildPositionStatusWord();
+                                    break;
+
                                 case InverterOperationMode.Velocity:
                                 case InverterOperationMode.ProfileVelocity:
                                     inverter.BuildVelocityStatusWord();
@@ -340,7 +347,8 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.ActualPositionShaft:
-                            var actualPositionMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(++inverter.AxisPosition));
+                            var impulses = this.IntValue2Impulses(inverter.AxisPosition);
+                            var actualPositionMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(impulses));
                             result = client.Client.Send(actualPositionMessage);
                             break;
 
@@ -400,7 +408,7 @@ namespace Ferretto.VW.Simulator.Services
                             responseMessage[2] = 0x00;                          // Code op   0x00: data, 0x06: configuration
                             responseMessage[3] = 0x00;                          // error code
                             Array.Copy(extractedMessage, device.FirmwareVersion == 0x11 ? 4 : 3, responseMessage, device.FirmwareVersion == 0x11 ? 5 : 4, 1);  // output values echo
-                            byte[] inputs = BitConverter.GetBytes(device.InputsValue);
+                            var inputs = BitConverter.GetBytes(device.InputsValue);
                             responseMessage[device.FirmwareVersion == 0x11 ? 6 : 5] = inputs[0];
                             responseMessage[device.FirmwareVersion == 0x11 ? 7 : 6] = inputs[1];
                             break;

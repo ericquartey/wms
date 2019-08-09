@@ -2,11 +2,11 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
     {
         #region Fields
 
-        private readonly MachineSensorsStatus machineSensorsStatus;
+        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly int numberExecutedSteps;
 
@@ -30,8 +30,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public PositioningEndState(
             IStateMachine parentMachine,
+            IMachineSensorsStatus machineSensorsStatus,
             IPositioningMessageData positioningMessageData,
-            MachineSensorsStatus machineSensorsStatus,
             ILogger logger,
             int numberExecutedSteps,
             bool stopRequested = false)
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
                             break;
                     }
                     break;
@@ -142,6 +142,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
+
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 500, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStatusUpdate);
+
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+
         }
 
         public override void Stop()
