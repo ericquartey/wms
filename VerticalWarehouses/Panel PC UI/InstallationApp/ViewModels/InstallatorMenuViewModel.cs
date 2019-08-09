@@ -28,6 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public InstallatorMenuViewModel()
             : base(PresentationMode.Installator)
         {
+            this.InitializeData();
         }
 
         #endregion
@@ -48,7 +49,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.OnNavigated();
 
-            this.InitializeData();
+            var state = new Presentation()
+            {
+                Type = PresentationTypes.Back,
+                IsVisible = false
+            };
+
+            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(state));
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, NavigationMenuItem menuItem)
@@ -77,6 +84,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InitializeData()
         {
+            this.InstallatorItems.Clear();
+            this.SensorsItems.Clear();
+            this.OtherItems.Clear();
+
             var values = Enum.GetValues(typeof(InstallatorMenus));
             foreach (InstallatorMenus enumValue in values)
             {

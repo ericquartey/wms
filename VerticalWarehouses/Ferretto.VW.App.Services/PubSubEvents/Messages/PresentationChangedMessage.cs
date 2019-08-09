@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Services
 {
@@ -7,6 +8,8 @@ namespace Ferretto.VW.App.Services
         #region Fields
 
         private readonly string errorMessage;
+
+        private readonly IRegionNavigationJournal journal;
 
         private readonly PresentationMode mode;
 
@@ -28,6 +31,11 @@ namespace Ferretto.VW.App.Services
             this.states = states;
         }
 
+        public PresentationChangedMessage(IRegionNavigationJournal journal)
+        {
+            this.journal = journal;
+        }
+
         public PresentationChangedMessage(Presentation state)
         {
             this.states = new List<Presentation> { state };
@@ -43,6 +51,8 @@ namespace Ferretto.VW.App.Services
         #region Properties
 
         public string ErrorMessage => this.errorMessage;
+
+        public IRegionNavigationJournal Journal => this.journal;
 
         public PresentationMode Mode => this.mode;
 

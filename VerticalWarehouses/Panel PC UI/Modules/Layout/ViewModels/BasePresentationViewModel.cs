@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -13,13 +14,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
     {
         #region Fields
 
-        private readonly PresentationMode currentPresentation;
-
         private readonly PresentationChangedPubSubEvent notificationEvent;
 
         private readonly SubscriptionToken presentationEventSubscription;
 
         private readonly List<IPresentation> states;
+
+        private PresentationMode currentPresentation;
 
         #endregion
 
@@ -27,6 +28,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public BasePresentationViewModel()
         {
+            this.currentPresentation = PresentationMode.None;
             this.states = new List<IPresentation>();
             this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
             this.presentationEventSubscription = this.notificationEvent.Subscribe(
@@ -44,7 +46,11 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #region Properties
 
-        public PresentationMode CurrentPresentation => this.currentPresentation;
+        public PresentationMode CurrentPresentation
+        {
+            get => this.currentPresentation;
+            set => this.SetProperty(ref this.currentPresentation, value);
+        }
 
         public List<IPresentation> States => this.states;
 
@@ -59,6 +65,16 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public virtual void InitializeData()
         {
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
         }
 
         public void PresentationChanged(PresentationChangedMessage presentation)

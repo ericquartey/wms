@@ -1,6 +1,8 @@
 ﻿using CommonServiceLocator;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
@@ -27,6 +29,17 @@ namespace Ferretto.VW.App.Controls
         public IEventAggregator EventAggregator => this.eventAggregator;
 
         public INavigationService NavigationService => this.navigationService;
+
+        #endregion
+
+        #region Methods
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+            var journal = navigationContext.NavigationService.Journal;
+            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(journal));
+        }
 
         #endregion
     }

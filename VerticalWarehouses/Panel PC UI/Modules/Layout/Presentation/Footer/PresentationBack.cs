@@ -10,13 +10,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
-        private readonly IRegionNavigationService regionNavigationService;
+        private IRegionNavigationJournal journal;
 
         #endregion
 
         #region Constructors
 
-        public PresentationBack(IRegionNavigationService regionNavigationService)
+        public PresentationBack()
         {
             if (regionNavigationService == null)
             {
@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
                 .Subscribe(this.Update);
+            this.Type = PresentationTypes.Back;
+            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>().Subscribe(this.Update);
         }
 
         #endregion
@@ -38,12 +40,20 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override void Execute()
         {
-            var journal = this.regionNavigationService.Journal;
-            journal.GoBack();
+            this.journal?.GoBack();
         }
 
         private void Update(PresentationChangedMessage message)
         {
+            if (message.Journal != null)
+            {
+                this.journal = message.Journal;
+            }
+
+            if (message.States != null &&
+                message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back)
+            {
+                if (back.IsVisible.HasValue)
             if (message.States != null
                 &&
                 message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back

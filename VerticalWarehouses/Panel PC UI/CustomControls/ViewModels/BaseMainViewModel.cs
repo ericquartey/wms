@@ -34,8 +34,8 @@ namespace Ferretto.VW.App.Controls
 
         public override void OnNavigated()
         {
-            base.OnNavigated();
             this.UpdatePresentation();
+            base.OnNavigated();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

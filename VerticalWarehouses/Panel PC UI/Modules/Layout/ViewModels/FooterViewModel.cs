@@ -42,6 +42,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 return;
             }
 
+            this.CurrentPresentation = mode;
             switch (mode)
             {
                 case PresentationMode.Login:
@@ -64,6 +65,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 default:
                     break;
             }
+
         }
 
         #endregion
