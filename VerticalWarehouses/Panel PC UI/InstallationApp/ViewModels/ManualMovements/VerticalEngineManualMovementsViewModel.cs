@@ -53,9 +53,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartPositioningAsync(messageData);
         }
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
             this.SohwBack(true);
         }
 

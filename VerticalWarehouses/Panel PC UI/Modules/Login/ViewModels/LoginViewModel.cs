@@ -85,9 +85,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.healthProbeService.SubscribeOnHealthStatusChanged(async (e) => await this.OnHealthStatusChanged(e));
         }
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
         }
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)

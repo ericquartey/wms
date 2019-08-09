@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -66,8 +67,9 @@ namespace Ferretto.VW.App.Controls
             return true;
         }
 
-        public virtual void OnNavigated()
+        public virtual Task OnNavigatedAsync()
         {
+            return Task.CompletedTask;
         }
 
         public virtual void OnNavigatedFrom(NavigationContext navigationContext)

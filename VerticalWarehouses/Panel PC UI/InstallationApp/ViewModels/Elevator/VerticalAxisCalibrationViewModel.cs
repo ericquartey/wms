@@ -197,9 +197,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 false);
         }
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
             this.SohwBack(true);
         }
 

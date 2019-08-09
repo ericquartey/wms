@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Services;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
@@ -32,10 +33,10 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
             this.UpdatePresentation();
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Services;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -16,9 +17,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
             this.SohwBack(true);
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Services.Interfaces
@@ -13,7 +14,7 @@ namespace Ferretto.VW.App.Services.Interfaces
 
         void Disappear();
 
-        void OnNavigated();
+        Task OnNavigatedAsync();
 
         void OnNavigatedFrom(NavigationContext navigationContext);
 

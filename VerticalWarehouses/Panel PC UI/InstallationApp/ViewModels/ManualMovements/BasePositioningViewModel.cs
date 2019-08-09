@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<PositioningMessageData>>()
@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   ThreadOption.PublisherThread,
                   false);
 
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
         }
 
         protected override void Dispose(bool disposing)

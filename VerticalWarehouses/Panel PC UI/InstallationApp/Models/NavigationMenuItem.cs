@@ -1,5 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -14,7 +16,9 @@ namespace Ferretto.VW.App.Installation.Models
 
         private string description;
 
-        private bool isActive;
+        private bool isEnabled;
+
+        private InstallatorMenus menuItemType;
 
         private string moduleName;
 
@@ -26,11 +30,13 @@ namespace Ferretto.VW.App.Installation.Models
 
         #region Constructors
 
-        public NavigationMenuItem(string viewModelName, string moduleName, string description)
+        public NavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description)
         {
             this.ViewModelName = viewModelName;
             this.ModuleName = moduleName;
             this.Description = description;
+            this.MenuItemType = menuItemType;
+            this.IsEnabled = true;
         }
 
         #endregion
@@ -43,10 +49,22 @@ namespace Ferretto.VW.App.Installation.Models
             set => this.SetProperty(ref this.description, value);
         }
 
-        public bool IsActive
+        public bool IsEnabled
         {
-            get => this.isActive;
-            set => this.SetProperty(ref this.isActive, value);
+            get => this.isEnabled;
+            set
+            {
+                if (this.SetProperty(ref this.isEnabled, value))
+                {
+                    ((DelegateCommand)this.NavigateCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public InstallatorMenus MenuItemType
+        {
+            get => this.menuItemType;
+            set => this.SetProperty(ref this.menuItemType, value);
         }
 
         public string ModuleName
@@ -55,7 +73,7 @@ namespace Ferretto.VW.App.Installation.Models
             set => this.SetProperty(ref this.moduleName, value);
         }
 
-        public ICommand NavigateCommand => this.navigateCommand ?? (this.navigateCommand = new DelegateCommand(this.Navigate));
+        public ICommand NavigateCommand => this.navigateCommand ?? (this.navigateCommand = new DelegateCommand(this.Navigate, this.CanNavigate));
 
         public string ViewModelName
         {
@@ -66,6 +84,11 @@ namespace Ferretto.VW.App.Installation.Models
         #endregion
 
         #region Methods
+
+        private bool CanNavigate()
+        {
+            return this.IsEnabled;
+        }
 
         private void Navigate()
         {

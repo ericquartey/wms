@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.Attributes;
 using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -14,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     public class InstallatorMenuViewModel : BaseMainViewModel
     {
         #region Fields
+
+        private readonly IInstallationStatusMachineService installationStatusService;
 
         private readonly BindingList<NavigationMenuItem> installatorItems = new BindingList<NavigationMenuItem>();
 
@@ -25,10 +30,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public InstallatorMenuViewModel()
+        public InstallatorMenuViewModel(IInstallationStatusMachineService installationStatusService)
             : base(PresentationMode.Installator)
         {
             this.InitializeData();
+            this.installationStatusService = installationStatusService;
         }
 
         #endregion
@@ -45,10 +51,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
             this.SohwBack(false);
+
+            try
+            {
+                var installationStatus = await this.installationStatusService.GetStatusAsync();
+                var checkHomingDone = installationStatus.FirstOrDefault();
+
+                this.EnableMenuItem(this.installatorItems, InstallatorMenus.VerticalOffsetCalibration, checkHomingDone);
+            }
+            catch (Exception ex)
+            {
+                this.EnableMenuItem(this.installatorItems, InstallatorMenus.VerticalOffsetCalibration, false);
+                this.ShowError(ex);
+            }
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, NavigationMenuItem menuItem)
@@ -75,6 +94,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void EnableMenuItem(IEnumerable<NavigationMenuItem> menuItems, InstallatorMenus menuItemType, bool isEnabled)
+        {
+            if (menuItems.FirstOrDefault(i => i.MenuItemType == menuItemType) is NavigationMenuItem menuItem)
+            {
+                menuItem.IsEnabled = isEnabled;
+            }
+        }
+
         private void InitializeData()
         {
             this.InstallatorItems.Clear();
@@ -88,7 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var dispAttribute = enumValue.GetAttributeOfType<InstallatorMenus, DisplayAttribute>();
 
                 this.AddMenuItem(viewAttribute.InstallatorMenuType,
-                                new NavigationMenuItem(viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description));
+                                new NavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description));
             }
 
             this.RaisePropertyChanged(nameof(this.InstallatorItems));

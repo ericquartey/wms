@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Threading.Tasks;
+using System.Windows.Controls;
 using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
@@ -13,18 +14,18 @@ namespace Ferretto.VW.App.Controls
 
         public View()
         {
-            this.Loaded += this.View_Loaded;
+            this.Loaded += async (sender, e) => await this.View_Loaded(sender, e);
         }
 
         #endregion
 
         #region Methods
 
-        private void View_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async Task View_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             if (this.DataContext is INavigableViewModel viewModel)
             {
-                viewModel.OnNavigated();
+                await viewModel.OnNavigatedAsync();
             }
         }
 

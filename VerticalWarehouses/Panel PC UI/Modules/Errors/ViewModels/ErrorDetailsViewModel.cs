@@ -54,11 +54,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Methods
 
-        public override async void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
             await this.CheckErrorsPresenceAsync();
 
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
         }
 
         private bool CanExecuteMarkAsResolvedCommand()

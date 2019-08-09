@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Controls;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -45,7 +46,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async void OnNavigated()
+        public override async Task OnNavigatedAsync()
         {
             this.subscriptionToken = this.EventAggregator
               .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
@@ -64,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowError(ex.Message);
             }
 
-            base.OnNavigated();
+            await base.OnNavigatedAsync();
         }
 
         protected override void Dispose(bool disposing)
