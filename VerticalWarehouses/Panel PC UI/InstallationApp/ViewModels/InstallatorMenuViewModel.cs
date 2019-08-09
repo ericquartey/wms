@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     dispAttribute != null)
                 {
                     this.AddMenuItem(viewAttribute.InstallatorMenuType,
-                                    new NavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description));
+                                    new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description));
                 }
             }
 
