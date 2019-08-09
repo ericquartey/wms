@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -156,6 +156,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 var messageData = new PositioningMessageData(
                     Axis.Vertical,
                     MovementType.Absolute,
+                    MovementMode.Position,
                     targetPositionDec,
                     speed,
                     maxAcceleration,
@@ -186,6 +187,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Relative,
+                MovementMode.Position,
                 displacement,
                 speed,
                 maxAcceleration,

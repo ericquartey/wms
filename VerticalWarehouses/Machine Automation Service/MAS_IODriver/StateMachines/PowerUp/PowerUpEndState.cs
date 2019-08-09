@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class EndState : IoStateBase
+    public class PowerUpEndState : IoStateBase
     {
         #region Fields
 
@@ -21,35 +21,35 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         #region Constructors
 
-        public EndState(
+        public PowerUpEndState(
             IIoStateMachine parentStateMachine,
             IoSHDStatus status,
             IoIndex index,
-            ILogger logger)
-            : base(parentStateMachine, logger)
+            ILogger logger )
+            : base( parentStateMachine, logger )
         {
             this.status = status;
             this.index = index;
 
-            logger.LogTrace("1:Method Start");
+            logger.LogTrace( "1:Method Start" );
         }
 
         #endregion
 
         #region Destructors
 
-        ~EndState()
+        ~PowerUpEndState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessMessage(IoSHDMessage message)
+        public override void ProcessMessage( IoSHDMessage message )
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace( "1:Method Start" );
 
             //if (message.ValidOutputs && message.ElevatorMotorOn)
             //{
@@ -69,9 +69,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             //}
         }
 
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        public override void ProcessResponseMessage( IoSHDReadMessage message )
         {
-            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
+            this.Logger.LogDebug( $"1: Received Message = {message.ToString()}" );
 
             //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
         }
@@ -86,11 +86,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                 FieldMessageType.IoPowerUp,
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
-                (byte)this.index);
+                (byte)this.index );
 
-            this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+            this.Logger.LogTrace( $"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}" );
 
-            this.ParentStateMachine.PublishNotificationEvent(endNotification);
+            this.ParentStateMachine.PublishNotificationEvent( endNotification );
             //var resetSecurityIoMessage = new IoSHDWriteMessage();
 
             //resetSecurityIoMessage.SwitchElevatorMotor(true);
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             //this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

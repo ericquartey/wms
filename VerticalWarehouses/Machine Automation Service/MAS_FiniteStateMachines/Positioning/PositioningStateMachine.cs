@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
-        private readonly MachineSensorsStatus machineSensorsStatus;
+        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly IPositioningMessageData positioningMessageData;
 
@@ -27,11 +27,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningStateMachine(
+            IMachineSensorsStatus machineSensorsStatus,
             IEventAggregator eventAggregator,
             IPositioningMessageData positioningMessageData,
             ILogger logger,
-            IServiceScopeFactory serviceScopeFactory,
-            MachineSensorsStatus machineSensorsStatus)
+            IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.logger = logger;
@@ -102,11 +102,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 if (checkConditions)
                 {
-                    this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.machineSensorsStatus, this.logger);
+                    if (this.positioningMessageData.MovementMode == MovementMode.FindZero && this.machineSensorsStatus.IsSensorZeroOnCradle)
+                    {
+                        this.CurrentState = new PositioningEndState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger, 0);
+                    }
+                    else
+                    {
+                        this.CurrentState = new PositioningStartState(this, this.machineSensorsStatus, this.positioningMessageData, this.logger);
+                    }
                 }
                 else
                 {
-                    this.CurrentState = new PositioningErrorState(this, this.positioningMessageData, null, this.Logger);
+                    this.CurrentState = new PositioningErrorState(this, this.machineSensorsStatus, this.positioningMessageData, null, this.Logger);
                 }
 
                 this.CurrentState?.Start();
