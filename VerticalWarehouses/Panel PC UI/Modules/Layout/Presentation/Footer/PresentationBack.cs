@@ -18,9 +18,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationBack(IRegionNavigationService regionNavigationService)
         {
-            this.Type = PresentationTypes.Back;
+            if (regionNavigationService == null)
+            {
+                throw new ArgumentNullException(nameof(regionNavigationService));
+            }
+
             this.regionNavigationService = regionNavigationService;
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>().Subscribe(this.Update);
+
+            this.Type = PresentationTypes.Back;
+
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Subscribe(this.Update);
         }
 
         #endregion
@@ -35,13 +44,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void Update(PresentationChangedMessage message)
         {
-            if (message.States != null &&
-                message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back)                
+            if (message.States != null
+                &&
+                message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back
+                &&
+                back.IsVisible.HasValue)
             {
-                if (back.IsVisible.HasValue)
-                {
-                    this.IsVisible = back.IsVisible;
-                }
+                this.IsVisible = back.IsVisible;
             }
         }
 

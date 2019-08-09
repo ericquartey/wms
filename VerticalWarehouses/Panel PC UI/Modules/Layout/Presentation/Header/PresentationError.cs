@@ -4,6 +4,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
@@ -49,7 +50,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
             this.Type = PresentationTypes.Error;
 
-            this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChanged(sender, e);
+            this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync(sender, e);
+            this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionChangedAsync(sender, e);
 
             this.CheckErrorsPresenceAsync();
         }
@@ -58,9 +60,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Properties
 
-        public new bool IsVisible
+        public new bool? IsVisible
         {
-            get => base.IsVisible && this.areErrorsPresent;
+            get => base.IsVisible.HasValue
+                ? base.IsVisible.Value && this.areErrorsPresent
+                : base.IsVisible;
             set => base.IsVisible = value;
         }
 
@@ -81,7 +85,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
                 this.areErrorsPresent = error != null;
 
-                this.IsVisible = this.IsVisible && this.areErrorsPresent;
+                this.IsVisible = this.IsVisible.HasValue
+                    ? this.IsVisible.Value && this.areErrorsPresent
+                    : this.IsVisible;
             }
             catch (System.Exception ex)
             {
@@ -89,9 +95,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
         }
 
-        private async Task OnMachineErrorStatusChanged(
-            object sender,
-            MAS.AutomationService.Contracts.Hubs.EventArgs.ErrorStatusChangedEventArgs e)
+        private async Task OnHubConnectionChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            await this.CheckErrorsPresenceAsync();
+        }
+
+        private async Task OnMachineErrorStatusChangedAsync(object sender, ErrorStatusChangedEventArgs e)
         {
             await this.CheckErrorsPresenceAsync();
         }
