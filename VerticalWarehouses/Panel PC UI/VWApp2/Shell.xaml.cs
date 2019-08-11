@@ -1,9 +1,8 @@
-using System.Windows;
 using Prism.Modularity;
 
 namespace Ferretto.VW.App
 {
-    public partial class Shell : Window
+    public partial class Shell
     {
         #region Constructors
 

@@ -3,7 +3,6 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Prism.Commands;
 using Prism.Events;
-using Unity;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {

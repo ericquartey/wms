@@ -12,7 +12,6 @@
     <Grid>
 
         <TextBlock Margin="230,30,0,0"
-                   HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />

@@ -61,19 +61,19 @@
                 IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <custom:CustomSensorControl Margin="560,290,0,0"
+        <custom:PpcSensorControl Margin="560,290,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorABay1}"
+                                    LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
                                     SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                                    Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="560,330,0,0"
+        <custom:PpcSensorControl Margin="560,330,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorBBay1}"
+                                    LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
                                     SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                                    Style="{StaticResource PpcSensorControlStyle}" />
 
     </Grid>
 </UserControl>

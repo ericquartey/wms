@@ -31,6 +31,7 @@
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
         <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
         <Setter Property="FontSize" Value="22" />
+        <Setter Property="Margin" Value="0,0,0,20" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>

@@ -60,8 +60,7 @@
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
                        Text="Serial Number: " />
 
-            <TextBlock Grid.Row="1"
-                       VerticalAlignment="Top"
+            <TextBlock VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
                        Text="{Binding MachineIdentity.SerialNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 

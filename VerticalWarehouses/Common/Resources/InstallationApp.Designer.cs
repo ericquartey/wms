@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -165,6 +165,33 @@ namespace Ferretto.VW.App.Resources {
         public static string Backward {
             get {
                 return ResourceManager.GetString("Backward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay 1.
+        /// </summary>
+        public static string Bay1 {
+            get {
+                return ResourceManager.GetString("Bay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay 2.
+        /// </summary>
+        public static string Bay2 {
+            get {
+                return ResourceManager.GetString("Bay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay 3.
+        /// </summary>
+        public static string Bay3 {
+            get {
+                return ResourceManager.GetString("Bay3", resourceCulture);
             }
         }
         
@@ -327,6 +354,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Carousel {
             get {
                 return ResourceManager.GetString("Carousel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carousel movements.
+        /// </summary>
+        public static string CarouselMovements {
+            get {
+                return ResourceManager.GetString("CarouselMovements", resourceCulture);
             }
         }
         
@@ -925,29 +961,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height control bay 1.
+        ///   Looks up a localized string similar to Height control.
         /// </summary>
-        public static string HeightControlCheck1 {
+        public static string HeightControlCheck {
             get {
-                return ResourceManager.GetString("HeightControlCheck1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Height control bay 2.
-        /// </summary>
-        public static string HeightControlCheck2 {
-            get {
-                return ResourceManager.GetString("HeightControlCheck2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Height control bay 3.
-        /// </summary>
-        public static string HeightControlCheck3 {
-            get {
-                return ResourceManager.GetString("HeightControlCheck3", resourceCulture);
+                return ResourceManager.GetString("HeightControlCheck", resourceCulture);
             }
         }
         
@@ -1321,15 +1339,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carousel movements.
-        /// </summary>
-        public static string LSMTCarouselPageHeader {
-            get {
-                return ResourceManager.GetString("LSMTCarouselPageHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Manual commands currently available for non blocked low speed movements.
         /// </summary>
         public static string LSMTComandNote {
@@ -1402,7 +1411,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LU Present in Bay 1.
+        ///   Looks up a localized string similar to Loading Unit in Bay.
         /// </summary>
         public static string LuPresentInBay {
             get {
@@ -1411,47 +1420,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LU Present in Bay 2.
+        ///   Looks up a localized string similar to Second LU Present in Bay.
         /// </summary>
-        public static string LuPresentInBay2 {
+        public static string LUPresentMiddleBottomBay {
             get {
-                return ResourceManager.GetString("LuPresentInBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to LU Present in Bay 3.
-        /// </summary>
-        public static string LuPresentInBay3 {
-            get {
-                return ResourceManager.GetString("LuPresentInBay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Second LU Present in Bay 1.
-        /// </summary>
-        public static string LUPresentMiddleBottomBay1 {
-            get {
-                return ResourceManager.GetString("LUPresentMiddleBottomBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Second LU Present in Bay 2.
-        /// </summary>
-        public static string LUPresentMiddleBottomBay2 {
-            get {
-                return ResourceManager.GetString("LUPresentMiddleBottomBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Second LU Present in Bay 3.
-        /// </summary>
-        public static string LUPresentMiddleBottomBay3 {
-            get {
-                return ResourceManager.GetString("LUPresentMiddleBottomBay3", resourceCulture);
+                return ResourceManager.GetString("LUPresentMiddleBottomBay", resourceCulture);
             }
         }
         
@@ -2077,56 +2050,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sensor shutter A bay 1.
+        ///   Looks up a localized string similar to Sensor shutter A bay.
         /// </summary>
-        public static string ShutterSensorABay1 {
+        public static string ShutterSensorA {
             get {
-                return ResourceManager.GetString("ShutterSensorABay1", resourceCulture);
+                return ResourceManager.GetString("ShutterSensorA", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sensor shutter A bay 2.
+        ///   Looks up a localized string similar to Sensor shutter B.
         /// </summary>
-        public static string ShutterSensorABay2 {
+        public static string ShutterSensorB {
             get {
-                return ResourceManager.GetString("ShutterSensorABay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensor shutter A bay 3.
-        /// </summary>
-        public static string ShutterSensorABay3 {
-            get {
-                return ResourceManager.GetString("ShutterSensorABay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensor shutter B bay 1.
-        /// </summary>
-        public static string ShutterSensorBBay1 {
-            get {
-                return ResourceManager.GetString("ShutterSensorBBay1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensor shutter B bay 2.
-        /// </summary>
-        public static string ShutterSensorBBay2 {
-            get {
-                return ResourceManager.GetString("ShutterSensorBBay2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensor shutter B bay 3.
-        /// </summary>
-        public static string ShutterSensorBBay3 {
-            get {
-                return ResourceManager.GetString("ShutterSensorBBay3", resourceCulture);
+                return ResourceManager.GetString("ShutterSensorB", resourceCulture);
             }
         }
         

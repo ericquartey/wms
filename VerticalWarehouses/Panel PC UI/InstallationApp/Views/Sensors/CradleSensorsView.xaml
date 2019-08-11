@@ -7,23 +7,42 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid>
-        <TextBlock Margin="160,10,0,562"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Cradle}" />
-        <custom:CustomSensorControl Margin="160,335,319,215"
-                                    LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
-                                    SensorState="{Binding IsZeroPawlSensorActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,422,319,128"
-                                    LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
-                                    SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,235,319,315"
-                                    LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
-                                    SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+
+    <Grid Margin="0,30,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <views:SensorsNavigationView />
+
+        <Grid Grid.Column="1"
+              Margin="130,0,90,10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.Cradle}" />
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical">
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
+                                            SensorState="{Binding IsZeroPawlSensorActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
+                                            SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
+                                            SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
+
+        </Grid>
     </Grid>
+
 </ctrls:View>

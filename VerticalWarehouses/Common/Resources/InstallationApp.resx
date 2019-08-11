@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -330,7 +330,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="LuPresentInBay" xml:space="preserve">
-    <value>LU Present in Bay 1</value>
+    <value>Loading Unit in Bay</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
@@ -748,48 +748,16 @@
   <data name="CellPositionDone" xml:space="preserve">
     <value>Cell position verified</value>
   </data>
-  <data name="LuPresentInBay2" xml:space="preserve">
-    <value>LU Present in Bay 2</value>
+  <data name="HeightControlCheck" xml:space="preserve">
+    <value>Height control</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="LuPresentInBay3" xml:space="preserve">
-    <value>LU Present in Bay 3</value>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Sensor shutter A bay</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="HeightControlCheck1" xml:space="preserve">
-    <value>Height control bay 1</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="HeightControlCheck2" xml:space="preserve">
-    <value>Height control bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="HeightControlCheck3" xml:space="preserve">
-    <value>Height control bay 3</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="ShutterSensorABay1" xml:space="preserve">
-    <value>Sensor shutter A bay 1</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="ShutterSensorBBay1" xml:space="preserve">
-    <value>Sensor shutter B bay 1</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="ShutterSensorABay2" xml:space="preserve">
-    <value>Sensor shutter A bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="ShutterSensorBBay2" xml:space="preserve">
-    <value>Sensor shutter B bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="ShutterSensorABay3" xml:space="preserve">
-    <value>Sensor shutter A bay 3</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="ShutterSensorBBay3" xml:space="preserve">
-    <value>Sensor shutter B bay 3</value>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Sensor shutter B</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton2" xml:space="preserve">
@@ -1052,7 +1020,7 @@
     <value>Carousel</value>
     <comment>Button text</comment>
   </data>
-  <data name="LSMTCarouselPageHeader" xml:space="preserve">
+  <data name="CarouselMovements" xml:space="preserve">
     <value>Carousel movements</value>
     <comment>Page header</comment>
   </data>
@@ -1167,14 +1135,8 @@
     <value>Store/recall drawer</value>
     <comment>Button text</comment>
   </data>
-  <data name="LUPresentMiddleBottomBay1" xml:space="preserve">
-    <value>Second LU Present in Bay 1</value>
-  </data>
-  <data name="LUPresentMiddleBottomBay2" xml:space="preserve">
-    <value>Second LU Present in Bay 2</value>
-  </data>
-  <data name="LUPresentMiddleBottomBay3" xml:space="preserve">
-    <value>Second LU Present in Bay 3</value>
+  <data name="LUPresentMiddleBottomBay" xml:space="preserve">
+    <value>Second LU Present in Bay</value>
   </data>
   <data name="StartManualDrawerRecall" xml:space="preserve">
     <value>Start recall from cell to bay</value>
@@ -1193,5 +1155,14 @@
   </data>
   <data name="Others" xml:space="preserve">
     <value>Others</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Bay 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Bay 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Bay 3</value>
   </data>
 </root>

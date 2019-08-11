@@ -11,154 +11,123 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid>
+    <Grid Margin="0,30,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <views:SensorsNavigationView Margin="0,30,0,0" />
+        <views:SensorsNavigationView />
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1"
+              Margin="130,0,90,10">
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="130" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="60" />
                 <RowDefinition />
-                <RowDefinition Height="10" />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
+            <TextBlock Grid.ColumnSpan="2"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.Bays}" />
 
-        <TextBlock Margin="100,30,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Bays}" />
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Bay1}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay1}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,110,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay1}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay1}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,150,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay1}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay1}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.HeightControlCheck}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay1}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,190,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.HeightControlCheck1}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay1}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay1}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,230,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorABay1}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay1}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay1}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
 
-        <custom:CustomSensorControl Margin="100,270,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorBBay1}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay1}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Bay2}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay2}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay2}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,345,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.LuPresentInBay2}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay2}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.HeightControlCheck}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay2}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,425,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.HeightControlCheck2}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay2}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay2}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="100,465,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorABay2}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay2}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay2}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
 
-        <custom:CustomSensorControl Margin="100,505,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorBBay2}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay2}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+            <StackPanel Grid.Row="2"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Bay3}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay3}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay3}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.HeightControlCheck}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay3}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="450,110,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.LuPresentInBay3}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay3}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay3}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="450,190,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.HeightControlCheck3}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay3}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-
-        <custom:CustomSensorControl Margin="450,230,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorABay3}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay3}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-
-        <custom:CustomSensorControl Margin="450,270,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorBBay3}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay3}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="450,150,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay3}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay3}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="100,385,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay2}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay2}"
-                                    Sensors="{Binding SensorsStates}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-            </Grid>
-            </Grid>
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
+                                            SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay3}"
+                                            Sensors="{Binding SensorsStates}"
+                                            Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </ctrls:View>

@@ -1,4 +1,3 @@
-using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details;

@@ -173,14 +173,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
                 return;
             }
 
-            var identityService = await this.identityService.GetAsync();
-            if (identityService == null)
+            var machineIdentity = await this.identityService.GetAsync();
+            if (machineIdentity == null)
             {
                 return;
             }
 
-            this.machineId = identityService.Id;
-            this.areaId = identityService.AreaId;
+            this.machineId = machineIdentity.Id;
+            this.areaId = machineIdentity.AreaId;
             await this.LoadListsAsync();
         }
 

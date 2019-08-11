@@ -7,19 +7,38 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid>
-        <TextBlock Margin="160,10,0,562"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate}" />
-        <custom:CustomSensorControl Margin="160,360,404,185"
-                                    LabelText="{x:Static res:InstallationApp.GateSensorA}"
-                                    SensorState="{Binding GateSensorA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-        <custom:CustomSensorControl Margin="160,217,404,328"
-                                    LabelText="{x:Static res:InstallationApp.GateSensorB}"
-                                    SensorState="{Binding GateSensorB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+    <Grid Margin="0,30,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <views:SensorsNavigationView />
+
+        <Grid Grid.Column="1"
+              Margin="130,0,130,10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.Gate}" />
+
+            <StackPanel Grid.Row="1">
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.GateSensorA}"
+                                         SensorState="{Binding GateSensorA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.GateSensorB}"
+                                         SensorState="{Binding GateSensorB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
+
+        </Grid>
+
     </Grid>
 </ctrls:View>

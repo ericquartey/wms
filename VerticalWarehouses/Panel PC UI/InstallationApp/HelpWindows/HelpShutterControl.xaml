@@ -75,21 +75,21 @@
                 Content="{x:Static res:InstallationApp.Stop}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomSensorControl Width="180"
+        <Controls:PpcSensorControl Width="180"
                                       Margin="20,350,0,0"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
-                                      LabelText="{x:Static res:InstallationApp.ShutterSensorABay1}"
+                                      LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
                                       SensorState="True"
-                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                                      Style="{StaticResource PpcSensorControlStyle}" />
 
-        <Controls:CustomSensorControl Width="180"
+        <Controls:PpcSensorControl Width="180"
                                       Margin="20,420,0,0"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
-                                      LabelText="{x:Static res:InstallationApp.ShutterSensorBBay1}"
+                                      LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
                                       SensorState="False"
-                                      Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                                      Style="{StaticResource PpcSensorControlStyle}" />
 
         <TextBlock Width="260"
                    Height="70"

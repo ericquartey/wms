@@ -1,11 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
+﻿namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 {
-    /// <summary>
-    /// Interaction logic for ListsInWaitView.xaml
-    /// </summary>
-    public partial class ListsInWaitView : UserControl
+    public partial class ListsInWaitView
     {
         #region Constructors
 

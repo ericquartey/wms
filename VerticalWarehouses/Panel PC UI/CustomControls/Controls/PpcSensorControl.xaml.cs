@@ -6,27 +6,48 @@ using Ferretto.VW.CommonUtils.Enumerations;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class CustomSensorControl : UserControl, INotifyPropertyChanged
+    public partial class PpcSensorControl : UserControl, INotifyPropertyChanged
     {
         #region Fields
 
-        public static readonly DependencyProperty BulletColorProperty = DependencyProperty.Register("BulletColor", typeof(SolidColorBrush), typeof(CustomSensorControl));
+        public static readonly DependencyProperty BulletColorProperty = DependencyProperty.Register(
+            nameof(BulletColor),
+            typeof(SolidColorBrush),
+            typeof(PpcSensorControl));
 
-        public static readonly DependencyProperty IoMachineSensorProperty = DependencyProperty.Register("IoMachineSensor", typeof(IOMachineSensors), typeof(CustomSensorControl));
+        public static readonly DependencyProperty IoMachineSensorProperty = DependencyProperty.Register(
+            "IoMachineSensor",
+            typeof(IOMachineSensors),
+            typeof(PpcSensorControl));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomSensorControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+            nameof(LabelText),
+            typeof(string),
+            typeof(PpcSensorControl),
+            new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty SensorPortProperty = DependencyProperty.Register("SensorPort", typeof(IOMachineSensors), typeof(CustomSensorControl), new FrameworkPropertyMetadata(IOMachineSensors.NoValue, OnSensorPortChanged));
+        public static readonly DependencyProperty SensorPortProperty = DependencyProperty.Register(
+            nameof(SensorPort),
+            typeof(IOMachineSensors),
+            typeof(PpcSensorControl),
+            new FrameworkPropertyMetadata(IOMachineSensors.NoValue, OnSensorPortChanged));
 
-        public static readonly DependencyProperty SensorsProperty = DependencyProperty.Register("Sensors", typeof(bool[]), typeof(CustomSensorControl), new FrameworkPropertyMetadata(null, OnSensorsChanged));
+        public static readonly DependencyProperty SensorsProperty = DependencyProperty.Register(
+            nameof(Sensors),
+            typeof(bool[]),
+            typeof(PpcSensorControl),
+            new FrameworkPropertyMetadata(null, OnSensorsChanged));
 
-        public static readonly DependencyProperty SensorStateProperty = DependencyProperty.Register("SensorState", typeof(bool), typeof(CustomSensorControl));
+        public static readonly DependencyProperty SensorStateProperty = DependencyProperty.Register(
+            nameof(SensorState),
+            typeof(bool),
+            typeof(PpcSensorControl));
 
         #endregion
 
         #region Constructors
 
-        public CustomSensorControl()
+        public PpcSensorControl()
         {
             this.InitializeComponent();
             var customSensorControl = this;
@@ -110,7 +131,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private static void OnSensorPortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CustomSensorControl control && e.NewValue is IOMachineSensors sensorStatus)
+            if (d is PpcSensorControl control && e.NewValue is IOMachineSensors)
             {
                 control.UpdateSensorState();
             }
@@ -118,7 +139,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private static void OnSensorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CustomSensorControl control && e.NewValue is bool[] sensors)
+            if (d is PpcSensorControl control && e.NewValue is bool[])
             {
                 control.UpdateSensorState();
             }

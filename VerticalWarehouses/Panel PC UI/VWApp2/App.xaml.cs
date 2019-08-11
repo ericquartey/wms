@@ -17,7 +17,7 @@ using Unity.Injection;
 
 namespace Ferretto.VW.App
 {
-    public partial class App : PrismApplication
+    public partial class App
     {
         #region Fields
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.App
             return this.Container.Resolve<Shell>();
         }
 
-        protected override void OnStartup(System.Windows.StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
@@ -121,13 +121,13 @@ namespace Ferretto.VW.App
         private static void RegisterHubs(IContainerRegistry container)
         {
             var wmsHubPath = ConfigurationManager.AppSettings.Get("WMS:DataService:Hubs:Data:Path");
-            var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new System.Uri(wmsHubPath));
+            var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new Uri(wmsHubPath));
             container.RegisterInstance(wmsHub);
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
-            var wmsServiceUrl = new System.Uri(ConfigurationManager.AppSettings.Get("WMS:DataService:Url"));
+            var wmsServiceUrl = new Uri(ConfigurationManager.AppSettings.Get("WMS:DataService:Url"));
 
             container.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             container.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
@@ -142,9 +142,9 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
         }
 
-        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            this.logger.Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
+            this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
         }
 
         private void HACK_ForceItalianLanguage()
