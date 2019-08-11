@@ -13,6 +13,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MissionMessageData(ObservableCollection<Mission> missions, MessageVerbosity verbosity = MessageVerbosity.Info)
         {
             this.Missions = missions;
+            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -21,7 +22,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public ObservableCollection<Mission> Missions { get; set; }
 
-        public MessageVerbosity Verbosity { get; set; }
+        public MessageVerbosity Verbosity { get; }
 
         #endregion
 
