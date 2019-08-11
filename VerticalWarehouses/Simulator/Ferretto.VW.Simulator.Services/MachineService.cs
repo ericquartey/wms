@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -11,7 +9,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using static Ferretto.VW.Simulator.Services.BufferUtility;
-using Microsoft.Extensions.Logging;
 using NLog;
 using Prism.Mvvm;
 

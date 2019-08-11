@@ -11,7 +11,7 @@ namespace Ferretto.VW.Utils
                     new Regex($"{Common.VIEWMODEL_SUFFIX}$", RegexOptions.Compiled);
 
         private static readonly Regex ViewRegEx = new Regex(
-                    $@"^{VW.Utils.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}\.(?<moduleName>[^\.]+)\.Views\.(?<viewName>.+)",
+                    $@"^{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}\.(?<moduleName>[^\.]+)\.Views\.(?<viewName>.+)",
             RegexOptions.Compiled);
 
         #endregion

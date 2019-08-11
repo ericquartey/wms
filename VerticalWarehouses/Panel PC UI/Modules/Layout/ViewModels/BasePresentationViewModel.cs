@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -67,16 +65,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            base.OnNavigatedFrom(navigationContext);
-        }
-
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-        }
-
         public void PresentationChanged(PresentationChangedMessage presentation)
         {
             this.UpdatePresentation(presentation.Mode);
@@ -122,9 +110,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     break;
 
                 case PresentationMode.None:
-                    break;
-
-                default:
                     break;
             }
         }

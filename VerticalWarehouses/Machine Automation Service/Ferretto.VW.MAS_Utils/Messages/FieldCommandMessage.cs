@@ -2,8 +2,6 @@
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using NLog;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages

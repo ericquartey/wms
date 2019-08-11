@@ -20,8 +20,6 @@ namespace Ferretto.VW.Simulator
 
         protected override void ConfigureContainer()
         {
-            var automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
-
             this.Container.RegisterInstance(ServiceFactory.Get<IThemeService>());
             this.Container.RegisterInstance(ServiceFactory.Get<IMachineService>());
             //this.Container.RegisterInstance<IIdentityService>(new IdentityService(automationServiceUrl));
@@ -46,7 +44,6 @@ namespace Ferretto.VW.Simulator
         protected override void InitializeShell()
         {
             var mainWindowViewModel = this.Container.Resolve<MainWindowViewModel>();
-            mainWindowViewModel.InitializeViewModelAsync(this.Container);
 
             var application = Application.Current as App;
             application.MainWindow.DataContext = mainWindowViewModel;

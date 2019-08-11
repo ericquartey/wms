@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private const int DefaultMaximumRetries = 3;
 
-        private static readonly Random random = new Random();
+        private static readonly Random Random = new Random();
 
         private int maximumRetries = DefaultMaximumRetries;
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             HttpCompletionOption completionOption,
             CancellationToken cancellationToken)
         {
-            var jitterSeconds = random.NextDouble();
+            var jitterSeconds = Random.NextDouble();
 
             Func<int, TimeSpan> sleepDurationProvider = count =>
             {

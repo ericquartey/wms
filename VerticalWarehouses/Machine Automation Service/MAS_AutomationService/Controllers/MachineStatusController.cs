@@ -1,9 +1,4 @@
-﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -16,16 +11,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         #endregion
 
         #region Constructors
 
-        public MachineStatusController(IEventAggregator eventAggregator, IServiceProvider services)
+        public MachineStatusController(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
         #endregion

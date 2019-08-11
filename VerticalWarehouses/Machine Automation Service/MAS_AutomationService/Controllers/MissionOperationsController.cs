@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             try
             {
-                var missionOperation = await this.missionOperationsDataService.CompleteItemAsync(id, quantity);
+                await this.missionOperationsDataService.CompleteItemAsync(id, quantity);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
@@ -73,8 +73,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     "Mission Operation Completed",
                     MessageActor.MissionsManager,
                     MessageActor.WebApi,
-                    MessageType.MissionOperationCompleted,
-                    MessageStatus.NoStatus);
+                    MessageType.MissionOperationCompleted);
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 this.logger.LogDebug($"AS-OC Operator marked mission operation id={id} as completed, with quantity {quantity}.");

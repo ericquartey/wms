@@ -15,7 +15,7 @@ namespace Ferretto.VW.Utils.Source.Filters
         #region Fields
 
         private static readonly Func<IDrawableCompartment, IDrawableCompartment, string> colorFunc =
-            delegate (IDrawableCompartment compartment, IDrawableCompartment selected)
+            delegate
             {
                 var color = "#0a0a0a";
                 return color;

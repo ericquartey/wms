@@ -72,83 +72,76 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             decimal initialTargetPosition = 0;
             var movementType = MovementType.Relative;
 
-            try
+            var homingDone = this.setupStatus.VerticalHomingDone;
+
+            switch (data.Axis)
             {
-                var homingDone = this.setupStatus.VerticalHomingDone;
+                // INFO Vertical LSM
+                case Axis.Vertical:
+                    maxSpeed = this.verticalAxis.MaxEmptySpeed;
+                    maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
+                    maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
 
-                switch (data.Axis)
-                {
-                    // INFO Vertical LSM
-                    case Axis.Vertical:
-                        maxSpeed = this.verticalAxis.MaxEmptySpeed;
-                        maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
-                        maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+                    //INFO Absolute movement using the min and max reachable positions for limits
+                    if (homingDone)
+                    {
+                        feedRate = this.verticalManualMovements.FeedRateAfterZero;
+                        movementType = MovementType.Absolute;
+                        //INFO For movements Up the limit is the UpperBound, for movements down the limit is the LowerBound
+                        initialTargetPosition = data.Displacement > 0 ? this.verticalAxis.UpperBound : this.verticalAxis.LowerBound;
+                    }
+                    else //INFO Before homing relative movements step by step
+                    {
+                        feedRate = this.verticalManualMovements.FeedRateVM;
+                        //INFO +1 for Up, -1 for Down
+                        initialTargetPosition = data.Displacement > 0 ? this.verticalManualMovements.PositiveTargetDirection : -this.verticalManualMovements.NegativeTargetDirection;
+                    }
 
-                        //INFO Absolute movement using the min and max reachable positions for limits
-                        if (homingDone)
-                        {
-                            feedRate = this.verticalManualMovements.FeedRateAfterZero;
-                            movementType = MovementType.Absolute;
-                            //INFO For movements Up the limit is the UpperBound, for movements down the limit is the LowerBound
-                            initialTargetPosition = data.Displacement > 0 ? this.verticalAxis.UpperBound : this.verticalAxis.LowerBound;
-                        }
-                        else //INFO Before homing relative movements step by step
-                        {
-                            feedRate = this.verticalManualMovements.FeedRateVM;
-                            //INFO +1 for Up, -1 for Down
-                            initialTargetPosition = data.Displacement > 0 ? this.verticalManualMovements.PositiveTargetDirection : -this.verticalManualMovements.NegativeTargetDirection;
-                        }
+                    break;
 
-                        break;
+                //INFO Horizontal LSM
+                case Axis.Horizontal:
+                    maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
+                    maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
+                    maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
+                    feedRate = this.horizontalManualMovements.FeedRateHM;
 
-                    //INFO Horizontal LSM
-                    case Axis.Horizontal:
-                        maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
-                        maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
-                        maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
-                        feedRate = this.horizontalManualMovements.FeedRateHM;
+                    if (homingDone)
+                    {
+                        initialTargetPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
+                    }
+                    else
+                    {
+                        initialTargetPosition = this.horizontalManualMovements.InitialTargetPositionHM;
+                    }
 
-                        if (homingDone)
-                        {
-                            initialTargetPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-                        }
-                        else
-                        {
-                            initialTargetPosition = this.horizontalManualMovements.InitialTargetPositionHM;
-                        }
+                    // INFO +1 for Forward, -1 for Back
+                    initialTargetPosition *= data.Displacement;
 
-                        // INFO +1 for Forward, -1 for Back
-                        initialTargetPosition *= data.Displacement;
-
-                        break;
-                }
-
-                var speed = maxSpeed * feedRate;
-
-                var messageData = new PositioningMessageData(
-                    data.Axis,
-                    movementType,
-                    initialTargetPosition,
-                    speed,
-                    maxAcceleration,
-                    maxDeceleration,
-                    0,
-                    0,
-                    0);
-                this.eventAggregator.GetEvent<CommandEvent>().Publish(
-                    new CommandMessage(
-                        messageData,
-                        $"Execute {data.Axis} Positioning Command",
-                        MessageActor.FiniteStateMachines,
-                        MessageActor.WebApi,
-                        MessageType.Positioning));
-
-                this.logger.LogDebug($"Starting positioning on Axis {data.Axis}, type {data.MovementType}, target position {initialTargetPosition}");
+                    break;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
+            var speed = maxSpeed * feedRate;
+
+            var messageData = new PositioningMessageData(
+                data.Axis,
+                movementType,
+                initialTargetPosition,
+                speed,
+                maxAcceleration,
+                maxDeceleration,
+                0,
+                0,
+                0);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(
+                new CommandMessage(
+                    messageData,
+                    $"Execute {data.Axis} Positioning Command",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.Positioning));
+
+            this.logger.LogDebug($"Starting positioning on Axis {data.Axis}, type {data.MovementType}, target position {initialTargetPosition}");
         }
 
         private void Stop_Method()

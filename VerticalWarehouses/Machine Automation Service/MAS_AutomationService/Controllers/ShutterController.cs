@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -23,17 +22,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         #endregion
 
         #region Constructors
 
-        public ShutterController(IEventAggregator eventAggregator, IServiceProvider services)
+        public ShutterController(
+            IEventAggregator eventAggregator,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
         }
 
         #endregion

@@ -272,10 +272,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.PositioningMethod(receivedMessage);
                         break;
 
-                    case MessageType.FSMException:
+                    case MessageType.FsmException:
                     case MessageType.InverterException:
                     case MessageType.IoDriverException:
-                    case MessageType.DLException:
+                    case MessageType.DlException:
                     case MessageType.WebApiException:
 
                         break;
@@ -304,16 +304,11 @@ namespace Ferretto.VW.MAS.AutomationService
                     case MessageType.ErrorStatusChanged:
                         this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
                         break;
-
-                    default:
-                        break;
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("9:Method End");
-
-            return;
         }
 
         private void OnDataLayerReady()

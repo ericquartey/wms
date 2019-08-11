@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.App.Modules.Errors.Views
 {
-    public partial class ErrorDetailsView : View
+    public partial class ErrorDetailsView
     {
         #region Constructors
 

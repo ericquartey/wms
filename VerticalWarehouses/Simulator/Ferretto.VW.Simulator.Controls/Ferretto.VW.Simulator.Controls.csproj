@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
     <PropertyGroup>
         <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
         <TargetFramework>net471</TargetFramework>
@@ -38,21 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Controls\CustomSensorSmallControl.xaml" />
-      <None Remove="Controls\CustomSensorSquareControl.xaml" />
-      <None Remove="Skins\DarkCustomControlSensor.xaml" />
-      <None Remove="Skins\DarkCustomLabelTextBlock.xaml" />
-      <None Remove="Skins\DarkSkin.xaml" />
-      <None Remove="Skins\LightCustomControlSensor.xaml" />
-      <None Remove="Skins\LightCustomLabelTextBlock.xaml" />
-      <None Remove="Skins\LightSkin.xaml" />
-      <None Remove="Styles\CustomLabelTextBlockStyle.xaml" />
-      <None Remove="Styles\CustomSensorSmallControlStyle.xaml" />
-      <None Remove="Styles\CustomSensorSquareControlStyle.xaml" />
-      <None Remove="Templates\ActionButtonControlTemplate.xaml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
       <ProjectReference Include="..\..\Panel PC UI\CustomControls\Ferretto.VW.App.Controls.csproj" />
       <ProjectReference Include="..\..\Panel PC UI\Utils\Ferretto.VW.Utils.csproj" />
@@ -60,10 +44,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Controls\CustomSensorControl.xaml">
+        <None Update="Controls\CustomSensorSmallControl.xaml">
           <Generator>MSBuild:Compile</Generator>
         </None>
-        <None Update="CustomSensorControlStyle.xaml">
+        <None Update="Controls\CustomSensorSquareControl.xaml">
           <Generator>MSBuild:Compile</Generator>
         </None>
         <None Update="Fonts\Microsoft-sans-serif.ttf">
@@ -72,16 +56,36 @@
         <None Update="Fonts\RobotoCondensed-Regular.ttf">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Skins\Shared.xaml">
+        <None Update="Skins\DarkCustomControlSensor.xaml">
           <Generator>MSBuild:Compile</Generator>
         </None>
-        <None Update="Styles\CustomSensorControlStyle.xaml">
+        <None Update="Skins\DarkCustomLabelTextBlock.xaml">
           <Generator>MSBuild:Compile</Generator>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Properties\" />
+        <None Update="Skins\DarkSkin.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Skins\LightCustomControlSensor.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Skins\LightCustomLabelTextBlock.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Skins\LightSkin.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Styles\CustomLabelTextBlockStyle.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Styles\CustomSensorSmallControlStyle.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Styles\CustomSensorSquareControlStyle.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
+        <None Update="Templates\ActionButtonControlTemplate.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </None>
     </ItemGroup>
 
 </Project>

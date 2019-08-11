@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Ferretto.VW.App.Controls.Controls;
 
 namespace Ferretto.VW.App.Controls
 {

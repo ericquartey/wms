@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -19,26 +18,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         #endregion
 
         #region Constructors
 
-        public MoveDrawerController(IEventAggregator eventAggregator, IServiceProvider services)
+        public MoveDrawerController(IEventAggregator eventAggregator)
         {
             if (eventAggregator == null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
             this.eventAggregator = eventAggregator;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
         #endregion

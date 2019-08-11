@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Unity;
 using Unity.Injection;

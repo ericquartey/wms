@@ -7,7 +7,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
@@ -20,8 +19,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private readonly ISessionService sessionService;
 
         private readonly IBayManager bayManager;
-
-        private readonly IIdentityMachineService identityMachineService;
 
         private readonly IHealthProbeService healthProbeService;
 
@@ -37,7 +34,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             ISessionService sessionService,
             IBayManager bayManager,
-            IIdentityMachineService identityMachineService,
             IHealthProbeService healthProbeService)
             : base(PresentationMode.Login)
         {
@@ -56,11 +52,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            if (identityMachineService == null)
-            {
-                throw new ArgumentNullException(nameof(identityMachineService));
-            }
-
             if (healthProbeService == null)
             {
                 throw new ArgumentNullException(nameof(healthProbeService));
@@ -69,7 +60,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.authenticationService = authenticationService;
             this.sessionService = sessionService;
             this.bayManager = bayManager;
-            this.identityMachineService = identityMachineService;
             this.healthProbeService = healthProbeService;
 
 #if DEBUG
@@ -83,11 +73,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #endif
 
             this.healthProbeService.SubscribeOnHealthStatusChanged(async (e) => await this.OnHealthStatusChanged(e));
-        }
-
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
         }
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -164,9 +149,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        public override async Task OnNavigatedAsync()
         {
-            this.RetrieveMachineInfoAsync();
+            await this.RetrieveMachineInfoAsync();
         }
 
         private async Task ExecuteLoginCommandAsync()
@@ -228,9 +213,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ShowError(ex);
             }
-            finally
-            {
-            }
         }
 
         private void LoadOperatorModule()
@@ -244,9 +226,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             catch (Exception ex)
             {
                 this.ShowError(ex);
-            }
-            finally
-            {
             }
         }
     }

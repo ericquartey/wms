@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.App.Modules.Layout.Views
 {
-    public partial class FooterView : UserControl
+    public partial class FooterView
     {
         #region Constructors
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
@@ -31,17 +32,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             if (errorsMachineService == null)
             {
-                throw new System.ArgumentNullException(nameof(errorsMachineService));
+                throw new ArgumentNullException(nameof(errorsMachineService));
             }
 
             if (operatorHubClient == null)
             {
-                throw new System.ArgumentNullException(nameof(operatorHubClient));
+                throw new ArgumentNullException(nameof(operatorHubClient));
             }
 
             if (navigationService == null)
             {
-                throw new System.ArgumentNullException(nameof(navigationService));
+                throw new ArgumentNullException(nameof(navigationService));
             }
 
             this.errorsMachineService = errorsMachineService;
@@ -50,7 +51,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
             this.Type = PresentationTypes.Error;
 
-            this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync(sender, e);
+            this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync();
             this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionChangedAsync(sender, e);
 
             this.CheckErrorsPresenceAsync();
@@ -89,7 +90,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     ? this.IsVisible.Value && this.areErrorsPresent
                     : this.IsVisible;
             }
-            catch (System.Exception ex)
+            catch (Exception)
             {
                 // TODO: show error
             }
@@ -97,10 +98,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private async Task OnHubConnectionChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
         {
-            await this.CheckErrorsPresenceAsync();
+            if(e.IsConnected)
+            {
+                await this.CheckErrorsPresenceAsync();
+            }
         }
 
-        private async Task OnMachineErrorStatusChangedAsync(object sender, ErrorStatusChangedEventArgs e)
+        private async Task OnMachineErrorStatusChangedAsync()
         {
             await this.CheckErrorsPresenceAsync();
         }

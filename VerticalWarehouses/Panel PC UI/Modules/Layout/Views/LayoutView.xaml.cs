@@ -1,9 +1,8 @@
-﻿using System.Windows.Controls;
-using Ferretto.VW.App.Controls;
+﻿using Ferretto.VW.App.Controls;
 
 namespace Ferretto.VW.App.Modules.Layout.Views
 {
-    public partial class LayoutView : View
+    public partial class LayoutView
     {
         #region Constructors
 

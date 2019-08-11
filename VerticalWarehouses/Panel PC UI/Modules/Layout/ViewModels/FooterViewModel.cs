@@ -61,9 +61,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.None, false);
                     this.Show(PresentationTypes.Back, true);
                     break;
-
-                default:
-                    break;
             }
 
         }

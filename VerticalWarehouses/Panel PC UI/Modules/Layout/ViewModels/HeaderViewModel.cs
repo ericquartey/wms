@@ -56,9 +56,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
                 case PresentationMode.Help:
                     break;
-
-                default:
-                    break;
             }
         }
 

@@ -7,12 +7,10 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
@@ -24,8 +22,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
-
-        private readonly ILogger logger;
 
         #endregion
 
@@ -45,7 +41,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
         #endregion
@@ -177,9 +172,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-
-                default:
-                    break;
             }
 
             return 0;

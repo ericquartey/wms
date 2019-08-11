@@ -4,9 +4,9 @@
     {
         #region Constructors
 
-        public ConnectedClient(string connectionID)
+        public ConnectedClient(string connectionId)
         {
-            this.ConnectionId = connectionID;
+            this.ConnectionId = connectionId;
         }
 
         #endregion

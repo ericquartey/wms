@@ -34,11 +34,11 @@
 
         ShutterPositioning,
 
-        FSMException,
+        FsmException,
 
         InverterException,
 
-        DLException,
+        DlException,
 
         ResolutionCalibration,
 

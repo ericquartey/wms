@@ -8,10 +8,9 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
@@ -24,17 +23,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         #endregion
 
         #region Constructors
 
-        public ResolutionCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
+        public ResolutionCalibrationController(
+            IEventAggregator eventAggregator,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
         }
 
         #endregion
@@ -249,7 +247,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
                     if (horizontalAxisParameterId != null)
                     {
-                        decimal value2 = 0;
+                        decimal value2;
                         try
                         {
                             value2 = this.dataLayerConfigurationValueManagement
@@ -291,9 +289,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-
-                default:
-                    break;
             }
 
             return 0;
