@@ -452,6 +452,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsSwitchedOn = true;
             }
+            Thread.Sleep(50);
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
@@ -467,6 +468,7 @@ namespace Ferretto.VW.Simulator.Services
                 // Set run status
                 device.Inputs[(int)IoPorts.NormalState].Value = true;
             }
+            Thread.Sleep(5);
         }
 
         #endregion
