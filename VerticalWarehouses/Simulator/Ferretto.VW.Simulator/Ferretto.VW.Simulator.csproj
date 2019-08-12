@@ -100,6 +100,15 @@
     <Resource Include="Resources\LogoFerrettoGroup2.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="CustomSensorControl.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="CustomSensorSquareControl.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 
 </Project>
 
