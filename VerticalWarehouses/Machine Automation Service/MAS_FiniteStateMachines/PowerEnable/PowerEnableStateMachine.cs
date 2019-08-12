@@ -1,7 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,6 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         #region Fields
 
         private readonly bool enable;
+
         private readonly byte index;
 
         private bool disposed;

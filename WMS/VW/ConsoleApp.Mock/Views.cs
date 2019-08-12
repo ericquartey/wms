@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 {
@@ -98,7 +99,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
             Console.WriteLine($"Mode: {machineStatus.Mode}");
 
-            if (machineStatus.Mode == VW.MachineAutomationService.Hubs.MachineMode.Fault)
+            if (machineStatus.Mode == Enums.MachineStatus.Error)
             {
                 Console.WriteLine($"Fault Code: {machineStatus.FaultCode}");
             }

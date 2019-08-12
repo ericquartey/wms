@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.MachineAutomationService.Hubs
 {
@@ -20,7 +21,7 @@ namespace Ferretto.VW.MachineAutomationService.Hubs
 
         Task LoadingUnitInElevatorChanged(int? loadingUnitId);
 
-        Task ModeChanged(MachineMode mode, int? faultCode);
+        Task ModeChanged(Enums.MachineStatus mode, int? faultCode);
 
         Task UserChanged(int? userId, int bayId);
 

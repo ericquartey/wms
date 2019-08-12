@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -25,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public double? AreaFillRate { get; set; }
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
         public string AreaName { get; set; }
 
@@ -39,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string CellPositionDescription { get; set; }
 
-        public Side? CellSide { get; set; }
+        public Enums.Side? CellSide { get; set; }
 
         [Required]
         [Unique]

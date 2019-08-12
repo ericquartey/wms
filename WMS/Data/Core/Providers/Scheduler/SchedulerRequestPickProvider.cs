@@ -10,6 +10,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -93,7 +94,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentSets = this.GetCompartmentSetsForRequest(item, itemOptions);
             this.logger.LogTrace($"Pick request for item id={itemId} has {compartmentSets.Count()} compatible compartment sets.");
             compartmentSets = this.compartmentOperationProvider
-                .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Pick);
+                .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, Enums.OperationType.Pick);
 
             var selectedSets = SelectMinimumCompartmentSets(compartmentSets, itemOptions.RequestedQuantity);
             if (selectedSets.Sum(s => s.Availability) < itemOptions.RequestedQuantity)
@@ -286,7 +287,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             System.Diagnostics.Debug.WriteLine($"Pick request for item (id={item.Id}): A total of {aggregatedCompartments.Count()} compartment sets match the request.");
 
             var aggregatedRequests = this.DataContext.SchedulerRequests
-                .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
+                .Where(r => r.ItemId == item.Id && r.Status != Enums.SchedulerRequestStatus.Completed);
 
             System.Diagnostics.Debug.WriteLine($"Pick request for item (id={item.Id}): There are {aggregatedRequests.Count()} accepted requests for the same item.");
 
@@ -303,7 +304,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(g => new CompartmentSet
                 {
                     Availability = g.c.Availability - g.r.Sum(
-                        r => (r.OperationType == Common.DataModels.OperationType.Pick ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+                        r => (r.OperationType == Enums.OperationType.Pick ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
                     Size = g.c.CompartmentsCount,
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,

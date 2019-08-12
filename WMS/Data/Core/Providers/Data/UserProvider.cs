@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -20,21 +21,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new UserClaims
                     {
                         Name = userName,
-                        AccessLevel = UserAccessLevel.User,
+                        AccessLevel = Enums.UserAccessLevel.User,
                     };
 
                 case "ADMIN":
                     return new UserClaims
                     {
                         Name = userName,
-                        AccessLevel = UserAccessLevel.Admin,
+                        AccessLevel = Enums.UserAccessLevel.Admin,
                     };
 
                 case "INSTALLER":
                     return new UserClaims
                     {
                         Name = userName,
-                        AccessLevel = UserAccessLevel.SuperUser,
+                        AccessLevel = Enums.UserAccessLevel.SuperUser,
                     };
 
                 default:

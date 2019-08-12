@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 {
@@ -253,7 +254,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
                 case UserSelection.ToggleMachineMode:
                     {
-                        var newMode = this.machineStatus.Mode == MachineMode.Auto ? MachineMode.Manual : MachineMode.Auto;
+                        var newMode = this.machineStatus.Mode == Enums.MachineStatus.Automatic ? Enums.MachineStatus.Manual : Enums.MachineStatus.Automatic;
 
                         this.machineStatus.Mode = newMode;
 
@@ -264,7 +265,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
                 case UserSelection.SetMachineFault:
                     {
-                        this.machineStatus.Mode = MachineMode.Fault;
+                        this.machineStatus.Mode = Enums.MachineStatus.Error;
 
                         var faultCode = new Random().Next(10000);
 

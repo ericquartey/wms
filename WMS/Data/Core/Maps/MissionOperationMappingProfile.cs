@@ -1,5 +1,6 @@
 using AutoMapper;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Maps
 {
@@ -9,12 +10,6 @@ namespace Ferretto.WMS.Data.Core.Maps
 
         public MissionOperationMappingProfile()
         {
-            this.CreateMap<Common.DataModels.MissionOperationType, MissionOperationType>()
-               .ConvertUsing(value => (MissionOperationType)value);
-
-            this.CreateMap<Common.DataModels.MissionOperationStatus, MissionOperationStatus>()
-                .ConvertUsing(value => (MissionOperationStatus)value);
-
             this.CreateMap<Common.DataModels.Item, ItemMissionInfo>();
             this.CreateMap<Common.DataModels.ItemList, ItemListMissionInfo>();
             this.CreateMap<Common.DataModels.ItemListRow, ItemListRowMissionInfo>();

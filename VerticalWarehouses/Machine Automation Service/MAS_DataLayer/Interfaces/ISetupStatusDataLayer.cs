@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         bool VerticalOffsetDone { get; }
 
-        bool VerticalResolutionDone { get; }
+        bool VerticalResolutionDone { get; set; }
 
         bool WeightMeasurementDone { get; }
 

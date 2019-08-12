@@ -50,8 +50,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             this.serviceScopeFactory = serviceScopeFactory;
-
-            this.Logger.LogTrace("DataLayer service initialised.");
         }
 
         #endregion
@@ -131,26 +129,31 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var redundancyService = scope.ServiceProvider
                     .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+                redundancyService.IsEnabled = false;
 
                 try
                 {
                     using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                     {
-                        if (activeDbContext.Database.GetPendingMigrations().Any())
+                        var pendingMigrationsCount = activeDbContext.Database.GetPendingMigrations().Count();
+                        if (pendingMigrationsCount > 0)
                         {
-                            this.Logger.LogInformation("Applying migrations to active database ...");
+                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to active database ...");
                             activeDbContext.Database.Migrate();
                         }
                     }
 
                     using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
                     {
-                        if (standbyDbContext.Database.GetPendingMigrations().Any())
+                        var pendingMigrationsCount = standbyDbContext.Database.GetPendingMigrations().Count();
+                        if (pendingMigrationsCount > 0)
                         {
-                            this.Logger.LogInformation("Applying migrations to standby database ...");
+                            this.Logger.LogInformation($"Applying {pendingMigrationsCount} migrations to standby database ...");
                             standbyDbContext.Database.Migrate();
                         }
                     }
+
+                    redundancyService.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -186,6 +189,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
                 .Publish(message);
+
+            this.Logger.LogDebug("Data layer service initialized.");
         }
 
         private void EnsureMachinestatusInitialization()

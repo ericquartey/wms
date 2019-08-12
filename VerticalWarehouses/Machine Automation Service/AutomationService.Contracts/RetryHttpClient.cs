@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
 
             newRequest.Version = request.Version;
-
+            newRequest.Content = request.Content;
             return newRequest;
         }
 

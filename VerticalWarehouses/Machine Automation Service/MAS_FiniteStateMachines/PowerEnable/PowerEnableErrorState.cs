@@ -1,10 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -13,7 +11,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
     public class PowerEnableErrorState : StateBase
     {
         #region Fields
-
 
         private readonly FieldNotificationMessage errorMessage;
 

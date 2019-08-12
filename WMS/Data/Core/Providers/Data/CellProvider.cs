@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -75,7 +77,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Floor = c.Floor,
                     Number = c.CellNumber,
                     Priority = c.Priority,
-                    Side = (Side)c.Side,
+                    Side = c.Side,
                     Status = c.CellStatus.Description,
                     CellTypeDescription = c.CellType.Description,
                     XCoordinate = c.XCoordinate,
@@ -101,7 +103,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Floor = c.Floor,
                     Number = c.CellNumber,
                     Priority = c.Priority,
-                    Side = (Side)c.Side,
+                    Side = c.Side,
                     Status = c.CellStatus.Description,
                     CellTypeDescription = c.CellType.Description,
                     XCoordinate = c.XCoordinate,
@@ -130,7 +132,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitsCount = loadingUnitsCount,
                     Number = c.CellNumber,
                     Priority = c.Priority,
-                    Side = (Side)c.Side,
+                    Side = c.Side,
                     XCoordinate = c.XCoordinate,
                     YCoordinate = c.YCoordinate,
                     ZCoordinate = c.ZCoordinate,
@@ -167,7 +169,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Floor = c.Floor,
                         Number = c.CellNumber,
                         Priority = c.Priority,
-                        Side = (Side)c.Side,
+                        Side = c.Side,
                         Status = c.CellStatus.Description,
                         CellTypeDescription = c.CellType.Description,
                         XCoordinate = c.XCoordinate,
@@ -241,7 +243,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (c.LoadingUnitsDescription != null && c.LoadingUnitsDescription.Contains(search))
                 || (c.Status != null && c.Status.Contains(search))
                 || (c.CellTypeDescription != null && c.CellTypeDescription.Contains(search))
-                || c.Side.ToString().Contains(search)
+                || c.Side.GetDisplayName(typeof(Enums.Side)).Contains(search)
                 || (successConversionAsInt
                     && (Equals(c.Floor, searchAsInt)
                         || Equals(c.Number, searchAsInt)
@@ -284,7 +286,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Floor = c.Cell.Floor,
                         Number = c.Cell.CellNumber,
                         Priority = c.Cell.Priority,
-                        Side = (Side)c.Cell.Side,
+                        Side = c.Cell.Side,
                         Status = c.Cell.CellStatus.Description,
                         CellTypeDescription = c.Cell.CellType.Description,
                         XCoordinate = c.Cell.XCoordinate,

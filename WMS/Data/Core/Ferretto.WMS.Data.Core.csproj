@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
       <OutputType>Library</OutputType>
@@ -40,6 +40,7 @@
         <ProjectReference Include="..\..\VW\Hubs\Ferretto.VW.MachineAutomationService.Hubs.csproj" />
         <ProjectReference Include="..\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
         <ProjectReference Include="..\Resources\Ferretto.WMS.Data.Resources.csproj" />
+        <ProjectReference Include="..\..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
     </ItemGroup>
 
     <ItemGroup>

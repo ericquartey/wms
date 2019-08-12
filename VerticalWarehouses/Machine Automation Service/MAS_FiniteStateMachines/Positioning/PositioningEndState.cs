@@ -6,12 +6,15 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 {
     public class PositioningEndState : StateBase
     {
         #region Fields
+
+        private readonly IMachineSensorsStatus machineSensorsStatus;
 
         private readonly int numberExecutedSteps;
 
@@ -27,6 +30,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
         public PositioningEndState(
             IStateMachine parentMachine,
+            IMachineSensorsStatus machineSensorsStatus,
             IPositioningMessageData positioningMessageData,
             ILogger logger,
             int numberExecutedSteps,
@@ -35,6 +39,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         {
             this.stopRequested = stopRequested;
             this.positioningMessageData = positioningMessageData;
+            this.machineSensorsStatus = machineSensorsStatus;
             this.numberExecutedSteps = numberExecutedSteps;
         }
 
@@ -78,7 +83,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.machineSensorsStatus, this.positioningMessageData, message, this.Logger));
                             break;
                     }
                     break;
@@ -93,6 +98,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
         public override void Start()
         {
             this.Logger?.LogTrace("1:Method Start");
+
+            lock (this.machineSensorsStatus)
+            {
+                this.positioningMessageData.CurrentPosition = (this.positioningMessageData.AxisMovement == Axis.Vertical) ? this.machineSensorsStatus.AxisYPosition : this.machineSensorsStatus.AxisXPosition;
+            }
 
             if (this.stopRequested)
             {
@@ -132,6 +142,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Positioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
+
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 500, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStatusUpdate);
+
+            this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+
         }
 
         public override void Stop()

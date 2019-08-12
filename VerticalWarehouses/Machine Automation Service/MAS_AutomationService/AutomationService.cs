@@ -305,6 +305,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
                         break;
 
+                    case MessageType.InverterStatusWord:
+                        this.InverterStatusWordMethod(receivedMessage);
+                        break;
+
                     default:
                         break;
                 }

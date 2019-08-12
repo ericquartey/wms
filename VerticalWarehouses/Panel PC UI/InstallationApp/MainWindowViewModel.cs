@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -9,17 +10,17 @@ using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Installation.Resources.Enumerables;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
+using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Unity;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Enumerations;
 
 namespace Ferretto.VW.App.Installation
 {
@@ -43,8 +44,6 @@ namespace Ferretto.VW.App.Installation
 
         private readonly IdleViewModel idleViewModel;
 
-        private readonly bool machineOnMarchSelectionBool;
-
         private readonly IOperatorHubClient operatorHubClient;
 
         private readonly IStatusMessageService statusMessageService;
@@ -52,6 +51,8 @@ namespace Ferretto.VW.App.Installation
         private IViewModel contentRegionCurrentViewModel;
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
+
+        private Dictionary<byte, IStatusWord> inverterStatuses = new Dictionary<byte, IStatusWord>();
 
         private bool isExitViewButtonRegionExpanded;
 
@@ -67,6 +68,8 @@ namespace Ferretto.VW.App.Installation
 
         private bool machineModeSelectionBool;
 
+        private bool machineOnMarchSelectionBool;
+
         private IMachineStatusMachineService machineStatusService;
 
         private IViewModel navigationRegionCurrentViewModel;
@@ -76,8 +79,6 @@ namespace Ferretto.VW.App.Installation
         private IViewModel previousContentRegionViewModel;
 
         private IViewModel previousNavigationViewModel;
-
-        private bool securityFunctionActive;
 
         private ICommand showErrorDetailsCommand;
 
@@ -147,7 +148,7 @@ namespace Ferretto.VW.App.Installation
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.idleViewModel = idleViewModel as IdleViewModel;
             this.ContentRegionCurrentViewModel = this.idleViewModel;
-            this.SecurityFunctionActive = false;
+            this.machineOnMarchSelectionBool = false;
             this.InitializeEvents();
 
             this.helpWindow = new HelpMainWindow(eventAggregator);
@@ -260,8 +261,8 @@ namespace Ferretto.VW.App.Installation
 
         public bool MachineOnMarchSelectionBool
         {
-            get => this.securityFunctionActive;
-            set => this.SetProperty(ref this.securityFunctionActive, value);
+            get => this.machineOnMarchSelectionBool;
+            set => this.SetProperty(ref this.machineOnMarchSelectionBool, value);
         }
 
         public IViewModel NavigationRegionCurrentViewModel
@@ -284,12 +285,10 @@ namespace Ferretto.VW.App.Installation
                 this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
             }));
 
-        public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
-
         public ICommand ShowErrorDetailsCommand =>
-            this.showErrorDetailsCommand
-            ??
-            (this.showErrorDetailsCommand = new DelegateCommand(async () => await this.ExecuteShowErrorDetailsCommandAsync()));
+           this.showErrorDetailsCommand
+           ??
+           (this.showErrorDetailsCommand = new DelegateCommand(async () => await this.ExecuteShowErrorDetailsCommandAsync()));
 
         #endregion
 
@@ -367,18 +366,21 @@ namespace Ferretto.VW.App.Installation
                 ThreadOption.PublisherThread,
                 false);
 
+            this.eventAggregator.GetEvent<NotificationEventUI<InverterStatusWordMessageData>>()
+                .Subscribe(
+                message => this.UpdateInverterStatusWord(message.Data),
+                ThreadOption.PublisherThread,
+                false);
+
             this.machineStatusService = this.container.Resolve<IMachineStatusMachineService>();
 
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
-            // TODO MachineOnMarch comes from the driver
-            //MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () =>
             {
-                if (!this.SecurityFunctionActive)
+                if (!this.machineOnMarchSelectionBool)
                 {
                     this.machineStatusService.ExecutePowerOnAsync();
-                    //this.securityFunctionActive = true;     // TODO - remove this line when this value comes from IoDriver
                 }
                 else
                 {
@@ -406,6 +408,22 @@ namespace Ferretto.VW.App.Installation
         private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
 
         private void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
+
+        private void UpdateInverterStatusWord(InverterStatusWordMessageData message)
+        {
+            if (this.inverterStatuses.ContainsKey(message.InverterIndex))
+            {
+                this.inverterStatuses[message.InverterIndex] = new StatusWordBase(message.Value);
+            }
+            else
+            {
+                this.inverterStatuses.Add(message.InverterIndex, new StatusWordBase(message.Value));
+            }
+            //if (this.inverterStatuses[message.InverterIndex].IsFault && Debugger.IsAttached)
+            //{
+            //    Debugger.Break(); // it works!!!
+            //}
+        }
 
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
