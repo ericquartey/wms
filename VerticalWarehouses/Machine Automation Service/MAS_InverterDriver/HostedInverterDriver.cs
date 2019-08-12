@@ -327,7 +327,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.CurrentStateMachine != null)
                 {
-                    this.logger.LogTrace( $"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}" );
+                    this.logger.LogWarning( $"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}" );
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage( new InverterExceptionFieldMessageData( ex, "Inverter operation already in progress", 0 ), FieldMessageType.InverterError );
