@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            return true;
+            return true;    // EvaluateWriteMessage will send a StatusWordParam
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {
                 this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.InverterStatus, this.Logger));
-                returnValue = true;
+                returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam 
             }
 
             return returnValue;

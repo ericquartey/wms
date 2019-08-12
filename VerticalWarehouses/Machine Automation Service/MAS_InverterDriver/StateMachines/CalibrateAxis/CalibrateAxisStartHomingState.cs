@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            var returnValue = false;    // EvaluateReadMessage will send a new StatusWordParam after the last StatusWordParam
+            var returnValue = false;    // EvaluateReadMessage will send a new StatusWordParam after receiving a StatusWord response
 
             if (message.IsError)
             {
