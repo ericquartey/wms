@@ -104,7 +104,7 @@
                                                                             VerticalAlignment="Center"
                                                                             IsReadOnly="True"
                                                                             LabelText=""
-                                                                            SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            SensorState="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                                                                             Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}" />
                                             <TextBlock Margin="-2,2,0,0"
                                                        HorizontalAlignment="Center"
@@ -139,7 +139,7 @@
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                LabelText="{Binding Description}"
-                                                               SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                               SensorState="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                                                                Style="{StaticResource VWSIM_CustomSensorSmallControlStyle}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -227,7 +227,7 @@
                                                                 HorizontalAlignment="Left"
                                                                 VerticalAlignment="Center"
                                                                 LabelText="{Binding Description}"
-                                                                SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                SensorState="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                                                                 Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -394,7 +394,7 @@
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           LabelText="Sicurezza"
-                                          SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource VWSIM_CustomSensorControlStyle}" />
 
             </Grid>
@@ -548,7 +548,7 @@
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   Text="{Binding ErrorMessage}"
                    TextWrapping="WrapWithOverflow" />
 
     </Grid>

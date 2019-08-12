@@ -74,11 +74,11 @@ namespace Ferretto.VW.App.Services
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
-                this.logger.Warn($"Invalid view model name '{viewModelName}' for module name '{moduleName}'.");
+                this.logger.Warn($"Invalid view model name '{moduleName}.{viewModelName}''.");
                 return;
             }
 
-            this.logger.Trace($"Opening view '{viewModelName}' of module '{moduleName}'.");
+            this.logger.Trace($"Opening view '{moduleName}.{viewModelName}''.");
 
             try
             {
@@ -99,7 +99,7 @@ namespace Ferretto.VW.App.Services
             }
             catch (Exception ex)
             {
-                this.logger.Error(ex, $"Cannot show view '{viewModelName}' for module '{moduleName}'.");
+                this.logger.Error(ex, $"Cannot show view '{moduleName}.{viewModelName}'.");
             }
 
             return;
@@ -134,7 +134,9 @@ namespace Ferretto.VW.App.Services
             {
                 navigationTrack = this.tracks.Pop();
             }
-            while (!navigationTrack.CanBackTrack && this.tracks.Any());
+            while (!navigationTrack.IsTrackable && this.tracks.Any());
+
+            this.logger.Info($"Navigating back to '{navigationTrack.ModuleName}.{navigationTrack.ViewName}'.");
 
             this.regionManager.RequestNavigate(
                 Utils.Modules.Layout.REGION_MAINCONTENT,

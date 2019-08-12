@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public ShutterSensorsViewModel(ISensorsMachineService sensorsService)
+        public ShutterSensorsViewModel(IMachineSensorsService sensorsService)
             : base(sensorsService)
         {
         }

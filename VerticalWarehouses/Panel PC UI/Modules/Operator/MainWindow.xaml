@@ -60,7 +60,7 @@
                     </Button>
                     <custom:CustomControlLoggedUser Margin="20,0,20,0"
                                                     IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LogOffCommand="{Binding BackToVWAPPCommand}"
+                                                    LogOffCommand="{Binding LogOffCommand}"
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"

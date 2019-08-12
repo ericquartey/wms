@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         #region Methods
 
-        public static IUnityContainer RegisterMachineAutomationHubs( // TODO remove this 
+        public static IUnityContainer RegisterMachineAutomationHubs( // TODO remove this
             this IUnityContainer container,
             System.Uri serviceUrl,
             string operatorHubPath,
@@ -25,74 +25,74 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             return container;
         }
 
-        public static IUnityContainer RegisterMachineAutomationServices(// TODO remove this 
+        public static IUnityContainer RegisterMachineAutomationServices(// TODO remove this
             this IUnityContainer container,
             System.Uri serviceUrl)
         {
             var urlString = serviceUrl.ToString();
 
-            container.RegisterType<IIdentityMachineService>(
-                new InjectionFactory(c => new IdentityMachineService(urlString)));
+            container.RegisterType<IMachineIdentityService>(
+                new InjectionFactory(c => new MachineIdentityService(urlString)));
 
-            container.RegisterType<IUsersMachineService>(
-                new InjectionFactory(c => new UsersMachineService(urlString)));
+            container.RegisterType<IMachineUsersService>(
+                new InjectionFactory(c => new MachineUsersService(urlString)));
 
-            container.RegisterType<IErrorsMachineService>(
-                new InjectionFactory(c => new ErrorsMachineService(urlString)));
+            container.RegisterType<IMachineErrorsService>(
+                new InjectionFactory(c => new MachineErrorsService(urlString)));
 
-            container.RegisterType<IMissionOperationsMachineService>(
-                new InjectionFactory(c => new MissionOperationsMachineService(urlString)));
+            container.RegisterType<IMachineMissionOperationsService>(
+                new InjectionFactory(c => new MachineMissionOperationsService(urlString)));
 
-            container.RegisterType<IHomingMachineService>(
-                new InjectionFactory(c => new HomingMachineService(urlString)));
+            container.RegisterType<IMachineHomingService>(
+                new InjectionFactory(c => new MachineHomingService(urlString)));
 
-            container.RegisterType<IPositioningMachineService>(
-                new InjectionFactory(c => new PositioningMachineService(urlString)));
+            container.RegisterType<IMachineElevatorService>(
+                new InjectionFactory(c => new MachineElevatorService(urlString)));
 
-            container.RegisterType<IBeltBurnishingMachineService>(
-                new InjectionFactory(c => new BeltBurnishingMachineService(urlString)));
+            container.RegisterType<IMachineBeltBurnishingService>(
+                new InjectionFactory(c => new MachineBeltBurnishingService(urlString)));
 
-            container.RegisterType<IShutterMachineService>(
-                new InjectionFactory(c => new ShutterMachineService(urlString)));
+            container.RegisterType<IMachineShutterService>(
+                new InjectionFactory(c => new MachineShutterService(urlString)));
 
-            container.RegisterType<IResolutionCalibrationMachineService>(
-                new InjectionFactory(c => new ResolutionCalibrationMachineService(urlString)));
+            container.RegisterType<IMachineResolutionCalibrationService>(
+                new InjectionFactory(c => new MachineResolutionCalibrationService(urlString)));
 
-            container.RegisterType<IVerticalOffsetMachineService>(
-                new InjectionFactory(c => new VerticalOffsetMachineService(urlString)));
+            container.RegisterType<IMachineVerticalOffsetService>(
+                new InjectionFactory(c => new MachineVerticalOffsetService(urlString)));
 
-            container.RegisterType<IInstallationStatusMachineService>(
-                new InjectionFactory(c => new InstallationStatusMachineService(urlString)));
+            container.RegisterType<IMachineInstallationStatusService>(
+                new InjectionFactory(c => new MachineInstallationStatusService(urlString)));
 
-            container.RegisterType<ISensorsMachineService>(
-                new InjectionFactory(c => new SensorsMachineService(urlString)));
+            container.RegisterType<IMachineSensorsService>(
+                new InjectionFactory(c => new MachineSensorsService(urlString)));
 
-            container.RegisterType<ITestMachineService>(
-                new InjectionFactory(c => new TestMachineService(urlString)));
+            container.RegisterType<IMachineTestService>(
+                new InjectionFactory(c => new MachineTestService(urlString)));
 
-            container.RegisterType<IMachineStatusMachineService>(
-                new InjectionFactory(c => new MachineStatusMachineService(urlString)));
+            container.RegisterType<IMachineMachineStatusService>(
+                new InjectionFactory(c => new MachineMachineStatusService(urlString)));
 
-            container.RegisterType<IMissionOperationsMachineService>(
-                new InjectionFactory(c => new MissionOperationsMachineService(urlString)));
+            container.RegisterType<IMachineMissionOperationsService>(
+                new InjectionFactory(c => new MachineMissionOperationsService(urlString)));
 
-            container.RegisterType<ILoadingUnitsMachineService>(
-                new InjectionFactory(c => new LoadingUnitsMachineService(urlString)));
+            container.RegisterType<IMachineLoadingUnitsService>(
+                new InjectionFactory(c => new MachineLoadingUnitsService(urlString)));
 
-            container.RegisterType<ICellsMachineService>(
-                new InjectionFactory(c => new CellsMachineService(urlString)));
+            container.RegisterType<IMachineCellsService>(
+                new InjectionFactory(c => new MachineCellsService(urlString)));
 
-            container.RegisterType<IErrorsMachineService>(
-                new InjectionFactory(c => new ErrorsMachineService(urlString)));
+            container.RegisterType<IMachineErrorsService>(
+                new InjectionFactory(c => new MachineErrorsService(urlString)));
 
-            container.RegisterType<IBaysMachineService>(
-                new InjectionFactory(c => new BaysMachineService(urlString)));
+            container.RegisterType<IMachineBaysService>(
+                new InjectionFactory(c => new MachineBaysService(urlString)));
 
-            container.RegisterType<IStatisticsMachineService>(
-                new InjectionFactory(c => new StatisticsMachineService(urlString)));
+            container.RegisterType<IMachineStatisticsService>(
+                new InjectionFactory(c => new MachineStatisticsService(urlString)));
 
-            container.RegisterType<IMoveDrawerMachineService>(
-                new InjectionFactory(c => new MoveDrawerMachineService(urlString)));
+            container.RegisterType<IMachineMoveDrawerService>(
+                new InjectionFactory(c => new MachineMoveDrawerService(urlString)));
 
             return container;
         }
@@ -121,47 +121,28 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             var urlString = serviceUrl.ToString();
 
-            container.RegisterInstance<IIdentityMachineService>(new IdentityMachineService(urlString));
-
-            container.RegisterInstance<IUsersMachineService>(new UsersMachineService(urlString));
-
-            container.RegisterInstance<IErrorsMachineService>( new ErrorsMachineService(urlString));
-
-            container.RegisterInstance<IMissionOperationsMachineService>(new MissionOperationsMachineService(urlString));
-
-            container.RegisterInstance<IHomingMachineService>(new HomingMachineService(urlString));
-
-            container.RegisterInstance<IPositioningMachineService>(new PositioningMachineService(urlString));
-
-            container.RegisterInstance<IBeltBurnishingMachineService>(new BeltBurnishingMachineService(urlString));
-
-            container.RegisterInstance<IShutterMachineService>(new ShutterMachineService(urlString));
-
-            container.RegisterInstance<IResolutionCalibrationMachineService>(new ResolutionCalibrationMachineService(urlString));
-
-            container.RegisterInstance<IVerticalOffsetMachineService>(new VerticalOffsetMachineService(urlString));
-
-            container.RegisterInstance<IInstallationStatusMachineService>(new InstallationStatusMachineService(urlString));
-
-            container.RegisterInstance<ISensorsMachineService>(new SensorsMachineService(urlString));
-
-            container.RegisterInstance<ITestMachineService>(new TestMachineService(urlString));
-
-            container.RegisterInstance<IMachineStatusMachineService>(new MachineStatusMachineService(urlString));
-
-            container.RegisterInstance<IMissionOperationsMachineService>(new MissionOperationsMachineService(urlString));
-
-            container.RegisterInstance<ILoadingUnitsMachineService>(new LoadingUnitsMachineService(urlString));
-
-            container.RegisterInstance<ICellsMachineService>(new CellsMachineService(urlString));
-
-            container.RegisterInstance<IErrorsMachineService>(new ErrorsMachineService(urlString));
-
-            container.RegisterInstance<IBaysMachineService>(new BaysMachineService(urlString));
-
-            container.RegisterInstance<IStatisticsMachineService>(new StatisticsMachineService(urlString));
-
-            container.RegisterInstance<IMoveDrawerMachineService>(new MoveDrawerMachineService(urlString));
+            container.RegisterInstance<IMachineBaysService>(new MachineBaysService(urlString));
+            container.RegisterInstance<IMachineBeltBurnishingService>(new MachineBeltBurnishingService(urlString));
+            container.RegisterInstance<IMachineCarouselService>(new MachineCarouselService(urlString));
+            container.RegisterInstance<IMachineCellsService>(new MachineCellsService(urlString));
+            container.RegisterInstance<IMachineElevatorService>(new MachineElevatorService(urlString));
+            container.RegisterInstance<IMachineErrorsService>(new MachineErrorsService(urlString));
+            container.RegisterInstance<IMachineErrorsService>(new MachineErrorsService(urlString));
+            container.RegisterInstance<IMachineHomingService>(new MachineHomingService(urlString));
+            container.RegisterInstance<IMachineIdentityService>(new MachineIdentityService(urlString));
+            container.RegisterInstance<IMachineInstallationStatusService>(new MachineInstallationStatusService(urlString));
+            container.RegisterInstance<IMachineLoadingUnitsService>(new MachineLoadingUnitsService(urlString));
+            container.RegisterInstance<IMachineMachineStatusService>(new MachineMachineStatusService(urlString));
+            container.RegisterInstance<IMachineMissionOperationsService>(new MachineMissionOperationsService(urlString));
+            container.RegisterInstance<IMachineMissionOperationsService>(new MachineMissionOperationsService(urlString));
+            container.RegisterInstance<IMachineMoveDrawerService>(new MachineMoveDrawerService(urlString));
+            container.RegisterInstance<IMachineResolutionCalibrationService>(new MachineResolutionCalibrationService(urlString));
+            container.RegisterInstance<IMachineSensorsService>(new MachineSensorsService(urlString));
+            container.RegisterInstance<IMachineShutterService>(new MachineShutterService(urlString));
+            container.RegisterInstance<IMachineStatisticsService>(new MachineStatisticsService(urlString));
+            container.RegisterInstance<IMachineTestService>(new MachineTestService(urlString));
+            container.RegisterInstance<IMachineUsersService>(new MachineUsersService(urlString));
+            container.RegisterInstance<IMachineVerticalOffsetService>(new MachineVerticalOffsetService(urlString));
 
             return container;
         }

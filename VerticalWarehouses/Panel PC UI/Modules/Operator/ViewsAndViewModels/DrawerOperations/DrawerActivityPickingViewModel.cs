@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
-            IMissionOperationsMachineService missionOperationsService,
+            IMachineMissionOperationsService missionOperationsService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IBayManager bayManager)
             : base(eventAggregator,

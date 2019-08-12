@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IStatisticsMachineService statisticsService;
+        private readonly IMachineStatisticsService statisticsService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         public StatisticsGeneralDataViewModel(
             IStatisticsNavigationViewModel statisticsNavigationViewModel,
-            IStatisticsMachineService statisticsService,
+            IMachineStatisticsService statisticsService,
             IStatusMessageService statusMessageService)
         {
             if (statisticsService == null)

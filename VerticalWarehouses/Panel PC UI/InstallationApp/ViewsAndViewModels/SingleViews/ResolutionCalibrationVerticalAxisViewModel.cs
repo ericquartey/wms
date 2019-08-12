@@ -20,11 +20,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IResolutionCalibrationMachineService resolutionCalibrationService;
+        private readonly IMachineResolutionCalibrationService resolutionCalibrationService;
 
         private readonly IStatusMessageService statusMessageService;
 
-        private readonly ITestMachineService testService;
+        private readonly IMachineTestService testService;
 
         private ICommand acceptButtonCommand;
 
@@ -100,8 +100,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public ResolutionCalibrationVerticalAxisViewModel(
             IEventAggregator eventAggregator,
-            IResolutionCalibrationMachineService resolutionCalibrationService,
-            ITestMachineService testService,
+            IMachineResolutionCalibrationService resolutionCalibrationService,
+            IMachineTestService testService,
             IStatusMessageService statusMessageService)
         {
             if (eventAggregator == null)
@@ -357,7 +357,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             var resultAssignment = await this.resolutionCalibrationService.SetResolutionParameterAsync(this.newResolutionDec);
 
-            if (resultAssignment == true)
+            if (resultAssignment)
             {
                 this.IsAcceptButtonActive = false;
                 this.IsUpdateResolutionButtonActive = false;
@@ -557,7 +557,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 }
             }
 
-            this.IsAcceptButtonActive = this.newResolutionDec > 0 ? true : false;
+            this.IsAcceptButtonActive = this.newResolutionDec > 0;
         }
 
         #endregion

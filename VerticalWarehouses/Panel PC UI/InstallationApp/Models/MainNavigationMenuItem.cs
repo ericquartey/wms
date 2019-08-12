@@ -13,8 +13,8 @@ namespace Ferretto.VW.App.Installation.Models
 
         #region Constructors
 
-        public MainNavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description, bool canBackTrack)
-            : base(viewModelName, moduleName, description, canBackTrack)
+        public MainNavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description, bool isTrackable)
+            : base(viewModelName, moduleName, description, isTrackable)
         {
             this.MenuItemType = menuItemType;
         }

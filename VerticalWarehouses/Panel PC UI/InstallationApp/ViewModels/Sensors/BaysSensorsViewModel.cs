@@ -7,19 +7,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Constructors
 
-        public BaysSensorsViewModel(ISensorsMachineService sensorsMachineService)
-            : base(sensorsMachineService)
+        public BaysSensorsViewModel(IMachineSensorsService machineSensorsService)
+            : base(machineSensorsService)
         {
-        }
-
-        #endregion
-
-        #region Methods
-
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-            this.SohwBack(true);
         }
 
         #endregion

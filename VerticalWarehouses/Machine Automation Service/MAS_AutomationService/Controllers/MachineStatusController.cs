@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -24,10 +25,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("ExecuteResetSecurity")]
-        public void ExecuteResetSecurity()
+        [HttpGet("ExecutePowerOff")]
+        public void ExecutePowerOff()
         {
-            this.ExecuteResetSecurity_Method();
+            this.ExecutePowerOff_Method();
         }
 
         [HttpGet("ExecutePowerOn")]
@@ -36,10 +37,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.ExecutePowerOn_Method();
         }
 
-        [HttpGet("ExecutePowerOff")]
-        public void ExecutePowerOff()
+        [HttpGet("ExecuteResetSecurity")]
+        public void ExecuteResetSecurity()
         {
-            this.ExecutePowerOff_Method();
+            this.ExecuteResetSecurity_Method();
         }
 
         #endregion

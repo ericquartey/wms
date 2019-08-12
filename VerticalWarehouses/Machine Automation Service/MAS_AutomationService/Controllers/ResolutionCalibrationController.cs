@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -23,16 +24,53 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IResolutionCalibrationDataLayer resolutionCalibration;
+
+        private readonly ISetupStatusDataLayer setupStatus;
+
+        private readonly IVerticalAxisDataLayer verticalAxis;
+
         #endregion
 
         #region Constructors
 
         public ResolutionCalibrationController(
             IEventAggregator eventAggregator,
-            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement)
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IResolutionCalibrationDataLayer resolutionCalibration,
+            IVerticalAxisDataLayer verticalAxisDataLayer,
+            ISetupStatusDataLayer setupStatusDataLayer)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (dataLayerConfigurationValueManagement == null)
+            {
+                throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            }
+
+            if (resolutionCalibration == null)
+            {
+                throw new ArgumentNullException(nameof(resolutionCalibration));
+            }
+
+            if (verticalAxisDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
+            }
+
+            if (setupStatusDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(setupStatusDataLayer));
+            }
+
             this.eventAggregator = eventAggregator;
+            this.verticalAxis = verticalAxisDataLayer;
+            this.setupStatus = setupStatusDataLayer;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.resolutionCalibration = resolutionCalibration;
         }
 
         #endregion
@@ -91,11 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement
-                    .SetBoolConfigurationValue(
-                        (long)SetupStatus.VerticalResolutionDone,
-                        ConfigurationCategory.SetupStatus,
-                        true);
+                this.setupStatus.VerticalResolutionDone = true;
             }
             catch (Exception)
             {
@@ -109,12 +143,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             string message;
 
-            var homingDone = this.dataLayerConfigurationValueManagement
-                .GetBoolConfigurationValue(
-                    (long)SetupStatus.VerticalHomingDone,
-                    ConfigurationCategory.SetupStatus);
+            var homingDone = this.setupStatus.VerticalHomingDone;
+            var beltBurnishingDone = this.setupStatus.BeltBurnishingDone;
 
-            if (homingDone)
+            if (homingDone && beltBurnishingDone)
             {
                 switch (resolutionCalibrationSteps)
                 {
@@ -137,19 +169,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 try
                 {
-                    var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxEmptySpeed, ConfigurationCategory.VerticalAxis);
-                    var maxAcceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxEmptyAcceleration, ConfigurationCategory.VerticalAxis);
-                    var maxDeceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)VerticalAxis.MaxEmptyDeceleration, ConfigurationCategory.VerticalAxis);
-                    var feedRate = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                        (long)ResolutionCalibration.FeedRate, ConfigurationCategory.ResolutionCalibration);
+                    var maxSpeed = this.verticalAxis.MaxEmptySpeed;
+                    var maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
+                    var maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+                    var feedRate = this.resolutionCalibration.FeedRate;
 
                     var speed = maxSpeed * feedRate;
                     var messageData = new PositioningMessageData(
                         Axis.Vertical,
                         MovementType.Absolute,
+                        MovementMode.Position,
                         position,
                         speed,
                         maxAcceleration,
@@ -157,6 +186,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         0,
                         0,
                         0);
+
                     var commandMessage = new CommandMessage(
                         messageData,
                         message,
@@ -216,9 +246,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             switch (categoryId)
             {
                 case ConfigurationCategory.VerticalAxis:
-
                     Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
-
                     if (verticalAxisParameterId != null)
                     {
                         decimal value1 = 0;
@@ -242,30 +270,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                         return this.NotFound("Parameter not found");
                     }
 
-                case ConfigurationCategory.HorizontalAxis:
-
-                    Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
-                    if (horizontalAxisParameterId != null)
-                    {
-                        decimal value2;
-                        try
-                        {
-                            value2 = this.dataLayerConfigurationValueManagement
-                                .GetDecimalConfigurationValue(
-                                (long)horizontalAxisParameterId,
-                                category);
-                        }
-                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                        {
-                            return this.NotFound("Parameter not found");
-                        }
-
-                        return this.Ok(value2);
-                    }
-                    else
-                    {
-                        return this.NotFound("Parameter not found");
-                    }
                 case ConfigurationCategory.ResolutionCalibration:
                     Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
                     if (resolutionCalibrationParameterId != null)
@@ -300,11 +304,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                this.dataLayerConfigurationValueManagement
-                    .SetDecimalConfigurationValue(
-                        (long)VerticalAxis.Resolution,
-                        ConfigurationCategory.VerticalAxis,
-                        newResolution);
+                this.verticalAxis.Resolution = newResolution;
             }
             catch (Exception)
             {

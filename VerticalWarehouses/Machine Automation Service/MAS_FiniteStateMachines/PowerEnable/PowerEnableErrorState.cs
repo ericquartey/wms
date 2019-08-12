@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
     {
         #region Fields
 
-
         private readonly FieldNotificationMessage errorMessage;
 
         private bool disposed;

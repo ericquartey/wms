@@ -4,36 +4,101 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CarouselManualMovementsViewModel : BasePositioningViewModel
+    public class CarouselManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
-        private DelegateCommand closeCarouselCommand;
+        private readonly IMachineCarouselService machineCarouselService;
 
-        private DelegateCommand openCarouselCommand;
+        private bool canExecuteCloseCommand;
+
+        private bool canExecuteOpenCommand;
+
+        private DelegateCommand closeCommand;
+
+        private bool isClosing;
+
+        private bool isOpening;
+
+        private bool isStopping;
+
+        private DelegateCommand openCommand;
 
         #endregion
 
         #region Constructors
 
-        public CarouselManualMovementsViewModel(IPositioningMachineService positioningService)
-            : base(positioningService)
+        public CarouselManualMovementsViewModel(
+            IMachineCarouselService machineCarouselService,
+            IMachineHomingService homingService)
+            : base(homingService)
         {
+            this.machineCarouselService = machineCarouselService;
+
+            this.RefreshCanExecuteCommands();
         }
 
         #endregion
 
         #region Properties
 
-        public DelegateCommand CloseCarouselCommand =>
-            this.closeCarouselCommand
-            ??
-            (this.closeCarouselCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
+        public bool CanExecuteCloseCommand
+        {
+            get => this.canExecuteCloseCommand;
+            set => this.SetProperty(ref this.canExecuteCloseCommand, value);
+        }
 
-        public DelegateCommand OpenCarouselCommand =>
-            this.openCarouselCommand
+        public bool CanExecuteOpenCommand
+        {
+            get => this.canExecuteOpenCommand;
+            set => this.SetProperty(ref this.canExecuteOpenCommand, value);
+        }
+
+        public DelegateCommand CloseCommand =>
+            this.closeCommand
             ??
-            (this.openCarouselCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
+            (this.closeCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
+
+        public bool IsClosing
+        {
+            get => this.isClosing;
+            set
+            {
+                if (this.SetProperty(ref this.isClosing, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsOpening
+        {
+            get => this.isOpening;
+            set
+            {
+                if (this.SetProperty(ref this.isOpening, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            set
+            {
+                if (this.SetProperty(ref this.isStopping, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public DelegateCommand OpenCommand =>
+            this.openCommand
+            ??
+            (this.openCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
 
         #endregion
 
@@ -41,27 +106,63 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task CloseCarouselAsync()
         {
-            var messageData = CreateMovementMessageData(-100);
+            this.IsClosing = true;
 
-            await this.StartPositioningAsync(messageData);
+            await this.StartMovementAsync(-100);
         }
 
         public async Task OpenCarouselAsync()
         {
-            var messageData = CreateMovementMessageData(100);
+            this.IsOpening = true;
 
-            await this.StartPositioningAsync(messageData);
+            await this.StartMovementAsync(100);
         }
 
-        private static MovementMessageDataDto CreateMovementMessageData(decimal displacement)
+        protected async Task StartMovementAsync(decimal displacement)
         {
-            return new MovementMessageDataDto
+            try
             {
-                Axis = Axis.Both,
-                MovementType = MovementType.Absolute,
-                SpeedPercentage = 50,
-                Displacement = displacement
-            };
+                await this.machineCarouselService.MoveAsync(
+                    new CarouselMovementParameters
+                    {
+                        MovementType = MovementType.Absolute,
+                        SpeedPercentage = 50,
+                        Displacement = displacement
+                    });
+            }
+            catch (System.Exception ex)
+            {
+                this.IsClosing = false;
+                this.IsOpening = false;
+
+                this.ShowError(ex);
+            }
+        }
+
+        protected override async Task StopMovementAsync()
+        {
+            try
+            {
+                this.IsStopping = true;
+
+                await this.machineCarouselService.StopAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowError(ex);
+            }
+            finally
+            {
+                this.IsOpening = false;
+                this.IsClosing = false;
+                this.IsStopping = false;
+            }
+        }
+
+        private void RefreshCanExecuteCommands()
+        {
+            this.CanExecuteCloseCommand = !this.IsOpening && !this.IsStopping;
+            this.CanExecuteOpenCommand = !this.IsClosing && !this.IsStopping;
         }
 
         #endregion

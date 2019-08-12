@@ -14,15 +14,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IShutterMachineService shutterService;
+        private readonly IMachineShutterService shutterService;
+
+        private bool canExecuteMoveDownCommand;
+
+        private bool canExecuteMoveUpCommand;
 
         private ShutterPosition? currentPosition;
+
+        private bool isMovingDown;
+
+        private bool isMovingUp;
+
+        private bool isStopping;
 
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
-
-        private DelegateCommand stopMovementCommand;
 
         private SubscriptionToken subscriptionToken;
 
@@ -30,7 +38,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public ShutterEngineManualMovementsViewModel(IShutterMachineService shutterService)
+        public ShutterEngineManualMovementsViewModel(
+            IMachineShutterService shutterService,
+            IMachineHomingService homingService)
+            : base(homingService)
         {
             if (shutterService == null)
             {
@@ -38,16 +49,66 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.shutterService = shutterService;
+
+            this.RefreshCanExecuteCommands();
         }
 
         #endregion
 
         #region Properties
 
-        public ShutterPosition? CurrentPosition
+        public bool CanExecuteMoveDownCommand
+        {
+            get => this.canExecuteMoveDownCommand;
+            set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
+        }
+
+        public bool CanExecuteMoveUpCommand
+        {
+            get => this.canExecuteMoveUpCommand;
+            set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
+        }
+
+        public new ShutterPosition? CurrentPosition
         {
             get => this.currentPosition;
             set => this.SetProperty(ref this.currentPosition, value);
+        }
+
+        public bool IsMovingDown
+        {
+            get => this.isMovingDown;
+            set
+            {
+                if (this.SetProperty(ref this.isMovingDown, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsMovingUp
+        {
+            get => this.isMovingUp;
+            set
+            {
+                if (this.SetProperty(ref this.isMovingUp, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            set
+            {
+                if (this.SetProperty(ref this.isStopping, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
         }
 
         public DelegateCommand MoveDownCommand =>
@@ -62,35 +123,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public BindableBase NavigationViewModel { get; set; }
 
-        public DelegateCommand StopMovementCommand =>
-            this.stopMovementCommand
-            ??
-            (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
-
         #endregion
 
         #region Methods
 
         public async Task MoveDownAsync()
         {
+            this.IsMovingDown = true;
+
             var messageData = new ShutterPositioningMovementMessageDataDto
             {
                 BayNumber = 1,
                 ShutterPositionMovement = MAS.AutomationService.Contracts.ShutterMovementDirection.Down
             };
 
-            await this.ExecutePositioningAsync(messageData);
+            await this.StartMovementAsync(messageData);
         }
 
         public async Task MoveUpAsync()
         {
+            this.IsMovingUp = true;
+
             var messageData = new ShutterPositioningMovementMessageDataDto
             {
                 BayNumber = 1,
                 ShutterPositionMovement = MAS.AutomationService.Contracts.ShutterMovementDirection.Up
             };
 
-            await this.ExecutePositioningAsync(messageData);
+            await this.StartMovementAsync(messageData);
         }
 
         public override async Task OnNavigatedAsync()
@@ -103,18 +163,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   false);
 
             await base.OnNavigatedAsync();
-        }
-
-        public async Task StopMovementAsync()
-        {
-            try
-            {
-                await this.shutterService.StopAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowError(ex);
-            }
         }
 
         protected override void Dispose(bool disposing)
@@ -131,7 +179,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Dispose(disposing);
         }
 
-        private async Task ExecutePositioningAsync(ShutterPositioningMovementMessageDataDto messageData)
+        protected override async Task StopMovementAsync()
+        {
+            try
+            {
+                this.IsStopping = true;
+
+                await this.shutterService.StopAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowError(ex);
+            }
+            finally
+            {
+                this.IsMovingDown = false;
+                this.IsMovingUp = false;
+                this.IsStopping = false;
+            }
+        }
+
+        private void RefreshCanExecuteCommands()
+        {
+            this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
+            this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
+        }
+
+        private async Task StartMovementAsync(ShutterPositioningMovementMessageDataDto messageData)
         {
             try
             {
@@ -139,6 +213,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
+                this.IsMovingDown = false;
+                this.IsMovingUp = false;
+
                 this.ShowError(ex);
             }
         }

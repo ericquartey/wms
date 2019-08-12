@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
     {
         #region Fields
 
-        private readonly IIdentityMachineService identityService;
+        private readonly IMachineIdentityService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
         public DetailListInWaitViewModel(
             IStatusMessageService statusMessageService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
-            IIdentityMachineService identityService,
+            IMachineIdentityService identityService,
             IItemListsDataService itemListsDataService)
         {
             if (statusMessageService == null)

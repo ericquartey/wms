@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMoveDrawerMachineService moveDrawerService;
+        private readonly IMachineMoveDrawerService moveDrawerService;
 
         private bool isStartRecallButtonActive = true;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public DrawerStoreRecallViewModel(
             IEventAggregator eventAggregator,
-            IMoveDrawerMachineService moveDrawerService)
+            IMachineMoveDrawerService moveDrawerService)
         {
             if (eventAggregator == null)
             {

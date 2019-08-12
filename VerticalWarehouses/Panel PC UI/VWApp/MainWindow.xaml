@@ -124,7 +124,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   Text="{Binding ErrorMessage}"
                    TextWrapping="WrapWithOverflow" />
 
         <Button Grid.Row="0"

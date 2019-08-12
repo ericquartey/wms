@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
-        private readonly IErrorsMachineService errorsMachineService;
+        private readonly IMachineErrorsService machineErrorsService;
 
         private readonly INavigationService navigationService;
 
@@ -26,13 +26,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationError(
-            IErrorsMachineService errorsMachineService,
+            IMachineErrorsService machineErrorsService,
             IOperatorHubClient operatorHubClient,
             INavigationService navigationService)
         {
-            if (errorsMachineService == null)
+            if (machineErrorsService == null)
             {
-                throw new ArgumentNullException(nameof(errorsMachineService));
+                throw new ArgumentNullException(nameof(machineErrorsService));
             }
 
             if (operatorHubClient == null)
@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            this.errorsMachineService = errorsMachineService;
+            this.machineErrorsService = machineErrorsService;
             this.operatorHubClient = operatorHubClient;
             this.navigationService = navigationService;
 
@@ -82,7 +82,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             try
             {
-                var error = await this.errorsMachineService.GetCurrentAsync();
+                var error = await this.machineErrorsService.GetCurrentAsync();
 
                 this.areErrorsPresent = error != null;
 

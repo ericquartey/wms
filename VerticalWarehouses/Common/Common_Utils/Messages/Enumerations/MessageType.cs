@@ -63,5 +63,7 @@
         InverterStop,
 
         PowerEnable,
+
+        InverterStatusWord
     }
 }

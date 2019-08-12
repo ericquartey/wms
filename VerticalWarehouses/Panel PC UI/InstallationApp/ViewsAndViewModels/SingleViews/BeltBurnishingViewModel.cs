@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
     {
         #region Fields
 
-        private readonly IBeltBurnishingMachineService beltBurnishingService;
+        private readonly IMachineBeltBurnishingService beltBurnishingService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
-            IBeltBurnishingMachineService beltBurnishingService)
+            IMachineBeltBurnishingService beltBurnishingService)
         {
             if (eventAggregator == null)
             {
@@ -236,19 +236,18 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
             {
+                this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
+                this.CurrentPosition = cp.Data.CurrentPosition.ToString();
+
                 switch (cp.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = false;
                         this.IsStopButtonActive = true;
                         break;
 
                     case MessageStatus.OperationEnd:
                     case MessageStatus.OperationStop:
-                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
 
@@ -258,11 +257,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                     case MessageStatus.OperationError:
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    case MessageStatus.OperationExecuting:
-                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         break;
                 }
             }

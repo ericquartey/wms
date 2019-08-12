@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
         #region Fields
 
-        private readonly IErrorsMachineService errorsMachineService;
+        private readonly IMachineErrorsService machineErrorsService;
 
         private Error error;
 
@@ -21,15 +21,15 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Constructors
 
-        public ErrorDetailsViewModel(IErrorsMachineService errorsMachineService)
+        public ErrorDetailsViewModel(IMachineErrorsService machineErrorsService)
             : base(Services.PresentationMode.Installator)
         {
-            if (errorsMachineService == null)
+            if (machineErrorsService == null)
             {
-                throw new ArgumentNullException(nameof(errorsMachineService));
+                throw new ArgumentNullException(nameof(machineErrorsService));
             }
 
-            this.errorsMachineService = errorsMachineService;
+            this.machineErrorsService = machineErrorsService;
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             try
             {
                 this.NavigationService.SetBusy(true);
-                this.Error = await this.errorsMachineService.GetCurrentAsync();
+                this.Error = await this.machineErrorsService.GetCurrentAsync();
             }
             catch (Exception ex)
             {
@@ -93,9 +93,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             try
             {
                 this.NavigationService.SetBusy(true);
-                await this.errorsMachineService.ResolveAsync(this.error.Id);
+                await this.machineErrorsService.ResolveAsync(this.error.Id);
 
-                var nextError = await this.errorsMachineService.GetCurrentAsync();
+                var nextError = await this.machineErrorsService.GetCurrentAsync();
                 this.NavigationService.SetBusy(false);
                 if (nextError == null)
                 {

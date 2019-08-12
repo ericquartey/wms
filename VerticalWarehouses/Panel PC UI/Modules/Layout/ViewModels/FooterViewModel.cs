@@ -7,13 +7,17 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
     {
         #region Fields
 
-        private string errorMessage;
+        private string notificationMessage;
 
         #endregion
 
         #region Properties
 
-        public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
+        public string NotificationMessage
+        {
+            get => this.notificationMessage;
+            set => this.SetProperty(ref this.notificationMessage, value);
+        }
 
         #endregion
 
@@ -28,9 +32,10 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         public override void UpdateChanges(PresentationChangedMessage message)
         {
             base.UpdateChanges(message);
+
             if (!string.IsNullOrEmpty(message.ErrorMessage))
             {
-                this.ErrorMessage = message.ErrorMessage;
+                this.NotificationMessage = message.ErrorMessage;
             }
         }
 
@@ -62,7 +67,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Back, true);
                     break;
             }
-
         }
 
         #endregion

@@ -4,7 +4,7 @@
     {
         #region Constructors
 
-        public NavigationTrack(string moduleName, string viewName, string viewModelName, bool canBackTrack)
+        public NavigationTrack(string moduleName, string viewName, string viewModelName, bool isTrackable)
         {
             if (string.IsNullOrEmpty(moduleName))
             {
@@ -24,14 +24,14 @@
             this.ModuleName = moduleName;
             this.ViewName = viewName;
             this.ViewModelName = viewModelName;
-            this.CanBackTrack = canBackTrack;
+            this.IsTrackable = isTrackable;
         }
 
         #endregion
 
         #region Properties
 
-        public bool CanBackTrack { get; }
+        public bool IsTrackable { get; }
 
         public string ModuleName { get; }
 
@@ -45,7 +45,7 @@
 
         public override string ToString()
         {
-            return $"{this.ModuleName}.{this.ViewModelName} (track: {this.CanBackTrack})";
+            return $"{this.ModuleName}.{this.ViewModelName} (track: {this.IsTrackable})";
         }
 
         #endregion

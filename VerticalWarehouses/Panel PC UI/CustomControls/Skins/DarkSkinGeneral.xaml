@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins">
 
     <FontFamily x:Key="PpcFontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
-    
+
     <SolidColorBrush x:Key="FerrettoWhiteGray">#e6e6e6</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoLightGray">#c5c7c4</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
@@ -24,6 +24,7 @@
     <Color x:Key="ColorFerrettoPureWhite">#ffffff</Color>
 
     <Color x:Key="EDBGrayA">#282828</Color>
+    <Color x:Key="EDBGrayA1">#2C2C2C</Color>
     <Color x:Key="EDBGrayB">#323232</Color>
     <Color x:Key="EDBGrayC">#3c3c3c</Color>
     <Color x:Key="EDBGrayD">#505050</Color>

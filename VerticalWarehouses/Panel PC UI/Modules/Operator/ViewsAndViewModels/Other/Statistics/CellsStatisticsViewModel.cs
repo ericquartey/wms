@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly ICellsMachineService cellsService;
+        private readonly IMachineCellsService cellsService;
 
         private readonly CustomControlCellStatisticsDataGridViewModel dataGridViewModelRef;
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         public CellsStatisticsViewModel(
             Operator.Interfaces.INavigationService navigationService,
-            ICellsMachineService cellsService,
+            IMachineCellsService cellsService,
             IStatusMessageService statusMessageService,
             ICustomControlCellStatisticsDataGridViewModel cellStatisticsDataGridViewModel)
         {

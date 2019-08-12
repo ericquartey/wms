@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         private readonly IAreasDataService areasDataService;
 
-        private readonly IIdentityMachineService identityService;
+        private readonly IMachineIdentityService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         public ListsInWaitViewModel(
             IStatusMessageService statusMessageService,
-            IIdentityMachineService identityService,
+            IMachineIdentityService identityService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IItemListsDataService itemListsDataService,
             IAreasDataService areasDataService

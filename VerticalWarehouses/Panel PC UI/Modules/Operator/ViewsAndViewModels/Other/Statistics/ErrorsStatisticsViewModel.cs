@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IErrorsMachineService errorsService;
+        private readonly IMachineErrorsService errorsService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         public ErrorsStatisticsViewModel(
             IStatusMessageService statusMessageService,
-            IErrorsMachineService errorsService,
+            IMachineErrorsService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
             this.statusMessageService = statusMessageService;

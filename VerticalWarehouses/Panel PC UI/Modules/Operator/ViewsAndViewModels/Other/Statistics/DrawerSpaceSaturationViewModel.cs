@@ -16,11 +16,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IIdentityMachineService identityService;
+        private readonly IMachineIdentityService identityService;
 
-        private readonly ILoadingUnitsMachineService loadingUnitService;
+        private readonly IMachineLoadingUnitsService loadingUnitService;
 
-        private readonly IStatisticsMachineService machineStatisticsService;
+        private readonly IMachineStatisticsService machineStatisticsService;
 
         private readonly IStatusMessageService statusMessageService;
 
@@ -45,9 +45,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerSpaceSaturationViewModel(
-            ILoadingUnitsMachineService loadingUnitService,
-            IIdentityMachineService identityService,
-            IStatisticsMachineService machineStatisticsService,
+            IMachineLoadingUnitsService loadingUnitService,
+            IMachineIdentityService identityService,
+            IMachineStatisticsService machineStatisticsService,
             IStatusMessageService statusMessageService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {

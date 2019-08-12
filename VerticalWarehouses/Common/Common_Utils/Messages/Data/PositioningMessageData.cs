@@ -19,6 +19,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public PositioningMessageData(
             Axis axisMovement,
             MovementType movementType,
+            MovementMode movementMode,
             decimal target,
             decimal speed,
             decimal acceleration,
@@ -30,6 +31,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
+            this.MovementMode = movementMode;
             this.TargetPosition = target;
             this.TargetSpeed = speed;
             this.TargetAcceleration = acceleration;
@@ -53,6 +55,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int ExecutedCycles { get; set; }
 
         public decimal LowerBound { get; set; }
+
+        public MovementMode MovementMode { get; set; }
 
         public MovementType MovementType { get; set; }
 

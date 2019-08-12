@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.DTOs;
+using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;

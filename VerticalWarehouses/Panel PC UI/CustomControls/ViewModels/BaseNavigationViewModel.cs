@@ -45,10 +45,19 @@ namespace Ferretto.VW.App.Controls
         {
             base.OnNavigatedTo(navigationContext);
             this.journal = navigationContext.NavigationService.Journal;
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(this.journal));
+
+            var parametersStorageKey = this.GetType().Name;
+            if (navigationContext.Parameters.ContainsKey(parametersStorageKey))
+            {
+                this.Data = navigationContext.Parameters[parametersStorageKey];
+            }
+
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()?
+                .Publish(new PresentationChangedMessage(this.journal));
         }
 
-        public void SohwBack(bool isVisible)
+        public void ShowBack(bool isVisible)
         {
             var state = new Presentation()
             {
@@ -56,7 +65,9 @@ namespace Ferretto.VW.App.Controls
                 IsVisible = isVisible
             };
 
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()?.Publish(new PresentationChangedMessage(state));
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()?
+                .Publish(new PresentationChangedMessage(state));
         }
 
         #endregion

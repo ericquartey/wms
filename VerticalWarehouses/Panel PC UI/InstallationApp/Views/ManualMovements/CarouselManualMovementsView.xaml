@@ -50,7 +50,7 @@
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Top"
-                                                ContentText="1235,2"
+                                                ContentText="{Binding CurrentPosition}"
                                                 LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
             <Button Grid.Row="2"
@@ -58,13 +58,14 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Up}"
+                    IsEnabled="{Binding CanExecuteOpenCommand}"
                     Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
-                        <i:InvokeCommandAction Command="{Binding OpenCarouselCommand}" />
+                        <i:InvokeCommandAction Command="{Binding OpenCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="PreviewMouseUp">
-                        <i:InvokeCommandAction Command="{Binding StopCarouselCommand}" />
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
@@ -74,13 +75,14 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Down}"
+                    IsEnabled="{Binding CanExecuteCloseCommand}"
                     Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
-                        <i:InvokeCommandAction Command="{Binding CloseCarouselCommand}" />
+                        <i:InvokeCommandAction Command="{Binding CloseCommand}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="PreviewMouseUp">
-                        <i:InvokeCommandAction Command="{Binding StopCarouselCommand}" />
+                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>

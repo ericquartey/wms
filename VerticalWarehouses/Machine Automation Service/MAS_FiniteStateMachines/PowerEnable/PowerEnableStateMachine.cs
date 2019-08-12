@@ -13,6 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
         #region Fields
 
         private readonly bool enable;
+
         private readonly byte index;
 
         private bool disposed;

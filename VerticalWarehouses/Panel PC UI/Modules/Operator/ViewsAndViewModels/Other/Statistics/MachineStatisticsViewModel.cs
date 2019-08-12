@@ -10,7 +10,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IStatisticsMachineService statisticsService;
+        private readonly IMachineStatisticsService statisticsService;
 
         private MachineStatistics model;
 
@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public MachineStatisticsViewModel(IStatisticsMachineService statisticsService)
+        public MachineStatisticsViewModel(IMachineStatisticsService statisticsService)
         {
             if (statisticsService == null)
             {

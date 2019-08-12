@@ -4,9 +4,19 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalEngineManualMovementsViewModel : BasePositioningViewModel
+    public class VerticalEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
+
+        private bool canExecuteMoveDownCommand;
+
+        private bool canExecuteMoveUpCommand;
+
+        private bool isMovingDown;
+
+        private bool isMovingUp;
+
+        private bool isStopping;
 
         private DelegateCommand moveDownCommand;
 
@@ -16,14 +26,74 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public VerticalEngineManualMovementsViewModel(IPositioningMachineService positioningService)
-            : base(positioningService)
+        public VerticalEngineManualMovementsViewModel(
+            IMachineElevatorService machineElevatorService,
+            IMachineHomingService homingService)
+            : base(homingService)
         {
+            if (machineElevatorService == null)
+            {
+                throw new System.ArgumentNullException(nameof(machineElevatorService));
+            }
+
+            this.MachineElevatorService = machineElevatorService;
+
+            this.RefreshCanExecuteCommands();
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanExecuteMoveDownCommand
+        {
+            get => this.canExecuteMoveDownCommand;
+            set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
+        }
+
+        public bool CanExecuteMoveUpCommand
+        {
+            get => this.canExecuteMoveUpCommand;
+            set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
+        }
+
+        public bool IsMovingDown
+        {
+            get => this.isMovingDown;
+            set
+            {
+                if (this.SetProperty(ref this.isMovingDown, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsMovingUp
+        {
+            get => this.isMovingUp;
+            set
+            {
+                if (this.SetProperty(ref this.isMovingUp, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            set
+            {
+                if (this.SetProperty(ref this.isStopping, value))
+                {
+                    this.RefreshCanExecuteCommands();
+                }
+            }
+        }
+
+        public IMachineElevatorService MachineElevatorService { get; }
 
         public DelegateCommand MoveDownCommand =>
             this.moveDownCommand
@@ -41,33 +111,79 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveDownAsync()
         {
-            var messageData = CreatePositioningMessageData(-1.0m);
+            this.IsMovingDown = true;
 
-            await this.StartPositioningAsync(messageData);
+            await this.StartMovementAsync(-1.0m);
         }
 
         public async Task MoveUpAsync()
         {
-            var messageData = CreatePositioningMessageData(1.0m);
+            this.IsMovingUp = true;
 
-            await this.StartPositioningAsync(messageData);
+            await this.StartMovementAsync(1.0m);
         }
 
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
-            this.SohwBack(true);
+
+            this.ShowBack(true);
+
+            try
+            {
+                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowError(ex);
+            }
         }
 
-        private static MovementMessageDataDto CreatePositioningMessageData(decimal displacement)
+        protected override async Task StopMovementAsync()
         {
-            return new MovementMessageDataDto
+            try
             {
-                Axis = Axis.Vertical,
-                MovementType = MovementType.Relative,
-                SpeedPercentage = 0,
-                Displacement = displacement
-            };
+                this.IsStopping = true;
+
+                await this.MachineElevatorService.StopAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowError(ex);
+            }
+            finally
+            {
+                this.IsMovingDown = false;
+                this.IsMovingUp = false;
+                this.IsStopping = false;
+            }
+        }
+
+        private void RefreshCanExecuteCommands()
+        {
+            this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
+            this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
+        }
+
+        private async Task StartMovementAsync(decimal displacement)
+        {
+            try
+            {
+                await this.MachineElevatorService.MoveVerticalAsync(
+                     new ElevatorMovementParameters
+                     {
+                         MovementType = MovementType.Relative,
+                         SpeedPercentage = 0,
+                         Displacement = displacement
+                     });
+            }
+            catch (System.Exception ex)
+            {
+                this.IsMovingUp = false;
+                this.IsMovingDown = false;
+
+                this.ShowError(ex);
+            }
         }
 
         #endregion

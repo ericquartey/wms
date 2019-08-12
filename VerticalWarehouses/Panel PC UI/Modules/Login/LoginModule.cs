@@ -26,14 +26,16 @@ namespace Ferretto.VW.App.Modules.Login
 
             regionManager.RegisterViewWithRegion(
                     $"{Utils.Modules.Layout.REGION_MAINCONTENT}",
-                    typeof(LoginView));
+                    typeof(LoaderView));
 
             this.logger.Trace("Module loaded.");
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<LoginView>(Utils.Modules.Login.LOGIN);
+            containerRegistry.RegisterForNavigation<LoginView>();
+
+            containerRegistry.RegisterForNavigation<LoaderView>(Utils.Modules.Login.LOADER);
         }
 
         #endregion

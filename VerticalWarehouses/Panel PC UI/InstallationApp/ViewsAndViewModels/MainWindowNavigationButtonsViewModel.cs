@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IInstallationStatusMachineService installationStatusService;
+        private readonly IMachineInstallationStatusService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -67,7 +67,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         public MainWindowNavigationButtonsViewModel(
             IEventAggregator eventAggregator,
-            IInstallationStatusMachineService installationStatusService)
+            IMachineInstallationStatusService installationStatusService)
         {
             if (eventAggregator == null)
             {
@@ -192,6 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
         {
             var installationStatus = await this.installationStatusService.GetStatusAsync();
             var checkHomingDone = installationStatus.FirstOrDefault();
+            var checkBeltBreakIn = installationStatus.ElementAt(2);
 
             this.IsInstallationStateButtonActive = true;
             this.IsUpScrollButtonActive = true;
@@ -201,7 +202,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
             this.IsBeltBurnishingButtonActive = checkHomingDone;
-            this.IsSetYResolutionButtonActive = checkHomingDone;
+            this.IsSetYResolutionButtonActive = checkHomingDone && checkBeltBreakIn;
 
             this.IsGateHeightControlButtonActive = true;                     // TODO: Reference value missing in InstallationInfo file
             this.IsWeightControlButtonActive = checkHomingDone;              // TODO: Reference value missing in InstallationInfo file

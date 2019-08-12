@@ -22,8 +22,6 @@
         <Grid Grid.Column="1"
               Margin="130,0,130,10">
 
-
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -41,7 +39,6 @@
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.LSMTVerticalEngineTitle}" />
 
-
             <custom:CustomLabelTextBlockControl Grid.Row="1"
                                                 Grid.ColumnSpan="2"
                                                 HorizontalAlignment="Left"
@@ -52,14 +49,14 @@
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Top"
-                                                ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                ContentText="{Binding CurrentPosition}"
                                                 LabelText="{x:Static res:InstallationApp.ActualPosition}" />
             <Button Grid.Row="2"
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Up}"
-                    IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding CanExecuteMoveUpCommand}"
                     Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
@@ -76,7 +73,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Down}"
-                    IsEnabled="{Binding IsButtonDownEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding CanExecuteMoveDownCommand}"
                     Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">

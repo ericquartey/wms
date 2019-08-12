@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Logging;
 using Prism.Mvvm;
 using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
@@ -19,15 +20,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IHomingMachineService homingService;
+        private readonly IMachineHomingService homingService;
 
-        private string currentPosition;
+        private decimal? currentPosition;
 
-        private string lowerBound;
+        private decimal lowerBound;
 
         private string noteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
 
-        private string offset;
+        private decimal offset;
 
         private SubscriptionToken receivedCalibrateAxisUpdateToken;
 
@@ -37,7 +38,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken receiveHomingUpdateToken;
 
-        private string resolution;
+        private decimal resolution;
 
         private ICommand startCommand;
 
@@ -45,14 +46,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken updateCurrentPositionToken;
 
-        private string upperBound;
+        private decimal upperBound;
 
         #endregion
 
         #region Constructors
 
         public VerticalAxisCalibrationViewModel(
-            IHomingMachineService homingService)
+            IMachineHomingService homingService)
             : base(Services.PresentationMode.Installator)
         {
             if (homingService == null)
@@ -67,13 +68,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public string CurrentPosition
+        public decimal? CurrentPosition
         {
             get => this.currentPosition;
             set => this.SetProperty(ref this.currentPosition, value);
         }
 
-        public string LowerBound
+        public decimal LowerBound
         {
             get => this.lowerBound;
             set => this.SetProperty(ref this.lowerBound, value);
@@ -87,29 +88,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.noteString, value);
         }
 
-        public string Offset
+        public decimal Offset
         {
             get => this.offset;
             set => this.SetProperty(ref this.offset, value);
         }
 
-        public string Resolution
+        public decimal Resolution
         {
             get => this.resolution;
             set => this.SetProperty(ref this.resolution, value);
         }
 
-        public ICommand StartButtonCommand =>
+        public ICommand StartCommand =>
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(async () => await this.ExecuteStartCommandAsync()));
 
-        public ICommand StopButtonCommand =>
+        public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(async () => await this.ExecuteStopCommandAsync()));
 
-        public string UpperBound
+        public decimal UpperBound
         {
             get => this.upperBound;
             set => this.SetProperty(ref this.upperBound, value);
@@ -128,13 +129,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                const string Category = "VerticalAxis";
-                this.CurrentPosition = "";
-                this.UpperBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
-                this.LowerBound = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
-                this.Offset = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
-                this.Resolution = (await this.homingService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString("##.##");
-                await this.homingService.GetCurrentPositionAxisAsync();
+                this.CurrentPosition = null;
+
+                const string category = "VerticalAxis";
+                this.UpperBound = await this.homingService.GetDecimalConfigurationParameterAsync(category, "UpperBound");
+                this.LowerBound = await this.homingService.GetDecimalConfigurationParameterAsync(category, "LowerBound");
+                this.Offset = await this.homingService.GetDecimalConfigurationParameterAsync(category, "Offset");
+                this.Resolution = await this.homingService.GetDecimalConfigurationParameterAsync(category, "Resolution");
+
+                await this.homingService.NotifyCurrentAxisAxisAsync();
             }
             catch (Exception ex)
             {
@@ -142,9 +145,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public async Task OnEnterViewAsync()
+        public override async Task OnNavigatedAsync()
         {
-            await this.GetParameterValuesAsync();
+            await base.OnNavigatedAsync();
+
+            this.ShowBack(true);
+
+              await this.GetParameterValuesAsync();
 
             this.receivedSwitchAxisUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
@@ -186,24 +193,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 ThreadOption.PublisherThread,
                 false);
 
-            this.updateCurrentPositionToken = this.EventAggregator
+            this.updateCurrentPositionToken = this.EventAggregator // TODO copy this in manual movements
                 .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
                 .Subscribe(
-                message =>
-                {
-                    this.UpdateCurrentPosition(message.Data.CurrentPosition);
-                },
+                message => this.CurrentPosition = message?.Data?.CurrentPosition,
                 ThreadOption.PublisherThread,
                 false);
         }
 
-        public override async Task OnNavigatedAsync()
-        {
-            await base.OnNavigatedAsync();
-            this.SohwBack(true);
-        }
-
-        public void UnSubscribeMethodFromEvent()
+        public override void Disappear()
         {
             this.EventAggregator
                 .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
@@ -218,33 +216,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .Unsubscribe(this.receiveHomingUpdateToken);
         }
 
-        public void UpdateCurrentPosition(decimal currentPosition)
-        {
-            this.CurrentPosition = currentPosition.ToString();
-        }
-
         private void CheckInputsCorrectness()
         {
-            if (decimal.TryParse(this.LowerBound, out var _lowerBound) &&
-                decimal.TryParse(this.Offset, out var _offset) &&
-                decimal.TryParse(this.Resolution, out var _resolution) &&
-                decimal.TryParse(this.UpperBound, out var _upperBound))
-            { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
-                var isStartButtonActive =
-                    _lowerBound > 0
+            var isStartButtonActive = // TODO
+                    this.lowerBound > 0
                     &&
-                    _lowerBound < _upperBound
+                    this.lowerBound < this.upperBound
                     &&
-                    _upperBound > 0
+                    this.upperBound > 0
                     &&
-                    _resolution > 0
+                    this.resolution > 0
                     &&
-                    _offset > 0;
-            }
-            else
-            {
-                var isStartButtonActive = false;
-            }
+                    this.offset > 0;
         }
 
         private async Task ExecuteStartCommandAsync()
@@ -293,9 +276,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return res;
         }
 
-        private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
+        private void UpdateCurrentActionStatus(MessageNotifiedEventArgs message)
         {
-            if (messageUI.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> s)
+            if (message.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> s)
             {
                 switch (s.Status)
                 {
@@ -315,7 +298,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            if (messageUI.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> c)
+            if (message.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> c)
             {
                 if (c.Status == MessageStatus.OperationExecuting ||
                     c.Status == MessageStatus.OperationError)
@@ -328,12 +311,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     if (c.Status == MessageStatus.OperationError)
                     {
                         //this.IsStartButtonActive = true;
-                        /// this.IsStopButtonActive = false;
+                        // this.IsStopButtonActive = false;
                     }
                 }
             }
 
-            if (messageUI.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
+            if (message.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
                 switch (h.Status)
                 {
@@ -355,7 +338,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            if (messageUI.NotificationMessage is NotificationMessageUI<InverterExceptionMessageData> f)
+            if (message.NotificationMessage is NotificationMessageUI<InverterExceptionMessageData> f)
             {
                 switch (f.Status)
                 {

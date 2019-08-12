@@ -1,10 +1,9 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -14,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
     {
         #region Fields
 
-        private readonly Axis axisToCalibrate;
+        private readonly ITemplateData templateData;
 
         private bool disposed;
 
@@ -24,11 +23,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public TemplateStartState(
             IStateMachine parentMachine,
-            Axis axisToCalibrate,
-            ILogger logger)
-            : base(parentMachine, logger)
+            ITemplateData templateData,
+            ILogger logger )
+            : base( parentMachine, logger )
         {
-            this.axisToCalibrate = axisToCalibrate;
+            this.templateData = templateData;
         }
 
         #endregion
@@ -37,78 +36,66 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         ~TemplateStartState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage( CommandMessage message )
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
-        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-
-            if (message.Type == FieldMessageType.SwitchAxis)
+            if (message.Type == FieldMessageType.NoType)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.axisToCalibrate, this.Logger));
+                        this.ParentStateMachine.ChangeState( new TemplateEndState( this.ParentStateMachine, this.templateData, this.Logger ) );
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.axisToCalibrate, message, this.Logger));
+                        this.ParentStateMachine.ChangeState( new TemplateErrorState( this.ParentStateMachine, this.templateData, message, this.Logger ) );
                         break;
                 }
             }
         }
 
-        public override void ProcessNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage( NotificationMessage message )
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
-            var commandMessageData = new SwitchAxisFieldMessageData(this.axisToCalibrate);
             var commandMessage = new FieldCommandMessage(
-                commandMessageData,
-                $"Switch Axis {this.axisToCalibrate}",
+                null,
+                $"Template Start State Field COmmand",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis);
+                FieldMessageType.NoType );
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
 
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-            var notificationMessageData = new HomingMessageData(this.axisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                "Homing Started",
+                null,
+                "Template Start State Notification",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Homing,
-                MessageStatus.OperationStart);
+                MessageType.NoType,
+                MessageStatus.OperationStart );
 
-            this.Logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
         }
 
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.axisToCalibrate, this.Logger, true));
+            this.ParentStateMachine.ChangeState( new TemplateEndState( this.ParentStateMachine, this.templateData, this.Logger, true ) );
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -121,7 +108,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

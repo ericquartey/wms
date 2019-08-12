@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IVerticalAxisDataLayer verticalAxis;
+
         #endregion
 
         #region Constructors
@@ -40,6 +42,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
+            this.verticalAxis = services.GetService(typeof(IVerticalAxisDataLayer)) as IVerticalAxisDataLayer;
         }
 
         #endregion
@@ -83,16 +86,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private void ExecuteBeltBurnishing_Method(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            var maxSpeed = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptySpeed, ConfigurationCategory.VerticalAxis);
-            var acceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyAcceleration, ConfigurationCategory.VerticalAxis);
-            var deceleration = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                (long)VerticalAxis.MaxEmptyDeceleration, ConfigurationCategory.VerticalAxis);
+            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
+            var acceleration = this.verticalAxis.MaxEmptyAcceleration;
+            var deceleration = this.verticalAxis.MaxEmptyDeceleration;
 
             var positioningMessageData = new PositioningMessageData(
                 Axis.Vertical,
-                MovementType.Relative,
+                MovementType.Absolute,
+                MovementMode.BeltBurnishing,
                 upperBound,
                 maxSpeed,
                 acceleration,
@@ -115,84 +116,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             Enum.TryParse(typeof(ConfigurationCategory), categoryString, out var categoryId);
             var category = (ConfigurationCategory)categoryId;
 
-            switch (category)
+            var parseSuccess = Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
+
+            if (parseSuccess)
             {
-                case ConfigurationCategory.VerticalAxis:
+                decimal value1;
 
-                    var parseSuccess = Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
+                try
+                {
+                    value1 = this.dataLayerConfigurationValueManagement
+                        .GetDecimalConfigurationValue(
+                        (long)verticalAxisParameterId,
+                        category);
+                }
+                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                {
+                    return this.NotFound("Parameter not found");
+                }
 
-                    if (parseSuccess)
-                    {
-                        decimal value1;
-
-                        try
-                        {
-                            value1 = this.dataLayerConfigurationValueManagement
-                                .GetDecimalConfigurationValue(
-                                (long)verticalAxisParameterId,
-                                category);
-                        }
-                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                        {
-                            return this.NotFound("Parameter not found");
-                        }
-
-                        return this.Ok(value1);
-                    }
-                    else
-                    {
-                        return this.NotFound("Parameter not found");
-                    }
-
-                case ConfigurationCategory.HorizontalAxis:
-
-                    Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
-                    if (horizontalAxisParameterId != null)
-                    {
-                        decimal value2;
-                        try
-                        {
-                            value2 = this.dataLayerConfigurationValueManagement
-                                .GetDecimalConfigurationValue(
-                                (long)horizontalAxisParameterId,
-                                category);
-                        }
-                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                        {
-                            return this.NotFound("Parameter not found");
-                        }
-
-                        return this.Ok(value2);
-                    }
-                    else
-                    {
-                        return this.NotFound("Parameter not found");
-                    }
-                case ConfigurationCategory.ResolutionCalibration:
-                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
-                    if (resolutionCalibrationParameterId != null)
-                    {
-                        decimal value3;
-                        try
-                        {
-                            value3 = this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValue(
-                                (long)resolutionCalibrationParameterId,
-                                category);
-                        }
-                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-                        {
-                            return this.NotFound("Parameter not found");
-                        }
-
-                        return this.Ok(value3);
-                    }
-                    else
-                    {
-                        return this.NotFound("Parameter not found");
-                    }
+                return this.Ok(value1);
+            }
+            else
+            {
+                return this.NotFound("Parameter not found");
             }
 
-            return 0;
         }
 
         private ActionResult<int> GetIntegerConfigurationParameter_Method(string categoryString, string parameter)

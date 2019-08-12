@@ -11,22 +11,31 @@
              d:DesignWidth="800"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    <Grid DataContext="{Binding States}">
-        <TextBlock Grid.Row="2"
-                   Height="40"
-                   Margin="80,2,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                   Text="{Binding ErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   TextWrapping="WrapWithOverflow" />
+    <Grid Margin="20,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="0,0,10,0"
+        <Border Margin="0,0,20,-30"
+                Padding="20,20,20,0"
+                Background="DarkRed"
+                Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}">
+            <TextBlock HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Foreground="White"
+                       Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
+                       Text="{Binding NotificationMessage}"
+                       TextWrapping="WrapWithOverflow" />
+        </Border>
+
+        <StackPanel Grid.Column="1"
+                    Margin="0,0,10,0"
+                    DataContext="{Binding States}"
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
 
-            <ctrls:PpcControl Margin="10,0,0,0"
-                              VerticalAlignment="Center"
+            <ctrls:PpcControl VerticalAlignment="Center"
                               PresentationType="{x:Static enums:PresentationTypes.Back}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <Button Command="{Binding ExecuteCommand}"

@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly ISensorsMachineService sensorsMachineService;
+        private readonly IMachineSensorsService machineSensorsService;
 
         private BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
@@ -24,50 +24,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        protected BaseSensorsViewModel(ISensorsMachineService sensorsMachineService)
+        protected BaseSensorsViewModel(IMachineSensorsService machineSensorsService)
             : base(Services.PresentationMode.Installator)
         {
-            if (sensorsMachineService == null)
+            if (machineSensorsService == null)
             {
-                throw new System.ArgumentNullException(nameof(sensorsMachineService));
+                throw new System.ArgumentNullException(nameof(machineSensorsService));
             }
 
-            this.sensorsMachineService = sensorsMachineService;
+            this.machineSensorsService = machineSensorsService;
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.VerticalAxisButton,
-                    canBackTrack: false));
+                    isTrackable: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.BAYS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Bays,
-                    canBackTrack: false));
+                    isTrackable: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.CRADLE,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Cradle,
-                    canBackTrack: false));
+                    isTrackable: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.SHUTTER,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Shutter,
-                    canBackTrack: false));
+                    isTrackable: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.OTHERS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Others,
-                    canBackTrack: false));
+                    isTrackable: false));
         }
 
         #endregion
@@ -92,6 +92,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            this.ShowBack(true);
+
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
@@ -102,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.sensorsMachineService.ForceNotificationAsync();
+                await this.machineSensorsService.ForceNotificationAsync();
             }
             catch (System.Exception ex)
             {

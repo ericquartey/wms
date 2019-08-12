@@ -12,7 +12,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
     {
         #region Fields
 
-
         private readonly FieldNotificationMessage errorMessage;
 
         private bool disposed;
@@ -24,8 +23,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
         public ResetSecurityErrorState(
             IStateMachine parentMachine,
             FieldNotificationMessage errorMessage,
-            ILogger logger)
-            : base(parentMachine, logger)
+            ILogger logger )
+            : base( parentMachine, logger )
         {
             this.errorMessage = errorMessage;
         }
@@ -36,21 +35,21 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
 
         ~ResetSecurityErrorState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessCommandMessage(CommandMessage message)
+        public override void ProcessCommandMessage( CommandMessage message )
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            this.Logger.LogTrace( $"1:Process Command Message {message.Type} Source {message.Source}" );
         }
 
-        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
         {
-            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace( $"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
 
             if (message.Type == FieldMessageType.ResetSecurity && message.Status != MessageStatus.OperationStart)
             {
@@ -61,16 +60,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                     MessageActor.FiniteStateMachines,
                     MessageType.ResetSecurity,
                     MessageStatus.OperationError,
-                    ErrorLevel.Error);
+                    ErrorLevel.Error );
 
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
             }
         }
 
         /// <inheritdoc/>
-        public override void ProcessNotificationMessage(NotificationMessage message)
+        public override void ProcessNotificationMessage( NotificationMessage message )
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.Logger.LogTrace( $"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
         }
 
         public override void Start()
@@ -80,19 +79,19 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
                 $"Reset Security",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ResetSecurity);
+                FieldMessageType.ResetSecurity );
 
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.Logger.LogTrace( $"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
         }
 
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace( "1:Method Start" );
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -104,7 +103,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
             }
 
             this.disposed = true;
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

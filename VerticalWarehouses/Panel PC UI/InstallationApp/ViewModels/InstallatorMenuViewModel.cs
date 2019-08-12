@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IInstallationStatusMachineService installationStatusService;
+        private readonly IMachineInstallationStatusService installationStatusService;
 
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public InstallatorMenuViewModel(IInstallationStatusMachineService installationStatusService)
+        public InstallatorMenuViewModel(IMachineInstallationStatusService installationStatusService)
             : base(PresentationMode.Installator)
         {
             this.InitializeData();
@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
-            this.SohwBack(false);
+            this.ShowBack(false);
 
             try
             {
@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     dispAttribute != null)
                 {
                     this.AddMenuItem(viewAttribute.InstallatorMenuType,
-                        new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, viewAttribute.CanBackTrack));
+                        new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, viewAttribute.IsTrackable));
                 }
             }
 

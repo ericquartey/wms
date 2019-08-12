@@ -15,9 +15,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IIdentityMachineService identityService;
+        private readonly IMachineIdentityService identityService;
 
-        private readonly ILoadingUnitsMachineService loadingUnitService;
+        private readonly IMachineLoadingUnitsService loadingUnitService;
 
         private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
@@ -50,8 +50,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerWeightSaturationViewModel(
-            ILoadingUnitsMachineService loadingUnitService,
-            IIdentityMachineService identityService,
+            IMachineLoadingUnitsService loadingUnitService,
+            IMachineIdentityService identityService,
             IStatusMessageService statusMessageService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)

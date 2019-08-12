@@ -16,10 +16,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IAuthenticationService authenticationService;
 
-        private readonly IBayManager bayManager;
-
-        private readonly IHealthProbeService healthProbeService;
-
         private ICommand loginCommand;
 
         #endregion
@@ -27,9 +23,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         #region Constructors
 
         public LoginViewModel(
-            IAuthenticationService authenticationService,
-            IBayManager bayManager,
-            IHealthProbeService healthProbeService)
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Login)
         {
             if (authenticationService == null)
@@ -37,19 +31,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 throw new ArgumentNullException(nameof(authenticationService));
             }
 
-            if (bayManager == null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            if (healthProbeService == null)
-            {
-                throw new ArgumentNullException(nameof(healthProbeService));
-            }
-
             this.authenticationService = authenticationService;
-            this.bayManager = bayManager;
-            this.healthProbeService = healthProbeService;
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -60,44 +42,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #else
             this.UserLogin = new UserLogin();
 #endif
-
-            this.healthProbeService.SubscribeOnHealthStatusChanged(async (e) => await this.OnHealthStatusChanged(e));
-        }
-
-        private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
-        {
-            await this.RetrieveMachineInfoAsync();
-        }
-
-        public bool IsLoginAllowed
-        {
-            get => this.isLoginAllowed;
-            set => this.SetProperty(ref this.isLoginAllowed, value);
-        }
-
-        private bool isLoginAllowed;
-
-        private async Task RetrieveMachineInfoAsync()
-        {
-            switch (this.healthProbeService.HealthStatus)
-            {
-                case HealthStatus.Healthy:
-                case HealthStatus.Degraded:
-                    await this.bayManager.InitializeAsync();
-                    this.MachineIdentity = this.bayManager.Identity;
-                    this.IsLoginAllowed = true;
-                    break;
-
-                case HealthStatus.Unhealthy:
-                    this.IsLoginAllowed = false;
-
-                    this.EventAggregator
-                        .GetEvent<PresentationChangedPubSubEvent>()
-                        .Publish(new PresentationChangedMessage("Impossibile connettersi al servizio di automazione.")); // TODO move to resources
-
-                    //this.NavigationService.Appear(nameof(M)) // move to navigation
-                    break;
-            }
         }
 
         #endregion
@@ -138,7 +82,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            await this.RetrieveMachineInfoAsync();
+            if (this.Data is MachineIdentity machineIdentity)
+            {
+                this.MachineIdentity = machineIdentity;
+            }
         }
 
         private async Task ExecuteLoginCommandAsync()

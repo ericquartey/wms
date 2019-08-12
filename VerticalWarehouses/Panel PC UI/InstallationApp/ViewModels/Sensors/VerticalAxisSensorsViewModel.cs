@@ -6,7 +6,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Constructors
 
-        public VerticalAxisSensorsViewModel(ISensorsMachineService sensorsService)
+        public VerticalAxisSensorsViewModel(IMachineSensorsService sensorsService)
             : base(sensorsService)
         {
         }

@@ -31,7 +31,7 @@ namespace Ferretto.VW.App
 
         private readonly IBayManager bayManager;
 
-        private readonly IIdentityMachineService identityService;
+        private readonly IMachineIdentityService identityService;
 
         private readonly IHealthProbeService healthProbeService;
 
@@ -61,7 +61,7 @@ namespace Ferretto.VW.App
             ISessionService sessionService,
             IStatusMessageService statusMessageService,
             IBayManager bayManager,
-            IIdentityMachineService identityService,
+            IMachineIdentityService identityService,
             IHealthProbeService healthProbeService)
         {
             if (eventAggregator == null)

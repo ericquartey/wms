@@ -32,12 +32,12 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public NavigationMenuItem(string viewModelName, string moduleName, string description, bool canBackTrack = true)
+        public NavigationMenuItem(string viewModelName, string moduleName, string description, bool isTrackable = true)
         {
             this.ViewModelName = viewModelName;
             this.ModuleName = moduleName;
             this.Description = description;
-            this.CanBackTrack = canBackTrack;
+            this.IsTrackable = isTrackable;
             this.IsEnabled = true;
 
             //   this.IsActive = this.navigationService.IsActive(moduleName, viewModelName);
@@ -52,7 +52,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
-        public bool CanBackTrack { get; }
+        public bool IsTrackable { get; }
 
         public string Description
         {
@@ -87,7 +87,7 @@ namespace Ferretto.VW.App.Controls
         public ICommand NavigateCommand =>
             this.navigateCommand
             ??
-            (this.navigateCommand = new DelegateCommand(() => this.Navigate(this.CanBackTrack), this.CanNavigate));
+            (this.navigateCommand = new DelegateCommand(() => this.Navigate(this.IsTrackable), this.CanNavigate));
 
         public string ViewModelName
         {
@@ -124,9 +124,9 @@ namespace Ferretto.VW.App.Controls
             return this.IsEnabled;
         }
 
-        private void Navigate(bool canBackTrack = true)
+        private void Navigate(bool isTrackable = true)
         {
-            this.navigationService.Appear(this.moduleName, this.viewModelName, canBackTrack);
+            this.navigationService.Appear(this.moduleName, this.viewModelName, isTrackable);
         }
 
         #endregion

@@ -6,6 +6,8 @@
 
         public const string LOGIN = "LoginViewModel";
 
+        public const string LOADER = "LoaderViewModel";
+
         #endregion
     }
 }

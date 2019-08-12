@@ -24,6 +24,7 @@
     <Color x:Key="ColorFerrettoPureWhite">#ffffff</Color>
 
     <Color x:Key="EDBGrayA">#282828</Color>
+    <Color x:Key="EDBGrayA1">#303030</Color>
     <Color x:Key="EDBGrayB">#323232</Color>
     <Color x:Key="EDBGrayC">#3c3c3c</Color>
     <Color x:Key="EDBGrayD">#505050</Color>

@@ -30,6 +30,8 @@ namespace Ferretto.VW.App
         public App()
         {
             AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
+
+            this.logger.Info("*** Starting application ***");
         }
 
         #endregion

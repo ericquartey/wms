@@ -55,13 +55,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.Ok();
         }
 
-        [ProducesResponseType(200)]
-        [HttpGet("GetCurrentPositionAxis")]
-        public void GetCurrentPositionAxis()
-        {
-            this.ExecuteGetCurrentPosition_Method();
-        }
-
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
@@ -71,21 +64,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [ProducesResponseType(200)]
+        [HttpPost("nofity-current-axis-position")]
+        public IActionResult NotifyCurrentAxisAxis()
+        {
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        null,
+                        "Sensors changed Command",
+                        MessageActor.FiniteStateMachines,
+                        MessageActor.WebApi,
+                        MessageType.SensorsChanged));
+
+            return this.Ok();
+        }
+
+        [ProducesResponseType(200)]
         [HttpGet("Stop")]
         public void Stop()
         {
             this.Stop_Method();
-        }
-
-        private void ExecuteGetCurrentPosition_Method()
-        {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(
-                new CommandMessage(
-                    null,
-                    "Sensors changed Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.WebApi,
-                    MessageType.SensorsChanged));
         }
 
         private void ExecuteHoming_Method()

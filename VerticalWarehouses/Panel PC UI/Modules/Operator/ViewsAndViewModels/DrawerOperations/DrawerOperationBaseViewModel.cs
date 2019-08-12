@@ -40,7 +40,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
-            IMissionOperationsMachineService missionOperationsService,
+            IMachineMissionOperationsService missionOperationsService,
             IBayManager bayManager)
         {
             if (eventAggregator == null)
@@ -139,7 +139,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 
         protected IMainWindowViewModel MainWindowViewModel { get; }
 
-        protected IMissionOperationsMachineService MissionOperationsService { get; }
+        protected IMachineMissionOperationsService MissionOperationsService { get; }
 
         protected Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService NavigationService { get; }
 

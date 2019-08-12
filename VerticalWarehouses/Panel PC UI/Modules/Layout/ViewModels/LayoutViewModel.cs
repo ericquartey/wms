@@ -5,9 +5,19 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
     public class LayoutViewModel : ViewModelBase, IBusyViewModel
     {
+        #region Fields
+
+        private bool isBusy;
+
+        #endregion
+
         #region Properties
 
-        public bool IsBusy { get; set; }
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
 
         #endregion
     }

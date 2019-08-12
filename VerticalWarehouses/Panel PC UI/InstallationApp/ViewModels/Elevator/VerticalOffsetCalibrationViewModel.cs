@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -17,98 +18,127 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly bool isAcceptOffsetButtonActive = true;
+        private readonly IEventAggregator eventAggregator;
 
-        private readonly bool isCorrectOffsetButtonActive;
+        private readonly IMachineVerticalOffsetService verticalOffsetService;
 
-        private readonly bool isSetPositionButtonActive = true;
-
-        private readonly bool isStepDownButtonActive = true;
-
-        private readonly bool isStepUpButtonActive = true;
-
-        private readonly IVerticalOffsetMachineService verticalOffsetMachineService;
-
-        private ICommand acceptOffsetButtonCommand;
+        private ICommand acceptOffsetCommand;
 
         private string correctOffset;
 
-        private ICommand correctOffsetButtonCommand;
+        private ICommand correctOffsetCommand;
 
         private string currentHeight;
 
         private decimal currentOffset;
 
-        private ICommand exitFromViewCommand;
-
         private string noteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
         private SubscriptionToken receivePositioningUpdateToken;
 
-        private string referenceCellHeight;
+        private decimal? referenceCellHeight;
 
-        private string referenceCellNumber;
+        private int referenceCellNumber;
 
-        private ICommand setPositionButtonCommand;
+        private ICommand setPositionCommand;
 
-        private ICommand stepDownButtonCommand;
+        private ICommand stepDownCommand;
 
-        private ICommand stepUpButtonCommand;
+        private ICommand stepUpCommand;
 
-        private string stepValue;
+        private decimal inputStepValue;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
         #region Constructors
 
-        public VerticalOffsetCalibrationViewModel(
-            IVerticalOffsetMachineService verticalOffsetMachineService)
+        public VerticalOffsetCalibrationViewModel(IMachineVerticalOffsetService verticalOffsetService)
             : base(Services.PresentationMode.Installator)
         {
-            if (verticalOffsetMachineService == null)
+            if (verticalOffsetService == null)
             {
-                throw new ArgumentNullException(nameof(verticalOffsetMachineService));
+                throw new ArgumentNullException(nameof(verticalOffsetService));
             }
 
-            this.verticalOffsetMachineService = verticalOffsetMachineService;
-
-            this.NoteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.verticalOffsetService = verticalOffsetService;
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand AcceptOffsetButtonCommand => this.acceptOffsetButtonCommand ?? (
-            this.acceptOffsetButtonCommand = new DelegateCommand(async () => await this.AcceptOffsetButtonCommandMethodAsync()));
+        public ICommand AcceptOffsetButtonCommand =>
+            this.acceptOffsetCommand
+            ??
+            (this.acceptOffsetCommand = new DelegateCommand(async () => await this.AcceptOffsetButtonCommandMethodAsync()));
 
-        public string CorrectOffset { get => this.correctOffset; set => this.SetProperty(ref this.correctOffset, value); }
-
-        public ICommand CorrectOffsetButtonCommand => this.correctOffsetButtonCommand ?? (
-            this.correctOffsetButtonCommand = new DelegateCommand(async () => await this.CorrectOffsetButtonCommandMethodAsync()));
-
-        public string CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
-
-        public decimal CurrentOffset { get => this.currentOffset; set => this.SetProperty(ref this.currentOffset, value); }
-
-        public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
-
-        public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
-
-        public string ReferenceCellHeight { get => this.referenceCellHeight; set => this.SetProperty(ref this.referenceCellHeight, value); }
-
-        public string ReferenceCellNumber { get => this.referenceCellNumber; set => this.SetProperty(ref this.referenceCellNumber, value); }
-
-        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonCommandMethod()));
-
-        public ICommand StepDownButtonCommand => this.stepDownButtonCommand ?? (this.stepDownButtonCommand = new DelegateCommand(this.StepDownButtonCommandMethod));
-
-        public ICommand StepUpButtonCommand => this.stepUpButtonCommand ?? (this.stepUpButtonCommand = new DelegateCommand(this.StepUpButtonCommandMethod));
-
-        public string StepValue
+        public string CorrectOffset
         {
-            get => this.stepValue;
-            set => this.SetProperty(ref this.stepValue, value);
+            get => this.correctOffset;
+            set => this.SetProperty(ref this.correctOffset, value);
+        }
+
+        public ICommand CorrectOffsetButtonCommand =>
+            this.correctOffsetCommand
+            ??
+            (this.correctOffsetCommand = new DelegateCommand(async () => await this.CorrectOffsetButtonCommandMethodAsync()));
+
+        public string CurrentHeight
+        {
+            get => this.currentHeight;
+            set => this.SetProperty(ref this.currentHeight, value);
+        }
+
+        public decimal CurrentOffset
+        {
+            get => this.currentOffset;
+            set => this.SetProperty(ref this.currentOffset, value);
+        }
+
+        public string NoteString
+        {
+            get => this.noteString;
+            set => this.SetProperty(ref this.noteString, value);
+        }
+
+        public decimal? ReferenceCellHeight
+        {
+            get => this.referenceCellHeight;
+            set => this.SetProperty(ref this.referenceCellHeight, value);
+        }
+
+        public int ReferenceCellNumber
+        {
+            get => this.referenceCellNumber;
+            set
+            {
+                this.SetProperty(ref this.referenceCellNumber, value);
+                this.CheckReferenceCellNumberCorrectness(value);
+                this.TriggerSearchAsync().GetAwaiter();
+            }
+        }
+
+        public ICommand SetPositionButtonCommand =>
+            this.setPositionCommand
+            ??
+            (this.setPositionCommand = new DelegateCommand(async () => await this.ExecuteSetPositionCommand()));
+
+        public ICommand StepDownButtonCommand =>
+            this.stepDownCommand
+            ??
+            (this.stepDownCommand = new DelegateCommand(this.ExecuteStepDownCommand));
+
+        public ICommand StepUpButtonCommand =>
+            this.stepUpCommand
+            ??
+            (this.stepUpCommand = new DelegateCommand(this.ExecuteStepUpCommand));
+
+        public decimal InputStepValue
+        {
+            get => this.inputStepValue;
+            set => this.SetProperty(ref this.inputStepValue, value);
         }
 
         #endregion
@@ -117,13 +147,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task AcceptOffsetButtonCommandMethodAsync()
         {
-            if (decimal.TryParse(this.CorrectOffset, out var correctOffset))
+            if (decimal.TryParse(this.CorrectOffset, out var offset))
             {
                 try
                 {
-                    await this.verticalOffsetMachineService.SetAsync(correctOffset);
+                    await this.verticalOffsetService.SetAsync(offset);
 
-                    this.CurrentOffset = correctOffset;
+                    this.CurrentOffset = offset;
                 }
                 catch (Exception ex)
                 {
@@ -132,11 +162,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public void CheckReferenceCellNumberCorrectness(int input)
+        {
+            if (input > 0)
+            {
+               // this.IsSetPositionButtonActive = true;
+            }
+            else
+            {
+               // this.IsSetPositionButtonActive = false;
+                this.ReferenceCellHeight = null;
+            }
+        }
+
         public async Task CorrectOffsetButtonCommandMethodAsync()
         {
             try
             {
-                await this.verticalOffsetMachineService.MarkAsCompleteAsync();
+                await this.verticalOffsetService.MarkAsCompletedAsync();
             }
             catch (Exception ex)
             {
@@ -144,25 +187,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public async Task GetParameterValuesAsync()
         {
             try
             {
-                const string Category = "OffsetCalibration";
-                this.referenceCellNumber = (await this.verticalOffsetMachineService.GetIntegerConfigurationParameterAsync(Category, "ReferenceCell")).ToString();
+                const string category = "OffsetCalibration";
 
-                //TEMP temporary commented because there is not a cell map
-                //this.referenceCellHeight = (await this.offsetCalibrationService.GetLoadingUnitPositionParameterAsync(Category, "CellReference")).ToString();
-                this.stepValue = (await this.verticalOffsetMachineService.GetDecimalConfigurationParameterAsync(Category, "StepValue")).ToString();
+                this.referenceCellNumber = await this.verticalOffsetService
+                    .GetIntegerConfigurationParameterAsync(category, "ReferenceCell");
+
+                this.inputStepValue = await this.verticalOffsetService
+                    .GetDecimalConfigurationParameterAsync(category, "StepValue");
             }
-            catch (SwaggerException)
+            catch (Exception ex)
             {
-                this.NoteString = VW.App.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+                this.ShowError(ex);
             }
         }
 
@@ -178,12 +217,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 },
                 ThreadOption.PublisherThread,
                 false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            await this.LoadReferenceCellHeightAsync(this.referenceCellNumber);
         }
 
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
-            this.SohwBack(true);
+
+            this.NoteString =  VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
+
+            this.ShowBack(true);
         }
 
         public void PositioningDone(bool result)
@@ -191,37 +237,74 @@ namespace Ferretto.VW.App.Installation.ViewModels
             // TODO implement missing feature
         }
 
-        public async Task SetPositionButtonCommandMethod()
+        public async Task LoadReferenceCellHeightAsync(int cellNumber)
         {
+            this.ReferenceCellHeight = await this.verticalOffsetService
+                .GetLoadingUnitPositionParameterAsync(cellNumber);
+        }
+
+        public async Task ExecuteSetPositionCommand()
+        {
+            System.Diagnostics.Debug.Assert(this.ReferenceCellHeight.HasValue);
+
             try
             {
-                await this.verticalOffsetMachineService.ExecutePositioningAsync();
+                await this.verticalOffsetService.ExecutePositioningAsync(this.ReferenceCellHeight.Value);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.NoteString = "Couldn't get response from this http request.";
-                throw; // TEMP Define a better throw exception
+                this.ShowError(ex);
             }
         }
 
-        public void StepDownButtonCommandMethod()
+        public void ExecuteStepDownCommand()
         {
             // TODO implement missing feature
         }
 
-        public void StepUpButtonCommandMethod()
+        public void ExecuteStepUpCommand()
         {
             // TODO implement missing feature
         }
 
-        public void UnSubscribeMethodFromEvent()
+        public override void Disappear()
         {
-            this.EventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Unsubscribe(this.receivePositioningUpdateToken);
+            if(this.receivePositioningUpdateToken != null)
+            {
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Unsubscribe(this.receivePositioningUpdateToken);
+            }
+
+            base.Disappear();
         }
 
-        private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
+        private async Task TriggerSearchAsync()
         {
-            if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> p)
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 500;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
+                    .ContinueWith(
+                        async t => await this.LoadReferenceCellHeightAsync(this.referenceCellNumber),
+                        this.tokenSource.Token,
+                        TaskContinuationOptions.NotOnCanceled,
+                        TaskScheduler.Current);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
+        }
+
+        private void UpdateCurrentActionStatus(MessageNotifiedEventArgs message)
+        {
+            if (message.NotificationMessage is NotificationMessageUI<PositioningMessageData> p)
             {
                 switch (p.Status)
                 {
@@ -235,9 +318,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     case MessageStatus.OperationError:
                         this.NoteString = VW.App.Resources.InstallationApp.Error;
-                        break;
-
-                    default:
                         break;
                 }
             }

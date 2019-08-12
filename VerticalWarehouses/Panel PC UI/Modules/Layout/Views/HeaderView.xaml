@@ -53,7 +53,7 @@
             <custom:CustomControlLoggedUser Margin="10,0,20,0"
                                             IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
                                             Items="{Binding States}"
-                                            LogOffCommand="{Binding BackToVWAPPCommand}"
+                                            LogOffCommand="{Binding LogOffCommand}"
                                             OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                             UserText="{Binding UserName}"
                                             Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />

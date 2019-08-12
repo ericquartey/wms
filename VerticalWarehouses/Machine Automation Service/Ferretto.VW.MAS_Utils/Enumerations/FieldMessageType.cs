@@ -32,6 +32,8 @@
 
         InverterError,
 
+        InverterDisable,
+
         AxisPosition,
 
         Positioning,
@@ -48,6 +50,8 @@
 
         PowerEnable,
 
-        InverterFaultReset
+        InverterFaultReset,
+
+        InverterStatusWord
     }
 }
