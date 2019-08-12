@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Prism.Commands;
 
@@ -27,11 +17,13 @@ namespace Ferretto.VW.Simulator.Controls.Controls
 
         public static readonly DependencyProperty BulletColorProperty = DependencyProperty.Register("BulletColor", typeof(SolidColorBrush), typeof(CustomSensorSquareControl));
 
+        public static readonly DependencyProperty HeightControlProperty = DependencyProperty.Register("HeightControl", typeof(double), typeof(CustomSensorSquareControl), new FrameworkPropertyMetadata(22D, OnHeightControlChanged));
+
         public static readonly DependencyProperty IoMachineSensorProperty = DependencyProperty.Register("IoMachineSensor", typeof(IOMachineSensors), typeof(CustomSensorSquareControl));
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(CustomSensorSquareControl));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomSensorSquareControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomSensorSquareControl), new PropertyMetadata("00"));
 
         public static readonly DependencyProperty SensorPortProperty = DependencyProperty.Register("SensorPort", typeof(IOMachineSensors), typeof(CustomSensorSquareControl), new FrameworkPropertyMetadata(IOMachineSensors.NoValue, OnSensorPortChanged));
 
@@ -49,8 +41,8 @@ namespace Ferretto.VW.Simulator.Controls.Controls
         {
             this.InitializeComponent();
 
-            var CustomSensorSquareControl = this;
-            this.LayoutRoot.DataContext = CustomSensorSquareControl;
+            var customSensorSquareControl = this;
+            this.LayoutRoot.DataContext = customSensorSquareControl;
         }
 
         #endregion
@@ -73,6 +65,16 @@ namespace Ferretto.VW.Simulator.Controls.Controls
             }
         }
 
+        public double HeightControl
+        {
+            get => (double)this.GetValue(HeightControlProperty);
+            set
+            {
+                this.SetValue(HeightControlProperty, value);
+                this.RaisePropertyChanged(nameof(this.HeightControl));
+            }
+        }
+
         public bool IsReadOnly
         {
             get => (bool)this.GetValue(IsReadOnlyProperty);
@@ -85,10 +87,10 @@ namespace Ferretto.VW.Simulator.Controls.Controls
 
         public string LabelText
         {
-            get => (string)this.GetValue(LabelProperty);
+            get => (string)this.GetValue(LabelTextProperty);
             set
             {
-                this.SetValue(LabelProperty, value);
+                this.SetValue(LabelTextProperty, value);
                 this.RaisePropertyChanged(nameof(this.LabelText));
             }
         }
@@ -129,6 +131,12 @@ namespace Ferretto.VW.Simulator.Controls.Controls
 
         #region Methods
 
+        public void UpdateHeightControl(double height)
+        {
+            this.Height = height;
+            this.Width = height;
+        }
+
         public void UpdateSensorState()
         {
             if (this.Sensors != null && this.SensorPort != IOMachineSensors.NoValue)
@@ -138,6 +146,14 @@ namespace Ferretto.VW.Simulator.Controls.Controls
             }
 
             this.SensorState = false;
+        }
+
+        private static void OnHeightControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CustomSensorSquareControl control && e.NewValue is double height)
+            {
+                control.UpdateHeightControl(height);
+            }
         }
 
         private static void OnSensorPortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

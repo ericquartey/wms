@@ -6,9 +6,11 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using NLog;
+using Prism.Commands;
 using Prism.Mvvm;
 using static Ferretto.VW.Simulator.Services.BufferUtility;
 
@@ -19,6 +21,10 @@ namespace Ferretto.VW.Simulator.Services
         #region Fields
 
         public byte[] Buffer;
+
+        private const int DELAY_INVERTER_CLIENT = 50;
+
+        private const int DELAY_IO_CLIENT = 5;
 
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
@@ -41,14 +47,14 @@ namespace Ferretto.VW.Simulator.Services
         public MachineService()
         {
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel() { Id = 0, InverterType = InverterType.Ang });
-            this.Inverters.Add(new InverterModel() { Id = 1, InverterType = InverterType.Ang, Enabled = false });
-            this.Inverters.Add(new InverterModel() { Id = 2, InverterType = InverterType.Agl });
-            this.Inverters.Add(new InverterModel() { Id = 3, InverterType = InverterType.Acu });
-            this.Inverters.Add(new InverterModel() { Id = 4, InverterType = InverterType.Agl });
-            this.Inverters.Add(new InverterModel() { Id = 5, InverterType = InverterType.Acu, Enabled = false });
-            this.Inverters.Add(new InverterModel() { Id = 6, InverterType = InverterType.Acu, Enabled = false }); //da sistemare
-            this.Inverters.Add(new InverterModel() { Id = 7, InverterType = InverterType.Acu, Enabled = false }); //da sistemare
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0 });
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 2 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
+            this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 4 });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 5, Enabled = false });
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 6, Enabled = false }); //da sistemare
+            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 7, Enabled = false }); //da sistemare
 
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
@@ -63,19 +69,19 @@ namespace Ferretto.VW.Simulator.Services
 
         public InverterModel Inverters00 { get => this.Inverters[0]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters01 { get => this.Inverters[1]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters01 { get => this.Inverters[1]; set { var inv = this.Inverters[1]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters02 { get => this.Inverters[2]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters02 { get => this.Inverters[2]; set { var inv = this.Inverters[2]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters03 { get => this.Inverters[3]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters03 { get => this.Inverters[3]; set { var inv = this.Inverters[3]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters04 { get => this.Inverters[4]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters04 { get => this.Inverters[4]; set { var inv = this.Inverters[4]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters05 { get => this.Inverters[5]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters05 { get => this.Inverters[5]; set { var inv = this.Inverters[5]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters06 { get => this.Inverters[6]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters06 { get => this.Inverters[6]; set { var inv = this.Inverters[6]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[7]; this.SetProperty(ref inv, value); } }
 
         public bool IsStartedSimulator { get; private set; }
 
@@ -354,6 +360,7 @@ namespace Ferretto.VW.Simulator.Services
 
                         case InverterParameterId.StatusDigitalSignals:
                         case InverterParameterId.ShutterTargetPosition:
+                            result = client.Client.Send(extractedMessage);
                             break;
 
                         default:
@@ -364,6 +371,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
                     }
                     this.UpdateInverter(inverter);
+                    Thread.Sleep(DELAY_INVERTER_CLIENT);
                 }
             }
             else
@@ -383,11 +391,6 @@ namespace Ferretto.VW.Simulator.Services
             if (device.Buffer.Length > 2 && device.Buffer.Length >= device.Buffer[0])
             {
                 var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref device.Buffer, 3, 0, 0);
-                //if (extractedMessages.Count > 1 && Debugger.IsAttached)
-                //{
-                //    Debugger.Break();
-                //}
-
                 foreach (var extractedMessage in extractedMessages)
                 {
                     var length = extractedMessage[0];
@@ -395,8 +398,8 @@ namespace Ferretto.VW.Simulator.Services
                     var codeOperation = extractedMessage[2];
                     var outputs = (from x in Enumerable.Range(0, 8)
                                    let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
-                                   select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString() }).Reverse().ToArray();
-                    device.Outputs = outputs.Select(x => new BitModel(x.Description, x.Value)).ToList();
+                                   select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString(), Index = (7 - x) }).Reverse().ToArray();
+                    device.Outputs = outputs.Select(x => new BitModel(x.Description, x.Value, IODeviceModel.GetRemoteIOSignalDescription(x.Index))).ToList();
 
                     byte[] responseMessage = null;
                     switch (codeOperation)
@@ -434,6 +437,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.UpdateRemoteIO(device);
 
                     var result = client.Client.Send(responseMessage);
+                    Thread.Sleep(DELAY_IO_CLIENT);
                 }
             }
             else
@@ -448,24 +452,37 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsFault = false;
             }
-            else if ((inverter.ControlWord & 0x0001) > 0)       // SwitchOn
+
+            else if ((inverter.ControlWord & 0x0001) > 0)       // Switch On
             {
                 inverter.IsSwitchedOn = true;
             }
+
+            if ((inverter.ControlWord & 0x0002) > 0)            // Enable Voltage
+            {
+                inverter.IsVoltageEnabled = true;
+            }
+
+            if ((inverter.ControlWord & 0x0003) > 0)            // Enable Operation
+            {
+                inverter.IsOperationEnabled = true;
+            }
+
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
-            // Logic
-            if (!device.Outputs[(int)IoPorts.PowerEnable].Value)
+            // Logic            
+            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value || !device.Inputs[(int)IoPorts.MushroomEmergency].Value)
             {
-                // Set run status
-                device.Inputs[(int)IoPorts.NormalState].Value = false;
+                // Reset run status
+                this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);
+
             }
-            else if (device.Outputs[(int)IoPorts.ResetSecurity].Value)
+            else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value)
             {
                 // Set run status
-                device.Inputs[(int)IoPorts.NormalState].Value = true;
+                this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = true);
             }
         }
 

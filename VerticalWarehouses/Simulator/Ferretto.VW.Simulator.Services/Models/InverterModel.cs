@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
+using System.Windows.Input;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -278,27 +281,36 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #endregion
 
+        private ICommand inverterInFaultCommand;
+
+        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.ExecuteInverterInFaultCommand()));
+
+        private void ExecuteInverterInFaultCommand()
+        {
+            this.IsFault = !this.IsFault;
+        }
+
         #region Constructors
 
-        public InverterModel()
+        public InverterModel(InverterType inverterType)
         {
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
-
             this.homingTimerActive = false;
-            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
 
+            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
             this.targetTimerActive = false;
 
             this.OperationMode = InverterOperationMode.Velocity;
+            this.InverterType = inverterType;
 
-            this.digitalIO.Add(new BitModel("Bit 00", false));
-            this.digitalIO.Add(new BitModel("Bit 01", false));
-            this.digitalIO.Add(new BitModel("Bit 02", false));
-            this.digitalIO.Add(new BitModel("Bit 03", false));
-            this.digitalIO.Add(new BitModel("Bit 04", false));
-            this.digitalIO.Add(new BitModel("Bit 05", false));
-            this.digitalIO.Add(new BitModel("Bit 06", false));
-            this.digitalIO.Add(new BitModel("Bit 07", false));
+            this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
+            this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
+            this.digitalIO.Add(new BitModel("02", false, GetInverterSignalDescription(inverterType, 2)));
+            this.digitalIO.Add(new BitModel("03", false, GetInverterSignalDescription(inverterType, 3)));
+            this.digitalIO.Add(new BitModel("04", false, GetInverterSignalDescription(inverterType, 4)));
+            this.digitalIO.Add(new BitModel("05", false, GetInverterSignalDescription(inverterType, 5)));
+            this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
+            this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
         }
 
         #endregion
@@ -313,12 +325,15 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.controlWord, value, () =>
             {
                 this.RaisePropertyChanged(nameof(this.ControlWord));
-                this.RaisePropertyChanged(nameof(this.ControlWordBinary));
+                this.RaisePropertyChanged(nameof(this.ControlWordArray));
             });
         }
 
-        public string ControlWordBinary => Convert.ToString(this.ControlWord, 2).PadLeft(16, '0');
-
+        public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
+                                               let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
+                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+        
         public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
@@ -354,10 +369,17 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.statusWord &= ~0x0008;
                 }
+                this.RaisePropertyChanged(nameof(this.IsFault));
+                this.RaisePropertyChanged(nameof(this.StatusWord));
+                this.RaisePropertyChanged(nameof(this.StatusWordArray));
             }
         }
 
-        public bool IsOperationEnabled => (this.statusWord & 0x0004) > 0;
+        public bool IsOperationEnabled
+        {
+            get => (this.statusWord & 0x0004) > 0;
+            set => this.statusWord |= 0x0004;
+        }
 
         public bool IsQuickStopTrue => (this.statusWord & 0x0020) > 0;
 
@@ -373,7 +395,11 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
-        public bool IsVoltageEnabled => (this.statusWord & 0x0010) > 0;
+        public bool IsVoltageEnabled
+        {
+            get => (this.statusWord & 0x0010) > 0;
+            set => this.statusWord |= 0x0010;
+        }
 
         public bool IsWarning => (this.statusWord & 0x0080) > 0;
 
@@ -386,12 +412,16 @@ namespace Ferretto.VW.Simulator.Services.Models
             get => this.statusWord;
             set => this.SetProperty(ref this.statusWord, value, () =>
             {
+                this.RaisePropertyChanged(nameof(this.IsFault));
                 this.RaisePropertyChanged(nameof(this.StatusWord));
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+                this.RaisePropertyChanged(nameof(this.StatusWordArray));
             });
         }
 
-        public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
+        public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
+                                               let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
+                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
 
         private int homingTickCount { get; set; }
 
@@ -630,12 +660,16 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.homingTickCount++;
             this.AxisPosition++;
 
-            if (this.homingTickCount > 5)
+            if (this.homingTickCount > 10)
             {
                 this.StatusWord |= 0x1000;
                 this.homingTimerActive = false;
                 this.homingTickCount = 0;
                 this.homingTimer.Change(-1, Timeout.Infinite);
+            }
+            else if (this.homingTickCount == 1)
+            {
+               this.StatusWord &= 0xEFFF;
             }
         }
 
@@ -655,6 +689,39 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                 this.targetTimerActive = false;
                 this.positionReached = true;
+            }
+        }
+
+        internal static string GetInverterSignalDescription(InverterType inverterType, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Potenza ON";
+
+                case 1:
+                    return "Funzionamento normale";
+
+                case 2:
+                    return inverterType == InverterType.Ang ? "Posizione di zero elevatore" : inverterType == InverterType.Agl ? "Sensore serranda (A)" : "Posizione di zero";
+
+                case 3:
+                    return inverterType == InverterType.Ang ? "Encoder canale B --- culla" : inverterType == InverterType.Agl ? "Sensore serranda (B)" : "Encoder canale B";
+
+                case 4:
+                    return inverterType == InverterType.Ang ? "Encoder canale A --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale A";
+
+                case 5:
+                    return inverterType == InverterType.Ang ? "Encoder canale Z --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale Z";
+
+                case 6:
+                    return inverterType == InverterType.Ang ? "Extracorsa elevatore" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+
+                case 7:
+                    return inverterType == InverterType.Ang ? "Sensore zero culla" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+
+                default:
+                    return string.Empty;
             }
         }
 

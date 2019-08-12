@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.PowerEnable
                     case MessageStatus.OperationEnd:
                         if (!this.enable)
                         {
-                            this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.ParentStateMachine, this.Logger));
+                            this.ParentStateMachine.ChangeState(new PowerEnableStopInverterState(this.ParentStateMachine, InverterIndex.MainInverter, this.Logger));
                         }
                         else
                         {
