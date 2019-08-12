@@ -443,24 +443,37 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsFault = false;
             }
-            else if ((inverter.ControlWord & 0x0001) > 0)       // SwitchOn
+
+            else if ((inverter.ControlWord & 0x0001) > 0)       // Switch On
             {
                 inverter.IsSwitchedOn = true;
             }
+
+            if ((inverter.ControlWord & 0x0002) > 0)            // Enable Voltage
+            {
+                inverter.IsVoltageEnabled = true;
+            }
+
+            if ((inverter.ControlWord & 0x0003) > 0)            // Enable Operation
+            {
+                inverter.IsOperationEnabled = true;
+            }
+
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
-            // Logic
-            if (!device.Outputs[(int)IoPorts.PowerEnable].Value)
+            // Logic            
+            if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value || !device.Inputs[(int)IoPorts.MushroomEmergency].Value)
             {
-                // Set run status
-                device.Inputs[(int)IoPorts.NormalState].Value = false;
+                // Reset run status
+                this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);
+
             }
-            else if (device.Outputs[(int)IoPorts.ResetSecurity].Value)
+            else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value)
             {
                 // Set run status
-                device.Inputs[(int)IoPorts.NormalState].Value = true;
+                this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = true);
             }
         }
 

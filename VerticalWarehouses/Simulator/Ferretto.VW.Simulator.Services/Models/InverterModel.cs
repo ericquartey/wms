@@ -357,7 +357,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        public bool IsOperationEnabled => (this.statusWord & 0x0004) > 0;
+        public bool IsOperationEnabled
+        {
+            get => (this.statusWord & 0x0004) > 0;
+            set => this.statusWord |= 0x0004;
+        }
 
         public bool IsQuickStopTrue => (this.statusWord & 0x0020) > 0;
 
@@ -373,7 +377,11 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
-        public bool IsVoltageEnabled => (this.statusWord & 0x0010) > 0;
+        public bool IsVoltageEnabled
+        {
+            get => (this.statusWord & 0x0010) > 0;
+            set => this.statusWord |= 0x0010;
+        }
 
         public bool IsWarning => (this.statusWord & 0x0080) > 0;
 
