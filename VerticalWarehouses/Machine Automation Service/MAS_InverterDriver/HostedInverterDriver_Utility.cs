@@ -939,6 +939,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace( "3:Inverter start powering off" );
 
                     this.CurrentStateMachine = new PowerOffStateMachine( inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage );
+                    this.CurrentStateMachine?.Start();
                 }
                 else
                 {

@@ -561,7 +561,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         break;
 
-                    case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:
 
@@ -573,8 +572,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.logger.LogDebug( $"State machine {this.CurrentStateMachine?.GetType()} is null !!" );
                             }
 
-                            if (this.CurrentStateMachine is PowerOffStateMachine ||
-                                this.CurrentStateMachine is SwitchOnStateMachine ||
+                            if (this.CurrentStateMachine is SwitchOnStateMachine ||
                                 this.CurrentStateMachine is StopStateMachine)
                             {
                                 this.CurrentStateMachine = null;
@@ -614,9 +612,33 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.logger.LogDebug( $"InverterPowerOn Deallocating {this.CurrentStateMachine?.GetType()} state machine" );
+                            this.logger.LogDebug($"Deallocating {this.CurrentStateMachine?.GetType()} state machine");
 
-                            if (this.CurrentStateMachine is PowerOnStateMachine)
+                            if (this.CurrentStateMachine is PowerOnStateMachine )
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
+
+                            var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
+                            if (nextMessage != null)
+                            {
+                                this.commandQueue.Enqueue(nextMessage);
+                            }
+                        }
+
+                        break;
+
+                    case FieldMessageType.InverterPowerOff:
+
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.logger.LogDebug( $"Deallocating {this.CurrentStateMachine?.GetType()} state machine" );
+
+                            if (this.CurrentStateMachine is PowerOffStateMachine)
                             {
                                 this.CurrentStateMachine = null;
                             }
@@ -625,7 +647,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.logger.LogDebug( $"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}" );
                             }
 
-                            var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
+                            var nextMessage = ((InverterPowerOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                             if (nextMessage != null)
                             {
                                 this.commandQueue.Enqueue( nextMessage );

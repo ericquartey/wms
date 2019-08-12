@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public InverterIndex InverterToPowerOff { get; set; }
 
+        public FieldCommandMessage NextCommandMessage { get; set; }
+
         public MessageVerbosity Verbosity { get; }
 
         #endregion
@@ -29,7 +31,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public override string ToString()
         {
-            return $"InverterToPowerOff:{this.InverterToPowerOff.ToString()}";
+            return $"InverterToPowerOff:{this.InverterToPowerOff.ToString()} NextCommandMessage:{this.NextCommandMessage}";
         }
 
         #endregion
