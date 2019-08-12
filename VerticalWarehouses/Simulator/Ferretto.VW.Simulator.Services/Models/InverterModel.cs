@@ -331,9 +331,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
                                                let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
-                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) }).Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
         
-
         public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
@@ -371,7 +371,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 this.RaisePropertyChanged(nameof(this.IsFault));
                 this.RaisePropertyChanged(nameof(this.StatusWord));
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+                this.RaisePropertyChanged(nameof(this.StatusWordArray));
             }
         }
 
@@ -414,11 +414,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 this.RaisePropertyChanged(nameof(this.IsFault));
                 this.RaisePropertyChanged(nameof(this.StatusWord));
-                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
+                this.RaisePropertyChanged(nameof(this.StatusWordArray));
             });
         }
 
-        public string StatusWordBinary => Convert.ToString(this.StatusWord, 2).PadLeft(16, '0');
+        public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
+                                               let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
+                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
 
         private int homingTickCount { get; set; }
 
