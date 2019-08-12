@@ -45,11 +45,6 @@ namespace Ferretto.VW.App.Controls
             this.UpdatePresentation();
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-        }
-
         public void ShowError(string error)
         {
             this.EventAggregator

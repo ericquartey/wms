@@ -334,7 +334,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
-    <value>Micro carter left side bay 1</value>
+    <value>Micro carter left side</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
-    <value>Mushroom Emergency Button bay 1</value>
+    <value>Mushroom Emergency Button</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="PawlEncoder" xml:space="preserve">
@@ -758,22 +758,6 @@
   </data>
   <data name="ShutterSensorB" xml:space="preserve">
     <value>Sensor shutter B</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="MushroomHeadButton2" xml:space="preserve">
-    <value>Mushroom Emergency Button bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="MushroomHeadButton3" xml:space="preserve">
-    <value>Mushroom Emergency Button bay 3</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="MicroCarterLeftSide2" xml:space="preserve">
-    <value>Micro carter left side bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="MicroCarterLeftSide3" xml:space="preserve">
-    <value>Micro carter left side bay 3</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterRightSide2" xml:space="preserve">

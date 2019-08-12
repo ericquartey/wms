@@ -31,7 +31,7 @@
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <Button Command="{Binding ExecuteCommand}"
                         Content="{x:Static res:InstallationApp.Back}"
-                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                        Template="{StaticResource PpcButtonControlTemplate}" />
             </ctrls:PpcControl>
 
         </StackPanel>

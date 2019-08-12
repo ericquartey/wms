@@ -51,14 +51,14 @@
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="0,255,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
 
     </Grid>

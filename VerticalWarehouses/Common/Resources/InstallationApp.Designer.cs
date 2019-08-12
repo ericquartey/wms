@@ -1510,29 +1510,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Micro carter left side bay 1.
+        ///   Looks up a localized string similar to Micro carter left side.
         /// </summary>
         public static string MicroCarterLeftSide {
             get {
                 return ResourceManager.GetString("MicroCarterLeftSide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro carter left side bay 2.
-        /// </summary>
-        public static string MicroCarterLeftSide2 {
-            get {
-                return ResourceManager.GetString("MicroCarterLeftSide2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro carter left side bay 3.
-        /// </summary>
-        public static string MicroCarterLeftSide3 {
-            get {
-                return ResourceManager.GetString("MicroCarterLeftSide3", resourceCulture);
             }
         }
         
@@ -1609,29 +1591,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mushroom Emergency Button bay 1.
+        ///   Looks up a localized string similar to Mushroom Emergency Button.
         /// </summary>
         public static string MushroomHeadButton {
             get {
                 return ResourceManager.GetString("MushroomHeadButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mushroom Emergency Button bay 2.
-        /// </summary>
-        public static string MushroomHeadButton2 {
-            get {
-                return ResourceManager.GetString("MushroomHeadButton2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mushroom Emergency Button bay 3.
-        /// </summary>
-        public static string MushroomHeadButton3 {
-            get {
-                return ResourceManager.GetString("MushroomHeadButton3", resourceCulture);
             }
         }
         

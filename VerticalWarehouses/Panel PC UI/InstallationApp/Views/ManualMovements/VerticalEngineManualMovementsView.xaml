@@ -60,7 +60,7 @@
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Up}"
                     IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                    Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
@@ -77,7 +77,7 @@
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Down}"
                     IsEnabled="{Binding IsButtonDownEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                    Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />

@@ -59,7 +59,7 @@
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Forward}"
                     IsEnabled="{Binding IsButtonForwardEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                    Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <i:InvokeCommandAction Command="{Binding MoveForwardsCommand}" />
@@ -76,7 +76,7 @@
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Backward}"
                     IsEnabled="{Binding IsButtonBackEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                    Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />

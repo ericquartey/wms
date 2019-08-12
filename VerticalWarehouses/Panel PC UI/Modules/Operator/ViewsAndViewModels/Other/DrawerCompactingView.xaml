@@ -15,7 +15,7 @@
 
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,460,0,0"
                   Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,170,0,0" MaxWidth="300" IsEnabled="False"
                                                ContentText="8"
@@ -27,7 +27,7 @@
 
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,460,0,0" IsEnabled="False"
                   Content="{x:Static Resources:OperatorApp.DrawerCompactingRearCompact}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,170,0,0" MaxWidth="300" IsEnabled="False"
                                                ContentText="6"
@@ -61,7 +61,7 @@
             VerticalAlignment="Bottom"
             Command="{Binding DrawerCompactingDetailButtonCommand}"
             Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+            Template="{StaticResource PpcButtonControlTemplate}" />
 
     </Grid>
 </UserControl>

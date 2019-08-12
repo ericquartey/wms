@@ -55,7 +55,7 @@
                 Command="{Binding SetPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                 IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="680,250,0,0"
                 HorizontalAlignment="Left"
@@ -63,28 +63,28 @@
                 Command="{Binding StepUpButtonCommand}"
                 Content="{x:Static res:InstallationApp.StepUp}"
                 IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="680,330,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding StepDownButtonCommand}"
                 Content="{x:Static res:InstallationApp.StepDown}"
                 IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="680,410,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding AcceptOffsetButtonCommand}"
                 Content="{x:Static res:InstallationApp.AcceptOffset}"
                 IsEnabled="{Binding IsAcceptOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="680,490,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding CorrectOffsetButtonCommand}"
                 Content="{x:Static res:InstallationApp.DoCorrectOffset}"
                 IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <custom:CustomLabelTextBlockControl Margin="230,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"

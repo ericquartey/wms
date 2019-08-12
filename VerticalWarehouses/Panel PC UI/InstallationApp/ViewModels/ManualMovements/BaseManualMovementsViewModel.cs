@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Installation.Models;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -21,25 +20,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.VERTICALENGINE,
                     nameof(Utils.Modules.Installation),
-                    Ferretto.VW.App.Resources.InstallationApp.VerticalAxis));
+                    VW.App.Resources.InstallationApp.VerticalAxis,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.HORIZONTALENGINE,
                     nameof(Utils.Modules.Installation),
-                    Ferretto.VW.App.Resources.InstallationApp.HorizontalAxis));
+                    VW.App.Resources.InstallationApp.HorizontalAxis,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.SHUTTER,
                     nameof(Utils.Modules.Installation),
-                    Ferretto.VW.App.Resources.InstallationApp.Shutter));
+                    VW.App.Resources.InstallationApp.Shutter,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.CAROUSEL,
                     nameof(Utils.Modules.Installation),
-                    Ferretto.VW.App.Resources.InstallationApp.Carousel));
+                    VW.App.Resources.InstallationApp.Carousel,
+                    canBackTrack: false));
         }
 
         #endregion

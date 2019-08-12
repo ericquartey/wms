@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Installation.HelpWindows"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sensorsState="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState"
         xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
         xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
         xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
@@ -95,6 +94,6 @@
                 HorizontalAlignment="Right"
                 Click="Button_Click"
                 Content="Back"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
     </Grid>
 </Window>

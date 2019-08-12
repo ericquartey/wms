@@ -224,6 +224,6 @@
                 Command="{Binding ButtonCommand}"
                 Content="{Binding ButtonContent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Style="{StaticResource BusyButtonStyle}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
     </Grid>
 </UserControl>

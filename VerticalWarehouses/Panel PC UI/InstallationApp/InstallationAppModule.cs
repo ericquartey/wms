@@ -4,7 +4,6 @@ using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Installation.ViewsAndViewModels;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
@@ -65,7 +64,6 @@ namespace Ferretto.VW.App.Installation
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
 
-            containerRegistry.RegisterForNavigation<SensorsNavigationViewModel>();
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
             containerRegistry.RegisterForNavigation<CradleSensorsView>();
             containerRegistry.RegisterForNavigation<ShutterSensorsView>();

@@ -32,7 +32,7 @@
                     VerticalAlignment="Center"
                     Command="{Binding ExecuteCommand}"
                     Content="{x:Static res:InstallationApp.Back}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                    Template="{StaticResource PpcButtonControlTemplate}" />
 
         </StackPanel>
     </Grid>

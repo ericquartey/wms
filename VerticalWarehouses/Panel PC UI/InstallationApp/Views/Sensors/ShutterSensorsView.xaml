@@ -22,7 +22,7 @@
               Margin="130,0,130,10">
 
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 

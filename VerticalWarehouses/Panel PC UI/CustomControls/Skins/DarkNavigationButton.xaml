@@ -13,7 +13,6 @@
     <sys:Double x:Key="VWAPP_NavigationButton_Height_Normal">60</sys:Double>
     <Thickness x:Key="VWAPP_NavigationButton_BorderThickness_Normal">1</Thickness>
     <sys:Double x:Key="VWAPP_NavigationButton_FontSize_Normal">14</sys:Double>
-    <FontFamily x:Key="VWAPP_NavigationButton_FontFamily_Normal">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
     <SolidColorBrush x:Key="VWAPP_NavigationButton_Background_Pressed"
                      Color="Transparent" />

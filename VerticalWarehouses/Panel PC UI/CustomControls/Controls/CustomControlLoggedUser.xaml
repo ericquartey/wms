@@ -15,19 +15,18 @@
                 Background="Transparent"
                 BorderBrush="Transparent"
                 Command="{Binding OpenClosePopupCommand}"
-                FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
                 FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
                 Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="10,0,10,0"
                                VerticalAlignment="Center"
-                               Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                               Foreground="{DynamicResource PpcButtonForeground}"
                                Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <vwicon:VWIcon Height="24"
                                    Margin="0,0,10,0"
                                    HorizontalAlignment="Center"
-                                   ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                   ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                    Source="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png" />
                 </StackPanel>
             </Button.Content>
@@ -49,13 +48,11 @@
                         Background="{DynamicResource VWAPP_BACKGROUND}"
                         BorderBrush="Transparent"
                         Command="{Binding LogOffCommand}"
-                        FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
                         FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
                         Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}">
                     <Button.Content>
                         <TextBlock HorizontalAlignment="Center"
                                    Background="Transparent"
-                                   FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
                                    FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
                                    Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}"
                                    Text="{x:Static res:InstallationApp.LogOff}" />

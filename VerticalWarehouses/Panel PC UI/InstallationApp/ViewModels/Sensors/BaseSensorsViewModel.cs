@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -9,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BaseSensorsViewModel : BaseMainViewModel
+    public class BaseSensorsViewModel : BaseMainViewModel, IBaseSensorsViewModel
     {
         #region Fields
 
@@ -39,31 +38,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.VerticalAxisButton));
+                    VW.App.Resources.InstallationApp.VerticalAxisButton,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.BAYS,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Bays));
+                    VW.App.Resources.InstallationApp.Bays,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.CRADLE,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Cradle));
+                    VW.App.Resources.InstallationApp.Cradle,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.SHUTTER,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Shutter));
+                    VW.App.Resources.InstallationApp.Shutter,
+                    canBackTrack: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.OTHERS,
                     nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Others));
+                    VW.App.Resources.InstallationApp.Others,
+                    canBackTrack: false));
         }
 
         #endregion

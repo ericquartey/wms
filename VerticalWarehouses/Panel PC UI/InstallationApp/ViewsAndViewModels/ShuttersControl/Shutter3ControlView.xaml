@@ -31,11 +31,11 @@
                 Margin="150,465,0,75"
                 HorizontalAlignment="Left"
                 Content="{x:Static res:InstallationApp.Start}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="570,465,0,75"
                 HorizontalAlignment="Left"
                 Content="{x:Static res:InstallationApp.Stop}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
     </Grid>
 </UserControl>

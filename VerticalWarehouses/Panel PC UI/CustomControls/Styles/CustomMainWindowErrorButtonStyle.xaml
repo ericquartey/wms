@@ -5,7 +5,6 @@
     <Style x:Key="VWAPP_CustomMainWindowErrorButton_TextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomMainWindowErrorButton_TextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomMainWindowErrorButton_TextBlock_FontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomMainWindowErrorButton_TextBlock_FontSize}" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />

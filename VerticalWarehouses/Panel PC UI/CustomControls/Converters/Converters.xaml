@@ -3,6 +3,7 @@
                     xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters">
 
     <!--  converters  -->
+    <conv:BoolToThicknessConverter x:Key="BTTC" />
     <conv:BoolToVisibilityConverter x:Key="BTVC" />
     <conv:BoolToVisibilityConverter x:Key="BTVIC"
                                     Invert="True" />

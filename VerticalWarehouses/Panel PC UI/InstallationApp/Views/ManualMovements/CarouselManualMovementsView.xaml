@@ -58,7 +58,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Up}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                    Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <i:InvokeCommandAction Command="{Binding OpenCarouselCommand}" />
@@ -74,7 +74,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Content="{x:Static res:InstallationApp.Down}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
+                    Template="{StaticResource PpcButtonControlTemplate}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <i:InvokeCommandAction Command="{Binding CloseCarouselCommand}" />

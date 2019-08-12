@@ -271,13 +271,13 @@
     <value>Cassetto Presente in Baia</value>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
-    <value>Micro carter lato sinistro baia 1</value>
+    <value>Micro carter lato sinistro</value>
   </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
     <value>Micro carter lato destro baia 1</value>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
-    <value>Fungo emergenza baia 1</value>
+    <value>Fungo di Emergenza</value>
   </data>
   <data name="PawlEncoder" xml:space="preserve">
     <value>Encoder nottolino</value>
@@ -597,18 +597,6 @@
   </data>
   <data name="ShutterSensorA" xml:space="preserve">
     <value>Sensore A serranda</value>
-  </data>
-  <data name="ShutterSensorB" xml:space="preserve">
-    <value>Sensore B serranda</value>
-  </data>
-  <data name="MushroomHeadButton2" xml:space="preserve">
-    <value>Fungo emergenza baia 2</value>
-  </data>
-  <data name="MushroomHeadButton3" xml:space="preserve">
-    <value>Fungo emergenza baia 3</value>
-  </data>
-  <data name="MicroCarterLeftSide2" xml:space="preserve">
-    <value>Micro carter lato sinistro baia 2</value>
   </data>
   <data name="MicroCarterLeftSide3" xml:space="preserve">
     <value>Micro carter lato sinistro baia 3</value>

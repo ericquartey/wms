@@ -44,7 +44,7 @@
                 VerticalAlignment="Bottom"
                 Command="{Binding DrawerCompactingButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
                                               Margin="490,145,0,0"

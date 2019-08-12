@@ -29,7 +29,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Content="{x:Static Resources:OperatorApp.DrawerActivityLocalCallGoBack}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+            Template="{StaticResource PpcButtonControlTemplate}" />
 
         <WmsControls:TrayControl Width="900"
             Height="200"

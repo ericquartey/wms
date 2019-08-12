@@ -78,7 +78,7 @@
                     VerticalAlignment="Top"
                     Command="{Binding MarkAsResolvedCommand}"
                     Content="Marca come risolto"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                    Template="{StaticResource PpcButtonControlTemplate}" />
 
         </Grid>
     </Grid>

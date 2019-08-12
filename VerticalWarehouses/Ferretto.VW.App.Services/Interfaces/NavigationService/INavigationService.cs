@@ -14,6 +14,10 @@
 
         void SetBusy(bool isBusy);
 
+        object SubscribeToNavigationCompleted(System.Action<NavigationCompletedPubSubEventArgs> action);
+
+        void UnsubscribeToNavigationCompleted(object subscriptionToken);
+
         #endregion
     }
 }

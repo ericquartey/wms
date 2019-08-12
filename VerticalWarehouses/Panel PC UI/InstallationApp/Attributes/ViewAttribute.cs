@@ -10,37 +10,38 @@ namespace Ferretto.VW.App.Installation.Attributes
 
         private const string ArgumentCannotBeNullOrWhitespace = "Argument cannot be null or whitespace.";
 
-        private readonly InstallatorMenuTypes installatorMenuType;
-
-        private readonly string moduleName;
-
-        private readonly string viewModelName;
-
         #endregion
 
         #region Constructors
 
-        public ViewAttribute(string viewModelName, string moduleName, InstallatorMenuTypes menuType = InstallatorMenuTypes.None)
+        public ViewAttribute(
+            string viewModelName,
+            string moduleName,
+            InstallatorMenuTypes menuType = InstallatorMenuTypes.None,
+            bool canBackTrack = true)
         {
             if (string.IsNullOrWhiteSpace(viewModelName))
             {
                 throw new ArgumentException(ArgumentCannotBeNullOrWhitespace, nameof(viewModelName));
             }
 
-            this.installatorMenuType = menuType;
-            this.viewModelName = viewModelName;
-            this.moduleName = moduleName;
+            this.InstallatorMenuType = menuType;
+            this.ViewModelName = viewModelName;
+            this.ModuleName = moduleName;
+            this.CanBackTrack = canBackTrack;
         }
 
         #endregion
 
         #region Properties
 
-        public InstallatorMenuTypes InstallatorMenuType => this.installatorMenuType;
+        public bool CanBackTrack { get; }
 
-        public string ModuleName => this.moduleName;
+        public InstallatorMenuTypes InstallatorMenuType { get; }
 
-        public string ViewModelName => this.viewModelName;
+        public string ModuleName { get; }
+
+        public string ViewModelName { get; }
 
         #endregion
     }

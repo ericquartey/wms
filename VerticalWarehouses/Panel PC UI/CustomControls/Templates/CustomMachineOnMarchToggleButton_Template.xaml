@@ -5,19 +5,19 @@
     <ControlTemplate x:Key="VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate"
                      TargetType="Button">
         <Border Name="Root_CustomMachineOnMarchToggleButtonBorder"
-                Background="{DynamicResource VWAPP_ActionButton_Background_Normal}"
-                BorderBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
-                BorderThickness="{DynamicResource VWAPP_ActionButton_BorderThickness_Normal}">
+                Background="{DynamicResource PpcButtonBackground}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
+                BorderThickness="{DynamicResource PpcButtonBorderThickness}">
             <ContentPresenter />
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="true">
-                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Pressed}" />
-                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Pressed}" />
+                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Disabled}" />
-                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Disabled}" />
+                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter TargetName="Root_CustomMachineOnMarchToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

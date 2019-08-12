@@ -77,41 +77,41 @@
                 Command="{Binding SetPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
                 IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,180,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding MoveButtonCommand}"
                 Content="{x:Static res:InstallationApp.Move}"
                 IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,260,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding UpdateResolutionCommand}"
                 Content="{x:Static res:InstallationApp.UpdateResolution}"
                 IsEnabled="{Binding IsUpdateResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,340,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding AcceptButtonCommand}"
                 Content="{x:Static res:General.Accept}"
                 IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,420,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding InitialPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                 IsEnabled="{Binding IsGoToInitialPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,500,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding CloseProcedureButtonCommand}"
                 Content="{x:Static res:InstallationApp.CloseProcedure}"
                 IsEnabled="{Binding IsCloseProcedureButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
     </Grid>
 </UserControl>

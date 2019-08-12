@@ -33,7 +33,7 @@
                 VerticalAlignment="Bottom"
                 Command="{Binding ConfirmCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <WmsControls:TrayControl Width="900"
                                  Height="200"
@@ -97,7 +97,7 @@
                 VerticalAlignment="Bottom"
                 Command="{Binding DrawerDetailsButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Controls:CustomLabelTextBlockControl MaxWidth="200"
                                               Margin="844,340,0,0"
                                               HorizontalAlignment="Left"

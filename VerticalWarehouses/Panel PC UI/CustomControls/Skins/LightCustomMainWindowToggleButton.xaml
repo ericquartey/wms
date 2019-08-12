@@ -5,8 +5,6 @@
 
     <sys:Double x:Key="VWAPP_CustomMachineModeToggleButton_FontSize">14</sys:Double>
     <sys:Double x:Key="VWAPP_CustomMachineOnMarchToggleButton_FontSize">14</sys:Double>
-    <FontFamily x:Key="VWAPP_CustomMachineModeToggleButton_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
-    <FontFamily x:Key="VWAPP_CustomMachineOnMarchToggleButton_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <Thickness x:Key="VWAPP_CustomMachineModeToggleButton_Thickness">1,1,1,1</Thickness>
     <Thickness x:Key="VWAPP_CustomMachineOnMarchToggleButton_Thickness">1,1,1,1</Thickness>
 

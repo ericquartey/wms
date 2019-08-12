@@ -19,7 +19,6 @@
     <Style x:Key="VWAPP_CustomControlSensor_TextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_FontSize}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_FontFamily}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_Foreground_Normal}" />
     </Style>
 </ResourceDictionary>

@@ -65,11 +65,11 @@
 
         <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
                     Content="{x:Static res:InstallationApp.Start}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+                    Template="{StaticResource PpcButtonControlTemplate}"  />
 
         <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,280,0,0"
             Content="{x:Static res:InstallationApp.Stop}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+            Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Controls:PpcSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                         LabelText="{x:Static res:InstallationApp.Gate1HeightReaced}"

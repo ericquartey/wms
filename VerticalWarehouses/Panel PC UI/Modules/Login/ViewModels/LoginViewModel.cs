@@ -16,15 +16,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IAuthenticationService authenticationService;
 
-        private readonly ISessionService sessionService;
-
         private readonly IBayManager bayManager;
 
         private readonly IHealthProbeService healthProbeService;
 
         private ICommand loginCommand;
-
-        private ICommand switchOffCommand;
 
         #endregion
 
@@ -32,7 +28,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public LoginViewModel(
             IAuthenticationService authenticationService,
-            ISessionService sessionService,
             IBayManager bayManager,
             IHealthProbeService healthProbeService)
             : base(PresentationMode.Login)
@@ -40,11 +35,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             if (authenticationService == null)
             {
                 throw new ArgumentNullException(nameof(authenticationService));
-            }
-
-            if (sessionService == null)
-            {
-                throw new ArgumentNullException(nameof(sessionService));
             }
 
             if (bayManager == null)
@@ -58,7 +48,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
 
             this.authenticationService = authenticationService;
-            this.sessionService = sessionService;
             this.bayManager = bayManager;
             this.healthProbeService = healthProbeService;
 
@@ -90,23 +79,24 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task RetrieveMachineInfoAsync()
         {
-            if (this.healthProbeService.HealthStatus == HealthStatus.Healthy
-                ||
-                this.healthProbeService.HealthStatus == HealthStatus.Degraded)
+            switch (this.healthProbeService.HealthStatus)
             {
-                await this.bayManager.InitializeAsync();
-                this.MachineIdentity = this.bayManager.Identity;
-                this.IsLoginAllowed = true;
-            }
-            else if (this.healthProbeService.HealthStatus == HealthStatus.Unhealthy)
-            {
-                this.IsLoginAllowed = false;
+                case HealthStatus.Healthy:
+                case HealthStatus.Degraded:
+                    await this.bayManager.InitializeAsync();
+                    this.MachineIdentity = this.bayManager.Identity;
+                    this.IsLoginAllowed = true;
+                    break;
 
-                this.EventAggregator
-                    .GetEvent<PresentationChangedPubSubEvent>()
-                    .Publish(new PresentationChangedMessage("Impossibile connettersi al servizio di automazione.")); // TODO move to resources
+                case HealthStatus.Unhealthy:
+                    this.IsLoginAllowed = false;
 
-                //this.NavigationService.Appear(nameof(M)) // move to navigation
+                    this.EventAggregator
+                        .GetEvent<PresentationChangedPubSubEvent>()
+                        .Publish(new PresentationChangedMessage("Impossibile connettersi al servizio di automazione.")); // TODO move to resources
+
+                    //this.NavigationService.Appear(nameof(M)) // move to navigation
+                    break;
             }
         }
 
@@ -125,11 +115,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 &&
                 string.IsNullOrEmpty(this.UserLogin.Error);
         }
-
-        public ICommand SwitchOffCommand =>
-            this.switchOffCommand
-            ??
-            (this.switchOffCommand = new DelegateCommand(() => this.ExecuteSwitchOffCommand()));
 
         public UserLogin UserLogin { get; }
 
@@ -151,6 +136,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
+            await base.OnNavigatedAsync();
+
             await this.RetrieveMachineInfoAsync();
         }
 
@@ -187,15 +174,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             else
             {
                 this.ShowError(Resources.Errors.UserLogin_InvalidCredentials);
-            }
-        }
-
-        private void ExecuteSwitchOffCommand()
-        {
-            var requestAccepted = this.sessionService.Shutdown();
-            if (requestAccepted)
-            {
-                this.ShowError("Shutting down ...");
             }
         }
 

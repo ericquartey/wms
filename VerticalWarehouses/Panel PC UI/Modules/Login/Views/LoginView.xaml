@@ -88,7 +88,7 @@
                     HorizontalAlignment="Left"
                     Command="{Binding LoginCommand}"
                     Content="{x:Static res:General.Login}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                    Template="{StaticResource PpcButtonControlTemplate}" />
         </StackPanel>
 
     </Grid>

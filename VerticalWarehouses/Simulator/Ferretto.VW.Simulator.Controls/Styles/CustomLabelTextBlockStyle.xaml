@@ -4,7 +4,7 @@
     <Style x:Key="VWSIM_CustomLabel_ContentInverseTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWSIM_CustomLabel_ContentInverseTextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWSIM_CustomLabel_ContentInverseTextBlock_FontFamily}" />
+        <Setter Property="FontFamily" Value="{DynamicResource PpcFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource VWSIM_CustomLabel_ContentInverseTextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
@@ -15,7 +15,6 @@
     <Style x:Key="VWSIM_CustomLabel_LabelInverseTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWSIM_CustomLabel_LabelInverseTextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWSIM_CustomLabel_LabelInverseTextBlock_FontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource VWSIM_CustomLabel_LabelInverseTextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">

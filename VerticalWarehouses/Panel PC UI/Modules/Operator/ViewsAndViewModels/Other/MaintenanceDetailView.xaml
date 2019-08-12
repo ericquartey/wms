@@ -27,19 +27,19 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="0,305,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="0,0,20,20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl MaxWidth="255"
                                               Margin="380,140,0,0"

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Installation.Resources;
+﻿using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Installation.Resources;
 
 namespace Ferretto.VW.App.Installation.Models
 {
@@ -12,8 +13,8 @@ namespace Ferretto.VW.App.Installation.Models
 
         #region Constructors
 
-        public MainNavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description)
-            : base(viewModelName, moduleName, description)
+        public MainNavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description, bool canBackTrack)
+            : base(viewModelName, moduleName, description, canBackTrack)
         {
             this.MenuItemType = menuItemType;
         }

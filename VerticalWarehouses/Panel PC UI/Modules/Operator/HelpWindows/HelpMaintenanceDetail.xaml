@@ -45,15 +45,15 @@
 
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
                   Content="{x:Static res:OperatorApp.CommonUp}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
                   Content="{x:Static res:OperatorApp.CommonDown}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0"
                   Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Template="{StaticResource PpcButtonControlTemplate}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"

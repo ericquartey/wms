@@ -107,7 +107,7 @@
                 VerticalAlignment="Center"
                 Command="{Binding SwitchOffCommand}"
                 Content="{x:Static res:VWApp.SwitchOff}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Grid.Row="1"
                 Margin="80,510,0,0"
@@ -116,7 +116,7 @@
                 Command="{Binding LoginCommand}"
                 Content="{x:Static res:General.Login}"
                 IsEnabled="{Binding IsLoginAllowed}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <TextBlock Grid.Row="2"
                    Height="40"
@@ -136,13 +136,13 @@
                 <StackPanel Orientation="Horizontal">
                     <vwIcon:VWIcon Height="36"
                                    Margin="10"
-                                   ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                   ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                    Source="pack://application:,,,/Ferretto.VW.App;Component/Icons/theme_dark.png"
                                    Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
                     <vwIcon:VWIcon Height="36"
                                    Margin="10"
-                                   ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                   ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                    Source="pack://application:,,,/Ferretto.VW.App;Component/Icons/theme_light.png"
                                    Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVIC}}" />
 

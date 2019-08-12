@@ -3,7 +3,6 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:Double x:Key="VWAPP_CustomControlSensor_TextBlock_FontSize">12</sys:Double>
-    <FontFamily x:Key="VWAPP_CustomControlSensor_TextBlock_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
     <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBrush_Up"
                      Color="{DynamicResource ColorFerrettoGreen}" />

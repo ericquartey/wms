@@ -22,7 +22,6 @@
             <TextBlock Grid.Row="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       FontFamily="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontFamily}"
                        FontSize="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontSize}"
                        Foreground="{DynamicResource VWAPP_CustomMachineModeToggleButton_Foreground_Normal}"
                        Text="{Binding MachineModeString}"

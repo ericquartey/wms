@@ -26,7 +26,6 @@
            TargetType="{x:Type TextBlock}">
         <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_FontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
@@ -39,7 +38,6 @@
            TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontFamily}" />
         <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
         <Setter Property="CaretBrush" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />

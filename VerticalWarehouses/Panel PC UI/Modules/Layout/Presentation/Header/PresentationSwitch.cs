@@ -19,9 +19,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Constructors
 
-        public PresentationSwitch(INavigationService navigationService,
-                                  ISessionService sessionService,
-                                  IThemeService themeService)
+        public PresentationSwitch(
+            INavigationService navigationService,
+              ISessionService sessionService,
+              IThemeService themeService)
         {
             this.navigationService = navigationService;
             this.sessionService = sessionService;
@@ -42,10 +43,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public override void Execute()
         {
             this.navigationService.SetBusy(true);
+
             var requestAccepted = this.sessionService.Shutdown();
             if (requestAccepted)
             {
-                this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>()
+                this.EventAggregator
+                    .GetEvent<PresentationChangedPubSubEvent>()
                     .Publish(new PresentationChangedMessage("Shutting down ..."));
             }
         }

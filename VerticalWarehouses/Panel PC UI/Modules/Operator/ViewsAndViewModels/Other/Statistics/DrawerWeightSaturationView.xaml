@@ -45,13 +45,13 @@
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="0,305,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Controls:CustomLabelTextBlockControl MaxWidth="300"
                                               Margin="350,90,0,0"
                                               HorizontalAlignment="Left"
@@ -76,7 +76,7 @@
                 VerticalAlignment="Bottom"
                 Command="{Binding DrawerSpaceSaturationButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionAnalisys}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
     </Grid>
 </UserControl>

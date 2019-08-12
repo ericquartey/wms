@@ -7,6 +7,7 @@ using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.Utils;
+using Prism.Events;
 using Prism.Modularity;
 using Prism.Regions;
 using Unity;
@@ -19,6 +20,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IUnityContainer container;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IRegionManager regionManager;
@@ -27,8 +30,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly Stack<NavigationTrack> tracks = new Stack<NavigationTrack>();
 
-        private bool isLastTrack;
-
         #endregion
 
         #region Constructors
@@ -36,10 +37,32 @@ namespace Ferretto.VW.App.Services
         public NavigationService(
             IUnityContainer unityContainer,
             IRegionManager regionManager,
+            IEventAggregator eventAggregator,
             IRegionNavigationService regionNavigationService)
         {
+            if (unityContainer == null)
+            {
+                throw new ArgumentNullException(nameof(unityContainer));
+            }
+
+            if (regionManager == null)
+            {
+                throw new ArgumentNullException(nameof(regionManager));
+            }
+
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (regionNavigationService == null)
+            {
+                throw new ArgumentNullException(nameof(regionNavigationService));
+            }
+
             this.container = unityContainer;
             this.regionManager = regionManager;
+            this.eventAggregator = eventAggregator;
             this.regionNavigationService = regionNavigationService;
         }
 
@@ -47,14 +70,15 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, bool keepTrack, object data = null)
+        public void Appear(string moduleName, string viewModelName, bool isTrackable, object data = null)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
+                this.logger.Warn($"Invalid view model name '{viewModelName}' for module name '{moduleName}'.");
                 return;
             }
 
-            this.logger.Trace(string.Format("Opening view '{0}' of module '{1}'.", viewModelName, moduleName));
+            this.logger.Trace($"Opening view '{viewModelName}' of module '{moduleName}'.");
 
             try
             {
@@ -65,17 +89,17 @@ namespace Ferretto.VW.App.Services
                 var parameters = new NavigationParameters();
                 parameters.Add(viewModelName, data);
 
-                this.regionManager.RequestNavigate(Ferretto.VW.Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
+                this.regionManager.RequestNavigate(Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
 
-                if (keepTrack)
-                {
-                    this.tracks.Push(new NavigationTrack(moduleName, viewName));
-                }
-                this.isLastTrack = keepTrack;
+                this.tracks.Push(new NavigationTrack(moduleName, viewName, viewModelName, isTrackable));
+
+                this.eventAggregator
+                    .GetEvent<NavigationCompleted>()
+                    .Publish(new NavigationCompletedPubSubEventArgs(moduleName, viewModelName));
             }
             catch (Exception ex)
             {
-                this.logger.Error(ex, string.Format("Cannot show view '{0}' for module '{1}'.", viewModelName, moduleName));
+                this.logger.Error(ex, $"Cannot show view '{viewModelName}' for module '{moduleName}'.");
             }
 
             return;
@@ -94,22 +118,32 @@ namespace Ferretto.VW.App.Services
             }
             catch (Exception ex)
             {
-                this.logger.Error(ex, string.Format("Cannot close view model '{0}'.", viewModel.GetType().Name));
+                this.logger.Error(ex, $"Cannot close view model '{viewModel.GetType().Name}'.");
             }
         }
 
         public void GoBack()
         {
-            if (this.tracks.Count > 0)
-            {                
-                if (this.isLastTrack)
-                {
-                    this.tracks.Pop();
-                    this.isLastTrack = false;
-                }             
-                var track = this.tracks.Last();                
-                this.regionManager.RequestNavigate(Ferretto.VW.Utils.Modules.Layout.REGION_MAINCONTENT, track.ViewName, new NavigationParameters());
+            if (!this.tracks.Any())
+            {
+                return;
             }
+
+            NavigationTrack navigationTrack = null;
+            do
+            {
+                navigationTrack = this.tracks.Pop();
+            }
+            while (!navigationTrack.CanBackTrack && this.tracks.Any());
+
+            this.regionManager.RequestNavigate(
+                Utils.Modules.Layout.REGION_MAINCONTENT,
+                navigationTrack.ViewName,
+                new NavigationParameters());
+
+            this.eventAggregator
+                .GetEvent<NavigationCompleted>()
+                .Publish(new NavigationCompletedPubSubEventArgs(navigationTrack.ModuleName, navigationTrack.ViewModelName));
         }
 
         public void LoadModule(string moduleName)
@@ -137,6 +171,23 @@ namespace Ferretto.VW.App.Services
                 view.DataContext is IBusyViewModel busyViewModel)
             {
                 busyViewModel.IsBusy = isBusy;
+            }
+        }
+
+        public object SubscribeToNavigationCompleted(Action<NavigationCompletedPubSubEventArgs> action)
+        {
+            return this.eventAggregator
+                .GetEvent<NavigationCompleted>()
+                .Subscribe(action);
+        }
+
+        public void UnsubscribeToNavigationCompleted(object subscriptionToken)
+        {
+            if (subscriptionToken is SubscriptionToken token)
+            {
+                this.eventAggregator
+                    .GetEvent<NavigationCompleted>()
+                    .Unsubscribe(token);
             }
         }
 

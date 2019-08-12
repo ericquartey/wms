@@ -1,35 +1,41 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Templates">
-    <ControlTemplate x:Key="VWAPP_ActionButton_ControlTemplate"
+                    xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters">
+
+    <ControlTemplate x:Key="PpcButtonControlTemplate"
                      TargetType="Button">
+        <ControlTemplate.Resources>
+            <conv:BoolToThicknessConverter x:Key="BTTC" ValueOnTrue="2" />
+        </ControlTemplate.Resources>
         <Border Name="Root_ActionButtonBorder"
-                Width="{DynamicResource VWAPP_ActionButton_Width_Normal}"
-                Height="{DynamicResource VWAPP_ActionButton_Height_Normal}"
+                Width="{DynamicResource PpcButtonWidth}"
+                Height="{DynamicResource PpcButtonHeight}"
                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                Background="{DynamicResource VWAPP_ActionButton_Background_Normal}"
-                BorderBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
-                BorderThickness="{DynamicResource VWAPP_ActionButton_BorderThickness_Normal}">
+                Background="{DynamicResource PpcButtonBackground}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
+                BorderThickness="{Binding IsActive, Converter={StaticResource BTTC}}">
+
             <TextBlock Name="ActionButtonTextBlock"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       FontFamily="{DynamicResource VWAPP_ActionButton_FontFamily_Normal}"
-                       FontSize="{DynamicResource VWAPP_ActionButton_FontSize_Normal}"
-                       Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                       FontFamily="{DynamicResource PpcFontFamily}"
+                       FontSize="{DynamicResource PpcButtonFontSize}"
+                       Foreground="{DynamicResource PpcButtonForeground}"
                        Text="{TemplateBinding Content}"
                        TextAlignment="Center"
                        TextWrapping="Wrap" />
         </Border>
+
         <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="true">
-                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Pressed}" />
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Pressed}" />
-                <Setter TargetName="ActionButtonTextBlock" Property="Foreground" Value="{DynamicResource VWAPP_ActionButton_Foreground_Pressed}" />
+                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+                <Setter TargetName="ActionButtonTextBlock" Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Disabled}" />
-                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Disabled}" />
-                <Setter TargetName="ActionButtonTextBlock" Property="Foreground" Value="{DynamicResource VWAPP_ActionButton_Foreground_Disabled}" />
+                <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                <Setter TargetName="ActionButtonTextBlock" Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

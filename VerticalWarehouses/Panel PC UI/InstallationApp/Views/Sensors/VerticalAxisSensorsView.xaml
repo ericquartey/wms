@@ -9,7 +9,9 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            d:DataContext="{d:DesignInstance viewModels:IBaseSensorsViewModel}"
             mc:Ignorable="d">
     <Grid Margin="0,30,0,0">
         <Grid.ColumnDefinitions>
@@ -66,7 +68,7 @@
                                          Style="{StaticResource PpcSensorControlStyle}" />
 
                 <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
-                                         SensorPort="{x:Static iom:IOMachineSensors.LuPresentiInMachineSideBay1}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.LuPresentInMachineSideBay1}"
                                          Sensors="{Binding SensorsStates}"
                                          Style="{StaticResource PpcSensorControlStyle}" />
 

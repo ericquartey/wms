@@ -52,7 +52,7 @@
                 Command="{Binding StartButtonCommand}"
                 Content="{x:Static res:InstallationApp.Start}"
                 IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="230,490,0,0"
                 HorizontalAlignment="Left"
@@ -60,6 +60,6 @@
                 Command="{Binding StopButtonCommand}"
                 Content="{x:Static res:InstallationApp.Stop}"
                 IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
     </Grid>
 </UserControl>

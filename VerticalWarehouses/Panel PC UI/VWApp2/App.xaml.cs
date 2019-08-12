@@ -80,9 +80,9 @@ namespace Ferretto.VW.App
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
             this.HACK_ForceItalianLanguage();
+
+            base.OnStartup(e);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
