@@ -280,25 +280,25 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Constructors
 
-        public InverterModel()
+        public InverterModel(InverterType inverterType)
         {
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
-
             this.homingTimerActive = false;
-            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
 
+            this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
             this.targetTimerActive = false;
 
             this.OperationMode = InverterOperationMode.Velocity;
+            this.InverterType = inverterType;
 
-            this.digitalIO.Add(new BitModel("Bit 00", false, "Potenza ON"));
-            this.digitalIO.Add(new BitModel("Bit 01", false, "Funzionamento normale"));
-            this.digitalIO.Add(new BitModel("Bit 02", false));
-            this.digitalIO.Add(new BitModel("Bit 03", false));
-            this.digitalIO.Add(new BitModel("Bit 04", false));
-            this.digitalIO.Add(new BitModel("Bit 05", false));
-            this.digitalIO.Add(new BitModel("Bit 06", false));
-            this.digitalIO.Add(new BitModel("Bit 07", false));
+            this.digitalIO.Add(new BitModel("Bit 00", false, GetInverterSignalDescription(inverterType, 0)));
+            this.digitalIO.Add(new BitModel("Bit 01", false, GetInverterSignalDescription(inverterType, 1)));
+            this.digitalIO.Add(new BitModel("Bit 02", false, GetInverterSignalDescription(inverterType, 2)));
+            this.digitalIO.Add(new BitModel("Bit 03", false, GetInverterSignalDescription(inverterType, 3)));
+            this.digitalIO.Add(new BitModel("Bit 04", false, GetInverterSignalDescription(inverterType, 4)));
+            this.digitalIO.Add(new BitModel("Bit 05", false, GetInverterSignalDescription(inverterType, 5)));
+            this.digitalIO.Add(new BitModel("Bit 06", false, GetInverterSignalDescription(inverterType, 6)));
+            this.digitalIO.Add(new BitModel("Bit 07", false, GetInverterSignalDescription(inverterType, 7)));
         }
 
         #endregion
@@ -655,6 +655,39 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                 this.targetTimerActive = false;
                 this.positionReached = true;
+            }
+        }
+
+        internal static string GetInverterSignalDescription(InverterType inverterType, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Potenza ON";
+
+                case 1:
+                    return "Funzionamento normale";
+
+                case 2:
+                    return inverterType == InverterType.Ang ? "Posizione di zero elevatore" : inverterType == InverterType.Agl ? "Sensore serranda (A)" : "Posizione di zero";
+
+                case 3:
+                    return inverterType == InverterType.Ang ? "Encoder canale B --- culla" : inverterType == InverterType.Agl ? "Sensore serranda (B)" : "Encoder canale B";
+
+                case 4:
+                    return inverterType == InverterType.Ang ? "Encoder canale A --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale A";
+
+                case 5:
+                    return inverterType == InverterType.Ang ? "Encoder canale Z --- culla" : inverterType == InverterType.Agl ? "Libero" : "Encoder canale Z";
+
+                case 6:
+                    return inverterType == InverterType.Ang ? "Extracorsa elevatore" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+
+                case 7:
+                    return inverterType == InverterType.Ang ? "Sensore zero culla" : inverterType == InverterType.Agl ? "Libero" : "Libero";
+
+                default:
+                    return string.Empty;
             }
         }
 
