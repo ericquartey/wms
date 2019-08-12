@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
                 StackFrame sf = st.GetFrame(1);
                 string trace = $"{sf.GetMethod().ReflectedType.Name}.{sf.GetMethod().Name}()";
 
-                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data?.ToString()}][{trace}]");
+                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data}][{trace}]");
             }
         }
 

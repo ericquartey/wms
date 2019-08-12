@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class PositioningFieldMessageData : IPositioningFieldMessageData
+    public class PositioningFieldMessageData : FieldMessageData, IPositioningFieldMessageData
     {
         #region Constructors
 
@@ -17,6 +17,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             decimal deceleration,
             int numberCycles,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -24,11 +25,13 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = speed;
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
-            this.Verbosity = verbosity;
             this.NumberCycles = numberCycles;
         }
 
-        public PositioningFieldMessageData(IPositioningMessageData messageData)
+        public PositioningFieldMessageData(
+            IPositioningMessageData messageData,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             if (messageData == null)
             {
@@ -41,7 +44,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetSpeed = messageData.TargetSpeed;
             this.TargetAcceleration = messageData.TargetAcceleration;
             this.TargetDeceleration = messageData.TargetDeceleration;
-            this.Verbosity = messageData.Verbosity;
         }
 
         #endregion
@@ -61,8 +63,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public decimal TargetPosition { get; set; }
 
         public decimal TargetSpeed { get; set; }
-
-        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
 

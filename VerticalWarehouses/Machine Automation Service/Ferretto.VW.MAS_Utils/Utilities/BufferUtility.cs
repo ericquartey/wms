@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
         {
             if (a == null)
             {
-                Array.Resize<byte>(ref a, 0);
+                Array.Resize(ref a, 0);
             }
 
             if (b == null)

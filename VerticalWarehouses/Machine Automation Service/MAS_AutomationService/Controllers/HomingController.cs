@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                     if (verticalAxisParameterId != null)
                     {
-                        decimal value1 = 0;
+                        decimal value1;
 
                         try
                         {

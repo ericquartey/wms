@@ -3,11 +3,12 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class CurrentPositionFieldMessageData : IFieldMessageData
+    public class CurrentPositionFieldMessageData : FieldMessageData, IFieldMessageData
     {
         #region Constructors
 
-        public CurrentPositionFieldMessageData(decimal currentPosition)
+        public CurrentPositionFieldMessageData(decimal currentPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.CurrentPosition = currentPosition;
         }
@@ -17,8 +18,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public decimal CurrentPosition { get; set; }
-
-        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
 

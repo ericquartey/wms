@@ -4,11 +4,16 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterExceptionFieldMessageData : IInverterExceptionFieldMessageData
+    public class InverterExceptionFieldMessageData : FieldMessageData, IInverterExceptionFieldMessageData
     {
         #region Constructors
 
-        public InverterExceptionFieldMessageData(Exception innerException, string exceptionDescription, int exceptionCode, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterExceptionFieldMessageData(
+            Exception innerException,
+            string exceptionDescription,
+            int exceptionCode,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.InnerException = innerException;
             this.ExceptionDescription = exceptionDescription;
@@ -24,8 +29,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public string ExceptionDescription { get; }
 
         public Exception InnerException { get; }
-
-        public MessageVerbosity Verbosity { get; private set; }
 
         #endregion
 

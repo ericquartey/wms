@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         #endregion
 
         #region Constructors
@@ -36,13 +34,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public VerticalOffsetController(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
-            ICellManagmentDataLayer dataLayerCellsManagement,
-            ILogger<VerticalOffsetController> logger)
+            ICellManagmentDataLayer dataLayerCellsManagement)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.dataLayerCellsManagement = dataLayerCellsManagement;
-            this.logger = logger;
         }
 
         #endregion
@@ -275,9 +271,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-
-                default:
-                    break;
             }
 
             return 0;

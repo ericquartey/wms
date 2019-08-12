@@ -92,8 +92,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 "Stop Homing",
                 MessageActor.FiniteStateMachines,
                 MessageActor.AutomationService,
-                MessageType.Stop,
-                MessageVerbosity.Info));
+                MessageType.Stop));
         }
 
         private ActionResult<decimal> GetDecimalConfigurationParameterMethod(string parameter)
@@ -142,20 +141,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var category = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), categoryString);
 
             long longParameter;
-            long longCategory;
 
             switch (category)
             {
                 case ConfigurationCategory.GeneralInfo:
                     {
-                        longCategory = (long)category;
                         longParameter = (long)Enum.Parse(typeof(GeneralInfo), parameter);
                         break;
                     }
                 default:
                     {
                         longParameter = 0;
-                        longCategory = 0;
                         break;
                     }
             }
@@ -223,8 +219,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 "Stop Homing",
                 MessageActor.FiniteStateMachines,
                 MessageActor.AutomationService,
-                MessageType.Stop,
-                MessageVerbosity.Info));
+                MessageType.Stop));
         }
 
         private async Task UpdateCurrentPositionTestMethod()

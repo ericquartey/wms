@@ -42,7 +42,7 @@
 
         IoDriverException,
 
-        SetConfigurationIO,
+        SetConfigurationIo,
 
         ResetSecurity,
 
