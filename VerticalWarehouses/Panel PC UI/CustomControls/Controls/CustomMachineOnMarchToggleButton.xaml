@@ -4,8 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignWidth="100"
              d:DesignHeight="60"
+             d:DesignWidth="100"
              mc:Ignorable="d">
 
     <Button Name="LayoutRoot"
