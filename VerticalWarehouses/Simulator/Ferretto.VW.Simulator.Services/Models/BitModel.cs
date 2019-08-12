@@ -12,9 +12,11 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         #region Fields
 
-        private string description;
+        private string name;
 
         private bool value;
+
+        private string description;
 
         #endregion
 
@@ -29,8 +31,9 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.Value = value;
         }
 
-        public BitModel(string description, bool value) : this(value)
+        public BitModel(string name, bool value, string description = "") : this(value)
         {
+            this.Name = name;
             this.Description = description;
         }
 
@@ -38,11 +41,18 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
+        public string Name
+        {
+            get => this.name;
+            set => this.SetProperty(ref this.name, value, () => this.RaisePropertyChanged(nameof(this.Name)));
+        }
+
         public string Description
         {
             get => this.description;
             set => this.SetProperty(ref this.description, value, () => this.RaisePropertyChanged(nameof(this.Description)));
         }
+
 
         public bool Value
         {
