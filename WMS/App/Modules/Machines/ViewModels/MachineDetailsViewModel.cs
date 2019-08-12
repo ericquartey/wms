@@ -58,7 +58,8 @@ namespace Ferretto.WMS.App.Modules.Machines
 
         public MachineLive MachineLive
         {
-            get => this.machineLive; set => this.SetProperty(ref this.machineLive, value);
+            get => this.machineLive;
+            set => this.SetProperty(ref this.machineLive, value);
         }
 
         public BayDetails SelectedBay
@@ -85,15 +86,11 @@ namespace Ferretto.WMS.App.Modules.Machines
 
         #region Methods
 
-        protected override async Task ExecuteRefreshCommandAsync()
-        {
-            await this.LoadDataAsync().ConfigureAwait(true);
-        }
+        protected override async Task ExecuteRefreshCommandAsync() => await this.LoadDataAsync().ConfigureAwait(true);
 
-        protected override Task ExecuteRevertCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
+
+        protected override Task<bool> ExecuteSaveCommandAsync() => throw new NotSupportedException();
 
         protected override async Task LoadDataAsync()
         {
@@ -160,7 +157,7 @@ namespace Ferretto.WMS.App.Modules.Machines
             if (e != null
                 && this.machineLive is MachineLive machine)
             {
-                machine.Status = (MachineStatus)e.MachineStatus.Mode;
+                machine.Status = e.MachineStatus.Mode;
                 machine.FaultCode = e.MachineStatus.FaultCode;
                 machine.CurrentLoadingUnitPosition = e.MachineStatus.ElevatorStatus.Position;
                 machine.CurrentLoadingUnitId = e.MachineStatus.ElevatorStatus.LoadingUnitId;

@@ -768,28 +768,28 @@
     <value>Height control bay 3</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorABay1" xml:space="preserve">
-    <value>Gate sensor A bay 1</value>
+  <data name="ShutterSensorABay1" xml:space="preserve">
+    <value>Sensor shutter A bay 1</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorBBay1" xml:space="preserve">
-    <value>Gate sensor B bay 1</value>
+  <data name="ShutterSensorBBay1" xml:space="preserve">
+    <value>Sensor shutter B bay 1</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorABay2" xml:space="preserve">
-    <value>Gate sensor A bay 2</value>
+  <data name="ShutterSensorABay2" xml:space="preserve">
+    <value>Sensor shutter A bay 2</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorBBay2" xml:space="preserve">
-    <value>Gate sensor B bay 2</value>
+  <data name="ShutterSensorBBay2" xml:space="preserve">
+    <value>Sensor shutter B bay 2</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorABay3" xml:space="preserve">
-    <value>Gate sensor A bay 3</value>
+  <data name="ShutterSensorABay3" xml:space="preserve">
+    <value>Sensor shutter A bay 3</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="GateSensorBBay3" xml:space="preserve">
-    <value>Gate sensor B bay 3</value>
+  <data name="ShutterSensorBBay3" xml:space="preserve">
+    <value>Sensor shutter B bay 3</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton2" xml:space="preserve">
@@ -1109,7 +1109,7 @@
     <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingExecuting" xml:space="preserve">
-    <value>Horizontal Homing Executing</value>
+    <value>Horizontal Homing Executing ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingStarted" xml:space="preserve">
@@ -1129,7 +1129,7 @@
     <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingExecuting" xml:space="preserve">
-    <value>Vertical Homing Executing</value>
+    <value>Vertical Homing Executing ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingStarted" xml:space="preserve">
@@ -1137,11 +1137,11 @@
     <comment>Output Text</comment>
   </data>
   <data name="VerticalHomingError" xml:space="preserve">
-    <value>Vertical Homing Error</value>
+    <value>Vertical Homing Error ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="HorizontalHomingError" xml:space="preserve">
-    <value>Horizontal Homing Error</value>
+    <value>Horizontal Homing Error ({0} of {1})</value>
     <comment>Output Text</comment>
   </data>
   <data name="SwitchEngineError" xml:space="preserve">
@@ -1162,5 +1162,30 @@
   <data name="UpdateResolution" xml:space="preserve">
     <value>Update Resolution</value>
     <comment>Update Resolution</comment>
+  </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Store/recall drawer</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="LUPresentMiddleBottomBay1" xml:space="preserve">
+    <value>Second LU Present in Bay 1</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay2" xml:space="preserve">
+    <value>Second LU Present in Bay 2</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay3" xml:space="preserve">
+    <value>Second LU Present in Bay 3</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Start recall from cell to bay</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Start store from bay to cell</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Drawer store and drawer recall</value>
+    <comment>Title</comment>
   </data>
 </root>

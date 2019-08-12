@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
+        Task CurrentPositionNotify(IBaseNotificationMessageUI message);
+
         Task ExceptionNotify(IBaseNotificationMessageUI message);
 
         Task HomingNotify(IBaseNotificationMessageUI message);
@@ -24,6 +26,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
         Task ShutterPositioningNotify(IBaseNotificationMessageUI message);
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
+
+        Task InverterStatusWordNotify(IBaseNotificationMessageUI message);
 
         #endregion
 

@@ -7,6 +7,7 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -116,8 +117,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         Code = l.Code,
                         Description = l.Description,
                         Priority = l.Priority,
-                        Status = (ItemListStatus)l.Status,
-                        ItemListType = (ItemListType)l.ItemListType,
+                        Status = (Enums.ItemListStatus)l.Status,
+                        ItemListType = (Enums.ItemListType)l.ItemListType,
                         ItemListRowsCount = l.ItemListRowsCount,
                         CreationDate = l.CreationDate,
                         Policies = l.GetPolicies(),
@@ -148,7 +149,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 var itemList = await this.itemListsDataService.GetByIdAsync(id);
 
-                var itemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
+                var itemListStatusChoices = ((Enums.ItemListStatus[])Enum.GetValues(typeof(Enums.ItemListStatus)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
                 var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
@@ -164,8 +165,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     Code = itemList.Code,
                     Description = itemList.Description,
                     Priority = itemList.Priority,
-                    Status = (ItemListStatus)itemList.Status,
-                    ItemListType = (ItemListType)itemList.ItemListType,
+                    Status = (Enums.ItemListStatus)itemList.Status,
+                    ItemListType = (Enums.ItemListType)itemList.ItemListType,
                     CreationDate = itemList.CreationDate,
                     ItemListStatusChoices = itemListStatusChoices,
                     ItemListRows = itemListRows,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -39,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int ItemListRowsCount { get; set; }
 
-        public ItemListType ItemListType { get; set; }
+        public Enums.ItemListType ItemListType { get; set; }
 
         public IEnumerable<Machine> Machines { get; set; }
 
@@ -58,7 +59,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string ShipmentUnitDescription { get; set; }
 
-        public ItemListStatus Status => GetStatus(
+        public Enums.ItemListStatus Status => GetStatus(
             this.ItemListRowsCount,
             this.CompletedRowsCount,
             this.NewRowsCount,
@@ -81,7 +82,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Methods
 
-        internal static ItemListStatus GetStatus(
+        internal static Enums.ItemListStatus GetStatus(
             int rowCount,
             int completedRowsCount,
             int newRowsCount,
@@ -94,46 +95,46 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             if (rowCount == 0 || rowCount == newRowsCount)
             {
-                return ItemListStatus.New;
+                return Enums.ItemListStatus.New;
             }
 
             if (rowCount == completedRowsCount)
             {
-                return ItemListStatus.Completed;
+                return Enums.ItemListStatus.Completed;
             }
 
             if (waitingRowsCount == rowCount)
             {
-                return ItemListStatus.Waiting;
+                return Enums.ItemListStatus.Waiting;
             }
 
             if (readyRowsCount == rowCount)
             {
-                return ItemListStatus.Ready;
+                return Enums.ItemListStatus.Ready;
             }
 
             if (errorRowsCount > 0)
             {
-                return ItemListStatus.Error;
+                return Enums.ItemListStatus.Error;
             }
 
             if (waitingRowsCount > 0 || readyRowsCount > 0 || executingRowsCount > 0)
             {
-                return ItemListStatus.Executing;
+                return Enums.ItemListStatus.Executing;
             }
 
             if (incompleteRowsCount > 0)
             {
-                return ItemListStatus.Incomplete;
+                return Enums.ItemListStatus.Incomplete;
             }
 
             if (suspendedRowsCount > 0)
             {
-                return ItemListStatus.Suspended;
+                return Enums.ItemListStatus.Suspended;
             }
 
             // we can arrive here only with mixed New + Complete rows status
-            return ItemListStatus.New;
+            return Enums.ItemListStatus.New;
         }
 
         #endregion

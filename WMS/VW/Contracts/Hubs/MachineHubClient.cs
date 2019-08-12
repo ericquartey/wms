@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MachineAutomationService.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.MachineAutomationService.Contracts
 {
@@ -123,7 +124,7 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
                 nameof(IMachineHub.LoadingUnitInElevatorChanged),
                 this.OnLoadingUnitInElevatorChanged);
 
-            this.connection.On<MachineMode, int?>(
+            this.connection.On<Enums.MachineStatus, int?>(
                 nameof(IMachineHub.ModeChanged),
                 this.OnModeChanged);
 
@@ -159,7 +160,7 @@ namespace Ferretto.VW.MachineAutomationService.Contracts
             this.MachineStatusReceived?.Invoke(this, new MachineStatusReceivedEventArgs(machineStatus));
         }
 
-        private void OnModeChanged(MachineMode mode, int? faultCode)
+        private void OnModeChanged(Enums.MachineStatus mode, int? faultCode)
         {
             this.ModeChanged?.Invoke(this, new ModeChangedEventArgs(this.MachineId, mode, faultCode));
         }

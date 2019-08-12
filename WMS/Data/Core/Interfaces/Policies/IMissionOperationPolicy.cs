@@ -1,4 +1,4 @@
-using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Properties
 
-        MissionOperationStatus Status { get; }
+        Enums.MissionOperationStatus Status { get; }
 
         #endregion
     }

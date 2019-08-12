@@ -28,13 +28,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue,
             IoSHDStatus status,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(eventAggregator, logger)
+            ILogger logger )
+            : base( eventAggregator, logger )
         {
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
 
-            logger.LogTrace("1:Method Start");
+            logger.LogTrace( "1:Method Start" );
         }
 
         #endregion
@@ -43,49 +43,49 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         ~ResetStateMachine()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        public override void ProcessMessage(IoSHDMessage message)
+        public override void ProcessMessage( IoSHDMessage message )
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}" );
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer( this.DelayElapsed, null, PULSE_INTERVAL, -1 );    //VALUE -1 period means timer does not fire multiple times
             }
 
-            base.ProcessMessage(message);
+            base.ProcessMessage( message );
         }
 
-        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        public override void ProcessResponseMessage( IoSHDReadMessage message )
         {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+            this.Logger.LogTrace( $"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}" );
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs && message.ResetSecurity;
 
-            if (this.CurrentState is ResetOutputsState && checkMessage && !this.pulseOneTime)
+            if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer( this.DelayElapsed, null, PULSE_INTERVAL, -1 );    //VALUE -1 period means timer does not fire multiple times
                 this.pulseOneTime = true;
             }
 
-            base.ProcessResponseMessage(message);
+            base.ProcessResponseMessage( message );
         }
 
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetOutputsState(this, this.status, this.Logger);
+            this.CurrentState = new ResetSecurityStartState(this, this.status, this.Logger);
             this.CurrentState?.Start();
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -100,17 +100,17 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
-        private void DelayElapsed(object state)
+        private void DelayElapsed( object state )
         {
             var pulseIoMessage = new IoSHDWriteMessage();
 
-            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
-            this.status.UpdateOutputStates(pulseIoMessage.Outputs);
+            this.Logger.LogTrace( $"1:Pulse IO={pulseIoMessage}" );
+            this.status.UpdateOutputStates( pulseIoMessage.Outputs );
 
-            this.EnqueueMessage(pulseIoMessage);
+            this.EnqueueMessage( pulseIoMessage );
         }
 
         #endregion

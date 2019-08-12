@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -26,7 +27,7 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
 
-        public ItemListType ItemListType { get; set; }
+        public Enums.ItemListType ItemListType { get; set; }
 
         public string Job { get; set; }
 

@@ -75,11 +75,15 @@ namespace Ferretto.VW.MAS.Utils
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            this.EventAggregator.GetEvent<CommandEvent>().Unsubscribe(
-                this.commandEventSubscriptionToken);
+            this.EventAggregator
+                .GetEvent<CommandEvent>()
+                .Unsubscribe(this.commandEventSubscriptionToken);
+            this.commandEventSubscriptionToken = null;
 
-            this.EventAggregator.GetEvent<NotificationEvent>().Unsubscribe(
-                this.commandEventSubscriptionToken);
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Unsubscribe(this.notificationEventSubscriptionToken);
+            this.notificationEventSubscriptionToken = null;
 
             await base.StopAsync(cancellationToken);
         }
@@ -145,7 +149,7 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (OperationCanceledException)
                 {
-                    this.Logger.LogDebug("Operation Canceled.");
+                    this.Logger.LogDebug("Operation canceled.");
 
                     return;
                 }
@@ -159,20 +163,24 @@ namespace Ferretto.VW.MAS.Utils
 
         private void InitializeSubscriptions()
         {
-            var commandEvent = this.EventAggregator.GetEvent<CommandEvent>();
-            this.commandEventSubscriptionToken = commandEvent.Subscribe(
-                command => this.commandQueue.Enqueue(command),
-                ThreadOption.PublisherThread,
-                false,
-                command => this.FilterCommand(command));
+            this.commandEventSubscriptionToken = this.EventAggregator
+                .GetEvent<CommandEvent>()
+                .Subscribe(
+                    command => this.commandQueue.Enqueue(command),
+                    ThreadOption.PublisherThread,
+                    false,
+                    command => this.FilterCommand(command));
+
             this.Logger.LogTrace("Subscribed to command events.");
 
-            var notificationEvent = this.EventAggregator.GetEvent<NotificationEvent>();
-            this.notificationEventSubscriptionToken = notificationEvent.Subscribe(
-                notification => this.notificationQueue.Enqueue(notification),
-                ThreadOption.PublisherThread,
-                false,
-                notification => this.FilterNotification(notification));
+            this.notificationEventSubscriptionToken = this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Subscribe(
+                    notification => this.notificationQueue.Enqueue(notification),
+                    ThreadOption.PublisherThread,
+                    false,
+                    notification => this.FilterNotification(notification));
+
             this.Logger.LogTrace("Subscribed to notification events.");
         }
 

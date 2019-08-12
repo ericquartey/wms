@@ -1,9 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
+using Ferretto.VW.MAS.FiniteStateMachines.Homing.Models;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -19,13 +21,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
         private readonly ILogger logger;
 
-        private Axis currentAxis;
-
         private bool disposed;
 
-        private int nMaxSteps;
-
-        private int numberOfExecutedSteps;
+        private HomingOperation homingOperation;
 
         #endregion
 
@@ -60,17 +58,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         #region Methods
 
         /// <inheritdoc/>
-        public override void ChangeState(IState newState, CommandMessage message = null)
-        {
-            if (this.numberOfExecutedSteps == this.nMaxSteps)
-            {
-                newState = new HomingEndState(this, this.currentAxis, this.logger);
-            }
-
-            base.ChangeState(newState, message);
-        }
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
@@ -87,10 +74,47 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
 
             if (message.Type == FieldMessageType.CalibrateAxis)
             {
+                if (message.Status == MessageStatus.OperationExecuting)
+                {
+                    var notificationMessageData = new CalibrateAxisMessageData(this.homingOperation.AxisToCalibrate, this.homingOperation.NumberOfExecutedSteps + 1, this.homingOperation.MaximumSteps, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        notificationMessageData,
+                        $"{this.homingOperation.AxisToCalibrate} axis calibration executing",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.CalibrateAxis,
+                        MessageStatus.OperationExecuting);
+
+                    this.Logger.LogTrace($"2:Process Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                    this.PublishNotificationMessage(notificationMessage);
+                }
+
                 if (message.Status == MessageStatus.OperationEnd)
                 {
-                    this.numberOfExecutedSteps++;
-                    this.currentAxis = (this.currentAxis == Axis.Vertical) ? Axis.Horizontal : Axis.Vertical;
+                    this.homingOperation.NumberOfExecutedSteps++;
+                    this.homingOperation.AxisToCalibrate =
+                        (this.homingOperation.AxisToCalibrate == Axis.Vertical) ?
+                            Axis.Horizontal :
+                            Axis.Vertical;
+                }
+            }
+
+            if (message.Type == FieldMessageType.InverterStatusUpdate &&
+                message.Status == MessageStatus.OperationExecuting)
+            {
+                if (message.Data is InverterStatusUpdateFieldMessageData data)
+                {
+                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition);
+                    var notificationMessage = new NotificationMessage(
+                        notificationMessageData,
+                        $"Current Encoder position: {data.CurrentPosition}",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.CurrentPosition,
+                        MessageStatus.OperationExecuting);
+
+                    this.PublishNotificationMessage(notificationMessage);
                 }
             }
 
@@ -126,21 +150,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
-                    this.nMaxSteps = 3;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Horizontal;
+                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 3);
                     break;
 
                 case Axis.Horizontal:
-                    this.nMaxSteps = 1;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Horizontal;
+                    this.homingOperation = new HomingOperation(Axis.Horizontal, 0, 1);
                     break;
 
                 case Axis.Vertical:
-                    this.nMaxSteps = 1;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Vertical;
+                    this.homingOperation = new HomingOperation(Axis.Vertical, 0, 1);
                     break;
             }
 
@@ -148,7 +166,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
             {
                 this.CurrentState = new HomingStartState(
                     this,
-                    this.currentAxis,
+                    this.homingOperation,
                     this.logger);
 
                 this.CurrentState.Start();

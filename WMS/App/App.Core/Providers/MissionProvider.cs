@@ -5,6 +5,7 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -49,7 +50,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     .Select(m => new Mission
                     {
                         Id = m.Id,
-                        Status = (MissionStatus)m.Status,
+                        Status = (Enums.MissionStatus)m.Status,
                         CreationDate = m.CreationDate,
                         LastModificationDate = m.LastModificationDate,
                         AreaName = m.AreaName,
@@ -64,14 +65,14 @@ namespace Ferretto.WMS.App.Core.Providers
                             Sub2 = o.Sub2,
                             MissionId = o.MissionId,
                             RegistrationNumber = o.RegistrationNumber,
-                            Type = (MissionOperationType)o.Type,
+                            Type = (Enums.MissionOperationType)o.Type,
                             ItemDescription = o.ItemDescription,
                             ItemListDescription = o.ItemListDescription,
                             ItemListRowDescription = o.ItemListRowCode,
                             RequestedQuantity = o.RequestedQuantity,
                             CreationDate = o.CreationDate,
                             LastModificationDate = o.LastModificationDate,
-                            Status = (MissionOperationStatus)o.Status,
+                            Status = (Enums.MissionOperationStatus)o.Status,
                             CompartmentType = string.Format(General.CompartmentTypeListFormatReduced, o.CompartmentWidth, o.CompartmentDepth),
                             ItemMeasureUnitDescription = o.ItemMeasureUnitDescription,
                             MaterialStatusDescription = o.MaterialStatusDescription,
@@ -107,7 +108,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 return new Mission
                 {
                     Id = mission.Id,
-                    Status = (MissionStatus)mission.Status,
+                    Status = (Enums.MissionStatus)mission.Status,
                     CreationDate = mission.CreationDate,
                     LastModificationDate = mission.LastModificationDate,
                     AreaName = mission.AreaName,
@@ -121,7 +122,7 @@ namespace Ferretto.WMS.App.Core.Providers
                             Sub1 = o.Sub1,
                             Sub2 = o.Sub2,
                             RegistrationNumber = o.RegistrationNumber,
-                            Type = (MissionOperationType)o.Type,
+                            Type = (Enums.MissionOperationType)o.Type,
                             CreationDate = o.CreationDate,
                             LastModificationDate = o.LastModificationDate,
                             ItemDescription = o.ItemDescription,

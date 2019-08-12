@@ -13,6 +13,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -77,8 +78,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             var createdModel = await this.GetByIdAsync(entry.Entity.Id);
 
             this.NotificationService.PushCreate(createdModel);
-            this.NotificationService.PushUpdate(new ItemList { Id = createdModel.ItemListId });
-            this.NotificationService.PushUpdate(new Item { Id = createdModel.ItemId });
+            this.NotificationService.PushUpdate(new ItemList { Id = createdModel.ItemListId }, createdModel);
+            this.NotificationService.PushUpdate(new Item { Id = createdModel.ItemId }, createdModel);
 
             return new SuccessOperationResult<ItemListRowDetails>(createdModel);
         }
@@ -105,8 +106,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushDelete(existingModel);
-                this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId });
-                this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId });
+                this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId }, existingModel);
+                this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId }, existingModel);
 
                 return new SuccessOperationResult<ItemListRowDetails>(existingModel);
             }
@@ -190,8 +191,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId }, model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
             return result;
         }
@@ -222,7 +223,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemListRowUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as IItemListRowDeletePolicy).ComputeDeletePolicy());
@@ -242,14 +243,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
-                    Status = (ItemListRowStatus)l.Status,
+                    Status = l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.MissionOperations.Count(
-                        m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
-                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete),
+                        m => m.Status != Enums.MissionOperationStatus.Completed &&
+                            m.Status != Enums.MissionOperationStatus.Incomplete),
                     Machines = this.DataContext.Compartments.Where(c => c.ItemId == l.ItemId)
                         .Join(
                             this.DataContext.Machines,
@@ -283,13 +284,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ItemImage = l.Item.Image,
                     RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    Status = (ItemListRowStatus)l.Status,
+                    Status = l.Status,
                     ItemDescription = l.Item.Description,
                     CreationDate = l.CreationDate,
                     ItemListCode = l.ItemList.Code,
                     ItemListDescription = l.ItemList.Description,
                     ItemListId = l.ItemListId,
-                    ItemListType = (ItemListType)l.ItemList.ItemListType,
+                    ItemListType = l.ItemList.ItemListType,
                     CompletionDate = l.CompletionDate,
                     LastExecutionDate = l.LastExecutionDate,
                     LastModificationDate = l.LastModificationDate,
@@ -303,8 +304,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.MissionOperations.Count(
-                        m => m.Status != Common.DataModels.MissionOperationStatus.Completed &&
-                            m.Status != Common.DataModels.MissionOperationStatus.Incomplete),
+                        m => m.Status != Enums.MissionOperationStatus.Completed &&
+                            m.Status != Enums.MissionOperationStatus.Incomplete),
                 });
         }
 

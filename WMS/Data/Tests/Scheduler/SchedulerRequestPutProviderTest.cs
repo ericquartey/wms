@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -33,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 FifoTimePut = 3,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO,
+                ManagementType = Enums.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -152,7 +153,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 FifoTimePut = fifoTime,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO,
+                ManagementType = Enums.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -252,7 +253,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             {
                 Id = GetNewId(),
                 FifoTimePut = 2,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO,
+                ManagementType = Enums.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -327,7 +328,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var otherItem = new Common.DataModels.Item
             {
                 Id = GetNewId(),
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -496,7 +497,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var otherItem = new Common.DataModels.Item
             {
                 Id = GetNewId(),
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
             var compartmentType1 = new Common.DataModels.CompartmentType
             {

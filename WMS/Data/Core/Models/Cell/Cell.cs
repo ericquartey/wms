@@ -1,5 +1,6 @@
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -36,7 +37,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public int Priority { get; set; }
 
-        public Side Side { get; set; }
+        public Enums.Side Side { get; set; }
 
         public string Status { get; set; }
 

@@ -21,7 +21,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.PowerOnOff}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.ExtraRunElevator}"
                                     Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
@@ -29,7 +29,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
-                                    SensorPort="{x:Static iom:IOMachineSensors.ZeroVertical}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.ZeroVerticalSensor}"
                                     Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
@@ -37,14 +37,16 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}"
-                                    SensorState="{Binding ElevatorEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.ElevatorEngineSelectedBay1}"
+                                    Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
         <custom:CustomSensorControl Margin="230,220,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.CradleEngineSelected}"
-                                    SensorState="{Binding CradleEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.CradleEngineSelectedBay1}"
+                                    Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
         <TextBlock Margin="230,300,0,0"
@@ -57,21 +59,25 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
-                                    SensorState="{Binding ZeroPawlSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.ZeroPawlSensor}"
+                                    Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
         <custom:CustomSensorControl Margin="230,410,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
-                                    SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.LuPresentInMachineSideBay1}"
+                                    Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
 
         <custom:CustomSensorControl Margin="230,450,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
-                                    SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SensorPort="{x:Static iom:IOMachineSensors.LuPresentInOperatorSideBay1}"
+                                    Sensors="{Binding SensorStatus}"
                                     Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+        <!--  LuPresentInOperatorSideBay1  -->
     </Grid>
 </UserControl>

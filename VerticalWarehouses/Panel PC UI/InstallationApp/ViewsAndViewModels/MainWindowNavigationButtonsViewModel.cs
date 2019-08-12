@@ -43,6 +43,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private bool isLowSpeedMovementsTestButtonActive = true;
 
+        private bool isManualDrawerStoreRecallButtonActive;
+
         private bool isOriginVerticalAxisButtonActive = true;
 
         private bool isSaveRestoreConfigButtonActive = true;
@@ -127,6 +129,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         public bool IsLowSpeedMovementsTestButtonActive { get => this.isLowSpeedMovementsTestButtonActive; set => this.SetProperty(ref this.isLowSpeedMovementsTestButtonActive, value); }
 
+        public bool IsManualDrawerStoreRecallButtonActive { get => this.isManualDrawerStoreRecallButtonActive; set => this.SetProperty(ref this.isManualDrawerStoreRecallButtonActive, value); }
+
         public bool IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
 
         public bool IsSaveRestoreConfigButtonActive { get => this.isSaveRestoreConfigButtonActive; set => this.SetProperty(ref this.isSaveRestoreConfigButtonActive, value); }
@@ -188,6 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
         {
             var installationStatus = await this.installationStatusService.GetStatusAsync();
             var checkHomingDone = installationStatus.FirstOrDefault();
+            var checkBeltBreakIn = installationStatus.ElementAt(2);
 
             this.IsInstallationStateButtonActive = true;
             this.IsUpScrollButtonActive = true;
@@ -197,7 +202,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
             this.IsBeltBurnishingButtonActive = checkHomingDone;
-            this.IsSetYResolutionButtonActive = checkHomingDone;
+            this.IsSetYResolutionButtonActive = checkHomingDone && checkBeltBreakIn;
 
             this.IsGateHeightControlButtonActive = true;                     // TODO: Reference value missing in InstallationInfo file
             this.IsWeightControlButtonActive = checkHomingDone;              // TODO: Reference value missing in InstallationInfo file
@@ -210,6 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
             this.IsLoadFirstDrawerButtonActive = checkHomingDone;
             this.IsLoadingDrawersButtonActive = checkHomingDone;
             this.IsSaveRestoreConfigButtonActive = true;
+            this.IsManualDrawerStoreRecallButtonActive = checkHomingDone;
         }
 
         #endregion

@@ -8,11 +8,13 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.Common.Utils.Extensions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -68,7 +70,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushCreate(createdModel);
             if (createdModel.CellId != null)
             {
-                this.NotificationService.PushUpdate(new Cell { Id = createdModel.CellId.Value });
+                this.NotificationService.PushUpdate(new Cell { Id = createdModel.CellId.Value }, createdModel);
             }
 
             return new SuccessOperationResult<LoadingUnitDetails>(createdModel);
@@ -98,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.NotificationService.PushDelete(existingModel);
                 if (existingModel.CellId != null)
                 {
-                    this.NotificationService.PushUpdate(new Cell { Id = existingModel.CellId.Value });
+                    this.NotificationService.PushUpdate(new Cell { Id = existingModel.CellId.Value }, existingModel);
                 }
 
                 return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
@@ -116,10 +118,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             string search)
         {
             var models = await this.GetAllBase()
+                .Where(l => l.AreaId.HasValue)
                 .Where(l => this.DataContext.ItemsAreas.Where(
-                    ia => ia.ItemId == id)
-                            .Select(ia => ia.AreaId)
-                            .Contains(l.AreaId))
+                        ia => ia.ItemId == id)
+                    .Select(ia => ia.AreaId)
+                    .Contains(l.AreaId.Value))
                 .Where(l => l.HasCompartments)
                 .ToArrayAsync<LoadingUnit, Common.DataModels.LoadingUnit>(
                     skip,
@@ -279,7 +282,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.NotificationService.PushUpdate(model);
             if (model.CellId != null)
             {
-                this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value }, model);
             }
 
             return result;
@@ -315,7 +318,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.DataContext.SaveChangesAsync();
 
                 this.NotificationService.PushUpdate(model);
-                this.NotificationService.PushUpdate(new Cell { Id = model.CellId });
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId }, model);
 
                 return new SuccessOperationResult<LoadingUnitOperationalInfoUpdate>(null);
             }
@@ -365,14 +368,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (l.LoadingUnitStatusDescription != null && l.LoadingUnitStatusDescription.Contains(search))
                 || (l.AbcClassDescription != null && l.AbcClassDescription.Contains(search))
                 || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search))
-                || (l.CellSide != null && l.CellSide.ToString().Contains(search))
+                || l.CellSide.GetDisplayName(typeof(Enums.Side)).Contains(search)
                 || (successConversionAsInt
                     && (Equals(l.CellFloor, searchAsInt)
                         || Equals(l.CellColumn, searchAsInt)
                         || Equals(l.CellNumber, searchAsInt)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as ILoadingUnitUpdatePolicy).ComputeUpdatePolicy());
             model.AddPolicy((model as ILoadingUnitDeletePolicy).ComputeDeletePolicy());
@@ -381,7 +384,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<LoadingUnit> GetAllBase()
         {
-            var loadingUnitsMachines = this.DataContext.LoadingUnits.Join(this.DataContext.Machines, l => l.Cell.Aisle.Id, machine => machine.AisleId, (l, m) => new { l, m }).ToArray();
+            var loadingUnitsMachines = this.DataContext.LoadingUnits.Join(
+                this.DataContext.Machines,
+                l => l.Cell.Aisle.Id,
+                machine => machine.AisleId,
+                (l, m) => new { l, m })
+                .ToArray();
+
             return this.DataContext.LoadingUnits
                 .Select(l => new LoadingUnit
                 {
@@ -396,16 +405,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
                     CellId = l.CellId,
-                    CellSide = (Side)l.Cell.Side,
+                    CellSide = l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                     CompartmentsCount = l.Compartments.Count(),
                     HasCompartments = l.LoadingUnitType.HasCompartments,
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Operations.Any(o =>
-                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            o.Status != Enums.MissionOperationStatus.Completed
                             &&
-                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
+                            o.Status != Enums.MissionOperationStatus.Incomplete)),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Depth)
                         / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
@@ -440,7 +449,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Depth = l.LoadingUnitType.LoadingUnitSizeClass.Depth,
                     Note = l.Note,
                     IsCellPairingFixed = l.IsCellPairingFixed,
-                    ReferenceType = (ReferenceType)l.ReferenceType,
+                    ReferenceType = l.ReferenceType,
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
@@ -463,9 +472,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(m =>
                         m.Operations.Any(o =>
-                            o.Status != Common.DataModels.MissionOperationStatus.Completed
+                            o.Status != Enums.MissionOperationStatus.Completed
                             &&
-                            o.Status != Common.DataModels.MissionOperationStatus.Incomplete)),
+                            o.Status != Enums.MissionOperationStatus.Incomplete)),
                 });
         }
 

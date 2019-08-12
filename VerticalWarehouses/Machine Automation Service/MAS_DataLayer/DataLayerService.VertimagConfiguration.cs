@@ -72,16 +72,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, (long)ConfigurationCategory.SetupNetwork);
+                    setupNetworkInverterIndex = this.GetIntegerConfigurationValue(setupNetworkInverterIndex, ConfigurationCategory.SetupNetwork);
                     installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogTrace($"{ex.Message}");
+                    this.Logger.LogTrace($"{ex.Message}");
                 }
             }
 
@@ -90,45 +90,45 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<IoIndex> GetInstalledIoList()
         {
-            long setupNetworkIoIndex;
             var installedIoDevices = new List<IoIndex>();
 
             foreach (IoIndex ioIndex in Enum.GetValues(typeof(IoIndex)))
             {
+                SetupNetwork isExpansionInstalledIndex;
                 switch (ioIndex)
                 {
                     case IoIndex.IoDevice1:
-                        setupNetworkIoIndex = (long)SetupNetwork.IOExpansion1;
+                        isExpansionInstalledIndex = SetupNetwork.IOExpansion1Installed;
                         break;
 
                     case IoIndex.IoDevice2:
-                        setupNetworkIoIndex = (long)SetupNetwork.IOExpansion2;
+                        isExpansionInstalledIndex = SetupNetwork.IOExpansion2Installed;
                         break;
 
                     case IoIndex.IoDevice3:
-                        setupNetworkIoIndex = (long)SetupNetwork.IOExpansion3;
+                        isExpansionInstalledIndex = SetupNetwork.IOExpansion3Installed;
                         break;
 
                     default:
-                        setupNetworkIoIndex = (long)SetupNetwork.Undefined;
+                        isExpansionInstalledIndex = SetupNetwork.Undefined;
                         break;
                 }
 
                 try
                 {
-                    var ipAddress = this.GetIpAddressConfigurationValue(setupNetworkIoIndex, (long)ConfigurationCategory.SetupNetwork);
-                    if (ipAddress != null)
+                    var isInstalled = this.GetBoolConfigurationValue((long)isExpansionInstalledIndex, ConfigurationCategory.SetupNetwork);
+                    if (isInstalled)
                     {
                         installedIoDevices.Add(ioIndex);
                     }
                 }
                 catch (DataLayerPersistentException ex)
                 {
-                    this.logger.LogTrace($"SetUp Network parameter not found: {setupNetworkIoIndex} - Message: {ex.Message}");
+                    this.Logger.LogTrace($"SetUp Network parameter not found: {isExpansionInstalledIndex} - Message: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogTrace($"{ex.Message}");
+                    this.Logger.LogTrace($"{ex.Message}");
                 }
             }
 

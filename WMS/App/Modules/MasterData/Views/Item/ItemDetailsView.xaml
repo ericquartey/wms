@@ -7,11 +7,11 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+             xmlns:enums="clr-namespace:Ferretto.Common.Resources.Enums;assembly=Ferretto.Common.Resources"
              Title="{x:Static res:Navigation.ItemDetails}"
              MinWidth="200"
              d:DesignHeight="450"
@@ -180,15 +180,28 @@
                 </wms:ActionBar>
             </Grid>
 
-            <TextBlock Grid.Row="1"
-                       Grid.ColumnSpan="3"
-                       Margin="0,0,10,5"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding Model.Error}"
-                       TextAlignment="Right"
-                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Margin="0,0,10,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Model.Error}"
+                           TextAlignment="Right"
+                           Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{x:Static res:Errors.ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed}"
+                           TextAlignment="Right">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MBATVC}">
+                            <Binding Path="HasConflictingChanges" />
+                            <Binding Path="IsBusy" Converter="{StaticResource BNC}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+            </StackPanel>
+
         </Grid>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
@@ -280,7 +293,7 @@
                                                            Tag="AssociateAreaBarItem"
                                                            TooltipText="{Binding AssociateAreaReason}" />
                                         <wms:ActionBarItem Command="{Binding UnassociateAreaCommand}"
-                                                           Content="{x:Static res:MasterData.UnassociateArea}"
+                                                           Content="{x:Static res:MasterData.DisassociateArea}"
                                                            CustomGlyphSize="24,24"
                                                            Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-off-black-24dp.png"
                                                            GlyphSize="Custom"
@@ -358,7 +371,7 @@
                                       EditValue="{Binding Path=Model.ManagementType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <mvvm:Interaction.Behaviors>
-                                <mvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemManagementType}"
+                                <mvvm:EnumItemsSourceBehavior EnumType="{x:Type enums:ItemManagementType}"
                                                               SortMode="DisplayName" />
                             </mvvm:Interaction.Behaviors>
                         </wms:ComboBox>

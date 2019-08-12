@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
     [Resource(nameof(ItemCompartmentType))]
-    public sealed class ItemCompartmentType : BaseModel<int>
+    public sealed class ItemCompartmentType : BaseModel<(int ItemId, int CompartmentTypeId)>
     {
         #region Properties
 
@@ -15,6 +16,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int EmptyCompartmentsCount { get; set; }
 
         public double? Depth { get; set; }
+
+        public new (int, int) Id => (this.ItemId, this.CompartmentTypeId);
 
         public int ItemId { get; set; }
 

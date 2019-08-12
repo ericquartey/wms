@@ -137,18 +137,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        private ActionResult<int> GetIntegerConfigurationParameterMethod(string category, string parameter)
+        private ActionResult<int> GetIntegerConfigurationParameterMethod(string categoryString, string parameter)
         {
-            var categoryEnum = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), category);
+            var category = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), categoryString);
 
             long longParameter;
             long longCategory;
 
-            switch (categoryEnum)
+            switch (category)
             {
                 case ConfigurationCategory.GeneralInfo:
                     {
-                        longCategory = (long)categoryEnum;
+                        longCategory = (long)category;
                         longParameter = (long)Enum.Parse(typeof(GeneralInfo), parameter);
                         break;
                     }
@@ -160,7 +160,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
             }
 
-            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValue(longParameter, longCategory);
+            var returnValue = this.dataLayerConfigurationValueManagment
+                .GetIntegerConfigurationValue(longParameter, category);
 
             return this.Ok(returnValue);
         }
@@ -175,7 +176,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private void HorizontalPositioningMethod()
         {
-            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
+            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, MovementMode.Position, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
@@ -271,7 +272,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private void VerticalPositioningMethod()
         {
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, MovementMode.Position, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }

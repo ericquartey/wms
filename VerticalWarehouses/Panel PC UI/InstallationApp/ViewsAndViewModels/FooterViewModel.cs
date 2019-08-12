@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
@@ -33,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
         private ICommand navigateBackCommand;
 
         private string note;
+
+        private Brush noteBrush;
 
         #endregion
 
@@ -85,6 +88,12 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 
+        public Brush NoteBrush
+        {
+            get => this.noteBrush;
+            set => this.SetProperty(ref this.noteBrush, value);
+        }
+
         #endregion
 
         #region Methods
@@ -120,6 +129,25 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
         private void StatusMessageService_StatusMessageNotified(object sender, StatusMessageEventArgs e)
         {
             this.Note = e.Message;
+
+            switch (e.Level)
+            {
+                case StatusMessageLevel.Error:
+                    this.NoteBrush = Brushes.DarkRed;
+                    break;
+
+                case StatusMessageLevel.Success:
+                    this.NoteBrush = Brushes.Green;
+                    break;
+
+                case StatusMessageLevel.Warning:
+                    this.NoteBrush = Brushes.Gold;
+                    break;
+
+                default:
+                    this.NoteBrush = Brushes.White;
+                    break;
+            }
         }
 
         #endregion

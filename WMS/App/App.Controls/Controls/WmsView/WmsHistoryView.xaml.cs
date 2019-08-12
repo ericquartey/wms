@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Docking;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 
@@ -109,6 +110,7 @@ namespace Ferretto.WMS.App.Controls
             this.registeredViews.Push(registeredView);
             this.DataContext = null;
             this.Content = registeredView;
+            this.UpdateTitle(registeredView);
             this.CheckBackVisibility();
             this.ReAssignBindings(registeredView);
         }
@@ -178,7 +180,9 @@ namespace Ferretto.WMS.App.Controls
             }
 
             var poppedView = this.registeredViews.Pop();
-            this.Content = this.registeredViews.Peek();
+            var previousView = this.registeredViews.Peek();
+            this.Content = previousView;
+            this.UpdateTitle(previousView);
             this.CheckBackVisibility();
             this.ReAssignBindings(this.Content as INavigableView);
 
@@ -231,9 +235,19 @@ namespace Ferretto.WMS.App.Controls
 
             if (wmsView is WmsView view)
             {
-                this.CreateBinding(view, nameof(WmsView.IsVisibleBackButton), WmsHistoryView.IsVisibleBackButtonProperty);
-                this.CreateBinding(view, nameof(WmsView.SubTitle), WmsHistoryView.SubTitleProperty);
-                this.CreateBinding(view, nameof(WmsView.SubTitleVisibility), WmsHistoryView.SubTitleVisibilityProperty);
+                this.CreateBinding(view, nameof(WmsView.IsVisibleBackButton), IsVisibleBackButtonProperty);
+                this.CreateBinding(view, nameof(WmsView.SubTitle), SubTitleProperty);
+                this.CreateBinding(view, nameof(WmsView.SubTitleVisibility), SubTitleVisibilityProperty);
+            }
+        }
+
+        private void UpdateTitle(INavigableView registeredView)
+        {
+            var parentLayoutPanel = LayoutTreeHelper.GetVisualParents(this).OfType<LayoutPanel>().FirstOrDefault();
+
+            if (parentLayoutPanel != null)
+            {
+                parentLayoutPanel.Caption = registeredView.Title;
             }
         }
 

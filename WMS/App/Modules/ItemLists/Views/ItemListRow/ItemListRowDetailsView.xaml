@@ -6,9 +6,9 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:res="clr-namespace:Ferretto.WMS.App.Resources;assembly=Ferretto.WMS.App.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+             xmlns:enums="clr-namespace:Ferretto.Common.Resources.Enums;assembly=Ferretto.Common.Resources"
              Title="{x:Static res:Navigation.ListRowDetails}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -97,15 +97,28 @@
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
-            <TextBlock Grid.Row="1"
-                       Grid.ColumnSpan="2"
-                       Margin="0,0,10,5"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding Model.Error}"
-                       TextAlignment="Right"
-                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,10,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding Model.Error}"
+                           TextAlignment="Right"
+                           Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
+                <TextBlock Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{x:Static res:Errors.ThisObjectHasUnsavedChangesButDataNeedToBeRefreshed}"
+                           TextAlignment="Right">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MBATVC}">
+                            <Binding Path="HasConflictingChanges" />
+                            <Binding Path="IsBusy" Converter="{StaticResource BNC}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+            </StackPanel>
+
         </Grid>
 
         <ScrollViewer Grid.Row="1"
@@ -162,7 +175,7 @@
                                       EditValue="{Binding Path=Model.Status, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListRowStatus}"
+                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type enums:ItemListRowStatus}"
                                                                 SortMode="DisplayName" />
                             </dxmvvm:Interaction.Behaviors>
                         </wms:ComboBox>
@@ -314,7 +327,7 @@
                     <GroupBox Grid.Row="0"
                               Margin="20,0"
                               Header="{x:Static res:ItemLists.ExecutionDetails}">
-                        <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListRowStatus}"
+                        <wms:WmsEnumIndicator EnumType="{x:Type enums:ItemListRowStatus}"
                                               EnumValue="{Binding Model.Status}"
                                               IconSize="48"
                                               ShowText="True" />

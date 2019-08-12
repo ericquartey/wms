@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:common="clr-namespace:Ferretto.VW.App.Controls.Views.ErrorDetails;assembly=Ferretto.VW.App.Controls"
                     xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
                     xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState"
@@ -7,8 +8,7 @@
                     xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
                     xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
-                    xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels"
-                    xmlns:common="clr-namespace:Ferretto.VW.App.Controls.Views.ErrorDetails;assembly=Ferretto.VW.App.Controls">
+                    xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
     <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
         <local:SSNavigationButtonsView />
     </DataTemplate>
@@ -117,6 +117,9 @@
     <DataTemplate DataType="{x:Type singleViews:SaveRestoreConfigViewModel}">
         <singleViews:SaveRestoreConfigView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type singleViews:DrawerStoreRecallViewModel}">
+        <singleViews:DrawerStoreRecallView />
+    </DataTemplate>
 
     <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsThreePositionsViewModel}">
         <custom:CustomShutterControlSensorsThreePositions />
@@ -128,7 +131,5 @@
     <DataTemplate DataType="{x:Type common:ErrorDetailsViewModel}">
         <common:ErrorDetailsView />
     </DataTemplate>
-
-    <converter:BoolToVisibilityConverter x:Key="BTVC" />
 
 </ResourceDictionary>

@@ -32,6 +32,8 @@
 
         InverterError,
 
+        InverterDisable,
+
         AxisPosition,
 
         Positioning,
@@ -45,5 +47,11 @@
         SetConfigurationIO,
 
         ResetSecurity,
+
+        PowerEnable,
+
+        InverterFaultReset,
+
+        InverterStatusWord
     }
 }

@@ -16,9 +16,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Exception { get; set; }
 
-        public string Level { get; set; }
+        public int Id { get; set; }
 
-        public int LogEntryID { get; set; }
+        public string Level { get; set; }
 
         public string LoggerName { get; set; }
 

@@ -186,7 +186,6 @@
                     </ve:DockingSplitLayoutPanel.Content1>
                     <ve:DockingSplitLayoutPanel.Content2>
                         <ve:TabHeaderControlBoxControl x:Name="PART_ControlBox"
-                                                       Visibility="Hidden"
                                                        ve:DockPane.HitTestType="ControlBox"
                                                        ve:TabHeaderControlBoxControl.Location="{Binding CaptionLocation}"
                                                        ButtonHeight="18"

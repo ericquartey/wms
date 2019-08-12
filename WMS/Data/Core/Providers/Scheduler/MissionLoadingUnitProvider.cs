@@ -9,6 +9,7 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -61,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            mission.Status = MissionStatus.Incomplete;
+            mission.Status = Enums.MissionStatus.Incomplete;
 
             await this.missionProvider.UpdateAsync(mission);
 
@@ -84,7 +85,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            mission.Status = MissionStatus.Completed;
+            mission.Status = Enums.MissionStatus.Completed;
 
             await this.missionProvider.UpdateAsync(mission);
             var updatedMission = await this.GetByIdAsync(id);
@@ -92,8 +93,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 await this.loadingUnitProvider.UpdateMissionsCountAsync(updatedMission.LoadingUnitId);
 
-                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
                 this.NotificationService.PushUpdate(mission);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId }, mission);
                 return new SuccessOperationResult<Mission>(updatedMission);
             }
 
@@ -117,7 +118,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.logger.LogWarning(
                 $"Scheduler Request (id={request.Id}): generating withdrawal mission for Loading Unit (Id={request.LoadingUnitId}), BayId={mission.BayId}. ");
 
-            request.Status = SchedulerRequestStatus.Completed;
+            request.Status = Enums.SchedulerRequestStatus.Completed;
 
             await this.requestProvider.UpdateAsync(request);
 
@@ -136,15 +137,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission);
             }
 
-            mission.Status = MissionStatus.Executing;
+            mission.Status = Enums.MissionStatus.Executing;
 
             await this.missionProvider.UpdateAsync(mission);
 
             var updatedMission = await this.GetByIdAsync(id);
             if (updatedMission != null)
             {
-                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId });
                 this.NotificationService.PushUpdate(mission);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = updatedMission.LoadingUnitId }, mission);
                 return new SuccessOperationResult<Mission>(updatedMission);
             }
 
@@ -165,7 +166,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return mission;
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             if (model is IMissionPolicy mission)
             {

@@ -15,6 +15,7 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -124,12 +125,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             IOperationResult<MissionOperation> result = null;
             switch (operation.Type)
             {
-                case MissionOperationType.Pick:
+                case Enums.MissionOperationType.Pick:
                     result = await this.CompletePickOperationAsync(operation, quantity);
                     this.logger.LogDebug($"Completed pick operation id={operation.Id}");
                     break;
 
-                case MissionOperationType.Put:
+                case Enums.MissionOperationType.Put:
                     result = await this.CompletePutOperationAsync(operation, quantity);
                     this.logger.LogDebug($"Completed put operation id={operation.Id}");
                     break;
@@ -184,7 +185,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     operation);
             }
 
-            operation.Status = MissionOperationStatus.Executing;
+            operation.Status = Enums.MissionOperationStatus.Executing;
             var result = await this.UpdateAsync(operation);
 
             await this.UpdateMissionStatusAsync(operation);
@@ -252,8 +253,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 checkForPolicies: false);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
-            this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
+            this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId }, model);
 
             return result;
         }
@@ -273,7 +274,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             mission.Status = newMissionStatus;
 
-            if (oldMissionStatus == MissionStatus.New && newMissionStatus == MissionStatus.Executing)
+            if (oldMissionStatus == Enums.MissionStatus.New && newMissionStatus == Enums.MissionStatus.Executing)
             {
                 await this.loadingUnitProvider.UpdateMissionsCountAsync(mission.LoadingUnitId);
             }
@@ -293,39 +294,39 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var involvedOperations = await this.GetByListRowIdAsync(row.Id);
 
-            var completeOperationsCount = involvedOperations.Count(o => o.Status == MissionOperationStatus.Completed);
-            var hasExecutingOperations = involvedOperations.Any(o => o.Status == MissionOperationStatus.Executing);
-            var hasErroredOperations = involvedOperations.Any(o => o.Status == MissionOperationStatus.Error);
-            var hasIncompleteOperations = involvedOperations.Any(o => o.Status == MissionOperationStatus.Incomplete);
+            var completeOperationsCount = involvedOperations.Count(o => o.Status == Enums.MissionOperationStatus.Completed);
+            var hasExecutingOperations = involvedOperations.Any(o => o.Status == Enums.MissionOperationStatus.Executing);
+            var hasErroredOperations = involvedOperations.Any(o => o.Status == Enums.MissionOperationStatus.Error);
+            var hasIncompleteOperations = involvedOperations.Any(o => o.Status == Enums.MissionOperationStatus.Incomplete);
 
             if (!involvedOperations.Any())
             {
-                row.Status = ItemListRowStatus.New;
+                row.Status = Enums.ItemListRowStatus.New;
             }
             else if (completeOperationsCount == involvedOperations.Count()
                 && involvedOperations.Sum(o => o.DispatchedQuantity).CompareTo(row.RequestedQuantity) == 0)
             {
-                row.Status = ItemListRowStatus.Completed;
+                row.Status = Enums.ItemListRowStatus.Completed;
                 row.CompletionDate = now;
             }
             else if (hasErroredOperations)
             {
-                row.Status = ItemListRowStatus.Error;
+                row.Status = Enums.ItemListRowStatus.Error;
             }
             else if (hasExecutingOperations)
             {
-                row.Status = ItemListRowStatus.Executing;
+                row.Status = Enums.ItemListRowStatus.Executing;
                 row.LastExecutionDate = now;
             }
             else if (hasIncompleteOperations)
             {
-                row.Status = ItemListRowStatus.Incomplete;
+                row.Status = Enums.ItemListRowStatus.Incomplete;
             }
 
             await this.rowExecutionProvider.UpdateAsync(row);
 
             var list = await this.itemListProvider.GetByIdAsync(operation.ItemListId.Value);
-            if (list.Status == ItemListStatus.Completed)
+            if (list.Status == Enums.ItemListStatus.Completed)
             {
                 list.ExecutionEndDate = now;
             }
@@ -366,7 +367,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        private static void SetPolicies(BaseModel<int> operation)
+        private static void SetPolicies(BasePolicyModel operation)
         {
             if (operation is IMissionOperationPolicy operationPolicyDescriptor)
             {
@@ -397,11 +398,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             switch (operation.Type)
             {
-                case MissionOperationType.Pick:
+                case Enums.MissionOperationType.Pick:
                     compartment.ReservedForPick -= operation.RequestedQuantity;
                     break;
 
-                case MissionOperationType.Put:
+                case Enums.MissionOperationType.Put:
                     compartment.ReservedToPut -= operation.RequestedQuantity;
                     RemovePairingIfEmpty(compartment);
                     break;
@@ -413,7 +414,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             operation.Type));
             }
 
-            operation.Status = MissionOperationStatus.Incomplete;
+            operation.Status = Enums.MissionOperationStatus.Incomplete;
             var updateResult = await this.UpdateAsync(operation);
 
             await this.UpdateMissionStatusAsync(operation);
@@ -479,8 +480,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 operation.DispatchedQuantity += quantity;
                 operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
-                    ? MissionOperationStatus.Completed
-                    : MissionOperationStatus.Incomplete;
+                    ? Enums.MissionOperationStatus.Completed
+                    : Enums.MissionOperationStatus.Incomplete;
                 var result = await this.UpdateAsync(operation);
 
                 await this.UpdateMissionStatusAsync(operation);
@@ -536,8 +537,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 operation.DispatchedQuantity += quantity;
                 operation.Status = operation.QuantityRemainingToDispatch.Equals(0)
-                    ? MissionOperationStatus.Completed
-                    : MissionOperationStatus.Incomplete;
+                    ? Enums.MissionOperationStatus.Completed
+                    : Enums.MissionOperationStatus.Incomplete;
                 var result = await this.UpdateAsync(operation);
 
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);

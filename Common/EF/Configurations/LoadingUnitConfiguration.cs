@@ -2,6 +2,7 @@
 using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.EF.Configurations
 {
@@ -33,7 +34,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(
                     enumValue => (char)enumValue,
-                    charValue => (ReferenceType)Enum.ToObject(typeof(ReferenceType), charValue));
+                    charValue => (Enums.ReferenceType)Enum.ToObject(typeof(Enums.ReferenceType), charValue));
 
             builder.Property(l => l.LoadingUnitStatusId)
                 .IsRequired()

@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +12,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ResetSecurity
     {
         #region Fields
 
-        private readonly Axis calibrateAxis;
-
-        private readonly Axis currentAxis;
-
         private bool disposed;
-
-        private readonly int nMaxSteps;
-
-        private readonly int numberOfExecutedSteps;
 
         #endregion
 

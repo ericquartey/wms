@@ -152,12 +152,16 @@
     <value>Are you sure you want to revert your changes?</value>
     <comment>Prompt message</comment>
   </data>
+  <data name="AreYouSureToRefreshWithModifications" xml:space="preserve">
+    <value>Refreshing the page will loose all your unsaved changes. Are you sure you want to proceed?</value>
+    <comment>Prompt message</comment>
+  </data>
   <data name="ConfirmOperation" xml:space="preserve">
     <value>Confirm Operation</value>
     <comment>Prompt title</comment>
   </data>
   <data name="AreYouSureToLeaveThePage" xml:space="preserve">
-    <value>Leaving the page will revert all your usaved changes. Are you sure you want to proceed?</value>
+    <value>Leaving the page will revert all your unsaved changes. Are you sure you want to proceed?</value>
   </data>
   <data name="AreYouSureToDeleteCompartment" xml:space="preserve">
     <value>Are you sure you want to delete this compartment?</value>

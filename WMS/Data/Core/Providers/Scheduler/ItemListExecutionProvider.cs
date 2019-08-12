@@ -12,6 +12,7 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -46,7 +47,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public static void SetPolicies(BaseModel<int> model)
+        public static void SetPolicies(BasePolicyModel model)
         {
             model.AddPolicy((model as IItemListPolicy).ComputeExecutePolicy());
         }
@@ -59,16 +60,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = i.Id,
                     Code = i.Code,
-                    OperationType = (ItemListType)i.ItemListType,
-                    CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
-                    ErrorRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
-                    ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
-                    IncompleteRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
-                    NewRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
-                    SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    OperationType = i.ItemListType,
+                    CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Completed),
+                    ErrorRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Error),
+                    ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Executing),
+                    IncompleteRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Incomplete),
+                    NewRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.New),
+                    SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Suspended),
                     TotalRowsCount = i.ItemListRows.Count(),
-                    WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
-                    ReadyRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
+                    WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Waiting),
+                    ReadyRowsCount = i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Ready),
                     Rows = i.ItemListRows.Select(r => new ItemListRowOperation
                     {
                         Id = r.Id,
@@ -76,12 +77,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ListId = r.ItemListId,
                         Lot = r.Lot,
                         Priority = r.Priority,
-                        OperationType = (ItemListType)i.ItemListType,
+                        OperationType = i.ItemListType,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequestedQuantity,
-                        Status = (ItemListRowStatus)r.Status,
+                        Status = r.Status,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
                     }),
@@ -103,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                if (list.Status == ItemListStatus.Waiting && !bayId.HasValue)
+                if (list.Status == Enums.ItemListStatus.Waiting && !bayId.HasValue)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         Resources.ItemList.CannotExecuteBecauseNoBayWasSpecified);
@@ -115,8 +116,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
                 }
 
-                if (list.OperationType != ItemListType.Pick
-                    && list.OperationType != ItemListType.Put)
+                if (list.OperationType != Enums.ItemListType.Pick
+                    && list.OperationType != Enums.ItemListType.Put)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         string.Format(
@@ -160,7 +161,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(typeof(ItemListRow));
+            this.NotificationService.PushUpdate(typeof(ItemListRow), model);
 
             return result;
         }

@@ -10,6 +10,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -48,7 +49,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public static void SetPolicies(BaseModel<int> model)
+        public static void SetPolicies(BasePolicyModel model)
         {
             model?.AddPolicy((model as IItemListRowExecutePolicy).ComputeExecutePolicy());
         }
@@ -70,8 +71,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
                     ListId = r.ItemListId,
-                    OperationType = (ItemListType)r.ItemList.ItemListType,
-                    Status = (ItemListRowStatus)r.Status,
+                    OperationType = r.ItemList.ItemListType,
+                    Status = r.Status,
                     DispatchedQuantity = r.DispatchedQuantity,
                     Priority = r.Priority,
                 })
@@ -140,7 +141,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Suspend)));
             }
 
-            row.Status = ItemListRowStatus.Suspended;
+            row.Status = Enums.ItemListRowStatus.Suspended;
 
             throw new System.NotImplementedException();
         }
@@ -154,8 +155,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 false);
 
             this.NotificationService.PushUpdate(model);
-            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId });
-            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId }, model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId }, model);
 
             return result;
         }
@@ -190,14 +191,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             IOperationResult<IEnumerable<ItemSchedulerRequest>> result;
             switch (row.OperationType)
             {
-                case ItemListType.Pick:
+                case Enums.ItemListType.Pick:
                     {
                         result = await this.schedulerRequestPickProvider
                             .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
                         break;
                     }
 
-                case ItemListType.Put:
+                case Enums.ItemListType.Put:
                     {
                         result = await this.schedulerRequestPutProvider
                             .FullyQualifyPutRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
@@ -214,7 +215,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (!result.Success)
             {
-                row.Status = ItemListRowStatus.Incomplete;
+                row.Status = Enums.ItemListRowStatus.Incomplete;
                 await this.UpdateAsync(row);
 
                 return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
@@ -231,7 +232,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var rowRequests = result.Entity.Cast<ItemListRowSchedulerRequest>();
 
-            row.Status = options.BayId.HasValue ? ItemListRowStatus.Ready : ItemListRowStatus.Waiting;
+            row.Status = options.BayId.HasValue ? Enums.ItemListRowStatus.Ready : Enums.ItemListRowStatus.Waiting;
 
             var updateResult = await this.UpdateAsync(row);
             if (!updateResult.Success)

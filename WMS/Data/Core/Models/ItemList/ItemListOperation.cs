@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -26,14 +27,14 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public int NewRowsCount { get; set; }
 
-        public ItemListType OperationType { get; set; }
+        public Enums.ItemListType OperationType { get; set; }
 
         [PositiveOrZero]
         public int ReadyRowsCount { get; set; }
 
         public IEnumerable<ItemListRowOperation> Rows { get; set; }
 
-        public ItemListStatus Status =>
+        public Enums.ItemListStatus Status =>
            ItemList.GetStatus(
                 this.TotalRowsCount,
                 this.CompletedRowsCount,

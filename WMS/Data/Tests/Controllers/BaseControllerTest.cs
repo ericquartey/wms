@@ -61,6 +61,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 
         protected CellType CellType1 { get; set; }
 
+        protected LoadingUnit LoadingUnit0 { get; set; }
+
         protected LoadingUnit LoadingUnit1 { get; set; }
 
         protected LoadingUnit LoadingUnit2 { get; set; }
@@ -326,6 +328,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Description = "Loading Unit Status #1",
             };
 
+            this.LoadingUnit0 = new LoadingUnit
+            {
+                Id = GetNewId(),
+                Code = "Loading Unit #0",
+                LoadingUnitTypeId = this.LoadingUnitType1.Id,
+                Weight = 100,
+                AbcClassId = this.AbcClass1.Id,
+                Height = 10,
+                LoadingUnitStatusId = this.LoadingUnitStatus1.Id,
+            };
+
             this.LoadingUnit1 = new LoadingUnit
             {
                 Id = GetNewId(),
@@ -406,6 +419,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 context.LoadingUnitTypesAisles.Add(this.LoadingUnitType1Aisle3);
                 context.LoadingUnitTypesAisles.Add(this.LoadingUnitType2Aisle3);
                 context.LoadingUnitStatuses.Add(this.LoadingUnitStatus1);
+                context.LoadingUnits.Add(this.LoadingUnit0);
                 context.LoadingUnits.Add(this.LoadingUnit1);
                 context.LoadingUnits.Add(this.LoadingUnit2);
                 context.LoadingUnits.Add(this.LoadingUnit3);

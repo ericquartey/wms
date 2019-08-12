@@ -354,7 +354,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(i.TotalStock, searchAsDouble)));
         }
 
-        private static void SetPolicies(BaseModel<int> model)
+        private static void SetPolicies(BasePolicyModel model)
         {
             if (model is IItemUpdatePolicy update)
             {
@@ -442,7 +442,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                          Id = i.Id,
                          AbcClassId = i.AbcClassId,
                          Image = i.Image,
-                         ManagementType = (ItemManagementType)i.ManagementType,
+                         ManagementType = i.ManagementType,
                          MeasureUnitDescription = i.MeasureUnit.Description,
                          Code = i.Code,
                          Description = i.Description,
@@ -553,7 +553,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         LastPickDate = i.LastPickDate,
                         LastPutDate = i.LastPutDate,
                         Depth = i.Depth,
-                        ManagementType = (ItemManagementType)i.ManagementType,
+                        ManagementType = i.ManagementType,
                         MeasureUnitId = i.MeasureUnitId,
                         MeasureUnitDescription = i.MeasureUnit.Description,
                         Note = i.Note,

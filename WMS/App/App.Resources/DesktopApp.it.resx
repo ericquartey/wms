@@ -144,6 +144,9 @@
   <data name="AreYouSureToRevertChanges" xml:space="preserve">
     <value>Sei sicuro di voler annullare tutte le modifiche?</value>
   </data>
+  <data name="AreYouSureToRefreshWithModifications" xml:space="preserve">
+    <value>Ricaricando questa pagina, tutte le modifiche verranno perse. Sei sicuro di voler proseguire?</value>
+  </data>
   <data name="ConfirmOperation" xml:space="preserve">
     <value>Conferma Operazione</value>
   </data>

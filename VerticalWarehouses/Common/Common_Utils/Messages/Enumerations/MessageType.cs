@@ -30,7 +30,7 @@
 
         Positioning,
 
-        CurrentEncoderPosition,
+        CurrentPosition,
 
         ShutterPositioning,
 
@@ -62,5 +62,8 @@
 
         InverterStop,
 
+        PowerEnable,
+
+        InverterStatusWord
     }
 }

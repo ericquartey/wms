@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -63,22 +64,22 @@ namespace Ferretto.VW.MAS.DataLayer
         //// INFO The method returns to the machine manager the position to take a drawer for mission from the WMS
         public LoadingUnitPosition GetLoadingUnitPosition(int cellId)
         {
-            var loadingUnitPosition = new LoadingUnitPosition();
-
-            using (var primaryDataContext = new DataLayerContext(this.primaryContextOptions))
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                var inMemoryCellPosition = primaryDataContext.Cells.FirstOrDefault(s => s.Id == cellId);
+                var dbContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
 
-                if (inMemoryCellPosition == null)
+                var cell = dbContext.Cells.FirstOrDefault(s => s.Id == cellId);
+                if (cell == null)
                 {
                     throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
                 }
 
-                loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
-                loadingUnitPosition.LoadingUnitSide = inMemoryCellPosition.Side;
+                return new LoadingUnitPosition
+                {
+                    LoadingUnitCoord = cell.Coord,
+                    LoadingUnitSide = cell.Side,
+                };
             }
-
-            return loadingUnitPosition;
         }
 
         #endregion

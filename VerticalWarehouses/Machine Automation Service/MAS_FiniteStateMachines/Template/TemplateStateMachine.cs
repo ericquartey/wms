@@ -1,8 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.FiniteStateMachines.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.FiniteStateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,15 +12,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
     {
         #region Fields
 
-        private readonly Axis calibrateAxis;
-
-        private Axis currentAxis;
+        private readonly ITemplateData templateData;
 
         private bool disposed;
-
-        private int nMaxSteps;
-
-        private int numberOfExecutedSteps;
 
         #endregion
 
@@ -31,14 +22,14 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         public TemplateStateMachine(
             IEventAggregator eventAggregator,
-            IHomingMessageData calibrateMessageData,
+            ITemplateData templateData,
             ILogger logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory )
+            : base( eventAggregator, logger, serviceScopeFactory )
         {
-            this.CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState( logger );
 
-            this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
+            this.templateData = templateData;
         }
 
         #endregion
@@ -47,7 +38,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
 
         ~TemplateStateMachine()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
@@ -55,109 +46,38 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
         #region Methods
 
         /// <inheritdoc/>
-        public override void ChangeState(IState newState, CommandMessage message = null)
+        public override void ProcessCommandMessage( CommandMessage message )
         {
-            if (this.numberOfExecutedSteps == this.nMaxSteps)
-            {
-                newState = new TemplateEndState(this, this.currentAxis, this.Logger);
-            }
+            this.CurrentState.ProcessCommandMessage( message );
+        }
 
-            base.ChangeState(newState, message);
+        public override void ProcessFieldNotificationMessage( FieldNotificationMessage message )
+        {
+            this.CurrentState.ProcessFieldNotificationMessage( message );
         }
 
         /// <inheritdoc/>
-        public override void ProcessCommandMessage(CommandMessage message)
+        public override void ProcessNotificationMessage( NotificationMessage message )
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
-
-            lock (this.CurrentState)
-            {
-                this.CurrentState.ProcessCommandMessage(message);
-            }
-        }
-
-        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
-        {
-            this.Logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-
-            if (message.Type == FieldMessageType.CalibrateAxis)
-            {
-                if (message.Status == MessageStatus.OperationEnd)
-                {
-                    this.numberOfExecutedSteps++;
-                    this.currentAxis = (this.currentAxis == Axis.Vertical) ? Axis.Horizontal : Axis.Vertical;
-                }
-            }
-
-            lock (this.CurrentState)
-            {
-                this.CurrentState.ProcessFieldNotificationMessage(message);
-            }
+            this.CurrentState.ProcessNotificationMessage( message );
         }
 
         /// <inheritdoc/>
-        public override void ProcessNotificationMessage(NotificationMessage message)
-        {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-
-            lock (this.CurrentState)
-            {
-                this.CurrentState.ProcessNotificationMessage(message);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void PublishNotificationMessage(NotificationMessage message)
-        {
-            this.Logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-
-            base.PublishNotificationMessage(message);
-        }
-
         /// <inheritdoc/>
         public override void Start()
         {
-            switch (this.calibrateAxis)
-            {
-                case Axis.Both:
-                    this.nMaxSteps = 3;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Horizontal;
-                    break;
-
-                case Axis.Horizontal:
-                    this.nMaxSteps = 1;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Horizontal;
-                    break;
-
-                case Axis.Vertical:
-                    this.nMaxSteps = 1;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Vertical;
-                    break;
-            }
-
-            lock (this.CurrentState)
-            {
-                this.CurrentState = new TemplateStartState(this, this.currentAxis, this.Logger);
-                this.CurrentState?.Start();
-            }
-
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
+            this.CurrentState = new TemplateStartState( this, this.templateData, this.Logger );
+            this.CurrentState?.Start();
         }
 
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogTrace( "1:Method Start" );
 
-            lock (this.CurrentState)
-            {
-                this.CurrentState.Stop();
-            }
+            this.CurrentState.Stop();
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
             if (this.disposed)
             {
@@ -169,7 +89,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Template
             }
 
             this.disposed = true;
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

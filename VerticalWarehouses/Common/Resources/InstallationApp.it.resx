@@ -271,7 +271,7 @@
     <value>Presenza UDC in culla lato operatore</value>
   </data>
   <data name="LuPresentInBay" xml:space="preserve">
-    <value>Presenza UDC in baia 1</value>
+    <value>UDC presente in baia 1</value>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
     <value>Micro carter lato sinistro baia 1</value>
@@ -533,7 +533,7 @@
     <value>Serranda baia 3</value>
   </data>
   <data name="HorizontalAxisHomedDone" xml:space="preserve">
-    <value>Origine Asse Orizzontale</value>
+    <value>Origine asse orizzontale</value>
   </data>
   <data name="Laser1Done" xml:space="preserve">
     <value>Puntatore laser 1</value>
@@ -596,10 +596,10 @@
     <value>Quote celle verificate</value>
   </data>
   <data name="LuPresentInBay2" xml:space="preserve">
-    <value>Presenza UDC in baia 2</value>
+    <value>UDC presente in baia 2</value>
   </data>
   <data name="LuPresentInBay3" xml:space="preserve">
-    <value>Presenza UDC in baia 3</value>
+    <value>UDC presente in baia 3</value>
   </data>
   <data name="HeightControlCheck1" xml:space="preserve">
     <value>Controllo altezza baia 1</value>
@@ -610,23 +610,23 @@
   <data name="HeightControlCheck3" xml:space="preserve">
     <value>Controllo altezza baia 3</value>
   </data>
-  <data name="GateSensorABay1" xml:space="preserve">
-    <value>Sensore A barriera baia 1</value>
+  <data name="ShutterSensorABay1" xml:space="preserve">
+    <value>Sensore A serranda baia 1</value>
   </data>
-  <data name="GateSensorBBay1" xml:space="preserve">
-    <value>Sensore B barriera baia 1</value>
+  <data name="ShutterSensorBBay1" xml:space="preserve">
+    <value>Sensore B serranda baia 1</value>
   </data>
-  <data name="GateSensorABay2" xml:space="preserve">
-    <value>Sensore A barriera baia 2</value>
+  <data name="ShutterSensorABay2" xml:space="preserve">
+    <value>Sensore A serranda baia 2</value>
   </data>
-  <data name="GateSensorBBay2" xml:space="preserve">
-    <value>Sensore B barriera baia 2</value>
+  <data name="ShutterSensorBBay2" xml:space="preserve">
+    <value>Sensore B serranda baia 2</value>
   </data>
-  <data name="GateSensorABay3" xml:space="preserve">
-    <value>Sensore A barriera baia 3</value>
+  <data name="ShutterSensorABay3" xml:space="preserve">
+    <value>Sensore A serranda baia 3</value>
   </data>
-  <data name="GateSensorBBay3" xml:space="preserve">
-    <value>Sensore B barriera baia 3</value>
+  <data name="ShutterSensorBBay3" xml:space="preserve">
+    <value>Sensore B serranda baia 3</value>
   </data>
   <data name="MushroomHeadButton2" xml:space="preserve">
     <value>Fungo emergenza baia 2</value>
@@ -827,7 +827,7 @@
     <value>Movimenti giostra.</value>
   </data>
   <data name="SaveRestoreConfigButton" xml:space="preserve">
-    <value>Salva e riprsitina</value>
+    <value>Salva e ripristina</value>
   </data>
   <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
     <value>Salva file di configurazione.</value>
@@ -857,10 +857,10 @@
     <value>Annulla caricamento</value>
   </data>
   <data name="VerticalHomingError" xml:space="preserve">
-    <value>Errore calibrazione asse verticale</value>
+    <value>Errore calibrazione asse verticale ({0} di {1})</value>
   </data>
   <data name="HorizontalHomingError" xml:space="preserve">
-    <value>Errore calibrazione Asse Orizzontale</value>
+    <value>Errore calibrazione asse orizzontale ({0} di {1})</value>
   </data>
   <data name="SwitchEngineError" xml:space="preserve">
     <value>Errore scambio assi</value>
@@ -875,19 +875,19 @@
     <value>Start calibrazione</value>
   </data>
   <data name="HorizontalHomingCompleted" xml:space="preserve">
-    <value>Calibrazione Asse Orizzontale completata</value>
+    <value>Calibrazione asse orizzontale completata</value>
   </data>
   <data name="HorizontalHomingExecuting" xml:space="preserve">
-    <value>Calibrazione Asse Orizzontale in esecuzione</value>
+    <value>Calibrazione asse orizzontale in esecuzione ({0} di {1})</value>
   </data>
   <data name="HorizontalHomingStarted" xml:space="preserve">
-    <value>Start calibrazione Asse Orizzontale </value>
+    <value>Start calibrazione asse orizzontale </value>
   </data>
   <data name="VerticalHomingCompleted" xml:space="preserve">
-    <value>Calibrazione asse verrticale completata</value>
+    <value>Calibrazione asse verticale completata</value>
   </data>
   <data name="VerticalHomingExecuting" xml:space="preserve">
-    <value>Calibrazione asse verticale in esecuzione</value>
+    <value>Calibrazione asse verticale in esecuzione ({0} di {1})</value>
   </data>
   <data name="VerticalHomingStarted" xml:space="preserve">
     <value>Start calibrazione asse verticale</value>
@@ -907,5 +907,26 @@
   <data name="UpdateResolution" xml:space="preserve">
     <value>Aggiorna Risoluzione</value>
     <comment>Aggiorna Risoluzione</comment>
+  </data>
+  <data name="LUPresentMiddleBottomBay1" xml:space="preserve">
+    <value>Seconda UDC presente in baia 1</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay2" xml:space="preserve">
+    <value>Seconda UDC presente in baia 2</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay3" xml:space="preserve">
+    <value>Seconda UDC presente in baia 3</value>
+  </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Carica/richiama cassetto</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Richiama da cella a baia</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Caricamento da baia a cella</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Caricamento cassetto e richiamo cassetto</value>
   </data>
 </root>

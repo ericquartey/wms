@@ -7,6 +7,7 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
@@ -100,7 +101,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Floor = c.Floor,
                         Number = c.Number,
                         Priority = c.Priority,
-                        Side = (Side)c.Side,
+                        Side = (Enums.Side)c.Side,
                         XCoordinate = c.XCoordinate,
                         YCoordinate = c.YCoordinate,
                         ZCoordinate = c.ZCoordinate,
@@ -190,7 +191,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitsCount = cell.LoadingUnitsCount,
                     Number = cell.Number,
                     Priority = cell.Priority,
-                    Side = (Side)cell.Side,
+                    Side = (Enums.Side)cell.Side,
                     XCoordinate = cell.XCoordinate,
                     YCoordinate = cell.YCoordinate,
                     ZCoordinate = cell.ZCoordinate,

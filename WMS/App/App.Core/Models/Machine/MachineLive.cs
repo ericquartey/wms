@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -14,7 +15,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? faultCode;
 
-        private MachineStatus? status;
+        private Enums.MachineStatus? status;
 
         #endregion
 
@@ -30,10 +31,10 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineFaultCode), ResourceType = typeof(BusinessObjects))]
         public int? FaultCode { get => this.faultCode; set => this.SetProperty(ref this.faultCode, value); }
 
-        public bool IsOnLine => this.Status != MachineStatus.Offline;
+        public bool IsOnLine => this.Status != Enums.MachineStatus.Offline;
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus? Status
+        public Enums.MachineStatus? Status
         {
             get => this.status;
             set

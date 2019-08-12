@@ -19,6 +19,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public PositioningMessageData(
             Axis axisMovement,
             MovementType movementType,
+            MovementMode movementMode,
             decimal target,
             decimal speed,
             decimal acceleration,
@@ -30,6 +31,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
+            this.MovementMode = movementMode;
             this.TargetPosition = target;
             this.TargetSpeed = speed;
             this.TargetAcceleration = acceleration;
@@ -54,6 +56,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal LowerBound { get; set; }
 
+        public MovementMode MovementMode { get; set; }
+
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; set; }
@@ -69,6 +73,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public decimal UpperBound { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.NumberCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound}";
+        }
 
         #endregion
     }

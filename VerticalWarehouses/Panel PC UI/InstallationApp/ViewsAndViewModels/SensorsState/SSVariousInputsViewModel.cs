@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Installation.Interfaces;
-//using Ferretto.VW.CommonUtils.IO;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 {
@@ -13,41 +13,19 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private const int INVERTER_INPUTS = 64;
 
-        //private readonly IOSensorsStatus ioSensorsStatus;
+        private const int REMOTEIO_INPUTS = 16;
+
+        private readonly IUnityContainer container;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IUpdateSensorsMachineService updateSensorsService;
 
-        private bool antiIntrusionShutterBay1;
-
-        private bool antiIntrusionShutterBay2;
-
-        private bool antiIntrusionShutterBay3;
-
-        private bool cradleEngineSelected;
-
-        private bool elevatorEngineSelected;
-
-        private bool microCarterLeftSideBay1;
-
-        private bool microCarterLeftSideBay2;
-
-        private bool microCarterLeftSideBay3;
-
-        private bool microCarterRightSideBay1;
-
-        private bool microCarterRightSideBay2;
-
-        private bool microCarterRightSideBay3;
-
-        private bool mushroomHeadButtonBay1;
-
-        private bool mushroomHeadButtonBay2;
-
-        private bool mushroomHeadButtonBay3;
-
         private bool securityFunctionActive;
+
+        private bool[] sensorStatus;
 
         private SubscriptionToken updateVariousInputsSensorsState;
 
@@ -70,46 +48,20 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             }
 
             this.eventAggregator = eventAggregator;
-            this.updateSensorsService = updateSensorsService;
-            //this.ioSensorsStatus = new IOSensorsStatus();
             this.NavigationViewModel = null;
+            this.updateSensorsService = updateSensorsService;
+            this.sensorStatus = new bool[REMOTEIO_INPUTS * 3 + INVERTER_INPUTS];
         }
 
         #endregion
 
         #region Properties
 
-        public bool AntiIntrusionShutterBay1 { get => this.antiIntrusionShutterBay1; set => this.SetProperty(ref this.antiIntrusionShutterBay1, value); }
-
-        public bool AntiIntrusionShutterBay2 { get => this.antiIntrusionShutterBay2; set => this.SetProperty(ref this.antiIntrusionShutterBay2, value); }
-
-        public bool AntiIntrusionShutterBay3 { get => this.antiIntrusionShutterBay3; set => this.SetProperty(ref this.antiIntrusionShutterBay3, value); }
-
-        public bool CradleEngineSelected { get => this.cradleEngineSelected; set => this.SetProperty(ref this.cradleEngineSelected, value); }
-
-        public bool ElevatorEngineSelected { get => this.elevatorEngineSelected; set => this.SetProperty(ref this.elevatorEngineSelected, value); }
-
-        public bool MicroCarterLeftSideBay1 { get => this.microCarterLeftSideBay1; set => this.SetProperty(ref this.microCarterLeftSideBay1, value); }
-
-        public bool MicroCarterLeftSideBay2 { get => this.microCarterLeftSideBay2; set => this.SetProperty(ref this.microCarterLeftSideBay2, value); }
-
-        public bool MicroCarterLeftSideBay3 { get => this.microCarterLeftSideBay3; set => this.SetProperty(ref this.microCarterLeftSideBay3, value); }
-
-        public bool MicroCarterRightSideBay1 { get => this.microCarterRightSideBay1; set => this.SetProperty(ref this.microCarterRightSideBay1, value); }
-
-        public bool MicroCarterRightSideBay2 { get => this.microCarterRightSideBay2; set => this.SetProperty(ref this.microCarterRightSideBay2, value); }
-
-        public bool MicroCarterRightSideBay3 { get => this.microCarterRightSideBay3; set => this.SetProperty(ref this.microCarterRightSideBay3, value); }
-
-        public bool MushroomHeadButtonBay1 { get => this.mushroomHeadButtonBay1; set => this.SetProperty(ref this.mushroomHeadButtonBay1, value); }
-
-        public bool MushroomHeadButtonBay2 { get => this.mushroomHeadButtonBay2; set => this.SetProperty(ref this.mushroomHeadButtonBay2, value); }
-
-        public bool MushroomHeadButtonBay3 { get => this.mushroomHeadButtonBay3; set => this.SetProperty(ref this.mushroomHeadButtonBay3, value); }
-
         public BindableBase NavigationViewModel { get; set; }
 
         public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
+
+        public bool[] SensorStatus { get => this.sensorStatus; set => this.SetProperty(ref this.sensorStatus, value); }
 
         #endregion
 
@@ -122,9 +74,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
 
         public async Task OnEnterViewAsync()
         {
-            this.DisableVariousInputsSensorsState();
-            this.updateVariousInputsSensorsState = this.eventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+            this.updateVariousInputsSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
                     message => this.UpdateVariousInputsSensorsState(message.Data.SensorsStates),
                     ThreadOption.PublisherThread,
@@ -138,46 +88,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState
             this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateVariousInputsSensorsState);
         }
 
-        private void DisableVariousInputsSensorsState()
-        {
-            this.SecurityFunctionActive = false;
-
-            this.MushroomHeadButtonBay1 = false;
-            this.MicroCarterLeftSideBay1 = false;
-            this.MicroCarterRightSideBay1 = false;
-            this.AntiIntrusionShutterBay1 = false;
-
-            this.MushroomHeadButtonBay2 = false;
-            this.MicroCarterLeftSideBay2 = false;
-            this.MicroCarterRightSideBay2 = false;
-            this.AntiIntrusionShutterBay2 = false;
-
-            this.MushroomHeadButtonBay3 = false;
-            this.MicroCarterLeftSideBay3 = false;
-            this.MicroCarterRightSideBay3 = false;
-            this.AntiIntrusionShutterBay3 = false;
-        }
-
         private void UpdateVariousInputsSensorsState(bool[] message)
         {
-            //this.ioSensorsStatus.UpdateInputStates(message);
-
-            //this.SecurityFunctionActive = this.ioSensorsStatus.SecurityFunctionActive;
-
-            //this.MushroomHeadButtonBay1 = !this.ioSensorsStatus.MushroomHeadButtonBay1;
-            //this.MicroCarterLeftSideBay1 = this.ioSensorsStatus.MicroCarterLeftSideBay1;
-            //this.MicroCarterRightSideBay1 = this.ioSensorsStatus.MicroCarterRightSideBay1;
-            //this.AntiIntrusionShutterBay1 = !this.ioSensorsStatus.AntiIntrusionShutterBay1;
-
-            //this.MushroomHeadButtonBay2 = !this.ioSensorsStatus.MushroomHeadButtonBay2;
-            //this.MicroCarterLeftSideBay2 = this.ioSensorsStatus.MicroCarterLeftSideBay2;
-            //this.MicroCarterRightSideBay2 = this.ioSensorsStatus.MicroCarterRightSideBay2;
-            //this.AntiIntrusionShutterBay2 = !this.ioSensorsStatus.AntiIntrusionShutterBay2;
-
-            //this.MushroomHeadButtonBay3 = !this.ioSensorsStatus.MushroomHeadButtonBay3;
-            //this.MicroCarterLeftSideBay3 = this.ioSensorsStatus.MicroCarterLeftSideBay3;
-            //this.MicroCarterRightSideBay3 = this.ioSensorsStatus.MicroCarterRightSideBay3;
-            //this.AntiIntrusionShutterBay3 = !this.ioSensorsStatus.AntiIntrusionShutterBay3;
+            this.SensorStatus = message;
         }
 
         #endregion

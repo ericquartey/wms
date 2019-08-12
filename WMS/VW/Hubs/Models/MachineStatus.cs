@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.VW.MachineAutomationService.Hubs
 {
@@ -14,7 +15,7 @@ namespace Ferretto.VW.MachineAutomationService.Hubs
 
         public int MachineId { get; set; }
 
-        public MachineMode Mode { get; set; } = MachineMode.Offline;
+        public Enums.MachineStatus Mode { get; set; } = Enums.MachineStatus.Offline;
 
         #endregion
     }

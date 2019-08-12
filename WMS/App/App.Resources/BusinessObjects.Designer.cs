@@ -547,15 +547,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inventory.
-        /// </summary>
-        public static string Inventory {
-            get {
-                return ResourceManager.GetString("Inventory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Inventory Tolerance.
         /// </summary>
         public static string InventoryTolerance {
@@ -709,155 +700,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed.
-        /// </summary>
-        public static string ItemListRowStatusCompleted {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        public static string ItemListRowStatusError {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executing.
-        /// </summary>
-        public static string ItemListRowStatusExecuting {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusExecuting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incomplete.
-        /// </summary>
-        public static string ItemListRowStatusIncomplete {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusIncomplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New.
-        /// </summary>
-        public static string ItemListRowStatusNew {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ready.
-        /// </summary>
-        public static string ItemListRowStatusReady {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusReady", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Suspended.
-        /// </summary>
-        public static string ItemListRowStatusSuspended {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusSuspended", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Waiting.
-        /// </summary>
-        public static string ItemListRowStatusWaiting {
-            get {
-                return ResourceManager.GetString("ItemListRowStatusWaiting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Associated Shipment Unit.
         /// </summary>
         public static string ItemListShipmentUnitAssociated {
             get {
                 return ResourceManager.GetString("ItemListShipmentUnitAssociated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Completed.
-        /// </summary>
-        public static string ItemListStatusCompleted {
-            get {
-                return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        public static string ItemListStatusError {
-            get {
-                return ResourceManager.GetString("ItemListStatusError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executing.
-        /// </summary>
-        public static string ItemListStatusExecuting {
-            get {
-                return ResourceManager.GetString("ItemListStatusExecuting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incomplete.
-        /// </summary>
-        public static string ItemListStatusIncomplete {
-            get {
-                return ResourceManager.GetString("ItemListStatusIncomplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New.
-        /// </summary>
-        public static string ItemListStatusNew {
-            get {
-                return ResourceManager.GetString("ItemListStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ready.
-        /// </summary>
-        public static string ItemListStatusReady {
-            get {
-                return ResourceManager.GetString("ItemListStatusReady", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Suspended.
-        /// </summary>
-        public static string ItemListStatusSuspended {
-            get {
-                return ResourceManager.GetString("ItemListStatusSuspended", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Waiting.
-        /// </summary>
-        public static string ItemListStatusWaiting {
-            get {
-                return ResourceManager.GetString("ItemListStatusWaiting", resourceCulture);
             }
         }
         
@@ -1339,33 +1186,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expired.
-        /// </summary>
-        public static string MachineMaintenanceStatusExpired {
-            get {
-                return ResourceManager.GetString("MachineMaintenanceStatusExpired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Expiring.
-        /// </summary>
-        public static string MachineMaintenanceStatusExpiring {
-            get {
-                return ResourceManager.GetString("MachineMaintenanceStatusExpiring", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Valid.
-        /// </summary>
-        public static string MachineMaintenanceStatusValid {
-            get {
-                return ResourceManager.GetString("MachineMaintenanceStatusValid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Manual Time.
         /// </summary>
         public static string MachineManualTime {
@@ -1483,42 +1303,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatic.
-        /// </summary>
-        public static string MachineStatusAutomatic {
-            get {
-                return ResourceManager.GetString("MachineStatusAutomatic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        public static string MachineStatusError {
-            get {
-                return ResourceManager.GetString("MachineStatusError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Manual.
-        /// </summary>
-        public static string MachineStatusManual {
-            get {
-                return ResourceManager.GetString("MachineStatusManual", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Offline.
-        /// </summary>
-        public static string MachineStatusOffline {
-            get {
-                return ResourceManager.GetString("MachineStatusOffline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Test Date.
         /// </summary>
         public static string MachineTestDate {
@@ -1573,164 +1357,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed.
-        /// </summary>
-        public static string MissionOperationStatusCompleted {
-            get {
-                return ResourceManager.GetString("MissionOperationStatusCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        public static string MissionOperationStatusError {
-            get {
-                return ResourceManager.GetString("MissionOperationStatusError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executing.
-        /// </summary>
-        public static string MissionOperationStatusExecuting {
-            get {
-                return ResourceManager.GetString("MissionOperationStatusExecuting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incomplete.
-        /// </summary>
-        public static string MissionOperationStatusIncomplete {
-            get {
-                return ResourceManager.GetString("MissionOperationStatusIncomplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New.
-        /// </summary>
-        public static string MissionOperationStatusNew {
-            get {
-                return ResourceManager.GetString("MissionOperationStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Completed.
-        /// </summary>
-        public static string MissionStatusCompleted {
-            get {
-                return ResourceManager.GetString("MissionStatusCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        public static string MissionStatusError {
-            get {
-                return ResourceManager.GetString("MissionStatusError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executing.
-        /// </summary>
-        public static string MissionStatusExecuting {
-            get {
-                return ResourceManager.GetString("MissionStatusExecuting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incomplete.
-        /// </summary>
-        public static string MissionStatusIncomplete {
-            get {
-                return ResourceManager.GetString("MissionStatusIncomplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New.
-        /// </summary>
-        public static string MissionStatusNew {
-            get {
-                return ResourceManager.GetString("MissionStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bypass.
-        /// </summary>
-        public static string MissionTypeBypass {
-            get {
-                return ResourceManager.GetString("MissionTypeBypass", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reorder.
-        /// </summary>
-        public static string MissionTypeReorder {
-            get {
-                return ResourceManager.GetString("MissionTypeReorder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Replace.
-        /// </summary>
-        public static string MissionTypeReplace {
-            get {
-                return ResourceManager.GetString("MissionTypeReplace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mono Reference.
-        /// </summary>
-        public static string MonoReference {
-            get {
-                return ResourceManager.GetString("MonoReference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insert.
-        /// </summary>
-        public static string OperationInsert {
-            get {
-                return ResourceManager.GetString("OperationInsert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reorder.
-        /// </summary>
-        public static string OperationReorder {
-            get {
-                return ResourceManager.GetString("OperationReorder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Replace.
-        /// </summary>
-        public static string OperationReplace {
-            get {
-                return ResourceManager.GetString("OperationReplace", resourceCulture);
             }
         }
         
@@ -1771,15 +1402,6 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick.
-        /// </summary>
-        public static string Pick {
-            get {
-                return ResourceManager.GetString("Pick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pick Tolerance.
         /// </summary>
         public static string PickTolerance {
@@ -1789,29 +1411,11 @@ namespace Ferretto.WMS.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multi Reference.
-        /// </summary>
-        public static string PluriReference {
-            get {
-                return ResourceManager.GetString("PluriReference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
         public static string Priority {
             get {
                 return ResourceManager.GetString("Priority", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Put.
-        /// </summary>
-        public static string Put {
-            get {
-                return ResourceManager.GetString("Put", resourceCulture);
             }
         }
         
@@ -1866,42 +1470,6 @@ namespace Ferretto.WMS.App.Resources {
         public static string SelectedItem {
             get {
                 return ResourceManager.GetString("SelectedItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Back.
-        /// </summary>
-        public static string SideBack {
-            get {
-                return ResourceManager.GetString("SideBack", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Front.
-        /// </summary>
-        public static string SideFront {
-            get {
-                return ResourceManager.GetString("SideFront", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Left.
-        /// </summary>
-        public static string SideLeft {
-            get {
-                return ResourceManager.GetString("SideLeft", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Right.
-        /// </summary>
-        public static string SideRight {
-            get {
-                return ResourceManager.GetString("SideRight", resourceCulture);
             }
         }
         

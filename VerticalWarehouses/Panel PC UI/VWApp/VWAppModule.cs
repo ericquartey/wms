@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Ioc;
@@ -34,9 +34,9 @@ namespace Ferretto.VW.App
             containerProvider.Resolve<IInstallationHubClient>().ConnectAsync();
             containerProvider.Resolve<IDataHubClient>().ConnectAsync();
 
-            var viewModel = (containerProvider.Resolve<IMainWindow>() as System.Windows.Window).DataContext;
+            containerProvider.Resolve<IHealthProbeService>().Start();
 
-            (viewModel as MainWindowViewModel)?.HACK_InitialiseHubOperator();
+            var viewModel = (containerProvider.Resolve<IMainWindow>() as System.Windows.Window).DataContext;
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

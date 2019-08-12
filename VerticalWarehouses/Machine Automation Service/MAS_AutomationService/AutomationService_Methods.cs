@@ -37,6 +37,25 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private void CurrentPositionMethod(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.CurrentPositionNotify(msgUI);
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.logger.LogTrace($"5:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
         private void HomingMethod(NotificationMessage receivedMessage)
         {
             try
@@ -248,6 +267,25 @@ namespace Ferretto.VW.MAS.AutomationService
             catch (Exception ex)
             {
                 this.logger.LogTrace($"8:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
+        private void InverterStatusWordMethod(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.InverterStatusWordNotify(msgUI);
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
             }
         }

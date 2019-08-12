@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
+﻿using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
 {
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
 
         #region Properties
 
-        public bool TargetReached { get; }
+        public bool TargetReached => (this.Value & 0x0400) > 0;
 
         #endregion
     }

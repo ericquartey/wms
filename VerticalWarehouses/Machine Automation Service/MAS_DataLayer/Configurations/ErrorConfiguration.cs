@@ -1,10 +1,10 @@
-using Ferretto.VW.MAS.DataModels.Errors;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class ErrorConfiguration : IEntityTypeConfiguration<Error>
+    internal class ErrorConfiguration : IEntityTypeConfiguration<Error>
     {
         #region Methods
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -10,6 +11,7 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -201,6 +203,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 if (this.currentStateMachine != null
                     && receivedMessage.Type != MessageType.Stop
                     && receivedMessage.Type != MessageType.SensorsChanged
+                    && receivedMessage.Type != MessageType.PowerEnable
                     )
                 {
                     var errorNotification = new NotificationMessage(
@@ -256,6 +259,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.ProcessResetSecurityMessage(receivedMessage);
                         break;
 
+                    case MessageType.PowerEnable:
+                        this.ProcessPowerEnableMessage(receivedMessage);
+                        break;
+
                     case MessageType.InverterStop:
                         this.ProcessInverterStopMessage();
                         break;
@@ -301,11 +308,11 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                         {
                             var ioIndex = receivedMessage.DeviceIndex;
+                            var oldNormalState = this.machineSensorsStatus.IsMachineInNormalState;
 
                             if (this.machineSensorsStatus.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
-
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
 
                                 msg = new NotificationMessage(
@@ -319,6 +326,15 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
                                 this.forceRemoteIoStatusPublish = false;
                             }
+                            if (oldNormalState
+                                && !this.machineSensorsStatus.IsMachineInNormalState
+                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                                )
+                            {
+                                this.logger.LogWarning($"3b:Normal machine state fall detected! Set Power Enable Off.");
+                                var powerEnableData = new PowerEnableMessageData(false);
+                                this.CreatePowerEnableStateMachine(powerEnableData);
+                            }
                         }
                         break;
 
@@ -328,6 +344,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
                         {
                             var inverterIndex = receivedMessage.DeviceIndex;
+
+                            //TEMP Update X, Y axis positions
+                            if (dataInverters.CurrentAxis == Axis.Vertical)
+                            {
+                                lock (this.machineSensorsStatus)
+                                {
+                                    this.machineSensorsStatus.AxisYPosition = dataInverters.CurrentPosition;
+                                }
+                            }
+                            else
+                            {
+                                lock (this.machineSensorsStatus)
+                                {
+                                    this.machineSensorsStatus.AxisXPosition = dataInverters.CurrentPosition;
+                                }
+                            }
 
                             if (this.machineSensorsStatus.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
@@ -344,7 +376,36 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
                                 this.forceInverterIoStatusPublish = false;
+
+                                //if(this.machineSensorsStatus.IsInverterFault)
                             }
+                        }
+                        break;
+
+                    case FieldMessageType.InverterStatusWord:
+                        this.logger.LogTrace($"5:InverterStatusWord received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is IInverterStatusWordFieldMessageData statusWordData)
+                        {
+                            var statusWord = new StatusWordBase(statusWordData.Value);
+                            if (statusWord.IsFault
+                                && this.machineSensorsStatus.IsMachineInNormalState
+                                && (this.currentStateMachine == null || !this.currentStateMachine.GetType().ToString().Contains("PowerEnableStateMachine"))
+                                )
+                            {
+                                this.logger.LogWarning($"6:Inverter fault detected in device {receivedMessage.DeviceIndex}! Set Power Enable Off.");
+                                var powerEnableData = new PowerEnableMessageData(false);
+                                this.CreatePowerEnableStateMachine(powerEnableData);
+                            }
+
+                            var msgData = new InverterStatusWordMessageData(receivedMessage.DeviceIndex, statusWordData.Value);
+                            msg = new NotificationMessage(
+                            msgData,
+                            "Inverter Status Word",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.InverterStatusWord,
+                            MessageStatus.OperationExecuting);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                         }
                         break;
 
@@ -380,7 +441,6 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
-
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             }
@@ -415,7 +475,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             fieldNotificationEvent.Subscribe(
                 message =>
                 {
-                    this.logger.LogTrace($"Enqueue Field Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}");
+                    this.logger.LogTrace($"Enqueue Field Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}, Count: {this.fieldNotificationQueue.Count}");
                     this.fieldNotificationQueue.Enqueue(message);
                 },
                 ThreadOption.PublisherThread,
@@ -479,7 +539,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                                         // update the installation status homing flag in the dataLayer
                                         this.dataLayerConfigurationValueManagement.SetBoolConfigurationValue(
                                             (long)SetupStatus.VerticalHomingDone,
-                                            (long)ConfigurationCategory.SetupStatus,
+                                            ConfigurationCategory.SetupStatus,
                                             true);
                                     }
                                     catch (Exception ex)
@@ -628,6 +688,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         break;
 
                     case MessageType.ResetSecurity:
+                    case MessageType.PowerEnable:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             switch (receivedMessage.Status)

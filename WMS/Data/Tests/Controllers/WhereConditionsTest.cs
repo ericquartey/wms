@@ -5,6 +5,7 @@ using Ferretto.Common.DataModels;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -13,11 +14,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
     {
         #region Properties
 
-        protected Common.DataModels.Item Item1 { get; set; }
+        protected Item Item1 { get; set; }
 
-        protected Common.DataModels.SchedulerRequest SchedulerRequest1 { get; set; }
+        protected SchedulerRequest SchedulerRequest1 { get; set; }
 
-        protected Common.DataModels.SchedulerRequest SchedulerRequest2 { get; set; }
+        protected SchedulerRequest SchedulerRequest2 { get; set; }
 
         #endregion
 
@@ -54,15 +55,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         public void Initialize()
         {
             this.InitializeDatabase();
-            this.Item1 = new Common.DataModels.Item
+            this.Item1 = new Item
             {
                 AbcClassId = this.AbcClass1.Id,
                 Code = "Item #1 Code",
                 Description = "Item #1 Description",
                 Id = GetNewId(),
-                ManagementType = ItemManagementType.FIFO,
+                ManagementType = Enums.ItemManagementType.FIFO,
             };
-            this.SchedulerRequest1 = new Common.DataModels.SchedulerRequest
+            this.SchedulerRequest1 = new SchedulerRequest
             {
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
@@ -70,10 +71,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = GetNewId(),
                 IsInstant = false,
                 ItemId = this.Item1.Id,
-                OperationType = Common.DataModels.OperationType.Pick,
+                OperationType = Enums.OperationType.Pick,
                 RequestedQuantity = 1,
             };
-            this.SchedulerRequest2 = new Common.DataModels.SchedulerRequest
+            this.SchedulerRequest2 = new SchedulerRequest
             {
                 AreaId = this.Area1.Id,
                 BayId = this.Bay2.Id,
@@ -81,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Id = 2,
                 IsInstant = false,
                 ItemId = this.Item1.Id,
-                OperationType = Common.DataModels.OperationType.Put,
+                OperationType = Enums.OperationType.Put,
                 RequestedQuantity = 2,
             };
 

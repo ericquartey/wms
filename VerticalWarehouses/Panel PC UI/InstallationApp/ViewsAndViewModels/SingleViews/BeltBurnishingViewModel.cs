@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
-using Ferretto.VW.MAS.Utils.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -236,19 +236,18 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         {
             if (messageUI.NotificationMessage is NotificationMessageUI<PositioningMessageData> cp)
             {
+                this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
+                this.CurrentPosition = cp.Data.CurrentPosition.ToString();
+
                 switch (cp.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = false;
                         this.IsStopButtonActive = true;
                         break;
 
                     case MessageStatus.OperationEnd:
                     case MessageStatus.OperationStop:
-                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
 
@@ -258,11 +257,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                     case MessageStatus.OperationError:
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
-                        break;
-
-                    case MessageStatus.OperationExecuting:
-                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
-                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         break;
                 }
             }

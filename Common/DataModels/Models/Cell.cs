@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.Common.DataModels
 {
@@ -37,7 +38,7 @@ namespace Ferretto.Common.DataModels
 
         public int Priority { get; set; }
 
-        public Side Side { get; set; }
+        public Enums.Side Side { get; set; }
 
         public double? XCoordinate { get; set; }
 

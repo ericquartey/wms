@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -61,12 +61,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemVolume.Id,
-                OperationType = Common.DataModels.OperationType.Put,
+                OperationType = Enums.OperationType.Put,
                 RequestedQuantity = 10,
                 ReservedQuantity = 0,
                 Priority = 2,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
             };
 
             using (var context = this.CreateContext())
@@ -96,7 +96,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var request1After = context.SchedulerRequests.First();
 
                 Assert.AreEqual(
-                    Common.DataModels.SchedulerRequestStatus.Completed,
+                    Enums.SchedulerRequestStatus.Completed,
                     request1After.Status,
                     "The request should be completed");
             }
@@ -116,10 +116,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 operations.Sum(o => o.RequestedQuantity),
                 "The operation should take the full request quantity");
             Assert.IsTrue(
-                operations.All(o => o.Type == MissionOperationType.Put),
+                operations.All(o => o.Type == Enums.MissionOperationType.Put),
                 "A type of operation should be Put");
             Assert.IsTrue(
-                operations.All(o => o.Status == MissionOperationStatus.New),
+                operations.All(o => o.Status == Enums.MissionOperationStatus.New),
                 "A status of operation should be New");
             Assert.IsTrue(
                 operations.All(o => o.ItemId == this.ItemVolume.Id),
@@ -164,12 +164,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemVolume.Id,
-                OperationType = Common.DataModels.OperationType.Put,
+                OperationType = Enums.OperationType.Put,
                 RequestedQuantity = 5,
                 ReservedQuantity = 0,
                 Priority = 2,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
             };
 
             using (var context = this.CreateContext())
@@ -198,7 +198,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var request1After = context.SchedulerRequests.First();
 
                 Assert.AreEqual(
-                    Common.DataModels.SchedulerRequestStatus.Completed,
+                    Enums.SchedulerRequestStatus.Completed,
                     request1After.Status,
                     "The request should be completed");
             }
@@ -208,11 +208,11 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 operations.Count(),
                 "A mission should be generated");
             Assert.AreEqual(
-                MissionOperationType.Put,
+                Enums.MissionOperationType.Put,
                 operations.First().Type,
                 "A type of mission should be Put");
             Assert.AreEqual(
-                MissionOperationStatus.New,
+                Enums.MissionOperationStatus.New,
                 operations.First().Status,
                 "A status of mission should be New");
             Assert.AreEqual(
@@ -270,12 +270,12 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemVolume.Id,
-                OperationType = Common.DataModels.OperationType.Put,
+                OperationType = Enums.OperationType.Put,
                 RequestedQuantity = 10,
                 ReservedQuantity = 0,
                 Priority = 2,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
+                Status = Enums.SchedulerRequestStatus.New,
             };
 
             using (var context = this.CreateContext())
@@ -304,7 +304,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 var request1After = context.SchedulerRequests.First();
 
                 Assert.AreEqual(
-                    Common.DataModels.SchedulerRequestStatus.New,
+                    Enums.SchedulerRequestStatus.New,
                     request1After.Status,
                     "The request should not be completed");
                 Assert.AreEqual(
@@ -318,11 +318,11 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 operations.Count(),
                 "A mission should be generated");
             Assert.AreEqual(
-                MissionOperationType.Put,
+                Enums.MissionOperationType.Put,
                 operations.First().Type,
                 "A type of mission should be Put");
             Assert.AreEqual(
-                MissionOperationStatus.New,
+                Enums.MissionOperationStatus.New,
                 operations.First().Status,
                 "A status of mission should be New");
             Assert.AreEqual(

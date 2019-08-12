@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public double RequestedQuantity { get; set; }
 
-        public ItemListRowStatus Status { get; set; }
+        public Enums.ItemListRowStatus Status { get; set; }
 
         #endregion
     }

@@ -28,7 +28,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice.Interfaces
 
         void ExecuteIoPowerUp();
 
+        void ExecutePowerEnable(FieldCommandMessage receivedMessage);
+
         void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage);
+
+        void ExecuteResetSecurity();
 
         void ExecuteSetConfiguration();
 

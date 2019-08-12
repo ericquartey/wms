@@ -1,11 +1,10 @@
-﻿using Ferretto.VW.MAS.DataModels.Cells;
-using Ferretto.VW.MAS.DataModels.LoadingUnits;
+﻿using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    public class CellsConfiguration : IEntityTypeConfiguration<Cell>
+    internal class CellsConfiguration : IEntityTypeConfiguration<Cell>
     {
         #region Methods
 

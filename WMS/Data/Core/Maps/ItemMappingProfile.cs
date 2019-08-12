@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Maps
 {
@@ -10,12 +11,6 @@ namespace Ferretto.WMS.Data.Core.Maps
 
         public ItemMappingProfile()
         {
-            this.CreateMap<ItemManagementType, Common.DataModels.ItemManagementType>()
-                .ConvertUsing(value => (Common.DataModels.ItemManagementType)value);
-
-            this.CreateMap<Common.DataModels.ItemManagementType, ItemManagementType>()
-                .ConvertUsing(value => (ItemManagementType)value);
-
             this.CreateMap<ItemAvailable, Common.DataModels.Item>();
             this.CreateMap<Common.DataModels.Item, ItemAvailable>();
 

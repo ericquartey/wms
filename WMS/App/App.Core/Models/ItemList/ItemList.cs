@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -16,11 +17,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int itemListRowsCount;
 
-        private ItemListType? itemListType;
+        private Enums.ItemListType? itemListType;
 
         private int? priority;
 
-        private ItemListStatus? status;
+        private Enums.ItemListStatus? status;
 
         #endregion
 
@@ -39,13 +40,13 @@ namespace Ferretto.WMS.App.Core.Models
         public int ItemListRowsCount { get => this.itemListRowsCount; set => this.SetProperty(ref this.itemListRowsCount, value); }
 
         [Display(Name = nameof(BusinessObjects.Type), ResourceType = typeof(BusinessObjects))]
-        public ItemListType? ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+        public Enums.ItemListType? ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         [Display(Name = nameof(BusinessObjects.Priority), ResourceType = typeof(BusinessObjects))]
         public int? Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
 
         [Display(Name = nameof(BusinessObjects.Status), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus? Status { get => this.status; set => this.SetProperty(ref this.status, value); }
+        public Enums.ItemListStatus? Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         #endregion
     }

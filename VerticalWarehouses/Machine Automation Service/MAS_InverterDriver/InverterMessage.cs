@@ -270,9 +270,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             returnString.Append("InverterMessage:");
 
+            returnString.Append($"SystemIndex={this.SystemIndex}:");
+
             returnString.Append($"IsWriteMessage={this.IsWriteMessage}:");
 
-            returnString.Append($"parameterId={this.parameterId:X}:");
+            returnString.Append($"parameterId={this.parameterId}:");
 
             returnString.Append($"payloadLength={this.payloadLength:X}:");
 
@@ -289,7 +291,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var sb = new StringBuilder();
                     foreach (var b in this.payload)
                     {
-                        sb.AppendFormat("{0:x2}", b);
+                        sb.AppendFormat("{0:x2};", b);
                     }
                     returnString.Append($"{sb}");
                 }

@@ -2,6 +2,7 @@
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -37,13 +38,13 @@ namespace Ferretto.WMS.Data.Core.Models
         [Positive]
         public int Priority { get; set; }
 
-        public MissionStatus Status { get; set; }
+        public Enums.MissionStatus Status { get; set; }
 
         #endregion
 
         #region Methods
 
-        internal static MissionStatus GetStatus(
+        internal static Enums.MissionStatus GetStatus(
            int operationsCount,
            int newOperationsCount,
            int executingOperationsCount,
@@ -53,30 +54,30 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             if (operationsCount == 0 || operationsCount == newOperationsCount)
             {
-                return MissionStatus.New;
+                return Enums.MissionStatus.New;
             }
 
             if (operationsCount == completedOperationsCount)
             {
-                return MissionStatus.Completed;
+                return Enums.MissionStatus.Completed;
             }
 
             if (errorOperationsCount > 0)
             {
-                return MissionStatus.Error;
+                return Enums.MissionStatus.Error;
             }
 
             if (executingOperationsCount > 0)
             {
-                return MissionStatus.Executing;
+                return Enums.MissionStatus.Executing;
             }
 
             if (incompleteOperationsCount > 0)
             {
-                return MissionStatus.Incomplete;
+                return Enums.MissionStatus.Incomplete;
             }
 
-            return MissionStatus.Executing;
+            return Enums.MissionStatus.Executing;
         }
 
         #endregion
