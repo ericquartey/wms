@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Prism.Commands;
@@ -324,11 +325,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.controlWord, value, () =>
             {
                 this.RaisePropertyChanged(nameof(this.ControlWord));
-                this.RaisePropertyChanged(nameof(this.ControlWordBinary));
+                this.RaisePropertyChanged(nameof(this.ControlWordArray));
             });
         }
 
-        public string ControlWordBinary => Convert.ToString(this.ControlWord, 2).PadLeft(16, '0');
+        public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
+                                               let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
+                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) }).Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+        
 
         public ObservableCollection<BitModel> DigitalIO
         {

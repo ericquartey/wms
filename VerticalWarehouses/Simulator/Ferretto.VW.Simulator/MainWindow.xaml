@@ -245,19 +245,32 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Right"
-                                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="Control Word:" />
+                        <ItemsControl Grid.Row="0"
+                                      Grid.Column="1"
+                                      Margin="0,5"
+                                      ItemsSource="{Binding ControlWordArray}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
 
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Bottom"
-                                   FontSize="12"
-                                   Style="{StaticResource VWSIM_CustomLabel_LabelInverseTextBlockStyle}"
-                                   Text="{Binding ControlWordBinary, FallbackValue='0000000000000000'}" />
+                                    <ctrl:CustomSensorSquareControl Height="19"
+                                                                        Margin="3,1"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"
+                                                                        IsReadOnly="True"
+                                                                        LabelText="{Binding Name}"
+                                                                        SensorState="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        Style="{StaticResource VWSIM_CustomSensorSquareControlStyle}"
+                                                                        ToolTip="{Binding Description}" />
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
 
                     </Grid>
 
