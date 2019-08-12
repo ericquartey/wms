@@ -108,14 +108,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
             }
 
-            return false;
+            return false;   // EvaluateWriteMessage will not send a StatusWordParam
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            return true;
+            return true;    // EvaluateReadMessage will stop sending StatusWordParam 
         }
 
         #endregion
