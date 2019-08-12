@@ -14,6 +14,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -220,25 +221,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ShipmentUnitCode = i.ShipmentUnitCode,
                     ShipmentUnitDescription = i.ShipmentUnitDescription,
                     CompletedRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Completed),
                     ErrorRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Error),
                     ExecutingRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Executing),
                     NewRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.New),
                     WaitingRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Waiting),
                     IncompleteRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Suspended),
                     ReadyRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Ready),
                     HasActiveRows = i.ItemListRows.Any(r =>
-                        r.Status != Common.DataModels.ItemListRowStatus.Completed &&
-                        r.Status != Common.DataModels.ItemListRowStatus.New),
-                    ItemListType = (ItemListType)i.ItemListType,
+                        r.Status != Enums.ItemListRowStatus.Completed &&
+                        r.Status != Enums.ItemListRowStatus.New),
+                    ItemListType = i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
                     CreationDate = i.CreationDate,
                 });
@@ -253,27 +254,27 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Code = i.Code,
                     Description = i.Description,
                     Priority = i.Priority,
-                    ItemListType = (ItemListType)i.ItemListType,
+                    ItemListType = i.ItemListType,
                     RowsCount = i.ItemListRows.Count(),
                     CompletedRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Completed),
                     ErrorRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Error),
                     ExecutingRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Executing),
                     WaitingRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Waiting),
                     IncompleteRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Suspended),
                     NewRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.New),
                     ReadyRowsCount =
-                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
+                        i.ItemListRows.Count(r => r.Status == Enums.ItemListRowStatus.Ready),
                     HasActiveRows = i.ItemListRows.Any(r =>
-                        r.Status != Common.DataModels.ItemListRowStatus.Completed &&
-                        r.Status != Common.DataModels.ItemListRowStatus.New),
+                        r.Status != Enums.ItemListRowStatus.Completed &&
+                        r.Status != Enums.ItemListRowStatus.New),
                     CreationDate = i.CreationDate,
                     Job = i.Job,
                     CustomerOrderCode = i.CustomerOrderCode,

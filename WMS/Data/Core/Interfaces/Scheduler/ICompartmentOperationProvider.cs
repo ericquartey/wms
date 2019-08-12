@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
@@ -24,8 +25,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         IQueryable<T> OrderCompartmentsByManagementType<T>(
             IQueryable<T> compartments,
-            ItemManagementType managementType,
-            OperationType operationType)
+            Enums.ItemManagementType managementType,
+            Enums.OperationType operationType)
             where T : IOrderableCompartment;
 
         #endregion

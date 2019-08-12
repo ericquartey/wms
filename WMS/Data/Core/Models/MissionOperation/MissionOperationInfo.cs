@@ -1,5 +1,6 @@
 using System;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -57,13 +58,13 @@ namespace Ferretto.WMS.Data.Core.Models
         [PositiveOrZero]
         public double RequestedQuantity { get; set; }
 
-        public MissionOperationStatus Status { get; set; } = MissionOperationStatus.New;
+        public Enums.MissionOperationStatus Status { get; set; } = Enums.MissionOperationStatus.New;
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public MissionOperationType Type { get; set; }
+        public Enums.MissionOperationType Type { get; set; }
 
         #endregion
     }

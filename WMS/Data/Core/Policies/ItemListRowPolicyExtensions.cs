@@ -2,6 +2,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Policies
 {
@@ -29,7 +30,7 @@ namespace Ferretto.WMS.Data.Core.Policies
                     Resources.ItemListRow.CannotDeleteTheItemListRowBecauseItHasAssociatedActiveMissions);
             }
 
-            if (rowToDelete.Status != ItemListRowStatus.New)
+            if (rowToDelete.Status != Enums.ItemListRowStatus.New)
             {
                 policy.AddErrorMessage(
                     Resources.ItemListRow.CannotDeleteTheItemListRowBecauseItHasAssociatedItIsNotInTheNewState);
@@ -46,11 +47,11 @@ namespace Ferretto.WMS.Data.Core.Policies
                 Type = PolicyType.Operation,
             };
 
-            if (rowToExecute.Status != ItemListRowStatus.New &&
-                rowToExecute.Status != ItemListRowStatus.Error &&
-                rowToExecute.Status != ItemListRowStatus.Incomplete &&
-                rowToExecute.Status != ItemListRowStatus.Suspended &&
-                rowToExecute.Status != ItemListRowStatus.Waiting)
+            if (rowToExecute.Status != Enums.ItemListRowStatus.New &&
+                rowToExecute.Status != Enums.ItemListRowStatus.Error &&
+                rowToExecute.Status != Enums.ItemListRowStatus.Incomplete &&
+                rowToExecute.Status != Enums.ItemListRowStatus.Suspended &&
+                rowToExecute.Status != Enums.ItemListRowStatus.Waiting)
             {
                 policy.AddErrorMessage(
                     Resources.ItemListRow.CannotExecuteTheItemListRowBecauseOfItsCurrentState);

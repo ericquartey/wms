@@ -3,6 +3,7 @@ using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DataModels = Ferretto.Common.DataModels;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -28,7 +29,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new DataModels.CompartmentType

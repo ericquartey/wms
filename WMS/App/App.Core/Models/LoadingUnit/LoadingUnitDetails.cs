@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.WMS.App.Resources;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -41,7 +42,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string note;
 
-        private ReferenceType? referenceType;
+        private Enums.ReferenceType? referenceType;
 
         private int? weight;
 
@@ -206,7 +207,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
-        public ReferenceType? ReferenceType
+        public Enums.ReferenceType? ReferenceType
         {
             get => this.referenceType;
             set => this.SetProperty(ref this.referenceType, value);

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using DataModels = Ferretto.Common.DataModels;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -16,14 +17,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         #region Methods
 
         [TestMethod]
-        [DataRow(DataModels.ItemListRowStatus.New, typeof(CreatedAtActionResult))]
-        [DataRow(DataModels.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Suspended, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Waiting, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Error, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Incomplete, typeof(BadRequestObjectResult))]
-        public async Task CreateAsync_WhenListIsInStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
+        [DataRow(Enums.ItemListRowStatus.New, typeof(CreatedAtActionResult))]
+        [DataRow(Enums.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Suspended, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Waiting, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Error, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Incomplete, typeof(BadRequestObjectResult))]
+        public async Task CreateAsync_WhenListIsInStatus(Enums.ItemListRowStatus rowStatus, Type resultType)
         {
             #region Arrange
 
@@ -80,15 +81,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         }
 
         [TestMethod]
-        [DataRow(DataModels.ItemListRowStatus.New, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Error, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Incomplete, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Suspended, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Waiting, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Ready, typeof(BadRequestObjectResult))]
-        public async Task ExecuteAsync_InStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
+        [DataRow(Enums.ItemListRowStatus.New, typeof(OkResult))]
+        [DataRow(Enums.ItemListRowStatus.Error, typeof(OkResult))]
+        [DataRow(Enums.ItemListRowStatus.Incomplete, typeof(OkResult))]
+        [DataRow(Enums.ItemListRowStatus.Suspended, typeof(OkResult))]
+        [DataRow(Enums.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
+        [DataRow(Enums.ItemListRowStatus.Waiting, typeof(OkResult))]
+        [DataRow(Enums.ItemListRowStatus.Ready, typeof(BadRequestObjectResult))]
+        public async Task ExecuteAsync_InStatus(Enums.ItemListRowStatus rowStatus, Type resultType)
         {
             #region Arrange
 
@@ -98,7 +99,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var itemArea1 = new DataModels.ItemArea
@@ -144,7 +145,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var list1 = new Common.DataModels.ItemList
             {
                 Id = list1Id,
-                ItemListType = DataModels.ItemListType.Put,
+                ItemListType = Enums.ItemListType.Put,
                 ItemListRows = new[] { row1 },
             };
 

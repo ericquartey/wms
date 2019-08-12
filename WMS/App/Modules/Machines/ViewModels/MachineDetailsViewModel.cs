@@ -157,7 +157,7 @@ namespace Ferretto.WMS.App.Modules.Machines
             if (e != null
                 && this.machineLive is MachineLive machine)
             {
-                machine.Status = (MachineStatus)e.MachineStatus.Mode;
+                machine.Status = e.MachineStatus.Mode;
                 machine.FaultCode = e.MachineStatus.FaultCode;
                 machine.CurrentLoadingUnitPosition = e.MachineStatus.ElevatorStatus.Position;
                 machine.CurrentLoadingUnitId = e.MachineStatus.ElevatorStatus.LoadingUnitId;

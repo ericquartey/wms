@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -75,9 +76,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             this.LoadingUnit2Cell2 = new LoadingUnit { Id = GetNewId(), Code = "Loading Unit #2", CellId = this.Cell2Aisle2.Id, LoadingUnitTypeId = this.LoadingUnitType.Id };
             this.Bay1Aisle1 = new Bay { Id = GetNewId(), Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine1Aisle1.Id };
             this.Bay2Aisle2 = new Bay { Id = GetNewId(), Description = "Bay #2", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine2Aisle2.Id };
-            this.Item1 = new Item { Id = GetNewId(), Code = "Item #1", ManagementType = ItemManagementType.FIFO };
-            this.ItemFifo = new Item { Id = GetNewId(), Code = "Item #2", ManagementType = ItemManagementType.FIFO, FifoTimePick = 1, FifoTimePut = 1 };
-            this.ItemVolume = new Item { Id = GetNewId(), Code = "Item #3", ManagementType = ItemManagementType.Volume };
+            this.Item1 = new Item { Id = GetNewId(), Code = "Item #1", ManagementType = Enums.ItemManagementType.FIFO };
+            this.ItemFifo = new Item { Id = GetNewId(), Code = "Item #2", ManagementType = Enums.ItemManagementType.FIFO, FifoTimePick = 1, FifoTimePut = 1 };
+            this.ItemVolume = new Item { Id = GetNewId(), Code = "Item #3", ManagementType = Enums.ItemManagementType.Volume };
             this.CompartmentType = new CompartmentType
             {
                 Id = GetNewId(),

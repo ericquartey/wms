@@ -9,6 +9,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Compartment = Ferretto.Common.DataModels.Compartment;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -101,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             IQueryable<CandidateCompartment> candidateCompartments;
             switch (request.OperationType)
             {
-                case OperationType.Pick:
+                case Enums.OperationType.Pick:
                     candidateCompartments = filteredCompartments
                         .Where(c => c.ItemId == request.ItemId)
                         .Select(c => new CandidateCompartment
@@ -131,7 +132,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     break;
 
-                case OperationType.Put:
+                case Enums.OperationType.Put:
 
                     var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
@@ -196,8 +197,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public IQueryable<T> OrderCompartmentsByManagementType<T>(
             IQueryable<T> compartments,
-            ItemManagementType managementType,
-            OperationType operationType)
+            Enums.ItemManagementType managementType,
+            Enums.OperationType operationType)
             where T : IOrderableCompartment
         {
             if (compartments == null)
@@ -209,7 +210,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             switch (managementType)
             {
-                case ItemManagementType.FIFO:
+                case Enums.ItemManagementType.FIFO:
                     {
                         var orderedCompartments = compartments
                             .OrderBy(c => c.FifoStartDate)
@@ -218,7 +219,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         return orderedCompartments;
                     }
 
-                case ItemManagementType.Volume:
+                case Enums.ItemManagementType.Volume:
                     {
                         var orderedCompartments = compartments
                             .OrderBy(selector);
@@ -230,7 +231,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     throw new ArgumentException(
                         string.Format(
                             Resources.Errors.UnableToInterpretEnumerationValueFor,
-                            nameof(ItemManagementType)),
+                            nameof(Enums.ItemManagementType)),
                         nameof(managementType));
             }
         }
@@ -253,7 +254,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)
+        private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(Enums.OperationType operationType)
             where T : IOrderableCompartment
         {
             if (typeof(T).GetInterface(nameof(IOrderableCompartmentSet)) != null)
@@ -262,7 +263,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 Expression<Func<T, double>> remainingCapacitySetSelector = c => c.RemainingCapacity / ((IOrderableCompartmentSet)c).Size;
 
-                return operationType == OperationType.Pick ? availabilitySetSelector : remainingCapacitySetSelector;
+                return operationType == Enums.OperationType.Pick ? availabilitySetSelector : remainingCapacitySetSelector;
             }
             else
             {
@@ -270,7 +271,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
 
-                return operationType == OperationType.Pick ? availabilitySelector : remainingCapacitySelector;
+                return operationType == Enums.OperationType.Pick ? availabilitySelector : remainingCapacitySelector;
             }
         }
 

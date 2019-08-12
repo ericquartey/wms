@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -51,10 +51,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var missionOperation1 = new Common.DataModels.MissionOperation
             {
                 Id = GetNewId(),
-                Status = Common.DataModels.MissionOperationStatus.Executing,
+                Status = Enums.MissionOperationStatus.Executing,
                 CompartmentId = compartment1.Id,
                 ItemId = itemCompartmentType.ItemId,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Type = Enums.MissionOperationType.Pick,
                 RequestedQuantity = 10,
             };
 
@@ -86,9 +86,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsTrue(result.Success);
 
             Assert.AreEqual(
-                MissionOperationStatus.Completed,
+                Enums.MissionOperationStatus.Completed,
                 result.Entity.Status,
-                $"The status of the mission should be '{MissionOperationStatus.Completed}'.");
+                $"The status of the mission should be '{Enums.MissionOperationStatus.Completed}'.");
 
             var updatedCompartment = await compartmentOperationProvider.GetByIdForStockUpdateAsync(compartment1.Id);
 
@@ -164,10 +164,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             var missionOperation1 = new Common.DataModels.MissionOperation
             {
                 Id = GetNewId(),
-                Status = Common.DataModels.MissionOperationStatus.Executing,
+                Status = Enums.MissionOperationStatus.Executing,
                 CompartmentId = compartment1.Id,
                 ItemId = item.Id,
-                Type = Common.DataModels.MissionOperationType.Pick,
+                Type = Enums.MissionOperationType.Pick,
                 RequestedQuantity = 7,
             };
 
@@ -201,9 +201,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Assert.IsTrue(result.Success);
 
                 Assert.AreEqual(
-                    MissionOperationStatus.Completed,
+                    Enums.MissionOperationStatus.Completed,
                     result.Entity.Status,
-                    $"The status of the mission should be '{MissionOperationStatus.Completed}'.");
+                    $"The status of the mission should be '{Enums.MissionOperationStatus.Completed}'.");
 
                 var updatedCompartment = await compartmentOperationProvider.GetByIdForStockUpdateAsync(compartment1.Id);
 

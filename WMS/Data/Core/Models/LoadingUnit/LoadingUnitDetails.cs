@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -38,7 +39,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CellPositionId { get; set; }
 
-        public Side CellSide { get; set; }
+        public Enums.Side CellSide { get; set; }
 
         [Required]
         [Unique]
@@ -90,7 +91,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Note { get; set; }
 
-        public ReferenceType ReferenceType { get; set; }
+        public Enums.ReferenceType ReferenceType { get; set; }
 
         [PositiveOrZero]
         public int Weight { get; set; }

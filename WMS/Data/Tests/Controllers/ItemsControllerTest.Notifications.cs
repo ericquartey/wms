@@ -6,6 +6,7 @@ using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Tests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -26,7 +27,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -94,14 +95,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var item2 = new Common.DataModels.Item
             {
                 Id = GetNewId(),
                 Code = "Item #2",
-                ManagementType = Common.DataModels.ItemManagementType.FIFO,
+                ManagementType = Enums.ItemManagementType.FIFO,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -219,7 +220,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             using (var context = this.CreateContext())
@@ -277,7 +278,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var item1 = new ItemDetails
             {
                 Code = "Item #1",
-                ManagementType = ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             #endregion
@@ -314,7 +315,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
             var itemArea1 = new Common.DataModels.ItemArea
             {
@@ -379,7 +380,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             using (var context = this.CreateContext())
@@ -423,7 +424,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
@@ -495,7 +496,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var compartmentType1 = new Common.DataModels.CompartmentType
@@ -587,7 +588,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             var itemArea1 = new Common.DataModels.ItemArea
@@ -686,7 +687,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = GetNewId(),
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
 
             using (var context = this.CreateContext())
@@ -734,7 +735,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = Enums.ItemManagementType.Volume,
             };
             var compartmentType1 = new Common.DataModels.CompartmentType
             {

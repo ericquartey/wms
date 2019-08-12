@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.Common.Utils;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -12,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastPutDate { get; set; }
 
-        public ItemManagementType ManagementType { get; set; }
+        public Enums.ItemManagementType ManagementType { get; set; }
 
         #endregion
     }

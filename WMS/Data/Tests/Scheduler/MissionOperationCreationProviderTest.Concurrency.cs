@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -39,10 +40,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 IsInstant = true,
                 RequestedQuantity = 15,
                 ReservedQuantity = 15,
-                Status = Common.DataModels.SchedulerRequestStatus.Completed,
+                Status = Enums.SchedulerRequestStatus.Completed,
                 Priority = 1,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                OperationType = Enums.OperationType.Pick,
             };
 
             var request2 = new Common.DataModels.SchedulerRequest
@@ -53,10 +54,10 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 IsInstant = true,
                 RequestedQuantity = 6,
                 ReservedQuantity = 0,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Status = Enums.SchedulerRequestStatus.New,
                 Priority = 1,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Type = Enums.SchedulerRequestType.Item,
+                OperationType = Enums.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())
@@ -133,9 +134,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 RequestedQuantity = 15,
                 ReservedQuantity = 0,
                 Priority = 1,
-                Status = Common.DataModels.SchedulerRequestStatus.New,
-                Type = Common.DataModels.SchedulerRequestType.Item,
-                OperationType = Common.DataModels.OperationType.Pick,
+                Status = Enums.SchedulerRequestStatus.New,
+                Type = Enums.SchedulerRequestType.Item,
+                OperationType = Enums.OperationType.Pick,
             };
 
             using (var context = this.CreateContext())

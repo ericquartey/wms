@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enums = Ferretto.Common.Resources.Enums;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -60,8 +60,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 MissionId = mission.Id,
                 CompartmentId = compartment.Id,
                 ItemId = this.Item1.Id,
-                Status = Common.DataModels.MissionOperationStatus.Executing,
-                Type = Common.DataModels.MissionOperationType.Put,
+                Status = Enums.MissionOperationStatus.Executing,
+                Type = Enums.MissionOperationType.Put,
                 RequestedQuantity = 10,
                 Sub1 = compartment.Sub1,
                 Sub2 = compartment.Sub2,
@@ -92,9 +92,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsTrue(result.Success, result.Description);
 
             Assert.AreEqual(
-                MissionOperationStatus.Incomplete,
+                Enums.MissionOperationStatus.Incomplete,
                 result.Entity.Status,
-                $"The status of the mission should be '{MissionOperationStatus.Incomplete}'.");
+                $"The status of the mission should be '{Enums.MissionOperationStatus.Incomplete}'.");
 
             var updatedCompartment = await compartmentProvider.GetByIdAsync(compartment.Id);
 
@@ -174,8 +174,8 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
                 Id = GetNewId(),
                 CompartmentId = emptyCompartment.Id,
                 ItemId = this.Item1.Id,
-                Status = Common.DataModels.MissionOperationStatus.Executing,
-                Type = Common.DataModels.MissionOperationType.Put,
+                Status = Enums.MissionOperationStatus.Executing,
+                Type = Enums.MissionOperationType.Put,
                 RequestedQuantity = 10,
                 Sub1 = emptyCompartment.Sub1,
                 Sub2 = emptyCompartment.Sub2,
@@ -215,9 +215,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             Assert.IsTrue(result.Success, result.Description);
 
             Assert.AreEqual(
-                MissionOperationStatus.Completed,
+                Enums.MissionOperationStatus.Completed,
                 result.Entity.Status,
-                $"The status of the mission should be '{MissionOperationStatus.Completed}'.");
+                $"The status of the mission should be '{Enums.MissionOperationStatus.Completed}'.");
 
             var updatedCompartment = await compartmentProvider.GetByIdAsync(emptyCompartment.Id);
 
