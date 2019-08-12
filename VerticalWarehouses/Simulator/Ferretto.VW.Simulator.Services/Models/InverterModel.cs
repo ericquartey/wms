@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Windows.Input;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.Simulator.Services.Models
@@ -278,6 +280,15 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #endregion
 
+        private ICommand inverterInFaultCommand;
+
+        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.ExecuteInverterInFaultCommand()));
+
+        private void ExecuteInverterInFaultCommand()
+        {
+            this.IsFault = !this.IsFault;
+        }
+
         #region Constructors
 
         public InverterModel(InverterType inverterType)
@@ -354,6 +365,9 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.statusWord &= ~0x0008;
                 }
+                this.RaisePropertyChanged(nameof(this.IsFault));
+                this.RaisePropertyChanged(nameof(this.StatusWord));
+                this.RaisePropertyChanged(nameof(this.StatusWordBinary));
             }
         }
 
@@ -386,6 +400,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             get => this.statusWord;
             set => this.SetProperty(ref this.statusWord, value, () =>
             {
+                this.RaisePropertyChanged(nameof(this.IsFault));
                 this.RaisePropertyChanged(nameof(this.StatusWord));
                 this.RaisePropertyChanged(nameof(this.StatusWordBinary));
             });

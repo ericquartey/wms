@@ -6,9 +6,11 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using NLog;
+using Prism.Commands;
 using Prism.Mvvm;
 using static Ferretto.VW.Simulator.Services.BufferUtility;
 
@@ -63,19 +65,19 @@ namespace Ferretto.VW.Simulator.Services
 
         public InverterModel Inverters00 { get => this.Inverters[0]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters01 { get => this.Inverters[1]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters01 { get => this.Inverters[1]; set { var inv = this.Inverters[1]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters02 { get => this.Inverters[2]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters02 { get => this.Inverters[2]; set { var inv = this.Inverters[2]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters03 { get => this.Inverters[3]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters03 { get => this.Inverters[3]; set { var inv = this.Inverters[3]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters04 { get => this.Inverters[4]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters04 { get => this.Inverters[4]; set { var inv = this.Inverters[4]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters05 { get => this.Inverters[5]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters05 { get => this.Inverters[5]; set { var inv = this.Inverters[5]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters06 { get => this.Inverters[6]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters06 { get => this.Inverters[6]; set { var inv = this.Inverters[6]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[7]; this.SetProperty(ref inv, value); } }
 
         public bool IsStartedSimulator { get; private set; }
 
