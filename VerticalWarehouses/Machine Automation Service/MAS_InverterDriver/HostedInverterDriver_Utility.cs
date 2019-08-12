@@ -377,6 +377,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
                 this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
+                //this.statusWordUpdateTimer?.Change(STATUS_WORD_UPDATE_INTERVAL, STATUS_WORD_UPDATE_INTERVAL);
             }
             catch (Exception ex)
             {
@@ -1020,6 +1021,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
+        // poll the inverter to have the Fault status
         private void RequestStatusWordMessage(object state)
         {
             foreach (var installedInverter in this.inverterStatuses)
@@ -1032,7 +1034,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                 }
-
+                // there are problems of too many messages: only ask the main?
+                break;
             }
         }
 

@@ -20,6 +20,10 @@ namespace Ferretto.VW.Simulator.Services
 
         public byte[] Buffer;
 
+        private const int DELAY_INVERTER_CLIENT = 50;
+
+        private const int DELAY_IO_CLIENT = 5;
+
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -364,6 +368,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
                     }
                     this.UpdateInverter(inverter);
+                    Thread.Sleep(DELAY_INVERTER_CLIENT);
                 }
             }
             else
@@ -434,6 +439,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.UpdateRemoteIO(device);
 
                     var result = client.Client.Send(responseMessage);
+                    Thread.Sleep(DELAY_IO_CLIENT);
                 }
             }
             else
@@ -452,7 +458,6 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsSwitchedOn = true;
             }
-            Thread.Sleep(50);
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
@@ -468,7 +473,6 @@ namespace Ferretto.VW.Simulator.Services
                 // Set run status
                 device.Inputs[(int)IoPorts.NormalState].Value = true;
             }
-            Thread.Sleep(5);
         }
 
         #endregion

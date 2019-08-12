@@ -454,7 +454,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.homingTimerActive)
                 {
-                    this.homingTimer.Change(0, 1000);
+                    this.homingTimer.Change(0, 500);
                     this.homingTimerActive = true;
                     this.AxisPosition = 0;
                 }
@@ -528,7 +528,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.StatusWord &= 0xFBFF;
 
-                    this.targetTimer.Change(0, 1000);
+                    this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
                     this.AxisPosition = 0;
                 }
@@ -590,7 +590,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.StatusWord |= 0x0004;
                 if (!this.targetTimerActive)
                 {
-                    this.targetTimer.Change(0, 1000);
+                    this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
                     this.AxisPosition = 0;
                 }
@@ -630,7 +630,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.homingTickCount++;
             this.AxisPosition++;
 
-            if (this.homingTickCount > 5)
+            if (this.homingTickCount > 10)
             {
                 this.StatusWord |= 0x1000;
                 this.homingTimerActive = false;
@@ -639,7 +639,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else if (this.homingTickCount == 1)
             {
-                this.StatusWord &= 0xEFFF;
+               this.StatusWord &= 0xEFFF;
             }
         }
 
