@@ -49,7 +49,11 @@
       <None Remove="Styles\CustomLabelTextBlockStyle.xaml" />
       <None Remove="Styles\CustomSensorSmallControlStyle.xaml" />
       <None Remove="Styles\CustomSensorSquareControlStyle.xaml" />
+      <None Remove="Styles\CustomTailInverter.xaml" />
+      <None Remove="Styles\CustomTailIoDriver.xaml" />
       <None Remove="Templates\ActionButtonControlTemplate.xaml" />
+      <None Remove="Templates\TailInverterControlTemplate.xaml" />
+      <None Remove="Templates\TailIoDriverControlTemplate.xaml" />
     </ItemGroup>
 
     <ItemGroup>
