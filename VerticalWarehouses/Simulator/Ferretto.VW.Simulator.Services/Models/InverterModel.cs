@@ -302,14 +302,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.OperationMode = InverterOperationMode.Velocity;
             this.InverterType = inverterType;
 
-            this.digitalIO.Add(new BitModel("Bit 00", false, GetInverterSignalDescription(inverterType, 0)));
-            this.digitalIO.Add(new BitModel("Bit 01", false, GetInverterSignalDescription(inverterType, 1)));
-            this.digitalIO.Add(new BitModel("Bit 02", false, GetInverterSignalDescription(inverterType, 2)));
-            this.digitalIO.Add(new BitModel("Bit 03", false, GetInverterSignalDescription(inverterType, 3)));
-            this.digitalIO.Add(new BitModel("Bit 04", false, GetInverterSignalDescription(inverterType, 4)));
-            this.digitalIO.Add(new BitModel("Bit 05", false, GetInverterSignalDescription(inverterType, 5)));
-            this.digitalIO.Add(new BitModel("Bit 06", false, GetInverterSignalDescription(inverterType, 6)));
-            this.digitalIO.Add(new BitModel("Bit 07", false, GetInverterSignalDescription(inverterType, 7)));
+            this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
+            this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
+            this.digitalIO.Add(new BitModel("02", false, GetInverterSignalDescription(inverterType, 2)));
+            this.digitalIO.Add(new BitModel("03", false, GetInverterSignalDescription(inverterType, 3)));
+            this.digitalIO.Add(new BitModel("04", false, GetInverterSignalDescription(inverterType, 4)));
+            this.digitalIO.Add(new BitModel("05", false, GetInverterSignalDescription(inverterType, 5)));
+            this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
+            this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
         }
 
         #endregion
