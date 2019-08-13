@@ -332,7 +332,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
                                                let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
                                                select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.InverterType, x.Index))).Reverse().ToArray();
         
         public ObservableCollection<BitModel> DigitalIO
         {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
                                                let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
                                                select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.InverterType, x.Index))).Reverse().ToArray();
 
         private int homingTickCount { get; set; }
 
@@ -723,6 +723,106 @@ namespace Ferretto.VW.Simulator.Services.Models
                 default:
                     return string.Empty;
             }
+        }
+
+        internal static string GetControlWordSignalDescription(InverterType inverterType, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Switch On";
+
+                case 1:
+                    return "Enable Voltage";
+
+                case 2:
+                    return "Quick Stop (Low Active)";
+
+                case 3:
+                    return "Enable Operation";
+
+                case 4:
+                case 5:
+                case 6:
+                    return "Operation mode specific";
+
+                case 7:
+                    return "Reset Fault";
+
+                case 8:
+                    return "Halt";
+
+                case 9:
+                    return "Operation mode specific";
+
+                case 10:
+                    return "Free";
+
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                    return "Manufacturer specific";
+            }
+
+            return "Free";
+        }
+
+        internal static string GetStatusWordSignalDescription(InverterType inverterType, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Ready to switch on";
+
+                case 1:
+                    return "Switched on";
+
+                case 2:
+                    return "Operation Enabled";
+
+                case 3:
+                    return "Fault";
+
+                case 4:
+                    return "Voltage Enabled";
+
+                case 5:
+                    return "Quick Stop (Low active)";
+
+                case 6:
+                    return "Switch on disabled";
+
+                case 7:
+                    return "Warning";
+
+                case 8:
+                    return "Manufacturer specific";
+
+                case 9:
+                    return "Remote";
+
+                case 10:
+                    return "Target reached";
+
+                case 11:
+                    return "Internal limit active";
+
+                case 12:
+                    return "Operation mode specific";
+
+                case 13:
+                    return "Operation mode specific";
+
+                case 14:
+                    return "Manufacturer specific";
+
+                case 15:
+                    return "Manufacturer specific Warning 2";
+            }
+
+            return "Free";
         }
 
         #endregion
