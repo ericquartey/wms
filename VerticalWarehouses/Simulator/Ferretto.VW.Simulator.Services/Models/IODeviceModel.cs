@@ -102,7 +102,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("15", false, "Opzione robot - Tasto fine picking (oppure fine picking robot)"));
 
             // Initialize ouputs
-            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, IODeviceModel.GetRemoteIOSignalDescription(x))).ToList();
+            this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, GetRemoteIOSignalDescription(x))).ToList();
 
             // Remove emergency button
             this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
@@ -116,7 +116,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
+        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
         public byte FirmwareVersion { get; set; } = 0x11;
 
