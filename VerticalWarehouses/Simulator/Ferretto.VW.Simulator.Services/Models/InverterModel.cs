@@ -279,6 +279,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private int statusWord;
 
+        private InverterOperationMode operationMode;
+
         #endregion
 
         private ICommand inverterInFaultCommand;
@@ -332,7 +334,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
                                                let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
                                                select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.InverterType, x.Index))).Reverse().ToArray();
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
         
         public ObservableCollection<BitModel> DigitalIO
         {
@@ -405,7 +407,11 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
-        public InverterOperationMode OperationMode { get; set; }
+        public InverterOperationMode OperationMode
+        {
+            get => this.operationMode;
+            set => this.SetProperty(ref this.operationMode, value);
+        }
 
         public int StatusWord
         {
@@ -421,7 +427,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
                                                let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
                                                select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.InverterType, x.Index))).Reverse().ToArray();
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
         private int homingTickCount { get; set; }
 
@@ -725,7 +731,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        internal static string GetControlWordSignalDescription(InverterType inverterType, int signalIndex)
+        internal static string GetControlWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
         {
             switch (signalIndex)
             {
@@ -742,9 +748,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Enable Operation";
 
                 case 4:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : "Operation mode specific";
                 case 5:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
                 case 6:
-                    return "Operation mode specific";
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : "Operation mode specific";
 
                 case 7:
                     return "Reset Fault";
@@ -753,7 +761,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Halt";
 
                 case 9:
-                    return "Operation mode specific";
+                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : "Operation mode specific";
 
                 case 10:
                     return "Free";
@@ -769,7 +777,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             return "Free";
         }
 
-        internal static string GetStatusWordSignalDescription(InverterType inverterType, int signalIndex)
+        internal static string GetStatusWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
         {
             switch (signalIndex)
             {
@@ -810,10 +818,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "Internal limit active";
 
                 case 12:
-                    return "Operation mode specific";
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Velocity" : operationMode == InverterOperationMode.Position ? "Set-point acknowledge" : operationMode == InverterOperationMode.Homing ? "Homing attained" : "Operation mode specific";
 
                 case 13:
-                    return "Operation mode specific";
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Max slippage" : operationMode == InverterOperationMode.Position ? "Following error" : operationMode == InverterOperationMode.Homing ? "Homing error" : "Operation mode specific";
 
                 case 14:
                     return "Manufacturer specific";
