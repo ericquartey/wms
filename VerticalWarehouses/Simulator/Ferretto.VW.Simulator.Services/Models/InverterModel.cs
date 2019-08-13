@@ -281,6 +281,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterOperationMode operationMode;
 
+        public BitModel[] controlWordArray;
+
         #endregion
 
         private ICommand inverterInFaultCommand;
@@ -324,16 +326,28 @@ namespace Ferretto.VW.Simulator.Services.Models
         public int ControlWord
         {
             get => this.controlWord;
-            set => this.SetProperty(ref this.controlWord, value, () =>
-            {
-                this.RaisePropertyChanged(nameof(this.ControlWordArray));
-            });
+            set => this.SetProperty(ref this.controlWord, value);
         }
 
-        public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
-                                               let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
-                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
+        public BitModel[] ControlWordArray => this.controlWordArray ?? (this.controlWordArray = this.RefreshControlWordArray());
+
+        public BitModel[] RefreshControlWordArray()
+        {
+            var cw = (from x in Enumerable.Range(0, 16)
+                      let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
+                      select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                     .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
+
+            if (this.controlWordArray != null)
+            {
+                for (int i = 0; i < cw.Length; i++)
+                {
+                    this.controlWordArray[i].Value = cw[i].Value;
+                }
+            }
+
+            return cw;
+        }
 
         public ObservableCollection<BitModel> DigitalIO
         {
