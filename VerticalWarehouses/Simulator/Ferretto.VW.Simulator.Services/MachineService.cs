@@ -282,6 +282,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     byte[] payload = null;
                     ushort ushortPayload = 0;
+                    uint uintPayload = 0;
                     if (extractedMessage.Length >= headerLenght + payloadLength)
                     {
                         payload = new byte[payloadLength];
@@ -290,6 +291,10 @@ namespace Ferretto.VW.Simulator.Services
                         if (payload.Length == 2)
                         {
                             ushortPayload = BitConverter.ToUInt16(payload, 0);
+                        }
+                        else if(payload.Length == 4)
+                        {
+                            uintPayload = BitConverter.ToUInt32(payload, 0);
                         }
                     }
 
@@ -317,11 +322,31 @@ namespace Ferretto.VW.Simulator.Services
                         case InverterParameterId.HomingCreepSpeedParam:
                         case InverterParameterId.HomingFastSpeedParam:
                         case InverterParameterId.HomingAcceleration:
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         case InverterParameterId.PositionAccelerationParam:
+                            inverter.TargetAcceleration = (int)uintPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         case InverterParameterId.PositionDecelerationParam:
+                            inverter.TargetAcceleration = (int)uintPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         case InverterParameterId.PositionTargetPositionParam:
+                            inverter.TargetPosition = (int)uintPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         case InverterParameterId.PositionTargetSpeedParam:
+                            inverter.TargetSpeed = (int)uintPayload;
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         case InverterParameterId.ShutterTargetVelocityParam:
+                            inverter.SpeedRate = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 

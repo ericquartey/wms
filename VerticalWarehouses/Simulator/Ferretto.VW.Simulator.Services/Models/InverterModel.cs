@@ -405,6 +405,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
+        public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
+
         public InverterOperationMode OperationMode { get; set; }
 
         public int StatusWord
@@ -422,6 +424,16 @@ namespace Ferretto.VW.Simulator.Services.Models
                                                let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
                                                select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+
+        public int SpeedRate { get; set; }
+
+        public int TargetAcceleration { get; set; }
+
+        public int TargetDeceleration { get; set; }
+
+        public int TargetPosition { get; set; }
+
+        public int TargetSpeed { get; set; }
 
         private int homingTickCount { get; set; }
 
@@ -560,7 +572,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                     this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
-                    this.AxisPosition = 0;
+
+                    //this.AxisPosition = 0;
                 }
             }
             else
@@ -676,9 +689,18 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void TargetTick(object state)
         {
             this.targetTickCount++;
-            this.AxisPosition++;
+            if(this.TargetPosition > this.AxisPosition)
+            {
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
 
-            if (this.targetTickCount > 10)
+            if (this.targetTickCount > 10
+                && (this.IsRelativeMovement || Math.Abs(this.AxisPosition-this.TargetPosition) < 1 )
+                )
             {
                 this.ControlWord &= 0xFFEF;
                 this.StatusWord |= 0x0400;
