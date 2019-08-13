@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IInstallationStatusMachineService installationStatusService;
+        private readonly IMachineInstallationStatusService installationStatusService;
 
         private bool isBayControlButtonActive;
 
@@ -67,7 +67,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels
 
         public MainWindowNavigationButtonsViewModel(
             IEventAggregator eventAggregator,
-            IInstallationStatusMachineService installationStatusService)
+            IMachineInstallationStatusService installationStatusService)
         {
             if (eventAggregator == null)
             {

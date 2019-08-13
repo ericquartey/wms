@@ -1,11 +1,8 @@
 ﻿using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Installation.Resources.Enumerables;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.SensorsState;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
@@ -66,7 +63,7 @@ namespace Ferretto.VW.App.Installation
 
         private ICommand lsmtGateEngineButtonCommand;
 
-        private ICommand lsmtHorizontalEngineButtonCommand;
+        private ICommand lsmtHorizontalAxisButtonCommand;
 
         private ICommand lsmtVerticalEngineButtonCommand;
 
@@ -116,11 +113,12 @@ namespace Ferretto.VW.App.Installation
             (this.beltBurnishingButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<BeltBurnishingViewModel, IBeltBurnishingViewModel>()));
 
-        public ICommand CarouselButtonCommand =>
-            this.carouselButtonCommand
-            ??
-            (this.carouselButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<LSMTCarouselViewModel, ILSMTCarouselViewModel>()));
+        /*     public ICommand CarouselButtonCommand =>
+                 this.carouselButtonCommand
+                 ??
+                 (this.carouselButtonCommand = new DelegateCommand(
+                     async () => await this.NavigateToViewAsync<LSMTCarouselViewModel, ILSMTCarouselViewModel>()));
+                     */
 
         public ICommand CellsControlButtonCommand =>
             this.cellsControlButtonCommand
@@ -208,29 +206,30 @@ namespace Ferretto.VW.App.Installation
             (this.loadingDrawersButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<LoadingDrawersViewModel, ILoadingDrawersViewModel>()));
 
-        public ICommand LowSpeedMovementsTestButtonCommand =>
-            this.lowSpeedMovementsTestButtonCommand
-            ??
-            (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<LSMTMainViewModel, ILSMTMainViewModel>()));
+        /* public ICommand LowSpeedMovementsTestButtonCommand =>
+             this.lowSpeedMovementsTestButtonCommand
+             ??
+             (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(
+                 async () => await this.NavigateToViewAsync<LSMTMainViewModel, ILSMTMainViewModel>()));
 
-        public ICommand LSMTGateEngineButtonCommand =>
-            this.lsmtGateEngineButtonCommand
-            ??
-            (this.lsmtGateEngineButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<LSMTShutterEngineViewModel, ILSMTShutterEngineViewModel>()));
+         public ICommand ShutterCommand =>
+             this.lsmtGateEngineButtonCommand
+             ??
+             (this.lsmtGateEngineButtonCommand = new DelegateCommand(
+                 async () => await this.NavigateToViewAsync<LSMTShutterEngineViewModel, ILSMTShutterEngineViewModel>()));
 
-        public ICommand LSMTHorizontalEngineButtonCommand =>
-            this.lsmtHorizontalEngineButtonCommand
-            ??
-            (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<LSMTHorizontalEngineViewModel, ILSMTHorizontalEngineViewModel>()));
+         public ICommand HorizontalAxisCommand =>
+             this.lsmtHorizontalAxisButtonCommand
+             ??
+             (this.lsmtHorizontalAxisButtonCommand = new DelegateCommand(
+                 async () => await this.NavigateToViewAsync<LSMTHorizontalAxisViewModel, ILSMTHorizontalAxisViewModel>()));
 
-        public ICommand LSMTVerticalEngineButtonCommand =>
-            this.lsmtVerticalEngineButtonCommand
-            ??
-            (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<LSMTVerticalEngineViewModel, ILSMTVerticalEngineViewModel>()));
+         public ICommand VerticalAxisCommand =>
+             this.lsmtVerticalEngineButtonCommand
+             ??
+             (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(
+                 async () => await this.NavigateToViewAsync<LSMTVerticalEngineViewModel, ILSMTVerticalEngineViewModel>()));
+ */
 
         public ICommand ManualDrawerStoreRecallButtonCommand =>
             this.manualDrawerStoreRecallButtonCommand
@@ -250,46 +249,47 @@ namespace Ferretto.VW.App.Installation
             (this.saveRestoreConfigButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<SaveRestoreConfigViewModel, ISaveRestoreConfigViewModel>()));
 
-        public ICommand SsBaysButtonCommand =>
-            this.ssBaysButtonCommand
-            ??
-            (this.ssBaysButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>()));
+        /*
+                public ICommand SsBaysButtonCommand =>
+                    this.ssBaysButtonCommand
+                    ??
+                    (this.ssBaysButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>()));
 
-        public ICommand SsCradleButtonCommand =>
-            this.ssCradleButtonCommand
-            ??
-            (this.ssCradleButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSCradleViewModel, ISSCradleViewModel>()));
+                public ICommand SsCradleButtonCommand =>
+                    this.ssCradleButtonCommand
+                    ??
+                    (this.ssCradleButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<CradleSensorsViewModel, ISSCradleViewModel>()));
 
-        public ICommand SsGateButtonCommand =>
-            this.ssGateButtonCommand
-            ??
-            (this.ssGateButtonCommand = new DelegateCommand(async () => await this.NavigateToViewAsync<SSShutterViewModel, ISSShutterViewModel>()));
+         public ICommand SsGateButtonCommand =>
+             this.ssGateButtonCommand
+             ??
+             (this.ssGateButtonCommand = new DelegateCommand(async () => await this.NavigateToViewAsync<ShutterSensorsViewModel, ISSShutterViewModel>()));
 
-        public ICommand SsNavigationButtonsButtonCommand =>
-            this.ssNavigationButtonsButtonCommand
-            ??
-            (this.ssNavigationButtonsButtonCommand = new DelegateCommand(
-                async () =>
-                {
-                    this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
-                    await this.NavigateToViewAsync<SSMainViewModel, ISSMainViewModel>();
-                    this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel =
-                        this.container.Resolve<ISSNavigationButtonsViewModel>() as SSNavigationButtonsViewModel;
-                }));
+             public ICommand SsNavigationButtonsButtonCommand =>
+                 this.ssNavigationButtonsButtonCommand
+                 ??
+                 (this.ssNavigationButtonsButtonCommand = new DelegateCommand(
+                     async () =>
+                     {
+                         this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
+                         await this.NavigateToViewAsync<SSMainViewModel, ISSMainViewModel>();
+                         this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel =
+                             this.container.Resolve<ISSNavigationButtonsViewModel>() as SensorsNavigationViewModel;
+                     }));
 
-        public ICommand SsVariousInputsButtonCommand =>
-            this.ssVariousInputsButtonCommand
-            ??
-            (this.ssVariousInputsButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSVariousInputsViewModel, ISSVariousInputsViewModel>()));
+                public ICommand SsVariousInputsButtonCommand =>
+                    this.ssVariousInputsButtonCommand
+                    ??
+                    (this.ssVariousInputsButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<SSVariousInputsViewModel, ISSVariousInputsViewModel>()));
 
-        public ICommand SsVerticalAxisButtonCommand =>
-            this.ssVerticalAxisButtonCommand
-            ??
-            (this.ssVerticalAxisButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<SSVerticalAxisViewModel, ISSVerticalAxisViewModel>()));
+           public ICommand SsVerticalAxisButtonCommand =>
+               this.ssVerticalAxisButtonCommand
+               ??
+               (this.ssVerticalAxisButtonCommand = new DelegateCommand(
+                   async () => await this.NavigateToViewAsync<VerticalAxisSensorsViewModel, ISSVerticalAxisViewModel>()));
 
         public ICommand VerticalAxisCalibrationButtonCommand =>
             this.verticalAxisCalibrationButtonCommand
@@ -297,11 +297,12 @@ namespace Ferretto.VW.App.Installation
             (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<VerticalAxisCalibrationViewModel, IVerticalAxisCalibrationViewModel>()));
 
-        public ICommand VerticalOffsetCalibrationButtonCommand =>
-            this.verticalOffsetCalibrationButtonCommand
-            ??
-            (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(
-                async () => await this.NavigateToViewAsync<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>()));
+                public ICommand VerticalOffsetCalibrationButtonCommand =>
+                    this.verticalOffsetCalibrationButtonCommand
+                    ??
+                    (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(
+                        async () => await this.NavigateToViewAsync<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>()));
+        */
 
         public ICommand WeightControlButtonCommand =>
             this.weightControlButtonCommand

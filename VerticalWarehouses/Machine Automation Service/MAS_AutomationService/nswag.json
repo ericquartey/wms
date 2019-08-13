@@ -82,7 +82,7 @@
       "generateUpdateJsonSerializerSettingsMethod": true,
       "serializeTypeInformation": false,
       "queryNullValue": "",
-      "className": "{controller}MachineService",
+      "className": "Machine{controller}Service",
       "operationGenerationMode": "MultipleClientsFromOperationId",
       "additionalNamespaceUsages": [],
       "additionalContractNamespaceUsages": [],

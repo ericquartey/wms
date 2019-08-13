@@ -4,14 +4,16 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterOperationTimeoutFieldMessageData : IInverterOperationTimeoutFieldMessageData
+    public class InverterOperationTimeoutFieldMessageData : FieldMessageData,  IInverterOperationTimeoutFieldMessageData
     {
         #region Constructors
 
-        public InverterOperationTimeoutFieldMessageData(ushort controlWord, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterOperationTimeoutFieldMessageData(
+            ushort controlWord,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.ControlWord = controlWord;
-            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -19,8 +21,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public ushort ControlWord { get; }
-
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

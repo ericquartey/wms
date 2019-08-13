@@ -34,23 +34,23 @@
                                               ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static res:InstallationApp.LoadingDrawersMaxWeight}" />
 
-        <Controls:CustomInputFieldControlFocusable Margin="580,240,0,0"
+        <Controls:PpcTextBox Margin="580,240,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.LoadingDrawersDrawerToInsert}"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Button Margin="580,480,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.LoadingDrawersStartInsertion}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="240,480,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.LoadingDrawersNextDrawer}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
     </Grid>
 </UserControl>

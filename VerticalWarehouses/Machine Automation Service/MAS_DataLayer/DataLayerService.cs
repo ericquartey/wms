@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 "DataLayer Error",
                 MessageActor.Any,
                 MessageActor.DataLayer,
-                MessageType.DLException,
+                MessageType.DlException,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
 

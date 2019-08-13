@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         {
             if (this.redundancyService == null)
             {
-                base.ToString();
+                return base.ToString();
             }
 
             return this.redundancyService.ActiveDbContextOptions == this.Options

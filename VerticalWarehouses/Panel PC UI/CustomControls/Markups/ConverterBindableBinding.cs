@@ -3,7 +3,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using Ferretto.VW.App.Controls.Converters;
 
-namespace Ferretto.VW.App.Controls.Markup
+namespace Ferretto.VW.App.Controls
 {
     public class ConverterBindableBinding : MarkupExtension
     {

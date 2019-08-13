@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
                     "Set configuration IO complete",
                     FieldMessageActor.Any,
                     FieldMessageActor.IoDriver,
-                    FieldMessageType.SetConfigurationIO,
+                    FieldMessageType.SetConfigurationIo,
                     MessageStatus.OperationEnd);
 
                 this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");

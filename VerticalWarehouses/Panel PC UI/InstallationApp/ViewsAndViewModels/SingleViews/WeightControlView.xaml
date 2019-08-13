@@ -14,17 +14,17 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WeightControl}"  />
 
-        <custom:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,120,0,0"
-                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <custom:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="600,120,0,0"
+                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                    InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
-        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,120,0,0" 
+        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,120,0,0"
                                                 ContentText="{Binding AcceptableWeightTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
 
-        <custom:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,210,0,0"
-                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <custom:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,210,0,0"
+                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                      InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:InstallationApp.TestRun}" />
 
@@ -40,12 +40,12 @@
                     Content="{x:Static res:InstallationApp.Start}"
                     Command="{Binding SetBeginButtonCommand}"
                     IsEnabled="{Binding IsSetBeginButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+                    Template="{StaticResource PpcButtonControlTemplate}"  />
 
         <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="250,460,0,0"
                     Content="{x:Static res:InstallationApp.Stop}"
                     Command="{Binding SetStopButtonCommand}"
                     IsEnabled="{Binding IsSetStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  />
+                    Template="{StaticResource PpcButtonControlTemplate}"  />
     </Grid>
 </UserControl>

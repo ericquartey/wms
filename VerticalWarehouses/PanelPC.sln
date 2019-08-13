@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Utils", "Panel 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Utils", "Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj", "{73086AC9-1316-4FFC-AA5D-0A50C132456A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Operator", "Panel PC UI\Ferretto.VW.OperatorApp\Ferretto.VW.App.Operator.csproj", "{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Operator", "Panel PC UI\Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj", "{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Logging.SQLiteTarget", "Common\SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj", "{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}"
 EndProject

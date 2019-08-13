@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IInstallationStatusMachineService installationStatusService;
+        private readonly IMachineInstallationStatusService installationStatusService;
 
         private bool isBeltBurnishingDone;
 
@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public InstallationStateViewModel(
             IEventAggregator eventAggregator,
-            IInstallationStatusMachineService installationStatusService)
+            IMachineInstallationStatusService installationStatusService)
         {
             if (eventAggregator == null)
             {

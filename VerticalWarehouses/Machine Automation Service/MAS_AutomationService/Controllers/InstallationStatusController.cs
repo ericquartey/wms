@@ -2,85 +2,47 @@
 using System.IO;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
     [ApiController]
     public class InstallationStatusController : ControllerBase
     {
-        #region Fields
-
-        private readonly ISetupStatusDataLayer dataLayerSetupStatus;
-
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly ILogger logger;
-
-        #endregion
-
-        #region Constructors
-
-        public InstallationStatusController(IEventAggregator eventAggregator, IServiceProvider services)
-        {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
-        }
-
-        #endregion
-
         #region Methods
 
         [ProducesResponseType(200, Type = typeof(bool[]))]
         [ProducesResponseType(404)]
-        [HttpGet("GetStatus")]
-        public ActionResult<bool[]> GetStatusAsync()
-        {
-            return this.GetStatus_Method();
-        }
-
-        private ActionResult<bool[]> GetStatus_Method()
+        [HttpGet]
+        public ActionResult<bool[]> GetStatusAsync([FromServices] ISetupStatusDataLayer dataLayerSetupStatus)
         {
             var value = new bool[23];
             try
             {
-                value[0] = this.dataLayerSetupStatus.VerticalHomingDone;
-                value[1] = this.dataLayerSetupStatus.HorizontalHomingDone;
-                value[2] = this.dataLayerSetupStatus.BeltBurnishingDone;
-                value[3] = this.dataLayerSetupStatus.VerticalResolutionDone;
-                value[4] = this.dataLayerSetupStatus.VerticalOffsetDone;
-                value[5] = this.dataLayerSetupStatus.CellsControlDone;
-                value[6] = this.dataLayerSetupStatus.PanelsControlDone;
-                value[7] = this.dataLayerSetupStatus.Shape1Done;
-                value[8] = this.dataLayerSetupStatus.Shape2Done;
-                value[9] = this.dataLayerSetupStatus.Shape3Done;
-                value[10] = this.dataLayerSetupStatus.WeightMeasurementDone;
-                value[11] = this.dataLayerSetupStatus.Shutter1Done;
-                value[12] = this.dataLayerSetupStatus.Shutter2Done;
-                value[13] = this.dataLayerSetupStatus.Shutter3Done;
-                value[14] = this.dataLayerSetupStatus.Bay1ControlDone;
-                value[15] = this.dataLayerSetupStatus.Bay2ControlDone;
-                value[16] = this.dataLayerSetupStatus.Bay3ControlDone;
-                value[17] = this.dataLayerSetupStatus.FirstDrawerLoadDone;
-                value[18] = this.dataLayerSetupStatus.DrawersLoadedDone;
-                value[19] = this.dataLayerSetupStatus.Laser1Done;
-                value[20] = this.dataLayerSetupStatus.Laser2Done;
-                value[21] = this.dataLayerSetupStatus.Laser3Done;
-                value[22] = this.dataLayerSetupStatus.MachineDone;
+                value[0] = dataLayerSetupStatus.VerticalHomingDone;
+                value[1] = dataLayerSetupStatus.HorizontalHomingDone;
+                value[2] = dataLayerSetupStatus.BeltBurnishingDone;
+                value[3] = dataLayerSetupStatus.VerticalResolutionDone;
+                value[4] = dataLayerSetupStatus.VerticalOffsetDone;
+                value[5] = dataLayerSetupStatus.CellsControlDone;
+                value[6] = dataLayerSetupStatus.PanelsControlDone;
+                value[7] = dataLayerSetupStatus.Shape1Done;
+                value[8] = dataLayerSetupStatus.Shape2Done;
+                value[9] = dataLayerSetupStatus.Shape3Done;
+                value[10] = dataLayerSetupStatus.WeightMeasurementDone;
+                value[11] = dataLayerSetupStatus.Shutter1Done;
+                value[12] = dataLayerSetupStatus.Shutter2Done;
+                value[13] = dataLayerSetupStatus.Shutter3Done;
+                value[14] = dataLayerSetupStatus.Bay1ControlDone;
+                value[15] = dataLayerSetupStatus.Bay2ControlDone;
+                value[16] = dataLayerSetupStatus.Bay3ControlDone;
+                value[17] = dataLayerSetupStatus.FirstDrawerLoadDone;
+                value[18] = dataLayerSetupStatus.DrawersLoadedDone;
+                value[19] = dataLayerSetupStatus.Laser1Done;
+                value[20] = dataLayerSetupStatus.Laser2Done;
+                value[21] = dataLayerSetupStatus.Laser3Done;
+                value[22] = dataLayerSetupStatus.MachineDone;
             }
             catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
             {

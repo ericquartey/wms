@@ -11,17 +11,9 @@ namespace Ferretto.VW.Common.Logging.SQLiteTarget
     {
         #region Fields
 
-        private bool disposed = false;
+        private bool disposed;
 
         private SQLiteConnection logConnection;
-
-        #endregion
-
-        #region Constructors
-
-        public SQLiteCustomTarget()
-        {
-        }
 
         #endregion
 
@@ -61,16 +53,16 @@ namespace Ferretto.VW.Common.Logging.SQLiteTarget
 
             // Insert a record
             var InsertSql = @"INSERT INTO LogEntries (TimeStamp, Message, LoggerName, Level, Exception) values (@timestamp, @message, @loggername, @level, @exception)";
-            var InsertCom = new SQLiteCommand(InsertSql, this.logConnection);
-            InsertCom.Parameters.Add(new SQLiteParameter("@timestamp") { Value = DateTime.Now });
-            InsertCom.Parameters.Add(new SQLiteParameter("@loggername") { Value = logEvent.LoggerName });
-            InsertCom.Parameters.Add(new SQLiteParameter("@level") { Value = logEvent.Level });
-            InsertCom.Parameters.Add(new SQLiteParameter("@message") { Value = logEvent.Message });
-            InsertCom.Parameters.Add(new SQLiteParameter("@exception") { Value = logEvent.Exception });
+            var insertCom = new SQLiteCommand(InsertSql, this.logConnection);
+            insertCom.Parameters.Add(new SQLiteParameter("@timestamp") { Value = DateTime.Now });
+            insertCom.Parameters.Add(new SQLiteParameter("@loggername") { Value = logEvent.LoggerName });
+            insertCom.Parameters.Add(new SQLiteParameter("@level") { Value = logEvent.Level });
+            insertCom.Parameters.Add(new SQLiteParameter("@message") { Value = logEvent.Message });
+            insertCom.Parameters.Add(new SQLiteParameter("@exception") { Value = logEvent.Exception });
 
             try
             {
-                InsertCom.ExecuteNonQuery();
+                insertCom.ExecuteNonQuery();
             }
             catch (Exception)
             {

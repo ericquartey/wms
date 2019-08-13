@@ -1,0 +1,151 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.OtherSensorsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:IBaseSensorsViewModel}">
+    <Grid Margin="0,30,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <views:SensorsNavigationView />
+
+        <Grid Grid.Column="1"
+              Margin="130,0,130,10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition />
+                <RowDefinition  />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.ColumnSpan="2"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.VariousInputs}" />
+
+            <custom:PpcSensorControl Grid.Row="1"
+                                     Grid.ColumnSpan="2"
+                                     LabelText="{x:Static res:InstallationApp.SecurityFunctionActive}"
+                                     SensorPort="{x:Static iom:IOMachineSensors.NormalState}"
+                                     Sensors="{Binding SensorsStates}"
+                                     Style="{StaticResource PpcSensorControlStyle}" />
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Bay1}" />
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MushroomHeadButton}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MushroomEmergencyButtonBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MicroCarterLeftSideBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MicroCarterRightSideBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.AntiIntrusionBarrierBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+            </StackPanel>
+            <StackPanel Grid.Row="2"
+                        Grid.Column="1"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Bay2}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MushroomHeadButton}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MushroomEmergencyButtonBay2}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MicroCarterLeftSideBay2}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MicroCarterRightSide2}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MicroCarterRightSideBay2}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.AntiIntrusionGate2}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.AntiIntrusionBarrierBay2}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
+            <StackPanel Grid.Row="3"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Bay3}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MushroomHeadButton}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MushroomEmergencyButtonBay3}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MicroCarterLeftSideBay3}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.MicroCarterRightSide3}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.MicroCarterRightSideBay3}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl
+                                         LabelText="{x:Static res:InstallationApp.AntiIntrusionGate3}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.AntiIntrusionBarrierBay3}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
+
+
+
+
+
+
+
+
+
+        </Grid>
+    </Grid>
+</ctrls:View>

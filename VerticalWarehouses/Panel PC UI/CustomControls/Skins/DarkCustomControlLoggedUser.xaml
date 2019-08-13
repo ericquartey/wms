@@ -5,7 +5,6 @@
     <sys:Double x:Key="VWAPP_CustomControlLoggedUser_Width">120</sys:Double>
     <sys:Double x:Key="VWAPP_CustomControlLoggedUser_Height">80</sys:Double>
     <sys:Double x:Key="VWAPP_CustomControlLoggedUser_FontSize_Normal">18</sys:Double>
-    <FontFamily x:Key="VWAPP_CustomControlLoggedUser_FontFamily_Normal">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <SolidColorBrush x:Key="VWAPP_CustomControlLoggedUser_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 

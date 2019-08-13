@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService
             return configuration.GetValue<bool>("Vertimag:InverterDriver:UseMock");
         }
 
-        public static bool UseRemoteIODriverMock(this IConfiguration configuration)
+        public static bool UseRemoteIoDriverMock(this IConfiguration configuration)
         {
             return configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
         }

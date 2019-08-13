@@ -11,6 +11,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
             this.ExceptionDescription = exceptionDescription;
             this.ExceptionCode = exceptionCode;
+            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -21,7 +22,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public string ExceptionDescription { get; }
 
-        public MessageVerbosity Verbosity { get; private set; }
+        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

@@ -1,0 +1,30 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters">
+
+    <!--  converters  -->
+    <conv:BoolToThicknessConverter x:Key="BTTC" />
+    <conv:BoolToVisibilityConverter x:Key="BTVC" />
+    <conv:BoolToVisibilityConverter x:Key="BTVIC"
+                                    Invert="True" />
+    <conv:BoolToVisibilityConverter x:Key="BTVHC"
+                                    Hide="True" />
+    <conv:BooleanNegationConverter x:Key="BNC" />
+
+    <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                         Invert="True" />
+
+    <conv:EnumCellStatusConverter x:Key="ECSC" />
+    <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
+    <conv:ImageToSourceConverter x:Key="ITSC" />
+
+
+    <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
+    <conv:MachineServiceStatusEnumConverter x:Key="MSSEC" />
+
+    <conv:MachinesMatchConverter x:Key="MMC" />
+    <conv:MachinesToStringConverter x:Key="MTSC" />
+    <conv:MultiValueConverterAdapter x:Key="MVC" />
+
+</ResourceDictionary>

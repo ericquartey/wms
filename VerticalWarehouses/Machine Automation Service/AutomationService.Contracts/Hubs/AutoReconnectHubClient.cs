@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         private const int DefaultMaxReconnectTimeout = 5000;
 
-        private static readonly Random random = new Random();
+        private static readonly Random Random = new Random();
 
         private readonly Uri endpoint;
 
@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         private async Task WaitForReconnectionAsync()
         {
-            var reconnectionTime = random.Next(
+            var reconnectionTime = Random.Next(
                 this.MaxReconnectTimeoutMilliseconds / 2,
                 this.MaxReconnectTimeoutMilliseconds);
 

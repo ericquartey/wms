@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Ferretto.VW.MAS.Utils.Utilities
 {
@@ -13,7 +11,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
         {
             if (a == null)
             {
-                Array.Resize<byte>(ref a, 0);
+                Array.Resize(ref a, 0);
             }
 
             if (b == null)

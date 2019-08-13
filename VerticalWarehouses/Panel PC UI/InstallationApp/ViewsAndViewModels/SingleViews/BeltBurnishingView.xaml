@@ -39,12 +39,12 @@
                                             ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="607,159,0,0"
+        <custom:PpcTextBox Margin="607,159,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding CycleQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <Button Margin="607,490,0,0"
                 HorizontalAlignment="Left"
@@ -52,7 +52,7 @@
                 Command="{Binding StartButtonCommand}"
                 Content="{x:Static res:InstallationApp.Start}"
                 IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="230,490,0,0"
                 HorizontalAlignment="Left"
@@ -60,6 +60,6 @@
                 Command="{Binding StopButtonCommand}"
                 Content="{x:Static res:InstallationApp.Stop}"
                 IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
     </Grid>
 </UserControl>

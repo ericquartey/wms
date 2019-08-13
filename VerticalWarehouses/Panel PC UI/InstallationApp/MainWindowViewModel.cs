@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Views.ErrorDetails;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Resources;
@@ -36,7 +35,7 @@ namespace Ferretto.VW.App.Installation
 
         private readonly IUnityContainer container;
 
-        private readonly IErrorsMachineService errorsMachineService;
+        private readonly IMachineErrorsService errorsMachineService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -70,7 +69,7 @@ namespace Ferretto.VW.App.Installation
 
         private bool machineOnMarchSelectionBool;
 
-        private IMachineStatusMachineService machineStatusService;
+        private IMachineMachineStatusService machineStatusService;
 
         private IViewModel navigationRegionCurrentViewModel;
 
@@ -80,9 +79,11 @@ namespace Ferretto.VW.App.Installation
 
         private IViewModel previousNavigationViewModel;
 
-        private ICommand showErrorDetailsCommand;
+        private bool securityFunctionActive;
 
-        private IUpdateSensorsMachineService updateSensorsService;
+        private IMachineSensorsService sensorsService;
+
+        private ICommand showErrorDetailsCommand;
 
         #endregion
 
@@ -93,7 +94,7 @@ namespace Ferretto.VW.App.Installation
             IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
             IIdleViewModel idleViewModel,
             IUnityContainer container,
-            IErrorsMachineService errorsMachineService,
+            IMachineErrorsService machineErrorsService,
             IAuthenticationService authenticationService,
             IOperatorHubClient operatorHubClient,
             IStatusMessageService statusMessageService)
@@ -118,9 +119,9 @@ namespace Ferretto.VW.App.Installation
                 throw new System.ArgumentNullException(nameof(container));
             }
 
-            if (errorsMachineService == null)
+            if (machineErrorsService == null)
             {
-                throw new System.ArgumentNullException(nameof(errorsMachineService));
+                throw new System.ArgumentNullException(nameof(machineErrorsService));
             }
 
             if (authenticationService == null)
@@ -140,7 +141,7 @@ namespace Ferretto.VW.App.Installation
 
             this.eventAggregator = eventAggregator;
             this.container = container;
-            this.errorsMachineService = errorsMachineService;
+            this.errorsMachineService = machineErrorsService;
             this.authenticationService = authenticationService;
             this.operatorHubClient = operatorHubClient;
             this.statusMessageService = statusMessageService;
@@ -302,39 +303,6 @@ namespace Ferretto.VW.App.Installation
 
         private async Task ExecuteShowErrorDetailsCommandAsync()
         {
-            var errorDetailsViewModel = this.container.Resolve<ErrorDetailsViewModel>();
-
-            if (this.ContentRegionCurrentViewModel != errorDetailsViewModel)
-            // navigate to error page
-            {
-                try
-                {
-                    errorDetailsViewModel.Error = await this.errorsMachineService.GetCurrentAsync();
-
-                    this.previousNavigationViewModel = this.NavigationRegionCurrentViewModel;
-                    this.previousContentRegionViewModel = this.ContentRegionCurrentViewModel;
-
-                    this.NavigationRegionCurrentViewModel = null;
-                    this.ContentRegionCurrentViewModel = errorDetailsViewModel;
-
-                    var footerViewModel = this.container.Resolve<IFooterViewModel>();
-
-                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
-                }
-                catch (System.Exception ex)
-                {
-                    this.statusMessageService.Notify(ex);
-                }
-            }
-            else
-            // leave error page
-            {
-                this.NavigationRegionCurrentViewModel = this.previousNavigationViewModel;
-                this.ContentRegionCurrentViewModel = this.previousContentRegionViewModel;
-
-                this.previousNavigationViewModel = null;
-                this.previousContentRegionViewModel = null;
-            }
         }
 
         private void InitializeEvents()
@@ -343,7 +311,6 @@ namespace Ferretto.VW.App.Installation
                 (message) =>
                 {
                     this.NavigationRegionCurrentViewModel = null;
-                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
                 },
                 ThreadOption.PublisherThread,
                 false,
@@ -372,10 +339,9 @@ namespace Ferretto.VW.App.Installation
                 ThreadOption.PublisherThread,
                 false);
 
-            this.machineStatusService = this.container.Resolve<IMachineStatusMachineService>();
+            this.machineStatusService = this.container.Resolve<IMachineMachineStatusService>();
 
-            MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
-            ClickedOnMachineModeEventHandler += () => { };
+           ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () =>
             {
                 if (!this.machineOnMarchSelectionBool)
@@ -388,8 +354,8 @@ namespace Ferretto.VW.App.Installation
                 }
             };
 
-            this.updateSensorsService = this.container.Resolve<IUpdateSensorsMachineService>();
-            this.updateSensorsService.ExecuteAsync();
+            this.sensorsService = this.container.Resolve<IMachineSensorsService>();
+            this.sensorsService.ForceNotificationAsync();
         }
 
         private async Task OnMachineErrorStatusChanged(object sender,

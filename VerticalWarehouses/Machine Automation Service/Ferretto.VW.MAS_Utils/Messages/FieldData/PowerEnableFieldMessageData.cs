@@ -4,14 +4,14 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class PowerEnableFieldMessageData : IPowerEnableFieldMessageData
+    public class PowerEnableFieldMessageData : FieldMessageData, IPowerEnableFieldMessageData
     {
         #region Constructors
 
         public PowerEnableFieldMessageData(bool enable, MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.Enable = enable;
-            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public bool Enable{ get; }
-
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
     }

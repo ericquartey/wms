@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins">
 
+    <FontFamily x:Key="PpcFontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+
     <SolidColorBrush x:Key="FerrettoWhiteGray">#e6e6e6</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoLightGray">#c5c7c4</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
@@ -22,13 +24,15 @@
     <Color x:Key="ColorFerrettoPureWhite">#ffffff</Color>
 
     <Color x:Key="EDBGrayA">#282828</Color>
+    <Color x:Key="EDBGrayA1">#2C2C2C</Color>
     <Color x:Key="EDBGrayB">#323232</Color>
     <Color x:Key="EDBGrayC">#3c3c3c</Color>
     <Color x:Key="EDBGrayD">#505050</Color>
     <Color x:Key="EDBGrayE">#5a5a5a</Color>
     <Color x:Key="EDBGrayF">#828282</Color>
     <Color x:Key="EDBGrayG">#a0a0a0</Color>
-    <Color x:Key="EDBGrayH">#e6e6e6</Color>
+    <Color x:Key="EDBGrayH">#b0b0b0</Color>
+    <Color x:Key="EDBGrayI">#e6e6e6</Color>
 
     <SolidColorBrush x:Key="VWAPP_BACKGROUND"
                      Color="{DynamicResource EDBGrayA}" />
@@ -56,5 +60,7 @@
     <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <FontFamily x:Key="VWAPP_GridFont">pack://application:,,,/Fonts/#Microsoft-sans-serif.ttf</FontFamily>
+
+
 
 </ResourceDictionary>

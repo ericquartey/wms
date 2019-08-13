@@ -12,9 +12,9 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly IIdentityMachineService identityService;
+        private readonly IMachineIdentityService identityService;
 
-        private readonly IMissionOperationsMachineService missionOperationsAutomationService;
+        private readonly IMachineMissionOperationsService missionOperationsAutomationService;
 
         private readonly IMissionOperationsDataService missionOperationsDataService;
 
@@ -32,9 +32,9 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IOperatorHubClient operatorHubClient,
-            IIdentityMachineService identityService,
+            IMachineIdentityService identityService,
             IMissionOperationsDataService missionOperationsDataService,
-            IMissionOperationsMachineService missionOperationsAutomationService,
+            IMachineMissionOperationsService missionOperationsAutomationService,
             IMissionsDataService missionsDataService,
             IStatusMessageService statusMessageService)
         {
