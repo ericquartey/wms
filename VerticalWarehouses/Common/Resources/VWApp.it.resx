@@ -144,4 +144,10 @@
   <data name="ErrorReason" xml:space="preserve">
     <value>Possibili cause</value>
   </data>
+  <data name="AutomaticMode" xml:space="preserve">
+    <value>Automatico</value>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Manuale</value>
+  </data>
 </root>

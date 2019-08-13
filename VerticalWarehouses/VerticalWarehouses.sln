@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionsMan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Controls", "Panel PC UI\CustomControls\Ferretto.VW.App.Controls.csproj", "{2F45ED0E-31CB-4115-8F27-6EC0B17876B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Installation", "Panel PC UI\InstallationApp\Ferretto.VW.App.Installation.csproj", "{7A484BAF-AB01-488A-853F-C0CE4305BA56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Installation", "Panel PC UI\Modules\Installation\Ferretto.VW.App.Modules.Installation.csproj", "{7A484BAF-AB01-488A-853F-C0CE4305BA56}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {D81C6B47-11EC-4B7D-B087-F580639106C3}
 		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}

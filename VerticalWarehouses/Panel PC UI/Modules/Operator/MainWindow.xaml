@@ -63,10 +63,7 @@
                                                     LogOffCommand="{Binding LogOffCommand}"
                                                     OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
                                                     UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <controls:CustomMachineModeToggleButton Name="MachineModeControl"
-                                                          CustomCommand="{Binding MachineModeCustomCommand}"
-                                                          MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
+                    <controls:CustomMachineModeToggleButton Name="MachineModeControl" />
                     <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
                                                              Margin="10,0,0,0" />
                     <controls:CustomMainWindowErrorButton Margin="10,0,0,0"

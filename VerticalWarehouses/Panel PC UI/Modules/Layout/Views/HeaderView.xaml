@@ -60,15 +60,11 @@
                                               UserText="{Binding UserName}"
                                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:CustomMachineModeToggleButton Name="MachineModeControl"
-                                                    CustomCommand="{Binding MachineModeCustomCommand}"
+            <controls:CustomMachineModeToggleButton Margin="10,0,0,0"
                                                     Items="{Binding States}"
-                                                    MachineModeState="{Binding MachineModeSelectionBool}"
-                                                    Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"
                                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
-                                                       Margin="10,0,0,0"
+            <controls:CustomMachineOnMarchToggleButton Margin="10,0,0,0"
                                                        Items="{Binding States}"
                                                        Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 

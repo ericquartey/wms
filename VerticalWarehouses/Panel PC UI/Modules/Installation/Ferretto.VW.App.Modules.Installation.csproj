@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>..\VWApp2\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\..\VWApp\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,12 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
-    <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
-    <ProjectReference Include="..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
-    <ProjectReference Include="..\CustomControls\Ferretto.VW.App.Controls.csproj" />
-    <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
+    <ProjectReference Include="..\..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
+    <ProjectReference Include="..\..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
+    <ProjectReference Include="..\..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
+    <ProjectReference Include="..\..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
+    <ProjectReference Include="..\..\CustomControls\Ferretto.VW.App.Controls.csproj" />
+    <ProjectReference Include="..\..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
