@@ -14,7 +14,7 @@ using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.App.Installation
+namespace Ferretto.VW.App.Modules.Installation
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",

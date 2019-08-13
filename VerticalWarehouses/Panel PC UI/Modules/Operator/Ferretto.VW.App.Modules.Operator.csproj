@@ -8,16 +8,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>..\VWApp\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\..\VWApp\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  
+
    <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />

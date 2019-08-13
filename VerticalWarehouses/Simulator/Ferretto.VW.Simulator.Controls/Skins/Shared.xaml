@@ -8,7 +8,6 @@
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Styles/CustomSensorSquareControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcTextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/TextBlockStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMachineModeToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ExpanderStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />

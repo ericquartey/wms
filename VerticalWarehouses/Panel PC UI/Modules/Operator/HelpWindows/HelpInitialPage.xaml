@@ -73,13 +73,9 @@
                                             IsPopupOpen="False"
                                             UserText="Operator"  />
 
-        <controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
-                                                MachineModeState="False"
-                                                Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"  />
+        <controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" />
 
-        <controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
-                                                MachineModeState="True"
-                                                Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"  />
+        <controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" />
 
         <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" />
 
