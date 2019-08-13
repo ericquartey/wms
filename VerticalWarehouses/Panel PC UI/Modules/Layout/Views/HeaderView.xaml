@@ -42,7 +42,7 @@
                         BorderThickness="0"
                         Command="{Binding OpenHelpWindow}">
 
-                    <custom:VWIcon Height="36"
+                    <custom:PpcIcon Height="36"
                                    Margin="15,0"
                                    ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                    Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
@@ -94,7 +94,7 @@
                     <Button.Content>
                         <StackPanel Height="60"
                                     Orientation="Horizontal">
-                            <custom:VWIcon Height="36"
+                            <custom:PpcIcon Height="36"
                                            Margin="15,0"
                                            ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                            Source="{DynamicResource ThemeImageSource}" />

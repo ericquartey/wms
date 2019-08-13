@@ -134,13 +134,13 @@
                 Command="{Binding ToggleThemeCommand}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <vwIcon:VWIcon Height="36"
+                    <vwIcon:PpcIcon Height="36"
                                    Margin="10"
                                    ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                    Source="pack://application:,,,/Ferretto.VW.App;Component/Icons/theme_dark.png"
                                    Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
-                    <vwIcon:VWIcon Height="36"
+                    <vwIcon:PpcIcon Height="36"
                                    Margin="10"
                                    ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                    Source="pack://application:,,,/Ferretto.VW.App;Component/Icons/theme_light.png"
