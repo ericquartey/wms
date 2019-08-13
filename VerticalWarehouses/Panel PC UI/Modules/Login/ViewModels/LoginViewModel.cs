@@ -99,23 +99,23 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 return;
             }
 
-            this.NavigationService.SetBusy(true);
+            this.NavigationService.IsBusy = true;
 
             var claims = await this.authenticationService.LogInAsync(
                this.UserLogin.UserName,
                this.UserLogin.Password);
 
-            this.NavigationService.SetBusy(false);
+            this.NavigationService.IsBusy = false;
 
             if (claims != null)
             {
                 if (claims.AccessLevel == UserAccessLevel.SuperUser)
                 {
-                    this.LoadInstallerModule();
+                    this.NavigateToInstallerMainView();
                 }
                 else
                 {
-                    this.LoadOperatorModule();
+                    this.NavigateToOperatorMainView();
                 }
             }
             else
@@ -124,34 +124,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private void LoadInstallerModule()
+        private void NavigateToInstallerMainView()
         {
-            try
-            {
-                this.NavigationService.LoadModule(nameof(Utils.Modules.Installation));
-
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.INSTALLATORMENU, true);
-            }
-            catch (Exception ex)
-            {
-                this.ShowError(ex);
-            }
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.INSTALLATORMENU,
+                data: null,
+                trackCurrentView: true);
         }
 
-        private void LoadOperatorModule()
+        private void NavigateToOperatorMainView()
         {
-            try
-            {
-                this.NavigationService.LoadModule(nameof(Utils.Modules.Operator));
-
-                this.NavigationService.Appear(nameof(Utils.Modules.Operator), "TODO", true); // TODO
-            }
-            catch (Exception ex)
-            {
-                this.ShowError(ex);
-            }
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+               "TODO",/// Utils.Modules.Operator,
+                data: null,
+                trackCurrentView: true);
         }
     }
 }

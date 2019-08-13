@@ -2,17 +2,21 @@
 {
     public interface INavigationService
     {
+        #region Properties
+
+        bool IsBusy { get; set; }
+
+        #endregion
+
         #region Methods
 
-        void Appear(string moduleName, string viewModelName, bool keepTrack, object data = null);
+        void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true);
 
         void Disappear(INavigableViewModel viewModel);
 
         void GoBack();
 
         void LoadModule(string moduleName);
-
-        void SetBusy(bool isBusy);
 
         object SubscribeToNavigationCompleted(System.Action<NavigationCompletedPubSubEventArgs> action);
 

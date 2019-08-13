@@ -39,35 +39,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.VerticalAxisButton,
-                    isTrackable: false));
+                    trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.BAYS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Bays,
-                    isTrackable: false));
+                    trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.CRADLE,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Cradle,
-                    isTrackable: false));
+                    trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.SHUTTER,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Shutter,
-                    isTrackable: false));
+                    trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.OTHERS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Others,
-                    isTrackable: false));
+                    trackCurrentView: false));
         }
 
         #endregion

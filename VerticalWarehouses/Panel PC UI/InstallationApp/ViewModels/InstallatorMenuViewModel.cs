@@ -118,8 +118,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     dispAttribute != null)
                 {
-                    this.AddMenuItem(viewAttribute.InstallatorMenuType,
-                        new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, viewAttribute.IsTrackable));
+                    this.AddMenuItem(
+                        viewAttribute.InstallatorMenuType,
+                        new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, trackCurrentView: true));
                 }
             }
 

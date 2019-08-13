@@ -98,28 +98,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    Utils.Modules.Installation.ManualMovements.VERTICALENGINE,
                    nameof(Utils.Modules.Installation),
                    VW.App.Resources.InstallationApp.VerticalAxis,
-                   isTrackable: false));
+                   trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.HORIZONTALENGINE,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.HorizontalAxis,
-                    isTrackable: false));
+                    trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.SHUTTER,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Shutter,
-                    isTrackable: false));
+                    trackCurrentView: false));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ManualMovements.CAROUSEL,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Carousel,
-                    isTrackable: false));
+                    trackCurrentView: false));
         }
 
         #endregion

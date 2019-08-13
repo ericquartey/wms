@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.Attributes
             string viewModelName,
             string moduleName,
             InstallatorMenuTypes menuType = InstallatorMenuTypes.None,
-            bool isTrackable = true)
+            bool trackCurrentView = true)
         {
             if (string.IsNullOrWhiteSpace(viewModelName))
             {
@@ -28,14 +28,11 @@ namespace Ferretto.VW.App.Installation.Attributes
             this.InstallatorMenuType = menuType;
             this.ViewModelName = viewModelName;
             this.ModuleName = moduleName;
-            this.IsTrackable = isTrackable;
         }
 
         #endregion
 
         #region Properties
-
-        public bool IsTrackable { get; }
 
         public InstallatorMenuTypes InstallatorMenuType { get; }
 

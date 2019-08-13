@@ -32,15 +32,14 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public NavigationMenuItem(string viewModelName, string moduleName, string description, bool isTrackable = true)
+        public NavigationMenuItem(string viewModelName, string moduleName, string description, bool trackCurrentView)
         {
             this.ViewModelName = viewModelName;
             this.ModuleName = moduleName;
             this.Description = description;
-            this.IsTrackable = isTrackable;
+            this.TrackCurrentView = trackCurrentView;
             this.IsEnabled = true;
 
-            //   this.IsActive = this.navigationService.IsActive(moduleName, viewModelName);
             this.subscriptionToken = this.navigationService.SubscribeToNavigationCompleted(
                 e => this.IsActive =
                 this.ViewModelName == e.ViewModelName
@@ -51,8 +50,6 @@ namespace Ferretto.VW.App.Controls
         #endregion
 
         #region Properties
-
-        public bool IsTrackable { get; }
 
         public string Description
         {
@@ -87,7 +84,9 @@ namespace Ferretto.VW.App.Controls
         public ICommand NavigateCommand =>
             this.navigateCommand
             ??
-            (this.navigateCommand = new DelegateCommand(() => this.Navigate(this.IsTrackable), this.CanNavigate));
+            (this.navigateCommand = new DelegateCommand(() => this.Navigate(), this.CanNavigate));
+
+        public bool TrackCurrentView { get; }
 
         public string ViewModelName
         {
@@ -124,13 +123,11 @@ namespace Ferretto.VW.App.Controls
             return this.IsEnabled;
         }
 
-        private void Navigate(bool isTrackable = true)
+        private void Navigate()
         {
-            this.navigationService.Appear(this.moduleName, this.viewModelName, isTrackable);
+            this.navigationService.Appear(this.moduleName, this.viewModelName, null, this.TrackCurrentView);
         }
 
         #endregion
-
-        // To detect redundant calls
     }
 }

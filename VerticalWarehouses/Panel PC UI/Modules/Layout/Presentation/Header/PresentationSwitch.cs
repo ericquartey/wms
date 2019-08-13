@@ -42,7 +42,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override void Execute()
         {
-            this.navigationService.SetBusy(true);
+            this.navigationService.IsBusy = true;
 
             var requestAccepted = this.sessionService.Shutdown();
             if (requestAccepted)
@@ -50,6 +50,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 this.EventAggregator
                     .GetEvent<PresentationChangedPubSubEvent>()
                     .Publish(new PresentationChangedMessage("Shutting down ..."));
+            }
+            else
+            {
+                this.navigationService.IsBusy = false;
             }
         }
 

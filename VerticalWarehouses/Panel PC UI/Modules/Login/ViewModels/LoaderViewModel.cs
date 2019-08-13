@@ -51,6 +51,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await this.RetrieveMachineInfoAsync();
         }
 
+        private void NavigateToLoginPage(MAS.AutomationService.Contracts.MachineIdentity machineIdentity)
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Login),
+                Utils.Modules.Login.LOGIN,
+                machineIdentity,
+                trackCurrentView: false);
+        }
+
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
             await this.RetrieveMachineInfoAsync();
@@ -64,9 +73,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
+
                     await this.bayManager.InitializeAsync();
                     var machineIdentity = this.bayManager.Identity;
-                    this.NavigationService.Appear(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN, true, machineIdentity);
+
+                    this.NavigateToLoginPage(machineIdentity);
+
                     break;
 
                 case HealthStatus.Unhealthy:

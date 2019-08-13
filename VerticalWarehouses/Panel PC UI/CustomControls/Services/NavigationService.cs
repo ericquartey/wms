@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IModuleManager moduleManager;
+
         private readonly IRegionManager regionManager;
 
         private readonly IRegionNavigationService regionNavigationService;
@@ -38,7 +40,8 @@ namespace Ferretto.VW.App.Services
             IUnityContainer unityContainer,
             IRegionManager regionManager,
             IEventAggregator eventAggregator,
-            IRegionNavigationService regionNavigationService)
+            IRegionNavigationService regionNavigationService,
+            IModuleManager moduleManager)
         {
             if (unityContainer == null)
             {
@@ -60,25 +63,57 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(regionNavigationService));
             }
 
+            if (moduleManager == null)
+            {
+                throw new ArgumentNullException(nameof(moduleManager));
+            }
+
             this.container = unityContainer;
             this.regionManager = regionManager;
             this.eventAggregator = eventAggregator;
             this.regionNavigationService = regionNavigationService;
+            this.moduleManager = moduleManager;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsBusy
+        {
+            get
+            {
+                var viewModel = this.GetBusyViewModel();
+                if (viewModel == null)
+                {
+                    return false;
+                }
+
+                return viewModel.IsBusy;
+            }
+            set
+            {
+                var viewModel = this.GetBusyViewModel();
+                if (viewModel != null)
+                {
+                    viewModel.IsBusy = value;
+                }
+            }
         }
 
         #endregion
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, bool isTrackable, object data = null)
+        public void Appear(string moduleName, string viewModelName, object data = null, bool trackCurrentView = true)
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
-                this.logger.Warn($"Invalid view model name '{moduleName}.{viewModelName}''.");
+                this.logger.Warn($"Unable to navigate to view '{moduleName}.{viewModelName}' because name is invalid.");
                 return;
             }
 
-            this.logger.Trace($"Opening view '{moduleName}.{viewModelName}''.");
+            this.logger.Trace($"Navigating to view '{moduleName}.{viewModelName}'.");
 
             try
             {
@@ -91,7 +126,14 @@ namespace Ferretto.VW.App.Services
 
                 this.regionManager.RequestNavigate(Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
 
-                this.tracks.Push(new NavigationTrack(moduleName, viewName, viewModelName, isTrackable));
+                if (trackCurrentView)
+                {
+                    var currentViewRecord = this.tracks.Peek();
+                    this.logger.Warn($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
+                    currentViewRecord.IsTrackable = true;
+                }
+
+                this.tracks.Push(new NavigationTrack(moduleName, viewName, viewModelName));
 
                 this.eventAggregator
                     .GetEvent<NavigationCompleted>()
@@ -101,8 +143,6 @@ namespace Ferretto.VW.App.Services
             {
                 this.logger.Error(ex, $"Cannot show view '{moduleName}.{viewModelName}'.");
             }
-
-            return;
         }
 
         public void Disappear(INavigableViewModel viewModel)
@@ -126,26 +166,31 @@ namespace Ferretto.VW.App.Services
         {
             if (!this.tracks.Any())
             {
+                this.logger.Warn($"Unable to navigate back because navigation stack is empty.");
                 return;
             }
 
-            NavigationTrack navigationTrack = null;
-            do
-            {
-                navigationTrack = this.tracks.Pop();
-            }
-            while (!navigationTrack.IsTrackable && this.tracks.Any());
+            var currentHistoryRecord = this.tracks.Pop();
+            this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
 
-            this.logger.Info($"Navigating back to '{navigationTrack.ModuleName}.{navigationTrack.ViewName}'.");
+            while (this.tracks.Any() && !this.tracks.Peek().IsTrackable)
+            {
+                var currentRecord = this.tracks.Peek();
+                this.logger.Trace($"Discarding history view '{currentRecord.ModuleName}.{currentRecord.ViewName}' because not marked as trackable.");
+                this.tracks.Pop();
+            }
+
+            var historyRecord = this.tracks.Peek();
+            this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
 
             this.regionManager.RequestNavigate(
                 Utils.Modules.Layout.REGION_MAINCONTENT,
-                navigationTrack.ViewName,
+                historyRecord.ViewName,
                 new NavigationParameters());
 
             this.eventAggregator
                 .GetEvent<NavigationCompleted>()
-                .Publish(new NavigationCompletedPubSubEventArgs(navigationTrack.ModuleName, navigationTrack.ViewModelName));
+                .Publish(new NavigationCompletedPubSubEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
         }
 
         public void LoadModule(string moduleName)
@@ -154,25 +199,17 @@ namespace Ferretto.VW.App.Services
             var module = catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName);
             if (module == null)
             {
-                this.logger.Error($"Module {moduleName} not found.");
+                this.logger.Error($"Module '{moduleName}': unable to load the module bacause it is not present in the catalog.");
                 return;
             }
 
-            if (module.State != ModuleState.NotStarted)
+            if (module.State == ModuleState.NotStarted)
             {
-                return;
-            }
+                this.logger.Debug($"Module '{moduleName}': loading module ...");
 
-            var moduleManager = this.container.Resolve<IModuleManager>();
-            moduleManager.LoadModule(moduleName);
-        }
+                this.moduleManager.LoadModule(moduleName);
 
-        public void SetBusy(bool isBusy)
-        {
-            if (Application.Current.MainWindow.Descendants<View>().FirstOrDefault() is View view &&
-                view.DataContext is IBusyViewModel busyViewModel)
-            {
-                busyViewModel.IsBusy = isBusy;
+                this.logger.Debug($"Module '{moduleName}': loaded.");
             }
         }
 
@@ -191,6 +228,17 @@ namespace Ferretto.VW.App.Services
                     .GetEvent<NavigationCompleted>()
                     .Unsubscribe(token);
             }
+        }
+
+        private IBusyViewModel GetBusyViewModel()
+        {
+            if (Application.Current.MainWindow.Descendants<View>().FirstOrDefault() is View view &&
+                view.DataContext is IBusyViewModel busyViewModel)
+            {
+                return busyViewModel;
+            }
+
+            return null;
         }
 
         #endregion

@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             try
             {
-                this.NavigationService.SetBusy(true);
+                this.NavigationService.IsBusy = true;
                 this.Error = await this.machineErrorsService.GetCurrentAsync();
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             finally
             {
-                this.NavigationService.SetBusy(false);
+                this.NavigationService.IsBusy = false;
             }
         }
 
@@ -92,11 +92,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             try
             {
-                this.NavigationService.SetBusy(true);
+                this.NavigationService.IsBusy = true;
+
                 await this.machineErrorsService.ResolveAsync(this.error.Id);
 
                 var nextError = await this.machineErrorsService.GetCurrentAsync();
-                this.NavigationService.SetBusy(false);
+
+                this.NavigationService.IsBusy = false;
+
                 if (nextError == null)
                 {
                     this.GoBack();
@@ -107,7 +110,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             catch (Exception ex)
             {
                 this.ShowError(ex);
-                this.NavigationService.SetBusy(false);
+                this.NavigationService.IsBusy = false;
             }
         }
 

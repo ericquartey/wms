@@ -13,11 +13,11 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Calibrazione offset asse verticale")]
         VerticalOffsetCalibration,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Sensors, isTrackable: false)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Sensors)]
         [Display(Description = "Stato sensori")]
         SensorsState,
 
-        [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others, isTrackable: false)]
+        [View(Utils.Modules.Installation.ManualMovements.VERTICALENGINE, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Movimenti manuali a bassa velocità")]
         VerticalEngineManualMovements,
 

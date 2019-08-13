@@ -13,8 +13,9 @@
            mc:Ignorable="d">
     <Grid>
         <StackPanel VerticalAlignment="Center">
-            <Image Width="300"
-                   gif:ImageBehavior.AnimatedSource="pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/loading_ring.gif"
+            <Image Width="60"
+                   Margin="30"
+                   gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
                    gif:ImageBehavior.AutoStart="true" />
             <TextBlock HorizontalAlignment="Center"
                        Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"

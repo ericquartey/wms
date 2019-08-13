@@ -2,36 +2,42 @@
 {
     public class NavigationTrack
     {
+        #region Fields
+
+        // TODO remove this constant
+        private const string ErrorMessage = "Parameter cannot be null or empty";
+
+        #endregion
+
         #region Constructors
 
-        public NavigationTrack(string moduleName, string viewName, string viewModelName, bool isTrackable)
+        public NavigationTrack(string moduleName, string viewName, string viewModelName)
         {
             if (string.IsNullOrEmpty(moduleName))
             {
-                throw new System.ArgumentException("message", nameof(moduleName));
+                throw new System.ArgumentException(ErrorMessage, nameof(moduleName));
             }
 
             if (string.IsNullOrEmpty(viewName))
             {
-                throw new System.ArgumentException("message", nameof(viewName));
+                throw new System.ArgumentException(ErrorMessage, nameof(viewName));
             }
 
             if (string.IsNullOrEmpty(viewModelName))
             {
-                throw new System.ArgumentException("message", nameof(viewModelName));
+                throw new System.ArgumentException(ErrorMessage, nameof(viewModelName));
             }
 
             this.ModuleName = moduleName;
             this.ViewName = viewName;
             this.ViewModelName = viewModelName;
-            this.IsTrackable = isTrackable;
         }
 
         #endregion
 
         #region Properties
 
-        public bool IsTrackable { get; }
+        public bool IsTrackable { get; set; }
 
         public string ModuleName { get; }
 
@@ -45,7 +51,7 @@
 
         public override string ToString()
         {
-            return $"{this.ModuleName}.{this.ViewModelName} (track: {this.IsTrackable})";
+            return $"{this.ModuleName}.{this.ViewName}";
         }
 
         #endregion

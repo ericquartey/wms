@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private const int ColorAlphaByteIndex = 3;
 
-        private bool colorizingInProgress;
+        private bool sourcePropertyChanging;
 
         #endregion
 
@@ -50,10 +50,13 @@ namespace Ferretto.VW.App.Controls.Controls
                 &&
                 e.NewValue is ImageSource imageSource
                 &&
-                !this.colorizingInProgress)
+                !this.sourcePropertyChanging)
             {
-                this.Source = this.ColorizeImage(imageSource);
-                this.colorizingInProgress = false;
+                var newSource = this.ColorizeImage(imageSource);
+
+                this.sourcePropertyChanging = true;
+                this.Source = newSource;
+                this.sourcePropertyChanging = false;
             }
 
             base.OnPropertyChanged(e);
@@ -63,8 +66,11 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             if (d is VWIcon wmsIcon && e.NewValue is SolidColorBrush brush)
             {
-                wmsIcon.Source = wmsIcon.ColorizeImage(wmsIcon.Source);
-                wmsIcon.colorizingInProgress = false;
+                var newSource = wmsIcon.ColorizeImage(wmsIcon.Source);
+
+                wmsIcon.sourcePropertyChanging = true;
+                wmsIcon.Source = newSource;
+                wmsIcon.sourcePropertyChanging = false;
             }
         }
 
@@ -74,8 +80,6 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 return image;
             }
-
-            this.colorizingInProgress = true;
 
             var bitmap = image as WriteableBitmap ?? new WriteableBitmap(image as BitmapSource);
 
