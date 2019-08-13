@@ -319,14 +319,13 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value, () => this.RaisePropertyChanged(nameof(this.AxisPosition))); }
+        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value); }
 
         public int ControlWord
         {
             get => this.controlWord;
             set => this.SetProperty(ref this.controlWord, value, () =>
             {
-                this.RaisePropertyChanged(nameof(this.ControlWord));
                 this.RaisePropertyChanged(nameof(this.ControlWordArray));
             });
         }
@@ -335,16 +334,15 @@ namespace Ferretto.VW.Simulator.Services.Models
                                                let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
                                                select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
-        
+
         public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
             set => this.SetProperty(ref this.digitalIO, value);
         }
 
-        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
+        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
-        //public bool[] DigitalIO { get; set; }
         public int Id { get; set; }
 
         public InverterRole InverterRole => (InverterRole)this.Id;
@@ -419,14 +417,13 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.statusWord, value, () =>
             {
                 this.RaisePropertyChanged(nameof(this.IsFault));
-                this.RaisePropertyChanged(nameof(this.StatusWord));
                 this.RaisePropertyChanged(nameof(this.StatusWordArray));
             });
         }
 
         public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
-                                               let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
-                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                              let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
+                                              select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
         private int homingTickCount { get; set; }
@@ -675,7 +672,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else if (this.homingTickCount == 1)
             {
-               this.StatusWord &= 0xEFFF;
+                this.StatusWord &= 0xEFFF;
             }
         }
 
