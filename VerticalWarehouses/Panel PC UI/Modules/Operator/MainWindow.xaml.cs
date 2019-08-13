@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -76,13 +75,7 @@ namespace Ferretto.VW.App.Modules.Operator
             ca.To = ((SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Auto"]).Color;
             ca.Duration = new Duration(TimeSpan.FromSeconds(.5));
             ca.RepeatBehavior = RepeatBehavior.Forever;
-            this.MachineModeControl.RectangleBrush = new SolidColorBrush(this.MachineModeControl.RectangleBrush.Color);
-            this.MachineModeControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, ca);
-            await Task.Delay(3000);
-            this.MachineModeControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
-            this.MachineModeControl.RectangleBrush = (!this.MachineModeControl.MachineModeState) ?
-                (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Auto"] :
-                (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineMode_Manual"];
+
             this.RaiseFinishedMachineModeChangeStateEvent();
         }
 
