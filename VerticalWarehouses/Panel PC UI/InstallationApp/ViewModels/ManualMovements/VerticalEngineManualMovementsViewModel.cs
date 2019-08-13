@@ -112,6 +112,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task MoveDownAsync()
         {
             this.IsMovingDown = true;
+            this.IsMovingUp = false;
 
             await this.StartMovementAsync(-1.0m);
         }
@@ -119,6 +120,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task MoveUpAsync()
         {
             this.IsMovingUp = true;
+            this.IsMovingDown = false;
 
             await this.StartMovementAsync(1.0m);
         }

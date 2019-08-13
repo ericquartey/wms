@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
@@ -43,41 +43,41 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpMaintenanceMainPageGridKit}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,460,0,0" Width="180"
                                                ContentText="VRT EF 84 L 990-BIS H"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceMainPageModel}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,530,0,0" Width="180"
                                                ContentText="VW_190012"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceMainPageSerial}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,600,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,600,0,0" Width="180"
                                                ContentText="15-04-2017"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceMainPageInstallationDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="20-04-2018"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceMainPageLastMaintenanceDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="20-04-2019"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceMainPageNextMaintenanceDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
                                                LabelText="{x:Static res:OperatorApp.MaintenanceMainPageStateMachine}"/>
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
                   Content="{x:Static res:OperatorApp.CommonUp}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
                   Content="{x:Static res:OperatorApp.CommonDown}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,334,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,334,0"
                   Content="{x:Static res:OperatorApp.CommonButtonDetail}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"

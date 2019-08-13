@@ -8,14 +8,14 @@
                   d:DesignHeight="60"
                   d:DesignWidth="100"
                   mc:Ignorable="d">
-    <Button Name="LayoutRoot"
-            Width="100"
-            Height="60"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="Transparent"
-            Command="{Binding CustomCommand}"
-            Template="{StaticResource VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate}">
+    <local:PpcButton x:Name="LayoutRoot"
+                     Width="100"
+                     Height="60"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Background="Transparent"
+                     Command="{Binding CustomCommand}"
+                     Template="{StaticResource VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="47" />
@@ -32,5 +32,5 @@
                        Height="12"
                        Fill="Orange" />
         </Grid>
-    </Button>
+    </local:PpcButton>
 </ctrls:PpcControl>

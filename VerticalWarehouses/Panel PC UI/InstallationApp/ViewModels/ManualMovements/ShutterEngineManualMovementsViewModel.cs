@@ -130,6 +130,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task MoveDownAsync()
         {
             this.IsMovingDown = true;
+            this.IsMovingUp = false;
 
             var messageData = new ShutterPositioningMovementMessageDataDto
             {
@@ -143,6 +144,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task MoveUpAsync()
         {
             this.IsMovingUp = true;
+            this.IsMovingDown = false;
 
             var messageData = new ShutterPositioningMovementMessageDataDto
             {

@@ -3,7 +3,6 @@ using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Views;
-using Ferretto.VW.App.Installation.ViewsAndViewModels;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
@@ -83,9 +82,10 @@ namespace Ferretto.VW.App.Installation
 
             this.container.RegisterInstance<IStatusMessageService>(new StatusMessageService());
 
-            this.container.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             this.container.RegisterSingleton<INotificationService, NotificationService>();
             this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
+
+            // TODO: all the following view models need refactoring
 
             this.container.RegisterSingleton<IBeltBurnishingViewModel, BeltBurnishingViewModel>();
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
@@ -99,7 +99,6 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<IIdleViewModel, IdleViewModel>();
             this.container.RegisterSingleton<IInstallationStateViewModel, InstallationStateViewModel>();
 
-            this.container.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
 
             this.container.RegisterSingleton<IWeightControlViewModel, WeightControlViewModel>();

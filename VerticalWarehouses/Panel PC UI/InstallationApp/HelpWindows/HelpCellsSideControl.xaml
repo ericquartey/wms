@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024" Height="688"
@@ -24,28 +24,28 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpCSCDescription}" />
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="125"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="175"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="-2,5"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
 
-        <Controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                  Width="180"
                                                  ContentText="Anteriore"
                                                  LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}"  />
@@ -70,9 +70,9 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpCSCSelectedSide}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
                     Content="{x:Static res:InstallationApp.Correct}"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
                      Width="260" Height="70"

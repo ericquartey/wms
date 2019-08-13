@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews.CellsControlView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
@@ -16,60 +16,60 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.CellsControl}" />
 
-        <custom:CustomLabelTextBlockControl Margin="200,120,0,0"
+        <controls:CustomLabelTextBlockControl Margin="200,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentCell, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
-        <custom:CustomLabelTextBlockControl Margin="436,120,0,0"
+        <controls:CustomLabelTextBlockControl Margin="436,120,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
-        <custom:CustomLabelTextBlockControl Margin="436,300,0,0"
+        <controls:CustomLabelTextBlockControl Margin="436,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <custom:PpcTextBox Margin="200,300,0,0"
+        <controls:PpcTextBox Margin="200,300,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.StepValue}"
                                                  Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <custom:CustomLabelTextBlockControl Margin="436,480,0,0"
+        <controls:CustomLabelTextBlockControl Margin="436,480,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CellCorrection}" />
 
-        <Button Margin="670,120,0,0"
+        <controls:PpcButton  Margin="670,120,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="670,260,0,0"
+        <controls:PpcButton  Margin="670,260,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.StepUp}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="670,330,0,0"
+        <controls:PpcButton  Margin="670,330,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.StepDown}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="670,480,0,0"
+        <controls:PpcButton  Margin="670,480,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Correct}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
     </Grid>
 </UserControl>

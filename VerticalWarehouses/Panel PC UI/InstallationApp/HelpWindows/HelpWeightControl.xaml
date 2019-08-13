@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -35,41 +35,41 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpWCFinalResult}" />
 
-        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,210,0,0"
+        <controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,210,0,0"
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="250,0"
                                                      Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                      LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
-        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
                                                   ContentText="5,0"
                                                   LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
 
-        <Controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="80,5"
                                                        Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                        LabelText="{x:Static res:InstallationApp.TestRun}" />
 
-        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"
                                                   ContentText="245,0"
                                                   LabelText="{x:Static res:InstallationApp.MesuredWeight}"  />
 
-        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="530,140,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="530,140,0,0" Width="180"
                                                   ContentText="Misura corretta"
                                                   LabelText="{x:Static res:InstallationApp.Output}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,210,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,210,0,0"
                     Content="{x:Static res:InstallationApp.Start}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}"  />
+                      />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,280,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,280,0,0"
                     Content="{x:Static res:InstallationApp.Stop}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}"  />
+                      />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,210,0,0"
                     Width="260" Height="70"
