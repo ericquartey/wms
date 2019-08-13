@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Controls;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 
@@ -21,6 +22,7 @@ namespace Ferretto.VW.App.Modules.Layout
         public PresentationLogged(
             IAuthenticationService authenticationService,
             INavigationService navigationService)
+            : base(PresentationTypes.Logged)
         {
             if (authenticationService == null)
             {
@@ -36,7 +38,6 @@ namespace Ferretto.VW.App.Modules.Layout
             this.navigationService = navigationService;
             this.Type = PresentationTypes.Logged;
 
-            this.UserName = this.authenticationService.UserName;
             this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
         }
 
@@ -54,9 +55,11 @@ namespace Ferretto.VW.App.Modules.Layout
 
         #region Methods
 
-        public override void Execute()
+        public override Task ExecuteAsync()
         {
             this.navigationService.Appear(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN, false);
+
+            return Task.CompletedTask;
         }
 
         private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)

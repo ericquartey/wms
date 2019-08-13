@@ -8,6 +8,7 @@
                   d:DesignHeight="60"
                   d:DesignWidth="100"
                   mc:Ignorable="d">
+    
     <local:PpcButton x:Name="LayoutRoot"
                      Width="100"
                      Height="60"

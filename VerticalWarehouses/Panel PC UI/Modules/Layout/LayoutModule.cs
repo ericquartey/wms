@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Layout
             containerRegistry.Register<IPresentation, PresentationHelp>(nameof(PresentationHelp));
 
             containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationTheme));
-            containerRegistry.Register<IPresentation, PresentationSwitch>(nameof(PresentationSwitch));
+            containerRegistry.Register<IPresentation, PresentationShutdown>(nameof(PresentationShutdown));
 
             containerRegistry.Register<IPresentation, PresentationBack>(nameof(PresentationBack));
         }

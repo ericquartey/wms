@@ -8,7 +8,7 @@
 
         Error,
 
-        Switch,
+        Shutdown,
 
         MachineMarch,
 
