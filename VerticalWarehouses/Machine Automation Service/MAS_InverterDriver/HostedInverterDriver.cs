@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
+        private const int STATUS_WORD_UPDATE_INTERVAL = 300;
+
         private readonly Stopwatch axisIntervalStopwatch;
 
         private readonly Stopwatch axisStopwatch;
@@ -327,7 +329,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.CurrentStateMachine != null)
                 {
-                    this.logger.LogTrace( $"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}" );
+                    this.logger.LogWarning( $"5:Inverter Driver already executing operation {this.CurrentStateMachine.GetType()}" );
 
                     var ex = new Exception();
                     this.SendOperationErrorMessage( new InverterExceptionFieldMessageData( ex, "Inverter operation already in progress", 0 ), FieldMessageType.InverterError );
@@ -559,7 +561,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         break;
 
-                    case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:
 
@@ -571,8 +572,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.logger.LogDebug( $"State machine {this.CurrentStateMachine?.GetType()} is null !!" );
                             }
 
-                            if (this.CurrentStateMachine is PowerOffStateMachine ||
-                                this.CurrentStateMachine is SwitchOnStateMachine ||
+                            if (this.CurrentStateMachine is SwitchOnStateMachine ||
                                 this.CurrentStateMachine is StopStateMachine)
                             {
                                 this.CurrentStateMachine = null;
@@ -612,9 +612,33 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            this.logger.LogDebug( $"InverterPowerOn Deallocating {this.CurrentStateMachine?.GetType()} state machine" );
+                            this.logger.LogDebug($"Deallocating {this.CurrentStateMachine?.GetType()} state machine");
 
-                            if (this.CurrentStateMachine is PowerOnStateMachine)
+                            if (this.CurrentStateMachine is PowerOnStateMachine )
+                            {
+                                this.CurrentStateMachine = null;
+                            }
+                            else
+                            {
+                                this.logger.LogDebug($"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}");
+                            }
+
+                            var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
+                            if (nextMessage != null)
+                            {
+                                this.commandQueue.Enqueue(nextMessage);
+                            }
+                        }
+
+                        break;
+
+                    case FieldMessageType.InverterPowerOff:
+
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.logger.LogDebug( $"Deallocating {this.CurrentStateMachine?.GetType()} state machine" );
+
+                            if (this.CurrentStateMachine is PowerOffStateMachine)
                             {
                                 this.CurrentStateMachine = null;
                             }
@@ -623,7 +647,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.logger.LogDebug( $"Try to deallocate {this.CurrentStateMachine?.GetType()} Handling {receivedMessage.Type}" );
                             }
 
-                            var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
+                            var nextMessage = ((InverterPowerOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                             if (nextMessage != null)
                             {
                                 this.commandQueue.Enqueue( nextMessage );

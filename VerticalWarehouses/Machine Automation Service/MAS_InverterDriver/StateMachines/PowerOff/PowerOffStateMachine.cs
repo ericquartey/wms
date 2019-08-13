@@ -1,5 +1,7 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -47,6 +49,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
         #endregion
 
         #region Methods
+
+        public override void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
+        {
+            if (this.CurrentState is PowerOffEndState)
+            {
+                if (this.nextCommandMessage.Type != FieldMessageType.InverterPowerOff)
+                {
+                    ((InverterPowerOffFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+                }
+            }
+            base.PublishNotificationEvent(notificationMessage);
+        }
 
         /// <inheritdoc />
         public override void Start()

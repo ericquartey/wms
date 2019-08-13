@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Models;
 
 namespace Ferretto.VW.Simulator.Services.Interfaces
@@ -41,7 +42,7 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
         Task ProcessStartSimulatorAsync();
 
         Task ProcessStopSimulatorAsync();
-
+        
         #endregion
     }
 }

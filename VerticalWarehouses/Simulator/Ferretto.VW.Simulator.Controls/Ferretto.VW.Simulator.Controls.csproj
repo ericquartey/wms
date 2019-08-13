@@ -43,49 +43,4 @@
       <ProjectReference Include="..\Ferretto.VW.Simulator.Resources\Ferretto.VW.Simulator.Resources.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <None Update="Controls\CustomSensorSmallControl.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Controls\CustomSensorSquareControl.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Fonts\Microsoft-sans-serif.ttf">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Fonts\RobotoCondensed-Regular.ttf">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Skins\DarkCustomControlSensor.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Skins\DarkCustomLabelTextBlock.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Skins\DarkSkin.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Skins\LightCustomControlSensor.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Skins\LightCustomLabelTextBlock.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Skins\LightSkin.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Styles\CustomLabelTextBlockStyle.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Styles\CustomSensorSmallControlStyle.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Styles\CustomSensorSquareControlStyle.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Templates\ActionButtonControlTemplate.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-    </ItemGroup>
-
 </Project>
