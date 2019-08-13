@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Layout.Views.HeaderView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-             xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:enums="clr-namespace:Ferretto.VW.App.Services;assembly=Ferretto.VW.App.Services"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -36,46 +36,48 @@
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Help}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <Button Width="60"
-                        Height="60"
-                        Background="{DynamicResource VWAPP_BACKGROUND}"
-                        BorderThickness="0"
-                        Command="{Binding OpenHelpWindow}">
+                <controls:PpcButton Width="60"
+                                    Height="60"
+                                    Background="{DynamicResource VWAPP_BACKGROUND}"
+                                    BorderThickness="0"
+                                    Command="{Binding OpenHelpWindow}">
+                    <Button.Content>
+                        <controls:PpcIcon Height="24"
+                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                          Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
 
-                    <custom:PpcIcon Height="36"
-                                   Margin="15,0"
-                                   ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                   Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
+                    </Button.Content>
 
-                </Button>
+
+                </controls:PpcButton>
             </ctrls:PpcControl>
 
-            <custom:CustomControlLoggedUser Margin="10,0,20,0"
-                                            IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
-                                            Items="{Binding States}"
-                                            LogOffCommand="{Binding LogOffCommand}"
-                                            OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
-                                            UserText="{Binding UserName}"
-                                            Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+            <controls:CustomControlLoggedUser Margin="10,0,20,0"
+                                              IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
+                                              Items="{Binding States}"
+                                              LogOffCommand="{Binding LogOffCommand}"
+                                              OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
+                                              UserText="{Binding UserName}"
+                                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <custom:CustomMachineModeToggleButton Name="MachineModeControl"
-                                                  CustomCommand="{Binding MachineModeCustomCommand}"
+            <controls:CustomMachineModeToggleButton Name="MachineModeControl"
+                                                    CustomCommand="{Binding MachineModeCustomCommand}"
+                                                    Items="{Binding States}"
+                                                    MachineModeState="{Binding MachineModeSelectionBool}"
+                                                    Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"
+                                                    Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+            <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
+                                                       Margin="10,0,0,0"
+                                                       CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                                                       Items="{Binding States}"
+                                                       MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay}"
+                                                       Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}"
+                                                       Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+            <controls:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                   Items="{Binding States}"
-                                                  MachineModeState="{Binding MachineModeSelectionBool}"
-                                                  Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"
                                                   Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
-
-            <custom:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
-                                                     Margin="10,0,0,0"
-                                                     CustomCommand="{Binding MachineOnMarchCustomCommand}"
-                                                     Items="{Binding States}"
-                                                     MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay}"
-                                                     Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}"
-                                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
-
-            <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
-                                                Items="{Binding States}"
-                                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
         </StackPanel>
         <!--  end installator  -->
 
@@ -90,14 +92,14 @@
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <Button Command="{Binding ExecuteCommand}">
+                <controls:PpcButton Command="{Binding ExecuteCommand}">
                     <Button.Content>
                         <StackPanel Height="60"
                                     Orientation="Horizontal">
-                            <custom:PpcIcon Height="36"
-                                           Margin="15,0"
-                                           ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                           Source="{DynamicResource ThemeImageSource}" />
+                            <controls:PpcIcon Height="36"
+                                              Margin="15,0"
+                                              ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                              Source="{DynamicResource ThemeImageSource}" />
 
                             <TextBlock Margin="0,0,10,0"
                                        VerticalAlignment="Center">
@@ -121,18 +123,8 @@
                             </TextBlock>
                         </StackPanel>
                     </Button.Content>
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                   
+                </controls:PpcButton>
             </ctrls:PpcControl>
 
             <!--  SwitchOffCommand  -->
@@ -143,9 +135,8 @@
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Switch}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
-                <Button Command="{Binding ExecuteCommand}"
-                        Content="{x:Static res:VWApp.SwitchOff}"
-                        Template="{StaticResource PpcButtonControlTemplate}" />
+                <controls:PpcButton Command="{Binding ExecuteCommand}"
+                                    Content="{x:Static res:VWApp.SwitchOff}" />
             </ctrls:PpcControl>
         </StackPanel>
 

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -35,35 +35,35 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpVacStart}" />
 
-        <Controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,140,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,140,0,0" Width="180"
                                                   ContentText="100,0"
                                                   LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
-        <Controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="20,210,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="20,210,0,0" Width="180"
                                                   ContentText="10350,5"
                                                   LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
-        <Controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,420,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,420,0,0" Width="180"
                                                   ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   LabelText="{x:Static res:InstallationApp.Output}"  />
 
-        <Controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,280,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,280,0,0" Width="180"
                                                   ContentText="150,0"
                                                   LabelText="{x:Static res:InstallationApp.Offset}" />
 
-        <Controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,350,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,350,0,0" Width="180"
                                                   ContentText="165,15"
                                                   LabelText="{x:Static res:InstallationApp.Resolution}" />
 
-        <Button    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,210,0,0"
+        <controls:PpcButton     VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,210,0,0"
                    Content="{x:Static res:InstallationApp.Stop}"
                    IsEnabled="True"
-                   Template="{StaticResource PpcButtonControlTemplate}" />
+                    />
 
-        <Button   VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,140,0,0"
+        <controls:PpcButton    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="530,140,0,0"
                   Content="{x:Static res:InstallationApp.Start}"
                   IsEnabled="True"
-                  Template="{StaticResource PpcButtonControlTemplate}"  />
+                    />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,210,0,0"
                      Width="260" Height="70"

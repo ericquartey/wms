@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail.DetailListInWaitView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,53 +22,53 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.DetailListInWaitHeader}" />
 
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="140,530,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="E' possibile eseguire solo le righe evidenziate."
                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
-        <Controls:CustomControlListDetailDataGrid Width="680"
+        <controls:CustomControlListDetailDataGrid Width="680"
                                                   Height="340"
                                                   Margin="140,150,0,0"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top" />
 
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding List.Code}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="430,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding List.Description}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}" />
-        <Button Margin="0,190,20,0"
+        <controls:PpcButton  Margin="0,190,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="0,255,20,0"
+        <controls:PpcButton  Margin="0,255,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="0,0,20,20"
+        <controls:PpcButton  Margin="0,0,20,20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding ListExecuteCommand}"
                 Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="140,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

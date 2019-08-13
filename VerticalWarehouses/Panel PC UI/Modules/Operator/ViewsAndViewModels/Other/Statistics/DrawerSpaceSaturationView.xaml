@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics.DrawerSpaceSaturationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -18,7 +18,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionHeader}" />
 
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
                                               Margin="520,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
@@ -32,33 +32,33 @@
                         VerticalAlignment="Top"
                         Content="{Binding DataGridViewModel}" />
 
-        <Controls:CustomLabelTextBlockControl MaxWidth="300"
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
                                               Margin="140,90,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding TotalLoadingUnits}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}" />
 
-        <Controls:CustomProgressBarControl MaxWidth="300"
+        <controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="590,510,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"
                                            ProgressionValue="{Binding FillPercentage, StringFormat={}{0:N1} %}" />
 
-        <Button Margin="0,190,20,0"
+        <controls:PpcButton  Margin="0,190,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding UpDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="0,255,20,0"
+        <controls:PpcButton  Margin="0,255,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding DownDataGridButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
 
     </Grid>

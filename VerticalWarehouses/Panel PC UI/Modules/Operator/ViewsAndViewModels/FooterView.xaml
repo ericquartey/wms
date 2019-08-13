@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              mc:Ignorable="d">
     <Grid Height="80">
         <Grid.ColumnDefinitions>
@@ -28,11 +29,11 @@
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
 
-                <Button Margin="10,0,0,0"
+                <controls:PpcButton  Margin="10,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding ExecuteCommand}"
                     Content="{x:Static res:InstallationApp.Back}"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
         </StackPanel>
     </Grid>

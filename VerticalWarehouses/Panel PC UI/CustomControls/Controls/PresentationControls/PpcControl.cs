@@ -11,11 +11,17 @@ namespace Ferretto.VW.App.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable<IPresentation>), typeof(PpcControl),
-                                                                            new PropertyMetadata(default(IEnumerable<IPresentation>), ItemsChanged));
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
+            nameof(Items),
+            typeof(IEnumerable<IPresentation>),
+            typeof(PpcControl),
+            new PropertyMetadata(default(IEnumerable<IPresentation>), ItemsChanged));
 
-        public static readonly DependencyProperty PresentationTypeProperty = DependencyProperty.Register("PresentationType", typeof(PresentationTypes), typeof(PpcControl),
-                                                                            new PropertyMetadata(default(PresentationTypes), PresentationTypeChanged));
+        public static readonly DependencyProperty PresentationTypeProperty = DependencyProperty.Register(
+            nameof(PresentationType),
+            typeof(PresentationTypes),
+            typeof(PpcControl),
+            new PropertyMetadata(default(PresentationTypes), PresentationTypeChanged));
 
         #endregion
 
@@ -29,7 +35,7 @@ namespace Ferretto.VW.App.Controls
 
         public PresentationTypes PresentationType
         {
-            get { return (PresentationTypes)this.GetValue(PresentationTypeProperty); }
+            get => (PresentationTypes)this.GetValue(PresentationTypeProperty);
             set => this.SetValue(PresentationTypeProperty, value);
         }
 
@@ -49,7 +55,8 @@ namespace Ferretto.VW.App.Controls
                 this.Items = items;
             }
 
-            if (this.Items != null &&
+            if (this.Items != null
+                &&
                 this.PresentationType != PresentationTypes.None)
             {
                 var presentationStateFound = this.Items.FirstOrDefault(i => i.Type == this.PresentationType);

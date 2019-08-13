@@ -6,9 +6,6 @@ using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    /// <summary>
-    /// Interaction logic for CustomMachineModeToggleButton.xaml
-    /// </summary>
     public partial class CustomMachineModeToggleButton : PpcControl, INotifyPropertyChanged
     {
         #region Fields

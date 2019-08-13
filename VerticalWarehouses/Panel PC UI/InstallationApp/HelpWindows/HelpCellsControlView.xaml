@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              mc:Ignorable="d">
 
     <Grid Width="1024"
@@ -35,39 +35,39 @@
             Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
             Text="{x:Static res:HelpDescriptions.HelpCCVSetPosition}" />
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0" Width="180"
                                                 ContentText="125"
                                                 LabelText="{x:Static res:InstallationApp.CurrentCell}"  />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0" Width="180"
                                                ContentText="1250,0"
                                                LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                                ContentText="1251,5"
                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0" Width="180"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     InputText="0,5"
                                                     Highlighted="True" IsEnabled="True"
                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                 ContentText="1,5"
                                                 LabelText="{x:Static res:InstallationApp.CellCorrection}" />
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
             Content="{x:Static res:InstallationApp.GoToInitialPosition}"
-            Template="{StaticResource PpcButtonControlTemplate}" />
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
+             />
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
             Content="{x:Static res:InstallationApp.StepUp}"
-            Template="{StaticResource PpcButtonControlTemplate}" />
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,280,0,0"
+             />
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,280,0,0"
             Content="{x:Static res:InstallationApp.StepDown}"
-            Template="{StaticResource PpcButtonControlTemplate}" />
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,350,0,0"
+             />
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,350,0,0"
             Content="{x:Static res:InstallationApp.Correct}"
-            Template="{StaticResource PpcButtonControlTemplate}" />
+             />
         <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,210,0,0"
             Width="260" Height="70"
             Text="{x:Static res:HelpDescriptions.HelpCCVCellPosition}"

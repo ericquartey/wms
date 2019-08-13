@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              mc:Ignorable="d" >
 
     <Grid    Width="1024" Height="608">
@@ -13,35 +13,35 @@
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.DrawerCompactingHeader}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,460,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,460,0,0"
                   Content="{x:Static Resources:OperatorApp.DrawerCompactingAntStop}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,170,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,170,0,0" MaxWidth="300" IsEnabled="False"
                                                ContentText="8"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingFragmentNumber}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,230,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,230,0,0" MaxWidth="300" IsEnabled="False"
                                                ContentText="200"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,460,0,0" IsEnabled="False"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,460,0,0" IsEnabled="False"
                   Content="{x:Static Resources:OperatorApp.DrawerCompactingRearCompact}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,170,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,170,0,0" MaxWidth="300" IsEnabled="False"
                                                ContentText="6"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingFragmentNumber}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,230,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,230,0,0" MaxWidth="300" IsEnabled="False"
                                                ContentText="150"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,290,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,290,0,0" MaxWidth="300" IsEnabled="False"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,290,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,290,0,0" MaxWidth="300" IsEnabled="False"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,110,0,0" MaxWidth="500"
@@ -50,18 +50,18 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,110,0,0" MaxWidth="500"
             Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.DrawerCompactingRear}" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,370,0,0" MaxWidth="300"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,370,0,0" MaxWidth="300"
             ContentText="Compattazione in corso"
             LabelText="{x:Static Resources:OperatorApp.DrawerCompactingProcedureStatus}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,370,0,0" MaxWidth="300" IsEnabled="False"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,370,0,0" MaxWidth="300" IsEnabled="False"
             ContentText="In attesa"
             LabelText="{x:Static Resources:OperatorApp.DrawerCompactingProcedureStatus}"/>
-        <Button Margin="0,0,20,20"
+        <controls:PpcButton  Margin="0,0,20,20"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding DrawerCompactingDetailButtonCommand}"
             Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-            Template="{StaticResource PpcButtonControlTemplate}" />
+             />
 
     </Grid>
 </UserControl>

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
@@ -35,27 +35,27 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpOpMainUser}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,260,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,260,0,0"
                   Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}"
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,330,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,330,0,0"
                   Content="{x:Static res:OperatorApp.NavigationMainMenuItems}"
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,400,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,400,0,0"
                   Content="{x:Static res:OperatorApp.NavigationMainMenuLists}"
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,470,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,470,0,0"
                   Content="{x:Static res:OperatorApp.NavigationMainMenuOther}"
                   IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,190,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,190,0,0"
                   Width="60"  Height="60"
                   VerticalContentAlignment="Center"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
@@ -67,36 +67,36 @@
                             TextAlignment="Center"><Run Text="?"/>
             </TextBlock>
 
-        </Button>
+        </controls:PpcButton>
 
-        <Controls:CustomControlLoggedUser   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,120,0,0"
+        <controls:CustomControlLoggedUser   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="510,120,0,0"
                                             IsPopupOpen="False"
                                             UserText="Operator"  />
 
-        <Controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
+        <controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
                                                 MachineModeState="False"
                                                 Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"  />
 
-        <Controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
+        <controls:CustomMachineModeToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
                                                 MachineModeState="True"
                                                 Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"  />
 
-        <Controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
+        <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
                                                    MachineOnMarchState="False"
                                                    Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
 
-        <Controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
+        <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
                                                    MachineOnMarchState="True"
                                                    Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
 
-        <Controls:CustomMainWindowServiceButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0"
+        <controls:CustomMainWindowServiceButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0"
                                                    ContentText="Service" />
 
-        <Controls:CustomMainWindowServiceButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0"
+        <controls:CustomMainWindowServiceButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0"
                                                    ContentText="Service" />
 
 
-        <Controls:CustomMainWindowErrorButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,540,0,0"
+        <controls:CustomMainWindowErrorButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,540,0,0"
                                                    Visibility="Visible" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,190,0,0"

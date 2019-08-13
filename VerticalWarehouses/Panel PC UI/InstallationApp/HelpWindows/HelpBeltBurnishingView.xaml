@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              mc:Ignorable="d">
     <Grid Width="1024"
           Height="688"
@@ -21,34 +21,34 @@
                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
             ContentText="4500" Width="180"
             LabelText="{x:Static res:InstallationApp.UpperBound}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
             ContentText="500" Width="180"
             LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
             ContentText="3500" Width="180"
             LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
-        <Controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
+        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
             ContentText="4500" Width="180"
             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
-        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+        <controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
             Highlighted="True" IsEnabled="True"
             Width="180"
             LabelText="{x:Static res:InstallationApp.RequiredCicles}"/>
 
-        <Button     Content="{x:Static res:InstallationApp.Start}"
-            Template="{StaticResource PpcButtonControlTemplate}"
+        <controls:PpcButton      Content="{x:Static res:InstallationApp.Start}"
+
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0" />
 
-        <Button     Content="{x:Static res:InstallationApp.Stop}"
-            Template="{StaticResource PpcButtonControlTemplate}"
+        <controls:PpcButton      Content="{x:Static res:InstallationApp.Stop}"
+
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0" />
 
         <TextBlock Grid.Row="0"

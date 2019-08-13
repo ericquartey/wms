@@ -132,6 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task MoveBackwardsAsync()
         {
             this.IsMovingBackwards = true;
+            this.IsMovingForwards = false;
 
             await this.StartMovementAsync(-1);
         }
@@ -139,6 +140,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task MoveForwardsAsync()
         {
             this.IsMovingForwards = true;
+            this.IsMovingBackwards = false;
 
             await this.StartMovementAsync(1);
         }
