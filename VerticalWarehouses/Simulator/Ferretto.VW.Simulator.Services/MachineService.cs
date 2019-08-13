@@ -303,7 +303,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         case InverterParameterId.ControlWordParam:
                             inverter.ControlWord = ushortPayload;
-                            //this.UpdateInverter(inverter);
+                            inverter.RefreshControlWordArray();
                             result = client.Client.Send(extractedMessage);
                             break;
 
