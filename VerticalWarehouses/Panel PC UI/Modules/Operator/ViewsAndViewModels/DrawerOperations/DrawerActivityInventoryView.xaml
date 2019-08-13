@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.DrawerActivityInventoryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:WmsControls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
              xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
@@ -21,18 +21,18 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.DrawerActivityInventoryHeader}" />
 
-        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:CustomLabelTextBlockControl MaxWidth="200"
                                               Margin="60,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}" />
 
-        <Button Margin="0,0,20,20"
+        <controls:PpcButton  Margin="0,0,20,20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
         <WmsControls:TrayControl Width="900"
                                  Height="200"
@@ -59,31 +59,31 @@
                VerticalAlignment="Bottom"
                Source="{Binding ItemImage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ImageToSourceConverter}}"
                Stretch="Uniform" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+        <controls:CustomLabelTextBlockControl MaxWidth="200"
                                               Margin="60,335,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemCode}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="150"
+        <controls:CustomLabelTextBlockControl MaxWidth="150"
                                               Margin="280,390,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,335,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
-        <Controls:PpcTextBox MaxWidth="160"
+        <controls:PpcTextBox MaxWidth="160"
                                                    Margin="844,400,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
@@ -91,13 +91,13 @@
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityInventoryQtyStored}"
                                                    RenderTransformOrigin="0.499,0.627"
                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
-        <Button Margin="280,0,0,20"
+        <controls:PpcButton  Margin="280,0,0,20"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Command="{Binding DrawerActivityInventoryDetailsButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
-        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+                 />
+        <controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,445,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"

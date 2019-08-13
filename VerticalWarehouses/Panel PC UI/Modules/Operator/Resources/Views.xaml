@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary x:Class="Ferretto.VW.App.Modules.Operator.Resources.Views"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:customviewsandviewmodels="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:other="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other"
@@ -12,6 +11,7 @@
                     xmlns:searchItem="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem"
                     xmlns:statistics="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics"
                     xmlns:viewsandviewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail"
+                    xmlns:customviewsandviewmodels="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
                     mc:Ignorable="d">
     <DataTemplate DataType="{x:Type viewsAndViewModels:IdleViewModel}">
         <viewsAndViewModels:IdleView />

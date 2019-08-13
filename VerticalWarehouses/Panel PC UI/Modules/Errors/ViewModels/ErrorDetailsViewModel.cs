@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 if (nextError == null)
                 {
-                    this.GoBack();
+                    this.NavigationService.GoBack();
                 }
 
                 this.Error = nextError;

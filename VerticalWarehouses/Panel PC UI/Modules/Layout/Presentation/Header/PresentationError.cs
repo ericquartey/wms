@@ -75,7 +75,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override void Execute()
         {
-            this.navigationService.Appear(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW, false);
+            this.navigationService.Appear(
+                nameof(Utils.Modules.Errors),
+                Utils.Modules.Errors.ERRORDETAILSVIEW,
+                data: null,
+                trackCurrentView: true);
         }
 
         private async Task CheckErrorsPresenceAsync()
@@ -98,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private async Task OnHubConnectionChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
         {
-            if(e.IsConnected)
+            if (e.IsConnected)
             {
                 await this.CheckErrorsPresenceAsync();
             }

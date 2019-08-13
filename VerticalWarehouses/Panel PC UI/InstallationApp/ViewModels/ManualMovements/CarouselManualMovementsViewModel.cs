@@ -107,6 +107,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task CloseCarouselAsync()
         {
             this.IsClosing = true;
+            this.IsOpening = false;
 
             await this.StartMovementAsync(-100);
         }
@@ -114,6 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task OpenCarouselAsync()
         {
             this.IsOpening = true;
+            this.IsClosing = false;
 
             await this.StartMovementAsync(100);
         }

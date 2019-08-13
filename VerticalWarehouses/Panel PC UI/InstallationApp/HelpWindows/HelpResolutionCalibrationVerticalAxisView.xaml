@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d" >
     <Grid Width="1024"
@@ -29,34 +29,34 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialPositionHelp}" />
 
-        <Controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,155,0,0"
+        <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,155,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
                                                        LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
                                                        Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,295,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,295,0,0"
                     Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,295,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationInitialStartHelp}" />
 
-        <Controls:PpcTextBox    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,450,0,0"
+        <controls:PpcTextBox    HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,450,0,0"
                                                       Width="180"
                                                       Highlighted="True" IsEnabled="True"
                                                       InputText="5150.0"
                                                       LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}"  />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,590,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,590,0,0"
                     Content="{x:Static res:InstallationApp.Move}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,450,0,0"
                     Width="260" Height="70"
@@ -68,7 +68,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFinalPosizionStartHelp}" />
 
-        <Controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,155,0,0"
+        <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,155,0,0"
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="4250,5"
@@ -80,30 +80,30 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.ResolutionCalibrationMeasuredeValueHelp}" />
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,225,0,0"
+        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,225,0,0"
                                                 Width="180"
                                                 ContentText="125,36"
                                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,295,0,0"
+        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,295,0,0"
                                                 Width="180"
                                                 ContentText="127,12"
                                                 LabelText="{x:Static res:InstallationApp.NewResolution}" />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,365,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,365,0,0"
                     Content="{x:Static res:General.Accept}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,526,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,526,0,0"
                     Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,599,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,599,0,0"
                     Content="{x:Static res:InstallationApp.CloseProcedure}"
                     IsEnabled="True"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,225,0,0"
                     Width="260" Height="70"
@@ -150,14 +150,14 @@
                    Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep4}" />
 
-        <Controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,225,0,0"
+        <controls:PpcTextBox   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,225,0,0"
                                                      Width="180"
                                                      Highlighted="True"
                                                      InputText="875,5"
                                                      LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
                                                      Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,520,0,0"
+        <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,520,0,0"
                                                        Width="180"
                                                        Highlighted="True"
                                                        InputText="5045,5"

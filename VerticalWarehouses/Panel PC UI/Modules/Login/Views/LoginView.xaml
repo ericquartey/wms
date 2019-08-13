@@ -11,7 +11,7 @@
            d:DesignWidth="800"
            prism:ViewModelLocator.AutoWireViewModel="True"
            mc:Ignorable="d">
-    <Grid Margin="100 0">
+    <Grid Margin="100,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -71,11 +71,10 @@
                               LabelText="{x:Static res:VWApp.UserLogin_Password}"
                               Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-            <Button Margin="0,20"
-                    HorizontalAlignment="Left"
-                    Command="{Binding LoginCommand}"
-                    Content="{x:Static res:General.Login}" 
-                    Template="{StaticResource PpcButtonControlTemplate}"/>
+            <ctrls:PpcButton Margin="0,20"
+                             HorizontalAlignment="Left"
+                             Command="{Binding LoginCommand}"
+                             Content="{x:Static res:General.Login}" />
         </StackPanel>
 
     </Grid>

@@ -12,6 +12,7 @@
              xmlns:searchItem="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem"
              xmlns:other="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other"
              xmlns:statistics="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              Width="1024"
              Height="768"
              mc:Ignorable="d"
@@ -132,14 +133,14 @@
                           Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </ContentPresenter>
 
-        <Button Grid.Row="1"
+        <controls:PpcButton  Grid.Row="1"
                 Content="Back"
                 HorizontalAlignment="Right"
                 Margin="0,0,10,0"
                 Click="Button_Click"
-                Template="{StaticResource PpcButtonControlTemplate}">
+                >
 
-        </Button>
+        </controls:PpcButton>
     </Grid>
 
 </Window>

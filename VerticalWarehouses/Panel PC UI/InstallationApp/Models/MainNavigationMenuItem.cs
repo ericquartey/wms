@@ -13,7 +13,12 @@ namespace Ferretto.VW.App.Installation.Models
 
         #region Constructors
 
-        public MainNavigationMenuItem(InstallatorMenus menuItemType, string viewModelName, string moduleName, string description, bool trackCurrentView)
+        public MainNavigationMenuItem(
+            InstallatorMenus menuItemType,
+            string viewModelName,
+            string moduleName,
+            string description,
+            bool trackCurrentView)
             : base(viewModelName, moduleName, description, trackCurrentView)
         {
             this.MenuItemType = menuItemType;

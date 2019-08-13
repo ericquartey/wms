@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
@@ -46,33 +46,33 @@
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
                      Text="{x:Static Resources:OperatorApp.ItemSearchGridItem}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
                   Content="{x:Static res:OperatorApp.CommonUp}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+        <controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0"
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="12"
                                                     LabelText="{x:Static res:OperatorApp.ItemSearchQtyRequest}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
                                                ContentText="14"
                                                LabelText="{x:Static res:OperatorApp.ItemSearchQtyAvailable}"/>
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
                   Content="{x:Static res:OperatorApp.CommonDown}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
                   Content="{x:Static res:OperatorApp.ItemSearchCall}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
                   Content="{x:Static res:OperatorApp.CommonButtonDetail}"
-                  Template="{StaticResource PpcButtonControlTemplate}" />
+                   />
 
-        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+        <controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0"
                                                     Highlighted="True" IsEnabled="True" Width="180"
                                                     InputText="25CF"

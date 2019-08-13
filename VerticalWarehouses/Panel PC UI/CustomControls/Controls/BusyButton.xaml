@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.BusyButton"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls">
     <Grid Name="layoutRoot">
         <Grid.Resources>
             <Color x:Key="FilledColor"
@@ -220,10 +221,9 @@
         <Control Name="control"
                  Margin="75,5,0,0"
                  Style="{StaticResource BusyAnimationStyle}" />
-        <Button Name="button"
-                Command="{Binding ButtonCommand}"
-                Content="{Binding ButtonContent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                Style="{StaticResource BusyButtonStyle}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+        <controls:PpcButton x:Name="button"
+                            Command="{Binding ButtonCommand}"
+                            Content="{Binding ButtonContent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource BusyButtonStyle}" />
     </Grid>
 </UserControl>

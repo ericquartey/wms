@@ -24,7 +24,6 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             this.InitializeComponent();
             var customMainWindowServiceButton = this;
-            this.LayoutRoot.DataContext = customMainWindowServiceButton;
             this.PresentationType = PresentationTypes.Service;
             this.Initialize();
         }

@@ -36,11 +36,6 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
-        public void GoBack()
-        {
-            this.journal?.GoBack();
-        }
-
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);

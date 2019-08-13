@@ -7,6 +7,7 @@
         xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
         xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
         xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
+        xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
@@ -89,11 +90,11 @@
                           Width="1024"
                           Height="688"
                           Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Button Grid.Row="1"
+        <controls:PpcButton  Grid.Row="1"
                 Margin="0,0,10,0"
                 HorizontalAlignment="Right"
                 Click="Button_Click"
                 Content="Back"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
     </Grid>
 </Window>

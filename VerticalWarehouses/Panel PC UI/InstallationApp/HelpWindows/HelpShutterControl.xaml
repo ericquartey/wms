@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.HelpWindows.HelpShutterControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -40,7 +40,7 @@
                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.HelpGCRequiredCycles}" />
 
-        <Controls:PpcTextBox Width="180"
+        <controls:PpcTextBox Width="180"
                                                    Margin="20,140,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
@@ -48,7 +48,7 @@
                                                    LabelText="{x:Static res:InstallationApp.RequiredCicles}"
                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:PpcTextBox Width="180"
+        <controls:PpcTextBox Width="180"
                                                    Margin="20,210,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
@@ -56,26 +56,26 @@
                                                    LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <Controls:CustomLabelTextBlockControl Width="180"
+        <controls:CustomLabelTextBlockControl Width="180"
                                               Margin="20,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="125"
                                               LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
-        <Button Margin="530,140,0,0"
+        <controls:PpcButton  Margin="530,140,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Start}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="530,210,0,0"
+        <controls:PpcButton  Margin="530,210,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Stop}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Controls:PpcSensorControl Width="180"
+        <controls:PpcSensorControl Width="180"
                                       Margin="20,350,0,0"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
@@ -83,7 +83,7 @@
                                       SensorState="True"
                                       Style="{StaticResource PpcSensorControlStyle}" />
 
-        <Controls:PpcSensorControl Width="180"
+        <controls:PpcSensorControl Width="180"
                                       Margin="20,420,0,0"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"

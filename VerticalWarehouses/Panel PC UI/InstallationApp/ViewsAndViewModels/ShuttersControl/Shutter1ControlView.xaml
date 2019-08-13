@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl.Shutter1ControlView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
@@ -18,21 +18,21 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate1Control}" />
 
-        <custom:PpcTextBox Margin="260,170,0,0"
+        <controls:PpcTextBox Margin="260,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
                                                  Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <custom:PpcTextBox Margin="560,170,0,0"
+        <controls:PpcTextBox Margin="560,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding DelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
                                                  Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <custom:CustomLabelTextBlockControl Margin="260,300,0,0"
+        <controls:CustomLabelTextBlockControl Margin="260,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
@@ -44,31 +44,31 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top" />
 
-        <Button Grid.Column="0"
+        <controls:PpcButton  Grid.Column="0"
                 Margin="560,450,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding StartButtonCommand}"
                 Content="{x:Static res:InstallationApp.Start}"
                 IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <Button Margin="260,450,0,0"
+        <controls:PpcButton  Margin="260,450,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding StopButtonCommand}"
                 Content="{x:Static res:InstallationApp.Stop}"
                 IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource PpcButtonControlTemplate}" />
+                 />
 
-        <custom:PpcSensorControl Margin="560,290,0,0"
+        <controls:PpcSensorControl Margin="560,290,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
                                     SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:PpcSensorControl Margin="560,330,0,0"
+        <controls:PpcSensorControl Margin="560,330,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     LabelText="{x:Static res:InstallationApp.ShutterSensorB}"

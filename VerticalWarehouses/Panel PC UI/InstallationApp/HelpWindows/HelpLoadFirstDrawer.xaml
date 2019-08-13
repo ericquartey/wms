@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -25,35 +25,35 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpLFDDescription}" />
 
-        <Controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
+        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,140,0,0"
                                                  Width="180" ContentText="4"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsToCheck}"  />
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
+        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                 Width="180" ContentText="2"
                                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsChecked}"  />
 
-        <Controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
+        <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
                                                  Width="180" ContentText="234"
                                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerActualCellToCheck}"  />
 
-        <Controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                     Width="180" InputText="1"
                                                     Highlighted="True" IsEnabled="True"
                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
                                                     LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
 
-        <Controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
+        <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"
                                                 Width="180" ContentText="500"
                                                 LabelText="{x:Static res:InstallationApp.LoadFirstDrawerMaxWeight}"/>
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
                     Content="{x:Static res:InstallationApp.LoadFirstDrawerStartLoading}"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
-        <Button     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
+        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"
                     Content="{x:Static res:InstallationApp.LoadFirstDrawerRecallDrawer}"
-                    Template="{StaticResource PpcButtonControlTemplate}" />
+                     />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,140,0,0"
                     Width="260" Height="70"
