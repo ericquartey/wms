@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Controls;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
@@ -16,8 +17,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationTheme(IThemeService themeService)
+            : base(PresentationTypes.Theme)
         {
-            this.Type = PresentationTypes.Theme;
+            if (themeService == null)
+            {
+                throw new System.ArgumentNullException(nameof(themeService));
+            }
+
             this.themeService = themeService;
         }
 
@@ -31,7 +37,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Methods
 
-        public override void Execute()
+        public override Task ExecuteAsync()
         {
             this.themeService.ApplyTheme(
                 this.themeService.ActiveTheme == ApplicationTheme.Light
@@ -39,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     : ApplicationTheme.Light);
 
             this.RaisePropertyChanged(nameof(this.IsDarkThemeActive));
+
+            return Task.CompletedTask;
         }
 
         #endregion

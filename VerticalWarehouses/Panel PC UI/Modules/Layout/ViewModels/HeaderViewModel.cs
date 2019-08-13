@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.InitializeData();
             this.States.Add(this.GetInstance(nameof(PresentationTheme)));
-            this.States.Add(this.GetInstance(nameof(PresentationSwitch)));
+            this.States.Add(this.GetInstance(nameof(PresentationShutdown)));
             this.States.Add(this.GetInstance(nameof(PresentationHelp)));
             this.States.Add(this.GetInstance(nameof(PresentationLogged)));
             this.States.Add(this.GetInstance(nameof(PresentationMachineMode)));
@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 case PresentationMode.Login:
                     this.Show(PresentationTypes.None, false);
                     this.Show(PresentationTypes.Theme, true);
-                    this.Show(PresentationTypes.Switch, true);
+                    this.Show(PresentationTypes.Shutdown, true);
                     break;
 
                 case PresentationMode.Installator:

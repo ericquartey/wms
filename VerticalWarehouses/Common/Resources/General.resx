@@ -247,4 +247,13 @@
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
   </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="MachineOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

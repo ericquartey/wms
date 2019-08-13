@@ -29,6 +29,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             IMachineErrorsService machineErrorsService,
             IOperatorHubClient operatorHubClient,
             INavigationService navigationService)
+            : base(PresentationTypes.Error)
         {
             if (machineErrorsService == null)
             {
@@ -48,8 +49,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.machineErrorsService = machineErrorsService;
             this.operatorHubClient = operatorHubClient;
             this.navigationService = navigationService;
-
-            this.Type = PresentationTypes.Error;
 
             this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync();
             this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionChangedAsync(sender, e);
@@ -73,13 +72,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         #region Methods
 
-        public override void Execute()
+        public override Task ExecuteAsync()
         {
             this.navigationService.Appear(
                 nameof(Utils.Modules.Errors),
                 Utils.Modules.Errors.ERRORDETAILSVIEW,
                 data: null,
                 trackCurrentView: true);
+
+            return Task.CompletedTask;
         }
 
         private async Task CheckErrorsPresenceAsync()

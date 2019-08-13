@@ -25,9 +25,8 @@ namespace Ferretto.VW.App.Controls.Controls
         public CustomMachineModeToggleButton()
         {
             this.InitializeComponent();
+
             this.PresentationType = PresentationTypes.MachineMode;
-            var customMachineModeToggleButton = this;
-            this.LayoutRoot.DataContext = customMachineModeToggleButton;
         }
 
         #endregion

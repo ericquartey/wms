@@ -6,7 +6,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <OutputPath>..\..\VWApp2\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\..\VWApp\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

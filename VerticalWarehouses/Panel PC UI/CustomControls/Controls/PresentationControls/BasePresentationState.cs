@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
@@ -8,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Controls
 {
-    public abstract class BasePresentation : BindableBase, IPresentation
+    public class BasePresentation : BindableBase, IPresentation
     {
         #region Fields
 
@@ -24,11 +25,23 @@ namespace Ferretto.VW.App.Controls
 
         #endregion
 
+        #region Constructors
+
+        protected BasePresentation(PresentationTypes type)
+        {
+            this.Type = type;
+        }
+
+        #endregion
+
         #region Properties
 
         public IEventAggregator EventAggregator => this.eventAggregator;
 
-        public ICommand ExecuteCommand => this.executeCommand ?? (this.executeCommand = new DelegateCommand(() => this.Execute()));
+        public ICommand ExecuteCommand =>
+            this.executeCommand
+            ??
+            (this.executeCommand = new DelegateCommand(async () => await this.ExecuteAsync()));
 
         public bool? IsVisible
         {
@@ -36,16 +49,26 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isVisible, value);
         }
 
-        public PresentationStates State { get => this.state; set => this.SetProperty(ref this.state, value); }
+        public PresentationStates State
+        {
+            get => this.state;
+            set => this.SetProperty(ref this.state, value);
+        }
 
-        public PresentationTypes Type { get => this.type; set => this.SetProperty(ref this.type, value); }
+        public PresentationTypes Type
+        {
+            get => this.type;
+            set => this.SetProperty(ref this.type, value);
+        }
 
         #endregion
 
         #region Methods
 
-        public virtual void Execute()
+        public virtual Task ExecuteAsync()
         {
+            // do nothing
+            return Task.CompletedTask;
         }
 
         #endregion

@@ -81,13 +81,9 @@
                                                 MachineModeState="True"
                                                 Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"  />
 
-        <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
-                                                   MachineOnMarchState="False"
-                                                   Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+        <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" />
 
-        <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
-                                                   MachineOnMarchState="True"
-                                                   Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+        <controls:CustomMachineOnMarchToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" />
 
         <controls:CustomMainWindowServiceButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0"
                                                    ContentText="Service" />

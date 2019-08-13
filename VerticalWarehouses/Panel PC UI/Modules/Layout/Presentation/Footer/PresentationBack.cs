@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Interfaces;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
@@ -12,41 +12,42 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly INavigationService navigationService;
 
-        private IRegionNavigationJournal journal;
-
         #endregion
 
         #region Constructors
 
         public PresentationBack(INavigationService navigationService)
+            : base(PresentationTypes.Back)
         {
-            this.Type = PresentationTypes.Back;
+            if (navigationService == null)
+            {
+                throw new System.ArgumentNullException(nameof(navigationService));
+            }
+
+            this.navigationService = navigationService;
 
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
                 .Subscribe(this.Update);
-            this.Type = PresentationTypes.Back;
-            this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>().Subscribe(this.Update);
-            this.navigationService = navigationService;
+
+            this.EventAggregator
+                .GetEvent<PresentationChangedPubSubEvent>()
+                .Subscribe(this.Update);
         }
 
         #endregion
 
         #region Methods
 
-        public override void Execute()
+        public override Task ExecuteAsync()
         {
             this.navigationService.GoBack();
-            //this.journal?.GoBack();
+
+            return Task.CompletedTask;
         }
 
         private void Update(PresentationChangedMessage message)
         {
-            if (message.Journal != null)
-            {
-                this.journal = message.Journal;
-            }
-
             if (message.States != null
                 &&
                 message.States.FirstOrDefault(s => s.Type == this.Type) is Services.Presentation back

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Controls;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
@@ -8,16 +9,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationMachineMode()
+            : base(PresentationTypes.MachineMode)
         {
-            this.Type = PresentationTypes.MachineMode;
         }
 
         #endregion
 
         #region Methods
 
-        public override void Execute()
+        public override Task ExecuteAsync()
         {
+            return Task.CompletedTask;
         }
 
         #endregion
