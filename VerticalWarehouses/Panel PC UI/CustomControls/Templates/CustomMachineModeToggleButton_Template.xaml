@@ -5,7 +5,6 @@
     <ControlTemplate x:Key="VWAPP_CustomMachineModeToggleButton_ControlTemplate"
                      TargetType="Button">
         <Border Name="Root_CustomMachineModeToggleButtonBorder"
-                Background="Transparent"
                 BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
                 BorderThickness="{DynamicResource VWAPP_CustomMachineModeToggleButton_Thickness}">
             <ContentPresenter />

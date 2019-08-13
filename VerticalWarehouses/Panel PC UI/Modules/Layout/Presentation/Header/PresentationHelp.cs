@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.App.Controls;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
@@ -8,8 +9,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationHelp()
+            : base(PresentationTypes.Help)
         {
-            this.Type = PresentationTypes.Help;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override Task ExecuteAsync()
+        {
+            return Task.CompletedTask;
         }
 
         #endregion

@@ -69,10 +69,7 @@
 
             <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
                                                        Margin="10,0,0,0"
-                                                       CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                        Items="{Binding States}"
-                                                       MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay}"
-                                                       Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}"
                                                        Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <controls:CustomMainWindowErrorButton Margin="10,0,0,0"
@@ -123,7 +120,7 @@
                             </TextBlock>
                         </StackPanel>
                     </Button.Content>
-                   
+
                 </controls:PpcButton>
             </ctrls:PpcControl>
 
@@ -133,7 +130,7 @@
                               HorizontalAlignment="Right"
                               VerticalAlignment="Center"
                               Items="{Binding States}"
-                              PresentationType="{x:Static enums:PresentationTypes.Switch}"
+                              PresentationType="{x:Static enums:PresentationTypes.Shutdown}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Command="{Binding ExecuteCommand}"
                                     Content="{x:Static res:VWApp.SwitchOff}" />

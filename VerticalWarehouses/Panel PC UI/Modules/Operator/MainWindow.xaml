@@ -68,10 +68,7 @@
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
                     <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
-                                                             Margin="10,0,0,0"
-                                                             CustomCommand="{Binding MachineOnMarchCustomCommand}"
-                                                             MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=OneWay}"
-                                                             Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+                                                             Margin="10,0,0,0" />
                     <controls:CustomMainWindowErrorButton Margin="10,0,0,0"
                                                         Visibility="Collapsed" />
                     <controls:CustomMainWindowServiceButton Margin="10,0,0,0"

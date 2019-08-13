@@ -55,15 +55,11 @@
 
         <controls:CustomMachineOnMarchToggleButton Margin="20,280,0,0"
                                                    HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   MachineOnMarchState="True"
-                                                   Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+                                                   VerticalAlignment="Top" />
 
         <controls:CustomMachineOnMarchToggleButton Margin="20,210,0,0"
                                                    HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   MachineOnMarchState="False"
-                                                   Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+                                                   VerticalAlignment="Top" />
 
         <controls:CustomControlLoggedUser Height="60"
                                           Margin="20,350,0,0"

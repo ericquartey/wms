@@ -5,34 +5,54 @@
                   xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
                   d:DesignHeight="60"
                   d:DesignWidth="100"
+                  PresentationType="MachineMarch"
                   mc:Ignorable="d">
 
     <controls:PpcButton x:Name="LayoutRoot"
                         Width="100"
                         Height="60"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Command="{Binding CustomCommand}"
-                        Template="{StaticResource VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate}">
-        <Grid>
+                        Command="{Binding ExecuteCommand}">
+
+        <Grid Width="100" Height="60">
             <Grid.RowDefinitions>
-                <RowDefinition Height="47" />
-                <RowDefinition Height="13" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontFamily="{DynamicResource PpcFontFamily}"
+
+            <TextBlock VerticalAlignment="Center"
                        FontSize="{DynamicResource PpcButtonFontSize}"
                        Foreground="{DynamicResource PpcButtonForeground}"
-                       Text="{Binding MachineOnMarchString}"
-                       TextAlignment="Center" />
+                       Text="{x:Static res:General.MachineOff}"
+                       TextAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
+                                         Value="True">
+                                <Setter Property="Text" Value="{x:Static res:General.MachineOn}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <Rectangle Grid.Row="1"
-                       Width="98"
                        Height="12"
-                       Fill="{Binding RectangleBrush}" />
+                       Fill="Gray">
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
+                                         Value="True">
+                                <Setter Property="Fill" Value="Green" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
         </Grid>
+
     </controls:PpcButton>
 </ctrls:PpcControl>

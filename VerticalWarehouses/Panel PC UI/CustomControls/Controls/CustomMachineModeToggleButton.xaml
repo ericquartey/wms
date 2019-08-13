@@ -8,29 +8,27 @@
                   d:DesignHeight="60"
                   d:DesignWidth="100"
                   mc:Ignorable="d">
+
     <controls:PpcButton x:Name="LayoutRoot"
                         Width="100"
                         Height="60"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Command="{Binding CustomCommand}"
-                        Template="{StaticResource VWAPP_CustomMachineModeToggleButton_ControlTemplate}">
-        <Grid>
+                        Command="{Binding ExecuteCommand}">
+
+        <Grid Width="100"
+              Height="60">
             <Grid.RowDefinitions>
-                <RowDefinition Height="47" />
-                <RowDefinition Height="13" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontSize}"
-                       Foreground="{DynamicResource VWAPP_CustomMachineModeToggleButton_Foreground_Normal}"
-                       Text="{Binding MachineModeString}"
+
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="{DynamicResource PpcButtonFontSize}"
+                       Foreground="{DynamicResource PpcButtonForeground}"
+                       Text="Manual"
                        TextAlignment="Center" />
             <Rectangle Grid.Row="1"
-                       Width="98"
                        Height="12"
-                       Fill="{Binding RectangleBrush}" />
+                       Fill="Green" />
         </Grid>
     </controls:PpcButton>
 </ctrls:PpcControl>
