@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
     /// <summary>
     /// Interaction logic for CustomMainWindowServiceButton.xaml
     /// </summary>
-    public partial class CustomMainWindowServiceButton : UserControl, INotifyPropertyChanged
+    public partial class CustomMainWindowServiceButton : PpcControl, INotifyPropertyChanged
     {
         #region Fields
 
@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Controls.Controls
             this.InitializeComponent();
             var customMainWindowServiceButton = this;
             this.LayoutRoot.DataContext = customMainWindowServiceButton;
+            this.PresentationType = PresentationTypes.Service;
+            this.Initialize();
         }
 
         #endregion

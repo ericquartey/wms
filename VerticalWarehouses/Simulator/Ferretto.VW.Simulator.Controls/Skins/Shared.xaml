@@ -3,10 +3,10 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomSensorControlStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Styles/CustomSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Styles/CustomSensorSquareControlStyle.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomInputFieldControlFocusableStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcTextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/TextBlockStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMachineModeToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
@@ -19,7 +19,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/NavigationButtonControlTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/ActionButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/PpcButtonTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Templates/ActionButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/RepeatButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineModeToggleButton_Template.xaml" />

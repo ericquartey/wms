@@ -37,13 +37,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         private IViewModel sensorRegion;
 
-        private readonly IShutterMachineService shutterService;
+        private readonly IMachineShutterService shutterService;
 
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
 
-        private readonly ITestMachineService testService;
+        private readonly IMachineTestService testService;
 
         private readonly ICustomShutterControlSensorsTwoPositionsViewModel customShutterControlSensorsTwoPositionsViewModel;
 
@@ -53,8 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         public Shutter1ControlViewModel(
             IEventAggregator eventAggregator,
-            ITestMachineService testService,
-            IShutterMachineService shutterService,
+            IMachineTestService testService,
+            IMachineShutterService shutterService,
             ICustomShutterControlSensorsTwoPositionsViewModel customShutterControlSensorsTwoPositionsViewModel)
         {
             if (eventAggregator == null)

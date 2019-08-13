@@ -2,24 +2,23 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    public partial class MachineStatusController : ControllerBase
+    public partial class MachineStatusController
     {
+
         #region Methods
 
-        private void ExecutePowerOff_Method()
+        private void ExecuteResetSecurity_Method()
         {
-            var powerEnableMessageData = new PowerEnableMessageData(false);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(
-                    powerEnableMessageData,
-                    "Power Enable Command",
+                    null,
+                    "Reset Security Command",
                     MessageActor.FiniteStateMachines,
                     MessageActor.WebApi,
-                    MessageType.PowerEnable));
+                    MessageType.ResetSecurity));
         }
 
         private void ExecutePowerOn_Method()
@@ -34,15 +33,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     MessageType.PowerEnable));
         }
 
-        private void ExecuteResetSecurity_Method()
+        private void ExecutePowerOff_Method()
         {
+            var powerEnableMessageData = new PowerEnableMessageData(false);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(
                 new CommandMessage(
-                    null,
-                    "Reset Security Command",
+                    powerEnableMessageData,
+                    "Power Enable Command",
                     MessageActor.FiniteStateMachines,
                     MessageActor.WebApi,
-                    MessageType.ResetSecurity));
+                    MessageType.PowerEnable));
         }
 
         #endregion

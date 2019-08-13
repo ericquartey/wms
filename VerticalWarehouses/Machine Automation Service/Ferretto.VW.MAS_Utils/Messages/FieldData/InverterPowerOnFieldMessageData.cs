@@ -5,16 +5,16 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterPowerOnFieldMessageData : IInverterPowerOnFieldMessageData
+    public class InverterPowerOnFieldMessageData : FieldMessageData, IInverterPowerOnFieldMessageData
     {
         #region Constructors
 
         public InverterPowerOnFieldMessageData(
             InverterIndex inverterToPowerOn,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.InverterToPowerOn = inverterToPowerOn;
-            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -25,7 +25,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public FieldCommandMessage NextCommandMessage { get; set; }
 
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

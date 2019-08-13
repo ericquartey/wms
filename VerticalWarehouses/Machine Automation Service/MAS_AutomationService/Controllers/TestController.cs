@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.DTOs;
 using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -20,28 +18,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private IDataHubClient dataHubClient;
-
-        private IHubContext<InstallationHub, IInstallationHub> installationHub;
-
-        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
-
         #endregion
 
         #region Constructors
 
         public TestController(
             IEventAggregator eventAggregator,
-            IServiceProvider services,
-            IHubContext<InstallationHub, IInstallationHub> hub,
-            IHubContext<OperatorHub, IOperatorHub> operatorHub,
-            IDataHubClient dataHubClient)
+            IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.installationHub = hub;
-            this.dataHubClient = dataHubClient;
-            this.operatorHub = operatorHub;
         }
 
         #endregion
@@ -115,15 +101,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.HorizontalPositioningMethod();
         }
 
-        [HttpGet("MissionExecutedTest")]
-        public void MissionExecuted()
-        {
-        }
-
-        [HttpGet("ResetIO")]
-        public void ResetIO()
-        {
-        }
 
         [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
         public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)

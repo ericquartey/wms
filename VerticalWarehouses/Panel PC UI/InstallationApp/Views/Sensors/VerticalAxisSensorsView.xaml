@@ -1,0 +1,82 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.VerticalAxisSensorsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            d:DataContext="{d:DesignInstance viewModels:IBaseSensorsViewModel}"
+            mc:Ignorable="d">
+    <Grid Margin="0,30,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <views:SensorsNavigationView />
+
+        <Grid Grid.Column="1"
+              Margin="130,0,130,10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.VerticalAxis}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.ExtraRunElevator}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.ZeroVerticalSensor}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.ElevatorEngineSelectedBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.CradleEngineSelected}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.CradleEngineSelectedBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical">
+                <TextBlock VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{x:Static res:InstallationApp.Cradle}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.ZeroPawlSensor}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.LuPresentInMachineSideBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+
+                <custom:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
+                                         SensorPort="{x:Static iom:IOMachineSensors.LuPresentInOperatorSideBay1}"
+                                         Sensors="{Binding SensorsStates}"
+                                         Style="{StaticResource PpcSensorControlStyle}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ctrls:View>

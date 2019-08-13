@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 statics.AreaFillPercentage = machine.AreaFillRate;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // if the call fails, some data will not be populated

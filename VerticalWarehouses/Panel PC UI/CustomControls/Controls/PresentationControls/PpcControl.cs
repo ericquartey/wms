@@ -1,0 +1,81 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+
+namespace Ferretto.VW.App.Controls
+{
+    public class PpcControl : UserControl
+    {
+        #region Fields
+
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable<IPresentation>), typeof(PpcControl),
+                                                                            new PropertyMetadata(default(IEnumerable<IPresentation>), ItemsChanged));
+
+        public static readonly DependencyProperty PresentationTypeProperty = DependencyProperty.Register("PresentationType", typeof(PresentationTypes), typeof(PpcControl),
+                                                                            new PropertyMetadata(default(PresentationTypes), PresentationTypeChanged));
+
+        #endregion
+
+        #region Properties
+
+        public IEnumerable<IPresentation> Items
+        {
+            get => (IEnumerable<IPresentation>)this.GetValue(ItemsProperty);
+            set => this.SetValue(ItemsProperty, value);
+        }
+
+        public PresentationTypes PresentationType
+        {
+            get { return (PresentationTypes)this.GetValue(PresentationTypeProperty); }
+            set => this.SetValue(PresentationTypeProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void Initialize()
+        {
+            if (this.DataContext is BasePresentation)
+            {
+                return;
+            }
+
+            if (this.DataContext is IEnumerable<IPresentation> items)
+            {
+                this.Items = items;
+            }
+
+            if (this.Items != null &&
+                this.PresentationType != PresentationTypes.None)
+            {
+                var presentationStateFound = this.Items.FirstOrDefault(i => i.Type == this.PresentationType);
+                if (presentationStateFound != null)
+                {
+                    this.DataContext = presentationStateFound;
+                }
+            }
+        }
+
+        private static void ItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcControl control)
+            {
+                control.Initialize();
+            }
+        }
+
+        private static void PresentationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcControl control)
+            {
+                control.Initialize();
+            }
+        }
+
+        #endregion
+    }
+}

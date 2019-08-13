@@ -20,11 +20,11 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IResolutionCalibrationMachineService resolutionCalibrationService;
+        private readonly IMachineResolutionCalibrationService resolutionCalibrationService;
 
         private readonly IStatusMessageService statusMessageService;
 
-        private readonly ITestMachineService testService;
+        private readonly IMachineTestService testService;
 
         private ICommand acceptButtonCommand;
 
@@ -100,8 +100,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public ResolutionCalibrationVerticalAxisViewModel(
             IEventAggregator eventAggregator,
-            IResolutionCalibrationMachineService resolutionCalibrationService,
-            ITestMachineService testService,
+            IMachineResolutionCalibrationService resolutionCalibrationService,
+            IMachineTestService testService,
             IStatusMessageService statusMessageService)
         {
             if (eventAggregator == null)

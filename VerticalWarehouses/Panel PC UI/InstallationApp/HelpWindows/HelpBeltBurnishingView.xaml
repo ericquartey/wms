@@ -37,18 +37,18 @@
             ContentText="4500" Width="180"
             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
-        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+        <Controls:PpcTextBox  Style="{StaticResource VWAPP_PpcTextBoxStyle}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
             Highlighted="True" IsEnabled="True"
             Width="180"
             LabelText="{x:Static res:InstallationApp.RequiredCicles}"/>
 
         <Button     Content="{x:Static res:InstallationApp.Start}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+            Template="{StaticResource PpcButtonControlTemplate}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0" />
 
         <Button     Content="{x:Static res:InstallationApp.Stop}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+            Template="{StaticResource PpcButtonControlTemplate}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0" />
 
         <TextBlock Grid.Row="0"

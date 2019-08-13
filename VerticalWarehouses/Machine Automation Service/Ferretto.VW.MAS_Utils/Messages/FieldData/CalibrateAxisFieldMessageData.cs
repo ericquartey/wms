@@ -4,14 +4,14 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class CalibrateAxisFieldMessageData : ICalibrateAxisFieldMessageData
+    public class CalibrateAxisFieldMessageData : FieldMessageData, ICalibrateAxisFieldMessageData
     {
         #region Constructors
 
         public CalibrateAxisFieldMessageData(Axis axisToCalibrate, MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.AxisToCalibrate = axisToCalibrate;
-            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public Axis AxisToCalibrate { get; }
-
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

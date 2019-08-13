@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics.StatisticsNavigationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
+
+    <Grid Name="NavigationButtonViewRoot"
+          Height="608"
+          Margin="20,30,0,0">
+
+        <StackPanel>
+            <Button Margin="0,50,0,0"
+                    Command="{Binding MachineStatisticsButtonCommand}"
+                    Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
+                    IsEnabled="{Binding IsErrorSimulationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+            <Button Command="{Binding DrawerSpaceSaturationButtonCommand}"
+                    Content="{x:Static res:OperatorApp.StatisticsNavigationDrawers}"
+                    IsEnabled="{Binding IsCompactionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+            <Button Command="{Binding CellsStatisticsButtonCommand}"
+                    Content="{x:Static res:OperatorApp.StatisticsNavigationCells}"
+                    IsEnabled="{Binding IsStatisticsButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+            <Button Command="{Binding ErrorsStatisticsButtonCommand}"
+                    Content="{x:Static res:OperatorApp.StatisticsNavigationErrors}"
+                    IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

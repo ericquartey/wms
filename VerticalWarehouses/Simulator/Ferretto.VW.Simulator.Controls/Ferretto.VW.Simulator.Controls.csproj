@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
     <PropertyGroup>
         <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
         <TargetFramework>net471</TargetFramework>
@@ -38,52 +37,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Controls\CustomSensorControl.xaml" />
-      <None Remove="Controls\CustomSensorSquareControl.xaml" />
-      <None Remove="Skins\DarkCustomControlSensor.xaml" />
-      <None Remove="Skins\DarkCustomLabelTextBlock.xaml" />
-      <None Remove="Skins\DarkSkin.xaml" />
-      <None Remove="Skins\LightCustomControlSensor.xaml" />
-      <None Remove="Skins\LightCustomLabelTextBlock.xaml" />
-      <None Remove="Skins\LightSkin.xaml" />
-      <None Remove="Styles\CustomLabelTextBlockStyle.xaml" />
-      <None Remove="Styles\CustomSensorSquareControlStyle.xaml" />
-      <None Remove="Templates\ActionButtonControlTemplate.xaml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
       <ProjectReference Include="..\..\Panel PC UI\CustomControls\Ferretto.VW.App.Controls.csproj" />
       <ProjectReference Include="..\..\Panel PC UI\Utils\Ferretto.VW.Utils.csproj" />
       <ProjectReference Include="..\Ferretto.VW.Simulator.Resources\Ferretto.VW.Simulator.Resources.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="CustomSensorControlStyle.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Fonts\Microsoft-sans-serif.ttf">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Fonts\RobotoCondensed-Regular.ttf">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="Skins\Shared.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-        <None Update="Styles\CustomSensorControlStyle.xaml">
-          <Generator>MSBuild:Compile</Generator>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Controls\CustomSensorControl.xaml.cs">
-        <DependentUpon>%(Filename)</DependentUpon>
-      </Compile>
     </ItemGroup>
 
 </Project>

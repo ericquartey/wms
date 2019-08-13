@@ -9,28 +9,28 @@
         <Border Name="Root_NavigationRepeatButtonBorder"
                 Width="160"
                 Height="60"
-                Background="{DynamicResource VWAPP_ActionButton_Background_Normal}"
-                BorderBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
-                BorderThickness="{DynamicResource VWAPP_ActionButton_BorderThickness_Normal}">
+                Background="{DynamicResource PpcButtonBackground}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
+                BorderThickness="{DynamicResource PpcButtonBorderThickness}">
             <TextBlock Name="ActionButtonTextBlock"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       FontFamily="{DynamicResource VWAPP_ActionButton_FontFamily_Normal}"
-                       FontSize="{DynamicResource VWAPP_ActionButton_FontSize_Normal}"
-                       Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                       FontFamily="{DynamicResource PpcFontFamily}"
+                       FontSize="{DynamicResource PpcButtonFontSize}"
+                       Foreground="{DynamicResource PpcButtonForeground}"
                        Text="{TemplateBinding Content}"
                        TextAlignment="Center"
                        TextWrapping="Wrap" />
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="true">
-                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Pressed}" />
-                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Pressed}" />
+                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
                 <Setter TargetName="ActionButtonTextBlock" Property="Foreground" Value="{DynamicResource VWAPP_NavigationRepeatButton_Foreground_Pressed}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Disabled}" />
-                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Disabled}" />
+                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter TargetName="Root_NavigationRepeatButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
                 <Setter TargetName="ActionButtonTextBlock" Property="Foreground" Value="{DynamicResource VWAPP_NavigationRepeatButton_Foreground_Disabled}" />
             </Trigger>
         </ControlTemplate.Triggers>

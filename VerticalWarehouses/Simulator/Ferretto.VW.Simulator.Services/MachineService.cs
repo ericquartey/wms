@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
+using static Ferretto.VW.Simulator.Services.BufferUtility;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;

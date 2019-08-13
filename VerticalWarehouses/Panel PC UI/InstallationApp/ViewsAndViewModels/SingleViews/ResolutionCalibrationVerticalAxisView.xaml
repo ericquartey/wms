@@ -17,15 +17,15 @@
 
 
 
-        <custom:CustomInputFieldControlFocusable Margin="140,100,0,0"
+        <custom:PpcTextBox Margin="140,100,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  Highlighted="{Binding IsDesiredInitialPositionHighlighted}"
                                                  InputScope="Number"
                                                  InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomInputFieldControlFocusable Margin="410,100,0,0"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <custom:PpcTextBox Margin="410,100,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  Highlighted="{Binding IsMesuredInitialPositionHighlighted}"
@@ -33,8 +33,8 @@
                                                  InputText="{Binding ReadInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsReadInitialPositionActive}"
                                                  LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomInputFieldControlFocusable Margin="140,180,0,0"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <custom:PpcTextBox Margin="140,180,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  Highlighted="{Binding IsDesiredFinalPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -42,8 +42,8 @@
                                                  InputText="{Binding DesiredFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsDesiredFinalPositionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomInputFieldControlFocusable Margin="410,180,0,0"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <custom:PpcTextBox Margin="410,180,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  Highlighted="{Binding IsReadFinalPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -51,8 +51,8 @@
                                                  InputText="{Binding ReadFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsReadFinalPositionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomInputFieldControlFocusable Margin="140,290,0,0"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <custom:PpcTextBox Margin="140,290,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  Highlighted="{Binding IsMesuredMovementHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -60,7 +60,7 @@
                                                  InputText="{Binding MesuredMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsMesuredMovementActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.MesuredMovement}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
         <custom:CustomLabelTextBlockControl Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
@@ -77,41 +77,41 @@
                 Command="{Binding SetPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
                 IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,180,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding MoveButtonCommand}"
                 Content="{x:Static res:InstallationApp.Move}"
                 IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,260,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding UpdateResolutionCommand}"
                 Content="{x:Static res:InstallationApp.UpdateResolution}"
                 IsEnabled="{Binding IsUpdateResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,340,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding AcceptButtonCommand}"
                 Content="{x:Static res:General.Accept}"
                 IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,420,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding InitialPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                 IsEnabled="{Binding IsGoToInitialPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
         <Button Margin="700,500,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding CloseProcedureButtonCommand}"
                 Content="{x:Static res:InstallationApp.CloseProcedure}"
                 IsEnabled="{Binding IsCloseProcedureButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
     </Grid>
 </UserControl>

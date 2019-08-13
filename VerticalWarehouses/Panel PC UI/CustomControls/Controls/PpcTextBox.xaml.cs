@@ -1,0 +1,119 @@
+﻿using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+
+namespace Ferretto.VW.App.Controls.Controls
+{
+    public partial class PpcTextBox : UserControl, INotifyPropertyChanged
+    {
+        #region Fields
+
+        public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register(
+            nameof(BorderColor),
+            typeof(SolidColorBrush),
+            typeof(PpcTextBox));
+
+        public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
+            nameof(Highlighted),
+            typeof(bool),
+            typeof(PpcTextBox));
+
+        public static readonly DependencyProperty InputProperty = DependencyProperty.Register(
+            nameof(InputText),
+            typeof(string),
+            typeof(PpcTextBox),
+            new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
+            nameof(LabelText),
+            typeof(string),
+            typeof(PpcTextBox),
+            new PropertyMetadata(string.Empty));
+
+        #endregion
+
+        #region Constructors
+
+        public PpcTextBox()
+        {
+            this.InitializeComponent();
+            var customInputFieldControlFocusable = this;
+            this.LayoutRoot.DataContext = customInputFieldControlFocusable;
+        }
+
+        #endregion
+
+        #region Events
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Properties
+
+        public SolidColorBrush BorderColor
+        {
+            get => (SolidColorBrush)this.GetValue(BorderColorProperty);
+            set
+            {
+                this.SetValue(BorderColorProperty, value);
+                this.RaisePropertyChanged(nameof(this.BorderColor));
+            }
+        }
+
+        public bool Highlighted
+        {
+            get => (bool)this.GetValue(HighlightedProperty);
+            set
+            {
+                this.SetValue(HighlightedProperty, value);
+                this.RaisePropertyChanged(nameof(this.Highlighted));
+            }
+        }
+
+        public string InputText
+        {
+            get => (string)this.GetValue(InputProperty);
+            set
+            {
+                this.SetValue(InputProperty, value);
+                this.RaisePropertyChanged(nameof(this.InputText));
+            }
+        }
+
+        public string LabelText
+        {
+            get => (string)this.GetValue(LabelProperty);
+            set
+            {
+                this.SetValue(LabelProperty, value);
+                this.RaisePropertyChanged(nameof(this.LabelText));
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                var b = this.GetBindingExpression(InputProperty);
+                b.UpdateSource();
+            }
+        }
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
+}

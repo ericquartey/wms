@@ -18,19 +18,19 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate1Control}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="260,170,0,0"
+        <custom:PpcTextBox Margin="260,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="560,170,0,0"
+        <custom:PpcTextBox Margin="560,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding DelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="260,300,0,0"
                                             HorizontalAlignment="Left"
@@ -51,7 +51,7 @@
                 Command="{Binding StartButtonCommand}"
                 Content="{x:Static res:InstallationApp.Start}"
                 IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="260,450,0,0"
                 HorizontalAlignment="Left"
@@ -59,21 +59,21 @@
                 Command="{Binding StopButtonCommand}"
                 Content="{x:Static res:InstallationApp.Stop}"
                 IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
-        <custom:CustomSensorControl Margin="560,290,0,0"
+        <custom:PpcSensorControl Margin="560,290,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorABay1}"
+                                    LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
                                     SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                                    Style="{StaticResource PpcSensorControlStyle}" />
 
-        <custom:CustomSensorControl Margin="560,330,0,0"
+        <custom:PpcSensorControl Margin="560,330,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    LabelText="{x:Static res:InstallationApp.ShutterSensorBBay1}"
+                                    LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
                                     SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+                                    Style="{StaticResource PpcSensorControlStyle}" />
 
     </Grid>
 </UserControl>

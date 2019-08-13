@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterPositioningFieldMessageData : IInverterPositioningFieldMessageData
+    public class InverterPositioningFieldMessageData : FieldMessageData, IInverterPositioningFieldMessageData
     {
         #region Constructors
 
@@ -14,6 +14,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             int targetPosition,
             int targetSpeed,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.AxisMovement = positioningFieldMessageData.AxisMovement;
             this.MovementType = positioningFieldMessageData.MovementType;
@@ -41,8 +42,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public int TargetPosition { get; set; }
 
         public int TargetSpeed { get; set; }
-
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

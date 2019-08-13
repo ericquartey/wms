@@ -5,22 +5,31 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterStatusUpdateFieldMessageData : IInverterStatusUpdateFieldMessageData
+    public class InverterStatusUpdateFieldMessageData : FieldMessageData, IInverterStatusUpdateFieldMessageData
     {
         #region Constructors
 
-        public InverterStatusUpdateFieldMessageData(bool sensorStatus, int sensorUpdateInterval, bool axisPosition, int axisUpdateInterval, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterStatusUpdateFieldMessageData(
+            bool sensorStatus,
+            int sensorUpdateInterval,
+            bool axisPosition,
+            int axisUpdateInterval,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.SensorStatus = sensorStatus;
             this.SensorUpdateInterval = sensorUpdateInterval;
 
             this.AxisPosition = axisPosition;
             this.AxisUpdateInterval = axisUpdateInterval;
-
-            this.Verbosity = verbosity;
         }
 
-        public InverterStatusUpdateFieldMessageData(Axis currentAxis, bool[] currentSensorStatus, int currentPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterStatusUpdateFieldMessageData(
+            Axis currentAxis,
+            bool[] currentSensorStatus,
+            int currentPosition,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.AxisPosition = true;
             this.CurrentAxis = currentAxis;
@@ -28,29 +37,30 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
             this.SensorStatus = true;
             this.CurrentSensorStatus = currentSensorStatus;
-
-            this.Verbosity = verbosity;
         }
 
-        public InverterStatusUpdateFieldMessageData(bool[] currentSensorStatus, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterStatusUpdateFieldMessageData(
+            bool[] currentSensorStatus,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.AxisPosition = false;
 
             this.SensorStatus = true;
             this.CurrentSensorStatus = currentSensorStatus;
-
-            this.Verbosity = verbosity;
         }
 
-        public InverterStatusUpdateFieldMessageData(Axis currentAxis, int currentPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterStatusUpdateFieldMessageData(
+            Axis currentAxis,
+            int currentPosition,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.AxisPosition = true;
             this.CurrentAxis = currentAxis;
             this.CurrentPosition = currentPosition;
 
             this.SensorStatus = false;
-
-            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -74,8 +84,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public bool SensorStatus { get; }
 
         public int SensorUpdateInterval { get; }
-
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
     {
         #region Fields
 
-        private readonly IBeltBurnishingMachineService beltBurnishingService;
+        private readonly IMachineBeltBurnishingService beltBurnishingService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
-            IBeltBurnishingMachineService beltBurnishingService)
+            IMachineBeltBurnishingService beltBurnishingService)
         {
             if (eventAggregator == null)
             {

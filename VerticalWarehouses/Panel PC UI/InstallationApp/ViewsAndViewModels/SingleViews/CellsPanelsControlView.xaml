@@ -45,12 +45,12 @@
                                             ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <custom:CustomInputFieldControlFocusable Margin="170,350,0,0"
+        <custom:PpcTextBox Margin="170,350,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.StepValue}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="430,490,0,0"
                                             HorizontalAlignment="Left"
@@ -62,31 +62,31 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.NextPanel}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="700,210,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="700,310,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.StepUp}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="700,380,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.StepDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
         <Button Margin="700,490,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Correct}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                Template="{StaticResource PpcButtonControlTemplate}" />
 
     </Grid>
 </UserControl>
