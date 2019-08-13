@@ -89,7 +89,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     return;
                 }
             }
-
             var message = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition);
             var byteMessage = message.GetWriteMessage();
             this.Logger.LogTrace($"4:inverterMessage={message}");

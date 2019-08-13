@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.LowSpeedMovements
 
         public async Task DownShutterAsync()
         {
-            var messageData = new ShutterPositioningMovementMessageDataDto { BayNumber = 1, ShutterPositionMovement = 0 };
+            var messageData = new ShutterPositioningMovementMessageDataDto { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Down };
             await this.shutterService.ExecutePositioningAsync(messageData);
         }
 

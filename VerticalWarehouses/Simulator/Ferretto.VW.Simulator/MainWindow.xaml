@@ -246,14 +246,14 @@
                                        Grid.Column="1"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding OperationMode, StringFormat='- {0} '}"
+                                       Text="{Binding OperationMode, StringFormat='/ {0} '}"
                                        ToolTip="Operation Mode" />
 
                             <TextBlock Grid.Row="1"
                                        Grid.Column="2"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding AxisPosition, StringFormat='- {0}'}"
+                                       Text="{Binding AxisPosition, StringFormat='/ {0}'}"
                                        ToolTip="Axis Position" />
                         </Grid>
 
