@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ShutterPositioning);
 
-            this.Logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+            this.Logger.LogDebug($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 

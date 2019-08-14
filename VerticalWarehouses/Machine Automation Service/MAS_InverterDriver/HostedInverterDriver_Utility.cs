@@ -45,14 +45,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace( $"2:ReadSensorStatusMessage={readSensorStatusMessage}" );
 
                     this.inverterCommandQueue.Enqueue( readSensorStatusMessage );
-
-                    this.forceStatusPublish = true;
                 }
                 else
                 {
                     this.logger.LogTrace( "3:Change sensor update interval" );
                     this.sensorStatusUpdateTimer.Change( updateData.SensorUpdateInterval, updateData.SensorUpdateInterval );
                 }
+                this.forceStatusPublish = true;
             }
             else
             {
@@ -69,14 +68,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.logger.LogTrace( $"5:ReadAxisPositionMessage={readAxisPositionMessage}" );
 
                     this.inverterCommandQueue.Enqueue( readAxisPositionMessage );
-
-                    this.forceStatusPublish = true;
                 }
                 else
                 {
                     this.logger.LogTrace( "6:Change axis update interval" );
                     this.axisPositionUpdateTimer.Change( updateData.AxisUpdateInterval, updateData.AxisUpdateInterval );
                 }
+                this.forceStatusPublish = true;
             }
             else
             {
@@ -144,10 +142,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.logger.LogTrace( $"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}" );
 
-                var index = 0;
                 foreach (var installedInverter in this.inverterStatuses)
                 {
-                    var ioStatuses = this.RetrieveInverterIOStatus( currentMessage.StringPayload, index );
+                    var ioStatuses = this.RetrieveInverterIOStatus( currentMessage.StringPayload, (int)installedInverter.Key);
 
                     if (this.inverterStatuses.TryGetValue( installedInverter.Key, out var inverterStatus ))
                     {
@@ -227,7 +224,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 break;
                         }
                     }
-                    index++;
                 }
                 //TEMP Changes end
 

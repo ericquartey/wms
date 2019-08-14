@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -385,6 +386,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
 
+        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterClosed => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
         public bool IsSwitchedOn
         {
             get => (this.statusWord & 0x0002) > 0;
@@ -652,7 +657,15 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else
             {
-                this.StatusWord &= 0xEFFF;
+                if (this.shutterTimerActive)
+                {
+                    this.shutterTimer.Change(-1, Timeout.Infinite);
+                    // Reset contatore
+                    this.shutterTickCount = 0;
+
+                    this.shutterTimerActive = false;
+                }
+                this.StatusWord &= ~0x0400;
             }
 
             //Fault Reset
@@ -861,8 +874,19 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void ShutterTick(object state)
         {
             this.shutterTickCount++;
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
+            {
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
 
-            if (this.shutterTickCount > 100)
+            if (this.shutterTickCount > 100
+                || (this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened)
+                )
             {
                 this.ControlWord &= 0xFFEF;
                 this.StatusWord |= 0x0400;

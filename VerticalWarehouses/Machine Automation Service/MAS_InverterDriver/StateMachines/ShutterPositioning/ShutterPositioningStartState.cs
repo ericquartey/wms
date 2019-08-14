@@ -89,9 +89,28 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     return;
                 }
             }
+            this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
+
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
+
+            this.Logger.LogTrace($"4:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            var notificationMessage = new FieldNotificationMessage(
+                this.shutterPositionData,
+                $"Shutter Positioning Start",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.ShutterPositioning,
+                MessageStatus.OperationStart);
+            this.Logger.LogDebug("Inverter Shutter Positioning Start State Start");
+
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+
             var message = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition);
             var byteMessage = message.GetWriteMessage();
-            this.Logger.LogTrace($"4:inverterMessage={message}");
+            this.Logger.LogTrace($"5:inverterMessage={message}");
             this.ParentStateMachine.EnqueueMessage(message);
         }
 
