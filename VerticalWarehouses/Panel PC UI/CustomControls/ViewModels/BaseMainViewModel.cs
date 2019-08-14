@@ -45,14 +45,14 @@ namespace Ferretto.VW.App.Controls
             this.UpdatePresentation();
         }
 
-        public void ShowError(string error)
+        public void ShowNotification(string message)
         {
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
-                .Publish(new PresentationChangedMessage(error));
+                .Publish(new PresentationChangedMessage(message));
         }
 
-        public void ShowError(System.Exception exception)
+        public void ShowNotification(System.Exception exception)
         {
             if (exception == null)
             {

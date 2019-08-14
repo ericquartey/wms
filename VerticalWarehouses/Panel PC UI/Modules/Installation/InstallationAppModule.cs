@@ -1,9 +1,6 @@
-﻿using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Installation.HelpWindows;
+﻿using Ferretto.VW.App.Installation.HelpWindows;
 using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.App.Installation.Views;
-using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl;
 using Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.App.Services;
@@ -63,11 +60,17 @@ namespace Ferretto.VW.App.Modules.Installation
         {
             containerRegistry.RegisterForNavigation<InstallatorMenuView>();
 
+            #region Sensors Views
+
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
             containerRegistry.RegisterForNavigation<CradleSensorsView>();
             containerRegistry.RegisterForNavigation<ShutterSensorsView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
+
+            #endregion
+
+            #region Manual Movements Views
 
             containerRegistry.RegisterForNavigation<CarouselManualMovementsView>();
             containerRegistry.RegisterForNavigation<HorizontalAxisManualMovementsView>();
@@ -75,8 +78,20 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<ShutterEngineManualMovementsView>();
             containerRegistry.RegisterForNavigation<VerticalEngineManualMovementsView>();
 
+            #endregion
+
+            #region Elevator Views
+
             containerRegistry.RegisterForNavigation<VerticalOffsetCalibrationView>();
             containerRegistry.RegisterForNavigation<VerticalAxisCalibrationView>();
+
+            #endregion
+
+            #region Shutter Views
+
+            containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
+
+            #endregion
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
 
@@ -85,12 +100,11 @@ namespace Ferretto.VW.App.Modules.Installation
 
             // TODO: all the following view models need refactoring
 
+            #region These views need refactoring
+
             this.container.RegisterSingleton<IBeltBurnishingViewModel, BeltBurnishingViewModel>();
             this.container.RegisterSingleton<ICellsControlViewModel, CellsControlViewModel>();
             this.container.RegisterSingleton<ICellsPanelsControlViewModel, CellsPanelsControlViewModel>();
-            this.container.RegisterSingleton<IShutter1ControlViewModel, Shutter1ControlViewModel>();
-            this.container.RegisterSingleton<IShutter2ControlViewModel, Shutter2ControlViewModel>();
-            this.container.RegisterSingleton<IShutter3ControlViewModel, Shutter3ControlViewModel>();
             this.container.RegisterSingleton<IShutter1HeightControlViewModel, Shutter1HeightControlViewModel>();
             this.container.RegisterSingleton<IShutter2HeightControlViewModel, Shutter2HeightControlViewModel>();
             this.container.RegisterSingleton<IShutter3HeightControlViewModel, Shutter3HeightControlViewModel>();
@@ -108,8 +122,7 @@ namespace Ferretto.VW.App.Modules.Installation
             this.container.RegisterSingleton<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>();
             this.container.RegisterSingleton<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>();
 
-            this.container.RegisterSingleton<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
-            this.container.RegisterSingleton<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
+            #endregion
         }
 
         #endregion

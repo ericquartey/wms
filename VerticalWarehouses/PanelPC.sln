@@ -17,13 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Controls", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Installation", "Panel PC UI\Modules\Installation\Ferretto.VW.App.Modules.Installation.csproj", "{7A484BAF-AB01-488A-853F-C0CE4305BA56}"
 	ProjectSection(ProjectDependencies) = postProject
+		{D32FF50E-27EF-4DAE-A14E-BDB4695EB38B} = {D32FF50E-27EF-4DAE-A14E-BDB4695EB38B}
 		{DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16} = {DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC UI\VWApp\Ferretto.VW.App.csproj", "{BBB70951-5692-44F2-BD04-C1E150D970FD}"
 	ProjectSection(ProjectDependencies) = postProject
-		{D32FF50E-27EF-4DAE-A14E-BDB4695EB38B} = {D32FF50E-27EF-4DAE-A14E-BDB4695EB38B}
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
+		{907674B7-B982-41C4-92DF-8928F8C9AF6B} = {907674B7-B982-41C4-92DF-8928F8C9AF6B}
 		{DF20E4C3-CFC8-4517-9ECE-788EA86A2275} = {DF20E4C3-CFC8-4517-9ECE-788EA86A2275}
 	EndProjectSection
 EndProject
@@ -32,6 +33,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Utils", "Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS.Utils.csproj", "{73086AC9-1316-4FFC-AA5D-0A50C132456A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Operator", "Panel PC UI\Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj", "{DF20E4C3-CFC8-4517-9ECE-788EA86A2275}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D32FF50E-27EF-4DAE-A14E-BDB4695EB38B} = {D32FF50E-27EF-4DAE-A14E-BDB4695EB38B}
+		{DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16} = {DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Common.Logging.SQLiteTarget", "Common\SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj", "{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}"
 EndProject
@@ -52,6 +57,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Errors", "Panel PC UI\Modules\Errors\Ferretto.VW.App.Modules.Errors.csproj", "{DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Layout", "Panel PC UI\Modules\Layout\Ferretto.VW.App.Modules.Layout.csproj", "{D32FF50E-27EF-4DAE-A14E-BDB4695EB38B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16} = {DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Login", "Panel PC UI\Modules\Login\Ferretto.VW.App.Modules.Login.csproj", "{907674B7-B982-41C4-92DF-8928F8C9AF6B}"
 EndProject

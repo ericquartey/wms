@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Installation.HelpWindows"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
         xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
         xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
         xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
@@ -30,10 +29,6 @@
 
         <DataTemplate DataType="{x:Type viewmodels:InstallationStateViewModel}">
             <helpWindows:HelpInstallationState />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type shuttersControl:Shutter1ControlViewModel}">
-            <helpWindows:HelpShutterControl />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">

@@ -33,9 +33,9 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.UpdateChanges(message);
 
-            if (!string.IsNullOrEmpty(message.ErrorMessage))
+            if (!string.IsNullOrEmpty(message.NotificationMessage))
             {
-                this.NotificationMessage = message.ErrorMessage;
+                this.NotificationMessage = message.NotificationMessage;
             }
         }
 

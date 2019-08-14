@@ -294,7 +294,7 @@
     <comment>Title</comment>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
-    <value>Anti intrusion gate bay 1</value>
+    <value>Anti intrusion gate</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="BrakeResistanceOvertemperature" xml:space="preserve">
@@ -338,7 +338,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
-    <value>Micro carter right side  bay 1</value>
+    <value>Micro carter right side</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
@@ -758,22 +758,6 @@
   </data>
   <data name="ShutterSensorB" xml:space="preserve">
     <value>Sensor shutter B</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="MicroCarterRightSide2" xml:space="preserve">
-    <value>Micro carter right side bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="MicroCarterRightSide3" xml:space="preserve">
-    <value>Micro carter right side bay 3</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="AntiIntrusionGate2" xml:space="preserve">
-    <value>Anti intrusion gate bay 2</value>
-    <comment>Sensor control text</comment>
-  </data>
-  <data name="AntiIntrusionGate3" xml:space="preserve">
-    <value>Anti intrusion gate bay 3</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="RequestedFinalPosition" xml:space="preserve">
