@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (this.currentStateMachine != null)
+            if (this.CurrentStateMachine != null)
             {
-                this.logger.LogInformation($"Io Driver already executing operation {this.currentStateMachine.GetType()}");
+                this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType()}");
 
                 var ex = new Exception();
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
@@ -46,11 +46,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioSHDStatus.ElevatorMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioSHDStatus.ElevatorMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("3:Method Start State Machine");
 
-                            this.currentStateMachine.Start();
+                            this.CurrentStateMachine.Start();
                         }
 
                         break;
@@ -72,11 +72,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioSHDStatus.CradleMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                            this.CurrentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioSHDStatus.CradleMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("5:Method Start State Machine");
 
-                            this.currentStateMachine.Start();
+                            this.CurrentStateMachine.Start();
                         }
 
                         break;

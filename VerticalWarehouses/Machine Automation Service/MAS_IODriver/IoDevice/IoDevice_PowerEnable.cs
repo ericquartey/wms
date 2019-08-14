@@ -18,26 +18,26 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         {
             if (receivedMessage.Data is IPowerEnableFieldMessageData powerEnableMessageData)
             {
-                if (this.currentStateMachine != null )
+                if (this.CurrentStateMachine != null)
                 {
                     if (powerEnableMessageData.Enable)
                     {
-                        this.logger.LogInformation($"Io Driver already executing operation {this.currentStateMachine.GetType()}");
+                        this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType()}");
 
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
                     }
-                    else 
+                    else
                     {
                         // if Enable is false I have to turn off power immediately, even if another state machine is active
-                        this.logger.LogInformation($"PowerEnable Off destroys active state machine {this.currentStateMachine.GetType()}");
+                        this.logger.LogInformation($"PowerEnable Off destroys active state machine {this.CurrentStateMachine.GetType()}");
                         this.DestroyStateMachine();
                     }
                 }
-                if (this.currentStateMachine == null)
+                if (this.CurrentStateMachine == null)
                 {
-                    this.currentStateMachine = new PowerEnableStateMachine(powerEnableMessageData.Enable, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
-                    this.currentStateMachine.Start();
+                    this.CurrentStateMachine = new PowerEnableStateMachine(powerEnableMessageData.Enable, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+                    this.CurrentStateMachine.Start();
                 }
             }
             else
