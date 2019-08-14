@@ -76,8 +76,4 @@
         <controls:CustomShutterControlSensorsTwoPositions />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type singleViews:DiagnosticDetailsViewModel}">
-        <singleViews:DiagnosticDetailsView />
-    </DataTemplate>
-
 </ResourceDictionary>

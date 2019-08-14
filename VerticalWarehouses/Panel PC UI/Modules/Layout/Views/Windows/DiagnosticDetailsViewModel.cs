@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Installation.Interfaces;
+//using Ferretto.VW.App.Installation.Interfaces;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 {
-    public class DiagnosticDetailsViewModel : BaseViewModel, IDiagnosticDetailsViewModel
+    public class DiagnosticDetailsViewModel : BaseViewModel//, IDiagnosticDetailsViewModel
     {
         #region Fields
 
@@ -20,14 +20,21 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private readonly IEventAggregator eventAggregator;
 
-        private SubscriptionToken updateMachneStateActive;
-        private SubscriptionToken updateStateActive;
-        private string currentStateFSM;
         private string currentMachineStatusFSM;
-        private string currentMachineStatusIODriver;
-        private string currentStateIODriver;
-        private string currentStateInverter;
+
         private string currentMachineStatusInverter;
+
+        private string currentMachineStatusIODriver;
+
+        private string currentStateFSM;
+
+        private string currentStateInverter;
+
+        private string currentStateIODriver;
+
+        private SubscriptionToken updateMachneStateActive;
+
+        private SubscriptionToken updateStateActive;
 
         #endregion
 
@@ -35,7 +42,6 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public DiagnosticDetailsViewModel()
         {
-                
         }
 
         public DiagnosticDetailsViewModel(
@@ -54,6 +60,20 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
         #endregion
 
         #region Properties
+
+        public string CurrentMachineStatusFSM { get => this.currentMachineStatusFSM; set => this.SetProperty(ref this.currentMachineStatusFSM, value); }
+
+        public string CurrentMachineStatusInverter { get => this.currentMachineStatusInverter; set => this.SetProperty(ref this.currentMachineStatusInverter, value); }
+
+        public string CurrentMachineStatusIODriver { get => this.currentMachineStatusIODriver; set => this.SetProperty(ref this.currentMachineStatusIODriver, value); }
+
+        public string CurrentStateFSM { get => this.currentStateFSM; set => this.SetProperty(ref this.currentStateFSM, value); }
+
+        public string CurrentStateInverter { get => this.currentStateInverter; set => this.SetProperty(ref this.currentStateInverter, value); }
+
+        public string CurrentStateIODriver { get => this.currentStateIODriver; set => this.SetProperty(ref this.currentStateIODriver, value); }
+
+        public bool IsOpen { get; set; }
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -74,19 +94,20 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                     ThreadOption.PublisherThread,
                     false);
 
-
             this.updateStateActive = this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>()
                 .Subscribe(
                     message => this.UpdateStateActive(message.Data.MessageActor, message.Data.CurrentState),
                     ThreadOption.PublisherThread,
                     false);
 
+            this.IsOpen = true;
         }
 
         public void UnSubscribeMethodFromEvent()
         {
             this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>().Unsubscribe(this.updateMachneStateActive);
             this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Unsubscribe(this.updateStateActive);
+            this.IsOpen = false;
         }
 
         private void UpdateMachneStateActive(MessageActor messageActor, string messageType)
@@ -96,12 +117,15 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 case MessageActor.FiniteStateMachines:
                     this.CurrentMachineStatusFSM = messageType.ToString();
                     break;
+
                 case MessageActor.InverterDriver:
                     this.CurrentMachineStatusInverter = messageType.ToString();
                     break;
+
                 case MessageActor.IoDriver:
                     this.CurrentMachineStatusIODriver = messageType.ToString();
                     break;
+
                 default:
                     break;
             }
@@ -114,33 +138,19 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 case MessageActor.FiniteStateMachines:
                     this.CurrentStateFSM = currentState;
                     break;
+
                 case MessageActor.InverterDriver:
                     this.CurrentStateInverter = currentState;
                     break;
+
                 case MessageActor.IoDriver:
                     this.CurrentStateIODriver = currentState;
                     break;
+
                 default:
                     break;
             }
         }
-
-
-        public string CurrentStateFSM { get => this.currentStateFSM; set => this.SetProperty(ref this.currentStateFSM, value); }
-
-        public string CurrentMachineStatusFSM { get => this.currentMachineStatusFSM; set => this.SetProperty(ref this.currentMachineStatusFSM, value); }
-
-
-
-        public string CurrentStateIODriver { get => this.currentStateIODriver; set => this.SetProperty(ref this.currentStateIODriver, value); }
-
-        public string CurrentMachineStatusIODriver { get => this.currentMachineStatusIODriver; set => this.SetProperty(ref this.currentMachineStatusIODriver, value); }
-
-
-        public string CurrentStateInverter { get => this.currentStateInverter; set => this.SetProperty(ref this.currentStateInverter, value); }
-
-        public string CurrentMachineStatusInverter { get => this.currentMachineStatusInverter; set => this.SetProperty(ref this.currentMachineStatusInverter, value); }
-
 
         #endregion
     }

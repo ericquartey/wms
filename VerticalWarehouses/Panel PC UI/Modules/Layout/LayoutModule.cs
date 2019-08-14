@@ -39,6 +39,8 @@ namespace Ferretto.VW.App.Modules.Layout
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<Installation.ViewsAndViewModels.SingleViews.DiagnosticDetailsViewModel>();
+
             containerRegistry.Register<IPresentation, PresentationError>(nameof(PresentationError));
             containerRegistry.Register<IPresentation, PresentationMachineMarch>(nameof(PresentationMachineMarch));
             containerRegistry.Register<IPresentation, PresentationMachineMode>(nameof(PresentationMachineMode));
@@ -49,6 +51,7 @@ namespace Ferretto.VW.App.Modules.Layout
             containerRegistry.Register<IPresentation, PresentationShutdown>(nameof(PresentationShutdown));
 
             containerRegistry.Register<IPresentation, PresentationBack>(nameof(PresentationBack));
+            containerRegistry.Register<IPresentation, PresentationDebug>(nameof(PresentationDebug));
         }
 
         #endregion

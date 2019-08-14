@@ -13,6 +13,7 @@
                                          IsDesignTimeCreatable=True}"
         d:DesignHeight="608"
         d:DesignWidth="1024"
+        ResizeMode="NoResize"
         mc:Ignorable="d">
 
     <Window.Resources>

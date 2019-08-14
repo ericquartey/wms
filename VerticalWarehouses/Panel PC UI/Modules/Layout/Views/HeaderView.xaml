@@ -62,6 +62,11 @@
             <controls:CustomMainWindowErrorButton Margin="15,0,0,0"
                                                   Items="{Binding States}"
                                                   Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
+            <controls:CustomMainWindowDebugButton Margin="15,0,0,0"
+                                                  Items="{Binding States}"
+                                                  Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+
         </StackPanel>
 
         <StackPanel Name="LoginHeader"
