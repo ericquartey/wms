@@ -13,11 +13,9 @@
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}"
           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"
-                           MaxHeight="80" />
-            <RowDefinition Height="608" />
-            <RowDefinition Height="Auto"
-                           MaxHeight="80" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ContentControl prism:RegionManager.RegionName="{x:Static modules:Layout.REGION_HEADER}" />
