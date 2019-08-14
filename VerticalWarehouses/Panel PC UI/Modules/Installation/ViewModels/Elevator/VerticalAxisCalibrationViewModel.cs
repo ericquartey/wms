@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Logging;
 using Prism.Mvvm;
 using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
@@ -120,6 +119,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            this.EventAggregator
+                .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
+                .Unsubscribe(this.receivedSwitchAxisUpdateToken);
+
+            this.EventAggregator
+                .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
+                .Unsubscribe(this.receivedCalibrateAxisUpdateToken);
+
+            this.EventAggregator
+                .GetEvent<NotificationEventUI<HomingMessageData>>()
+                .Unsubscribe(this.receiveHomingUpdateToken);
+        }
+
         public void ExitFromViewMethod()
         {
             // TODO
@@ -149,9 +163,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            this.ShowBack(true);
+            this.IsBackNavigationAllowed = true;
 
-              await this.GetParameterValuesAsync();
+            await this.GetParameterValuesAsync();
 
             this.receivedSwitchAxisUpdateToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
@@ -199,21 +213,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 message => this.CurrentPosition = message?.Data?.CurrentPosition,
                 ThreadOption.PublisherThread,
                 false);
-        }
-
-        public override void Disappear()
-        {
-            this.EventAggregator
-                .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
-                .Unsubscribe(this.receivedSwitchAxisUpdateToken);
-
-            this.EventAggregator
-                .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
-                .Unsubscribe(this.receivedCalibrateAxisUpdateToken);
-
-            this.EventAggregator
-                .GetEvent<NotificationEventUI<HomingMessageData>>()
-                .Unsubscribe(this.receiveHomingUpdateToken);
         }
 
         private void CheckInputsCorrectness()

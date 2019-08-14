@@ -58,6 +58,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             await this.CheckErrorsPresenceAsync();
 
+            this.IsBackNavigationAllowed = true;
+
             await base.OnNavigatedAsync();
         }
 

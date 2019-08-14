@@ -30,6 +30,22 @@ namespace Ferretto.VW.App.Controls
 
         public IEventAggregator EventAggregator => this.eventAggregator;
 
+        public bool IsBackNavigationAllowed
+        {
+            set
+            {
+                var state = new Presentation
+                {
+                    Type = PresentationTypes.Back,
+                    IsVisible = value
+                };
+
+                this.EventAggregator
+                    .GetEvent<PresentationChangedPubSubEvent>()?
+                    .Publish(new PresentationChangedMessage(state));
+            }
+        }
+
         public INavigationService NavigationService => this.navigationService;
 
         #endregion
@@ -50,19 +66,6 @@ namespace Ferretto.VW.App.Controls
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()?
                 .Publish(new PresentationChangedMessage(this.journal));
-        }
-
-        public void ShowBack(bool isVisible)
-        {
-            var state = new Presentation()
-            {
-                Type = PresentationTypes.Back,
-                IsVisible = isVisible
-            };
-
-            this.EventAggregator
-                .GetEvent<PresentationChangedPubSubEvent>()?
-                .Publish(new PresentationChangedMessage(state));
         }
 
         #endregion

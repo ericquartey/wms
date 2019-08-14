@@ -173,24 +173,47 @@ namespace Ferretto.VW.App.Services
             var currentHistoryRecord = this.tracks.Pop();
             this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
 
-            while (this.tracks.Any() && !this.tracks.Peek().IsTrackable)
+            while (this.tracks.Any()
+                &&
+                !this.tracks.Peek().IsTrackable)
             {
                 var currentRecord = this.tracks.Peek();
                 this.logger.Trace($"Discarding history view '{currentRecord.ModuleName}.{currentRecord.ViewName}' because not marked as trackable.");
                 this.tracks.Pop();
             }
 
-            var historyRecord = this.tracks.Peek();
-            this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
+            this.NavigateBackTo(this.tracks.Peek());
+        }
 
-            this.regionManager.RequestNavigate(
-                Utils.Modules.Layout.REGION_MAINCONTENT,
-                historyRecord.ViewName,
-                new NavigationParameters());
+        public void GoBackTo(string modelName, string viewModelName)
+        {
+            if (!this.tracks.Any(t => t.ModuleName == modelName && t.ViewModelName == viewModelName))
+            {
+                this.logger.Warn($"Unable to navigate back to '{modelName}.{viewModelName}' because no view with the specified name was found in the navigation stack.");
+                return;
+            }
 
-            this.eventAggregator
-                .GetEvent<NavigationCompleted>()
-                .Publish(new NavigationCompletedPubSubEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
+            if (this.tracks.Peek().ModuleName == modelName
+                &&
+                this.tracks.Peek().ViewModelName == viewModelName)
+            {
+                this.logger.Info($"Back navigation to '{modelName}.{viewModelName}' not performed because it matches the current view");
+                return;
+            }
+
+            var currentHistoryRecord = this.tracks.Pop();
+            this.logger.Trace($"Navigating back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
+
+            while (this.tracks.Any()
+                &&
+                this.tracks.Peek().ModuleName != modelName
+                &&
+                this.tracks.Peek().ViewModelName != viewModelName)
+            {
+                this.tracks.Pop();
+            }
+
+            this.NavigateBackTo(this.tracks.Peek());
         }
 
         public void LoadModule(string moduleName)
@@ -239,6 +262,20 @@ namespace Ferretto.VW.App.Services
             }
 
             return null;
+        }
+
+        private void NavigateBackTo(NavigationTrack historyRecord)
+        {
+            this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
+
+            this.regionManager.RequestNavigate(
+                Utils.Modules.Layout.REGION_MAINCONTENT,
+                historyRecord.ViewName,
+                new NavigationParameters());
+
+            this.eventAggregator
+                .GetEvent<NavigationCompleted>()
+                .Publish(new NavigationCompletedPubSubEventArgs(historyRecord.ModuleName, historyRecord.ViewModelName));
         }
 
         #endregion

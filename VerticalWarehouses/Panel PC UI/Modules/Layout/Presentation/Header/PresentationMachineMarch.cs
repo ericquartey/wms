@@ -62,7 +62,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsBusy
         {
             get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value);
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public bool IsMachinePoweredOn
@@ -93,11 +99,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             catch
             {
                 // TODO: report error
-            }
-            finally
-            {
                 this.IsBusy = false;
             }
+        }
+
+        protected override bool CanExecute()
+        {
+            return !this.IsBusy;
         }
 
         private void UpdateMachinePowerState(bool[] sensorsStates)
@@ -114,6 +122,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 var isPoweredOn = sensorsStates[sensorIndex];
 
+                if (this.IsBusy == true && this.IsMachinePoweredOn != isPoweredOn)
+                {
+                    this.IsBusy = false;
+                }
                 this.IsMachinePoweredOn = isPoweredOn;
             }
             else

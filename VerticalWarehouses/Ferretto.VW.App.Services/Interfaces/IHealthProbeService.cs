@@ -16,9 +16,9 @@ namespace Ferretto.VW.App.Services
 
         void Stop();
 
-        object SubscribeOnHealthStatusChanged(Action<HealthStatusChangedEventArgs> action);
+        object SubscribeToHealthStatusChangedEvent(Action<HealthStatusChangedEventArgs> action);
 
-        void UnSubscribe(object subscriptionToken);
+        void UnsubscribeFromHealthStatusChangedEvent(object subscriptionToken);
 
         #endregion
     }

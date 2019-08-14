@@ -5,8 +5,10 @@
                   xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
                   d:DesignHeight="60"
                   d:DesignWidth="100"
+                  PresentationType="MachineMode"
                   mc:Ignorable="d">
 
     <controls:PpcButton x:Name="LayoutRoot"
@@ -24,7 +26,7 @@
             <TextBlock VerticalAlignment="Center"
                        FontSize="{DynamicResource PpcButtonFontSize}"
                        Foreground="{DynamicResource PpcButtonForeground}"
-                       Text="Manual"
+                       Text="{x:Static res:VWApp.ManualMode}"
                        TextAlignment="Center" />
             <Rectangle Grid.Row="1"
                        Height="12"

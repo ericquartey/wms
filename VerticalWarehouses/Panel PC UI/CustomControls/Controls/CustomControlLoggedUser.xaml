@@ -15,21 +15,20 @@
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Command="{Binding OpenClosePopupCommand}"
-                            FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
+                            FontSize="{DynamicResource PpcButtonFontSize}"
                             Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}">
-            <Button.Content>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="10,0,10,0"
-                               VerticalAlignment="Center"
-                               Foreground="{DynamicResource PpcButtonForeground}"
-                               Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <controls:PpcIcon Height="24"
-                                      Margin="0,0,10,0"
-                                      HorizontalAlignment="Center"
-                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                      Source="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png" />
-                </StackPanel>
-            </Button.Content>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="10,0,10,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource PpcButtonForeground}"
+                           Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <controls:PpcIcon Height="24"
+                                  HorizontalAlignment="Center"
+                                  ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                  Source="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png" />
+            </StackPanel>
+
         </controls:PpcButton>
 
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"

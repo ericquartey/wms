@@ -16,6 +16,8 @@
 
         void GoBack();
 
+        void GoBackTo(string modelName, string viewModelName);
+
         void LoadModule(string moduleName);
 
         object SubscribeToNavigationCompleted(System.Action<NavigationCompletedPubSubEventArgs> action);

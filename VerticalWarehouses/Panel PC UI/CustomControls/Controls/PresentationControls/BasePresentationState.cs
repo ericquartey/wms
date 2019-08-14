@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IEventAggregator eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
 
-        private ICommand executeCommand;
+        private DelegateCommand executeCommand;
 
         private bool? isVisible;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Controls
         public ICommand ExecuteCommand =>
             this.executeCommand
             ??
-            (this.executeCommand = new DelegateCommand(async () => await this.ExecuteAsync()));
+            (this.executeCommand = new DelegateCommand(async () => await this.ExecuteAsync(), this.CanExecute));
 
         public bool? IsVisible
         {
@@ -69,6 +69,16 @@ namespace Ferretto.VW.App.Controls
         {
             // do nothing
             return Task.CompletedTask;
+        }
+
+        protected virtual bool CanExecute()
+        {
+            return true;
+        }
+
+        protected void RaiseCanExecuteChanged()
+        {
+            this.executeCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

@@ -14,7 +14,7 @@ using Prism.Modularity;
 using Prism.Mvvm;
 using Unity;
 
-namespace Ferretto.VW.App.Installation
+namespace Ferretto.VW.App.Modules.Installation
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
@@ -79,8 +79,6 @@ namespace Ferretto.VW.App.Installation
             containerRegistry.RegisterForNavigation<VerticalAxisCalibrationView>();
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-
-            this.container.RegisterInstance<IStatusMessageService>(new StatusMessageService());
 
             this.container.RegisterSingleton<INotificationService, NotificationService>();
             this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service

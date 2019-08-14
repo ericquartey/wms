@@ -4,11 +4,11 @@
     <ControlTemplate x:Key="PpcButtonControlTemplate"
                      TargetType="{x:Type Button}">
         <Border Name="Root_ActionButtonBorder"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                Background="{DynamicResource PpcButtonBackground}"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
                 Width="{TemplateBinding Width}"
                 Height="{TemplateBinding Height}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
                 BorderThickness="0"
                 TextBlock.FontSize="{DynamicResource PpcButtonFontSize}"
                 TextBlock.Foreground="{DynamicResource PpcButtonForeground}"
@@ -22,15 +22,15 @@
 
         <ControlTemplate.Triggers>
             <DataTrigger Binding="{Binding IsActive}"
-                         Value="true">
+                         Value="True">
                 <Setter TargetName="Root_ActionButtonBorder" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
             </DataTrigger>
-            <Trigger Property="IsPressed" Value="true">
+            <Trigger Property="IsPressed" Value="True">
                 <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                 <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
                 <Setter Property="TextBlock.Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="false">
+            <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="Root_ActionButtonBorder" Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
                 <Setter TargetName="Root_ActionButtonBorder" Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
                 <Setter Property="TextBlock.Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />

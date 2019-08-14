@@ -13,46 +13,37 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
 
-    <Grid Height="80">
+    <Grid Margin="15">
 
-        <Image Grid.Row="0"
-               Grid.Column="0"
-               Width="190"
-               Margin="15,0"
+        <Image Width="180"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality"
                Source="{DynamicResource Ferretto_Logo}" />
 
-        <!--  Installator  -->
         <StackPanel FlowDirection="RightToLeft"
-                    Orientation="Horizontal"
-                    ScrollViewer.CanContentScroll="True">
+                    Orientation="Horizontal">
 
-            <ctrls:PpcControl Width="60"
-                              Height="60"
-                              Margin="10,0"
-                              VerticalContentAlignment="Center"
+            <ctrls:PpcControl VerticalContentAlignment="Center"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Help}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Width="60"
                                     Height="60"
-                                    Background="{DynamicResource VWAPP_BACKGROUND}"
                                     BorderThickness="0"
                                     Command="{Binding OpenHelpWindow}">
-                    <Button.Content>
-                        <controls:PpcIcon Height="24"
-                                          ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                          Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
 
-                    </Button.Content>
+                    <controls:PpcIcon Height="24"
+                                      ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                      Source="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
+
+
 
 
                 </controls:PpcButton>
             </ctrls:PpcControl>
 
-            <controls:CustomControlLoggedUser Margin="10,0,20,0"
+            <controls:CustomControlLoggedUser Margin="15,0,15,0"
                                               IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay}"
                                               Items="{Binding States}"
                                               LogOffCommand="{Binding LogOffCommand}"
@@ -60,23 +51,18 @@
                                               UserText="{Binding UserName}"
                                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:CustomMachineModeToggleButton Name="MachineModeControl"
-                                                    CustomCommand="{Binding MachineModeCustomCommand}"
+            <controls:CustomMachineModeToggleButton Margin="15,0,0,0"
                                                     Items="{Binding States}"
-                                                    MachineModeState="{Binding MachineModeSelectionBool}"
-                                                    Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}"
                                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
-                                                       Margin="10,0,0,0"
+            <controls:CustomMachineOnMarchToggleButton Margin="15,0,0,0"
                                                        Items="{Binding States}"
                                                        Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:CustomMainWindowErrorButton Margin="10,0,0,0"
+            <controls:CustomMainWindowErrorButton Margin="15,0,0,0"
                                                   Items="{Binding States}"
                                                   Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
         </StackPanel>
-        <!--  end installator  -->
 
         <StackPanel Name="LoginHeader"
                     HorizontalAlignment="Right"
@@ -84,7 +70,7 @@
                     Orientation="Horizontal">
 
             <!--  ToggleThemeCommand  -->
-            <ctrls:PpcControl Margin="15,0"
+            <ctrls:PpcControl Margin="0,0,15,0"
                               VerticalAlignment="Center"
                               Items="{Binding States}"
                               PresentationType="{x:Static enums:PresentationTypes.Theme}"
@@ -126,7 +112,6 @@
 
             <!--  SwitchOffCommand  -->
             <ctrls:PpcControl Grid.Row="0"
-                              Margin="15,0"
                               HorizontalAlignment="Right"
                               VerticalAlignment="Center"
                               Items="{Binding States}"
