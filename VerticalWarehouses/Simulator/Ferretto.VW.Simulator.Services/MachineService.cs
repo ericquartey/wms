@@ -6,12 +6,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
-using static Ferretto.VW.Simulator.Services.BufferUtility;
 using NLog;
-using Prism.Commands;
 using Prism.Mvvm;
 using static Ferretto.VW.Simulator.Services.BufferUtility;
 
