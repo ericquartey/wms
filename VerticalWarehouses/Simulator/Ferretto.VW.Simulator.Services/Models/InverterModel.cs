@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -261,7 +262,11 @@ namespace Ferretto.VW.Simulator.Services.Models
     {
         #region Fields
 
+        public BitModel[] controlWordArray;
+
         private readonly Timer homingTimer;
+
+        private readonly Timer shutterTimer;
 
         private readonly Timer targetTimer;
 
@@ -273,26 +278,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool enabled;
 
+        private ICommand inverterInFaultCommand;
+
         private InverterType inverterType;
+
+        private InverterOperationMode operationMode;
 
         private bool positionReached;
 
         private int statusWord;
 
-        private InverterOperationMode operationMode;
-
-        public BitModel[] controlWordArray;
-
         #endregion
-
-        private ICommand inverterInFaultCommand;
-
-        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.ExecuteInverterInFaultCommand()));
-
-        private void ExecuteInverterInFaultCommand()
-        {
-            this.IsFault = !this.IsFault;
-        }
 
         #region Constructors
 
@@ -303,6 +299,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
             this.targetTimerActive = false;
+
+            this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
+            this.shutterTimerActive = false;
 
             this.OperationMode = InverterOperationMode.Velocity;
             this.InverterType = inverterType;
@@ -315,6 +314,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("05", false, GetInverterSignalDescription(inverterType, 5)));
             this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
             this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
+
+            // Remove overrun signal
+            if (inverterType == InverterType.Ang)
+            {
+                this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+            }
         }
 
         #endregion
@@ -331,24 +336,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] ControlWordArray => this.controlWordArray ?? (this.controlWordArray = this.RefreshControlWordArray());
 
-        public BitModel[] RefreshControlWordArray()
-        {
-            var cw = (from x in Enumerable.Range(0, 16)
-                      let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
-                      select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                     .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
-
-            if (this.controlWordArray != null)
-            {
-                for (int i = 0; i < cw.Length; i++)
-                {
-                    this.controlWordArray[i].Value = cw[i].Value;
-                }
-            }
-
-            return cw;
-        }
-
         public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
@@ -358,6 +345,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
         public int Id { get; set; }
+
+        public ICommand InverterInFaultCommand => this.inverterInFaultCommand ?? (this.inverterInFaultCommand = new DelegateCommand(() => this.ExecuteInverterInFaultCommand()));
 
         public InverterRole InverterRole => (InverterRole)this.Id;
 
@@ -399,7 +388,13 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsReadyToSwitchOn => (this.statusWord & 0x0001) > 0;
 
+        public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
+
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
+
+        public bool IsShutterClosed => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsSwitchedOn
         {
@@ -425,6 +420,8 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.operationMode, value);
         }
 
+        public int SpeedRate { get; set; }
+
         public int StatusWord
         {
             get => this.statusWord;
@@ -440,9 +437,23 @@ namespace Ferretto.VW.Simulator.Services.Models
                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
+        public int TargetAcceleration { get; set; }
+
+        public int TargetDeceleration { get; set; }
+
+        public int TargetPosition { get; set; }
+
+        public int TargetShutterPosition { get; set; }
+
+        public int TargetSpeed { get; set; }
+
         private int homingTickCount { get; set; }
 
         private bool homingTimerActive { get; set; }
+
+        private int shutterTickCount { get; set; }
+
+        private bool shutterTimerActive { get; set; }
 
         private int targetTickCount { get; set; }
 
@@ -503,7 +514,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.homingTimer.Change(0, 500);
                     this.homingTimerActive = true;
-                    this.AxisPosition = 0;
+                    //this.AxisPosition = 0;
                 }
             }
             else
@@ -564,7 +575,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else
             {
-                this.StatusWord &= 0xFFFB;
+                this.StatusWord &= 0xFBFB;
                 this.positionReached = false;
             }
 
@@ -577,11 +588,20 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                     this.targetTimer.Change(0, 500);
                     this.targetTimerActive = true;
-                    this.AxisPosition = 0;
+
+                    //this.AxisPosition = 0;
                 }
             }
             else
             {
+                if (this.targetTimerActive)
+                {
+                    this.targetTimer.Change(-1, Timeout.Infinite);
+                    // Reset contatore
+                    this.targetTickCount = 0;
+
+                    this.targetTimerActive = false;
+                }
                 this.StatusWord &= 0xEFFF;
             }
 
@@ -635,16 +655,23 @@ namespace Ferretto.VW.Simulator.Services.Models
             if ((this.ControlWord & 0x0008) > 0)
             {
                 this.StatusWord |= 0x0004;
-                if (!this.targetTimerActive)
+                if (!this.shutterTimerActive)
                 {
-                    this.targetTimer.Change(0, 500);
-                    this.targetTimerActive = true;
-                    this.AxisPosition = 0;
+                    this.shutterTimer.Change(0, 500);
+                    this.shutterTimerActive = true;
                 }
             }
             else
             {
-                this.StatusWord &= 0xFFFB;
+                if (this.shutterTimerActive)
+                {
+                    this.shutterTimer.Change(-1, Timeout.Infinite);
+                    // Reset contatore
+                    this.shutterTickCount = 0;
+
+                    this.shutterTimerActive = false;
+                }
+                this.StatusWord &= ~0x0400;
             }
 
             //Fault Reset
@@ -690,23 +717,74 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        private void TargetTick(object state)
+        public BitModel[] RefreshControlWordArray()
         {
-            this.targetTickCount++;
-            this.AxisPosition++;
+            var cw = (from x in Enumerable.Range(0, 16)
+                      let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
+                      select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                     .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
-            if (this.targetTickCount > 10)
+            if (this.controlWordArray != null)
             {
-                this.ControlWord &= 0xFFEF;
-                this.StatusWord |= 0x0400;
-
-                this.targetTimer.Change(-1, Timeout.Infinite);
-                // Reset contatore
-                this.targetTickCount = 0;
-
-                this.targetTimerActive = false;
-                this.positionReached = true;
+                for (int i = 0; i < cw.Length; i++)
+                {
+                    this.controlWordArray[i].Value = cw[i].Value;
+                }
             }
+
+            return cw;
+        }
+
+        internal static string GetControlWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Switch On";
+
+                case 1:
+                    return "Enable Voltage";
+
+                case 2:
+                    return "Quick Stop (Low Active)";
+
+                case 3:
+                    return "Enable Operation";
+
+                case 4:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : "Operation mode specific";
+
+                case 5:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
+
+                case 6:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : "Operation mode specific";
+
+                case 7:
+                    return "Reset Fault";
+
+                case 8:
+                    return "Halt";
+
+                case 9:
+                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : "Operation mode specific";
+
+                case 10:
+                    return "Free";
+
+                case 11:
+                case 12:
+                case 13:
+                    return "Manufacturer specific";
+
+                case 14:
+                    return "HeartBeat";
+
+                case 15:
+                    return "Manufacturer specific";
+            }
+
+            return "Free";
         }
 
         internal static string GetInverterSignalDescription(InverterType inverterType, int signalIndex)
@@ -740,52 +818,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                 default:
                     return string.Empty;
             }
-        }
-
-        internal static string GetControlWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
-        {
-            switch (signalIndex)
-            {
-                case 0:
-                    return "Switch On";
-
-                case 1:
-                    return "Enable Voltage";
-
-                case 2:
-                    return "Quick Stop (Low Active)";
-
-                case 3:
-                    return "Enable Operation";
-
-                case 4:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : "Operation mode specific";
-                case 5:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
-                case 6:
-                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : "Operation mode specific";
-
-                case 7:
-                    return "Reset Fault";
-
-                case 8:
-                    return "Halt";
-
-                case 9:
-                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : "Operation mode specific";
-
-                case 10:
-                    return "Free";
-
-                case 11:
-                case 12:
-                case 13:
-                case 14:
-                case 15:
-                    return "Manufacturer specific";
-            }
-
-            return "Free";
         }
 
         internal static string GetStatusWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
@@ -842,6 +874,66 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
 
             return "Free";
+        }
+
+        private void ExecuteInverterInFaultCommand()
+        {
+            this.IsFault = !this.IsFault;
+        }
+
+        private void ShutterTick(object state)
+        {
+            this.shutterTickCount++;
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
+            {
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
+
+            if (this.shutterTickCount > 100
+                || (this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened)
+                )
+            {
+                this.ControlWord &= 0xFFEF;
+                this.StatusWord |= 0x0400;
+
+                this.shutterTimer.Change(-1, Timeout.Infinite);
+                // Reset contatore
+                this.shutterTickCount = 0;
+
+                this.shutterTimerActive = false;
+                this.positionReached = true;
+            }
+        }
+
+        private void TargetTick(object state)
+        {
+            this.targetTickCount++;
+            if (this.TargetPosition > this.AxisPosition)
+            {
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
+
+            if (Math.Abs(this.TargetPosition - this.AxisPosition) == 0 || this.targetTickCount > 100)
+            {
+                this.ControlWord &= 0xFFEF;
+                this.StatusWord |= 0x0400;
+
+                this.targetTimer.Change(-1, Timeout.Infinite);
+                // Reset contatore
+                this.targetTickCount = 0;
+
+                this.targetTimerActive = false;
+                this.positionReached = true;
+            }
         }
 
         #endregion

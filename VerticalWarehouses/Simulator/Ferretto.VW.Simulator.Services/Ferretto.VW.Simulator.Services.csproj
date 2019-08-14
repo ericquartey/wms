@@ -20,4 +20,8 @@
     <PackageReference Include="Unity" Version="4.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
+  </ItemGroup>
+
 </Project>

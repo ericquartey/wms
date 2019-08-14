@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         public override void Start()
         {
             this.InverterStatus.CommonControlWord.EnableVoltage = false;
+            this.Logger.LogDebug("Disable Voltage");
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
 

@@ -100,7 +100,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.moveBackwardsCommand = new DelegateCommand(async () => await this.MoveBackwardsAsync()));
 
-        public DelegateCommand MoveForwardButtonCommand =>
+        public DelegateCommand MoveForwardsCommand =>
             this.moveForwardsCommand
             ??
             (this.moveForwardsCommand = new DelegateCommand(async () => await this.MoveForwardsAsync()));

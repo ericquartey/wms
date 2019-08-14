@@ -3,8 +3,8 @@
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:Double x:Key="VWAPP_CustomLabel_ContentTextBlock_FontSize">18</sys:Double>
-    <sys:Double x:Key="VWAPP_CustomLabel_LabelTextBlock_FontSize">14</sys:Double>
+    <sys:Double x:Key="VWAPP_CustomLabel_ContentTextBlock_FontSize">17</sys:Double>
+    <sys:Double x:Key="VWAPP_CustomLabel_LabelTextBlock_FontSize">12</sys:Double>
 
     <SolidColorBrush x:Key="VWAPP_CustomLabel_ContentTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoBlack}" />
