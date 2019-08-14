@@ -54,7 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
-            this.ShowBack(false);
+
+            this.IsBackNavigationAllowed = false;
 
             try
             {

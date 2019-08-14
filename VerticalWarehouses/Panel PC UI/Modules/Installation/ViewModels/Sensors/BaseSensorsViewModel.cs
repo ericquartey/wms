@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnNavigatedAsync()
         {
-            this.ShowBack(true);
+            this.IsBackNavigationAllowed = true;
 
             this.subscriptionToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
