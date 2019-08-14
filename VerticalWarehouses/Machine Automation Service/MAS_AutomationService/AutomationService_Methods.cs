@@ -289,7 +289,43 @@ namespace Ferretto.VW.MAS.AutomationService
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
             }
         }
-
+        
+        private void MachineStateActiveMethod(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.MachineStateActiveNotify(msgUI);
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+        private void MachineStatusActiveMethod(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.MachineStatusActiveNotify(msgUI);
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
         #endregion
     }
 }

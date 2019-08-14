@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Views.ErrorDetails;
 using Ferretto.VW.App.Installation.HelpWindows;
@@ -19,6 +20,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using Unity;
 
@@ -52,7 +54,7 @@ namespace Ferretto.VW.App.Installation
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
-        private Dictionary<byte, IStatusWord> inverterStatuses = new Dictionary<byte, IStatusWord>();
+        private readonly Dictionary<byte, IStatusWord> inverterStatuses = new Dictionary<byte, IStatusWord>();
 
         private bool isExitViewButtonRegionExpanded;
 
@@ -80,9 +82,13 @@ namespace Ferretto.VW.App.Installation
 
         private IViewModel previousNavigationViewModel;
 
+        private ICommand showDiagnosticDetailsCommand;
+
         private ICommand showErrorDetailsCommand;
 
         private IUpdateSensorsMachineService updateSensorsService;
+
+        private readonly InteractionRequest<Confirmation> interactionRequest;
 
         #endregion
 
@@ -149,6 +155,7 @@ namespace Ferretto.VW.App.Installation
             this.idleViewModel = idleViewModel as IdleViewModel;
             this.ContentRegionCurrentViewModel = this.idleViewModel;
             this.machineOnMarchSelectionBool = false;
+            this.interactionRequest = new InteractionRequest<Confirmation>();
             this.InitializeEvents();
 
             this.helpWindow = new HelpMainWindow(eventAggregator);
@@ -285,8 +292,13 @@ namespace Ferretto.VW.App.Installation
                 this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
             }));
 
+        public ICommand ShowDiagnosticDetailsCommand =>
+           this.showDiagnosticDetailsCommand
+           ??
+           (this.showDiagnosticDetailsCommand = new DelegateCommand(() => this.ExecuteShowDiagnosticDetailsCommandAsync()));
+
         public ICommand ShowErrorDetailsCommand =>
-           this.showErrorDetailsCommand
+                   this.showErrorDetailsCommand
            ??
            (this.showErrorDetailsCommand = new DelegateCommand(async () => await this.ExecuteShowErrorDetailsCommandAsync()));
 
@@ -298,6 +310,63 @@ namespace Ferretto.VW.App.Installation
         {
             var error = await this.errorsMachineService.GetCurrentAsync();
             this.MachineHasErrors = error != null;
+        }
+        private void OnWindowClosed(Confirmation confirmation)
+        {
+            if (confirmation.Confirmed)
+            {
+                //perform the confirmed action...
+            }
+            else
+            {
+
+            }
+        }
+
+        private void ExecuteShowDiagnosticDetailsCommandAsync()
+        {
+            var diagnosticDetailsViewModel = this.container.Resolve<DiagnosticDetailsViewModel>();
+
+            var win = new DiagnosticDetailsView();
+            win.DataContext = diagnosticDetailsViewModel;
+            win.Loaded += async (s, e) => await diagnosticDetailsViewModel.OnEnterViewAsync();
+            win.Unloaded += (s, e) => diagnosticDetailsViewModel.UnSubscribeMethodFromEvent();
+            win.Show();
+
+            /*
+            var diagnosticDetailsViewModel = this.container.Resolve<DiagnosticDetailsViewModel>();
+            if (this.ContentRegionCurrentViewModel != diagnosticDetailsViewModel)
+            // navigate to error page
+            {
+                try
+                {
+                    this.previousNavigationViewModel = this.NavigationRegionCurrentViewModel;
+                    this.previousContentRegionViewModel = this.ContentRegionCurrentViewModel;
+
+                    this.NavigationRegionCurrentViewModel = null;
+
+                    await diagnosticDetailsViewModel.OnEnterViewAsync();
+                    this.ContentRegionCurrentViewModel = diagnosticDetailsViewModel;
+
+                    var footerViewModel = this.container.Resolve<IFooterViewModel>();
+
+                    this.ExitViewButtonRegionCurrentViewModel = (FooterViewModel)this.container.Resolve<IFooterViewModel>();
+                }
+                catch (System.Exception ex)
+                {
+                    this.statusMessageService.Notify(ex);
+                }
+            }
+            else
+            // leave error page
+            {
+                this.NavigationRegionCurrentViewModel = this.previousNavigationViewModel;
+                this.ContentRegionCurrentViewModel = this.previousContentRegionViewModel;
+
+                this.previousNavigationViewModel = null;
+                this.previousContentRegionViewModel = null;
+            }
+            */
         }
 
         private async Task ExecuteShowErrorDetailsCommandAsync()

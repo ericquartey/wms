@@ -5,7 +5,10 @@
         xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
         xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:views="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
         Title="MainWindow"
         Width="1024"
         Height="768"
@@ -87,6 +90,20 @@
                                                         ContentText="Error"
                                                         CustomCommand="{Binding ShowErrorDetailsCommand}"
                                                         Visibility="{Binding MachineHasErrors, Converter={StaticResource BTVC}}" />
+                    <custom:CustomMainWindowDiagnosticButton Margin="10,0,0,0"
+                                                             ContentText="DEBUG"
+                                                             CustomCommand="{Binding ShowDiagnosticDetailsCommand}" />
+                    <!--<i:Interaction.Triggers>
+                        <prism:InteractionRequestTrigger SourceObject="{Binding OptionSettingConfirmationRequest, Mode=OneWay}">
+                            <prism:PopupWindowAction>
+                                <prism:PopupWindowAction.WindowContent>
+                                    <views:DiagnosticDetailsView />
+                                </prism:PopupWindowAction.WindowContent>
+                            </prism:PopupWindowAction>
+                        </prism:InteractionRequestTrigger>
+                    </i:Interaction.Triggers>-->
+
+
                     <custom:CustomMainWindowServiceButton Margin="10,0,0,0"
                                                           ContentText="Service"
                                                           Visibility="Collapsed" />

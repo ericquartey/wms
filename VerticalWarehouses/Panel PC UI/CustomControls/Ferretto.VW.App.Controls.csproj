@@ -39,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\CustomMainWindowDiagnosticButton.xaml" />
+    <None Remove="Styles\CustomMainWindowDiagnosticButtonStyle.xaml" />
+    <None Remove="Templates\CustomMainWindowDiagnosticButtonControlTemplate.xaml" />
     <None Remove="Views\SSBaysView.xaml" />
   </ItemGroup>
 

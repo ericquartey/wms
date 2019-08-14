@@ -22,6 +22,10 @@
 
         CalibrateAxis,
 
+        MachineStateActive,
+
+        MachineStatusActive,
+
         ShutterControl,
 
         NewMissionAvailable,

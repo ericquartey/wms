@@ -115,6 +115,8 @@ namespace Ferretto.VW.App.Installation
             this.container.RegisterSingleton<ILSMTCarouselViewModel, LSMTCarouselViewModel>();
             this.container.RegisterSingleton<IDrawerStoreRecallViewModel, DrawerStoreRecallViewModel>();
 
+            this.container.RegisterSingleton<IDiagnosticDetailsViewModel, DiagnosticDetailsViewModel>();
+
             this.container.RegisterSingleton<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterSingleton<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
         }

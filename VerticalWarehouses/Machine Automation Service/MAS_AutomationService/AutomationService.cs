@@ -309,6 +309,14 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.InverterStatusWordMethod(receivedMessage);
                         break;
 
+                    case MessageType.MachineStateActive:
+                        this.MachineStateActiveMethod(receivedMessage);
+                        break;
+
+                    case MessageType.MachineStatusActive:
+                        this.MachineStatusActiveMethod(receivedMessage);
+                        break;
+
                     default:
                         break;
                 }

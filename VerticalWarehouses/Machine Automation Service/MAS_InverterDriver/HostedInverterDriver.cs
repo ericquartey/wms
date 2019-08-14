@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
@@ -383,6 +385,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ProcessDisableMessage( receivedMessage );
                         break;
                 }
+
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current machine status {receivedMessage.Type}",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+    
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
                 this.logger.LogTrace( $"Socket Timings: Read Wait Samples {this.ReadWaitTimeData.TotalSamples}, Max {this.ReadWaitTimeData.MaxValue}ms, Min {this.ReadWaitTimeData.MinValue}ms, Average {this.ReadWaitTimeData.AverageValue}ms, Deviation {this.ReadWaitTimeData.StandardDeviation}ms / Round Trip Samples {this.WriteRoundtripTimeData.TotalSamples}, Max {this.WriteRoundtripTimeData.MaxValue}ms, Min {this.WriteRoundtripTimeData.MinValue}ms, Average {this.WriteRoundtripTimeData.AverageValue}ms, Deviation {this.WriteRoundtripTimeData.StandardDeviation}ms" );
                 this.logger.LogTrace( $"Axis Timings: Request interval Samples {this.AxisTimeData.TotalSamples}, Max {this.AxisTimeData.MaxValue}ms, Min {this.AxisTimeData.MinValue}ms, Average {this.AxisTimeData.AverageValue}ms, Deviation {this.AxisTimeData.StandardDeviation}ms / Round Trip Samples {this.AxisIntervalTimeData.TotalSamples}, Max {this.AxisIntervalTimeData.MaxValue}ms, Min {this.AxisIntervalTimeData.MinValue}ms, Average {this.AxisIntervalTimeData.AverageValue}ms, Deviation {this.AxisIntervalTimeData.StandardDeviation}ms" );

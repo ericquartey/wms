@@ -9,6 +9,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/TextBlockStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMachineModeToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowDiagnosticButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ExpanderStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
@@ -21,6 +22,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/RepeatButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineModeToggleButton_Template.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineOnMarchToggleButton_Template.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMainWindowDiagnosticButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomInputText_TextBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/DataGridScrollButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/DataGridRepeatButtonControlTemplate.xaml" />

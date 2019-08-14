@@ -99,6 +99,7 @@ namespace Ferretto.VW.App.Installation
         private ICommand verticalOffsetCalibrationButtonCommand;
 
         private ICommand weightControlButtonCommand;
+        private DelegateCommand dddddddButtonCommand;
 
         #endregion
 
@@ -308,6 +309,12 @@ namespace Ferretto.VW.App.Installation
             ??
             (this.weightControlButtonCommand = new DelegateCommand(
                 async () => await this.NavigateToViewAsync<WeightControlViewModel, IWeightControlViewModel>()));
+
+        public ICommand DddddddButtonCommand =>
+            this.dddddddButtonCommand
+            ??
+            (this.dddddddButtonCommand = new DelegateCommand(
+                async () => await this.NavigateToViewAsync<DiagnosticDetailsViewModel, IDiagnosticDetailsViewModel>()));
 
         #endregion
 

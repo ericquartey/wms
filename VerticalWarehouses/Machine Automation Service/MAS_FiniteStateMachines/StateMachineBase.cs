@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -68,6 +70,17 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, newState.GetType().Name, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"FSM current state {newState.GetType().Name}",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.MachineStateActive,
+                MessageStatus.OperationStart);
+
+            this.PublishNotificationMessage(notificationMessage);
+
             lock (this.CurrentState)
             {
                 this.CurrentState = newState;
@@ -139,6 +152,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
             if (disposing)
             {
+            }
+
+            {
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"FSM current status null",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+
+            {
+                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"FSM current state null",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.MachineStateActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
 
             this.disposed = true;
