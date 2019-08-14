@@ -96,6 +96,9 @@
     <Compile Update="Views\Sensors\VerticalAxisSensorsView.xaml.cs">
       <DependentUpon>VerticalAxisSensorsView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Shutter\ShutterEnduranceTestView.xaml.cs">
+      <DependentUpon>ShutterEnduranceTestView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

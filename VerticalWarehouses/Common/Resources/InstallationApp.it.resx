@@ -244,7 +244,7 @@
     <value>Input vari</value>
   </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
-    <value>Barriera anti intrusione baia 1</value>
+    <value>Barriera anti intrusione</value>
   </data>
   <data name="CradleEngineSelected" xml:space="preserve">
     <value>Motore culla selezionato</value>
@@ -274,7 +274,7 @@
     <value>Micro carter lato sinistro</value>
   </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
-    <value>Micro carter lato destro baia 1</value>
+    <value>Micro carter lato destro</value>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
     <value>Fungo di Emergenza</value>
@@ -597,21 +597,6 @@
   </data>
   <data name="ShutterSensorA" xml:space="preserve">
     <value>Sensore A serranda</value>
-  </data>
-  <data name="MicroCarterLeftSide3" xml:space="preserve">
-    <value>Micro carter lato sinistro baia 3</value>
-  </data>
-  <data name="MicroCarterRightSide2" xml:space="preserve">
-    <value>Micro carter lato destro baia 2</value>
-  </data>
-  <data name="MicroCarterRightSide3" xml:space="preserve">
-    <value>Micro carter lato destro baia 3</value>
-  </data>
-  <data name="AntiIntrusionGate2" xml:space="preserve">
-    <value>Barriera anti intrusione baia 2</value>
-  </data>
-  <data name="AntiIntrusionGate3" xml:space="preserve">
-    <value>Barriera anti intrusione baia 3</value>
   </data>
   <data name="RequestedFinalPosition" xml:space="preserve">
     <value>Quota finale [mm]:</value>

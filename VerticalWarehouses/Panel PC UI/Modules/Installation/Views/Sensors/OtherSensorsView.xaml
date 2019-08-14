@@ -90,12 +90,12 @@
                                            Sensors="{Binding SensorsStates}"
                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.MicroCarterRightSide2}"
+                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}"
                                            SensorPort="{x:Static iom:IOMachineSensors.MicroCarterRightSideBay2}"
                                            Sensors="{Binding SensorsStates}"
                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.AntiIntrusionGate2}"
+                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}"
                                            SensorPort="{x:Static iom:IOMachineSensors.AntiIntrusionBarrierBay2}"
                                            Sensors="{Binding SensorsStates}"
                                            Style="{StaticResource PpcSensorControlStyle}" />
@@ -116,12 +116,12 @@
                                            Sensors="{Binding SensorsStates}"
                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.MicroCarterRightSide3}"
+                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}"
                                            SensorPort="{x:Static iom:IOMachineSensors.MicroCarterRightSideBay3}"
                                            Sensors="{Binding SensorsStates}"
                                            Style="{StaticResource PpcSensorControlStyle}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.AntiIntrusionGate3}"
+                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}"
                                            SensorPort="{x:Static iom:IOMachineSensors.AntiIntrusionBarrierBay3}"
                                            Sensors="{Binding SensorsStates}"
                                            Style="{StaticResource PpcSensorControlStyle}" />
