@@ -1,4 +1,6 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -71,6 +73,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.InverterDriver, newState.GetType().Name, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"Inverter current state {newState.GetType().Name}",
+                MessageActor.Any,
+                MessageActor.InverterDriver,
+                MessageType.MachineStateActive,
+                MessageStatus.OperationStart);
+
+            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
             this.Logger.LogTrace($"1:new State: {newState.GetType()}");
 
             this.CurrentState = newState;
@@ -138,6 +151,32 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             if (disposing)
             {
                 //this.controlWordCheckTimer?.Dispose();
+            }
+
+            {
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current status null",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+
+            {
+                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.InverterDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current state null",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStateActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
 
             this.disposed = true;

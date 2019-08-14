@@ -1,4 +1,7 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -54,6 +57,17 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         public void ChangeState(IIoState newState)
         {
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, newState.GetType().Name, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"IoDriver current state {newState.GetType().Name}",
+                MessageActor.Any,
+                MessageActor.IoDriver,
+                MessageType.MachineStateActive,
+                MessageStatus.OperationStart);
+
+            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
             this.CurrentState.Dispose();
 
             this.CurrentState = newState;
@@ -64,6 +78,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
+
         }
 
         public void EnqueueMessage(IoSHDWriteMessage message)
@@ -101,6 +116,31 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             {
             }
 
+            {
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"IoDriver current status null",
+                    MessageActor.Any,
+                    MessageActor.IoDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+
+            {
+                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"IoDriver current state null",
+                    MessageActor.Any,
+                    MessageActor.IoDriver,
+                    MessageType.MachineStateActive,
+                    MessageStatus.OperationStart);
+
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
             this.disposed = true;
         }
 
