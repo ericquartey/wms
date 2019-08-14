@@ -8,8 +8,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         public void ExecuteSetConfiguration()
         {
-            this.currentStateMachine = new SetConfigurationStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
-            this.currentStateMachine.Start();
+            this.CurrentStateMachine = new SetConfigurationStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+            this.CurrentStateMachine.Start();
         }
 
         #endregion
