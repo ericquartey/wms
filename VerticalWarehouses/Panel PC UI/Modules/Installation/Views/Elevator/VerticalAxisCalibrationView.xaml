@@ -9,65 +9,75 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid>
+    <Grid Margin="250,30,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Margin="250,30,0,0"
-                   VerticalAlignment="Top"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
 
-        <controls:CustomLabelTextBlockControl Margin="250,130,0,0"
+        <controls:CustomLabelTextBlockControl Grid.Row="1"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
                                               LabelText="{x:Static res:InstallationApp.LowerBound}" />
-
-        <controls:CustomLabelTextBlockControl Margin="250,220,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
-                                              LabelText="{x:Static res:InstallationApp.UpperBound}" />
-
-        <controls:CustomLabelTextBlockControl Margin="250,310,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='Operation in progress...'}"
-                                              LabelText="{x:Static res:InstallationApp.Output}" />
-
-        <controls:CustomLabelTextBlockControl Grid.Column="0"
-                                              Margin="535,130,0,0"
+        <controls:CustomLabelTextBlockControl Grid.Row="1"
+                                              Grid.Column="1"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
                                               LabelText="{x:Static res:InstallationApp.Offset}" />
-
-        <controls:CustomLabelTextBlockControl Grid.Column="0"
-                                              Margin="535,220,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              ContentText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
-                                              LabelText="{x:Static res:InstallationApp.Resolution}" />
-
-        <controls:CustomLabelTextBlockControl Margin="775,130,0,0"
+        <controls:CustomLabelTextBlockControl Grid.Row="1"
+                                              Grid.Column="2"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               ContentText="{Binding CurrentPosition, FallbackValue='999,99'}"
                                               LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
-        <controls:PpcButton Grid.Column="0"
-                            Margin="250,450,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StopButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
-                            IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <controls:CustomLabelTextBlockControl Grid.Row="2"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                              LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
-        <controls:PpcButton Margin="600,450,0,0"
+        <controls:CustomLabelTextBlockControl Grid.Row="2"
+                                              Grid.Column="1"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='999'}"
+                                              LabelText="{x:Static res:InstallationApp.Resolution}" />
+        
+        <controls:CustomLabelTextBlockControl Grid.Row="3"
+                                              Grid.ColumnSpan="2"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='Operation in progress...'}"
+                                              LabelText="{x:Static res:InstallationApp.Output}" />
+
+
+        <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StartButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
-                            IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StartCommand}"
+                            Content="{x:Static res:InstallationApp.Start}" />
     </Grid>
 </ctrls:View>

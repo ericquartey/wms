@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-                    xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
                     xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
                     xmlns:singleViews="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
                     xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels">
@@ -26,15 +25,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type singleViews:IdleViewModel}">
         <singleViews:IdleView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type shuttersControl:Shutter1ControlViewModel}">
-        <shuttersControl:Shutter1ControlView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type shuttersControl:Shutter2ControlViewModel}">
-        <shuttersControl:Shutter2ControlView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type shuttersControl:Shutter3ControlViewModel}">
-        <shuttersControl:Shutter3ControlView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type shuttersHeightControl:Shutter1HeightControlViewModel}">
         <shuttersHeightControl:Shutter1HeightControlView />
@@ -67,13 +57,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type singleViews:DrawerStoreRecallViewModel}">
         <singleViews:DrawerStoreRecallView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type controls:CustomShutterControlSensorsThreePositionsViewModel}">
-        <controls:CustomShutterControlSensorsThreePositions />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type controls:CustomShutterControlSensorsTwoPositionsViewModel}">
-        <controls:CustomShutterControlSensorsTwoPositions />
     </DataTemplate>
 
 </ResourceDictionary>

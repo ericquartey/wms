@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Installation.Interfaces;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -11,57 +10,54 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
+namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class Shutter1ControlViewModel : BindableBase, IShutter1ControlViewModel
+    public class ShutterEnduranceTestViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private int completedCycles;
 
-        private string completedCycles;
+        private int delayBetweenCycles;
 
-        private string delayBetweenCycles;
+        private bool canExecuteStartCommand = true;
 
-        private bool isStartButtonActive = true;
-
-        private bool isStopButtonActive;
+        private bool canExecuteStopCommand;
 
         private SubscriptionToken receivedActionUpdateCompletedToken;
 
         private SubscriptionToken receivedActionUpdateErrorToken;
 
-        private string requiredCycles;
+        private int requiredCycles;
 
         private IViewModel sensorRegion;
 
         private readonly IMachineShutterService shutterService;
 
-        private ICommand startButtonCommand;
+        private ICommand startCommand;
 
-        private ICommand stopButtonCommand;
+        private ICommand stopCommand;
 
         private readonly IMachineTestService testService;
 
-        private readonly ICustomShutterControlSensorsTwoPositionsViewModel customShutterControlSensorsTwoPositionsViewModel;
+        private bool closeSensorState;
+
+        private bool openSensorState;
+
+        public bool CloseSensorState { get => this.closeSensorState; set => this.SetProperty(ref this.closeSensorState, value); }
+
+        public bool OpenSensorState { get => this.openSensorState; set => this.SetProperty(ref this.openSensorState, value); }
 
         #endregion
 
         #region Constructors
 
-        public Shutter1ControlViewModel(
-            IEventAggregator eventAggregator,
+        public ShutterEnduranceTestViewModel(
             IMachineTestService testService,
-            IMachineShutterService shutterService,
-            ICustomShutterControlSensorsTwoPositionsViewModel customShutterControlSensorsTwoPositionsViewModel)
+            IMachineShutterService shutterService)
+            : base(Services.PresentationMode.Installator)
         {
-            if (eventAggregator == null)
-            {
-                throw new System.ArgumentNullException(nameof(eventAggregator));
-            }
-
             if (testService == null)
             {
                 throw new System.ArgumentNullException(nameof(testService));
@@ -72,17 +68,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
                 throw new System.ArgumentNullException(nameof(shutterService));
             }
 
-            if (customShutterControlSensorsTwoPositionsViewModel == null)
-            {
-                throw new System.ArgumentNullException(nameof(customShutterControlSensorsTwoPositionsViewModel));
-            }
-
-            this.eventAggregator = eventAggregator;
             this.testService = testService;
             this.shutterService = shutterService;
-            this.customShutterControlSensorsTwoPositionsViewModel = customShutterControlSensorsTwoPositionsViewModel;
             this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
-            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -101,9 +89,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         #region Properties
 
-        public string CompletedCycles { get => this.completedCycles; set => this.SetProperty(ref this.completedCycles, value); }
+        public int CompletedCycles
+        {
+            get => this.completedCycles;
+            set => this.SetProperty(ref this.completedCycles, value);
+        }
 
-        public string DelayBetweenCycles
+        public int DelayBetweenCycles
         {
             get => this.delayBetweenCycles;
             set
@@ -115,19 +107,17 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         public bool IsStartButtonActive
         {
-            get => this.isStartButtonActive;
-            set => this.SetProperty(ref this.isStartButtonActive, value);
+            get => this.canExecuteStartCommand;
+            set => this.SetProperty(ref this.canExecuteStartCommand, value);
         }
 
         public bool IsStopButtonActive
         {
-            get => this.isStopButtonActive;
-            set => this.SetProperty(ref this.isStopButtonActive, value);
+            get => this.canExecuteStopCommand;
+            set => this.SetProperty(ref this.canExecuteStopCommand, value);
         }
 
-        public BindableBase NavigationViewModel { get; set; }
-
-        public string RequiredCycles
+        public int RequiredCycles
         {
             get => this.requiredCycles;
             set
@@ -144,29 +134,26 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
         }
 
         public ICommand StartButtonCommand =>
-            this.startButtonCommand ??
-            (this.startButtonCommand = new DelegateCommand(
-                async () => await this.ExecuteStartButtonCommandAsync()));
+            this.startCommand
+            ??
+            (this.startCommand = new DelegateCommand(
+                async () => await this.ExecuteStartCommandAsync()));
 
         public ICommand StopButtonCommand =>
-            this.stopButtonCommand ??
-            (this.stopButtonCommand = new DelegateCommand(
-                async () => await this.ExecuteStopButtonCommandAsync()));
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(
+                async () => await this.ExecuteStopCommandAsync()));
 
         #endregion
 
         #region Methods
 
-        public void ExitFromViewMethod()
-        {
-            // TODO
-        }
-
         public async Task GetIntegerParametersAsync()
         {
-            const string Category = "GeneralInfo";
-            this.RequiredCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
-            this.DelayBetweenCycles = (await this.shutterService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
+            const string category = "GeneralInfo";
+            this.RequiredCycles = await this.shutterService.GetIntegerConfigurationParameterAsync(category, "RequiredCycles");
+            this.DelayBetweenCycles = await this.shutterService.GetIntegerConfigurationParameterAsync(category, "DelayBetweenCycles");
 
 #if !DEBUG
             /*    var client = new System.Net.HttpClient();
@@ -186,16 +173,9 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         public Task OnEnterViewAsync()
         {
-            if (false /* Bay with three positions */) // TODO
-            {
-                // this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
-            }
-            else
-            {
-                this.sensorRegion = this.customShutterControlSensorsTwoPositionsViewModel;
-            }
+            // TODO swap between 2/3 positions bay
 
-            this.receivedActionUpdateCompletedToken = this.eventAggregator
+            this.receivedActionUpdateCompletedToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<ShutterControlMessageData>>()
                 .Subscribe(
                     message =>
@@ -205,7 +185,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
                     ThreadOption.PublisherThread,
                     false);
 
-            this.receivedActionUpdateErrorToken = this.eventAggregator
+            this.receivedActionUpdateErrorToken = this.EventAggregator
                 .GetEvent<MAS_ErrorEvent>()
                 .Subscribe(
                     msg => this.UpdateError(),
@@ -221,36 +201,25 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateErrorToken);
-            this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateCompletedToken);
+            this.EventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateErrorToken);
+            this.EventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateCompletedToken);
         }
 
         private void CheckInputsAccuracy()
         {
-            if (int.TryParse(this.RequiredCycles, out var requiredCycles) &&
-                int.TryParse(this.DelayBetweenCycles, out var delayBetweenCycles))
-            {
-                this.IsStartButtonActive = (requiredCycles > 0 && delayBetweenCycles > 0) ? true : false;
-            }
-            else
-            {
-                this.IsStartButtonActive = false;
-            }
+            this.IsStartButtonActive = this.requiredCycles > 0 && this.delayBetweenCycles > 0;
         }
 
-        private async Task ExecuteStartButtonCommandAsync()
+        private async Task ExecuteStartCommandAsync()
         {
             this.IsStartButtonActive = false;
             this.IsStopButtonActive = true;
 
-            int.TryParse(this.DelayBetweenCycles, out var delay);
-            int.TryParse(this.RequiredCycles, out var reqCycles);
-
-            const int bayNumber = 1; //TEMP: Set the value bay index hardcoded
-            await this.shutterService.ExecuteControlTestAsync(bayNumber, delay, reqCycles);
+            const int bayNumber = 1; // TODO remove hardcoded bay number
+            await this.shutterService.ExecuteControlTestAsync(bayNumber, this.DelayBetweenCycles, this.RequiredCycles);
         }
 
-        private async Task ExecuteStopButtonCommandAsync()
+        private async Task ExecuteStopCommandAsync()
         {
             this.IsStartButtonActive = true;
             this.IsStopButtonActive = false;
@@ -262,15 +231,13 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl
         {
             if (data.NotificationMessage is ShutterControlMessageData parsedData)
             {
-                if (int.TryParse(this.RequiredCycles, out var value)
-                    &&
-                    value == parsedData.CurrentShutterPosition)
+                if (this.RequiredCycles == parsedData.CurrentShutterPosition)
                 {
                     this.IsStartButtonActive = true;
                     this.IsStopButtonActive = false;
                 }
 
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
+                this.CompletedCycles = parsedData.CurrentShutterPosition;
             }
         }
 

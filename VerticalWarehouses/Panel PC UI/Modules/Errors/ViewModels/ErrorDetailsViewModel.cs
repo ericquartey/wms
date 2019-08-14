@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
             finally
             {
@@ -111,7 +111,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError(ex);
+                this.ShowNotification(ex);
                 this.NavigationService.IsBusy = false;
             }
         }

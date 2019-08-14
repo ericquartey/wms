@@ -97,29 +97,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anti intrusion gate bay 1.
+        ///   Looks up a localized string similar to Anti intrusion gate.
         /// </summary>
         public static string AntiIntrusionGate {
             get {
                 return ResourceManager.GetString("AntiIntrusionGate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Anti intrusion gate bay 2.
-        /// </summary>
-        public static string AntiIntrusionGate2 {
-            get {
-                return ResourceManager.GetString("AntiIntrusionGate2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Anti intrusion gate bay 3.
-        /// </summary>
-        public static string AntiIntrusionGate3 {
-            get {
-                return ResourceManager.GetString("AntiIntrusionGate3", resourceCulture);
             }
         }
         
@@ -1519,29 +1501,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Micro carter right side  bay 1.
+        ///   Looks up a localized string similar to Micro carter right side.
         /// </summary>
         public static string MicroCarterRightSide {
             get {
                 return ResourceManager.GetString("MicroCarterRightSide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro carter right side bay 2.
-        /// </summary>
-        public static string MicroCarterRightSide2 {
-            get {
-                return ResourceManager.GetString("MicroCarterRightSide2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro carter right side bay 3.
-        /// </summary>
-        public static string MicroCarterRightSide3 {
-            get {
-                return ResourceManager.GetString("MicroCarterRightSide3", resourceCulture);
             }
         }
         

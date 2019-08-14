@@ -90,12 +90,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task ExecuteLoginCommandAsync()
         {
-            this.ShowError(string.Empty);
+            this.ShowNotification(string.Empty);
 
             this.UserLogin.IsValidationEnabled = true;
             if (!string.IsNullOrEmpty(this.UserLogin.Error))
             {
-                this.ShowError(this.UserLogin.Error);
+                this.ShowNotification(this.UserLogin.Error);
                 return;
             }
 
@@ -120,7 +120,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             else
             {
-                this.ShowError(Resources.Errors.UserLogin_InvalidCredentials);
+                this.ShowNotification(Resources.Errors.UserLogin_InvalidCredentials);
             }
         }
 
