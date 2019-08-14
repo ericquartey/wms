@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics.CellsStatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Width="1024"
+          Height="608">
+
+        <TextBlock MaxWidth="500"
+                   Margin="220,40,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.CellsStatisticsHeader}" />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="490,90,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding CellStatistics.TotalFrontCells}"
+                                              LabelText="{x:Static Resources:OperatorApp.CellsStatisticsFrontCellsTotal}" />
+
+        <ContentControl HorizontalAlignment="Left"
+                        Height="160"
+                        Margin="220,220,0,0"
+                        VerticalAlignment="Top"
+                        Width="530"
+                        Content="{Binding DataGridViewModel}" >
+        </ContentControl>
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="220,90,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding CellStatistics.TotalCells}"
+                                              LabelText="{x:Static Resources:OperatorApp.CellsStatisticsCellsTotal}" />
+
+        <controls:PpcButton  Margin="0,0,20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding DrawerCompactingButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
+                 />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="490,145,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding CellStatistics.TotalBackCells}"
+                                              LabelText="{x:Static Resources:OperatorApp.CellsStatisticsRearCellsTotal}" />
+
+        <controls:CustomProgressBarControl MaxWidth="300"
+                                           Margin="560,410,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                           ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
+
+    </Grid>
+</UserControl>

@@ -279,6 +279,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private int statusWord;
 
+        private InverterOperationMode operationMode;
+
+        public BitModel[] controlWordArray;
+
         #endregion
 
         private ICommand inverterInFaultCommand;
@@ -317,32 +321,42 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value, () => this.RaisePropertyChanged(nameof(this.AxisPosition))); }
+        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value); }
 
         public int ControlWord
         {
             get => this.controlWord;
-            set => this.SetProperty(ref this.controlWord, value, () =>
-            {
-                this.RaisePropertyChanged(nameof(this.ControlWord));
-                this.RaisePropertyChanged(nameof(this.ControlWordArray));
-            });
+            set => this.SetProperty(ref this.controlWord, value);
         }
 
-        public BitModel[] ControlWordArray => (from x in Enumerable.Range(0, 16)
-                                               let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
-                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
-        
+        public BitModel[] ControlWordArray => this.controlWordArray ?? (this.controlWordArray = this.RefreshControlWordArray());
+
+        public BitModel[] RefreshControlWordArray()
+        {
+            var cw = (from x in Enumerable.Range(0, 16)
+                      let binary = Convert.ToString(this.ControlWord, 2).PadLeft(16, '0')
+                      select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                     .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetControlWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
+
+            if (this.controlWordArray != null)
+            {
+                for (int i = 0; i < cw.Length; i++)
+                {
+                    this.controlWordArray[i].Value = cw[i].Value;
+                }
+            }
+
+            return cw;
+        }
+
         public ObservableCollection<BitModel> DigitalIO
         {
             get => this.digitalIO;
             set => this.SetProperty(ref this.digitalIO, value);
         }
 
-        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value, () => this.RaisePropertyChanged(nameof(this.Enabled))); }
+        public bool Enabled { get => this.enabled; set => this.SetProperty(ref this.enabled, value); }
 
-        //public bool[] DigitalIO { get; set; }
         public int Id { get; set; }
 
         public InverterRole InverterRole => (InverterRole)this.Id;
@@ -405,7 +419,11 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsWarning2 => (this.statusWord & 0x8000) > 0;
 
-        public InverterOperationMode OperationMode { get; set; }
+        public InverterOperationMode OperationMode
+        {
+            get => this.operationMode;
+            set => this.SetProperty(ref this.operationMode, value);
+        }
 
         public int StatusWord
         {
@@ -413,15 +431,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.statusWord, value, () =>
             {
                 this.RaisePropertyChanged(nameof(this.IsFault));
-                this.RaisePropertyChanged(nameof(this.StatusWord));
                 this.RaisePropertyChanged(nameof(this.StatusWordArray));
             });
         }
 
         public BitModel[] StatusWordArray => (from x in Enumerable.Range(0, 16)
-                                               let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
-                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
-                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value)).Reverse().ToArray();
+                                              let binary = Convert.ToString(this.StatusWord, 2).PadLeft(16, '0')
+                                              select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
+                                               .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
         private int homingTickCount { get; set; }
 
@@ -669,7 +686,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
             else if (this.homingTickCount == 1)
             {
-               this.StatusWord &= 0xEFFF;
+                this.StatusWord &= 0xEFFF;
             }
         }
 
@@ -723,6 +740,108 @@ namespace Ferretto.VW.Simulator.Services.Models
                 default:
                     return string.Empty;
             }
+        }
+
+        internal static string GetControlWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Switch On";
+
+                case 1:
+                    return "Enable Voltage";
+
+                case 2:
+                    return "Quick Stop (Low Active)";
+
+                case 3:
+                    return "Enable Operation";
+
+                case 4:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg enable" : operationMode == InverterOperationMode.Position ? "New set-point" : operationMode == InverterOperationMode.Homing ? "Homing operation started" : "Operation mode specific";
+                case 5:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg unlock" : operationMode == InverterOperationMode.Position ? "Change set immediately" : "Operation mode specific";
+                case 6:
+                    return operationMode == InverterOperationMode.Velocity ? "Rfg use ref" : operationMode == InverterOperationMode.Position ? "Abs/rel" : "Operation mode specific";
+
+                case 7:
+                    return "Reset Fault";
+
+                case 8:
+                    return "Halt";
+
+                case 9:
+                    return operationMode == InverterOperationMode.Position ? "Change on set-point" : "Operation mode specific";
+
+                case 10:
+                    return "Free";
+
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                    return "Manufacturer specific";
+            }
+
+            return "Free";
+        }
+
+        internal static string GetStatusWordSignalDescription(InverterOperationMode operationMode, int signalIndex)
+        {
+            switch (signalIndex)
+            {
+                case 0:
+                    return "Ready to switch on";
+
+                case 1:
+                    return "Switched on";
+
+                case 2:
+                    return "Operation Enabled";
+
+                case 3:
+                    return "Fault";
+
+                case 4:
+                    return "Voltage Enabled";
+
+                case 5:
+                    return "Quick Stop (Low active)";
+
+                case 6:
+                    return "Switch on disabled";
+
+                case 7:
+                    return "Warning";
+
+                case 8:
+                    return "Manufacturer specific";
+
+                case 9:
+                    return "Remote";
+
+                case 10:
+                    return "Target reached";
+
+                case 11:
+                    return "Internal limit active";
+
+                case 12:
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Velocity" : operationMode == InverterOperationMode.Position ? "Set-point acknowledge" : operationMode == InverterOperationMode.Homing ? "Homing attained" : "Operation mode specific";
+
+                case 13:
+                    return operationMode == InverterOperationMode.ProfileVelocity ? "Max slippage" : operationMode == InverterOperationMode.Position ? "Following error" : operationMode == InverterOperationMode.Homing ? "Homing error" : "Operation mode specific";
+
+                case 14:
+                    return "Manufacturer specific";
+
+                case 15:
+                    return "Manufacturer specific Warning 2";
+            }
+
+            return "Free";
         }
 
         #endregion

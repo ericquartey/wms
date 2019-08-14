@@ -13,7 +13,6 @@
             <TextBlock Name="NavigationButtonTextBlock"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       FontFamily="{DynamicResource VWAPP_NavigationButton_FontFamily_Normal}"
                        FontSize="{DynamicResource VWAPP_NavigationButton_FontSize_Normal}"
                        Foreground="{DynamicResource VWAPP_NavigationButton_Foreground_Normal}"
                        Text="{TemplateBinding Content}"

@@ -10,11 +10,11 @@
                 VerticalAlignment="Top">
         <TextBlock Margin="0,1,5,1"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                   Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding LabelText}" />
         <TextBlock Margin="0,1,5,1"
                    Background="Transparent"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                   Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                   Text="{Binding ContentText, TargetNullValue={x:Static res:General.TargetNullValue}}"
                    TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>

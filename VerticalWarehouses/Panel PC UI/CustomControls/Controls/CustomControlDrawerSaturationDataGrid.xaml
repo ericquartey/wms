@@ -10,11 +10,11 @@
             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
         </Style>
         <Style TargetType="DataGridCell">
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -34,13 +34,13 @@
                   CanUserSortColumns="False"
                   FontSize="18"
                   HeadersVisibility="Column"
-                  HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
+                  HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                   IsReadOnly="True"
                   ItemsSource="{Binding LoadingUnits}"
                   RowHeight="30"
                   SelectedItem="{Binding SelectedLoadingUnit}"
                   SelectionMode="Single"
-                  VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
+                  VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                   VerticalScrollBarVisibility="Hidden">
             <DataGrid.Style>
                 <Style TargetType="DataGrid">
@@ -69,7 +69,7 @@
                                          Color="{StaticResource ColorFerrettoPureWhite}" />
                     </Style.Resources>
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                     <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                 </Style>
             </DataGrid.CellStyle>
@@ -104,7 +104,7 @@
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
@@ -113,7 +113,7 @@
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="1,0,0,0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>
@@ -134,13 +134,13 @@
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>
@@ -160,13 +160,13 @@
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>
@@ -181,7 +181,7 @@
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
@@ -201,7 +201,7 @@
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>

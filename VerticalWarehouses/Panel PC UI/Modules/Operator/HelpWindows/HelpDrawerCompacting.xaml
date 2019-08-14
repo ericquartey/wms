@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.HelpWindows.HelpDrawerCompacting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             mc:Ignorable="d">
+
+    <Grid Width="1024" Height="688"
+          Background="{DynamicResource VWAPP_BACKGROUND}">
+
+        <Image Width="200" Height="60"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+               Source="{DynamicResource Ferretto_Logo}"
+               Stretch="Uniform" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                    Text="{x:Static res:OperatorApp.DrawerCompactingHeader}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
+                    Width="670" Height="60"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingDescription}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingSide}" />
+
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactFront}" />
+
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
+                  Content="{x:Static res:OperatorApp.DrawerCompactingAntCompact}"
+                   />
+
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
+                                               ContentText="8"
+                                               LabelText="{x:Static res:OperatorApp.DrawerCompactingFragmentNumber}"/>
+
+        <controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
+                                               ContentText="450"
+                                               LabelText="{x:Static res:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
+
+        <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
+                  Content="{x:Static res:OperatorApp.DrawerCompactingRearCompact}"
+                   />
+
+        <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
+                                                    Width="180"
+                                                    Highlighted="True" IsEnabled="True"
+                                                    InputText="450"
+                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+                                                    LabelText="{x:Static res:OperatorApp.DrawerCompactingSpaceToRecover}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingFragment}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,260,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingSpaceRecoverable}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,330,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingSpaceToRecover}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactRear}" />
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
+                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+                    Text="{x:Static res:OperatorApp.DrawerCompactingFront}" />
+
+    </Grid>
+</UserControl>

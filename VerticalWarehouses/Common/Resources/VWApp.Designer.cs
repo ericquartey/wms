@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        public static string AutomaticMode {
+            get {
+                return ResourceManager.GetString("AutomaticMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error Code.
         /// </summary>
         public static string ErrorCode {
@@ -93,6 +102,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ErrorRecoveryProcedure {
             get {
                 return ResourceManager.GetString("ErrorRecoveryProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        public static string ManualMode {
+            get {
+                return ResourceManager.GetString("ManualMode", resourceCulture);
             }
         }
         

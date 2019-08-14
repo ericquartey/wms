@@ -1,0 +1,100 @@
+﻿<Window x:Class="Ferretto.VW.App.Installation.HelpWindows.HelpMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Installation.HelpWindows"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shuttersControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersControl"
+        xmlns:shuttersHeightControl="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.ShuttersHeightControl"
+        xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews"
+        xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+        Width="1024"
+        Height="768"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        mc:Ignorable="d">
+    <Window.Resources>
+
+        <DataTemplate DataType="{x:Type viewmodels:BeltBurnishingViewModel}">
+            <helpWindows:BeltBurnishingHelpView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CellsControlViewModel}">
+            <helpWindows:CellsControlHelpView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:ResolutionCalibrationVerticalAxisViewModel}">
+            <helpWindows:ResolutionCalibrationVerticalAxisHelpView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:InstallationStateViewModel}">
+            <helpWindows:HelpInstallationState />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type shuttersControl:Shutter1ControlViewModel}">
+            <helpWindows:HelpShutterControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
+            <helpWindows:HelpCellsPanelControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type shuttersHeightControl:Shutter1HeightControlViewModel}">
+            <helpWindows:HelpShutterHeightControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:WeightControlViewModel}">
+            <helpWindows:HelpWeightControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CellsSideControlViewModel}">
+            <helpWindows:HelpCellsSideControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:LoadFirstDrawerViewModel}">
+            <helpWindows:HelpLoadFirstDrawer />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:LoadingDrawersViewModel}">
+            <helpWindows:HelpLoadingDrawers />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:BayControlViewModel}">
+            <helpWindows:HelpBayControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:IdleViewModel}">
+            <helpWindows:HelpInitialPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:DrawerLoadingUnloadingTestViewModel}">
+            <helpWindows:HelpDLUTest />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:SaveRestoreConfigViewModel}">
+            <helpWindows:HelpSaveRestoreConfig />
+        </DataTemplate>
+
+
+    </Window.Resources>
+    <Grid Width="1024"
+          Height="768"
+          Background="{DynamicResource VWAPP_BACKGROUND}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="688" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <ContentPresenter Name="HelpContentRegion"
+                          Grid.Row="0"
+                          Width="1024"
+                          Height="688"
+                          Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <controls:PpcButton  Grid.Row="1"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
+                Click="Button_Click"
+                Content="Back"
+                 />
+    </Grid>
+</Window>

@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews.ResolutionCalibrationVerticalAxisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
+    <Grid Width="1024"
+          Height="608">
+
+        <TextBlock Margin="140,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+
+
+
+        <controls:PpcTextBox Margin="140,100,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="{Binding IsDesiredInitialPositionHighlighted}"
+                                                 InputScope="Number"
+                                                 InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <controls:PpcTextBox Margin="410,100,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="{Binding IsMesuredInitialPositionHighlighted}"
+                                                 InputScope="Number"
+                                                 InputText="{Binding ReadInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding IsReadInitialPositionActive}"
+                                                 LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <controls:PpcTextBox Margin="140,180,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="{Binding IsDesiredFinalPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 InputScope="Number"
+                                                 InputText="{Binding DesiredFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding IsDesiredFinalPositionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <controls:PpcTextBox Margin="410,180,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="{Binding IsReadFinalPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 InputScope="Number"
+                                                 InputText="{Binding ReadFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding IsReadFinalPositionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <controls:PpcTextBox Margin="140,290,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="{Binding IsMesuredMovementHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 InputScope="Number"
+                                                 InputText="{Binding MesuredMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding IsMesuredMovementActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.MesuredMovement}"
+                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+        <controls:CustomLabelTextBlockControl Margin="410,290,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+        <controls:CustomLabelTextBlockControl Margin="411,350,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.NewResolution}" />
+        <controls:PpcButton  Margin="700,100,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding SetPositionButtonCommand}"
+                Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
+                IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 />
+        <controls:PpcButton  Margin="700,180,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding MoveButtonCommand}"
+                Content="{x:Static res:InstallationApp.Move}"
+                IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 />
+        <controls:PpcButton  Margin="700,260,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding UpdateResolutionCommand}"
+                Content="{x:Static res:InstallationApp.UpdateResolution}"
+                IsEnabled="{Binding IsUpdateResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 />
+        <controls:PpcButton  Margin="700,340,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding AcceptButtonCommand}"
+                Content="{x:Static res:General.Accept}"
+                IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 />
+        <controls:PpcButton  Margin="700,420,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding InitialPositionButtonCommand}"
+                Content="{x:Static res:InstallationApp.GoToInitialPosition}"
+                IsEnabled="{Binding IsGoToInitialPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 />
+        <controls:PpcButton  Margin="700,500,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding CloseProcedureButtonCommand}"
+                Content="{x:Static res:InstallationApp.CloseProcedure}"
+                IsEnabled="{Binding IsCloseProcedureButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 />
+    </Grid>
+</UserControl>

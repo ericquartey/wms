@@ -4,7 +4,6 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:Double x:Key="VWAPP_CustomMainWindowErrorButton_TextBlock_FontSize">14</sys:Double>
-    <FontFamily x:Key="VWAPP_CustomMainWindowErrorButton_TextBlock_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <Thickness x:Key="VWAPP_CustomMainWindowErrorButton_Button_Thickness">1,1,1,1</Thickness>
 
     <SolidColorBrush x:Key="VWAPP_CustomMainWindowErrorButton_TextBlock_Foreground_Normal"

@@ -289,7 +289,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.Logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
 
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
-                this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty, 0));
+                this.SendErrorMessage(new DLExceptionMessageData(ex, string.Empty));
             }
         }
 

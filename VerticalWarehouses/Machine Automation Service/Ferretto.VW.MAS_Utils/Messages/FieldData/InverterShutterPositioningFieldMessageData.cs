@@ -3,11 +3,14 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class InverterShutterPositioningFieldMessageData : IInverterShutterPositioningFieldMessageData
+    public class InverterShutterPositioningFieldMessageData : FieldMessageData, IInverterShutterPositioningFieldMessageData
     {
         #region Constructors
 
-        public InverterShutterPositioningFieldMessageData(IShutterPositioningFieldMessageData shutterPositioningFieldMessageData, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterShutterPositioningFieldMessageData(
+            IShutterPositioningFieldMessageData shutterPositioningFieldMessageData,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
+            : base(verbosity)
         {
             this.ShutterPosition = shutterPositioningFieldMessageData.ShutterPosition;
             this.ShutterType = shutterPositioningFieldMessageData.ShutterType;
@@ -26,8 +29,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public ShutterType ShutterType { get; }
 
         public int SpeedRate { get; set; }
-
-        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

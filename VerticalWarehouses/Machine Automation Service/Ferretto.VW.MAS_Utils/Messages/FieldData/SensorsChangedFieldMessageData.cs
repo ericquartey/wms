@@ -4,8 +4,14 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 {
-    public class SensorsChangedFieldMessageData : ISensorsChangedFieldMessageData
+    public class SensorsChangedFieldMessageData : FieldMessageData, ISensorsChangedFieldMessageData
     {
+        public SensorsChangedFieldMessageData(MessageVerbosity verbosity = MessageVerbosity.Info)
+            : base(verbosity)
+        {
+
+        }
+
         #region Properties
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -15,8 +21,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public bool[] SensorsStates { get; set; }
 
         public bool SensorsStatus { get; set; }
-
-        public MessageVerbosity Verbosity => MessageVerbosity.Info;
 
         #endregion
 

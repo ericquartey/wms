@@ -3,30 +3,33 @@
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <SolidColorBrush x:Key="VWAPP_ActionButton_Background_Normal"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="VWAPP_ActionButton_BorderBrush_Normal"
+    <SolidColorBrush x:Key="PpcButtonBackground"
+                     Color="{DynamicResource EDBGrayH}" />
+    <SolidColorBrush x:Key="PpcButtonBorderBrush"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
-    <SolidColorBrush x:Key="VWAPP_ActionButton_Foreground_Normal"
-                     Color="{DynamicResource EDBGrayC}" />
-    <sys:Double x:Key="VWAPP_ActionButton_Width_Normal">160</sys:Double>
-    <sys:Double x:Key="VWAPP_ActionButton_Height_Normal">60</sys:Double>
-    <Thickness x:Key="VWAPP_ActionButton_BorderThickness_Normal">1</Thickness>
-    <sys:Double x:Key="VWAPP_ActionButton_FontSize_Normal">14</sys:Double>
-    <FontFamily x:Key="VWAPP_ActionButton_FontFamily_Normal">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
-
-    <SolidColorBrush x:Key="VWAPP_ActionButton_Background_Pressed"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="VWAPP_ActionButton_BorderBrush_Pressed"
+    <SolidColorBrush x:Key="PpcButtonForeground"
                      Color="{DynamicResource EDBGrayA}" />
-    <SolidColorBrush x:Key="VWAPP_ActionButton_Foreground_Pressed"
-                     Color="{DynamicResource EDBGrayA}" />
+    <sys:Double x:Key="PpcButtonWidth">160</sys:Double>
+    <sys:Double x:Key="PpcButtonHeight">60</sys:Double>
+    <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
+    <sys:Double x:Key="PpcButtonFontSize">14</sys:Double>
 
-    <SolidColorBrush x:Key="VWAPP_ActionButton_Background_Disabled"
+    <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
+                     Color="{DynamicResource EDBGrayD}" />
+    <SolidColorBrush x:Key="PpcButtonBorderBrushPressed"
+                     Color="{DynamicResource EDBGrayA}" />
+    <SolidColorBrush x:Key="PpcButtonForegroundPressed"
+                     Color="{DynamicResource EDBGrayI}" />
+
+    <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+        <GradientStop Offset="0" Color="Transparent" />
+        <GradientStop Offset="0.5" Color="Transparent" />
+        <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayG}" />
+        <GradientStop Offset="1" Color="{DynamicResource EDBGrayG}" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
                      Color="Transparent" />
-    <SolidColorBrush x:Key="VWAPP_ActionButton_BorderBrush_Disabled"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="VWAPP_ActionButton_Foreground_Disabled"
-                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
+                     Color="{DynamicResource EDBGrayA}" />
 
 </ResourceDictionary>

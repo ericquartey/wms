@@ -29,13 +29,12 @@
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.6" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
-    <PackageReference Include="Unity.NLog" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.App.Controls.csproj" />
+    <ProjectReference Include="..\Themes\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
@@ -59,10 +58,6 @@
 
   <ItemGroup>
     <Compile Remove="publish\**" />
-    <Content Remove="Images\*.*" />
-    <Content Remove="Icons\*.*" />
-    <Resource Include="Images\*.*" />
-    <Resource Include="Icons\*.*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,27 +67,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Remove="Images\Divieto_Dark.png" />
-    <None Remove="Images\Divieto_Light.png" />
-      <None Remove="nlog.config" />
-      <Content Include="Images\Divieto_Dark.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="Images\Divieto_Light.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <None Update="nlog.config">
+    <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="mkdir  &quot;$(ProjectDir)publish\$(ConfigurationName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Installation.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Installation.dll&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Operator.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Operator.dll&quot;" />
-  </Target>
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir  &quot;$(ProjectDir)publish\$(ConfigurationName)&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Installation.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Installation.dll&quot;&#xD;&#xA;copy &quot;$(ProjectDir)bin\$(ConfigurationName)\net471\Ferretto.VW.App.Modules.Operator.dll&quot; &quot;$(ProjectDir)publish\$(ConfigurationName)\Ferretto.VW.App.Modules.Operator.dll&quot;" />
+  </Target>-->
 
 </Project>
-
-   

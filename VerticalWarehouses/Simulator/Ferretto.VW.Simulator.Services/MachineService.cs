@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
+using static Ferretto.VW.Simulator.Services.BufferUtility;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -234,7 +235,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         if (socket != null && socket.Connected)
                         {
-                            if (socket.Poll(5000, SelectMode.SelectRead))
+                            if (socket.Poll(50000, SelectMode.SelectRead))
                             {
                                 var bytes = socket.Receive(buffer);
                                 if (bytes > 0)
@@ -298,7 +299,7 @@ namespace Ferretto.VW.Simulator.Services
                     {
                         case InverterParameterId.ControlWordParam:
                             inverter.ControlWord = ushortPayload;
-                            //this.UpdateInverter(inverter);
+                            inverter.RefreshControlWordArray();
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -399,7 +400,10 @@ namespace Ferretto.VW.Simulator.Services
                     var outputs = (from x in Enumerable.Range(0, 8)
                                    let binary = Convert.ToString(device.FirmwareVersion == 0x10 ? extractedMessage[3] : extractedMessage[4], 2).PadLeft(8, '0')
                                    select new { Value = binary[x] == '1' ? true : false, Description = (7 - x).ToString(), Index = (7 - x) }).Reverse().ToArray();
-                    device.Outputs = outputs.Select(x => new BitModel(x.Description, x.Value, IODeviceModel.GetRemoteIOSignalDescription(x.Index))).ToList();
+                    for (int i = 0; i < outputs.Length; i++)
+                    {
+                        device.Outputs[i].Value = outputs[i].Value;
+                    }
 
                     byte[] responseMessage = null;
                     switch (codeOperation)

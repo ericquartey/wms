@@ -20,8 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.logger.LogTrace($"13:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.CalibrateAxisNotify(messageToUI);
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.CalibrateAxisNotify(messageToUi);
 
                 this.logger.LogTrace($"14:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }
@@ -41,8 +41,8 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             try
             {
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.CurrentPositionNotify(msgUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.CurrentPositionNotify(message);
             }
             catch (ArgumentNullException exNull)
             {
@@ -60,8 +60,8 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             try
             {
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.HomingNotify(msgUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.HomingNotify(message);
             }
             catch (ArgumentNullException exNull)
             {
@@ -131,8 +131,7 @@ namespace Ferretto.VW.MAS.AutomationService
                                 "New mission operation from WMS",
                                 MessageActor.MissionsManager,
                                 MessageActor.AutomationService,
-                                MessageType.NewMissionAvailable,
-                                MessageStatus.NoStatus);
+                                MessageType.NewMissionAvailable);
                             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
                         }
                         break;
@@ -146,9 +145,9 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.logger.LogTrace($"21:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
 
-                this.installationHub.Clients.All.PositioningNotify(messageToUI);
+                this.installationHub.Clients.All.PositioningNotify(message);
 
                 this.logger.LogTrace($"22:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }
@@ -170,8 +169,8 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.logger.LogTrace($"29:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ResolutionCalibrationNotify(messageToUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.ResolutionCalibrationNotify(message);
 
                 this.logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }
@@ -191,8 +190,8 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             try
             {
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.SensorsChangedNotify(msgUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.SensorsChangedNotify(message);
             }
             catch (ArgumentNullException exNull)
             {
@@ -212,8 +211,8 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.logger.LogTrace($"17:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ShutterControlNotify(msgUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.ShutterControlNotify(message);
 
                 this.logger.LogTrace($"18:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }
@@ -235,8 +234,8 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 this.logger.LogTrace($"9:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ShutterPositioningNotify(msgUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.ShutterPositioningNotify(message);
 
                 this.logger.LogTrace($"10:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
             }
@@ -256,8 +255,8 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             try
             {
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.SwitchAxisNotify(messageToUI);
+                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.SwitchAxisNotify(message);
             }
             catch (ArgumentNullException exNull)
             {
@@ -275,7 +274,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             try
             {
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                var msgUI = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
                 this.installationHub.Clients.All.InverterStatusWordNotify(msgUI);
             }
             catch (ArgumentNullException exNull)

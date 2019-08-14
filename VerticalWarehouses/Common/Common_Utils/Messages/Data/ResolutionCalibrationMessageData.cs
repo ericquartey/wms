@@ -11,6 +11,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
             this.ReadInitialPosition = readInitialPosition;
             this.ReadFinalPosition = readFinalPosition;
+            this.Verbosity = verbosity;
         }
 
         #endregion
@@ -23,7 +24,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public decimal Resolution { get; set; }
 
-        public MessageVerbosity Verbosity { get; private set; }
+        public MessageVerbosity Verbosity { get; }
 
         #endregion
 

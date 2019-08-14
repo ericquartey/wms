@@ -12,10 +12,6 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly IAreasDataService areasDataService;
-
-        private readonly IItemListsDataService itemListsDataService;
-
         private readonly IItemsDataService itemsDataService;
 
         private readonly ILoadingUnitsDataService loadingUnitsDataService;
@@ -28,19 +24,12 @@ namespace Ferretto.VW.App.Services
 
         public WmsDataProvider(
             IStatusMessageService statusMessageService,
-            IAreasDataService areasDataService,
             ILoadingUnitsDataService loadingUnitsDataService,
-            IItemsDataService itemsDataService,
-            IItemListsDataService itemListsDataService)
+            IItemsDataService itemsDataService)
         {
             if (statusMessageService == null)
             {
                 throw new ArgumentNullException(nameof(statusMessageService));
-            }
-
-            if (areasDataService == null)
-            {
-                throw new ArgumentNullException(nameof(areasDataService));
             }
 
             if (loadingUnitsDataService == null)
@@ -53,16 +42,10 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(itemsDataService));
             }
 
-            if (itemListsDataService == null)
-            {
-                throw new ArgumentNullException(nameof(itemListsDataService));
-            }
-
             this.statusMessageService = statusMessageService;
-            this.areasDataService = areasDataService;
+
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.itemsDataService = itemsDataService;
-            this.itemListsDataService = itemListsDataService;
         }
 
         #endregion
@@ -80,6 +63,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.statusMessageService.Notify(ex);
             }
+
             return item.Image;
         }
 
@@ -90,16 +74,18 @@ namespace Ferretto.VW.App.Services
             var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(loadingUnitId);
             if (compartments != null && compartments.Count > 0)
             {
-                returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
-                {
-                    Depth = x.Depth,
-                    Id = x.Id,
-                    LoadingUnitId = x.LoadingUnitId,
-                    Width = x.Width,
-                    XPosition = x.XPosition,
-                    YPosition = x.YPosition
-                }));
+                returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x =>
+                    new TrayControlCompartment
+                    {
+                        Depth = x.Depth,
+                        Id = x.Id,
+                        LoadingUnitId = x.LoadingUnitId,
+                        Width = x.Width,
+                        XPosition = x.XPosition,
+                        YPosition = x.YPosition
+                    }));
             }
+
             return returnValue;
         }
 
@@ -111,6 +97,7 @@ namespace Ferretto.VW.App.Services
                 areaId = 2;
                 bayId = 2;
             }
+
             // END HACK
             try
             {

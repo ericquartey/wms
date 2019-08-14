@@ -5,7 +5,6 @@
     <Style x:Key="VWAPP_CustomLabel_ContentTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomLabel_ContentTextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomLabel_ContentTextBlock_FontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomLabel_ContentTextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
@@ -16,7 +15,6 @@
     <Style x:Key="VWAPP_CustomLabel_LabelTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomLabel_LabelTextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomLabel_LabelTextBlock_FontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomLabel_LabelTextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">

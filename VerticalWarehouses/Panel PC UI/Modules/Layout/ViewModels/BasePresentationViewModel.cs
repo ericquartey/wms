@@ -1,0 +1,125 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Interfaces;
+using Prism.Events;
+
+namespace Ferretto.VW.App.Modules.Layout.ViewModels
+{
+    public class BasePresentationViewModel : BaseNavigationViewModel
+    {
+        #region Fields
+
+        private readonly PresentationChangedPubSubEvent notificationEvent;
+
+        private readonly SubscriptionToken presentationEventSubscription;
+
+        private readonly List<IPresentation> states;
+
+        private PresentationMode currentPresentation;
+
+        #endregion
+
+        #region Constructors
+
+        public BasePresentationViewModel()
+        {
+            this.currentPresentation = PresentationMode.None;
+            this.states = new List<IPresentation>();
+            this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
+            this.presentationEventSubscription = this.notificationEvent.Subscribe(
+                notificationMessage =>
+                {
+                    this.PresentationChanged(notificationMessage);
+                },
+                ThreadOption.PublisherThread,
+                false);
+
+            this.InitializeData();
+        }
+
+        #endregion
+
+        #region Properties
+
+        public PresentationMode CurrentPresentation
+        {
+            get => this.currentPresentation;
+            set => this.SetProperty(ref this.currentPresentation, value);
+        }
+
+        public List<IPresentation> States => this.states;
+
+        #endregion
+
+        #region Methods
+
+        public IPresentation GetInstance(string presentationName)
+        {
+            return ServiceLocator.Current.GetInstance<IPresentation>(presentationName);
+        }
+
+        public virtual void InitializeData()
+        {
+        }
+
+        public void PresentationChanged(PresentationChangedMessage presentation)
+        {
+            this.UpdatePresentation(presentation.Mode);
+
+            this.UpdateChanges(presentation);
+        }
+
+        public void Show(PresentationTypes type, bool isVisible)
+        {
+            if (type == PresentationTypes.None)
+            {
+                this.states.ForEach(s => s.IsVisible = isVisible);
+                return;
+            }
+
+            if (this.states.FirstOrDefault(s => s.Type == type) is IPresentation state)
+            {
+                state.IsVisible = isVisible;
+            }
+        }
+
+        public virtual void UpdateChanges(PresentationChangedMessage presentation)
+        {
+        }
+
+        public virtual void UpdatePresentation(PresentationMode mode)
+        {
+            if (this.CurrentPresentation == PresentationMode.None ||
+                this.CurrentPresentation == mode)
+            {
+                return;
+            }
+
+            switch (mode)
+            {
+                case PresentationMode.Login:
+                    break;
+
+                case PresentationMode.Installator:
+                    break;
+
+                case PresentationMode.Operator:
+                    break;
+
+                case PresentationMode.None:
+                    break;
+            }
+        }
+
+        protected override void OnDispose()
+        {
+            this.notificationEvent.Unsubscribe(this.presentationEventSubscription);
+            base.OnDispose();
+        }
+
+        #endregion
+    }
+}

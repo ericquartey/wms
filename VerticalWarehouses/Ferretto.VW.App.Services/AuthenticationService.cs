@@ -10,14 +10,14 @@ namespace Ferretto.VW.App.Services
 
         private readonly IStatusMessageService statusMessageService;
 
-        private readonly IUsersMachineService usersService;
+        private readonly IMachineUsersService usersService;
 
         #endregion
 
         #region Constructors
 
         public AuthenticationService(
-            IUsersMachineService usersService,
+            IMachineUsersService usersService,
             IStatusMessageService statusMessageService)
         {
             if (usersService == null)

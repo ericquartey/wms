@@ -13,8 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.6.6" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <PackageReference Include="Unity.Abstractions" Version="3.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,94 +45,28 @@
     <None Remove="Controls\CustomMainWindowDiagnosticButton.xaml" />
     <None Remove="Styles\CustomMainWindowDiagnosticButtonStyle.xaml" />
     <None Remove="Templates\CustomMainWindowDiagnosticButtonControlTemplate.xaml" />
-    <None Remove="Views\SSBaysView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
+    <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Controls\BusyButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\BusyIndicator.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlArticleDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlCellStatisticsDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlDrawerDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlDrawerSaturationDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlDrawerWeightSaturationDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlErrorsDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlItemStatisticsDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlListDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlListDetailDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlMaintenanceDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomControlMaintenanceDetailDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\CustomProgressBarControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\VWIcon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\VWIcon\VWIcon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Fonts\Microsoft-sans-serif.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Fonts\RobotoCondensed-Regular.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Skins\DarkCustomControlDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Skins\LightCustomControlDataGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\CustomControlArticleDataGridStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Templates\DataGridRepeatButtonControlTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Templates\DataGridScrollButtonControlTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ErrorDetails\ErrorDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <Compile Update="Controls\PpcIcon.xaml.cs">
+      <DependentUpon>PpcIcon.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\ErrorDetails\ErrorDetailsView.xaml.cs">
-      <DependentUpon>ErrorDetailsView.xaml</DependentUpon>
-    </Compile>
+    <None Update="Controls\PpcButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Controls\PpcIcon - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
 </Project>

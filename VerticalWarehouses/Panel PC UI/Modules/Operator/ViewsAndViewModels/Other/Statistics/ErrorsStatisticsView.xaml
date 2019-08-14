@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics.ErrorsStatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid Width="1024"
+          Height="608">
+
+        <TextBlock MaxWidth="500"
+                   Margin="280,40,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.ErrorsStatisticsHeader}" />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="510,90,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding Statistics.TotalLoadingUnitsBetweenErrors}"
+                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}" />
+
+        <ContentControl Width="450"
+                        Height="310"
+                        Margin="280,200,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="{Binding DataGridViewModel}" />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="280,90,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding Statistics.TotalLoadingUnits}"
+                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}" />
+
+        <controls:PpcButton  Margin="0,240,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding UpDataGridButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonUp}"
+                 />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="280,140,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding Statistics.TotalErrors}"
+                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotErrors}" />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="280,520,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding DataGridViewModel.SelectedCell.Description}"
+                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}" />
+
+        <controls:PpcButton  Margin="0,305,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding DownDataGridButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                 />
+
+        <controls:CustomLabelTextBlockControl MaxWidth="300"
+                                              Margin="510,140,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding Statistics.ReliabilityPercentage, StringFormat={}{0:N3} %}"
+                                              LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}" />
+
+    </Grid>
+</UserControl>

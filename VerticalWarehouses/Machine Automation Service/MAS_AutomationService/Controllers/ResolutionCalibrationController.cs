@@ -10,8 +10,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("1.0.0/Installation/[controller]")]
@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger logger;
-
         private readonly IResolutionCalibrationDataLayer resolutionCalibration;
 
         private readonly ISetupStatusDataLayer setupStatus;
@@ -36,13 +34,43 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public ResolutionCalibrationController(IEventAggregator eventAggregator, IServiceProvider services)
+        public ResolutionCalibrationController(
+            IEventAggregator eventAggregator,
+            IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
+            IResolutionCalibrationDataLayer resolutionCalibration,
+            IVerticalAxisDataLayer verticalAxisDataLayer,
+            ISetupStatusDataLayer setupStatusDataLayer)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            if (dataLayerConfigurationValueManagement == null)
+            {
+                throw new ArgumentNullException(nameof(dataLayerConfigurationValueManagement));
+            }
+
+            if (resolutionCalibration == null)
+            {
+                throw new ArgumentNullException(nameof(resolutionCalibration));
+            }
+
+            if (verticalAxisDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(verticalAxisDataLayer));
+            }
+
+            if (setupStatusDataLayer == null)
+            {
+                throw new ArgumentNullException(nameof(setupStatusDataLayer));
+            }
+
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IConfigurationValueManagmentDataLayer)) as IConfigurationValueManagmentDataLayer;
-            this.verticalAxis = services.GetService(typeof(IVerticalAxisDataLayer)) as IVerticalAxisDataLayer;
-            this.setupStatus = services.GetService(typeof(ISetupStatusDataLayer)) as ISetupStatusDataLayer;
-            this.logger = services.GetService(typeof(ILogger)) as ILogger;
+            this.verticalAxis = verticalAxisDataLayer;
+            this.setupStatus = setupStatusDataLayer;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+            this.resolutionCalibration = resolutionCalibration;
         }
 
         #endregion
@@ -265,9 +293,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
-
-                default:
-                    break;
             }
 
             return 0;

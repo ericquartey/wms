@@ -12,15 +12,15 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <local:CustomSensorControl Grid.Row="0"
+        <local:PpcSensorControl Grid.Row="0"
                                    Margin="0,2,0,2"
                                    BulletColor="{StaticResource FerrettoGreen}"
                                    LabelText="{x:Static res:InstallationApp.Open}" />
-        <local:CustomSensorControl Grid.Row="1"
+        <local:PpcSensorControl Grid.Row="1"
                                    Margin="0,2,0,2"
                                    BulletColor="{StaticResource FerrettoMediumGray}"
                                    LabelText="{x:Static res:InstallationApp.Middle}" />
-        <local:CustomSensorControl Grid.Row="2"
+        <local:PpcSensorControl Grid.Row="2"
                                    Margin="0,2,0,2"
                                    BulletColor="{StaticResource FerrettoMediumGray}"
                                    LabelText="{x:Static res:InstallationApp.Closed}" />

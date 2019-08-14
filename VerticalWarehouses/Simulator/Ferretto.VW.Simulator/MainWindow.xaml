@@ -3,11 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
         xmlns:ctrl="clr-namespace:Ferretto.VW.Simulator.Controls.Controls;assembly=Ferretto.VW.Simulator.Controls"
-        xmlns:custom="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+        xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Ferretto.VW.Simulator"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:model="clr-namespace:Ferretto.VW.Simulator.Services.Models;assembly=Ferretto.VW.Simulator.Services"
         xmlns:res="clr-namespace:Ferretto.VW.Simulator.Resources;assembly=Ferretto.VW.Simulator.Resources"
         Title="Simulator"
         Width="1360"
@@ -68,12 +66,12 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <custom:VWIcon Grid.Column="0"
-                                       Height="36"
-                                       Margin="0,0,10,0"
-                                       VerticalAlignment="Top"
-                                       ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
-                                       Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/device.png" />
+                        <controls:PpcIcon Grid.Column="0"
+                                        Height="36"
+                                        Margin="0,0,10,0"
+                                        VerticalAlignment="Top"
+                                        ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
+                                        Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/device.png" />
 
                         <TextBlock Grid.Row="0"
                                    Grid.Column="1"
@@ -191,12 +189,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <custom:VWIcon Grid.Column="0"
+                        <controls:PpcIcon Grid.Column="0"
                                        Height="36"
                                        Margin="0,0,15,0"
                                        Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/inverter.png">
-                            <custom:VWIcon.Style>
-                                <Style TargetType="{x:Type custom:VWIcon}">
+                            <controls:PpcIcon.Style>
+                                <Style TargetType="{x:Type controls:PpcIcon}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsFault}"
                                                      Value="False">
@@ -208,12 +206,12 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </custom:VWIcon.Style>
-                            <custom:VWIcon.InputBindings>
+                            </controls:PpcIcon.Style>
+                            <controls:PpcIcon.InputBindings>
                                 <MouseBinding Command="{Binding InverterInFaultCommand}"
                                               Gesture="LeftClick" />
-                            </custom:VWIcon.InputBindings>
-                        </custom:VWIcon>
+                            </controls:PpcIcon.InputBindings>
+                        </controls:PpcIcon>
 
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -481,22 +479,22 @@
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
                     Visibility="{Binding InverterService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
 
-            <custom:CustomSensorControl Grid.Column="1"
-                                        Margin="10"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        LabelText="{x:Static res:General.SimulatorStarted}"
-                                        SensorState="{Binding InverterService.IsStartedSimulator}"
-                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}"
-                                        Visibility="Collapsed" />
+            <controls:PpcSensorControl Grid.Column="1"
+                                     Margin="10"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     LabelText="{x:Static res:General.SimulatorStarted}"
+                                     SensorState="{Binding InverterService.IsStartedSimulator}"
+                                     Style="{StaticResource PpcSensorControlStyle}"
+                                     Visibility="Collapsed" />
 
-            <custom:CustomSensorControl Grid.Column="2"
-                                        Margin="10"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        LabelText="Sicurezza"
-                                        SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
+            <controls:PpcSensorControl Grid.Column="2"
+                                     Margin="10"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     LabelText="Sicurezza"
+                                     SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource PpcSensorControlStyle}" />
 
         </Grid>
 
@@ -508,13 +506,13 @@
                 Command="{Binding ToggleThemeCommand}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <custom:VWIcon Height="36"
+                    <controls:PpcIcon Height="36"
                                    Margin="10"
                                    ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                                    Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_dark.png"
                                    Visibility="{Binding IsDarkThemeActive, Converter={StaticResource BTVC}}" />
 
-                    <custom:VWIcon Height="36"
+                    <controls:PpcIcon Height="36"
                                    Margin="10"
                                    ColorizeBrush="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                                    Source="pack://application:,,,/Ferretto.VW.Simulator;Component/Icons/theme_light.png"
