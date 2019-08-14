@@ -56,16 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     this.Logger.LogTrace($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
 
-                    var errorShutterPosition = new FieldNotificationMessage(
-                        this.shutterPositionData,
-                        "Shutter Position destination is not available",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.ShutterPositioning,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Error);
-
-                    this.ParentStateMachine.PublishNotificationEvent(errorShutterPosition);
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
 
                     return;
                 }
@@ -75,16 +66,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     this.Logger.LogTrace($"3:Warning position {this.shutterPositionData.ShutterPosition} already reached for shutter {this.InverterStatus.SystemIndex}");
 
                     // TEMP If the shutter is already in the shutter position target, don't notify an error condition
-                    var messageShutterPosition = new FieldNotificationMessage(
-                        this.shutterPositionData,
-                        "Shutter Position is already reached",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.ShutterPositioning,
-                        MessageStatus.OperationEnd,
-                        ErrorLevel.NoError);
-
-                    this.ParentStateMachine.PublishNotificationEvent(messageShutterPosition);
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
 
                     return;
                 }

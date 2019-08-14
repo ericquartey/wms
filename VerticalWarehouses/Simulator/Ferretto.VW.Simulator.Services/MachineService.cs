@@ -27,6 +27,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private const int DELAY_IO_CLIENT = 5;
 
+        private const int IMPULSES_ENCODER_PER_ROUND = 77;
+
         private readonly TcpListener listenerInverter = new TcpListener(IPAddress.Any, 17221);
 
         private readonly TcpListener listenerIoDriver1 = new TcpListener(IPAddress.Any, 19550);
@@ -48,7 +50,7 @@ namespace Ferretto.VW.Simulator.Services
         public MachineService()
         {
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0 });
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0, AxisPosition = 300 });
             this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1, Enabled = false });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
@@ -217,10 +219,9 @@ namespace Ferretto.VW.Simulator.Services
             return byteMessage;
         }
 
-        private int IntValue2Impulses(int value)
+        private int Impulses2millimeters(int value)
         {
-            const int IMPULSES_ENCODER_PER_ROUND = 1024;
-            return value * IMPULSES_ENCODER_PER_ROUND;
+            return value / IMPULSES_ENCODER_PER_ROUND;
         }
 
         private void ManageClient(TcpClient client, CancellationToken token, Action<TcpClient, byte[]> messageHandler)
@@ -262,6 +263,11 @@ namespace Ferretto.VW.Simulator.Services
             }
         }
 
+        private int Millimeters2Impulses(int value)
+        {
+            return value * IMPULSES_ENCODER_PER_ROUND;
+        }
+
         private void ReplyInverter(TcpClient client, byte[] message)
         {
             const int headerLenght = 6;
@@ -293,7 +299,7 @@ namespace Ferretto.VW.Simulator.Services
                         {
                             ushortPayload = BitConverter.ToUInt16(payload, 0);
                         }
-                        else if(payload.Length == 4)
+                        else if (payload.Length == 4)
                         {
                             uintPayload = BitConverter.ToUInt32(payload, 0);
                         }
@@ -337,7 +343,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.PositionTargetPositionParam:
-                            inverter.TargetPosition = (int)uintPayload;
+                            inverter.TargetPosition = this.Impulses2millimeters((int)uintPayload);
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -379,7 +385,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.ActualPositionShaft:
-                            var impulses = this.IntValue2Impulses(inverter.AxisPosition);
+                            var impulses = this.Millimeters2Impulses(inverter.AxisPosition);
                             var actualPositionMessage = this.FormatMessage(extractedMessage, systemIndex, dataSetIndex, BitConverter.GetBytes(impulses));
                             result = client.Client.Send(actualPositionMessage);
                             break;
@@ -485,7 +491,6 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsFault = false;
             }
-
             else if ((inverter.ControlWord & 0x0001) > 0)       // Switch On
             {
                 inverter.IsSwitchedOn = true;
@@ -500,17 +505,15 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsOperationEnabled = true;
             }
-
         }
 
         private void UpdateRemoteIO(IODeviceModel device)
         {
-            // Logic            
+            // Logic
             if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value || !device.Inputs[(int)IoPorts.MushroomEmergency].Value)
             {
                 // Reset run status
                 this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = false);
-
             }
             else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value)
             {

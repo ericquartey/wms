@@ -47,6 +47,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
+            this.InverterStatus.CommonControlWord.EnableOperation = false;
+
             var errorNotification = new FieldNotificationMessage(
                 this.shutterPositionData,
                 "Inverter operation error",

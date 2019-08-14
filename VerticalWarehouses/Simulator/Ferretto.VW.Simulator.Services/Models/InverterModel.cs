@@ -386,9 +386,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
 
-        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
-
         public bool IsShutterClosed => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
         public bool IsSwitchedOn
         {
@@ -508,7 +508,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     this.homingTimer.Change(0, 500);
                     this.homingTimerActive = true;
-                    this.AxisPosition = 0;
+                    //this.AxisPosition = 0;
                 }
             }
             else
@@ -769,7 +769,11 @@ namespace Ferretto.VW.Simulator.Services.Models
                 case 11:
                 case 12:
                 case 13:
+                    return "Manufacturer specific";
+
                 case 14:
+                    return "HeartBeat";
+
                 case 15:
                     return "Manufacturer specific";
             }
@@ -912,9 +916,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.AxisPosition--;
             }
 
-            if ((!this.IsRelativeMovement && this.targetTickCount > 10)
-                || (this.IsRelativeMovement && this.targetTickCount > 1)
-                )
+            if (Math.Abs(this.TargetPosition - this.AxisPosition) == 0 || this.targetTickCount > 100)
             {
                 this.ControlWord &= 0xFFEF;
                 this.StatusWord |= 0x0400;

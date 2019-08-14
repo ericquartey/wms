@@ -54,10 +54,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             if (this.stopRequested)
             {
-                if (this.InverterStatus is AglInverterStatus currentStatus)
-                {
-                    this.InverterStatus.CommonControlWord.EnableOperation = false;
-                }
+                this.InverterStatus.CommonControlWord.EnableOperation = false;
             }
             var endNotification = new FieldNotificationMessage(
                 this.shutterPositionData,
