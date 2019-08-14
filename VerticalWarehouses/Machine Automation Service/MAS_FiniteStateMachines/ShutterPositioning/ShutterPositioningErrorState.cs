@@ -65,12 +65,12 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         {
             this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.InverterStop && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
-                    "Shuter Positioning Stopped for an error",
+                    "Shutter Positioning Stopped for an error",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,
@@ -128,6 +128,8 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, this.Logger, true));
         }
 
         protected override void Dispose(bool disposing)

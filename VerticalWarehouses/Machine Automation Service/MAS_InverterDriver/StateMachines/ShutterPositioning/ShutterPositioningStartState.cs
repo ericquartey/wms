@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 if (aglStatus.ShutterType == ShutterType.Shutter2Type && this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
                 {
-                    this.Logger.LogTrace($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
+                    this.Logger.LogError($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
 
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
                 if (aglStatus.CurrentShutterPosition == this.shutterPositionData.ShutterPosition)
                 {
-                    this.Logger.LogTrace($"3:Warning position {this.shutterPositionData.ShutterPosition} already reached for shutter {this.InverterStatus.SystemIndex}");
+                    this.Logger.LogWarning($"3:Warning position {this.shutterPositionData.ShutterPosition} already reached for shutter {this.InverterStatus.SystemIndex}");
 
                     // TEMP If the shutter is already in the shutter position target, don't notify an error condition
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
