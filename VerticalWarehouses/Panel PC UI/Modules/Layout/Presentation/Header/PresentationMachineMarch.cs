@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            this.IsBusy = true;
+            //this.IsBusy = true;
 
             try
             {
