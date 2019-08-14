@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    this.ShowError(ex);
+                    this.ShowNotification(ex);
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
         }
 
@@ -207,7 +207,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
         }
 

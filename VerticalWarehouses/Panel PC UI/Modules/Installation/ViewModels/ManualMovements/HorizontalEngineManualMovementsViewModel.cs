@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
             finally
             {
@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsMovingForwards = false;
                 this.IsMovingBackwards = false;
 
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
         }
 

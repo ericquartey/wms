@@ -67,7 +67,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.EnableMenuItem(this.installatorItems, InstallatorMenus.VerticalOffsetCalibration, false);
-                this.ShowError(ex);
+                this.ShowNotification(ex);
             }
         }
 

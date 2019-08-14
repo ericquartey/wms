@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 case HealthStatus.Unhealthy:
 
-                    this.ShowError("Impossibile connettersi al servizio di automazione");
+                    this.ShowNotification("Impossibile connettersi al servizio di automazione");
                     break;
             }
         }

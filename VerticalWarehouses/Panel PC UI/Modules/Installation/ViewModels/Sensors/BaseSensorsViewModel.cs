@@ -108,7 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.ShowError(ex.Message);
+                this.ShowNotification(ex.Message);
             }
 
             await base.OnNavigatedAsync();

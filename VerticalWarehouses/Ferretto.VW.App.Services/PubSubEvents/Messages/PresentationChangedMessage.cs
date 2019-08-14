@@ -7,11 +7,11 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly string errorMessage;
-
         private readonly IRegionNavigationJournal journal;
 
         private readonly PresentationMode mode;
+
+        private readonly string notificationMessage;
 
         private readonly PresentationTypes presentationType;
 
@@ -21,9 +21,9 @@ namespace Ferretto.VW.App.Services
 
         #region Constructors
 
-        public PresentationChangedMessage(string errorMessage)
+        public PresentationChangedMessage(string notificationMessage)
         {
-            this.errorMessage = errorMessage;
+            this.notificationMessage = notificationMessage;
         }
 
         public PresentationChangedMessage(List<Presentation> states)
@@ -50,11 +50,11 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public string ErrorMessage => this.errorMessage;
-
         public IRegionNavigationJournal Journal => this.journal;
 
         public PresentationMode Mode => this.mode;
+
+        public string NotificationMessage => this.notificationMessage;
 
         public PresentationTypes PresentationType => this.presentationType;
 
