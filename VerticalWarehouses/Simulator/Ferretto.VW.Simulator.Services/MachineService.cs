@@ -6,12 +6,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
-using static Ferretto.VW.Simulator.Services.BufferUtility;
 using NLog;
-using Prism.Commands;
 using Prism.Mvvm;
 using static Ferretto.VW.Simulator.Services.BufferUtility;
 
@@ -56,7 +53,7 @@ namespace Ferretto.VW.Simulator.Services
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 4 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 5, Enabled = false });
-            this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 6, Enabled = false }); //da sistemare
+            this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 6, Enabled = false }); //da sistemare
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 7, Enabled = false }); //da sistemare
 
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
