@@ -416,7 +416,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.serviceScopeFactory,
                     this.machineSensorsStatus );
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogDebug( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
 
                 try
                 {

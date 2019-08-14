@@ -121,9 +121,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             //TEMP Speed rate parameter need to be multiply by 100
             //TEMP var speedRate = (Convert.ToDouble(maxSpeed) * 0.1) * 100;
             var speedRate = 100m;
+            ShutterPosition destination;
+            if (data.ShutterPositionMovement == ShutterMovementDirection.Up)
+            {
+                destination = ShutterPosition.Opened;
+            }
+            else
+            {
+                destination = ShutterPosition.Closed;
+            }
 
             var messageData = new ShutterPositioningMessageData(
-                ShutterPosition.Closed,
+                destination,
                 data.ShutterPositionMovement,
                 ShutterType.Shutter3Type,
                 data.BayNumber,

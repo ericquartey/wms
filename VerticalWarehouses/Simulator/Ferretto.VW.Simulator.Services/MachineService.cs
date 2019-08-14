@@ -385,7 +385,11 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.StatusDigitalSignals:
+                            result = client.Client.Send(extractedMessage);
+                            break;
+
                         case InverterParameterId.ShutterTargetPosition:
+                            inverter.TargetShutterPosition = (int)ushortPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 

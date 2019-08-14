@@ -122,6 +122,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterPositioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
+
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 500, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStatusUpdate);
+
+            this.Logger.LogDebug($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
         }
 
         public override void Stop()

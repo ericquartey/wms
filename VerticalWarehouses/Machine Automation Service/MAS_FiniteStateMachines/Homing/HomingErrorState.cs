@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.Homing
         public override void Start()
         {
             // Send a field message to the Update of position axis to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, false, 0);
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 500, false, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",

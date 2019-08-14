@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         MessageStatus.OperationError,
                         ErrorLevel.Error);
 
-                    this.logger.LogTrace($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+                    this.logger.LogWarning($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;

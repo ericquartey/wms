@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Input;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -265,6 +266,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private readonly Timer homingTimer;
 
+        private readonly Timer shutterTimer;
+
         private readonly Timer targetTimer;
 
         private int axisPosition;
@@ -296,6 +299,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
             this.targetTimerActive = false;
+
+            this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
+            this.shutterTimerActive = false;
 
             this.OperationMode = InverterOperationMode.Velocity;
             this.InverterType = inverterType;
@@ -380,6 +386,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
 
+        public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
+        public bool IsShutterClosed => this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
+
         public bool IsSwitchedOn
         {
             get => (this.statusWord & 0x0002) > 0;
@@ -427,11 +437,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int TargetPosition { get; set; }
 
+        public int TargetShutterPosition { get; set; }
+
         public int TargetSpeed { get; set; }
 
         private int homingTickCount { get; set; }
 
         private bool homingTimerActive { get; set; }
+
+        private int shutterTickCount { get; set; }
+
+        private bool shutterTimerActive { get; set; }
 
         private int targetTickCount { get; set; }
 
@@ -633,16 +649,23 @@ namespace Ferretto.VW.Simulator.Services.Models
             if ((this.ControlWord & 0x0008) > 0)
             {
                 this.StatusWord |= 0x0004;
-                if (!this.targetTimerActive)
+                if (!this.shutterTimerActive)
                 {
-                    this.targetTimer.Change(0, 500);
-                    this.targetTimerActive = true;
-                    this.AxisPosition = 0;
+                    this.shutterTimer.Change(0, 500);
+                    this.shutterTimerActive = true;
                 }
             }
             else
             {
-                this.StatusWord &= 0xFFFB;
+                if (this.shutterTimerActive)
+                {
+                    this.shutterTimer.Change(-1, Timeout.Infinite);
+                    // Reset contatore
+                    this.shutterTickCount = 0;
+
+                    this.shutterTimerActive = false;
+                }
+                this.StatusWord &= ~0x0400;
             }
 
             //Fault Reset
@@ -846,6 +869,35 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void ExecuteInverterInFaultCommand()
         {
             this.IsFault = !this.IsFault;
+        }
+
+        private void ShutterTick(object state)
+        {
+            this.shutterTickCount++;
+            if (this.TargetShutterPosition == (int)ShutterPosition.Opened)
+            {
+                this.AxisPosition++;
+            }
+            else
+            {
+                this.AxisPosition--;
+            }
+
+            if (this.shutterTickCount > 100
+                || (this.TargetShutterPosition == (int)ShutterPosition.Closed && this.IsShutterClosed)
+                || (this.TargetShutterPosition == (int)ShutterPosition.Opened && this.IsShutterOpened)
+                )
+            {
+                this.ControlWord &= 0xFFEF;
+                this.StatusWord |= 0x0400;
+
+                this.shutterTimer.Change(-1, Timeout.Infinite);
+                // Reset contatore
+                this.shutterTickCount = 0;
+
+                this.shutterTimerActive = false;
+                this.positionReached = true;
+            }
         }
 
         private void TargetTick(object state)
