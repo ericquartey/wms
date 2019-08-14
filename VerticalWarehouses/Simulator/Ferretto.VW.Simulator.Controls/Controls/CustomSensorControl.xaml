@@ -31,7 +31,7 @@
                      Fill="{Binding BulletColor}" />
 
             <TextBlock x:Name="TextBlock"
-                       Margin="0,1,0,0"
+                       Margin="0,-1,0,0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontSize="{Binding FontSizeLabel}"
