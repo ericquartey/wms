@@ -187,9 +187,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            await this.GetParameterValuesAsync();
-
             this.SubscribeToEvents();
+
+            await this.GetParameterValuesAsync();
         }
 
         private bool CanExecuteStartCommand()
