@@ -84,6 +84,6 @@
                              VerticalAlignment="Top"
                              InputText="{Binding InputReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.CurrentCell}"
-                             Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+                             Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
     </Grid>
 </ctrls:View>
