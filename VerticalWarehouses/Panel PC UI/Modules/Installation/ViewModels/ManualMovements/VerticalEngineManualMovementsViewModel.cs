@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            this.ShowBack(true);
+            this.IsBackNavigationAllowed = true;
 
             try
             {

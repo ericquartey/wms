@@ -7,5 +7,6 @@
         Height="{DynamicResource PpcButtonHeight}"
         d:DesignHeight="450"
         d:DesignWidth="800"
+        Background="{DynamicResource PpcButtonBackground}"
         Template="{DynamicResource PpcButtonControlTemplate}"
         mc:Ignorable="d" />

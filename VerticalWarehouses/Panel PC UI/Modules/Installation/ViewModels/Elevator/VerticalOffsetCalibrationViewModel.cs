@@ -269,7 +269,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.NoteString = VW.App.Resources.InstallationApp.VerticalOffsetCalibration;
 
-            this.ShowBack(true);
+            this.IsBackNavigationAllowed = true;
         }
 
         public void PositioningDone(bool result)

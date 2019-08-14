@@ -80,8 +80,6 @@ namespace Ferretto.VW.App.Modules.Installation
 
             this.container.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
 
-            this.container.RegisterInstance<IStatusMessageService>(new StatusMessageService());
-
             this.container.RegisterSingleton<INotificationService, NotificationService>();
             this.container.Resolve<INotificationService>(); // HACK this is to force the instantiation of the notification service
 
