@@ -36,14 +36,6 @@ namespace Ferretto.VW.App
 
         #endregion
 
-        #region Properties
-
-        public Window InstallationAppMainWindowInstance { get; set; }
-
-        public BindableBase InstallationAppMainWindowViewModel { get; set; }
-
-        #endregion
-
         #region Methods
 
         public static void LoadCatalog(IModuleCatalog moduleCatalog)
@@ -105,7 +97,13 @@ namespace Ferretto.VW.App
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
             containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                 new InjectionFactory(c =>
-                    new HealthProbeService(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath, c.Resolve<IEventAggregator>())));
+                    new HealthProbeService(
+                        serviceUrl,
+                        serviceLiveHealthPath,
+                        serviceReadyHealthPath,
+                        c.Resolve<IEventAggregator>(),
+                        c.Resolve<INavigationService>())));
+
             containerRegistry.RegisterInstance(ServiceFactory.Get<IThemeService>());
             containerRegistry.RegisterInstance(ServiceFactory.Get<ISessionService>());
 

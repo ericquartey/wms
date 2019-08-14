@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 
@@ -12,6 +13,8 @@ namespace Ferretto.VW.App.Services
 
         private const int DefaultPollInterval = 3000;
 
+        private const string ErrorMessage = "String cannot be null or empty.";
+
         private readonly Uri baseAddress;
 
         private readonly Task healthProbeTask;
@@ -20,13 +23,15 @@ namespace Ferretto.VW.App.Services
 
         private readonly string liveHealthCheckPath;
 
+        private readonly INavigationService navigationService;
+
         private readonly string readyHealthCheckPath;
 
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private HealthStatus healthStatus;
 
-        private int pollInterval = DefaultPollInterval;
+        private volatile int pollInterval = DefaultPollInterval;
 
         #endregion
 
@@ -36,7 +41,8 @@ namespace Ferretto.VW.App.Services
             Uri baseAddress,
             string liveHealthCheckPath,
             string readyHealthCheckPath,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            INavigationService navigationService)
         {
             if (baseAddress == null)
             {
@@ -45,12 +51,12 @@ namespace Ferretto.VW.App.Services
 
             if (string.IsNullOrEmpty(liveHealthCheckPath))
             {
-                throw new ArgumentException("String cannot be null or empty.", nameof(liveHealthCheckPath));
+                throw new ArgumentException(ErrorMessage, nameof(liveHealthCheckPath));
             }
 
             if (string.IsNullOrEmpty(readyHealthCheckPath))
             {
-                throw new ArgumentException("String cannot be null or empty.", nameof(readyHealthCheckPath));
+                throw new ArgumentException(ErrorMessage, nameof(readyHealthCheckPath));
             }
 
             if (eventAggregator == null)
@@ -58,9 +64,15 @@ namespace Ferretto.VW.App.Services
                 throw new System.ArgumentNullException(nameof(eventAggregator));
             }
 
+            if (navigationService == null)
+            {
+                throw new ArgumentNullException(nameof(navigationService));
+            }
+
             this.baseAddress = baseAddress;
             this.liveHealthCheckPath = liveHealthCheckPath;
             this.readyHealthCheckPath = readyHealthCheckPath;
+            this.navigationService = navigationService;
             this.healthStatusChangedEvent = eventAggregator.GetEvent<HealthStatusChangedPubSubEvent>();
 
             this.healthProbeTask = new Task(
@@ -82,7 +94,15 @@ namespace Ferretto.VW.App.Services
 
                     System.Diagnostics.Debug.WriteLine($"Service at '{this.baseAddress}' is {this.healthStatus}.");
 
-                    this.healthStatusChangedEvent.Publish(new HealthStatusChangedEventArgs(this.healthStatus));
+                    this.healthStatusChangedEvent
+                        .Publish(new HealthStatusChangedEventArgs(this.healthStatus));
+
+                    if (this.healthStatus == HealthStatus.Unhealthy)
+                    {
+                        this.navigationService.GoBackTo(
+                            nameof(Utils.Modules.Login),
+                            Utils.Modules.Login.LOGIN);
+                    }
                 }
             }
         }
@@ -115,7 +135,7 @@ namespace Ferretto.VW.App.Services
             this.tokenSource.Cancel(false);
         }
 
-        public object SubscribeOnHealthStatusChanged(Action<HealthStatusChangedEventArgs> action)
+        public object SubscribeToHealthStatusChangedEvent(Action<HealthStatusChangedEventArgs> action)
         {
             return this.healthStatusChangedEvent
                 .Subscribe(
@@ -124,7 +144,7 @@ namespace Ferretto.VW.App.Services
                     false);
         }
 
-        public void UnSubscribe(object subscriptionToken)
+        public void UnsubscribeFromHealthStatusChangedEvent(object subscriptionToken)
         {
             if (subscriptionToken is SubscriptionToken token)
             {
@@ -168,6 +188,7 @@ namespace Ferretto.VW.App.Services
             }
             catch
             {
+                // do nothing
             }
         }
 
@@ -190,7 +211,7 @@ namespace Ferretto.VW.App.Services
         {
             do
             {
-                using (var client = new RetryHttpClient() { BaseAddress = this.baseAddress })
+                using (var client = new RetryHttpClient { BaseAddress = this.baseAddress })
                 {
                     if (this.HealthStatus == HealthStatus.Unknown
                         ||

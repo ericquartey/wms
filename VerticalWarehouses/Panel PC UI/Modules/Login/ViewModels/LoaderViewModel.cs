@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnNavigatedAsync();
 
-            this.healthProbeService.SubscribeOnHealthStatusChanged(async (e) => await this.OnHealthStatusChanged(e));
+            this.healthProbeService.SubscribeToHealthStatusChangedEvent(async (e) => await this.OnHealthStatusChanged(e));
 
             await this.RetrieveMachineInfoAsync();
         }
