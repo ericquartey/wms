@@ -78,7 +78,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
-
         }
 
         public void EnqueueMessage(IoSHDWriteMessage message)
@@ -116,31 +115,17 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             {
             }
 
-            {
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"IoDriver current status null",
-                    MessageActor.Any,
-                    MessageActor.IoDriver,
-                    MessageType.MachineStatusActive,
-                    MessageStatus.OperationStart);
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"IoDriver current state null",
+                MessageActor.Any,
+                MessageActor.IoDriver,
+                MessageType.MachineStateActive,
+                MessageStatus.OperationStart);
 
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
+            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-            {
-                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"IoDriver current state null",
-                    MessageActor.Any,
-                    MessageActor.IoDriver,
-                    MessageType.MachineStateActive,
-                    MessageStatus.OperationStart);
-
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
             this.disposed = true;
         }
 
