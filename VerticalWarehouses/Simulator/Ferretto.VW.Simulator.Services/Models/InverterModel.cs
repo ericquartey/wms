@@ -314,6 +314,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.digitalIO.Add(new BitModel("05", false, GetInverterSignalDescription(inverterType, 5)));
             this.digitalIO.Add(new BitModel("06", false, GetInverterSignalDescription(inverterType, 6)));
             this.digitalIO.Add(new BitModel("07", false, GetInverterSignalDescription(inverterType, 7)));
+
+            // Remove overrun signal
+            if (inverterType == InverterType.Ang)
+            {
+                this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
+            }
         }
 
         #endregion
