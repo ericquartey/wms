@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
@@ -93,7 +94,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 }
                 else
                 {
-                    await this.machineStatusService.ExecutePowerOnAsync();
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Confirmation operation?", "March", System.Windows.MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        await this.machineStatusService.ExecutePowerOnAsync();
+                    }
+                    else
+                    {
+                        this.IsBusy = false;
+                    }
                 }
             }
             catch

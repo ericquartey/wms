@@ -208,13 +208,14 @@ namespace Ferretto.VW.App.Services
                     this.eventAggregator.GetEvent<NotificationEventUI<InverterStatusWordMessageData>>().Publish(isw);
                     break;
 
-
-                case null:
-                    if (Debugger.IsAttached)
-                    {
-                        Debugger.Break();
-                    }
+                case NotificationMessageUI<MachineStatusActiveMessageData> msa:
+                    this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>().Publish(msa);
                     break;
+
+                case NotificationMessageUI<MachineStateActiveMessageData> msa:
+                    this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Publish(msa);
+                    break;
+
             }
         }
 

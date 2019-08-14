@@ -70,6 +70,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<InverterStatusWordMessageData>>(
                 "InverterStatusWordNotify", this.OnInverterStatusWordNotify);
 
+            connection.On<NotificationMessageUI<MachineStatusActiveMessageData>>(
+                "MachineStatusActiveNotify", this.OnMachineStatusActiveNotify);
+
+            connection.On<NotificationMessageUI<MachineStateActiveMessageData>>(
+                "MachineStateActiveNotify", this.OnMachineStateActiveNotify);
+
+        }
+
+        private void OnMachineStateActiveNotify(NotificationMessageUI<MachineStateActiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMachineStatusActiveNotify(NotificationMessageUI<MachineStatusActiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         /// <summary>

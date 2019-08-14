@@ -17,6 +17,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance(nameof(PresentationMachineMode)));
             this.States.Add(this.GetInstance(nameof(PresentationMachineMarch)));
             this.States.Add(this.GetInstance(nameof(PresentationError)));
+            this.States.Add(this.GetInstance(nameof(PresentationDebug)));
         }
 
         public override void UpdatePresentation(PresentationMode mode)
@@ -43,6 +44,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
                     this.Show(PresentationTypes.Error, true);
+                    this.Show(PresentationTypes.Debug, true);
                     break;
 
                 case PresentationMode.Operator:

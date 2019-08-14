@@ -29,6 +29,10 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
 
         Task InverterStatusWordNotify(IBaseNotificationMessageUI message);
 
+        Task MachineStatusActiveNotify(IBaseNotificationMessageUI message);
+
+        Task MachineStateActiveNotify(IBaseNotificationMessageUI message);
+
         #endregion
 
         //Task UpDownRepetitiveNotify(IBaseNotificationMessageUI message);

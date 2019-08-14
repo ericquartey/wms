@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels.Enumerations;
@@ -184,6 +186,18 @@ namespace Ferretto.VW.MAS.IODriver
                     default:
                         break;
                 }
+
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current machine state {receivedMessage.Type}",
+                    MessageActor.Any,
+                    MessageActor.IoDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
             }
             while (!this.stoppingToken.IsCancellationRequested);
         }

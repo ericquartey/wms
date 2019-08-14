@@ -23,5 +23,7 @@
         Theme,
 
         Back,
+
+        Debug
     }
 }
