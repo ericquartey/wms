@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface IShutterControlMessageData : IMessageData
+    public interface IShutterTestStatusChangedMessageData : IMessageData
     {
         #region Properties
 

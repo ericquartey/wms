@@ -1,47 +1,33 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.VW.CommonUtils.Enumerations;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class PpcSensorControl : UserControl, INotifyPropertyChanged
+    public partial class PpcSensorControl : UserControl
     {
         #region Fields
 
-        public static readonly DependencyProperty BulletColorProperty = DependencyProperty.Register(
-            nameof(BulletColor),
-            typeof(SolidColorBrush),
+        public static readonly DependencyProperty IndicatorBorderBrushProperty = DependencyProperty.Register(
+            nameof(IndicatorBorderBrush),
+            typeof(Brush),
             typeof(PpcSensorControl));
 
-        public static readonly DependencyProperty IoMachineSensorProperty = DependencyProperty.Register(
-            "IoMachineSensor",
-            typeof(IOMachineSensors),
+        public static readonly DependencyProperty IndicatorFillBrushProperty = DependencyProperty.Register(
+            nameof(IndicatorFillBrush),
+            typeof(Brush),
             typeof(PpcSensorControl));
-
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-            nameof(LabelText),
-            typeof(string),
-            typeof(PpcSensorControl),
-            new PropertyMetadata(string.Empty));
-
-        public static readonly DependencyProperty SensorPortProperty = DependencyProperty.Register(
-            nameof(SensorPort),
-            typeof(IOMachineSensors),
-            typeof(PpcSensorControl),
-            new FrameworkPropertyMetadata(IOMachineSensors.NoValue, OnSensorPortChanged));
-
-        public static readonly DependencyProperty SensorsProperty = DependencyProperty.Register(
-            nameof(Sensors),
-            typeof(bool[]),
-            typeof(PpcSensorControl),
-            new FrameworkPropertyMetadata(null, OnSensorsChanged));
 
         public static readonly DependencyProperty SensorStateProperty = DependencyProperty.Register(
             nameof(SensorState),
             typeof(bool),
             typeof(PpcSensorControl));
+
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+            nameof(Text),
+            typeof(string),
+            typeof(PpcSensorControl),
+            new PropertyMetadata(string.Empty));
 
         #endregion
 
@@ -50,107 +36,34 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcSensorControl()
         {
             this.InitializeComponent();
-            var customSensorControl = this;
-            this.LayoutRoot.DataContext = customSensorControl;
         }
-
-        #endregion
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
         #region Properties
 
-        public SolidColorBrush BulletColor
+        public Brush IndicatorBorderBrush
         {
-            get => (SolidColorBrush)this.GetValue(BulletColorProperty);
-            set
-            {
-                this.SetValue(BulletColorProperty, value);
-                this.RaisePropertyChanged(nameof(this.BulletColor));
-            }
+            get => (Brush)this.GetValue(IndicatorBorderBrushProperty);
+            set => this.SetValue(IndicatorBorderBrushProperty, value);
         }
 
-        public string LabelText
+        public Brush IndicatorFillBrush
         {
-            get => (string)this.GetValue(LabelProperty);
-            set
-            {
-                this.SetValue(LabelProperty, value);
-                this.RaisePropertyChanged(nameof(this.LabelText));
-            }
-        }
-
-        public IOMachineSensors SensorPort
-        {
-            get => (IOMachineSensors)this.GetValue(SensorPortProperty);
-            set
-            {
-                this.SetValue(SensorPortProperty, value);
-                this.RaisePropertyChanged(nameof(this.SensorPort));
-            }
-        }
-
-        public bool[] Sensors
-        {
-            get => (bool[])this.GetValue(SensorsProperty);
-            set
-            {
-                this.SetValue(SensorsProperty, value);
-                this.RaisePropertyChanged(nameof(this.Sensors));
-            }
+            get => (Brush)this.GetValue(IndicatorFillBrushProperty);
+            set => this.SetValue(IndicatorFillBrushProperty, value);
         }
 
         public bool SensorState
         {
             get => (bool)this.GetValue(SensorStateProperty);
-            set
-            {
-                this.SetValue(SensorStateProperty, value);
-                this.RaisePropertyChanged(nameof(this.SensorState));
-            }
+            set => this.SetValue(SensorStateProperty, value);
         }
 
-        #endregion
-
-        #region Methods
-
-        public void UpdateSensorState()
+        public string Text
         {
-            if (this.Sensors != null && this.SensorPort != IOMachineSensors.NoValue)
-            {
-                this.SensorState = this.Sensors[(int)this.SensorPort];
-                return;
-            }
-
-            this.SensorState = false;
-        }
-
-        private static void OnSensorPortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PpcSensorControl control && e.NewValue is IOMachineSensors)
-            {
-                control.UpdateSensorState();
-            }
-        }
-
-        private static void OnSensorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PpcSensorControl control && e.NewValue is bool[])
-            {
-                control.UpdateSensorState();
-            }
-        }
-
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            get => (string)this.GetValue(TextProperty);
+            set => this.SetValue(TextProperty, value);
         }
 
         #endregion

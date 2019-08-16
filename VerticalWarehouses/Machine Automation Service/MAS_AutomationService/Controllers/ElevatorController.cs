@@ -2,8 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,13 +9,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class ElevatorController : ControllerBase
+    public class ElevatorController : BaseAutomationController
     {
         #region Fields
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly IHorizontalAxisDataLayer horizontalAxis;
 
@@ -43,8 +39,38 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
             ISetupStatusDataLayer setupStatusDataLayer,
             ILogger<ElevatorController> logger)
+            : base(eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
+            if (verticalAxisDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(verticalAxisDataLayer));
+            }
+
+            if (verticalManualMovementsDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(verticalManualMovementsDataLayer));
+            }
+
+            if (horizontalAxisDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(horizontalAxisDataLayer));
+            }
+
+            if (horizontalManualMovementsDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
+            }
+
+            if (setupStatusDataLayer == null)
+            {
+                throw new System.ArgumentNullException(nameof(setupStatusDataLayer));
+            }
+
+            if (logger == null)
+            {
+                throw new System.ArgumentNullException(nameof(logger));
+            }
+
             this.verticalAxis = verticalAxisDataLayer;
             this.verticalManualMovements = verticalManualMovementsDataLayer;
             this.horizontalAxis = horizontalAxisDataLayer;
@@ -60,77 +86,61 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("vertical/position")]
         public ActionResult<decimal> GetVerticalPosition()
         {
-            return 0;
+            throw new System.NotImplementedException();
         }
 
         [HttpPost("horizontal/move")]
-        public void MoveHorizontal([FromBody]ElevatorMovementParameters data)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontal([FromBody]ElevatorMovementParameters data)
         {
-            decimal maxSpeed = 0;
-            decimal maxAcceleration = 0;
-            decimal maxDeceleration = 0;
-            decimal feedRate = 0;
-            decimal initialTargetPosition = 0;
-            var movementType = MovementType.Relative;
-
-            var homingDone = this.setupStatus.VerticalHomingDone;
-
-            maxSpeed = this.horizontalAxis.MaxEmptySpeedHA;
-            maxAcceleration = this.horizontalAxis.MaxEmptyAccelerationHA;
-            maxDeceleration = this.horizontalAxis.MaxEmptyDecelerationHA;
-            feedRate = this.horizontalManualMovements.FeedRateHM;
-
-            if (homingDone)
-            {
-                initialTargetPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            }
-            else
-            {
-                initialTargetPosition = this.horizontalManualMovements.InitialTargetPositionHM;
-            }
+            var initialTargetPosition = this.setupStatus.VerticalHomingDone
+                ? this.horizontalManualMovements.RecoveryTargetPositionHM
+                : this.horizontalManualMovements.InitialTargetPositionHM;
 
             // INFO +1 for Forward, -1 for Back
+            // TODO: this is not very clear, rethink about it
             initialTargetPosition *= data.Displacement;
 
-            var speed = maxSpeed * feedRate;
+            var speed = this.horizontalAxis.MaxEmptySpeedHA * this.horizontalManualMovements.FeedRateHM;
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
-                movementType,
+                MovementType.Relative,
                 MovementMode.Position,
                 initialTargetPosition,
                 speed,
-                maxAcceleration,
-                maxDeceleration,
+                this.horizontalAxis.MaxEmptyAccelerationHA,
+                this.horizontalAxis.MaxEmptyDecelerationHA,
                 0,
                 0,
                 0);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(
-                new CommandMessage(
-                    messageData,
-                    $"Execute {Axis.Horizontal} Positioning Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.WebApi,
-                    MessageType.Positioning));
 
-            this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {data.MovementType}, target position {initialTargetPosition}");
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {MovementType.Relative}, target position {initialTargetPosition}");
+
+            return this.Accepted();
         }
 
         [HttpPost("vertical/move")]
-        public void MoveVertical([FromBody]ElevatorMovementParameters data)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveVertical([FromBody]ElevatorMovementParameters data)
         {
-            decimal maxSpeed = 0;
-            decimal maxAcceleration = 0;
-            decimal maxDeceleration = 0;
             decimal feedRate = 0;
             decimal initialTargetPosition = 0;
             var movementType = MovementType.Relative;
 
             var homingDone = this.setupStatus.VerticalHomingDone;
 
-            maxSpeed = this.verticalAxis.MaxEmptySpeed;
-            maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
-            maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
+            var maxSpeed = this.verticalAxis.MaxEmptySpeed;
+            var maxAcceleration = this.verticalAxis.MaxEmptyAcceleration;
+            var maxDeceleration = this.verticalAxis.MaxEmptyDeceleration;
 
             //INFO Absolute movement using the min and max reachable positions for limits
             if (homingDone)
@@ -160,32 +170,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 0,
                 0,
                 0);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(
-                new CommandMessage(
-                    messageData,
-                    $"Execute {Axis.Horizontal} Positioning Command",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.WebApi,
-                    MessageType.Positioning));
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
 
             this.logger.LogDebug($"Starting positioning on Axis {Axis.Horizontal}, type {data.MovementType}, target position {initialTargetPosition}");
+
+            return this.Accepted();
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("stop")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                   new CommandMessage(
-                       null,
-                       "Stop Command",
-                       MessageActor.FiniteStateMachines,
-                       MessageActor.WebApi,
-                       MessageType.Stop));
+            this.PublishCommand(
+                null,
+                "Stop Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Stop);
 
-            return this.Ok();
+            return this.Accepted();
         }
 
         #endregion

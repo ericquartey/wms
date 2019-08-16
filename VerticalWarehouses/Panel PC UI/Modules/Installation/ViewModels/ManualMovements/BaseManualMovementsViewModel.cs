@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.CommonUtils;
@@ -13,7 +14,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineHomingService homingService;
+        private readonly IMachineHomingProcedureService homingService;
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
@@ -27,7 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        protected BaseManualMovementsViewModel(IMachineHomingService homingService)
+        protected BaseManualMovementsViewModel(IMachineHomingProcedureService homingService)
             : base(Services.PresentationMode.Installator)
         {
             if (homingService == null)
@@ -50,7 +51,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.currentPosition, value);
         }
 
-        public BindingList<NavigationMenuItem> MenuItems => this.menuItems;
+        public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
         public DelegateCommand StopMovementCommand =>
             this.stopMovementCommand
@@ -70,7 +71,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                   ThreadOption.PublisherThread,
                   false);
 
-            await this.homingService.NotifyCurrentAxisAxisAsync();
+            try
+            {
+                await this.homingService.NotifyCurrentAxisPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
 
             await base.OnNavigatedAsync();
         }

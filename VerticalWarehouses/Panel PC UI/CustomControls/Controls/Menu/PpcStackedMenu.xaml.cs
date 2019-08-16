@@ -19,8 +19,6 @@ namespace Ferretto.VW.App.Controls
         public PpcStackedMenu()
         {
             this.InitializeComponent();
-
-            this.SourceUpdated += this.PpcStackedMenu_SourceUpdated;
         }
 
         #endregion
@@ -31,17 +29,6 @@ namespace Ferretto.VW.App.Controls
         {
             get => (Orientation)this.GetValue(OrientationProperty);
             set => this.SetValue(OrientationProperty, value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void PpcStackedMenu_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
-        {
-            if (e.Source is NavigationMenuItem menuItem)
-            {
-            }
         }
 
         #endregion

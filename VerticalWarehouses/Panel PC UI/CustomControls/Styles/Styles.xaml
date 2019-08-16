@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcSensorControlStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcTextBoxStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/TextBlockStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ExpanderStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomControlArticleDataGridStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

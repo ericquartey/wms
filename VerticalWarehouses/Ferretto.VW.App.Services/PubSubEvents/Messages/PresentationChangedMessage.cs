@@ -5,60 +5,53 @@ namespace Ferretto.VW.App.Services
 {
     public class PresentationChangedMessage
     {
-        #region Fields
-
-        private readonly IRegionNavigationJournal journal;
-
-        private readonly PresentationMode mode;
-
-        private readonly string notificationMessage;
-
-        private readonly PresentationTypes presentationType;
-
-        private readonly List<Presentation> states;
-
-        #endregion
-
         #region Constructors
 
         public PresentationChangedMessage(string notificationMessage)
         {
-            this.notificationMessage = notificationMessage;
+            this.NotificationMessage = notificationMessage;
+        }
+
+        public PresentationChangedMessage(System.Exception exception)
+        {
+            this.Exception = exception;
         }
 
         public PresentationChangedMessage(List<Presentation> states)
         {
-            this.states = states;
+            this.States = states;
         }
 
         public PresentationChangedMessage(IRegionNavigationJournal journal)
         {
-            this.journal = journal;
+            this.Journal = journal;
         }
 
         public PresentationChangedMessage(Presentation state)
         {
-            this.states = new List<Presentation> { state };
+            this.States = new List<Presentation> { state };
         }
 
         public PresentationChangedMessage(PresentationMode mode)
         {
-            this.mode = mode;
+            this.Mode = mode;
         }
 
         #endregion
 
         #region Properties
 
-        public IRegionNavigationJournal Journal => this.journal;
+        public System.Exception Exception { get; }
 
-        public PresentationMode Mode => this.mode;
+        public IRegionNavigationJournal Journal { get; }
 
-        public string NotificationMessage => this.notificationMessage;
+        public PresentationMode Mode { get; }
 
-        public PresentationTypes PresentationType => this.presentationType;
+        public string NotificationMessage { get; }
 
-        public List<Presentation> States => this.states;
+        public PresentationTypes PresentationType { get; }
+
+        public List<Presentation> States { get; }
 
         #endregion
     }

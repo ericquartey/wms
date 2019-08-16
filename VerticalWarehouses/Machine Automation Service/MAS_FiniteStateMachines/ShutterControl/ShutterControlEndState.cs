@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
     {
         #region Fields
 
-        private readonly IShutterControlMessageData shutterControlMessageData;
+        private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
 
         private readonly bool stopRequested;
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         public ShutterControlEndState(
             IStateMachine parentMachine,
-            IShutterControlMessageData shutterControlMessageData,
+            IShutterTestStatusChangedMessageData shutterControlMessageData,
             ILogger logger,
             bool stopRequested = false)
             : base(parentMachine, logger)

@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Services
 
                 case ApplicationTheme.Dark:
                     themeDictionary.Source = new Uri(
-                         "/Ferretto.VW.App.Controls;Component/Skins/DarkSkin.xaml",
+                         "/Ferretto.VW.App.Controls;Component/Skins/Dark/DarkSkin.xaml",
                          UriKind.Relative);
                     break;
 

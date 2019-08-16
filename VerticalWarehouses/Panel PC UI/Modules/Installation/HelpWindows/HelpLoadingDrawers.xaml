@@ -54,7 +54,7 @@
                                                       Width="180"
                                                       Highlighted="True" IsEnabled="True"
                                                       InputText="15"
-                                                      Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                       LabelText="{x:Static res:InstallationApp.LoadingDrawersDrawerToInsert}" />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,210,0,0"

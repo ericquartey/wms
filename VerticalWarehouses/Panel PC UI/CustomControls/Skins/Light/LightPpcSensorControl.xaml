@@ -5,13 +5,14 @@
 
     <sys:Double x:Key="VWAPP_CustomControlSensor_TextBlock_FontSize">16</sys:Double>
 
-    <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBrush_Up"
+    <SolidColorBrush x:Key="PpcSensorControlActiveStateBrush"
                      Color="{DynamicResource ColorFerrettoGreen}" />
-    <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBrush_Down"
+    <SolidColorBrush x:Key="PpcSensorControlInactiveStateBrush"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
+
     <SolidColorBrush x:Key="VWAPP_CustomControlSensor_TextBlock_Foreground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource ColorFerrettoBlack}" />
     <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBackground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource ColorFerrettoBlack}" />
 
 </ResourceDictionary>

@@ -24,7 +24,35 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
     {
         #region Methods
 
-        private bool EvaluateCondition( ConditionToCheckType condition )
+        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
+        {
+            if (this.currentStateMachine != null)
+            {
+                this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                this.currentStateMachine = null;
+            }
+            this.currentStateMachine = new PowerEnableStateMachine(
+                this.eventAggregator,
+                (byte)this.ioIndexDeviceList[0],
+                data,
+                this.logger,
+                this.serviceScopeFactory);
+
+            this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
+
+            try
+            {
+                this.currentStateMachine.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
+
+                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+            }
+        }
+
+        private bool EvaluateCondition(ConditionToCheckType condition)
         {
             var result = false;
             switch (condition)
@@ -79,13 +107,13 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
 
         //    return true;
         //}
-        private void ProcessCheckConditionMessage( CommandMessage message )
+        private void ProcessCheckConditionMessage(CommandMessage message)
         {
-            this.logger.LogTrace( $"1:Processing Command {message.Type} Source {message.Source}" );
+            this.logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
 
             if (message.Data is ICheckConditionMessageData data)
             {
-                data.Result = this.EvaluateCondition( data.ConditionToCheck );
+                data.Result = this.EvaluateCondition(data.ConditionToCheck);
 
                 //TEMP Send a notification message
                 var msg = new NotificationMessage(
@@ -95,18 +123,18 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 MessageActor.FiniteStateMachines,
                 MessageType.CheckCondition,
                 MessageStatus.OperationEnd,
-                ErrorLevel.NoError );
-                this.eventAggregator.GetEvent<NotificationEvent>().Publish( msg );
+                ErrorLevel.NoError);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
             }
         }
 
-        private void ProcessDrawerOperation( CommandMessage receivedMessage )
+        private void ProcessDrawerOperation(CommandMessage receivedMessage)
         {
-            this.logger.LogTrace( $"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}" );
+            this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
             if (receivedMessage.Data is IDrawerOperationMessageData data)
             {
-                this.logger.LogTrace( "2: Starting Drawer Operation FSM" );
+                this.logger.LogTrace("2: Starting Drawer Operation FSM");
 
                 this.currentStateMachine = new MoveDrawerStateMachine(
                     this.eventAggregator,
@@ -117,7 +145,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.horizontalAxis,
                     data,
                     this.logger,
-                    this.serviceScopeFactory );
+                    this.serviceScopeFactory);
 
                 try
                 {
@@ -125,22 +153,22 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError( $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine" );
+                    this.logger.LogError($"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine");
 
-                    this.SendMessage( new FsmExceptionMessageData( ex, $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine", 1, MessageVerbosity.Error ) );
+                    this.SendMessage(new FsmExceptionMessageData(ex, $"Exception: {ex.Message} while starting {this.currentStateMachine.GetType()} state machine", 1, MessageVerbosity.Error));
                 }
             }
             else
             {
-                this.logger.LogError( $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type" );
+                this.logger.LogError($"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type");
 
-                this.SendMessage( new FsmExceptionMessageData( null, $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type", 2, MessageVerbosity.Error ) );
+                this.SendMessage(new FsmExceptionMessageData(null, $"Message data type {receivedMessage.Data.GetType()} is invalid for DrawerOperation message type", 2, MessageVerbosity.Error));
             }
         }
 
-        private void ProcessHomingMessage( CommandMessage message )
+        private void ProcessHomingMessage(CommandMessage message)
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IHomingMessageData data)
             {
@@ -167,9 +195,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator,
                     data,
                     this.logger,
-                    this.serviceScopeFactory );
+                    this.serviceScopeFactory);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
@@ -177,32 +205,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FsmExceptionMessageData( ex, string.Empty, 0 ) );
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
 
         private void ProcessInverterStopMessage()
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             // Send a field message to stop inverters to InverterDriver
-            var inverterDataMessage = new InverterStopFieldMessageData( InverterIndex.MainInverter );
+            var inverterDataMessage = new InverterStopFieldMessageData(InverterIndex.MainInverter);
 
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Stop Inverter",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop );
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish( inverterMessage );
+                FieldMessageType.InverterStop);
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
         }
 
-        private void ProcessPositioningMessage( CommandMessage message )
+        private void ProcessPositioningMessage(CommandMessage message)
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IPositioningMessageData data)
             {
@@ -211,27 +239,27 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator,
                     data,
                     this.logger,
-                    this.serviceScopeFactory );
+                    this.serviceScopeFactory);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
-                    this.logger.LogDebug( "Starting Positioning FSM" );
+                    this.logger.LogDebug("Starting Positioning FSM");
                     this.currentStateMachine.Start();
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FsmExceptionMessageData( ex, string.Empty, 0 ) );
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
 
-        private void ProcessPowerEnableMessage( CommandMessage message )
+        private void ProcessPowerEnableMessage(CommandMessage message)
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IPowerEnableMessageData data)
             {
@@ -242,7 +270,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 {
                     if (this.currentStateMachine != null)
                     {
-                        this.logger.LogDebug( $"2:Deallocation FSM {this.currentStateMachine?.GetType()}" );
+                        this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
                         this.currentStateMachine = null;
                     }
                     this.currentStateMachine = new PowerEnableStateMachine(
@@ -250,9 +278,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         (byte)this.ioIndexDeviceList[0],
                         data,
                         this.logger,
-                        this.serviceScopeFactory );
+                        this.serviceScopeFactory);
 
-                    this.logger.LogTrace( $"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}" );
+                    this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
 
                     try
                     {
@@ -260,32 +288,32 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogDebug( $"4:Exception: {ex.Message} during the FSM start" );
+                        this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
 
-                        this.SendMessage( new FsmExceptionMessageData( ex, string.Empty, 0 ) );
+                        this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                     }
                 }
                 else
                 {
-                    this.logger.LogTrace( $"5:Machine is already in the requested state: IsNormal {this.machineSensorsStatus.IsMachineInNormalState}: Enable {data.Enable}" );
+                    this.logger.LogTrace($"5:Machine is already in the requested state: IsNormal {this.machineSensorsStatus.IsMachineInNormalState}: Enable {data.Enable}");
                     var notificationMessage = new NotificationMessage(
                         null,
                         "Power Enable Completed",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.PowerEnable,
-                        MessageStatus.OperationEnd );
+                        MessageStatus.OperationEnd);
 
-                    this.logger.LogTrace( $"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
+                    this.logger.LogTrace($"6:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish( notificationMessage );
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
             }
         }
 
         private void ProcessResetSecurityMessage(CommandMessage message)
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             //if (message.Data is IResetSecurityMessageData data)
             {
@@ -293,65 +321,37 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator,
                     null,
                     this.logger,
-                    this.serviceScopeFactory );
+                    this.serviceScopeFactory);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
-                    this.logger.LogDebug( "Starting Reset Security FSM" );
+                    this.logger.LogDebug("Starting Reset Security FSM");
                     this.currentStateMachine.Start();
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FsmExceptionMessageData( ex, string.Empty, 0 ) );
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
-            }
-        }
-
-        private void CreatePowerEnableStateMachine(IPowerEnableMessageData data)
-        {
-            if (this.currentStateMachine != null)
-            {
-                this.logger.LogDebug($"2:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                this.currentStateMachine = null;
-            }
-            this.currentStateMachine = new PowerEnableStateMachine(
-                this.eventAggregator,
-                (byte)this.ioIndexDeviceList[0],
-                data,
-                this.logger,
-                this.serviceScopeFactory);
-
-            this.logger.LogTrace($"3:Starting FSM {this.currentStateMachine.GetType()}: Enable {data.Enable}");
-
-            try
-            {
-                this.currentStateMachine.Start();
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogDebug($"4:Exception: {ex.Message} during the FSM start");
-
-                this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
             }
         }
 
         private void ProcessSensorsChangedMessage()
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             // Send a field message to force the Update of sensors (input lines) to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData( true, 0, false, 0 );
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, false, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStatusUpdate );
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish( inverterMessage );
+                FieldMessageType.InverterStatusUpdate);
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
 
             // Send a field message to force the Update of sensors (input lines) to IoDriver
             foreach (var index in this.ioIndexDeviceList)
@@ -364,20 +364,20 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     FieldMessageActor.IoDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.SensorsChanged,
-                    (byte)index );
+                    (byte)index);
 
-                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish( ioMessage );
+                this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(ioMessage);
             }
 
             this.forceInverterIoStatusPublish = true;
             this.forceRemoteIoStatusPublish = true;
         }
 
-        private void ProcessShutterControlMessage( CommandMessage message )
+        private void ProcessShutterControlMessage(CommandMessage message)
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IShutterControlMessageData data)
+            if (message.Data is IShutterTestStatusChangedMessageData data)
             {
                 // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
                 data.ShutterType = ShutterType.Shutter2Type;
@@ -386,9 +386,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.eventAggregator,
                     data,
                     this.logger,
-                    this.serviceScopeFactory );
+                    this.serviceScopeFactory);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
@@ -396,16 +396,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FsmExceptionMessageData( ex, string.Empty, 0 ) );
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
 
-        private void ProcessShutterPositioningMessage( CommandMessage message )
+        private void ProcessShutterPositioningMessage(CommandMessage message)
         {
-            this.logger.LogTrace( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IShutterPositioningMessageData data)
             {
@@ -414,9 +414,9 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     data,
                     this.logger,
                     this.serviceScopeFactory,
-                    this.machineSensorsStatus );
+                    this.machineSensorsStatus);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
@@ -424,16 +424,16 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FsmExceptionMessageData( ex, string.Empty, 0 ) );
+                    this.SendMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }
 
-        private void ProcessStopMessage( CommandMessage receivedMessage )
+        private void ProcessStopMessage(CommandMessage receivedMessage)
         {
-            this.logger.LogTrace( $"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}" );
+            this.logger.LogTrace($"1:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
             this.currentStateMachine?.Stop();
         }

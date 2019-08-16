@@ -42,6 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Skins\Palette.xaml" />
+    <None Remove="Styles\Styles.xaml" />
+    <None Remove="Templates\PpcSensorControlTemplate.xaml" />
+    <None Remove="Templates\Templates.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />

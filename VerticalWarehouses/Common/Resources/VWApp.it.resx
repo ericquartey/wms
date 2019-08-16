@@ -150,4 +150,7 @@
   <data name="ManualMode" xml:space="preserve">
     <value>Manuale</value>
   </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Errore di comunicazione con i servizi.</value>
+  </data>
 </root>

@@ -131,8 +131,8 @@ namespace Ferretto.VW.App.Services
                     }
                     break;
 
-                case NotificationMessageUI<ShutterControlMessageData> sc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>().Publish(sc);
+                case NotificationMessageUI<ShutterTestStatusChangedMessageData> sc:
+                    this.eventAggregator.GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>().Publish(sc);
 
                     if (sc.Status == MessageStatus.OperationError)
                     {

@@ -41,20 +41,18 @@
                    Text="{x:Static res:HelpDescriptions.HelpGCRequiredCycles}" />
 
         <controls:PpcTextBox Width="180"
-                                                   Margin="20,140,0,0"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   InputText="580"
-                                                   LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                             Margin="20,140,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="580"
+                             LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
 
         <controls:PpcTextBox Width="180"
-                                                   Margin="20,210,0,0"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   InputText="1,5"
-                                                   LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                             Margin="20,210,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="1,5"
+                             LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
 
         <controls:CustomLabelTextBlockControl Width="180"
                                               Margin="20,280,0,0"
@@ -63,33 +61,29 @@
                                               ContentText="125"
                                               LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
-        <controls:PpcButton  Margin="530,140,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{x:Static res:InstallationApp.Start}"
-                 />
+        <controls:PpcButton Margin="530,140,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Start}" />
 
-        <controls:PpcButton  Margin="530,210,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{x:Static res:InstallationApp.Stop}"
-                 />
+        <controls:PpcButton Margin="530,210,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
         <controls:PpcSensorControl Width="180"
-                                      Margin="20,350,0,0"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
-                                      SensorState="True"
-                                      Style="{StaticResource PpcSensorControlStyle}" />
+                                   Margin="20,350,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   SensorState="True"
+                                   Text="{x:Static res:InstallationApp.ShutterSensorA}" />
 
         <controls:PpcSensorControl Width="180"
-                                      Margin="20,420,0,0"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
-                                      SensorState="False"
-                                      Style="{StaticResource PpcSensorControlStyle}" />
+                                   Margin="20,420,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   SensorState="False"
+                                   Text="{x:Static res:InstallationApp.ShutterSensorB}" />
 
         <TextBlock Width="260"
                    Height="70"

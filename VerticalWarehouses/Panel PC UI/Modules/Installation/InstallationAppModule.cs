@@ -109,7 +109,6 @@ namespace Ferretto.VW.App.Modules.Installation
             this.container.RegisterSingleton<IShutter2HeightControlViewModel, Shutter2HeightControlViewModel>();
             this.container.RegisterSingleton<IShutter3HeightControlViewModel, Shutter3HeightControlViewModel>();
             this.container.RegisterSingleton<IIdleViewModel, IdleViewModel>();
-            this.container.RegisterSingleton<IInstallationStateViewModel, InstallationStateViewModel>();
 
             this.container.RegisterSingleton<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>();
 

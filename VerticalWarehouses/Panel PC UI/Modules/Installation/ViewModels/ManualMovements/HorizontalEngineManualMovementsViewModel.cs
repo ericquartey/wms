@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public HorizontalAxisManualMovementsViewModel(
             IMachineElevatorService machineElevatorService,
-            IMachineHomingService homingService)
+            IMachineHomingProcedureService homingService)
             : base(homingService)
         {
             if (machineElevatorService == null)

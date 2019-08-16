@@ -483,18 +483,18 @@
                                      Margin="10"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Center"
-                                     LabelText="{x:Static res:General.SimulatorStarted}"
+                                     Text="{x:Static res:General.SimulatorStarted}"
                                      SensorState="{Binding InverterService.IsStartedSimulator}"
-                                     Style="{StaticResource PpcSensorControlStyle}"
+
                                      Visibility="Collapsed" />
 
             <controls:PpcSensorControl Grid.Column="2"
                                      Margin="10"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Center"
-                                     LabelText="Sicurezza"
+                                     Text="Sicurezza"
                                      SensorState="{Binding InverterService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource PpcSensorControlStyle}" />
+                                      />
 
         </Grid>
 

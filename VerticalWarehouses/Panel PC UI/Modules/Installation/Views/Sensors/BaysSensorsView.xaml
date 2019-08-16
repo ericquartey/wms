@@ -43,30 +43,20 @@
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay1}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay1}"
+                                           Text="{x:Static res:InstallationApp.LuPresentInBay}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}"
+                                           Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.HeightControlCheck}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.BarrierCalibrationBay1}"
+                                           Text="{x:Static res:InstallationApp.HeightControlCheck}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay1}"
+                                           Text="{x:Static res:InstallationApp.ShutterSensorA}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay1}"
+                                           Text="{x:Static res:InstallationApp.ShutterSensorB}" />
             </StackPanel>
 
             <StackPanel Grid.Row="1"
@@ -75,29 +65,20 @@
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay2}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay2}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay2}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay2}"
+                                           Text="{x:Static res:InstallationApp.LuPresentInBay}" />
+                
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay2}"
+                                           Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.HeightControlCheck}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay2}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.BarrierCalibrationBay2}"
+                                           Text="{x:Static res:InstallationApp.HeightControlCheck}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay2}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay2}"
+                                           Text="{x:Static res:InstallationApp.ShutterSensorA}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay2}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay2}"
+                                           Text="{x:Static res:InstallationApp.ShutterSensorB}" />
             </StackPanel>
 
             <StackPanel Grid.Row="2"
@@ -105,28 +86,20 @@
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Bay3}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LUPresentInBay3}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LUPresentMiddleBottomBay3}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.HeightControlCheck}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.BarrierCalibrationBay3}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay3}"
+                                           Text="{x:Static res:InstallationApp.LuPresentInBay}" />
+                
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay3}"
+                                           Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
+                
+                <controls:PpcSensorControl SensorState="{Binding Sensors.BarrierCalibrationBay3}"
+                                           Text="{x:Static res:InstallationApp.HeightControlCheck}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.AGLSensorAShutterBay3}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay3}"
+                                           Text="{x:Static res:InstallationApp.ShutterSensorA}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.AGLSensorBShutterBay3}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay3}"
+                                           Text="{x:Static res:InstallationApp.ShutterSensorB}" />
             </StackPanel>
         </Grid>
     </Grid>

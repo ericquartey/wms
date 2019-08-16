@@ -43,7 +43,7 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:CustomLabelTextBlockControl MaxWidth="200"
                                               Margin="610,450,0,0"
@@ -72,7 +72,7 @@
                                                    VerticalAlignment="Top"
                                                    InputText="{Binding SearchItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
-                                                   Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                    />
 
         <controls:BusyIndicator Width="40"
                                 Height="40"

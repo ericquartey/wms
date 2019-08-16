@@ -27,10 +27,6 @@
             <helpWindows:ResolutionCalibrationVerticalAxisHelpView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodels:InstallationStateViewModel}">
-            <helpWindows:HelpInstallationState />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewmodels:CellsPanelsControlViewModel}">
             <helpWindows:HelpCellsPanelControl />
         </DataTemplate>

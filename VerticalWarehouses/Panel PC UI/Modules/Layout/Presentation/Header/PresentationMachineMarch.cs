@@ -89,11 +89,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 if (this.IsMachinePoweredOn)
                 {
-                    await this.machineStatusService.ExecutePowerOffAsync();
+                    await this.machineStatusService.PowerOffAsync();
                 }
                 else
                 {
-                    await this.machineStatusService.ExecutePowerOnAsync();
+                    await this.machineStatusService.PowerOnAsync();
                 }
             }
             catch

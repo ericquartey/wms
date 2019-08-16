@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
 using Prism.Commands;
 using Prism.Events;
-using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -18,7 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineHomingService homingService;
+        private readonly IMachineHomingProcedureService homingProcedureService;
 
         private decimal? currentPosition;
 
@@ -55,15 +54,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalAxisCalibrationViewModel(
-            IMachineHomingService homingService)
+            IMachineHomingProcedureService homingProcedureService)
             : base(Services.PresentationMode.Installator)
         {
-            if (homingService == null)
+            if (homingProcedureService == null)
             {
-                throw new ArgumentNullException(nameof(homingService));
+                throw new ArgumentNullException(nameof(homingProcedureService));
             }
 
-            this.homingService = homingService;
+            this.homingProcedureService = homingProcedureService;
         }
 
         #endregion
@@ -163,33 +162,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .Unsubscribe(this.receiveHomingUpdateToken);
         }
 
-        public async Task GetParameterValuesAsync()
-        {
-            try
-            {
-                const string category = "VerticalAxis";
-                this.UpperBound = await this.homingService.GetDecimalConfigurationParameterAsync(category, "UpperBound");
-                this.LowerBound = await this.homingService.GetDecimalConfigurationParameterAsync(category, "LowerBound");
-                this.Offset = await this.homingService.GetDecimalConfigurationParameterAsync(category, "Offset");
-                this.Resolution = await this.homingService.GetDecimalConfigurationParameterAsync(category, "Resolution");
-
-                await this.homingService.NotifyCurrentAxisAxisAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         public override async Task OnNavigatedAsync()
         {
             await base.OnNavigatedAsync();
 
             this.IsBackNavigationAllowed = true;
 
-            await this.GetParameterValuesAsync();
+            await this.RetrieveProcedureInformationAsync();
 
             this.SubscribeToEvents();
+        }
+
+        public async Task RetrieveProcedureInformationAsync()
+        {
+            try
+            {
+                var procedureParameters = await this.homingProcedureService.GetProcedureParametersAsync();
+
+                this.UpperBound = procedureParameters.UpperBound;
+                this.LowerBound = procedureParameters.LowerBound;
+                this.Offset = procedureParameters.Offset;
+                this.Resolution = procedureParameters.Resolution;
+
+                await this.homingProcedureService.NotifyCurrentAxisPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private bool CanExecuteStartCommand()
@@ -213,12 +213,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
-                await this.homingService.ExecuteAsync();
+                await this.homingProcedureService.StartAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsExecutingProcedure = true;
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -228,9 +229,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.homingService.StopAsync();
+                await this.homingProcedureService.StopAsync();
 
-                this.ShowNotification(VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted);
+                this.NoteString = VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             }
             catch (Exception ex)
             {
@@ -239,6 +240,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
+                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
                 this.IsExecutingProcedure = false;
             }
         }

@@ -5,27 +5,22 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class VerticalOffsetController : ControllerBase
+    public class VerticalOffsetProcedureController : BaseAutomationController
     {
         #region Fields
 
         private readonly ICellManagmentDataLayer dataLayerCellsManagement;
 
         private readonly IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement;
-
-        private readonly IEventAggregator eventAggregator;
 
         private readonly IOffsetCalibrationDataLayer offsetCalibration;
 
@@ -35,18 +30,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public VerticalOffsetController(
+        public VerticalOffsetProcedureController(
             IEventAggregator eventAggregator,
             IConfigurationValueManagmentDataLayer configurationValueManagmentDataLayer,
             ICellManagmentDataLayer dataLayerCellsManagement,
             IVerticalAxisDataLayer verticalAxisDataLayer,
             IOffsetCalibrationDataLayer offsetCalibrationDataLayer)
+            : base(eventAggregator)
         {
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
             if (configurationValueManagmentDataLayer == null)
             {
                 throw new ArgumentNullException(nameof(configurationValueManagmentDataLayer));
@@ -67,7 +58,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(offsetCalibrationDataLayer));
             }
 
-            this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = configurationValueManagmentDataLayer;
             this.dataLayerCellsManagement = dataLayerCellsManagement;
             this.verticalAxis = verticalAxisDataLayer;
@@ -78,77 +68,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("mark-as-completed")]
-        public IActionResult MarkAsCompleted()
-        {
-            try
-            {
-                this.dataLayerConfigurationValueManagement
-                    .SetBoolConfigurationValue(
-                    (long)SetupStatus.VerticalOffsetDone,
-                    ConfigurationCategory.SetupStatus,
-                    true);
-            }
-            catch (Exception)
-            {
-                this.UnprocessableEntity();
-            }
-
-            return this.Ok();
-        }
-
-        [HttpPost("ExecutePositioning/{targetPosition}")]
-        public IActionResult ExecutePositioning(decimal targetPosition)
-        {
-            // TODO range check on targetPosition?
-
-            var speed = this.verticalAxis.MaxEmptySpeed * this.offsetCalibration.FeedRateOC;
-
-            var messageData = new PositioningMessageData(
-                Axis.Vertical,
-                MovementType.Absolute,
-                MovementMode.Position,
-                targetPosition,
-                speed,
-                this.verticalAxis.MaxEmptyAcceleration,
-                this.verticalAxis.MaxEmptyDeceleration,
-                0,
-                0,
-                0);
-
-            var commandMessage = new CommandMessage(
-                messageData,
-                "Offset Calibration Start",
-                MessageActor.FiniteStateMachines,
-                MessageActor.WebApi,
-                MessageType.Positioning);
-
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(commandMessage);
-
-            return this.Ok();
-        }
-
         [HttpPost("ExecuteStepDown")]
-        public void ExecuteStepDown()
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ExecuteStepDown()
         {
             var stepValue = this.offsetCalibration.StepValue;
 
             this.ExecuteStep(-stepValue);
+
+            return this.Accepted();
         }
 
         [HttpPost("ExecuteStepUp")]
-        public void ExecuteStepUp()
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ExecuteStepUp()
         {
             var stepValue = this.offsetCalibration.StepValue;
 
             this.ExecuteStep(stepValue);
+
+            return this.Accepted();
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<decimal> GetDecimalConfigurationParameter(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
@@ -209,9 +157,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
@@ -240,16 +189,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
         [HttpGet("GetLoadingUnitPositionParameter/{referenceCell}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<decimal> GetLoadingUnitPositionParameter(int referenceCell)
         {
             if (referenceCell <= 0)
             {
                 return this.BadRequest("Reference cell index cannot be negative or zero.");
             }
-  
+
             try
             {
                 var value = this.dataLayerCellsManagement.GetLoadingUnitPosition(referenceCell);
@@ -262,9 +213,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(404)]
         [HttpGet("GetLoadingUnitSideParameter/{category}/{parameter}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<int> GetLoadingUnitSideParameter(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
@@ -274,7 +227,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 return this.BadRequest("Specified parameter does not exist.");
             }
-            
+
             LoadingUnitPosition value;
             var cellId = this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValue((long)OffsetCalibration.ReferenceCell, ConfigurationCategory.OffsetCalibration);
 
@@ -290,44 +243,73 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("mark-as-completed")]
+        public IActionResult MarkAsCompleted()
+        {
+            this.dataLayerConfigurationValueManagement
+                .SetBoolConfigurationValue(
+                    (long)SetupStatus.VerticalOffsetDone,
+                    ConfigurationCategory.SetupStatus,
+                    true);
+
+            return this.Ok();
+        }
+
         [HttpPost]
         public IActionResult Set(decimal newOffset)
         {
-            try
-            {
-                this.dataLayerConfigurationValueManagement
-                    .SetDecimalConfigurationValue(
-                        (long)VerticalAxis.Offset,
-                        ConfigurationCategory.VerticalAxis,
-                        newOffset);
-            }
-            catch (Exception)
-            {
-                return this.UnprocessableEntity();
-            }
+            this.dataLayerConfigurationValueManagement
+                .SetDecimalConfigurationValue(
+                    (long)VerticalAxis.Offset,
+                    ConfigurationCategory.VerticalAxis,
+                    newOffset);
 
             return this.Ok();
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet("Stop")]
+        [HttpPost("start")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Start(decimal targetPosition)
+        {
+            // TODO range check on targetPosition
+
+            var speed = this.verticalAxis.MaxEmptySpeed * this.offsetCalibration.FeedRateOC;
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                MovementMode.Position,
+                targetPosition,
+                speed,
+                this.verticalAxis.MaxEmptyAcceleration,
+                this.verticalAxis.MaxEmptyDeceleration,
+                0,
+                0,
+                0);
+
+            this.PublishCommand(
+                messageData,
+                "Offset Calibration Start",
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning);
+
+            return this.Accepted();
+        }
+
+        [HttpGet("stop")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                    new CommandMessage(
-                       null,
-                       "Stop Command",
-                       MessageActor.FiniteStateMachines,
-                       MessageActor.WebApi,
-                       MessageType.Stop));
+            this.PublishCommand(
+                null,
+                "Stop Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Stop);
 
-            return this.Ok();
+            return this.Accepted();
         }
-        
 
         private void ExecuteStep(decimal displacement)
         {
@@ -350,13 +332,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 0,
                 0);
 
-            var commandMessage = new CommandMessage(
+            this.PublishCommand(
                 messageData,
                 "Offset Calibration Start",
                 MessageActor.FiniteStateMachines,
-                MessageActor.WebApi,
                 MessageType.Positioning);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
         #endregion

@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -88,7 +89,7 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public int BayId { get; private set; }
+        public int BayNumber => ConfigurationManager.AppSettings.GetBayNumber();
 
         public MissionInfo CurrentMission { get; private set; }
 
@@ -136,7 +137,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.BayId == e.BayId)
+            if (this.BayNumber == e.BayId)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -145,7 +146,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
-            if (this.BayId == e.BayId)
+            if (this.BayNumber == e.BayId)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

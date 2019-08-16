@@ -35,7 +35,7 @@
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
                                                        LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                        />
 
         <controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0"
                                                        Width="180"

@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Controls
 
             this.EventAggregator
                 .GetEvent<PresentationChangedPubSubEvent>()
-                .Publish(new PresentationChangedMessage(exception.Message));
+                .Publish(new PresentationChangedMessage(exception));
         }
 
         private void UpdatePresentation()

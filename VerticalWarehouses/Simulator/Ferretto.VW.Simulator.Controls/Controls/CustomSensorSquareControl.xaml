@@ -34,7 +34,7 @@
             <TextBlock Margin="0,1,0,0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Style="{StaticResource VWAPP_CustomControlSensor_TextBlockStyle}"
+                       Style="{StaticResource PpcSensorControlLabelStyle}"
                        Text="{Binding LabelText, FallbackValue='00'}" />
         </Grid>
 

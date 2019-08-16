@@ -16,11 +16,9 @@
                                 Height="70"
                                 Margin="13,6,13,6"
                                 Command="{Binding NavigateCommand}">
-                <Button.Content>
-                    <TextBlock Text="{Binding Description}"
+                <TextBlock Text="{Binding Description}"
                                TextAlignment="Center"
                                TextWrapping="Wrap" />
-                </Button.Content>
             </controls:PpcButton>
         </DataTemplate>
 

@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 "ShutterPositioningNotify", this.OnShutterPositioningNotify);
 
-            connection.On<NotificationMessageUI<ShutterControlMessageData>>(
+            connection.On<NotificationMessageUI<ShutterTestStatusChangedMessageData>>(
                 "ShutterControlNotify", this.OnShutterControlNotify);
 
             connection.On<NotificationMessageUI<PositioningMessageData>>(
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         /// Handler for the ShutterControl event.
         /// </summary>
         /// <param name="message"></param>
-        private void OnShutterControlNotify(NotificationMessageUI<ShutterControlMessageData> message)
+        private void OnShutterControlNotify(NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

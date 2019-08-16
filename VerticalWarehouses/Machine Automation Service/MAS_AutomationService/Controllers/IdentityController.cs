@@ -2,7 +2,6 @@
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -52,7 +51,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MachineIdentity))]
         [HttpGet]
         public ActionResult<MachineIdentity> Get()
         {
@@ -65,7 +63,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 Id = 1,
                 AreaId = 2, // TODO
-                BayId = 3, // TODO
                 Width = 3080, // TODO
                 Depth = 500, // TODO
                 ModelName = this.generalInfo.Model,

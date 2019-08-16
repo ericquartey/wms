@@ -55,7 +55,7 @@
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="450"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:OperatorApp.DrawerCompactingSpaceToRecover}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"

@@ -54,7 +54,7 @@
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025,5"
                                                      LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                      />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"

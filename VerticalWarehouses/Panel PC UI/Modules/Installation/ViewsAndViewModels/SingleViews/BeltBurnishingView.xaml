@@ -44,7 +44,7 @@
                                                  VerticalAlignment="Top"
                                                  InputText="{Binding CycleQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
 
         <controls:PpcButton  Margin="607,490,0,0"
                 HorizontalAlignment="Left"
