@@ -430,38 +430,51 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsOperationEnabled
         {
-            get => (this.statusWord & 0x0004) > 0;
+            get => (this.StatusWord & 0x0004) > 0;
             set
             {
                 if (value)
                 {
-                    this.statusWord |= 0x0004;
+                    this.StatusWord |= 0x0004;
                 }
                 else
                 {
-                    this.statusWord &= ~0x0004;
+                    this.StatusWord &= ~0x0004;
                 }
             }
         }
 
         public bool IsQuickStopTrue
         {
-            get => (this.statusWord & 0x0020) > 0;
+            get => (this.StatusWord & 0x0020) > 0;
             set
             {
                 if (value)
                 {
-                    this.statusWord |= 0x0020;
+                    this.StatusWord |= 0x0020;
                 }
                 else
                 {
-                    this.statusWord &= ~0x0020;
+                    this.StatusWord &= ~0x0020;
                 }
             }
         }
 
-        public bool IsReadyToSwitchOn => (this.statusWord & 0x0001) > 0;
-
+        public bool IsReadyToSwitchOn
+        {
+            get => (this.StatusWord & 0x0001) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0001;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0001;
+                }
+            }
+        }
         public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
@@ -473,15 +486,35 @@ namespace Ferretto.VW.Simulator.Services.Models
         public bool IsSwitchedOn
         {
             get => (this.statusWord & 0x0002) > 0;
-            set => this.statusWord |= 0x0002;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0002;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0002;
+                }
+            }
         }
 
         public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
         public bool IsVoltageEnabled
         {
-            get => (this.statusWord & 0x0010) > 0;
-            set => this.statusWord |= 0x0010;
+            get => (this.StatusWord & 0x0010) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0010;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0010;
+                }
+            }
         }
 
         public bool IsWarning => (this.statusWord & 0x0080) > 0;
@@ -539,48 +572,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void BuildHomingStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
-            //EnableOperation
-            if ((this.ControlWord & 0x0008) > 0)
-            {
-                this.StatusWord |= 0x0004;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFB;
-            }
-
             //StartHoming
             if ((this.ControlWord & 0x0010) > 0)
             {
@@ -610,49 +601,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void BuildPositionStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
-            //EnableOperation
-            if ((this.ControlWord & 0x0008) > 0)
-            {
-                this.StatusWord |= 0x0004;
-            }
-            else
-            {
-                this.StatusWord &= 0xFBFB;
-                this.positionReached = false;
-            }
-
             //New SetPoint
             if ((this.ControlWord & 0x0010) > 0)
             {
@@ -678,53 +626,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 this.StatusWord &= 0xEFFF;
             }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
-            }
         }
 
         public void BuildVelocityStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
             //EnableOperation
             if ((this.ControlWord & 0x0008) > 0)
             {
@@ -746,17 +651,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.shutterTimerActive = false;
                 }
                 this.StatusWord &= ~0x0400;
-            }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
             }
         }
 
