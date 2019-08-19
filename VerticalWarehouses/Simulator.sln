@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service", "Machine Automation Service", "{A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}"
 EndProject
@@ -40,6 +40,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Hubs", "Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj", "{26E27B6B-0492-46BA-A0BE-9B98F5D12738}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Services", "Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj", "{1EF377C1-13FF-4B9A-A5FF-F1CD19B3177E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Themes", "Panel PC UI\Themes\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj", "{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -231,6 +233,24 @@ Global
 		{1EF377C1-13FF-4B9A-A5FF-F1CD19B3177E}.Release|x64.Build.0 = Release|Any CPU
 		{1EF377C1-13FF-4B9A-A5FF-F1CD19B3177E}.Release|x86.ActiveCfg = Release|Any CPU
 		{1EF377C1-13FF-4B9A-A5FF-F1CD19B3177E}.Release|x86.Build.0 = Release|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug|x64.Build.0 = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Debug|x86.Build.0 = Debug|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Release|x64.ActiveCfg = Release|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Release|x64.Build.0 = Release|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +271,7 @@ Global
 		{33205B01-78B1-409D-B89C-A929C40D85D2} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 		{26E27B6B-0492-46BA-A0BE-9B98F5D12738} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{1EF377C1-13FF-4B9A-A5FF-F1CD19B3177E} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
+		{176ECCB1-0908-4B43-BC59-ADD65ADF64F5} = {F1C06ED8-17DC-48AE-9D64-B18455CA3231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

@@ -222,12 +222,13 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Row="0"
                                        Grid.Column="0"
-                                       Grid.ColumnSpan="3"
+                                       Grid.ColumnSpan="4"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                                        Text="{Binding InverterRole, StringFormat='INVERTER {0} '}"
@@ -251,8 +252,15 @@
                                        Grid.Column="2"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                       Text="{Binding AxisPosition, StringFormat='/ {0}'}"
-                                       ToolTip="Axis Position" />
+                                       Text="{Binding AxisPositionX, StringFormat='/ {0} '}"
+                                       ToolTip="Horizontal Position" />
+                            
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="3"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                                       Text="{Binding AxisPositionY, StringFormat='/ {0} '}"
+                                       ToolTip="Vertical Position" />
                         </Grid>
 
                     </Grid>

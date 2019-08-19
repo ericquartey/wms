@@ -50,6 +50,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         public override void Stop()
         {
             this.Logger.LogTrace("1:Method Start");
+            this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
         }
 
         /// <inheritdoc />
@@ -70,8 +71,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
             {
                 this.ParentStateMachine.ChangeState(new StopErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
-
-            this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
             if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
             {

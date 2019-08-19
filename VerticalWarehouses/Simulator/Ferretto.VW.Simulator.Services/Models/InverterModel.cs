@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -264,15 +265,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public BitModel[] controlWordArray;
 
+        private readonly Dictionary<Axis, int> axisPosition;
+
         private readonly Timer homingTimer;
 
         private readonly Timer shutterTimer;
 
         private readonly Timer targetTimer;
 
-        private int axisPosition;
-
         private int controlWord;
+
+        private Axis currentAxis;
 
         private ObservableCollection<BitModel> digitalIO = new ObservableCollection<BitModel>();
 
@@ -320,13 +323,56 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 this.digitalIO[(int)InverterSensors.ANG_OverrunElevatorSensor].Value = true;
             }
+
+            this.currentAxis = Axis.Horizontal;
+
+            this.axisPosition = new Dictionary<Axis, int>();
+            this.axisPosition.Add(Axis.Horizontal, 0);
+            this.axisPosition.Add(Axis.Vertical, 300);
+
+            this.TargetPosition = new Dictionary<Axis, int>();
+            this.TargetPosition.Add(Axis.Horizontal, 0);
+            this.TargetPosition.Add(Axis.Vertical, 0);
+
+            this.TargetAcceleration = new Dictionary<Axis, int>();
+            this.TargetAcceleration.Add(Axis.Horizontal, 0);
+            this.TargetAcceleration.Add(Axis.Vertical, 0);
+
+            this.TargetDeceleration = new Dictionary<Axis, int>();
+            this.TargetDeceleration.Add(Axis.Horizontal, 0);
+            this.TargetDeceleration.Add(Axis.Vertical, 0);
+
+            this.TargetSpeed = new Dictionary<Axis, int>();
+            this.TargetSpeed.Add(Axis.Horizontal, 0);
+            this.TargetSpeed.Add(Axis.Vertical, 0);
         }
 
         #endregion
 
         #region Properties
 
-        public int AxisPosition { get => this.axisPosition; set => this.SetProperty(ref this.axisPosition, value); }
+        public int AxisPosition
+        {
+            get => this.axisPosition[this.IsHorizontalAxis ? Axis.Horizontal : Axis.Vertical];
+            set
+            {
+                this.axisPosition[this.IsHorizontalAxis ? Axis.Horizontal : Axis.Vertical] = value;
+                this.RaisePropertyChanged(nameof(this.AxisPosition));
+
+                if (this.IsHorizontalAxis)
+                {
+                    this.RaisePropertyChanged(nameof(this.AxisPositionX));
+                }
+                else
+                {
+                    this.RaisePropertyChanged(nameof(this.AxisPositionY));
+                }
+            }
+        }
+
+        public int AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
+
+        public int AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
 
         public int ControlWord
         {
@@ -335,6 +381,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         }
 
         public BitModel[] ControlWordArray => this.controlWordArray ?? (this.controlWordArray = this.RefreshControlWordArray());
+
+        public Axis CurrentAxis { get => this.currentAxis; set => this.SetProperty(ref this.currentAxis, value); }
 
         public ObservableCollection<BitModel> DigitalIO
         {
@@ -378,16 +426,55 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        public bool IsHorizontalAxis => (this.ControlWord & 0x8000) > 0;
+
         public bool IsOperationEnabled
         {
-            get => (this.statusWord & 0x0004) > 0;
-            set => this.statusWord |= 0x0004;
+            get => (this.StatusWord & 0x0004) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0004;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0004;
+                }
+            }
         }
 
-        public bool IsQuickStopTrue => (this.statusWord & 0x0020) > 0;
+        public bool IsQuickStopTrue
+        {
+            get => (this.StatusWord & 0x0020) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0020;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0020;
+                }
+            }
+        }
 
-        public bool IsReadyToSwitchOn => (this.statusWord & 0x0001) > 0;
-
+        public bool IsReadyToSwitchOn
+        {
+            get => (this.StatusWord & 0x0001) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0001;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0001;
+                }
+            }
+        }
         public bool IsRelativeMovement => (this.ControlWord & 0x0040) > 0;
 
         public bool IsRemote => (this.statusWord & 0x0200) > 0;
@@ -399,15 +486,35 @@ namespace Ferretto.VW.Simulator.Services.Models
         public bool IsSwitchedOn
         {
             get => (this.statusWord & 0x0002) > 0;
-            set => this.statusWord |= 0x0002;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0002;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0002;
+                }
+            }
         }
 
         public bool IsSwitchOnDisabled => (this.statusWord & 0x0040) > 0;
 
         public bool IsVoltageEnabled
         {
-            get => (this.statusWord & 0x0010) > 0;
-            set => this.statusWord |= 0x0010;
+            get => (this.StatusWord & 0x0010) > 0;
+            set
+            {
+                if (value)
+                {
+                    this.StatusWord |= 0x0010;
+                }
+                else
+                {
+                    this.StatusWord &= ~0x0010;
+                }
+            }
         }
 
         public bool IsWarning => (this.statusWord & 0x0080) > 0;
@@ -437,15 +544,15 @@ namespace Ferretto.VW.Simulator.Services.Models
                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
-        public int TargetAcceleration { get; set; }
+        public Dictionary<Axis, int> TargetAcceleration { get; set; }
 
-        public int TargetDeceleration { get; set; }
+        public Dictionary<Axis, int> TargetDeceleration { get; set; }
 
-        public int TargetPosition { get; set; }
+        public Dictionary<Axis, int> TargetPosition { get; set; }
 
         public int TargetShutterPosition { get; set; }
 
-        public int TargetSpeed { get; set; }
+        public Dictionary<Axis, int> TargetSpeed { get; set; }
 
         private int homingTickCount { get; set; }
 
@@ -465,48 +572,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void BuildHomingStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
-            //EnableOperation
-            if ((this.ControlWord & 0x0008) > 0)
-            {
-                this.StatusWord |= 0x0004;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFB;
-            }
-
             //StartHoming
             if ((this.ControlWord & 0x0010) > 0)
             {
@@ -536,49 +601,6 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public void BuildPositionStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
-            //EnableOperation
-            if ((this.ControlWord & 0x0008) > 0)
-            {
-                this.StatusWord |= 0x0004;
-            }
-            else
-            {
-                this.StatusWord &= 0xFBFB;
-                this.positionReached = false;
-            }
-
             //New SetPoint
             if ((this.ControlWord & 0x0010) > 0)
             {
@@ -604,53 +626,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 this.StatusWord &= 0xEFFF;
             }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
-            }
         }
 
         public void BuildVelocityStatusWord()
         {
-            //SwitchON
-            if ((this.ControlWord & 0x0001) > 0)
-            {
-                this.StatusWord |= 0x0002;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFD;
-            }
-
-            //EnableVoltage
-            if ((this.ControlWord & 0x0002) > 0)
-            {
-                this.StatusWord |= 0x0001;
-                this.StatusWord |= 0x0010;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFFE;
-                this.StatusWord &= 0xFFEF;
-            }
-
-            //QuickStop
-            if ((this.ControlWord & 0x0004) > 0)
-            {
-                this.StatusWord |= 0x0020;
-            }
-            else
-            {
-                this.StatusWord &= 0xFFDF;
-            }
-
             //EnableOperation
             if ((this.ControlWord & 0x0008) > 0)
             {
@@ -672,17 +651,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     this.shutterTimerActive = false;
                 }
                 this.StatusWord &= ~0x0400;
-            }
-
-            //Fault Reset
-            if ((this.ControlWord & 0x0080) > 0)
-            {
-                this.StatusWord &= 0xFFBF;
-            }
-
-            //Halt
-            if ((this.ControlWord & 0x0100) > 0)
-            {
             }
         }
 
@@ -781,7 +749,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return "HeartBeat";
 
                 case 15:
-                    return "Manufacturer specific";
+                    return "Horizontal Axis";
             }
 
             return "Free";
@@ -913,7 +881,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void TargetTick(object state)
         {
             this.targetTickCount++;
-            if (this.TargetPosition > this.AxisPosition)
+            if (this.TargetPosition[this.currentAxis] > this.AxisPosition)
             {
                 this.AxisPosition++;
             }
@@ -922,7 +890,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.AxisPosition--;
             }
 
-            if (Math.Abs(this.TargetPosition - this.AxisPosition) == 0 || this.targetTickCount > 100)
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0 || this.targetTickCount > 100)
             {
                 this.ControlWord &= 0xFFEF;
                 this.StatusWord |= 0x0400;

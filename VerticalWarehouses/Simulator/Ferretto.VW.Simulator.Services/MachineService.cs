@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using NLog;
@@ -47,7 +48,7 @@ namespace Ferretto.VW.Simulator.Services
         public MachineService()
         {
             this.Inverters = new ObservableCollection<InverterModel>();
-            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0, AxisPosition = 300 });
+            this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 0 });
             this.Inverters.Add(new InverterModel(InverterType.Ang) { Id = 1, Enabled = false });
             this.Inverters.Add(new InverterModel(InverterType.Agl) { Id = 2 });
             this.Inverters.Add(new InverterModel(InverterType.Acu) { Id = 3 });
@@ -308,6 +309,7 @@ namespace Ferretto.VW.Simulator.Services
                         case InverterParameterId.ControlWordParam:
                             inverter.ControlWord = ushortPayload;
                             inverter.RefreshControlWordArray();
+                            this.UpdateInverter(inverter);
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -330,22 +332,22 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.PositionAccelerationParam:
-                            inverter.TargetAcceleration = (int)uintPayload;
+                            inverter.TargetAcceleration[inverter.CurrentAxis] = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
                         case InverterParameterId.PositionDecelerationParam:
-                            inverter.TargetAcceleration = (int)uintPayload;
+                            inverter.TargetDeceleration[inverter.CurrentAxis] = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
                         case InverterParameterId.PositionTargetPositionParam:
-                            inverter.TargetPosition = this.Impulses2millimeters((int)uintPayload);
+                            inverter.TargetPosition[inverter.CurrentAxis] = this.Impulses2millimeters((int)uintPayload);
                             result = client.Client.Send(extractedMessage);
                             break;
 
                         case InverterParameterId.PositionTargetSpeedParam:
-                            inverter.TargetSpeed = (int)uintPayload;
+                            inverter.TargetSpeed[inverter.CurrentAxis] = (int)uintPayload;
                             result = client.Client.Send(extractedMessage);
                             break;
 
@@ -355,6 +357,7 @@ namespace Ferretto.VW.Simulator.Services
                             break;
 
                         case InverterParameterId.StatusWordParam:
+                            this.UpdateInverter(inverter);
                             switch (inverter.OperationMode)
                             {
                                 case InverterOperationMode.Homing:
@@ -403,7 +406,7 @@ namespace Ferretto.VW.Simulator.Services
                             }
                             break;
                     }
-                    this.UpdateInverter(inverter);
+
                     Thread.Sleep(DELAY_INVERTER_CLIENT);
                 }
             }
@@ -484,24 +487,34 @@ namespace Ferretto.VW.Simulator.Services
 
         private void UpdateInverter(InverterModel inverter)
         {
-            if ((inverter.ControlWord & 0x0080) > 0)            // Reset fault
+            if ((inverter.ControlWord & 0x0100) > 0)       // Halt
+            {
+                inverter.IsFault = true;
+            }
+            else if ((inverter.ControlWord & 0x0080) > 0)   // Reset fault
             {
                 inverter.IsFault = false;
             }
-            else if ((inverter.ControlWord & 0x0001) > 0)       // Switch On
+
+            // Switch On
+            inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
+            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0;
+
+            // Enable Voltage
+            inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;
+
+            // Quick Stop
+            inverter.IsQuickStopTrue = (inverter.ControlWord & 0x0004) > 0;
+            if (!inverter.IsQuickStopTrue)                      // Quick stop
             {
-                inverter.IsSwitchedOn = true;
+                inverter.IsOperationEnabled = false;
+            }
+            else
+            {
+                inverter.IsOperationEnabled = (inverter.ControlWord & 0x0008) > 0;   // Enable Operation
             }
 
-            if ((inverter.ControlWord & 0x0002) > 0)            // Enable Voltage
-            {
-                inverter.IsVoltageEnabled = true;
-            }
-
-            if ((inverter.ControlWord & 0x0003) > 0)            // Enable Operation
-            {
-                inverter.IsOperationEnabled = true;
-            }
+            inverter.CurrentAxis = (inverter.IsHorizontalAxis) ? Axis.Horizontal : Axis.Vertical;
         }
 
         private void UpdateRemoteIO(IODeviceModel device)

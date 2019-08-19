@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         public override void Start()
         {
-            if(this.InverterStatus == null)
+            if (this.InverterStatus == null)
             {
                 this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, null, this.inverterIndex, this.Logger));
             }
@@ -75,7 +75,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                 this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
                 this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
-
             }
         }
 
@@ -110,7 +109,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
             else if (this.InverterStatus.CommonControlWord.FaultReset)
             {
                 // reset command FaultReset bit before exiting the state machine
-                this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
                 this.InverterStatus.CommonControlWord.FaultReset = false;
 
@@ -122,15 +120,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
                 returnValue = true;
             }
-            else 
+            else
             {
-                this.InverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
                 this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
                 returnValue = true;
             }
-
-
 
             return returnValue;
         }
