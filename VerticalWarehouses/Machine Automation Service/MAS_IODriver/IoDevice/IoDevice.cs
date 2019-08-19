@@ -5,6 +5,8 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.IODriver.Enumerations;
 using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.IoDevice.Interfaces;
@@ -47,6 +49,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         private readonly int port;
 
+        private readonly Timer publishIoTimer;
+
         private readonly ISHDTransport shdTransport;
 
         private readonly CancellationToken stoppingToken;
@@ -60,8 +64,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
         private bool forceIoStatusPublish;
 
         private Timer pollIoTimer;
-
-        private Timer publishIoTimer;
 
         private byte[] receiveBuffer;
 
@@ -101,12 +103,45 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
 
         #endregion
 
+        #region Properties
+
+        private IIoStateMachine CurrentStateMachine
+        {
+            get => this.currentStateMachine;
+            set
+            {
+                if (this.currentStateMachine != value)
+                {
+                    this.currentStateMachine = value;
+                }
+
+                string objectName = string.Empty;
+                if (this.currentStateMachine != null)
+                {
+                    objectName = this.currentStateMachine.GetType().Name;
+                }
+
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, objectName, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    (!string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null"),
+                    MessageActor.Any,
+                    MessageActor.IoDriver,
+                    MessageType.MachineStatusActive,
+                    MessageStatus.OperationStart);
+
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         public void DestroyStateMachine()
         {
-            this.currentStateMachine?.Dispose();
-            this.currentStateMachine = null;
+            this.CurrentStateMachine?.Dispose();
+            this.CurrentStateMachine = null;
         }
 
         public async Task ReceiveIoDataTaskFunction()
@@ -151,7 +186,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         continue;
                     }
-                  
+
                     var message = new IoSHDWriteMessage(
                         this.ioSHDStatus.ComunicationTimeOut,
                         this.ioSHDStatus.UseSetupOutputLines,
@@ -297,30 +332,30 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                                 this.forceIoStatusPublish = false;
                             }
 
-                        var messageData = new IoSHDReadMessage(
-                            formatDataOperation,
-                            fwRelease,
-                            inputData,
-                            outputData,
-                            configurationData,
-                            errorCode);
-                        this.logger.LogTrace($"4:{messageData}: index {this.index}");
+                            var messageData = new IoSHDReadMessage(
+                                formatDataOperation,
+                                fwRelease,
+                                inputData,
+                                outputData,
+                                configurationData,
+                                errorCode);
+                            this.logger.LogTrace($"4:{messageData}: index {this.index}");
 
-                            this.currentStateMachine?.ProcessResponseMessage(messageData);
+                            this.CurrentStateMachine?.ProcessResponseMessage(messageData);
                             break;
 
                         case SHDFormatDataOperation.Ack:
 
-                        var messageConfig = new IoSHDReadMessage(
-                            formatDataOperation,
-                            fwRelease,
-                            inputData,
-                            outputData,
-                            configurationData,
-                            errorCode);
-                        this.logger.LogTrace($"4: Configuration message={messageConfig}: index {this.index}");
+                            var messageConfig = new IoSHDReadMessage(
+                                formatDataOperation,
+                                fwRelease,
+                                inputData,
+                                outputData,
+                                configurationData,
+                                errorCode);
+                            this.logger.LogTrace($"4: Configuration message={messageConfig}: index {this.index}");
 
-                            this.currentStateMachine?.ProcessResponseMessage(messageConfig);
+                            this.CurrentStateMachine?.ProcessResponseMessage(messageConfig);
                             break;
 
                         default:
@@ -366,18 +401,18 @@ namespace Ferretto.VW.MAS.IODriver.IoDevice
                                         telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
                                         await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"3:message={shdMessage}: index {this.index}");
-                        }
-                        break;
+                                        this.logger.LogTrace($"3:message={shdMessage}: index {this.index}");
+                                    }
+                                    break;
 
                                 case SHDCodeOperation.Configuration:
                                     {
                                         telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
                                         await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"4:message={shdMessage}: index {this.index}");
-                        }
-                        break;
+                                        this.logger.LogTrace($"4:message={shdMessage}: index {this.index}");
+                                    }
+                                    break;
 
                                 case SHDCodeOperation.SetIP:
                                     {

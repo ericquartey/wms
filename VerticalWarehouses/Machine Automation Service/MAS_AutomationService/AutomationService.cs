@@ -308,6 +308,15 @@ namespace Ferretto.VW.MAS.AutomationService
                     case MessageType.InverterStatusWord:
                         this.InverterStatusWordMethod(receivedMessage);
                         break;
+
+                    case MessageType.MachineStateActive:
+                        this.MachineStateActiveMethod(receivedMessage);
+                        break;
+
+                    case MessageType.MachineStatusActive:
+                        this.MachineStatusActiveMethod(receivedMessage);
+                        break;
+
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);

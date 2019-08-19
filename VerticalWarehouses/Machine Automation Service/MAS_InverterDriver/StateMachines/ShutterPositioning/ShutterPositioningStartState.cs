@@ -54,45 +54,45 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 if (aglStatus.ShutterType == ShutterType.Shutter2Type && this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
                 {
-                    this.Logger.LogTrace($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
+                    this.Logger.LogError($"2:Error unavailable position for shutter {this.InverterStatus.SystemIndex}");
 
-                    var errorShutterPosition = new FieldNotificationMessage(
-                        this.shutterPositionData,
-                        "Shutter Position destination is not available",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.ShutterPositioning,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Error);
-
-                    this.ParentStateMachine.PublishNotificationEvent(errorShutterPosition);
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
 
                     return;
                 }
 
                 if (aglStatus.CurrentShutterPosition == this.shutterPositionData.ShutterPosition)
                 {
-                    this.Logger.LogTrace($"3:Warning position {this.shutterPositionData.ShutterPosition} already reached for shutter {this.InverterStatus.SystemIndex}");
+                    this.Logger.LogWarning($"3:Warning position {this.shutterPositionData.ShutterPosition} already reached for shutter {this.InverterStatus.SystemIndex}");
 
                     // TEMP If the shutter is already in the shutter position target, don't notify an error condition
-                    var messageShutterPosition = new FieldNotificationMessage(
-                        this.shutterPositionData,
-                        "Shutter Position is already reached",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.ShutterPositioning,
-                        MessageStatus.OperationEnd,
-                        ErrorLevel.NoError);
-
-                    this.ParentStateMachine.PublishNotificationEvent(messageShutterPosition);
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
 
                     return;
                 }
             }
+            this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
+
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.InverterStatus.OperatingMode);
+
+            this.Logger.LogTrace($"4:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            var notificationMessage = new FieldNotificationMessage(
+                this.shutterPositionData,
+                $"Shutter Positioning Start",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.ShutterPositioning,
+                MessageStatus.OperationStart);
+            this.Logger.LogDebug("Inverter Shutter Positioning Start State Start");
+
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
             var message = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition);
             var byteMessage = message.GetWriteMessage();
-            this.Logger.LogTrace($"4:inverterMessage={message}");
+            this.Logger.LogTrace($"5:inverterMessage={message}");
             this.ParentStateMachine.EnqueueMessage(message);
         }
 

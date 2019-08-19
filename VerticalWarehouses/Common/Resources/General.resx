@@ -256,4 +256,7 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
 </root>

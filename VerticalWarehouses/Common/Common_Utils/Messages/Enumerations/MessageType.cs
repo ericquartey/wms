@@ -23,6 +23,11 @@
         CalibrateAxis,
 
         ShutterTestStatusChanged,
+        MachineStateActive,
+
+        MachineStatusActive,
+
+        ShutterControl,
 
         NewMissionAvailable,
 

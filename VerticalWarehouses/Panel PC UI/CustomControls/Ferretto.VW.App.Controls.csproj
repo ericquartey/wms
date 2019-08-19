@@ -49,6 +49,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\CustomMainWindowDebugButton.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
@@ -56,6 +60,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\CustomMainWindowDebugButton.xaml.cs">
+      <DependentUpon>CustomMainWindowDebugButton.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\PpcIcon.xaml.cs">
       <DependentUpon>PpcIcon.xaml</DependentUpon>
     </Compile>

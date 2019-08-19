@@ -58,9 +58,9 @@ namespace Ferretto.VW.MAS.IODriver
             IConfigurationValueManagmentDataLayer dataLayerConfigurationValueManagement,
             IVertimagConfigurationDataLayer vertimagConfiguration,
             ILogger<HostedSHDIoDriver> logger,
-            IConfiguration configuration )
+            IConfiguration configuration)
         {
-            logger.LogTrace( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
@@ -73,8 +73,8 @@ namespace Ferretto.VW.MAS.IODriver
             this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
-            this.commandReceiveTask = new Task( () => this.CommandReceiveTaskFunction() );
-            this.notificationReceiveTask = new Task( async () => await this.NotificationReceiveTaskFunction() );
+            this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
+            this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
         }
@@ -85,14 +85,14 @@ namespace Ferretto.VW.MAS.IODriver
 
         ~HostedSHDIoDriver()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
-        protected void Dispose( bool disposing )
+        protected void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -107,11 +107,11 @@ namespace Ferretto.VW.MAS.IODriver
             this.disposed = true;
         }
 
-        protected override Task ExecuteAsync( CancellationToken stoppingToken )
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
-            this.logger.LogDebug( "1:Starting Tasks" );
+            this.logger.LogDebug("1:Starting Tasks");
             try
             {
                 this.commandReceiveTask.Start();
@@ -119,9 +119,9 @@ namespace Ferretto.VW.MAS.IODriver
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical( $"2:Exception: {ex.Message} while starting service threads" );
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage( new IoExceptionFieldMessageData( ex, "IO Driver Exception", 0 ) );
+                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0));
             }
 
             return Task.CompletedTask;
@@ -134,17 +134,17 @@ namespace Ferretto.VW.MAS.IODriver
                 FieldCommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue( Timeout.Infinite, this.stoppingToken, out receivedMessage );
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace( $"1:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}" );
+                    this.logger.LogTrace($"1:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug( "2:Method End - Operation Canceled" );
+                    this.logger.LogDebug("2:Method End - Operation Canceled");
 
                     return;
                 }
-                this.logger.LogTrace( $"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}" );
+                this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
 
                 IoIndex currentDevice;
                 switch (receivedMessage.Type)
@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.IODriver
                         switch (receivedMessage.DeviceIndex)
                         {
                             case (byte)IoIndex.IoDevice1:
-                                this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis( receivedMessage );
+                                this.ioDevices[IoIndex.IoDevice1].ExecuteSwitchAxis(receivedMessage);
                                 break;
 
                             default:
@@ -162,13 +162,13 @@ namespace Ferretto.VW.MAS.IODriver
                         break;
 
                     case FieldMessageType.IoReset:
-                        currentDevice = Enum.Parse<IoIndex>( receivedMessage.DeviceIndex.ToString() );
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
                         this.ioDevices[currentDevice].ExecuteIoReset();
                         break;
 
                     case FieldMessageType.SensorsChanged:
-                        currentDevice = Enum.Parse<IoIndex>( receivedMessage.DeviceIndex.ToString() );
-                        this.ioDevices[currentDevice].ExecuteSensorsStateUpdate( receivedMessage );
+                        currentDevice = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        this.ioDevices[currentDevice].ExecuteSensorsStateUpdate(receivedMessage);
                         break;
 
                     case FieldMessageType.ResetSecurity:
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.IODriver
             var ioDevicesList = this.vertimagConfiguration.GetInstalledIoList();
             IIoDevice ioDevice = null;
 
-            var useMockedTransport = this.configuration.GetValue<bool>( "Vertimag:RemoteIODriver:UseMock" );
+            var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
 
             foreach (var ioIndex in ioDevicesList)
             {
@@ -231,29 +231,29 @@ namespace Ferretto.VW.MAS.IODriver
                         break;
                 }
 
-                this.ioDevices.Add( ioIndex, ioDevice );
+                this.ioDevices.Add(ioIndex, ioDevice);
             }
         }
 
         private void InitializeMethodSubscriptions()
         {
-            this.logger.LogTrace( "1:Commands Subscription" );
+            this.logger.LogTrace("1:Commands Subscription");
 
             var commandEvent = this.eventAggregator.GetEvent<FieldCommandEvent>();
             commandEvent.Subscribe(
-                commandMessage => { this.commandQueue.Enqueue( commandMessage ); },
+                commandMessage => { this.commandQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
                 false,
-                commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any );
+                commandMessage => commandMessage.Destination == FieldMessageActor.IoDriver || commandMessage.Destination == FieldMessageActor.Any);
 
-            this.logger.LogTrace( "1:Notifications Subscription" );
+            this.logger.LogTrace("1:Notifications Subscription");
 
             var notificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
             notificationEvent.Subscribe(
-                notificationMessage => { this.notificationQueue.Enqueue( notificationMessage ); },
+                notificationMessage => { this.notificationQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
                 false,
-                notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any );
+                notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
         }
 
         private async Task NotificationReceiveTaskFunction()
@@ -263,16 +263,16 @@ namespace Ferretto.VW.MAS.IODriver
                 FieldNotificationMessage receivedMessage;
                 try
                 {
-                    this.notificationQueue.TryDequeue( Timeout.Infinite, this.stoppingToken, out receivedMessage );
-                    this.logger.LogTrace( $"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}" );
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug( "2:Method End operation cancelled" );
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
-                this.logger.LogTrace( $"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}" );
+                this.logger.LogTrace($"Notification received: {receivedMessage.Type}, {receivedMessage.Status}, destination: {receivedMessage.Destination}");
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
@@ -303,7 +303,7 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void SendMessage( IFieldMessageData messageData )
+        private void SendMessage(IFieldMessageData messageData)
         {
             var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
             messageData,
@@ -312,9 +312,9 @@ namespace Ferretto.VW.MAS.IODriver
             FieldMessageActor.IoDriver,
             FieldMessageType.IoDriverException,
             MessageStatus.OperationError,
-            ErrorLevel.Critical );
+            ErrorLevel.Critical);
 
-            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish( inverterUpdateStatusErrorNotification );
+            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
         }
 
         private async Task StartHardwareCommunications()

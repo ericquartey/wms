@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
@@ -83,7 +84,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            this.IsBusy = true;
+            //this.IsBusy = true;
 
             try
             {
@@ -93,7 +94,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 }
                 else
                 {
-                    await this.machineStatusService.PowerOnAsync();
+                    var messageBoxResult = System.Windows.MessageBox.Show("Confirmation operation?", "March", System.Windows.MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        await this.machineStatusService.PowerOnAsync();
+                    }
+                    else
+                    {
+                        this.IsBusy = false;
+                    }
                 }
             }
             catch

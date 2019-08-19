@@ -344,7 +344,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
             this.logger.LogTrace("1:Method Start");
 
             // Send a field message to force the Update of sensors (input lines) to InverterDriver
-            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, false, 0);
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, true, 0);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
                 "Update Inverter digital input status",
@@ -416,7 +416,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                     this.serviceScopeFactory,
                     this.machineSensorsStatus);
 
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.logger.LogDebug($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {

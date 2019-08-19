@@ -16,11 +16,12 @@
                                 Height="70"
                                 Margin="13,6,13,6"
                                 Command="{Binding NavigateCommand}">
-                <TextBlock Text="{Binding Description}"
+                <TextBlock FontSize="{DynamicResource PpcButtonFontSize}"
+                           Foreground="{DynamicResource PpcButtonForeground}"
+                           Text="{Binding Description}"
                                TextAlignment="Center"
                                TextWrapping="Wrap" />
             </controls:PpcButton>
         </DataTemplate>
-
     </ItemsControl.ItemTemplate>
 </ItemsControl>
