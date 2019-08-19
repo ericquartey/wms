@@ -28,21 +28,21 @@
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="125"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,210,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="175"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,280,0,0"
                                                     Width="180"
                                                     Highlighted="True" IsEnabled="True"
                                                     InputText="-2,5"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
 
         <controls:CustomLabelTextBlockControl    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"

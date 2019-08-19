@@ -34,25 +34,17 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.VerticalAxis}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.ExtraRunElevator}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ExtraRunElevator}"
+                                           Text="{x:Static res:InstallationApp.EmergencyEndRun}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.ZeroVerticalSensor}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroVerticalSensor}"
+                                           Text="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.ElevatorEngineSelectedBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ElevatorEngineSelectedBay1}"
+                                           Text="{x:Static res:InstallationApp.ElevatorEngineSelected}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.CradleEngineSelected}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.CradleEngineSelectedBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.CradleEngineSelectedBay1}"
+                                           Text="{x:Static res:InstallationApp.CradleEngineSelected}" />
 
             </StackPanel>
 
@@ -62,20 +54,14 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{x:Static res:InstallationApp.Cradle}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.ZeroPawlSensor}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensor}"
+                                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LuPresentInMachineSideBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInMachineSideBay1}"
+                                           Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
 
-                <controls:PpcSensorControl LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
-                                           SensorPort="{x:Static iom:IOMachineSensors.LuPresentInOperatorSideBay1}"
-                                           Sensors="{Binding SensorsStates}"
-                                           Style="{StaticResource PpcSensorControlStyle}" />
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInOperatorSideBay1}"
+                                           Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
             </StackPanel>
         </Grid>
     </Grid>

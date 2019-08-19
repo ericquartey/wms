@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.FiniteStateMachines.Interface;
@@ -18,7 +17,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         private readonly ILogger logger;
 
-        private readonly IShutterControlMessageData shutterControlMessageData;
+        private readonly IShutterTestStatusChangedMessageData shutterControlMessageData;
 
         private bool disposed;
 
@@ -32,7 +31,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
 
         public ShutterControlStateMachine(
             IEventAggregator eventAggregator,
-            IShutterControlMessageData shutterControlMessageData,
+            IShutterTestStatusChangedMessageData shutterControlMessageData,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
@@ -121,10 +120,10 @@ namespace Ferretto.VW.MAS.FiniteStateMachines.ShutterControl
         {
             this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == MessageType.ShutterControl && message.Status == MessageStatus.OperationExecuting)
+            if (message.Type == MessageType.ShutterTestStatusChanged && message.Status == MessageStatus.OperationExecuting)
             {
                 //TEMP Update the number of executed cycles so far
-                if (message.Data is ShutterControlMessageData s)
+                if (message.Data is IShutterTestStatusChangedMessageData s)
                 {
                     s.ExecutedCycles = this.numberOfExecutedCycles;
                 }

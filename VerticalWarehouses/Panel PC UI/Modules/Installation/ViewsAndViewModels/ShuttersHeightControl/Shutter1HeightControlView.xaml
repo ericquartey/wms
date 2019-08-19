@@ -7,50 +7,66 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
-    <Grid    Width="1024"
-             Height="608">
+    <Grid Width="1024"
+          Height="608">
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,30,0,0"
+        <TextBlock Margin="160,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate1HeightControl}"/>
+                   Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
 
-        <controls:PpcTextBox    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
-                                                    InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+        <controls:PpcTextBox Margin="160,140,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,140,0,0"
-                                                ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.Tolerance}"/>
+        <controls:CustomLabelTextBlockControl Margin="700,140,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.Tolerance}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,140,0,0"
-                                                ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.SystemErrorMM}"  />
+        <controls:CustomLabelTextBlockControl Margin="410,140,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,260,0,0"
-                                                ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+        <controls:CustomLabelTextBlockControl Margin="160,260,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,260,0,0"
-                                                ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+        <controls:CustomLabelTextBlockControl Margin="700,260,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.GateCorrection}" />
 
-        <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="160,360,0,0"
-                                                ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.Output}" />
+        <controls:CustomLabelTextBlockControl Margin="160,360,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.Output}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,490,0,0"
-                    Content="{x:Static res:InstallationApp.Start}"
-                      />
+        <controls:PpcButton Margin="410,490,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Start}" />
 
-        <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="700,490,0,0"
-                    Content="{x:Static res:InstallationApp.Stop}"
-                     />
+        <controls:PpcButton Margin="700,490,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
-        <controls:PpcSensorControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,260,0,0"
-                                      LabelText="{x:Static res:InstallationApp.Gate1HeightReaced}"
-                                      SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource PpcSensorControlStyle}" />
+        <controls:PpcSensorControl Margin="410,260,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   SensorState="{Binding LuPresentInBay}"
+                                   Text="{x:Static res:InstallationApp.Gate1HeightReaced}" />
 
     </Grid>
 </UserControl>

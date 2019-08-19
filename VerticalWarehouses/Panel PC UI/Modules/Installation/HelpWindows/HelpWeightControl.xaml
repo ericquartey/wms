@@ -39,7 +39,7 @@
                                                      Width="180"
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="250,0"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                      LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
 
         <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,280,0,0" Width="180"
@@ -50,7 +50,7 @@
                                                        Width="180"
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="80,5"
-                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                        LabelText="{x:Static res:InstallationApp.TestRun}" />
 
         <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,350,0,0" Width="180"

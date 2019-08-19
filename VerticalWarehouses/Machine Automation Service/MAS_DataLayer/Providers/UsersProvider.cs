@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public int? Authenticate(string userName, string password)
         {
             var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
             if (user != null
                 &&
                 IsPasswordValid(password, user))
@@ -96,7 +97,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return salt;
         }
 
-        private static bool IsPasswordValid(string password, DataModels.User user)
+        private static bool IsPasswordValid(string password, User user)
         {
             var providedPasswordHash = GeneratePasswordHash(password, user.PasswordSalt);
 

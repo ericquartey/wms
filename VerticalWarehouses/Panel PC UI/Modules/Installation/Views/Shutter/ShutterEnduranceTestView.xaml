@@ -1,96 +1,85 @@
-﻿<controls1:View x:Class="Ferretto.VW.App.Installation.Views.ShutterEnduranceTestView"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-                xmlns:controls1="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:prism="http://prismlibrary.com/"
-                xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-                prism:ViewModelLocator.AutoWireViewModel="True"
-                mc:Ignorable="d">
-    <Grid>
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ShutterEnduranceTestView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="130,30,130,10">
 
-        <TextBlock Grid.Row="0"
-                   Margin="260,30,0,0"
-                   HorizontalAlignment="Left"
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.Gate1Control}" />
+                   Text="{Binding BayNumber, StringFormat={x:Static res:InstallationApp.ShutterEnduranceTestTitle}}" />
 
-        <controls:PpcTextBox Margin="260,170,0,0"
+        <controls:PpcTextBox Grid.Row="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             InputText="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.RequiredCicles}"
-                             Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                             InputText="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
-        <controls:PpcTextBox Margin="560,170,0,0"
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             InputText="{Binding DelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
-                             Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                             InputText="{Binding InputDelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
-        <controls:CustomLabelTextBlockControl Margin="260,300,0,0"
+
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+
+            <controls:PpcSensorControl SensorState="{Binding Sensors.Open}"
+                                       Text="{x:Static res:InstallationApp.ShutterOpen}" />
+            <!--  - optional sensor  -->
+            <controls:PpcSensorControl SensorState="{Binding Sensors.MidWay}"
+                                       Text="{x:Static res:InstallationApp.ShutterMidWay}" />
+
+            <controls:PpcSensorControl SensorState="{Binding Sensors.Closed}"
+                                       Text="{x:Static res:InstallationApp.ShutterClosed}" />
+
+        </StackPanel>
+
+        <controls:CustomLabelTextBlockControl Grid.Row="3"
+                                              Margin="0,20,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
+                                              ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
 
-        <Grid Width="200"
-              Height="180"
-              Margin="560,240,0,0"
-              HorizontalAlignment="Left"
-              VerticalAlignment="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <controls:PpcSensorControl Grid.Row="0"
-                                       Margin="0,2,0,2"
-                                       BulletColor="{StaticResource FerrettoGreen}"
-                                       LabelText="{x:Static res:InstallationApp.Open}" />
-            <!--  - optional sensor  -->
-            <controls:PpcSensorControl Grid.Row="1"
-                                       Margin="0,2,0,2"
-                                       BulletColor="{StaticResource FerrettoMediumGray}"
-                                       LabelText="{x:Static res:InstallationApp.Middle}" />
-            <controls:PpcSensorControl Grid.Row="2"
-                                       Margin="0,2,0,2"
-                                       BulletColor="{StaticResource FerrettoMediumGray}"
-                                       LabelText="{x:Static res:InstallationApp.Closed}" />
-
-        </Grid>
-
-        <controls:PpcButton Grid.Column="0"
-                            Margin="560,450,0,0"
+        <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StartButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
-                            IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Command="{Binding StartCommand}"
+                            Content="{x:Static res:InstallationApp.Start}" />
 
-        <controls:PpcButton Margin="260,450,0,0"
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Command="{Binding StopButtonCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
-                            IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        <controls:PpcSensorControl Margin="560,290,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   LabelText="{x:Static res:InstallationApp.ShutterSensorA}"
-                                   SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource PpcSensorControlStyle}" />
-
-        <controls:PpcSensorControl Margin="560,330,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   LabelText="{x:Static res:InstallationApp.ShutterSensorB}"
-                                   SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource PpcSensorControlStyle}" />
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
     </Grid>
-</controls1:View>
+
+</ctrls:View>

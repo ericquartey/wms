@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineVerticalOffsetService verticalOffsetService;
+        private readonly IMachineVerticalOffsetProcedureService verticalOffsetService;
 
         private ICommand acceptOffsetCommand;
 
@@ -52,7 +52,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public VerticalOffsetCalibrationViewModel(IMachineVerticalOffsetService verticalOffsetService)
+        public VerticalOffsetCalibrationViewModel(IMachineVerticalOffsetProcedureService verticalOffsetService)
             : base(Services.PresentationMode.Installator)
         {
             if (verticalOffsetService == null)
@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.verticalOffsetService.ExecutePositioningAsync(this.ReferenceCellHeight.Value);
+                await this.verticalOffsetService.StartAsync(this.ReferenceCellHeight.Value);
             }
             catch (Exception ex)
             {
@@ -213,12 +213,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public void ExecuteStepDownCommand()
         {
-            // TODO implement missing feature
+            throw new NotImplementedException();
         }
 
         public void ExecuteStepUpCommand()
         {
-            // TODO implement missing feature
+            throw new NotImplementedException();
         }
 
         public async Task GetParameterValuesAsync()
@@ -274,7 +274,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public void PositioningDone(bool result)
         {
-            // TODO implement missing feature
+            throw new NotImplementedException();
         }
 
         private async Task TriggerSearchAsync()

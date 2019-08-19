@@ -7,7 +7,7 @@
               mc:Ignorable="d">
     <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-            <StackPanel Orientation="Vertical" />
+            <StackPanel Orientation="{Binding Orientation}" />
         </ItemsPanelTemplate>
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>

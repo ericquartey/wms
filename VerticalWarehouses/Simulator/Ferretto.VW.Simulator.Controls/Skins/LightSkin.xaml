@@ -2,21 +2,21 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightSkinGeneral.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightVarious.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightSkinImages.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightActionButton.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightNavigationButton.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightNavigationRepeatButton.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightMainWindowUserComboBox.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightCustomControlInputFieldFocusable.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightSkinGeneral.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightVarious.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightSkinImages.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightActionButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightNavigationButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightNavigationRepeatButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightMainWindowUserComboBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlInputFieldFocusable.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/LightCustomControlSensor.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightCustomLabelTextBlock.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomLabelTextBlock.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/LightCustomLabelTextBlock.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightCustomMainWindowErrorButton.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightCustomMainWindowToggleButton.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightCustomControlLoggedUser.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/LightCustomControlDataGrid.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomMainWindowErrorButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomMainWindowToggleButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlLoggedUser.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlDataGrid.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Skins/Shared.xaml" />
 
     </ResourceDictionary.MergedDictionaries>

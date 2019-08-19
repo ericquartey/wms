@@ -50,8 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                // TODO get machine id
-                var machineId = 1;
+                var machineId = 1; // TODO get WMS machine id
                 var machine = await this.machinesDataService.GetByIdAsync(machineId);
 
                 statics.AreaFillPercentage = machine.AreaFillRate;

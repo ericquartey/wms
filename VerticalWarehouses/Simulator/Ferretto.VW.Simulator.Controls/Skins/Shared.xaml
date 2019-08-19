@@ -20,6 +20,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/PpcButtonTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.Simulator.Controls;Component/Templates/ActionButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/RepeatButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/PpcSensorControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineModeToggleButton_Template.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomMachineOnMarchToggleButton_Template.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Templates/CustomInputText_TextBoxTemplate.xaml" />

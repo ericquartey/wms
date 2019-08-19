@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -14,7 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineShutterService shutterService;
+        private readonly IMachineShuttersService shuttersService;
 
         private bool canExecuteMoveDownCommand;
 
@@ -39,16 +40,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ShutterEngineManualMovementsViewModel(
-            IMachineShutterService shutterService,
-            IMachineHomingService homingService)
+            IMachineShuttersService shuttersService,
+            IMachineHomingProcedureService homingService,
+            IBayManager bayManager)
             : base(homingService)
         {
-            if (shutterService == null)
+            if (shuttersService == null)
             {
-                throw new System.ArgumentNullException(nameof(shutterService));
+                throw new System.ArgumentNullException(nameof(shuttersService));
             }
 
-            this.shutterService = shutterService;
+            if (bayManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManager));
+            }
+
+            this.shuttersService = shuttersService;
+            this.BayNumber = bayManager.BayNumber;
 
             this.RefreshCanExecuteCommands();
         }
@@ -56,6 +64,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public int BayNumber { get; }
 
         public bool CanExecuteMoveDownCommand
         {
@@ -187,7 +197,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsStopping = true;
 
-                await this.shutterService.StopAsync();
+                await this.shuttersService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -211,7 +221,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.shutterService.ExecutePositioningAsync(messageData);
+                await this.shuttersService.MoveAsync(this.BayNumber, messageData);
             }
             catch (System.Exception ex)
             {

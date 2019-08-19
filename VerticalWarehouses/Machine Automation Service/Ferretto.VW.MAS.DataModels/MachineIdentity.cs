@@ -6,8 +6,6 @@
 
         public int AreaId { get; set; }
 
-        public int BayId { get; set; }
-
         public decimal Depth { get; set; }
 
         public int Id { get; set; }

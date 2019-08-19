@@ -32,8 +32,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.StepValue}"
-                             Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                             LabelText="{x:Static res:InstallationApp.StepValue}" />
 
         <controls:CustomLabelTextBlockControl Margin="410,430,0,0"
                                               HorizontalAlignment="Left"
@@ -45,8 +44,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputText="{Binding InputCorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.CorrectOffset}"
-                             Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                             LabelText="{x:Static res:InstallationApp.CorrectOffset}" />
 
         <controls:PpcButton Margin="680,120,0,0"
                             HorizontalAlignment="Left"

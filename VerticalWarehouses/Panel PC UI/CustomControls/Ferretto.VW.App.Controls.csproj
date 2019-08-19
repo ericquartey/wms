@@ -42,6 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Skins\Palette.xaml" />
+    <None Remove="Styles\Styles.xaml" />
+    <None Remove="Templates\PpcSensorControlTemplate.xaml" />
+    <None Remove="Templates\Templates.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Controls\CustomMainWindowDebugButton.xaml" />
   </ItemGroup>
 

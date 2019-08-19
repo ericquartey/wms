@@ -1,53 +1,49 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs.EventArgs;
-using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ShutterEnduranceTestViewModel : BaseMainViewModel
+    public class ShutterEnduranceTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
-        private int completedCycles;
+        private readonly IMachineShuttersService shuttersService;
 
-        private int delayBetweenCycles;
+        private readonly IMachineTestService testService;
 
-        private bool canExecuteStartCommand = true;
+        private int bayNumber;
 
-        private bool canExecuteStopCommand;
+        private int? completedCycles;
+
+        private int? inputDelayBetweenCycles;
+
+        private int? inputRequiredCycles;
+
+        private bool isExecutingProcedure;
+
+        private bool isWaitingForResponse;
 
         private SubscriptionToken receivedActionUpdateCompletedToken;
 
         private SubscriptionToken receivedActionUpdateErrorToken;
 
-        private int requiredCycles;
+        private readonly ShutterSensors sensors;
 
-        private IViewModel sensorRegion;
+        private DelegateCommand startCommand;
 
-        private readonly IMachineShutterService shutterService;
-
-        private ICommand startCommand;
-
-        private ICommand stopCommand;
-
-        private readonly IMachineTestService testService;
-
-        private bool closeSensorState;
-
-        private bool openSensorState;
-
-        public bool CloseSensorState { get => this.closeSensorState; set => this.SetProperty(ref this.closeSensorState, value); }
-
-        public bool OpenSensorState { get => this.openSensorState; set => this.SetProperty(ref this.openSensorState, value); }
+        private DelegateCommand stopCommand;
 
         #endregion
 
@@ -55,22 +51,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEnduranceTestViewModel(
             IMachineTestService testService,
-            IMachineShutterService shutterService)
-            : base(Services.PresentationMode.Installator)
+            IMachineShuttersService shuttersService,
+            IBayManager bayManager)
+            : base(PresentationMode.Installator)
         {
             if (testService == null)
             {
                 throw new System.ArgumentNullException(nameof(testService));
             }
 
-            if (shutterService == null)
+            if (shuttersService == null)
             {
-                throw new System.ArgumentNullException(nameof(shutterService));
+                throw new System.ArgumentNullException(nameof(shuttersService));
+            }
+
+            if (bayManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(bayManager));
             }
 
             this.testService = testService;
-            this.shutterService = shutterService;
-            this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
+            this.shuttersService = shuttersService;
+
+            this.BayNumber = bayManager.BayNumber;
+
+            this.sensors = new ShutterSensors(this.BayNumber);
         }
 
         #endregion
@@ -81,107 +86,146 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Events
-
-        public event CheckAccuracyOnPropertyChangedEventHandler InputsAccuracyControlEventHandler;
-
-        #endregion
-
         #region Properties
 
-        public int CompletedCycles
+        public int BayNumber
+        {
+            get => this.bayNumber;
+            set => this.SetProperty(ref this.bayNumber, value);
+        }
+
+        public int? CompletedCycles
         {
             get => this.completedCycles;
             set => this.SetProperty(ref this.completedCycles, value);
         }
 
-        public int DelayBetweenCycles
+        public string Error => string.Join(
+                System.Environment.NewLine,
+                this[nameof(this.InputDelayBetweenCycles)],
+                this[nameof(this.InputRequiredCycles)]);
+
+        public int? InputDelayBetweenCycles
         {
-            get => this.delayBetweenCycles;
+            get => this.inputDelayBetweenCycles;
             set
             {
-                this.SetProperty(ref this.delayBetweenCycles, value);
-                this.InputsAccuracyControlEventHandler();
+                if (this.SetProperty(ref this.inputDelayBetweenCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 
-        public bool IsStartButtonActive
+        public int? InputRequiredCycles
         {
-            get => this.canExecuteStartCommand;
-            set => this.SetProperty(ref this.canExecuteStartCommand, value);
-        }
-
-        public bool IsStopButtonActive
-        {
-            get => this.canExecuteStopCommand;
-            set => this.SetProperty(ref this.canExecuteStopCommand, value);
-        }
-
-        public int RequiredCycles
-        {
-            get => this.requiredCycles;
+            get => this.inputRequiredCycles;
             set
             {
-                this.SetProperty(ref this.requiredCycles, value);
-                this.InputsAccuracyControlEventHandler();
+                if (this.SetProperty(ref this.inputRequiredCycles, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 
-        public IViewModel SensorRegion
+        public bool IsExecutingProcedure
         {
-            get => this.sensorRegion;
-            set => this.SetProperty(ref this.sensorRegion, value);
+            get => this.isExecutingProcedure;
+            set
+            {
+                if (this.SetProperty(ref this.isExecutingProcedure, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
-        public ICommand StartButtonCommand =>
-            this.startCommand
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ShutterSensors Sensors => this.sensors;
+
+        public ICommand StartCommand =>
+                    this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.ExecuteStartCommandAsync()));
+                async () => await this.ExecuteStartCommandAsync(),
+                this.CanExecuteStartCommand));
 
-        public ICommand StopButtonCommand =>
+        public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.ExecuteStopCommandAsync()));
+                async () => await this.ExecuteStopCommandAsync(),
+                this.CanExecuteStopCommand));
+
+        #endregion
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.InputRequiredCycles):
+                        if (!this.InputRequiredCycles.HasValue)
+                        {
+                            return $"InputRequiredCycles is required.";
+                        }
+
+                        if (this.InputRequiredCycles.Value <= 0)
+                        {
+                            return "InputRequiredCycles must be strictly positive.";
+                        }
+                        break;
+
+                    case nameof(this.InputDelayBetweenCycles):
+                        if (!this.InputDelayBetweenCycles.HasValue)
+                        {
+                            return $"InputDelayBetweenCycles is required.";
+                        }
+
+                        if (this.InputDelayBetweenCycles.Value <= 0)
+                        {
+                            return "InputDelayBetweenCycles must be strictly positive.";
+                        }
+                        break;
+                }
+
+                return null;
+            }
+        }
 
         #endregion
 
         #region Methods
 
-        public async Task GetIntegerParametersAsync()
+        public override async Task OnNavigatedAsync()
         {
-            const string category = "GeneralInfo";
-            this.RequiredCycles = await this.shutterService.GetIntegerConfigurationParameterAsync(category, "RequiredCycles");
-            this.DelayBetweenCycles = await this.shutterService.GetIntegerConfigurationParameterAsync(category, "DelayBetweenCycles");
+            await base.OnNavigatedAsync();
 
-#if !DEBUG
-            /*    var client = new System.Net.HttpClient();
-                var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                }
-                response = null;
-                response = await client.GetAsync(new System.Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-                }*/
-#endif
-        }
+            this.IsBackNavigationAllowed = true;
 
-        public Task OnEnterViewAsync()
-        {
+            await this.RetrieveTestParametersAsync();
+
             // TODO swap between 2/3 positions bay
 
             this.receivedActionUpdateCompletedToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<ShutterControlMessageData>>()
+                .GetEvent<NotificationEventUI<ShutterTestStatusChangedMessageData>>()
                 .Subscribe(
-                    message =>
-                    {
-                        this.UpdateCompletedCycles(new MessageNotifiedEventArgs(message));
-                    },
+                    message => this.OnShutterTestStatusChanged(message),
                     ThreadOption.PublisherThread,
                     false);
 
@@ -195,56 +239,102 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     message.NotificationType == NotificationType.Error &&
                     message.ActionType == ActionType.ShutterControl &&
                     message.ActionStatus == ActionStatus.Error);
-
-            return Task.CompletedTask;
         }
 
-        public void UnSubscribeMethodFromEvent()
+        private bool CanExecuteStartCommand()
         {
-            this.EventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateErrorToken);
-            this.EventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateCompletedToken);
+            return !this.IsExecutingProcedure
+                && !this.IsWaitingForResponse
+                && string.IsNullOrWhiteSpace(this.Error);
         }
 
-        private void CheckInputsAccuracy()
+        private bool CanExecuteStopCommand()
         {
-            this.IsStartButtonActive = this.requiredCycles > 0 && this.delayBetweenCycles > 0;
+            return this.IsExecutingProcedure
+                && !this.IsWaitingForResponse;
         }
 
         private async Task ExecuteStartCommandAsync()
         {
-            this.IsStartButtonActive = false;
-            this.IsStopButtonActive = true;
+            this.IsExecutingProcedure = true;
+            this.IsWaitingForResponse = true;
 
-            const int bayNumber = 1; // TODO remove hardcoded bay number
-            await this.shutterService.ExecuteControlTestAsync(bayNumber, this.DelayBetweenCycles, this.RequiredCycles);
+            try
+            {
+                await this.shuttersService.RunTestAsync(
+                    this.BayNumber,
+                    this.InputDelayBetweenCycles.Value,
+                    this.InputRequiredCycles.Value);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task ExecuteStopCommandAsync()
         {
-            this.IsStartButtonActive = true;
-            this.IsStopButtonActive = false;
+            this.IsWaitingForResponse = true;
 
-            await this.shutterService.StopAsync();
+            try
+            {
+                await this.shuttersService.StopAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
+            }
         }
 
-        private void UpdateCompletedCycles(MessageNotifiedEventArgs data)
+        private void OnShutterTestStatusChanged(
+            NotificationMessageUI<ShutterTestStatusChangedMessageData> message)
         {
-            if (data.NotificationMessage is ShutterControlMessageData parsedData)
+            if (message?.Data == null)
             {
-                if (this.RequiredCycles == parsedData.CurrentShutterPosition)
-                {
-                    this.IsStartButtonActive = true;
-                    this.IsStopButtonActive = false;
-                }
+                return;
+            }
 
-                this.CompletedCycles = parsedData.CurrentShutterPosition;
+            this.CompletedCycles = message.Data.ExecutedCycles;
+
+            if (this.InputRequiredCycles <= message.Data.ExecutedCycles)
+            {
+                this.IsExecutingProcedure = false;
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task RetrieveTestParametersAsync()
+        {
+            try
+            {
+                var procedureParameters = await this.shuttersService.GetTestParametersAsync();
+
+                this.InputRequiredCycles = procedureParameters.RequiredCycles;
+                this.InputDelayBetweenCycles = procedureParameters.DelayBetweenCycles;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 
         private void UpdateError()
         {
-            this.IsStartButtonActive = false;
-            this.IsStopButtonActive = false;
+            this.IsExecutingProcedure = false;
         }
 
         #endregion

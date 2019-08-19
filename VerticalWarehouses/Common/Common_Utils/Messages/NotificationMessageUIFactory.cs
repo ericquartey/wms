@@ -28,7 +28,7 @@ namespace Ferretto.VW.CommonUtils.Messages
             if (messageDataType == null)
             {
                 throw new System.InvalidOperationException(
-                    "Message data type for UI cannot be created.");
+                    $"Message data type '{messageType}' cannot be found.");
             }
 
             var genericMessageUiType = typeof(NotificationMessageUI<>).MakeGenericType(messageDataType);

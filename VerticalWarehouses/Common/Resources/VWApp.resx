@@ -123,6 +123,9 @@
   <data name="ErrorCode" xml:space="preserve">
     <value>Error Code</value>
   </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Error communicating with services.</value>
+  </data>
   <data name="ErrorDescription" xml:space="preserve">
     <value>Error Description</value>
   </data>

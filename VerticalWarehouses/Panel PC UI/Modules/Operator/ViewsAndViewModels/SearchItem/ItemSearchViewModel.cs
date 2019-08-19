@@ -222,7 +222,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
             var success = await this.wmsDataProvider.PickAsync(
                 itemToPick.Id,
                 2, // TODO remove this hardcoded value
-                this.bayManager.BayId,
+                this.bayManager.BayNumber,
                 qty);
 
             if (success)

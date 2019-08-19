@@ -1,53 +1,44 @@
-﻿using System;
-using System.IO;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+﻿using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("1.0.0/Installation/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class InstallationStatusController : ControllerBase
     {
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(bool[]))]
-        [ProducesResponseType(404)]
         [HttpGet]
-        public ActionResult<bool[]> GetStatusAsync([FromServices] ISetupStatusDataLayer dataLayerSetupStatus)
+        public ActionResult<bool[]> Get([FromServices] ISetupStatusDataLayer dataLayerSetupStatus)
         {
-            var value = new bool[23];
-            try
+            var value = new bool[]
             {
-                value[0] = dataLayerSetupStatus.VerticalHomingDone;
-                value[1] = dataLayerSetupStatus.HorizontalHomingDone;
-                value[2] = dataLayerSetupStatus.BeltBurnishingDone;
-                value[3] = dataLayerSetupStatus.VerticalResolutionDone;
-                value[4] = dataLayerSetupStatus.VerticalOffsetDone;
-                value[5] = dataLayerSetupStatus.CellsControlDone;
-                value[6] = dataLayerSetupStatus.PanelsControlDone;
-                value[7] = dataLayerSetupStatus.Shape1Done;
-                value[8] = dataLayerSetupStatus.Shape2Done;
-                value[9] = dataLayerSetupStatus.Shape3Done;
-                value[10] = dataLayerSetupStatus.WeightMeasurementDone;
-                value[11] = dataLayerSetupStatus.Shutter1Done;
-                value[12] = dataLayerSetupStatus.Shutter2Done;
-                value[13] = dataLayerSetupStatus.Shutter3Done;
-                value[14] = dataLayerSetupStatus.Bay1ControlDone;
-                value[15] = dataLayerSetupStatus.Bay2ControlDone;
-                value[16] = dataLayerSetupStatus.Bay3ControlDone;
-                value[17] = dataLayerSetupStatus.FirstDrawerLoadDone;
-                value[18] = dataLayerSetupStatus.DrawersLoadedDone;
-                value[19] = dataLayerSetupStatus.Laser1Done;
-                value[20] = dataLayerSetupStatus.Laser2Done;
-                value[21] = dataLayerSetupStatus.Laser3Done;
-                value[22] = dataLayerSetupStatus.MachineDone;
-            }
-            catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-            {
-                return this.NotFound("Setup configuration not found");
-            }
+                dataLayerSetupStatus.VerticalHomingDone,
+                dataLayerSetupStatus.HorizontalHomingDone,
+                dataLayerSetupStatus.BeltBurnishingDone,
+                dataLayerSetupStatus.VerticalResolutionDone,
+                dataLayerSetupStatus.VerticalOffsetDone,
+                dataLayerSetupStatus.CellsControlDone,
+                dataLayerSetupStatus.PanelsControlDone,
+                dataLayerSetupStatus.Shape1Done,
+                dataLayerSetupStatus.Shape2Done,
+                dataLayerSetupStatus.Shape3Done,
+                dataLayerSetupStatus.WeightMeasurementDone,
+                dataLayerSetupStatus.Shutter1Done,
+                dataLayerSetupStatus.Shutter2Done,
+                dataLayerSetupStatus.Shutter3Done,
+                dataLayerSetupStatus.Bay1ControlDone,
+                dataLayerSetupStatus.Bay2ControlDone,
+                dataLayerSetupStatus.Bay3ControlDone,
+                dataLayerSetupStatus.FirstDrawerLoadDone,
+                dataLayerSetupStatus.DrawersLoadedDone,
+                dataLayerSetupStatus.Laser1Done,
+                dataLayerSetupStatus.Laser2Done,
+                dataLayerSetupStatus.Laser3Done,
+                dataLayerSetupStatus.MachineDone,
+            };
 
             return this.Ok(value);
         }

@@ -94,7 +94,7 @@ namespace Ferretto.VW.SignalRClientConsole
                 Console.WriteLine(szMsg);
             }
 
-            if (e.NotificationMessage is NotificationMessageUI<ShutterControlMessageData> sc)
+            if (e.NotificationMessage is NotificationMessageUI<ShutterTestStatusChangedMessageData> sc)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 szMsg = string.Format("{0} - {1}", DateTime.Now.ToString(), $"Received NotificationMessageUI<ShutterControlMessageData>. Object values => Position: {sc.Data.CurrentShutterPosition.ToString()}, #Cycles: {sc.Data.NumberCycles.ToString()}, Status: {sc.Status.ToString()}");

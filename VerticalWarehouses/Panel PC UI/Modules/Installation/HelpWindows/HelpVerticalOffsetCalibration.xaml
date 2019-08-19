@@ -40,7 +40,7 @@
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="1025,5"
                                                      LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                      />
 
         <controls:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0" Width="180"
                                                   ContentText="1023,5"
@@ -51,7 +51,7 @@
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="0,5"
                                                      LabelText="{x:Static res:InstallationApp.StepValue}"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                      />
 
         <controls:CustomLabelTextBlockControl      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0" Width="180"
                                                    ContentText="145,0"
@@ -62,7 +62,7 @@
                                                      Highlighted="True" IsEnabled="True"
                                                      InputText="148,0"
                                                      LabelText="{x:Static res:InstallationApp.CorrectOffset}"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                      />
 
         <controls:PpcButton    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,140,0,0"
                   Content="{x:Static res:InstallationApp.GoToInitialPosition}"

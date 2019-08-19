@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var installationStatus = await this.installationStatusService.GetStatusAsync();
+                var installationStatus = await this.installationStatusService.GetAsync();
                 var checkHomingDone = installationStatus.FirstOrDefault();
 
                 this.EnableMenuItem(this.installatorItems, InstallatorMenus.VerticalOffsetCalibration, checkHomingDone);

@@ -24,7 +24,7 @@
                                                  InputScope="Number"
                                                  InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
         <controls:PpcTextBox Margin="410,100,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
@@ -33,7 +33,7 @@
                                                  InputText="{Binding ReadInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsReadInitialPositionActive}"
                                                  LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
         <controls:PpcTextBox Margin="140,180,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
@@ -42,7 +42,7 @@
                                                  InputText="{Binding DesiredFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsDesiredFinalPositionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
         <controls:PpcTextBox Margin="410,180,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
@@ -51,7 +51,7 @@
                                                  InputText="{Binding ReadFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsReadFinalPositionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
         <controls:PpcTextBox Margin="140,290,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
@@ -60,7 +60,7 @@
                                                  InputText="{Binding MesuredMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsEnabled="{Binding IsMesuredMovementActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.MesuredMovement}"
-                                                 Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                  />
         <controls:CustomLabelTextBlockControl Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"

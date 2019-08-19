@@ -5,12 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Prism.Events;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.DTOs;
+using Microsoft.AspNetCore.Http;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoadingUnitsController : ControllerBase
+    public class LoadingUnitsController : BaseAutomationController
     {
         #region Fields
 
@@ -23,8 +28,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public LoadingUnitsController(
+            IEventAggregator eventAggregator,
             ILoadingUnitStatisticsProvider loadingUnitStatisticsProvider,
             IMachinesDataService machinesDataService)
+            : base(eventAggregator)
         {
             if (loadingUnitStatisticsProvider == null)
             {
@@ -44,7 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("SpaceStatistics")]
+        [HttpGet("statistics/space")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync()
         {
             var statistics = this.loadingUnitStatisticsProvider.GetSpaceStatistics();
@@ -71,7 +78,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
-        [HttpGet("WeightStatistics")]
+        [HttpGet("statistics/weight")]
         public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync()
         {
             var statistics = this.loadingUnitStatisticsProvider.GetWeightStatistics();
@@ -94,6 +101,41 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(statistics);
+        }
+
+        [HttpPost("start-moving")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartMoving([FromBody]MoveDrawerMessageDataDTO data)
+        {
+            var drawerOperationData = new DrawerOperationMessageData(
+               data.DrawerOperation,
+               DrawerOperationStep.None);
+
+            drawerOperationData.Source = DrawerDestination.InternalBay1Up; // TODO do not hardcode bay number
+            drawerOperationData.Destination = DrawerDestination.Cell;
+
+            this.PublishCommand(
+                drawerOperationData,
+                "Execute Drawer Operation Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.DrawerOperation);
+
+            return this.Accepted();
+        }
+
+        [HttpGet("stop-moving")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Stop()
+        {
+            this.PublishCommand(
+                null,
+                "Stop Command",
+                MessageActor.FiniteStateMachines,
+                MessageType.Stop);
+
+            return this.Accepted();
         }
 
         #endregion

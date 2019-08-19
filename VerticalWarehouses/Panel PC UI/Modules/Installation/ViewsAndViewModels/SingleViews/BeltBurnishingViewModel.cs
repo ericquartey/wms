@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
     {
         #region Fields
 
-        private readonly IMachineBeltBurnishingService beltBurnishingService;
+        private readonly IMachineBeltBurnishingProcedureService beltBurnishingService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
-            IMachineBeltBurnishingService beltBurnishingService)
+            IMachineBeltBurnishingProcedureService beltBurnishingService)
         {
             if (eventAggregator == null)
             {
@@ -210,7 +210,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                 decimal.TryParse(this.LowerBound, out var lowerBound);
                 decimal.TryParse(this.UpperBound, out var upperBound);
 
-                await this.beltBurnishingService.ExecuteAsync(upperBound, lowerBound, reqCycles);
+                await this.beltBurnishingService.StartAsync(upperBound, lowerBound, reqCycles);
             }
             catch (Exception)
             {
@@ -251,7 +251,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
 
-                        await this.beltBurnishingService.SetBeltBurnishingCompletionAsync();
+                        await this.beltBurnishingService.MarkAsCompletedAsync();
                         break;
 
                     case MessageStatus.OperationError:

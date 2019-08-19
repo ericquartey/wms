@@ -2,8 +2,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    public class AutomationBaseController : ControllerBase
+    public class BaseWmsProxyBaseController : ControllerBase
     {
+        #region Constructors
+
+        protected BaseWmsProxyBaseController()
+        { }
+
+        #endregion
+
         #region Methods
 
         protected ActionResult NegativeResult(WMS.Data.WebAPI.Contracts.SwaggerException exception)

@@ -61,7 +61,7 @@
 
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                     Highlighted="True" IsEnabled="True" InputText="12"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingQtyRefilled}"  />
 
         <controls:PpcButton   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"

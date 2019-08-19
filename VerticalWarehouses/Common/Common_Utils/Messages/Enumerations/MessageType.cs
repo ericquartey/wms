@@ -22,6 +22,7 @@
 
         CalibrateAxis,
 
+        ShutterTestStatusChanged,
         MachineStateActive,
 
         MachineStatusActive,

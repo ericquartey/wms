@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    internal class BaysConfigurationProvider : IBaysConfigurationProvider
+    internal class BaysConfigurationProvider : Interfaces.IBaysConfigurationProvider
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly Interfaces.IBaysProvider baysProvider;
 
         private readonly IGeneralInfoConfigurationDataLayer generalInfoConfiguration;
 
@@ -24,7 +23,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         public BaysConfigurationProvider(
             IGeneralInfoConfigurationDataLayer generalInfoConfiguration,
             ISetupNetworkDataLayer networkConfiguration,
-            IBaysProvider baysProvider)
+            Interfaces.IBaysProvider baysProvider)
         {
             if (generalInfoConfiguration == null)
             {

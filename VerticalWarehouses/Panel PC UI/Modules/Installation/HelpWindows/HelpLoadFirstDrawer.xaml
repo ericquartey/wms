@@ -40,7 +40,7 @@
         <controls:PpcTextBox  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,350,0,0"
                                                     Width="180" InputText="1"
                                                     Highlighted="True" IsEnabled="True"
-                                                    Style="{StaticResource VWAPP_PpcTextBoxStyle}"
+
                                                     LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
 
         <controls:CustomLabelTextBlockControl   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,420,0,0"

@@ -21,6 +21,10 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Movimenti manuali a bassa velocità")]
         VerticalEngineManualMovements,
 
+        [View(Utils.Modules.Installation.SHUTTERENDURANCETEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Test Serranda")]
+        ShutterEnduranceTest,
+
         //To DO remove after implementing PpcControl for navigation of sub menus
         None
     }

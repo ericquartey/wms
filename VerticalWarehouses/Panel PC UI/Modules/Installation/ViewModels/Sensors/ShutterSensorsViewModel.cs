@@ -6,9 +6,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private bool gateSensorA;
+        private readonly bool gateSensorA;
 
-        private bool gateSensorB;
+        private readonly bool gateSensorB;
 
         #endregion
 
@@ -17,22 +17,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ShutterSensorsViewModel(IMachineSensorsService sensorsService)
             : base(sensorsService)
         {
-        }
-
-        #endregion
-
-        #region Properties
-
-        public bool GateSensorA
-        {
-            get => this.gateSensorA;
-            set => this.SetProperty(ref this.gateSensorA, value);
-        }
-
-        public bool GateSensorB
-        {
-            get => this.gateSensorB;
-            set => this.SetProperty(ref this.gateSensorB, value);
         }
 
         #endregion

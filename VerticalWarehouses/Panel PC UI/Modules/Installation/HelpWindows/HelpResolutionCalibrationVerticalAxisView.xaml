@@ -34,7 +34,7 @@
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="1025,5"
                                                        LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                        />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,295,0,0"
                     Content="{x:Static res:InstallationApp.StartResolutionProcedure}"
@@ -51,7 +51,7 @@
                                                       Highlighted="True" IsEnabled="True"
                                                       InputText="5150.0"
                                                       LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
-                                                      Style="{StaticResource VWAPP_PpcTextBoxStyle}"  />
+                                                        />
 
         <controls:PpcButton      HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,590,0,0"
                     Content="{x:Static res:InstallationApp.Move}"
@@ -73,7 +73,7 @@
                                                        Highlighted="True" IsEnabled="True"
                                                        InputText="4250,5"
                                                        LabelText="{x:Static res:InstallationApp.MesuredMovement}"
-                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}"  />
+                                                         />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,155,0,0"
                     Width="260" Height="70"
@@ -155,7 +155,7 @@
                                                      Highlighted="True"
                                                      InputText="875,5"
                                                      LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
-                                                     Style="{StaticResource VWAPP_PpcTextBoxStyle}" />
+                                                      />
 
         <controls:PpcTextBox     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,520,0,0"
                                                        Width="180"
@@ -163,7 +163,7 @@
                                                        InputText="5045,5"
                                                        IsEnabled="True"
                                                        LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
-                                                       Style="{StaticResource VWAPP_PpcTextBoxStyle}"  />
+                                                         />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,225,0,0"
                     Width="260" Height="70"

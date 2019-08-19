@@ -6,18 +6,22 @@
         <Setter Property="Margin" Value="0,0,0,15" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="IndicatorBorderBrush" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBackground_Normal}" />
         <Style.Triggers>
-            <Trigger Property="SensorState" Value="true">
-                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBrush_Up}" />
+            <Trigger Property="SensorState" Value="True">
+                <Setter Property="IndicatorFillBrush" Value="{DynamicResource PpcSensorControlActiveStateBrush}" />
             </Trigger>
-            <Trigger Property="SensorState" Value="false">
-                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBrush_Down}" />
+            <Trigger Property="SensorState" Value="False">
+                <Setter Property="IndicatorFillBrush" Value="{DynamicResource PpcSensorControlInactiveStateBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="VWAPP_CustomControlSensor_TextBlockStyle"
+    <Style x:Key="PpcSensorControlLabelStyle"
            TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="10,0,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_FontSize}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_FontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_Foreground_Normal}" />
     </Style>

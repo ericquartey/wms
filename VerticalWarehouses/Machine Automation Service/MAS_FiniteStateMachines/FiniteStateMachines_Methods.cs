@@ -377,7 +377,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
         {
             this.logger.LogTrace("1:Method Start");
 
-            if (message.Data is IShutterControlMessageData data)
+            if (message.Data is IShutterTestStatusChangedMessageData data)
             {
                 // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
                 data.ShutterType = ShutterType.Shutter2Type;

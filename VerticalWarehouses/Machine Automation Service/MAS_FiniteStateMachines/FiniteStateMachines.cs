@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
-                    case MessageType.ShutterControl:
+                    case MessageType.ShutterTestStatusChanged:
                         this.ProcessShutterControlMessage(receivedMessage);
                         break;
 
@@ -660,7 +660,7 @@ namespace Ferretto.VW.MAS.FiniteStateMachines
                         }
                         break;
 
-                    case MessageType.ShutterControl:
+                    case MessageType.ShutterTestStatusChanged:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             switch (receivedMessage.Status)
